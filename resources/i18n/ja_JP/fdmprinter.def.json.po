@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.2\n"
+"Project-Id-Version: Cura 3.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-02-10 05:04+0900\n"
-"Last-Translator: Brule\n"
+"PO-Revision-Date: 2018-04-11 14:40+0100\n"
+"Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Brule\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
@@ -54,26 +54,26 @@ msgstr "このプリンターのバリエーションを表示するかどうか
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
 msgid "Start G-code"
-msgstr ""
+msgstr "G-Codeの開始"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "最初に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
-msgstr ""
+msgstr "G-codeの終了"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "最後に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -177,22 +177,22 @@ msgstr "楕円形"
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type label"
 msgid "Build Plate Material"
-msgstr ""
+msgstr "ビルドプレートの材料"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
-msgstr ""
+msgstr "プリンターに取り付けられているビルドプレートの材料です。"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option glass"
 msgid "Glass"
-msgstr ""
+msgstr "ガラス"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
-msgstr ""
+msgstr "アルミニウム"
 
 # msgstr "楕円形"
 #: fdmprinter.def.json
@@ -242,12 +242,12 @@ msgstr "エクストルーダーの数。エクストルーダーの単位は、
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders that are enabled"
-msgstr ""
+msgstr "有効なエクストルーダーの数"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
 msgid "Number of extruder trains that are enabled; automatically set in software"
-msgstr ""
+msgstr "有効なエクストルーダートレインの数（ソフトウェアが自動設定）"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
@@ -346,12 +346,12 @@ msgstr "ノズルが冷却される前にエクストルーダーが静止しな
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code flavour"
-msgstr ""
+msgstr "G-codeフレーバー"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
-msgstr ""
+msgstr "生成するG-codeの種類です。"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
@@ -640,72 +640,72 @@ msgstr "フィラメントのモーターのデフォルトジャーク。"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x label"
 msgid "Steps per Millimeter (X)"
-msgstr ""
+msgstr "ミリメートルあたりのステップ (X)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the X direction."
-msgstr ""
+msgstr "X 方向に 1 ミリメートルの移動でステップモーターが行うステップの数を示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y label"
 msgid "Steps per Millimeter (Y)"
-msgstr ""
+msgstr "ミリメートルあたりのステップ (Y)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Y direction."
-msgstr ""
+msgstr "Y 方向に 1 ミリメートルの移動でステップモーターが行うステップの数を示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
-msgstr ""
+msgstr "ミリメートルあたりのステップ (Z)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Z direction."
-msgstr ""
+msgstr "Z 方向に 1 ミリメートルの移動でステップモーターが行うステップの数を示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e label"
 msgid "Steps per Millimeter (E)"
-msgstr ""
+msgstr "ミリメートルあたりのステップ (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr ""
+msgstr "1 ミリメートルの押出でステップモーターが行うステップの数を示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
 msgid "X Endstop in Positive Direction"
-msgstr ""
+msgstr "プラス方向の X エンドストップ"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x description"
 msgid "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate)."
-msgstr ""
+msgstr "X 軸のエンドストップがプラス方向（高い X 座標）またはマイナス方向（低い X 座標）のいずれかを示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y label"
 msgid "Y Endstop in Positive Direction"
-msgstr ""
+msgstr "プラス方向の Y エンドストップ"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y description"
 msgid "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate)."
-msgstr ""
+msgstr "Y 軸のエンドストップがプラス方向（高い Y 座標）またはマイナス方向（低い Y 座標）のいずれかを示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z label"
 msgid "Z Endstop in Positive Direction"
-msgstr ""
+msgstr "プラス方向の Z エンドストップ"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z description"
 msgid "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate)."
-msgstr ""
+msgstr "Z 軸のエンドストップがプラス方向（高い Z 座標）またはマイナス方向（低い Z 座標）のいずれかを示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
@@ -720,12 +720,12 @@ msgstr "プリントヘッドの最小移動速度。"
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter label"
 msgid "Feeder Wheel Diameter"
-msgstr ""
+msgstr "フィーダーホイール直径"
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
-msgstr ""
+msgstr "材料をフィーダーに送るホイールの直径。"
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -1283,9 +1283,7 @@ msgstr "ZシームX"
 #: fdmprinter.def.json
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr ""
-"レイヤー内の各印刷を開始するX座\n"
-"標の位置。"
+msgstr "レイヤー内の各印刷を開始するX座\n標の位置。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
@@ -1740,9 +1738,7 @@ msgstr "インフィル優先"
 #: fdmprinter.def.json
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
-msgstr ""
-"壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\n"
-"はじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
+msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\nはじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -1912,12 +1908,12 @@ msgstr "印刷中にノズルが冷える際の速度。同じ値が、加熱す
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature label"
 msgid "Default Build Plate Temperature"
-msgstr ""
+msgstr "ビルドプレートのデフォルト温度"
 
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
-msgstr ""
+msgstr "加熱式ビルドプレートのデフォルト温度。これはビルドプレートの「基本」温度でます。他のすべての印刷温度はこの値に基づいてオフセットする必要があります。"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -1972,12 +1968,12 @@ msgstr "表面エネルギー。"
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Shrinkage Ratio"
-msgstr ""
+msgstr "収縮率"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "Shrinkage ratio in percentage."
-msgstr ""
+msgstr "収縮率をパーセントで示す。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -1992,12 +1988,12 @@ msgstr "流れの補修: 押出されるマテリアルの量は、この値か�
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
-msgstr ""
+msgstr "初期レイヤーフロー"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
-msgstr ""
+msgstr "初期レイヤーの流量補修:初期レイヤーの マテリアル吐出量はこの値の乗算で計算されます。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable label"
@@ -3190,12 +3186,12 @@ msgstr "クロス"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
 msgid "Connect Support Lines"
-msgstr ""
+msgstr "サポートライン接続"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support description"
 msgid "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material."
-msgstr ""
+msgstr "サポートライン両端を接続します。この設定を有効にすると、より確実なサポートで抽出不足を解消しますが、材料の費用がかさみます。"
 
 # msgstr "クロス"
 #: fdmprinter.def.json
@@ -3696,7 +3692,7 @@ msgstr "密着性"
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
-msgstr "プライムブロブを有効にする"
+msgstr "プライムボルブを有効にする"
 
 # msgstr "プライムブロブを有効にする"
 #: fdmprinter.def.json
@@ -3788,9 +3784,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"スカートと印刷の最初の層の間の水平距離。\n"
-"これは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
+msgstr "スカートと印刷の最初の層の間の水平距離。\nこれは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4155,12 +4149,12 @@ msgstr "印刷物の横にタワーを造形して、ノズル交換後にフィ
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular label"
 msgid "Circular Prime Tower"
-msgstr ""
+msgstr "円形プライムタワー"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular description"
 msgid "Make the prime tower as a circular shape."
-msgstr ""
+msgstr "プライムタワーを円形にします。"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
@@ -4331,7 +4325,7 @@ msgstr "スティッチできない部分を保持"
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
 msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper g-code."
-msgstr ""
+msgstr "通常、Curaはメッシュ内の小さな穴をスティッチし、大きな穴のあるレイヤーの部分を削除しようとします。このオプションを有効にすると、スティッチできない部分が保持されます。このオプションは、他のすべてが適切なG-codeを生成できない場合の最後の手段として使用する必要があります。"
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4552,7 +4546,7 @@ msgstr "相対押出"
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the g-code. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any g-code script is output."
-msgstr ""
+msgstr "絶対押出ではなく、相対押出を使用します。相対Eステップを使用すると、G-codeの後処理が容易になります。ただし、すべてのプリンタでサポートされているわけではありません。絶対的Eステップと比較して、材料の量にごくわずかな偏差が生じることがあります。この設定に関係なく、G-codeスクリプトが出力される前にエクストルーダーのモードは常に絶対値にて設定されています。"
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -5412,202 +5406,202 @@ msgstr "小さいレイヤーを使用するかどうかの閾値。この値が
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled label"
 msgid "Enable Bridge Settings"
-msgstr ""
+msgstr "ブリッジ設定を有効にする"
 
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
-msgstr ""
+msgstr "ブリッジを検出し、ブリッジを印刷しながらて印刷速度、フロー、ファンの設定を変更します。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_min_length label"
 msgid "Minimum Bridge Wall Length"
-msgstr ""
+msgstr "ブリッジ壁の最小長さ"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_min_length description"
 msgid "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings."
-msgstr ""
+msgstr "この値より短いサポートされていない壁が通常の壁設定で印刷されます。長いサポートされていない壁は、ブリッジ壁設定で印刷されます。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold label"
 msgid "Bridge Skin Support Threshold"
-msgstr ""
+msgstr "ブリッジスキンサポートのしきい値"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
-msgstr ""
+msgstr "対象領域に対してこのパーセンテージ未満のスキン領域がサポートされている場合、ブリッジ設定で印刷します。それ以外の場合は、通常のスキン設定で印刷します。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang label"
 msgid "Bridge Wall Max Overhang"
-msgstr ""
+msgstr "ブリッジ壁最大オーバーハング"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang description"
 msgid "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings."
-msgstr ""
+msgstr "ブリッジ設定でウォールを印刷する前に、壁の線の下の空気の領域で可能な最大幅。空気ギャップがこれより広い場合は、壁の線はブリッジ設定で印刷されます。それ以外は、通常の設定で印刷されます。この値より低い場合は、オーバーハング壁線がブリッジ設定で印刷されます。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
-msgstr ""
+msgstr "ブリッジ壁コースティング"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
-msgstr ""
+msgstr "この設定は、ブリッジ壁が始まる直前に、エクストルーダーを動かす距離を制御します。ブリッジが始まる前にコースティングすることにより、ノズル内が減圧され、ブリッジがより平らになります。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_speed label"
 msgid "Bridge Wall Speed"
-msgstr ""
+msgstr "ブリッジ壁速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_speed description"
 msgid "The speed at which the bridge walls are printed."
-msgstr ""
+msgstr "ブリッジ壁を印刷する速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow label"
 msgid "Bridge Wall Flow"
-msgstr ""
+msgstr "ブリッジ壁フロー"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow description"
 msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "ブリッジ壁を印刷するときは、材料の吐出量をこの値で乗算します。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed label"
 msgid "Bridge Skin Speed"
-msgstr ""
+msgstr "ブリッジスキン速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
-msgstr ""
+msgstr "ブリッジスキン領域が印刷される速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow label"
 msgid "Bridge Skin Flow"
-msgstr ""
+msgstr "ブリッジスキンフロー"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "ブリッジスキン領域を印刷するときは、材料の吐出量をこの値で乗算します。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density label"
 msgid "Bridge Skin Density"
-msgstr ""
+msgstr "ブリッジスキンの密度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density description"
 msgid "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "ブリッジスキンレイヤーの密度。100 以下の場合は、スキンライン間のギャップを増やします。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed label"
 msgid "Bridge Fan Speed"
-msgstr ""
+msgstr "ブリッジファン速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
-msgstr ""
+msgstr "ブリッジ壁とスキンを印刷する際に使用するファン速度の割合。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers label"
 msgid "Bridge Has Multiple Layers"
-msgstr ""
+msgstr "ブリッジを構成する多重レイヤー"
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
-msgstr ""
+msgstr "有効な場合、空気上部の第二および第三レイヤーは以下の設定で印刷されます。それ以外の場合は、それらのレイヤーは通常の設定で印刷されます。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 label"
 msgid "Bridge Second Skin Speed"
-msgstr ""
+msgstr "ブリッジセカンドスキンの速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
-msgstr ""
+msgstr "セカンドブリッジのスキンレイヤーを印刷する際に使用する印刷速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 label"
 msgid "Bridge Second Skin Flow"
-msgstr ""
+msgstr "ブリッジセカンドスキンのフロー"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "セカンドブリッジスキンレイヤーを印刷するときは、材料の吐出量をこの値で乗算します。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 label"
 msgid "Bridge Second Skin Density"
-msgstr ""
+msgstr "ブリッジセカンドスキンの密度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 description"
 msgid "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "セカンドブリッジスキンレイヤーの密度。100 以下の場合は、スキンライン間のギャップを増やします。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 label"
 msgid "Bridge Second Skin Fan Speed"
-msgstr ""
+msgstr "ブリッジセカンドスキンのファン速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
-msgstr ""
+msgstr "セカンドブリッジのスキンレイヤーを印刷する際に使用するファン速度の割合。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 label"
 msgid "Bridge Third Skin Speed"
-msgstr ""
+msgstr "ブリッジサードスキンの速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
-msgstr ""
+msgstr "サードブリッジのスキンレイヤーを印刷する際に使用する印刷速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 label"
 msgid "Bridge Third Skin Flow"
-msgstr ""
+msgstr "ブリッジサードスキンのフロー"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "サードブリッジスキンレイヤーを印刷するときは、材料の吐出量をこの値で乗算します。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 label"
 msgid "Bridge Third Skin Density"
-msgstr ""
+msgstr "ブリッジサードスキンの密度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "サードブリッジスキンレイヤーの密度。100 以下の場合は、スキンライン間のギャップを増やします。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 label"
 msgid "Bridge Third Skin Fan Speed"
-msgstr ""
+msgstr "ブリッジサードスキンのファン速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
-msgstr ""
+msgstr "サードブリッジのスキンレイヤーを印刷する際に使用するファン速度の割合。"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

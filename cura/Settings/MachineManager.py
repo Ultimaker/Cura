@@ -318,7 +318,7 @@ class MachineManager(QObject):
         else:
             quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
             if quality_type not in quality_groups:
-                Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
+                Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, ", ".join(quality_groups.keys()))
                 self._setEmptyQuality()
                 return
             new_quality_group = quality_groups[quality_type]
@@ -785,6 +785,8 @@ class MachineManager(QObject):
                 continue
 
             old_value = container.getProperty(setting_key, "value")
+            if int(old_value) < 0:
+                continue
             if int(old_value) >= extruder_count or not self._global_container_stack.extruders[str(old_value)].isEnabled:
                 result.append(setting_key)
                 Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
@@ -925,6 +927,8 @@ class MachineManager(QObject):
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
         # Make sure the front end reflects changes
         self.forceUpdateAllSettings()
+        # Also trigger the build plate compatibility to update
+        self.activeMaterialChanged.emit()
 
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()
@@ -1022,17 +1026,25 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
+    def _fixQualityChangesGroupToNotSupported(self, quality_changes_group):
+        nodes = [quality_changes_group.node_for_global] + list(quality_changes_group.nodes_for_extruders.values())
+        containers = [n.getContainer() for n in nodes if n is not None]
+        for container in containers:
+            container.setMetaDataEntry("quality_type", "not_supported")
+        quality_changes_group.quality_type = "not_supported"
+
     def _setQualityChangesGroup(self, quality_changes_group):
         if self._global_container_stack is None:
             return #Can't change that.
         quality_type = quality_changes_group.quality_type
         # A custom quality can be created based on "not supported".
         # In that case, do not set quality containers to empty.
-        if quality_type == "not_supported":
-            quality_group = None
-        else:
+        quality_group = None
+        if quality_type != "not_supported":
             quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
-            quality_group = quality_group_dict[quality_type]
+            quality_group = quality_group_dict.get(quality_type)
+            if quality_group is None:
+                self._fixQualityChangesGroupToNotSupported(quality_changes_group)
 
         quality_changes_container = self._empty_quality_changes_container
         quality_container = self._empty_quality_container
@@ -1158,7 +1170,7 @@ class MachineManager(QObject):
             context.context["evaluate_from_container_index"] = _ContainerIndexes.DefinitionChanges
             material_diameter = extruder.getProperty("material_diameter", "value", context)
             candidate_materials = self._material_manager.getAvailableMaterials(
-                self._global_container_stack.definition.getId(),
+                self._global_container_stack.definition,
                 current_variant_name,
                 material_diameter)
 

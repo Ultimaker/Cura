@@ -49,6 +49,13 @@ class ModelChecker(QObject, Extension):
         warning_size_xy = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
         warning_size_z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
 
+        # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
+        # has not done yet.
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None:
+            Application.getInstance().callLater(lambda: self.onChanged.emit())
+            return False
+
         material_shrinkage = self._getMaterialShrinkage()
 
         warning_nodes = []
@@ -56,6 +63,13 @@ class ModelChecker(QObject, Extension):
         # Check node material shrinkage and bounding box size
         for node in self.sliceableNodes():
             node_extruder_position = node.callDecoration("getActiveExtruderPosition")
+
+            # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
+            # has not done yet.
+            if str(node_extruder_position) not in global_container_stack.extruders:
+                Application.getInstance().callLater(lambda: self.onChanged.emit())
+                return False
+
             if material_shrinkage[node_extruder_position] > shrinkage_threshold:
                 bbox = node.getBoundingBox()
                 if bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z:
@@ -63,11 +77,11 @@ class ModelChecker(QObject, Extension):
 
         self._caution_message.setText(catalog.i18nc(
             "@info:status",
-            "Some models may not be printed optimally due to object size and chosen material for models: {model_names}.\n"
-            "Tips that may be useful to improve the print quality:\n"
-            "1) Use rounded corners.\n"
-            "2) Turn the fan off (only if there are no tiny details on the model).\n"
-            "3) Use a different material.").format(model_names = ", ".join([n.getName() for n in warning_nodes])))
+            "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+            "<p>{model_names}</p>\n"
+            "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+            "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+            ).format(model_names = ", ".join([n.getName() for n in warning_nodes])))
 
         return len(warning_nodes) > 0
 
@@ -92,9 +106,8 @@ class ModelChecker(QObject, Extension):
         Logger.log("d", "Model checker view created.")
 
     @pyqtProperty(bool, notify = onChanged)
-    def runChecks(self):
+    def hasWarnings(self):
         danger_shrinkage = self.checkObjectsForShrinkage()
-
         return any((danger_shrinkage, )) #If any of the checks fail, show the warning button.
 
     @pyqtSlot()

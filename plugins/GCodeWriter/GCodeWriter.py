@@ -42,6 +42,8 @@ class GCodeWriter(MeshWriter):
         re.escape("\r"): "\\r"    # Carriage return. Windows users may need this for visualisation in their editors.
     }
 
+    _setting_keyword = ";SETTING_"
+
     def __init__(self):
         super().__init__()
 
@@ -69,11 +71,15 @@ class GCodeWriter(MeshWriter):
             return False
         gcode_list = gcode_dict.get(active_build_plate, None)
         if gcode_list is not None:
+            has_settings = False
             for gcode in gcode_list:
+                if gcode[:len(self._setting_keyword)] == self._setting_keyword:
+                    has_settings = True
                 stream.write(gcode)
             # Serialise the current container stack and put it at the end of the file.
-            settings = self._serialiseSettings(Application.getInstance().getGlobalContainerStack())
-            stream.write(settings)
+            if not has_settings:
+                settings = self._serialiseSettings(Application.getInstance().getGlobalContainerStack())
+                stream.write(settings)
             return True
 
         return False
@@ -108,7 +114,7 @@ class GCodeWriter(MeshWriter):
         container_registry = self._application.getContainerRegistry()
         quality_manager = self._application.getQualityManager()
 
-        prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
+        prefix = self._setting_keyword + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
         quality_type = stack.quality.getMetaDataEntry("quality_type")

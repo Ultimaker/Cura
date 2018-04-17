@@ -105,6 +105,7 @@ import copy
 import os
 import argparse
 import json
+import time
 
 
 numpy.seterr(all="ignore")
@@ -143,6 +144,7 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self, **kwargs):
+        self._boot_loading_time = time.time()
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "quality_changes", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
@@ -696,15 +698,28 @@ class CuraApplication(QtApplication):
         else:
             self.runWithGUI()
 
-        # Pre-load files if requested
-        for file_name in self.getCommandLineOption("file", []):
-            self._openFile(file_name)
-        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
-            self._openFile(file_name)
-
         self.started = True
         self.initializationFinished.emit()
+        Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
+
+
+        # For now use a timer to postpone some things that need to be done after the application and GUI are
+        # initialized, for example opening files because they may show dialogs which can be closed due to incomplete
+        # GUI initialization.
+        self._post_start_timer = QTimer(self)
+        self._post_start_timer.setInterval(1000)
+        self._post_start_timer.setSingleShot(True)
+        self._post_start_timer.timeout.connect(self._onPostStart)
+        self._post_start_timer.start()
+
+        Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
         self.exec_()
+
+    def _onPostStart(self):
+        for file_name in self.getCommandLineOption("file", []):
+            self.callLater(self._openFile, file_name)
+        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
+            self.callLater(self._openFile, file_name)
 
     initializationFinished = pyqtSignal()
 
@@ -1556,8 +1571,10 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    @pyqtSlot(QUrl)
-    def readLocalFile(self, file):
+    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+
+    @pyqtSlot(QUrl, bool)
+    def readLocalFile(self, file, skip_project_file_check = False):
         if not file.isValid():
             return
 
@@ -1567,6 +1584,10 @@ class CuraApplication(QtApplication):
             if node.callDecoration("isBlockSlicing"):
                 self.deleteAll()
                 break
+
+        if not skip_project_file_check and self.checkIsValidProjectFile(file):
+            self.callLater(self.openProjectFile.emit, file)
+            return
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]

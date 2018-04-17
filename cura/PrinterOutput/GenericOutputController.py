@@ -60,7 +60,6 @@ class GenericOutputController(PrinterOutputController):
     def homeHead(self, printer):
         self._output_device.sendCommand("G28 X")
         self._output_device.sendCommand("G28 Y")
-        self._output_device.sendCommand("G28 Z")
 
     def homeBed(self, printer):
         self._output_device.sendCommand("G28 Z")

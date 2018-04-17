@@ -42,6 +42,7 @@ class BedLevelMachineAction(MachineAction):
         printer.homeBed()
         printer.moveHead(0, 0, 3)
         printer.homeHead()
+        printer.homeBed()
 
     def _getPrinterOutputDevices(self) -> List[PrinterOutputDevice]:
         return [printer_output_device for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices() if isinstance(printer_output_device, PrinterOutputDevice)]
@@ -60,6 +61,7 @@ class BedLevelMachineAction(MachineAction):
             printer.moveHead(0, 0, 3)
             printer.moveHead(Application.getInstance().getGlobalContainerStack().getProperty("machine_width", "value") - 10, 0, 0)
             printer.moveHead(0, 0, -3)
+            printer.homeBed()
             self._bed_level_position += 1
         elif self._bed_level_position == 1:
             printer.moveHead(0, 0, 3)
