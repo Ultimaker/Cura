@@ -72,7 +72,7 @@ UM.Dialog
                 right: parent.right
             }
 
-            text: catalog.i18nc("@text:window", "Cura sends anonymous data so we can improve the print quality and user experience. Below is an example of all the data we send.")
+            text: catalog.i18nc("@text:window", "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent.")
             wrapMode: Text.WordWrap
         }
 
@@ -107,7 +107,7 @@ UM.Dialog
         RadioButton
         {
             id: dontSendButton
-            text: catalog.i18nc("@text:window", "I don't want to send these settings")
+            text: catalog.i18nc("@text:window", "I don't want to send these data")
             exclusiveGroup: group
             onClicked:
             {
@@ -117,7 +117,7 @@ UM.Dialog
         RadioButton
         {
             id: allowSendButton
-            text: catalog.i18nc("@text:window", "Allow sending these settings to improve Cura")
+            text: catalog.i18nc("@text:window", "Allow sending these data to Ultimaker and help us improve Cura")
             exclusiveGroup: group
             onClicked:
             {
@@ -138,8 +138,9 @@ UM.Dialog
         Button
         {
             anchors.right: parent.right
-            text: catalog.i18nc("@action:button", "Ok")
-            onClicked: {
+            text: catalog.i18nc("@action:button", "OK")
+            onClicked:
+            {
                 baseDialog.accepted()
                 baseDialog.hide()
             }
@@ -149,7 +150,8 @@ UM.Dialog
         {
             anchors.left: parent.left
             text: catalog.i18nc("@action:button", "Cancel")
-            onClicked: {
+            onClicked:
+            {
                 baseDialog.rejected()
                 baseDialog.hide()
             }
