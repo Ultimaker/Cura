@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// PluginBrowser is released under the terms of the LGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Window 2.2
