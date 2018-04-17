@@ -3504,12 +3504,12 @@ msgstr "Certains paramètres masqués utilisent des valeurs différentes de leur
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
 msgid "Affects"
-msgstr "Touche"
+msgstr "Dirige"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:66
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
-msgstr "Touché par"
+msgstr "Est Dirigé Par"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:154
 msgctxt "@label"
