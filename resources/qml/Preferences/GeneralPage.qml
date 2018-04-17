@@ -669,7 +669,7 @@ UM.PreferencesPage
                         bottom: parent.bottom
                     }
 
-                    text: catalog.i18nc("@action:button", "Show more information on anonymous data collection")
+                    text: catalog.i18nc("@action:button", "More information")
                     onClicked:
                     {
                         CuraApplication.getCuraAppSignals().showMoreInfoOnAnonymousDataCollection();
