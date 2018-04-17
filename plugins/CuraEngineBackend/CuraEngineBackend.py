@@ -121,7 +121,7 @@ class CuraEngineBackend(QObject, Backend):
         self._slice_start_time = None
         self._is_disabled = False
 
-        Preferences.getInstance().addPreference("general/auto_slice", True)
+        Preferences.getInstance().addPreference("general/auto_slice", False)
 
         self._use_timer = False
         # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
