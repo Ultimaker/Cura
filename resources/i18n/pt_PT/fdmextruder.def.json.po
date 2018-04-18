@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Cura 3.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-04-11 14:40+0100\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: Portuguese <info@bothof.nl>, Paulo Miranda <av@utopica3d.com>\n"
+"PO-Revision-Date: 2018-04-16 02:14+0100\n"
+"Last-Translator: Paulo Miranda <av@utopica3d.com>\n"
+"Language-Team: Paulo Miranda <av@utopica3d.com>, Portuguese <info@bothof.nl>\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,7 +96,7 @@ msgstr "Posição Inicial Absoluta do Extrusor"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
-msgstr "Define a posição inicial do extrusor, absoluta em vez de relativa à última posição conhecida da cabeça de impressão."
+msgstr "Define a posição inicial do extrusor, de forma absoluta em vez, de relativa à última posição conhecida da cabeça de impressão."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_x label"
@@ -161,42 +161,42 @@ msgstr "A coordenada Y da posição final ao desligar o extrusor."
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "Posição Z para Preparação Extrusor"
+msgstr "Posição Z para Preparação do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "A coordenada Z da posição onde fazer a preparação do nozzle no inicio da impressão."
+msgstr "A coordenada Z da posição onde o nozzle é preparado ao iniciar a impressão."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "Aderência"
+msgstr "Aderência à Base Construção"
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
-msgstr "Aderência à Base de Construção"
+msgstr "Aderência"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
-msgstr "Posição X Preparação Extrusor"
+msgstr "Posição X Preparação do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "A coordenada X da posição onde o é feita a preparação do nozzle no inicio da impressão."
+msgstr "A coordenada X da posição onde o nozzle é preparado ao iniciar a impressão."
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
-msgstr "Posição Y Preparação Extrusor"
+msgstr "Posição Y Preparação do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "A coordenada Y da posição onde o é feita a preparação do nozzle no inicio da impressão."
+msgstr "A coordenada Y da posição onde o nozzle é preparado ao iniciar a impressão."
 
 #: fdmextruder.def.json
 msgctxt "material label"
