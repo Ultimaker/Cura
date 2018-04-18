@@ -36,7 +36,7 @@ class AuthorsModel(ListModel):
             items.append({
                 "name": author["name"],
                 "email": author["email"] if "email" in author else None,
-                "website": author["website"] if "website" in author else None,
+                "website": author["website"],
                 "type": author["type"] if "type" in author else None,
                 "icon_url": author["icon_url"] if "icon_url" in author else None,
                 "packages_count": author["packages_count"] if "packages_count" in author else 0

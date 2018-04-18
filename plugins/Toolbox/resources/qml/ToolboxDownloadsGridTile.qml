@@ -58,7 +58,8 @@ Item
             Label
             {
                 id: info
-                text: {
+                text:
+                {
                     if (model.description.length > 50)
                     {
                         return model.description.substring(0, 50) + "..."

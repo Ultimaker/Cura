@@ -5,18 +5,19 @@ import QtQuick 2.2
 
 Rectangle
 {
+    property bool reversed: false
     width: parent.width
     height: 8
     gradient: Gradient
     {
         GradientStop
         {
-            position: 0.0
-            color: Qt.rgba(0,0,0,0.2)
+            position: reversed ? 1.0 : 0.0
+            color: reversed ? Qt.rgba(0,0,0,0.05) : Qt.rgba(0,0,0,0.2)
         }
         GradientStop
         {
-            position: 1.0
+            position: reversed ? 0.0 : 1.0
             color: Qt.rgba(0,0,0,0)
         }
     }

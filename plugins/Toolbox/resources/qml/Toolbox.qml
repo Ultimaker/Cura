@@ -14,7 +14,7 @@ import UM 1.1 as UM
 Window
 {
     id: base
-    title: catalog.i18nc("@title:tab", "Toolbox");
+    title: catalog.i18nc("@title:tab", "Toolbox")
     modality: Qt.ApplicationModal
     width: 720 * screenScaleFactor
     height: 640 * screenScaleFactor
@@ -73,10 +73,14 @@ Window
         ToolboxFooter
         {
             id: footer
+            visible: toolbox.restartRequired
+            height: toolbox.restartRequired ? UM.Theme.getSize("base_unit").height * 5 : 0
         }
         ToolboxShadow
         {
-            anchors.top: footer.top
+            visible: toolbox.restartRequired
+            anchors.bottom: footer.top
+            reversed: true
         }
 
         UM.I18nCatalog { id: catalog; name: "cura" }

@@ -74,19 +74,19 @@ Item
             width: childrenRect.width
             Label
             {
-                text: "Version:"
+                text: catalog.i18nc("@label", "Version") + ":"
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text_medium")
             }
             Label
             {
-                text: "Last Update:"
+                text: catalog.i18nc("@label", "Last updated") + ":"
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text_medium")
             }
             Label
             {
-                text: "Author:"
+                text: catalog.i18nc("@label", "Author") + ":"
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text_medium")
             }
@@ -117,9 +117,20 @@ Item
             }
             Label
             {
-                text: details.author_name
+                text:
+                {
+                    if (details.author_email)
+                    {
+                        return "<a href=\"mailto:"+details.author_email+"?Subject=Cura: "+details.name+"\">"+details.author_name+"</a>"
+                    }
+                    else
+                    {
+                        return "<a href=\""+details.website+"\">"+details.author_name+"</a>"
+                    }
+                }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
+                onLinkActivated: Qt.openUrlExternally(link)
             }
         }
         Rectangle

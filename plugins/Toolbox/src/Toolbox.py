@@ -129,7 +129,6 @@ class Toolbox(QObject, Extension):
         self._active_package = None
 
         self._dialog = None
-        self._restartDialog = None
         self._restart_required = False
 
         # variables for the license agreement dialog
@@ -158,7 +157,6 @@ class Toolbox(QObject, Extension):
     filterChanged = pyqtSignal()
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
-    showRestartDialog = pyqtSignal()
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self):
@@ -172,19 +170,11 @@ class Toolbox(QObject, Extension):
     def getLicenseDialogLicenseContent(self):
         return self._license_dialog_license_content
 
-    @pyqtSlot(result = str)
-    def getRestartDialogMessage(self):
-        return self._restart_dialog_message
-
     def openLicenseDialog(self, plugin_name, license_content, plugin_file_location):
         self._license_dialog_plugin_name = plugin_name
         self._license_dialog_license_content = license_content
         self._license_dialog_plugin_file_location = plugin_file_location
         self.showLicenseDialog.emit()
-
-    def openRestartDialog(self, message):
-        self._restart_dialog_message = message
-        self.showRestartDialog.emit()
 
     def _onAppInitialized(self):
         self._package_manager = Application.getInstance().getCuraPackageManager()
@@ -250,12 +240,16 @@ class Toolbox(QObject, Extension):
         self._plugin_registry.enablePlugin(plugin_id)
         self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'active'.", plugin_id)
+        self._restart_required = True
+        self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
     def disable(self, plugin_id):
         self._plugin_registry.disablePlugin(plugin_id)
         self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'deactive'.", plugin_id)
+        self._restart_required = True
+        self.restartRequiredChanged.emit()
 
     @pyqtProperty(bool, notify = metadataChanged)
     def dataReady(self):

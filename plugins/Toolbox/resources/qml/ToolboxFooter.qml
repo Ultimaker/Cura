@@ -14,7 +14,6 @@ import UM 1.1 as UM
 Item
 {
     width: parent.width
-    height: UM.Theme.getSize("base_unit").height * 4
     anchors.bottom: parent.bottom
     Label
     {

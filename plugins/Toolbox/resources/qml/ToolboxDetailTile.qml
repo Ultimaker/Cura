@@ -34,7 +34,21 @@ Rectangle
         Label
         {
             width: parent.width
-            text: model.description
+            text:
+            {
+                if (model.description.length > 235)
+                {
+                    if (model.description.substring(234, 235) == " ")
+                    {
+                        return model.description.substring(0, 234) + "..."
+                    }
+                    else
+                    {
+                        return model.description.substring(0, 235) + "..."
+                    }
+                }
+                return model.description
+            }
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
