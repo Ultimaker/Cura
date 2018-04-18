@@ -97,7 +97,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             return  # Aleady printing
 
         # cancel any ongoing preheat timer before starting a print
-        self._printers[0].stopPreheatTimers()
+        self._printers[0].getController().stopPreheatTimers()
 
         Application.getInstance().getController().setActiveStage("MonitorStage")
 

@@ -164,5 +164,5 @@ class GenericOutputController(PrinterOutputController):
             self._preheat_hotends_timer.stop()
 
         if self._preheat_bed_timer.isActive():
-            self._active_printer.updateIsPreheating(False)
+            self._preheat_printer.updateIsPreheating(False)
             self._preheat_bed_timer.stop()
