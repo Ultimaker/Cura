@@ -1,11 +1,11 @@
 # Cura
-# Copyright (C) 2017 Ultimaker
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
+"Project-Id-Version: Cura 3.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
 "PO-Revision-Date: 2018-04-14 14:35+0200\n"
@@ -2760,7 +2760,7 @@ msgstr "Potwierdź Zmianę Średnicy"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:95
 msgctxt "@label (%1 is object name)"
 msgid "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?"
-msgstr "Nowa średnica materiał€ jest ustawiona na %1 mm, co nie jest kompatybilne z obecną maszyną. Czy chciałbyś kontynuować?"
+msgstr "Nowa średnica materiał jest ustawiona na %1 mm, co nie jest kompatybilne z obecną maszyną. Czy chciałbyś kontynuować?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:128
 msgctxt "@label"
