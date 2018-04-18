@@ -405,7 +405,6 @@ class Toolbox(QObject, Extension):
                     # Create packages model with all packages:
                     if not self._models["packages"]:
                         self._models["packages"] = PackagesModel(self)
-                        print(json_data["data"])
                     self._metadata["packages"] = json_data["data"]
                     self._models["packages"].setMetadata(self._metadata["packages"])
                     self.metadataChanged.emit()
@@ -430,8 +429,6 @@ class Toolbox(QObject, Extension):
                                     author["icon_url"] = package["icon_url"]
 
                     self._models["authors"].setMetadata(self._metadata["authors"])
-                    for author in self._models["authors"].items:
-                        print(author["icon_url"])
                     self.metadataChanged.emit()
 
                     if not self._models["materials_showcase"]:

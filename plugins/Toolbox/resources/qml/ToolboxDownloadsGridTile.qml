@@ -89,7 +89,6 @@ Item
         }
         onClicked:
         {
-            console.log(model.icon_url)
             if ( toolbox.viewCategory == "material" )
             {
                 toolbox.viewSelection = model.name

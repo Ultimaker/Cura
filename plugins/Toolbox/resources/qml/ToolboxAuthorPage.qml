@@ -111,7 +111,6 @@ Item
                     }
                     else
                     {
-                        console.log("<a href=\""+details.website+"\">"+details.author_name+"</a>")
                         return "<a href=\""+details.website+"\">"+details.name+"</a>"
                     }
                 }

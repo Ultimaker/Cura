@@ -16,7 +16,6 @@ Item
     {
         if (toolbox.viewCategory == "material" && model.packages_count)
         {
-            console.log(model)
             return model.packages_count > 0
         }
         else
