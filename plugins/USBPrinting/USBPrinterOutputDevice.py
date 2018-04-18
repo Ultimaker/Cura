@@ -96,6 +96,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._is_printing:
             return  # Aleady printing
 
+        # cancel any ongoing preheat timer before starting a print
+        self._printers[0].stopPreheatTimers()
+
         Application.getInstance().getController().setActiveStage("MonitorStage")
 
         # find the G-code for the active build plate to print
