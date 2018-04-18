@@ -196,15 +196,7 @@ class Toolbox(QObject, Extension):
         self._makeRequestByType("plugins_showcase")
 
         # Gather installed packages:
-        all_packages = self._package_manager.getAllInstalledPackagesInfo()
-        if "plugin" in all_packages:
-            self._metadata["plugins_installed"] = all_packages["plugin"]
-            self._models["plugins_installed"].setMetadata(self._metadata["plugins_installed"])
-            self.metadataChanged.emit()
-        if "material" in all_packages:
-            self._metadata["materials_installed"] = all_packages["material"]
-            self._models["materials_installed"].setMetadata(self._metadata["materials_installed"])
-            self.metadataChanged.emit()
+        self._updateInstalledModels()
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
@@ -219,10 +211,23 @@ class Toolbox(QObject, Extension):
         dialog = Application.getInstance().createQmlComponent(path, {"toolbox": self})
         return dialog
 
+    @pyqtSlot()
+    def _updateInstalledModels(self):
+        all_packages = self._package_manager.getAllInstalledPackagesInfo()
+        if "plugin" in all_packages:
+            self._metadata["plugins_installed"] = all_packages["plugin"]
+            self._models["plugins_installed"].setMetadata(self._metadata["plugins_installed"])
+            self.metadataChanged.emit()
+        if "material" in all_packages:
+            self._metadata["materials_installed"] = all_packages["material"]
+            self._models["materials_installed"].setMetadata(self._metadata["materials_installed"])
+            self.metadataChanged.emit()
+
     @pyqtSlot(str)
     def install(self, file_path):
         self._package_manager.installPackage(file_path)
         self.installChanged.emit()
+        self._updateInstalledModels()
         self.metadataChanged.emit()
         self._restart_required = True
         self.restartRequiredChanged.emit()
@@ -231,6 +236,7 @@ class Toolbox(QObject, Extension):
     def uninstall(self, plugin_id):
         self._package_manager.removePackage(plugin_id)
         self.installChanged.emit()
+        self._updateInstalledModels()
         self.metadataChanged.emit()
         self._restart_required = True
         self.restartRequiredChanged.emit()
