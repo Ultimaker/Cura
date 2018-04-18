@@ -69,9 +69,7 @@ class QualityManagementModel(ListModel):
         # Create quality_changes group items
         quality_changes_item_list = []
         for quality_changes_group in quality_changes_group_dict.values():
-            if quality_changes_group.quality_type not in available_quality_types:
-                continue
-            quality_group = quality_group_dict[quality_changes_group.quality_type]
+            quality_group = quality_group_dict.get(quality_changes_group.quality_type)
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,
                     "quality_group": quality_group,
