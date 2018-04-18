@@ -138,6 +138,7 @@ class PrintInformation(QObject):
 
     def setPreSliced(self, pre_sliced):
         self._pre_sliced = pre_sliced
+        self._updateJobName()
         self.preSlicedChanged.emit()
 
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
