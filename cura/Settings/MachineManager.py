@@ -344,7 +344,7 @@ class MachineManager(QObject):
                 if quality_groups:
                     quality_group = next(quality_groups.values())
             if quality_group is None:
-                self.setQua_setQualityGrouplityGroup(quality_group, empty_quality_changes = True)
+                self._setQualityGroup(quality_group, empty_quality_changes = True)
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
