@@ -60,14 +60,24 @@ Item
             width: parent.width
             height: UM.Theme.getSize("base_unit") * 2
         }
-
+        Label
+        {
+            id: description
+            text: details.description
+            anchors
+            {
+                top: title.bottom
+                left: title.left
+                topMargin: UM.Theme.getSize("default_margin").height
+            }
+        }
         Column
         {
             id: properties
             anchors
             {
-                top: title.bottom
-                left: title.left
+                top: description.bottom
+                left: description.left
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("default_margin").height / 2)
@@ -84,7 +94,7 @@ Item
             id: values
             anchors
             {
-                top: title.bottom
+                top: description.bottom
                 left: properties.right
                 leftMargin: UM.Theme.getSize("default_margin").width
                 topMargin: UM.Theme.getSize("default_margin").height
