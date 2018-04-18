@@ -342,7 +342,7 @@ class MachineManager(QObject):
             quality_group = quality_groups.get(preferred_quality_type)
             if quality_group is None:
                 if quality_groups:
-                    quality_group = next(quality_groups.values())
+                    quality_group = list(quality_groups.values())[0]
             self._setQualityGroup(quality_group, empty_quality_changes = True)
 
     @pyqtSlot(str)
