@@ -1128,7 +1128,7 @@ msgstr "Grupo #{group_nr}"
 #: /home/ruben/Projects/Cura/cura/Machines/Models/MachineManagementModel.py:65
 msgctxt "@info:title"
 msgid "Network enabled printers"
-msgstr "Impressoras com capacidade de ligação em rede"
+msgstr "Impressoras em rede"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/MachineManagementModel.py:80
 msgctxt "@info:title"
@@ -2281,22 +2281,22 @@ msgstr "Modelo Normal"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:76
 msgctxt "@label"
 msgid "Print as support"
-msgstr "Suporte - Imprime o objeto como suporte"
+msgstr "Imprimir como suporte"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:84
 msgctxt "@label"
 msgid "Don't support overlap with other models"
-msgstr "Sem Suporte - Retirar os suportes de outros modelos que sobrepõe"
+msgstr "Não suportar sobreposição com outros modelos"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:92
 msgctxt "@label"
 msgid "Modify settings for overlap with other models"
-msgstr "Definições - Altera as definições de outros objetos que intercepta"
+msgstr "Modificar definições para sobreposição com outros modelos"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:100
 msgctxt "@label"
 msgid "Modify settings for infill of other models"
-msgstr "Enchimento - Altera as definições de enchimento dos outros modelos que intercepta"
+msgstr "Modificar definições para preenchimento de outros modelos"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:342
 msgctxt "@action:button"
@@ -3863,7 +3863,7 @@ msgstr "Aqueçer a base com antecedência antes de imprimir. Pode continuar a aj
 #: /home/ruben/Projects/Cura/resources/qml/Menus/PrinterMenu.qml:25
 msgctxt "@label:category menu label"
 msgid "Network enabled printers"
-msgstr "Impressoras com capacidade de ligação em rede"
+msgstr "Impressoras em rede"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/PrinterMenu.qml:42
 msgctxt "@label:category menu label"

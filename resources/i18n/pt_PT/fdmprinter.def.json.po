@@ -1221,8 +1221,7 @@ msgstr "Expansão Horizontal"
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
 msgstr ""
-"Quantidade de desvio aplicado a todos os polígonos em cada camada.\n"
-" Valores positivos podem compensar buracos demasiado grandes; os valores negativos podem compensar buracos demasiado pequenos."
+"Quantidade de desvio aplicado a todos os polígonos em cada camada. Valores positivos podem compensar buracos demasiado grandes; os valores negativos podem compensar buracos demasiado pequenos."
 
 #: fdmprinter.def.json
 msgctxt "xy_offset_layer_0 label"
@@ -1235,8 +1234,7 @@ msgstr "Expansão Horizontal Camada Inicial"
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
 msgstr ""
-"Quantidade de desvio aplicado a todos os polígonos na primeira camada.\n"
-" Um valor negativo pode compensar o \"esmagamento\" da camada inicial, conhecido como \"pé de elefante\"."
+"Quantidade de desvio aplicado a todos os polígonos na primeira camada. Um valor negativo pode compensar o \"esmagamento\" da camada inicial, conhecido como \"pé de elefante\"."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -1248,9 +1246,7 @@ msgstr "Alinhamento da Junta-Z"
 msgctxt "z_seam_type description"
 msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
 msgstr ""
-"Ponto inicial de cada trajetória de uma camada.\n"
-"Quando as trajetórias em camadas consecutivas começam no mesmo ponto, pode aparecer uma junta vertical na impressão.\n"
-" Ao alinhar o inicio das trajectórias próximo a uma posição definida pelo utilizador, é mais fácil remover a linha de junta. Quando dispostas aleatoriamente, as imprecisões no início das trajetórias serão menos perceptíveis. Ao adoptar a trajetória mais curta, a impressão será mais rápida."
+"Ponto inicial de cada trajetória de uma camada. Quando as trajetórias em camadas consecutivas começam no mesmo ponto, pode aparecer uma junta vertical na impressão. Ao alinhar o inicio das trajectórias próximo a uma posição definida pelo utilizador, é mais fácil remover a linha de junta. Quando dispostas aleatoriamente, as imprecisões no início das trajetórias serão menos perceptíveis. Ao adoptar a trajetória mais curta, a impressão será mais rápida."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type option back"
