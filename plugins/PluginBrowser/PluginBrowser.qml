@@ -15,6 +15,7 @@ Window {
     id: base
 
     title: catalog.i18nc("@title:tab", "Plugins");
+    modality: Qt.ApplicationModal
     width: 800 * screenScaleFactor
     height: 640 * screenScaleFactor
     minimumWidth: 350 * screenScaleFactor

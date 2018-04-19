@@ -310,19 +310,40 @@ class MachineManager(QObject):
         global_quality_changes = global_stack.qualityChanges
         global_quality_changes_name = global_quality_changes.getName()
 
+        # Try to set the same quality/quality_changes as the machine specified.
+        # If the quality/quality_changes is not available, switch to the default or the first quality that's available.
+        same_quality_found = False
+        quality_groups = self._application.getQualityManager().getQualityGroups(global_stack)
+
         if global_quality_changes.getId() != "empty_quality_changes":
-            quality_changes_groups = self._application._quality_manager.getQualityChangesGroups(global_stack)
-            if global_quality_changes_name in quality_changes_groups:
-                new_quality_changes_group = quality_changes_groups[global_quality_changes_name]
+            quality_changes_groups = self._application.getQualityManager().getQualityChangesGroups(global_stack)
+            new_quality_changes_group = quality_changes_groups.get(global_quality_changes_name)
+            if new_quality_changes_group is not None and new_quality_changes_group.is_available:
                 self._setQualityChangesGroup(new_quality_changes_group)
+                same_quality_found = True
+                Logger.log("i", "Machine '%s' quality changes set to '%s'",
+                           global_stack.getName(), new_quality_changes_group.name)
         else:
-            quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
-            if quality_type not in quality_groups:
-                Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, ", ".join(quality_groups.keys()))
-                self._setEmptyQuality()
-                return
-            new_quality_group = quality_groups[quality_type]
-            self._setQualityGroup(new_quality_group, empty_quality_changes = True)
+            if quality_type in quality_groups:
+                new_quality_group = quality_groups[quality_type]
+                self._setQualityGroup(new_quality_group, empty_quality_changes = True)
+                same_quality_found = True
+                Logger.log("i", "Machine '%s' quality set to '%s'",
+                           global_stack.getName(), new_quality_group.quality_type)
+
+        # Could not find the specified quality/quality_changes, switch to the preferred quality if available,
+        # otherwise the first quality that's available, otherwise empty (not supported).
+        if not same_quality_found:
+            Logger.log("i", "Machine '%s' could not find quality_type '%s' and quality_changes '%s'. "
+                       "Available quality types are [%s]. Switching to default quality.",
+                       global_stack.getName(), quality_type, global_quality_changes_name,
+                       ", ".join(quality_groups.keys()))
+            preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
+            quality_group = quality_groups.get(preferred_quality_type)
+            if quality_group is None:
+                if quality_groups:
+                    quality_group = list(quality_groups.values())[0]
+            self._setQualityGroup(quality_group, empty_quality_changes = True)
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
@@ -1011,6 +1032,10 @@ class MachineManager(QObject):
         self._current_quality_group = quality_group
         if empty_quality_changes:
             self._current_quality_changes_group = None
+
+        if quality_group is None:
+            self._setEmptyQuality()
+            return
 
         # Set quality and quality_changes for the GlobalStack
         self._global_container_stack.quality = quality_group.node_for_global.getContainer()
