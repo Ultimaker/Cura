@@ -462,7 +462,8 @@ Column
     {
         id: buildplateRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
+        // TODO Temporary hidden, add back again when feature ready
+        visible: false //Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
