@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-04-19 11:54+0900\n"
+"PO-Revision-Date: 2018-04-19 16:10+0900\n"
 "Last-Translator: Jinbuhm Kim <JInbuhm.Kim@gmail.com>\n"
 "Language-Team: Jinbum Kim\n"
 "Language: ko_KR\n"
@@ -43,7 +43,7 @@ msgstr "G-code 파일"
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
 msgid "Model Checker Warning"
-msgstr ""
+msgstr "모델 검사기 경고"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:66
 #, python-brace-format
@@ -56,6 +56,12 @@ msgid ""
 "2) Turn the fan off (only if there are no tiny details on the model).\n"
 "3) Use a different material."
 msgstr ""
+"모델의 크기 및 재질 {model_names} 때문에 일부 모델이 최적으로 인쇄되지 않을 "
+"수 있습니다.\n"
+"인쇄 품질을 향상시키는 데 유용한 팁 :\n"
+"1) 둥근 모서리를 사용하십시오.\n"
+"2) 팬을 끄십시오 (모델에 작은 세부 사항이없는 경우에만).\n"
+"3) 다른 재료를 사용하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -190,7 +196,7 @@ msgstr "이동식 드라이브  {0}에 저장"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:110
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
-msgstr ""
+msgstr "쓸 수있는 파일 형식이 없습니다!"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:94
 #, python-brace-format
@@ -381,6 +387,8 @@ msgid ""
 "There is an issue with the configuration of your Ultimaker, which makes it "
 "impossible to start the print. Please resolve this issues before continuing."
 msgstr ""
+"Ultimaker의 설정에 문제가 있어 프린팅을 시작할 수 없습니다. 계속하기 전에 이 "
+"문제를 해결하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:206
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:228
@@ -426,7 +434,7 @@ msgstr "데이터 전송 중"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "No Printcore loaded in slot {slot_number}"
-msgstr ""
+msgstr "{slot_number} 슬롯에 로드 된 프린터코어가 없음"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:327
 #, python-brace-format
@@ -483,7 +491,7 @@ msgstr "출력 작업이 프린터에 성공적으로 보내졌습니다."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:249
 msgctxt "@info:title"
 msgid "Data Sent"
-msgstr ""
+msgstr "데이터 전송 됨"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:250
 msgctxt "@action:button"
@@ -500,7 +508,7 @@ msgstr "'{printer_name} 프린터가 '{job_name}' 프린팅을 완료했습니�
 #, python-brace-format
 msgctxt "@info:status"
 msgid "The print job '{job_name}' was finished."
-msgstr ""
+msgstr "인쇄 작업 ‘{job_name}’이 완료되었습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:341
 msgctxt "@info:status"
@@ -672,7 +680,7 @@ msgstr "Support Blocker"
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:13
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
-msgstr ""
+msgstr "서포트가 프린팅되지 않는 볼륨을 만듭니다."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
@@ -1074,7 +1082,7 @@ msgctxt "@info:generic"
 msgid ""
 "Settings have been changed to match the current availability of extruders: "
 "[%s]"
-msgstr ""
+msgstr "현재 사용가능한 익스트루더: [% s]에 맞도록 설정이 변경되었습니다"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:805
 msgctxt "@info:title"
@@ -1204,12 +1212,12 @@ msgstr "로컬 프린터"
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
-msgstr ""
+msgstr "지원되는 모든 유형 ({0})"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:109
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
-msgstr ""
+msgstr "모든 파일 (*)"
 
 #: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:511
 msgctxt "@label"
@@ -1290,11 +1298,19 @@ msgid ""
 "p>\n"
 "                "
 msgstr ""
+"<p> <b> 죄송합니다, Ultimaker Cura가 정상적이지 않습니다. </ p> </ b>\n"
+"                     <p> 시작할 때 복구 할 수없는 오류가 발생했습니다. 이 오"
+"류는 잘못된 구성 파일로 인해 발생할 수 있습니다. 설정을 백업하고 재설정하는 "
+"것이 좋습니다. </ p>\n"
+"                     <p> 백업은 설정 폴더에서 찾을 수 있습니다. </ p>\n"
+"                     <p> 문제를 해결하기 위해이 오류 보고서를 보내주십시오. "
+"</ p>\n"
+"                 "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:103
 msgctxt "@action:button"
 msgid "Send crash report to Ultimaker"
-msgstr ""
+msgstr "충돌 보고서를 Ultimaker에 보내기"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:106
 msgctxt "@action:button"
@@ -1671,6 +1687,8 @@ msgid ""
 "Some things could be problematic in this print. Click to see tips for "
 "adjustment."
 msgstr ""
+"이 출력물에는 문제가있을 수 있습니다. 조정을 위한 도움말을 보려면 클릭하십시"
+"오."
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
 msgctxt "@label"
@@ -1737,6 +1755,7 @@ msgid ""
 "This printer/group is already added to Cura. Please select another printer/"
 "group."
 msgstr ""
+"이 프린터/그룹은 이미 Cura에 추가되었습니다. 다른 프린터/그룹을 선택하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:76
 msgctxt "@title:window"
@@ -2471,7 +2490,7 @@ msgstr "기기의 충돌을 어떻게 해결해야합니까?"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:124
 msgctxt "@action:ComboBox option"
 msgid "Update"
-msgstr ""
+msgstr "업데이트"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:143
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:99
@@ -2572,7 +2591,7 @@ msgstr "열기"
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:127
 msgctxt "@action:button"
 msgid "Update"
-msgstr ""
+msgstr "업데이트"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:129
 msgctxt "@action:button"
@@ -2953,7 +2972,7 @@ msgstr "정보"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:94
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
-msgstr ""
+msgstr "직경 변경 확인"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:95
 msgctxt "@label (%1 is object name)"
@@ -3721,7 +3740,7 @@ msgstr "SVG 아이콘"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:139
 msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
-msgstr ""
+msgstr "Linux 교차 배포 응용 프로그램 배포"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:42
 msgctxt "@label"
@@ -3935,6 +3954,8 @@ msgid ""
 "Send a custom G-code command to the connected printer. Press 'enter' to send "
 "the command."
 msgstr ""
+"연결된 프린터에 사용자 정의 G 코드 명령을 보냅니다. ‘Enter’키를 눌러 명령을 "
+"전송하십시오."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:36
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:256
@@ -4622,6 +4643,8 @@ msgid ""
 "This quality profile is not available for you current material and nozzle "
 "configuration. Please change these to enable this quality profile"
 msgstr ""
+"이 품질 프로파일은 현재 재료 및 노즐 설정에 사용할 수 없습니다. 이 품질 프로"
+"파일을 사용하려면 이 값을 변경하십시오"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:412
 msgctxt "@tooltip"
@@ -4841,12 +4864,12 @@ msgctxt "description"
 msgid ""
 "Checks models and print configuration for possible printing issues and give "
 "suggestions."
-msgstr ""
+msgstr "가능한 프린팅 문제를 위해 모델 및 인쇄 구성을 확인하고 제안합니다."
 
 #: ModelChecker/plugin.json
 msgctxt "name"
 msgid "Model Checker"
-msgstr ""
+msgstr "모델 검사기"
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "description"
@@ -5008,7 +5031,7 @@ msgstr "시뮬레이션 뷰"
 #: GCodeGzReader/plugin.json
 msgctxt "description"
 msgid "Reads g-code from a compressed archive."
-msgstr ""
+msgstr "압축 된 아카이브로 부터 g-code를 읽습니다."
 
 #: GCodeGzReader/plugin.json
 msgctxt "name"
@@ -5029,7 +5052,7 @@ msgstr "후처리"
 msgctxt "description"
 msgid ""
 "Creates an eraser mesh to block the printing of support in certain places"
-msgstr ""
+msgstr "특정 장소에서 서포트 프린팅을 막는 지우개 메쉬(eraser mesh)를 만듭니다"
 
 #: SupportEraser/plugin.json
 msgctxt "name"
