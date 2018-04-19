@@ -7,6 +7,7 @@ import os
 import threading
 from typing import List, Tuple
 
+
 import xml.etree.ElementTree as ET
 
 from UM.Workspace.WorkspaceReader import WorkspaceReader
@@ -15,6 +16,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Signal import postponeSignals, CompressTechnique
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -28,41 +30,11 @@ from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.CuraApplication import CuraApplication
+from cura.Utils.Threading import call_on_qt_thread
 
 from .WorkspaceDialog import WorkspaceDialog
 
 i18n_catalog = i18nCatalog("cura")
-
-
-#
-# HACK:
-#
-# In project loading, when override the existing machine is selected, the stacks and containers that are correctly
-# active in the system will be overridden at runtime. Because the project loading is done in a different thread than
-# the Qt thread, something else can kick in the middle of the process. One of them is the rendering. It will access
-# the current stacks and container, which have not completely been updated yet, so Cura will crash in this case.
-#
-# This "@call_on_qt_thread" decorator makes sure that a function will always be called on the Qt thread (blocking).
-# It is applied to the read() function of project loading so it can be guaranteed that only after the project loading
-# process is completely done, everything else that needs to occupy the QT thread will be executed.
-#
-class InterCallObject:
-    def __init__(self):
-        self.finish_event = threading.Event()
-        self.result = None
-
-
-def call_on_qt_thread(func):
-    def _call_on_qt_thread_wrapper(*args, **kwargs):
-        def _handle_call(ico, *args, **kwargs):
-            ico.result = func(*args, **kwargs)
-            ico.finish_event.set()
-        inter_call_object = InterCallObject()
-        new_args = tuple([inter_call_object] + list(args)[:])
-        CuraApplication.getInstance().callLater(_handle_call, *new_args, **kwargs)
-        inter_call_object.finish_event.wait()
-        return inter_call_object.result
-    return _call_on_qt_thread_wrapper
 
 
 class ContainerInfo:
@@ -332,7 +304,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
                     instance_container = InstanceContainer(container_id)
-                    instance_container.deserialize(serialized, file_name = instance_container_file_name)
+                    try:
+                        instance_container.deserialize(serialized, file_name = instance_container_file_name)
+                    except ContainerFormatError:
+                        Logger.logException("e", "Failed to deserialize InstanceContainer %s from project file %s",
+                                            instance_container_file_name, file_name)
+                        return ThreeMFWorkspaceReader.PreReadResult.failed
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
             elif container_type == "quality":
@@ -639,8 +616,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
-                definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
-                                                 file_name = definition_container_file)
+                try:
+                    definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
+                                                     file_name = definition_container_file)
+                except ContainerFormatError:
+                    # We cannot just skip the definition file because everything else later will just break if the
+                    # machine definition cannot be found.
+                    Logger.logException("e", "Failed to deserialize definition file %s in project file %s",
+                                        definition_container_file, file_name)
+                    definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
                 self._container_registry.addContainer(definition_container)
             Job.yieldThread()
 
@@ -679,8 +663,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if to_deserialize_material:
                     material_container = xml_material_profile(container_id)
-                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                   file_name = container_id + "." + self._material_container_suffix)
+                    try:
+                        material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                       file_name = container_id + "." + self._material_container_suffix)
+                    except ContainerFormatError:
+                        Logger.logException("e", "Failed to deserialize material file %s in project file %s",
+                                            material_container_file, file_name)
+                        continue
                     if need_new_name:
                         new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
                         material_container.setName(new_name)
@@ -704,7 +693,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
         self._updateActiveMachine(global_stack)
 
-        # Load all the nodes / meshdata of the workspace
+        # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
         if nodes is None:
             nodes = []

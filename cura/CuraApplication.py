@@ -501,11 +501,6 @@ class CuraApplication(QtApplication):
     def getStaticVersion(cls):
         return CuraVersion
 
-    ##  Handle removing the unneeded plugins
-    #   \sa PluginRegistry
-    def _removePlugins(self):
-        self._plugin_registry.removePlugins()
-
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
     def _loadPlugins(self):
@@ -991,7 +986,7 @@ class CuraApplication(QtApplication):
         return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
 
     def updatePlatformActivityDelayed(self, node = None):
-        if node is not None and node.getMeshData() is not None:
+        if node is not None and (node.getMeshData() is not None or node.callDecoration("getLayerData")):
             self._update_platform_activity_timer.start()
 
     ##  Update scene bounding box for current build plate

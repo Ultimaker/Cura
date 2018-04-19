@@ -1,9 +1,10 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import configparser
 
 from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.ProfileReader import ProfileReader
 
@@ -77,7 +78,10 @@ class CuraProfileReader(ProfileReader):
         profile.addMetaDataEntry("type", "quality_changes")
         try:
             profile.deserialize(serialized)
-        except Exception as e:  # Parsing error. This is not a (valid) Cura profile then.
+        except ContainerFormatError as e:
+            Logger.log("e", "Error in the format of a container: %s", str(e))
+            return None
+        except Exception as e:
             Logger.log("e", "Error while trying to parse profile: %s", str(e))
             return None
         return profile
