@@ -323,16 +323,21 @@ class PrintInformation(QObject):
         # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
         # extension. This cuts the extension off if necessary.
         name = os.path.splitext(name)[0]
+        filename_parts = os.path.basename(base_name).split(".")
+
+        # If it's a gcode, also always update the job name
+        is_gcode = False
+        if len(filename_parts) > 1:
+            # Only check the extension(s)
+            is_gcode = "gcode" in filename_parts[1:]
 
         # if this is a profile file, always update the job name
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
         is_empty = name == ""
-        if is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
-            # remove ".curaproject" suffix from (imported) the file name
-            if name.endswith(".curaproject"):
-                name = name[:name.rfind(".curaproject")]
-            self._base_name = name
-            self._updateJobName()
+        if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
+            # Only take the file name part
+            self._base_name = filename_parts[0]
+        self._updateJobName()
 
     @pyqtProperty(str, fset = setBaseName, notify = baseNameChanged)
     def baseName(self):
