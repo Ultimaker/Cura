@@ -18,7 +18,7 @@ Column
     Label
     {
         id: heading
-        text: "Featured"
+        text: catalog.i18nc("@label", "Featured")
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")

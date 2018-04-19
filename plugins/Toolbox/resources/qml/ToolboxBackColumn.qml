@@ -2,7 +2,6 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -23,17 +22,23 @@ Item
     Button
     {
         id: button
-        text: "Back"
+        text: catalog.i18nc("@action:button", "Back")
         UM.RecolorImage
         {
             id: backArrow
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors
+            {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                rightMargin: UM.Theme.getSize("default_margin").width
+            }
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.width: width
-            sourceSize.height: height
+            sourceSize
+            {
+                width: width
+                height: height
+            }
             color: button.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")
             source: UM.Theme.getIcon("arrow_left")
         }

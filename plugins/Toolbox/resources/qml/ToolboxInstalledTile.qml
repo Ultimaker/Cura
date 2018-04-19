@@ -2,8 +2,6 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -43,20 +41,17 @@ Item
         {
             text: model.name
             width: parent.width
-            height: 24
+            height: UM.Theme.getSize("base_unit").height * 2
             wrapMode: Text.WordWrap
             verticalAlignment: Text.AlignVCenter
-            font {
-                pixelSize: 13
-                bold: true
-            }
+            font: UM.Theme.getFont("default_bold")
             color: pluginInfo.color
         }
         Text
         {
             text: model.description
             width: parent.width
-            height: 36
+            height: UM.Theme.getSize("base_unit").height * 3
             clip: true
             wrapMode: Text.WordWrap
             color: pluginInfo.color
@@ -66,7 +61,7 @@ Item
     Column
     {
         id: authorInfo
-        width: 192
+        width: UM.Theme.getSize("base_unit").width * 16
         height: parent.height
         anchors
         {
@@ -89,7 +84,7 @@ Item
                 }
             }
             width: parent.width
-            height: 24
+            height: UM.Theme.getSize("base_unit").height * 3
             wrapMode: Text.WordWrap
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
@@ -97,8 +92,6 @@ Item
             color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
         }
     }
-
-    // Plugin actions
     Column
     {
         id: pluginActions
@@ -111,7 +104,6 @@ Item
             right: parent.right
             topMargin: UM.Theme.getSize("default_margin").height
         }
-
         Button {
             id: removeButton
             text:
@@ -131,7 +123,7 @@ Item
                 background: Rectangle
                 {
                     implicitWidth: UM.Theme.getSize("base_unit").width * 8
-                    implicitHeight: UM.Theme.getSize("base_unit").width * 2.5
+                    implicitHeight: Math.floor(UM.Theme.getSize("base_unit").width * 2.5)
                     color: "transparent"
                     border
                     {
@@ -139,7 +131,8 @@ Item
                         color: UM.Theme.getColor("lining")
                     }
                 }
-                label: Text {
+                label: Text
+                {
                     text: control.text
                     color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
@@ -165,8 +158,8 @@ Item
                 }
             }
         }
-
-        Button {
+        Button
+        {
             id: updateButton
             text: catalog.i18nc("@action:button", "Update")
             visible: canUpdate
@@ -195,10 +188,13 @@ Item
         ProgressBar
         {
             id: progressbar
-            anchors.left: updateButton.left
-            anchors.right: updateButton.right
-            anchors.top: updateButton.bottom
-            anchors.topMargin: 4
+            anchors
+            {
+                left: updateButton.left
+                right: updateButton.right
+                top: updateButton.bottom
+                topMargin: Math.floor(UM.Theme.getSize("base_unit") / 4)
+            }
             value: toolbox.isDownloading ? toolbox.downloadProgress : 0
             visible: toolbox.isDownloading
             style: ProgressBarStyle

@@ -2,8 +2,6 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
@@ -34,7 +32,8 @@ Item
             color: "white"
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
-            Image {
+            Image
+            {
                 anchors.centerIn: parent
                 width: UM.Theme.getSize("toolbox_thumbnail_small").width - 26
                 height: UM.Theme.getSize("toolbox_thumbnail_small").height - 26
@@ -89,19 +88,24 @@ Item
         }
         onClicked:
         {
-            if ( toolbox.viewCategory == "material" )
+            switch(toolbox.viewCategory)
             {
-                toolbox.viewSelection = model.name
-                toolbox.viewPage = "author"
-                toolbox.filterModelByProp("packages", "author_name", model.name)
-                toolbox.filterModelByProp("authors", "name", model.name)
-            }
-            else
-            {
-                toolbox.viewSelection = model.id
-                toolbox.viewPage = "detail"
-                toolbox.filterModelByProp("packages", "id", model.id)
-                toolbox.filterModelByProp("authors", "name", model.author_name)
+                case "material":
+                    console.log("OKAY FILTER BY AUTHOR", model.name)
+                    toolbox.viewSelection = model.name
+                    toolbox.viewPage = "author"
+                    console.log(toolbox)
+                    var name = model.name
+                    toolbox.filterModelByProp("authors", "name", name)
+                    toolbox.filterModelByProp("packages", "author_name", name)
+                    console.log(toolbox)
+                    break
+                default:
+                    toolbox.viewSelection = model.id
+                    toolbox.viewPage = "detail"
+                    toolbox.filterModelByProp("authors", "name", model.author_name)
+                    toolbox.filterModelByProp("packages", "id", model.id)
+                    break
             }
         }
     }

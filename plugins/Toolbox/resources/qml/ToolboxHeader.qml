@@ -2,54 +2,29 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-Rectangle {
-
+Item
+{
+    id: header
     width: parent.width
-    color: "transparent"
-    height: childrenRect.height
-
+    height: UM.Theme.getSize("base_unit").height * 4
     Row
     {
+        id: bar
         spacing: 12
         height: childrenRect.height
         width: childrenRect.width
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-        Button
+        anchors
         {
-            text: "Plugins"
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    color: "transparent"
-                    implicitWidth: 96
-                    implicitHeight: 48
-                    Rectangle
-                    {
-                        visible: toolbox.viewCategory == "plugin"
-                        color: UM.Theme.getColor("primary")
-                        anchors.bottom: parent.bottom
-                        width: parent.width
-                        height: 3
-                    }
-                }
-                label: Text
-                {
-                    text: control.text
-                    color: UM.Theme.getColor("text")
-                    font.pixelSize: 15
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-            }
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+        }
+        ToolboxTabButton
+        {
+            text: catalog.i18nc("@title:tab", "Plugins")
+            active: toolbox.viewCategory == "plugin"
             onClicked:
             {
                 toolbox.filterModelByProp("packages", "type", "plugin")
@@ -58,35 +33,10 @@ Rectangle {
                 toolbox.viewPage = "overview"
             }
         }
-
-        Button
+        ToolboxTabButton
         {
-            text: "Materials"
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    color: "transparent"
-                    implicitWidth: 96
-                    implicitHeight: 48
-                    Rectangle
-                    {
-                        visible: toolbox.viewCategory == "material"
-                        color: UM.Theme.getColor("primary")
-                        anchors.bottom: parent.bottom
-                        width: parent.width
-                        height: 3
-                    }
-                }
-                label: Text
-                {
-                    text: control.text
-                    color: UM.Theme.getColor("text")
-                    font.pixelSize: 15
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-            }
+            text: catalog.i18nc("@title:tab", "Materials")
+            active: toolbox.viewCategory == "material"
             onClicked:
             {
                 toolbox.filterModelByProp("packages", "type", "material")
@@ -96,36 +46,19 @@ Rectangle {
             }
         }
     }
-
-    Button
+    ToolboxTabButton
     {
-        text: "Installed"
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        style: ButtonStyle
+        text: catalog.i18nc("@title:tab", "Installed")
+        active: toolbox.viewCategory == "installed"
+        anchors
         {
-            background: Rectangle
-            {
-                color: "transparent"
-                implicitWidth: 96
-                implicitHeight: 48
-                Rectangle {
-                    visible: toolbox.viewCategory == "installed"
-                    color: UM.Theme.getColor("primary")
-                    anchors.bottom: parent.bottom
-                    width: parent.width
-                    height: 3
-                }
-            }
-            label: Text
-            {
-                text: control.text
-                color: UM.Theme.getColor("text")
-                font.pixelSize: 15
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-            }
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
         onClicked: toolbox.viewCategory = "installed"
+    }
+    ToolboxShadow
+    {
+        anchors.top: bar.bottom
     }
 }

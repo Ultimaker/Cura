@@ -2,17 +2,15 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-Rectangle
+Item
 {
     property bool installed: toolbox.isInstalled(model.id)
     width: base.width - UM.Theme.getSize("double_margin").width
     height: UM.Theme.getSize("base_unit").height * 8
-    color: "transparent"
     Column
     {
         anchors
@@ -60,9 +58,11 @@ Rectangle
         anchors.right: parent.right
         anchors.top: parent.top
         width: childrenRect.width
-        Button {
+        Button
+        {
             id: installButton
-            text: {
+            text:
+            {
                 if (installed)
                 {
                     return catalog.i18nc("@action:button", "Installed")
@@ -95,7 +95,8 @@ Rectangle
                 }
             }
             opacity: enabled ? 1.0 : 0.5
-            style: ButtonStyle {
+            style: ButtonStyle
+            {
                 background: Rectangle
                 {
                     implicitWidth: 96

@@ -4,17 +4,12 @@
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 import UM 1.1 as UM
 
 Window
 {
     id: base
-    title: catalog.i18nc("@title:tab", "Toolbox")
+    title: catalog.i18nc("@title", "Toolbox")
     modality: Qt.ApplicationModal
     width: 720 * screenScaleFactor
     height: 640 * screenScaleFactor
@@ -22,6 +17,11 @@ Window
     maximumWidth: 720 * screenScaleFactor
     minimumHeight: 350 * screenScaleFactor
     color: UM.Theme.getColor("sidebar")
+    UM.I18nCatalog
+    {
+        id: catalog
+        name:"cura"
+    }
     Item
     {
         anchors.fill: parent
@@ -29,11 +29,11 @@ Window
         {
             id: header
         }
-        Rectangle
+        Item
         {
             id: mainView
             width: parent.width
-            color: "transparent"
+            z: -1
             anchors
             {
                 top: header.bottom
@@ -66,25 +66,13 @@ Window
                 visible: toolbox.viewCategory == "installed"
             }
         }
-        ToolboxShadow
-        {
-            anchors.top: header.bottom
-        }
         ToolboxFooter
         {
             id: footer
             visible: toolbox.restartRequired
             height: toolbox.restartRequired ? UM.Theme.getSize("base_unit").height * 5 : 0
         }
-        ToolboxShadow
-        {
-            visible: toolbox.restartRequired
-            anchors.bottom: footer.top
-            reversed: true
-        }
-
-        UM.I18nCatalog { id: catalog; name: "cura" }
-
+        // TODO: Clean this up:
         Connections
         {
             target: toolbox
@@ -96,23 +84,9 @@ Window
                 licenseDialog.show();
             }
         }
-        Connections
-        {
-            target: toolbox
-            onShowRestartDialog:
-            {
-                restartDialog.message = toolbox.getRestartDialogMessage();
-                restartDialog.show();
-            }
-        }
         ToolboxLicenseDialog
         {
             id: licenseDialog
-        }
-
-        ToolboxRestartDialog
-        {
-            id: restartDialog
         }
     }
 }

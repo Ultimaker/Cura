@@ -141,7 +141,8 @@ Item
             anchors.bottom: parent.bottom
         }
     }
-    ToolboxDetailList {
+    ToolboxDetailList
+    {
         anchors
         {
             top: header.bottom

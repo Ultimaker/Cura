@@ -2,30 +2,29 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 import UM 1.1 as UM
 
 Item
 {
+    id: footer
     width: parent.width
     anchors.bottom: parent.bottom
+    height: visible ? Math.floor(UM.Theme.getSize("base_unit").height * 5.5) : 0
     Label
     {
         visible: toolbox.restartRequired
         text: "You will need to restart Cura before changes in plugins have effect."
-        height: UM.Theme.getSize("base_unit").height * 2
+        height: Math.floor(UM.Theme.getSize("base_unit").height * 2.5)
         verticalAlignment: Text.AlignVCenter
         anchors
         {
-            top: closeButton.top
+            top: restartButton.top
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("double_margin").width
+            right: restartButton.right
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
     }
     Button
@@ -34,9 +33,10 @@ Item
         text: "Quit Cura"
         anchors
         {
-            top: closeButton.top
-            right: closeButton.left
-            rightMargin: UM.Theme.getSize("default_margin").width
+            top: parent.top
+            topMargin: UM.Theme.getSize("default_margin").height
+            right: parent.right
+            rightMargin: UM.Theme.getSize("double_margin").width
         }
         visible: toolbox.restartRequired
         iconName: "dialog-restart"
@@ -45,65 +45,24 @@ Item
         {
             background: Rectangle
             {
-                implicitWidth: 96
-                implicitHeight: UM.Theme.getSize("base_unit").height * 2
+                implicitWidth: UM.Theme.getSize("base_unit").width * 8
+                implicitHeight: Math.floor(UM.Theme.getSize("base_unit").height * 2.5)
                 color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
             }
             label: Text
             {
-                verticalAlignment: Text.AlignVCenter
                 color: UM.Theme.getColor("button_text")
-                font
-                {
-                    pixelSize: 13
-                    bold: true
-                }
+                font: UM.Theme.getFont("default_bold")
                 text: control.text
+                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
             }
         }
     }
-
-    Button
+    ToolboxShadow
     {
-        id: closeButton
-        text: catalog.i18nc("@action:button", "Close")
-        iconName: "dialog-close"
-        onClicked:
-        {
-            if ( toolbox.isDownloading )
-            {
-                toolbox.cancelDownload()
-            }
-            base.close();
-        }
-        anchors
-        {
-            top: parent.top
-            topMargin: UM.Theme.getSize("default_margin").height
-            right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-        style: ButtonStyle
-        {
-            background: Rectangle
-            {
-                color: "transparent"
-                implicitWidth: 96
-                implicitHeight: UM.Theme.getSize("base_unit").height * 2
-                border
-                {
-                    width: 1
-                    color: UM.Theme.getColor("lining")
-                }
-            }
-            label: Text
-            {
-                verticalAlignment: Text.AlignVCenter
-                color: UM.Theme.getColor("text")
-                text: control.text
-                horizontalAlignment: Text.AlignHCenter
-            }
-        }
+        visible: toolbox.restartRequired
+        anchors.bottom: footer.top
+        reversed: true
     }
 }

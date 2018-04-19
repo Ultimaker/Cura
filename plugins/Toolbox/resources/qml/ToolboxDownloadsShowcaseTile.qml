@@ -2,8 +2,6 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -28,8 +26,11 @@ Item
         color: "white"
         width: UM.Theme.getSize("toolbox_thumbnail_medium").width
         height: UM.Theme.getSize("toolbox_thumbnail_medium").height
-        border.width: 1
-        border.color: UM.Theme.getColor("lining")
+        border
+        {
+            width: UM.Theme.getSize("default_lining").width
+            color: UM.Theme.getColor("lining")
+        }
         anchors
         {
             top: parent.top
@@ -37,8 +38,8 @@ Item
         }
         Image {
             anchors.centerIn: parent
-            width: UM.Theme.getSize("toolbox_thumbnail_medium").width - 26
-            height: UM.Theme.getSize("toolbox_thumbnail_medium").height - 26
+            width: UM.Theme.getSize("toolbox_thumbnail_medium").width - 2 * UM.Theme.getSize("default_margin")
+            height: UM.Theme.getSize("toolbox_thumbnail_medium").height - 2 * UM.Theme.getSize("default_margin")
             fillMode: Image.PreserveAspectFit
             source: model.icon_url || "../images/logobot.svg"
         }
@@ -61,7 +62,8 @@ Item
     MouseArea
     {
         anchors.fill: parent
-        onClicked: {
+        onClicked:
+        {
             switch(toolbox.viewCategory)
             {
                 case "material":

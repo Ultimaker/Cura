@@ -2,8 +2,6 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
@@ -19,7 +17,7 @@ Column
     Label
     {
         id: heading
-        text: toolbox.viewCategory == "material" ? "Maker Choices" : "Community Plugins"
+        text: toolbox.viewCategory == "material" ? catalog.i18nc("@label", "Maker Choices") : catalog.i18nc("@label", "Community Plugins")
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")

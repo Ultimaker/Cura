@@ -11,22 +11,19 @@ import QtQuick.Controls.Styles 1.4
 
 import UM 1.1 as UM
 
-UM.Dialog {
+UM.Dialog
+{
     title: catalog.i18nc("@title:window", "Plugin License Agreement")
-
     minimumWidth: UM.Theme.getSize("license_window_minimum").width
     minimumHeight: UM.Theme.getSize("license_window_minimum").height
     width: minimumWidth
     height: minimumHeight
-
     property var pluginName;
     property var licenseContent;
     property var pluginFileLocation;
-
     Item
     {
         anchors.fill: parent
-
         Label
         {
             id: licenseTitle
@@ -36,7 +33,6 @@ UM.Dialog {
             text: licenseDialog.pluginName + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
             wrapMode: Text.Wrap
         }
-
         TextArea
         {
             id: licenseText
@@ -49,8 +45,8 @@ UM.Dialog {
             text: licenseDialog.licenseContent != null ? licenseDialog.licenseContent : ""
         }
     }
-
-    rightButtons: [
+    rightButtons:
+    [
         Button
         {
             id: acceptButton

@@ -31,7 +31,7 @@ ScrollView
         Label
         {
             width: parent.width
-            text: "Plugins"
+            text: catalog.i18nc("@title:tab", "Plugins")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
         }
@@ -66,7 +66,7 @@ ScrollView
         Label
         {
             width: base.width
-            text: "Materials"
+            text: catalog.i18nc("@title:tab", "Materials")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
         }
