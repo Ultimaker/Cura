@@ -652,7 +652,7 @@ UM.PreferencesPage
                 {
                     id: checkUpdatesCheckbox
                     text: catalog.i18nc("@option:check","Check for updates on start")
-                    checked: parent.visible ? boolCheck(UM.Preferences.getValue("info/automatic_update_check")): false
+                    checked: boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
                     onCheckedChanged: UM.Preferences.setValue("info/automatic_update_check", checked)
                 }
             }
@@ -667,7 +667,7 @@ UM.PreferencesPage
                 {
                     id: sendDataCheckbox
                     text: catalog.i18nc("@option:check","Send (anonymous) print information")
-                    checked: parent.visible ? boolCheck(UM.Preferences.getValue("info/send_slice_info")) : false
+                    checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                     onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
                 }
 
