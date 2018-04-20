@@ -22,9 +22,9 @@ ScrollView
         {
             right: parent.right
             left: parent.left
-            leftMargin: UM.Theme.getSize("double_margin").width
-            topMargin: UM.Theme.getSize("double_margin").height
-            bottomMargin: UM.Theme.getSize("double_margin").height
+            leftMargin: UM.Theme.getSize("wide_margin").width
+            topMargin: UM.Theme.getSize("wide_margin").height
+            bottomMargin: UM.Theme.getSize("wide_margin").height
             top: parent.top
         }
         height: childrenRect.height + 4 * UM.Theme.getSize("default_margin").height

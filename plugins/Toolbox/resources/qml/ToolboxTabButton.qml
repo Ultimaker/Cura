@@ -14,8 +14,8 @@ Button
         background: Rectangle
         {
             color: "transparent"
-            implicitWidth: UM.Theme.getSize("base_unit").height * 8
-            implicitHeight: UM.Theme.getSize("base_unit").height * 4
+            implicitWidth: UM.Theme.getSize("toolbox_header_tab").width
+            implicitHeight: UM.Theme.getSize("toolbox_header_tab").height
             Rectangle
             {
                 visible: control.active

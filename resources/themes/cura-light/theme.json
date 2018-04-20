@@ -323,12 +323,15 @@
     "sizes": {
         "base_unit": [1.0, 1.0],
         "window_minimum_size": [70, 50],
-        "window_margin": [1.0, 1.0],
-        "default_margin": [1.0, 1.0],
-        "double_margin": [2.0, 2.0],
+
         "default_lining": [0.08, 0.08],
         "default_arrow": [0.8, 0.8],
         "logo": [7.6, 1.6],
+
+        "default_margin": [1.0, 1.0],
+        "wide_margin": [2.0, 2.0],
+        "narrow_margin": [0.5, 0.5],
+        "window_margin": [1.0, 1.0],
 
         "extruder_button_material_margin": [0.70, 0.9],
         "extruder_button_material": [0.75, 0.75],
@@ -443,6 +446,12 @@
 
         "toolbox_thumbnail_small": [6.0, 6.0],
         "toolbox_thumbnail_medium": [8.0, 8.0],
-        "toolbox_thumbnail_large": [12.0, 12.0]
+        "toolbox_thumbnail_large": [12.0, 12.0],
+        "toolbox_footer": [1.0, 5.0],
+        "toolbox_showcase_spacing": [1.0, 1.0],
+        "toolbox_header_tab": [8.0, 4.0],
+        "toolbox_detail_header": [1.0, 12.0],
+        "toolbox_detail_tile": [1.0, 8.0],
+        "toolbox_back_column": [6.0, 1.0]
     }
 }

@@ -22,7 +22,7 @@ Item
         {
             top: restartButton.top
             left: parent.left
-            leftMargin: UM.Theme.getSize("double_margin").width
+            leftMargin: UM.Theme.getSize("wide_margin").width
             right: restartButton.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }
@@ -36,7 +36,7 @@ Item
             top: parent.top
             topMargin: UM.Theme.getSize("default_margin").height
             right: parent.right
-            rightMargin: UM.Theme.getSize("double_margin").width
+            rightMargin: UM.Theme.getSize("wide_margin").width
         }
         visible: toolbox.restartRequired
         iconName: "dialog-restart"

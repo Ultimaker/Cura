@@ -9,8 +9,8 @@ import UM 1.1 as UM
 Item
 {
     property bool installed: toolbox.isInstalled(model.id)
-    width: base.width - UM.Theme.getSize("double_margin").width
-    height: UM.Theme.getSize("base_unit").height * 8
+    width: base.width - UM.Theme.getSize("wide_margin").width
+    height: UM.Theme.getSize("toolbox_detail_tile").height
     Column
     {
         anchors

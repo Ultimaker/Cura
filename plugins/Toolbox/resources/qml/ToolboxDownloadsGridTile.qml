@@ -23,7 +23,7 @@ Item
     {
         width: parent.width
         height: childrenRect.height
-        spacing: Math.floor(UM.Theme.getSize("base_unit").width / 2)
+        spacing: Math.floor(UM.Theme.getSize("narrow_margin").width)
         Rectangle
         {
             id: thumbnail
@@ -44,7 +44,7 @@ Item
         Column
         {
             width: parent.width - thumbnail.width - parent.spacing
-            spacing: Math.floor(UM.Theme.getSize("base_unit").width / 2)
+            spacing: Math.floor(UM.Theme.getSize("narrow_margin").width)
             Label
             {
                 id: name

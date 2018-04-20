@@ -19,8 +19,8 @@ Item
             anchors
             {
                 right: base.right
-                topMargin: UM.Theme.getSize("double_margin").height
-                bottomMargin: UM.Theme.getSize("double_margin").height
+                topMargin: UM.Theme.getSize("wide_margin").height
+                bottomMargin: UM.Theme.getSize("wide_margin").height
                 top: parent.top
             }
             height: childrenRect.height

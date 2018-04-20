@@ -10,12 +10,12 @@ Item
 {
     id: sidebar
     height: parent.height
-    width: UM.Theme.getSize("base_unit").width * 6
+    width: UM.Theme.getSize("toolbox_back_column").width
     anchors
     {
         top: parent.top
         left: parent.left
-        topMargin: UM.Theme.getSize("double_margin").height
+        topMargin: UM.Theme.getSize("wide_margin").height
         leftMargin: UM.Theme.getSize("default_margin").width
         rightMargin: UM.Theme.getSize("default_margin").width
     }

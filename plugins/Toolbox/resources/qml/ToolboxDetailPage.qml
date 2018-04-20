@@ -23,9 +23,9 @@ Item
         {
             left: sidebar.right
             right: parent.right
-            rightMargin: UM.Theme.getSize("double_margin").width
+            rightMargin: UM.Theme.getSize("wide_margin").width
         }
-        height: UM.Theme.getSize("base_unit").height * 12
+        height: UM.Theme.getSize("toolbox_detail_header").height
         Image
         {
             id: thumbnail
@@ -37,8 +37,8 @@ Item
             {
                 top: parent.top
                 left: parent.left
-                leftMargin: UM.Theme.getSize("double_margin").width
-                topMargin: UM.Theme.getSize("double_margin").height
+                leftMargin: UM.Theme.getSize("wide_margin").width
+                topMargin: UM.Theme.getSize("wide_margin").height
             }
         }
 
@@ -51,7 +51,7 @@ Item
                 left: thumbnail.right
                 leftMargin: UM.Theme.getSize("default_margin").width
                 right: parent.right
-                rightMargin: UM.Theme.getSize("double_margin").width
+                rightMargin: UM.Theme.getSize("wide_margin").width
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
             text: details.name
@@ -70,7 +70,7 @@ Item
                 left: title.left
                 topMargin: UM.Theme.getSize("default_margin").height
             }
-            spacing: Math.floor(UM.Theme.getSize("default_margin").height / 2)
+            spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
             Label
             {
@@ -101,8 +101,8 @@ Item
                 leftMargin: UM.Theme.getSize("default_margin").width
                 topMargin: UM.Theme.getSize("default_margin").height
             }
-            spacing: Math.floor(UM.Theme.getSize("default_margin").height/2)
-            width: UM.Theme.getSize("base_unit").width * 12
+            spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
+            // width: UM.Theme.getSize("base_unit").width * 12
             Label
             {
                 text: details.version
@@ -111,7 +111,11 @@ Item
             }
             Label
             {
-                text: Qt.formatDateTime(details.last_updated, "dd MMM yyyy")
+                text:
+                {
+                    var date = new Date(details.last_updated)
+                    return date.toLocaleString(Qt.locale())
+                }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
             }

@@ -18,7 +18,7 @@ ScrollView
     {
         width: base.width
         spacing: UM.Theme.getSize("default_margin").height
-        padding: UM.Theme.getSize("double_margin").height
+        padding: UM.Theme.getSize("wide_margin").height
         height: childrenRect.height + 2 * padding
         ToolboxDownloadsShowcase
         {

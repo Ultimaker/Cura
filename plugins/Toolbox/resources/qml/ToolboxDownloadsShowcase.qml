@@ -14,7 +14,7 @@ Column
 {
     id: base
     height: childrenRect.height
-    spacing: UM.Theme.getSize("base_unit").height
+    spacing: UM.Theme.getSize("toolbox_showcase_spacing").width
     Label
     {
         id: heading
