@@ -16,7 +16,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
-from cura.Utils.VersionTools import compareSemanticVersions
+from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
@@ -289,7 +289,7 @@ class Toolbox(QObject, Extension):
 
         local_version = local_package["package_version"]
         remote_version = remote_package["package_version"]
-        return compareSemanticVersions(remote_version, local_version) > 0
+        return Version(remote_version) > Version(local_version)
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id) -> bool:

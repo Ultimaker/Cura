@@ -12,9 +12,7 @@ from PyQt5.QtCore import pyqtSlot, QObject, pyqtSignal
 
 from UM.Logger import Logger
 from UM.Resources import Resources
-
-from cura.Utils import VersionTools
-
+from UM.Version import Version
 
 class CuraPackageManager(QObject):
 
@@ -186,7 +184,7 @@ class CuraPackageManager(QObject):
             # Compare versions and only schedule the installation if the given package is newer
             new_version = package_info["package_version"]
             installed_version = installed_package_info["package_version"]
-            if VersionTools.compareSemanticVersions(new_version, installed_version) > 0:
+            if Version(new_version) > Version(installed_version):
                 Logger.log("i", "Package [%s] version [%s] is newer than the installed version [%s], update it.",
                            package_id, new_version, installed_version)
                 to_install_package = True
