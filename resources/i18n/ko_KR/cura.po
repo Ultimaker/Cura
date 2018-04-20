@@ -1433,7 +1433,7 @@ msgstr "기기로드 중 ..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:712
 msgctxt "@info:progress"
 msgid "Setting up scene..."
-msgstr "Setting up scene..."
+msgstr "장면 설정 중..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:751
 msgctxt "@info:progress"
