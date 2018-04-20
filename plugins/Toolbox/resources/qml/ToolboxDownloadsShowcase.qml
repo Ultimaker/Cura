@@ -26,7 +26,7 @@ Column
     Row
     {
         height: childrenRect.height
-        spacing: UM.Theme.getSize("base_unit").width * 2
+        spacing: UM.Theme.getSize("wide_margin").width
         anchors
         {
             horizontalCenter: parent.horizontalCenter

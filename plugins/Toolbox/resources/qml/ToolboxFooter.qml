@@ -11,12 +11,12 @@ Item
     id: footer
     width: parent.width
     anchors.bottom: parent.bottom
-    height: visible ? Math.floor(UM.Theme.getSize("base_unit").height * 5.5) : 0
+    height: visible ? Math.floor(UM.Theme.getSize("toolbox_footer").height) : 0
     Label
     {
         visible: toolbox.restartRequired
         text: "You will need to restart Cura before changes in plugins have effect."
-        height: Math.floor(UM.Theme.getSize("base_unit").height * 2.5)
+        height: Math.floor(UM.Theme.getSize("toolbox_footer_button").height)
         verticalAlignment: Text.AlignVCenter
         anchors
         {
@@ -45,8 +45,8 @@ Item
         {
             background: Rectangle
             {
-                implicitWidth: UM.Theme.getSize("base_unit").width * 8
-                implicitHeight: Math.floor(UM.Theme.getSize("base_unit").height * 2.5)
+                implicitWidth: UM.Theme.getSize("toolbox_footer_button").width
+                implicitHeight: Math.floor(UM.Theme.getSize("toolbox_footer_button").height)
                 color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
             }
             label: Text

@@ -54,7 +54,7 @@ Item
         }
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        height: UM.Theme.getSize("base_unit").width * 4
+        height: UM.Theme.getSize("toolbox_heading_label").height
         width: parent.width
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("medium_bold")

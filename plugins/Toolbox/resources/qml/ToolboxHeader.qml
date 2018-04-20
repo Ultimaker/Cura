@@ -9,7 +9,7 @@ Item
 {
     id: header
     width: parent.width
-    height: UM.Theme.getSize("base_unit").height * 4
+    height: UM.Theme.getSize("toolbox_header").height * 4
     Row
     {
         id: bar

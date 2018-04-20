@@ -11,7 +11,7 @@ Item
     id: base
     property bool canUpdate: false
     property bool isEnabled: true
-    height: UM.Theme.getSize("base_unit").height * 8
+    height: UM.Theme.getSize("toolbox_installed_tile").height
     anchors
     {
         left: parent.left
@@ -41,7 +41,7 @@ Item
         {
             text: model.name
             width: parent.width
-            height: UM.Theme.getSize("base_unit").height * 2
+            height: UM.Theme.getSize("toolbox_property_label").height
             wrapMode: Text.WordWrap
             verticalAlignment: Text.AlignVCenter
             font: UM.Theme.getFont("default_bold")
@@ -51,7 +51,7 @@ Item
         {
             text: model.description
             width: parent.width
-            height: UM.Theme.getSize("base_unit").height * 3
+            height: UM.Theme.getSize("toolbox_property_label").height
             clip: true
             wrapMode: Text.WordWrap
             color: pluginInfo.color
@@ -61,7 +61,6 @@ Item
     Column
     {
         id: authorInfo
-        width: UM.Theme.getSize("base_unit").width * 16
         height: parent.height
         anchors
         {
@@ -84,7 +83,7 @@ Item
                 }
             }
             width: parent.width
-            height: UM.Theme.getSize("base_unit").height * 3
+            height: UM.Theme.getSize("toolbox_property_label").height
             wrapMode: Text.WordWrap
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
@@ -122,8 +121,8 @@ Item
             {
                 background: Rectangle
                 {
-                    implicitWidth: UM.Theme.getSize("base_unit").width * 8
-                    implicitHeight: Math.floor(UM.Theme.getSize("base_unit").width * 2.5)
+                    implicitWidth: UM.Theme.getSize("toolbox_action_button").width
+                    implicitHeight: UM.Theme.getSize("toolbox_action_button").height
                     color: "transparent"
                     border
                     {
@@ -167,8 +166,8 @@ Item
             {
                 background: Rectangle
                 {
-                    implicitWidth: UM.Theme.getSize("base_unit").width * 8
-                    implicitHeight: UM.Theme.getSize("base_unit").width * 2.5
+                    implicitWidth: UM.Theme.getSize("toolbox_action_button").width
+                    implicitHeight: UM.Theme.getSize("toolbox_action_button").height
                     color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
                 }
                 label: Label
@@ -193,7 +192,7 @@ Item
                 left: updateButton.left
                 right: updateButton.right
                 top: updateButton.bottom
-                topMargin: Math.floor(UM.Theme.getSize("base_unit") / 4)
+                topMargin: Math.floor(UM.Theme.getSize("default_margin") / 4)
             }
             value: toolbox.isDownloading ? toolbox.downloadProgress : 0
             visible: toolbox.isDownloading
@@ -202,7 +201,7 @@ Item
                 background: Rectangle
                 {
                     color: UM.Theme.getColor("lining")
-                    implicitHeight: Math.floor(UM.Theme.getSize("base_unit").height / 2)
+                    implicitHeight: Math.floor(UM.Theme.getSize("toolbox_progress_bar").height)
                 }
                 progress: Rectangle
                 {

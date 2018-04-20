@@ -57,7 +57,7 @@ Item
             font: UM.Theme.getFont("large")
             wrapMode: Text.WordWrap
             width: parent.width
-            height: UM.Theme.getSize("base_unit") * 2
+            height: UM.Theme.getSize("toolbox_property_label").height
         }
         Label
         {
@@ -99,7 +99,6 @@ Item
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
-            // width: UM.Theme.getSize("base_unit").width * 12
             Label
             {
                 text:

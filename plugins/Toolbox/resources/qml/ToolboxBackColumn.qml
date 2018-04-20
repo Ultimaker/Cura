@@ -42,8 +42,8 @@ Item
             color: button.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")
             source: UM.Theme.getIcon("arrow_left")
         }
-        width: UM.Theme.getSize("base_unit").width * 4
-        height: UM.Theme.getSize("base_unit").height * 2
+        width: UM.Theme.getSize("toolbox_back_button").width
+        height: UM.Theme.getSize("toolbox_back_button").height
         onClicked:
         {
             toolbox.viewPage = "overview"

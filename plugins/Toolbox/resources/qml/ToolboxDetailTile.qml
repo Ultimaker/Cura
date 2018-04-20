@@ -23,7 +23,7 @@ Item
         Label
         {
             width: parent.width
-            height: UM.Theme.getSize("base_unit").height * 2
+            height: UM.Theme.getSize("toolbox_property_label").height
             text: model.name
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")

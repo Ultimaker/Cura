@@ -13,7 +13,7 @@ Column
 {
     id: base
     height: childrenRect.height
-    spacing: UM.Theme.getSize("base_unit").height
+    spacing: UM.Theme.getSize("default_margin").height
     Label
     {
         id: heading
@@ -27,8 +27,8 @@ Column
         id: grid
         width: parent.width
         columns: 2
-        columnSpacing: UM.Theme.getSize("base_unit").width
-        rowSpacing: UM.Theme.getSize("base_unit").height
+        columnSpacing: UM.Theme.getSize("default_margin").height
+        rowSpacing: UM.Theme.getSize("default_margin").width
 
         Repeater
         {
