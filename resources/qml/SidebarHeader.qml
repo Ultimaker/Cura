@@ -527,6 +527,7 @@ Column
             width: parent.width - materialCompatibilityLink.width
             text: catalog.i18nc("@label", "Use adhesion sheet or glue with this material combination")
             font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text")
             visible: buildplateCompatibilityError || buildplateCompatibilityWarning
             wrapMode: Text.WordWrap
             opacity: 0.5
