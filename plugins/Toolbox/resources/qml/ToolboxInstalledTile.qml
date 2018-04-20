@@ -62,6 +62,7 @@ Item
     {
         id: authorInfo
         height: parent.height
+        width: Math.floor(UM.Theme.getSize("toolbox_action_button").width * 1.25)
         anchors
         {
             top: parent.top
