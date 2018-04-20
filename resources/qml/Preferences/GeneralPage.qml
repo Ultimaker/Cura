@@ -723,6 +723,14 @@ UM.PreferencesPage
                     onCheckedChanged: UM.Preferences.setValue("cura/not_arrange_objects_on_load", checked)
                 }
             }
+
+            Connections {
+                target: UM.Preferences
+                onPreferenceChanged:
+                {
+                    sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+                }
+            }
         }
     }
 }
