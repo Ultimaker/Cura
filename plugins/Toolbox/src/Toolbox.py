@@ -159,23 +159,25 @@ class Toolbox(QObject, Extension):
     showLicenseDialog = pyqtSignal()
 
     @pyqtSlot(result = str)
-    def getLicenseDialogPluginName(self):
+    def getLicenseDialogPluginName(self) -> str:
         return self._license_dialog_plugin_name
 
     @pyqtSlot(result = str)
-    def getLicenseDialogPluginFileLocation(self):
+    def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
 
     @pyqtSlot(result = str)
-    def getLicenseDialogLicenseContent(self):
+    def getLicenseDialogLicenseContent(self) -> str:
         return self._license_dialog_license_content
 
-    def openLicenseDialog(self, plugin_name, license_content, plugin_file_location):
+    def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str):
         self._license_dialog_plugin_name = plugin_name
         self._license_dialog_license_content = license_content
         self._license_dialog_plugin_file_location = plugin_file_location
         self.showLicenseDialog.emit()
 
+    # This is a plugin, so most of the components required are not ready when
+    # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self):
         self._package_manager = Application.getInstance().getCuraPackageManager()
 
@@ -205,7 +207,7 @@ class Toolbox(QObject, Extension):
         # Apply enabled/disabled state to installed plugins
         self.enabledChanged.emit()
 
-    def _createDialog(self, qml_name):
+    def _createDialog(self, qml_name: str):
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
         dialog = Application.getInstance().createQmlComponent(path, {"toolbox": self})
@@ -224,7 +226,7 @@ class Toolbox(QObject, Extension):
             self.metadataChanged.emit()
 
     @pyqtSlot(str)
-    def install(self, file_path):
+    def install(self, file_path: str):
         self._package_manager.installPackage(file_path)
         self.installChanged.emit()
         self._updateInstalledModels()
@@ -233,7 +235,7 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
-    def uninstall(self, plugin_id):
+    def uninstall(self, plugin_id: str):
         self._package_manager.removePackage(plugin_id)
         self.installChanged.emit()
         self._updateInstalledModels()
@@ -242,7 +244,7 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
-    def enable(self, plugin_id):
+    def enable(self, plugin_id: str):
         self._plugin_registry.enablePlugin(plugin_id)
         self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'active'.", plugin_id)
@@ -250,7 +252,7 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
-    def disable(self, plugin_id):
+    def disable(self, plugin_id: str):
         self._plugin_registry.disablePlugin(plugin_id)
         self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'deactive'.", plugin_id)
@@ -292,11 +294,11 @@ class Toolbox(QObject, Extension):
         return Version(remote_version) > Version(local_version)
 
     @pyqtSlot(str, result = bool)
-    def isInstalled(self, package_id) -> bool:
+    def isInstalled(self, package_id: str) -> bool:
         return self._package_manager.isPackageInstalled(package_id)
 
     @pyqtSlot(str, result = bool)
-    def isEnabled(self, package_id) -> bool:
+    def isEnabled(self, package_id: str) -> bool:
         if package_id in self._plugin_registry.getActivePlugins():
             return True
         return False
@@ -305,7 +307,7 @@ class Toolbox(QObject, Extension):
 
     # Make API Calls
     # --------------------------------------------------------------------------
-    def _makeRequestByType(self, type):
+    def _makeRequestByType(self, type: str):
         Logger.log("i", "Toolbox: Requesting %s metadata from server.", type)
         request = QNetworkRequest(self._request_urls[type])
         request.setRawHeader(*self._request_header)
@@ -313,7 +315,7 @@ class Toolbox(QObject, Extension):
     # TODO: Request authors and request material showcase
 
     @pyqtSlot(str)
-    def startDownload(self, url):
+    def startDownload(self, url: str):
         Logger.log("i", "Toolbox: Attempting to download & install package from %s.", url)
         url = QUrl(url)
         self._download_request = QNetworkRequest(url)
@@ -338,7 +340,7 @@ class Toolbox(QObject, Extension):
 
     # Handlers for Network Events
     # --------------------------------------------------------------------------
-    def _onNetworkAccesibleChanged(self, accessible):
+    def _onNetworkAccesibleChanged(self, accessible: int):
         if accessible == 0:
             self.setDownloadProgress(0)
             self.setIsDownloading(False)
@@ -347,7 +349,7 @@ class Toolbox(QObject, Extension):
                 self._download_reply.abort()
                 self._download_reply = None
 
-    def _onRequestFinished(self, reply):
+    def _onRequestFinished(self, reply: QNetworkReply):
 
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Got a timeout.")
@@ -479,7 +481,7 @@ class Toolbox(QObject, Extension):
             # Ignore any operation that is not a get operation
             pass
 
-    def _onDownloadProgress(self, bytes_sent, bytes_total):
+    def _onDownloadProgress(self, bytes_sent: int, bytes_total: int):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
             self.setDownloadProgress(new_progress)
@@ -495,7 +497,7 @@ class Toolbox(QObject, Extension):
                 self._onDownloadComplete(file_path)
                 return
 
-    def _onDownloadComplete(self, file_path):
+    def _onDownloadComplete(self, file_path: str):
         Logger.log("i", "Toolbox: Download complete.")
         try:
             package_info = self._package_manager.getPackageInfo(file_path)
@@ -514,48 +516,48 @@ class Toolbox(QObject, Extension):
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
-    def setDownloadProgress(self, progress):
+    def setDownloadProgress(self, progress: int):
         if progress != self._download_progress:
             self._download_progress = progress
             self.onDownloadProgressChanged.emit()
     @pyqtProperty(int, fset = setDownloadProgress, notify = onDownloadProgressChanged)
-    def downloadProgress(self):
+    def downloadProgress(self) -> int:
         return self._download_progress
 
-    def setIsDownloading(self, is_downloading):
+    def setIsDownloading(self, is_downloading: bool):
         if self._is_downloading != is_downloading:
             self._is_downloading = is_downloading
             self.onIsDownloadingChanged.emit()
     @pyqtProperty(bool, fset = setIsDownloading, notify = onIsDownloadingChanged)
-    def isDownloading(self):
+    def isDownloading(self) -> bool:
         return self._is_downloading
 
-    def setActivePackage(self, package):
+    def setActivePackage(self, package: dict):
         self._active_package = package
         self.activePackageChanged.emit()
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
-    def activePackage(self):
+    def activePackage(self) -> dict:
         return self._active_package
 
-    def setViewCategory(self, category = "plugins"):
+    def setViewCategory(self, category: str = "plugins"):
         self._view_category = category
         self.viewChanged.emit()
     @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
-    def viewCategory(self):
+    def viewCategory(self) -> str:
         return self._view_category
 
-    def setViewPage(self, page = "overview"):
+    def setViewPage(self, page: str = "overview"):
         self._view_page = page
         self.viewChanged.emit()
     @pyqtProperty(str, fset = setViewPage, notify = viewChanged)
-    def viewPage(self):
+    def viewPage(self) -> str:
         return self._view_page
 
-    def setViewSelection(self, selection = ""):
+    def setViewSelection(self, selection: str = ""):
         self._view_selection = selection
         self.viewChanged.emit()
     @pyqtProperty(str, fset = setViewSelection, notify = viewChanged)
-    def viewSelection(self):
+    def viewSelection(self) -> str:
         return self._view_selection
 
 
@@ -565,27 +567,27 @@ class Toolbox(QObject, Extension):
     # TODO: Maybe replace this with simply exposing self._models to Qt and then
     # setting model: toolbox.models.foobar instead of toolbox.foobarModel
     @pyqtProperty(QObject, notify = metadataChanged)
-    def authorsModel(self):
+    def authorsModel(self) -> AuthorsModel:
         return self._models["authors"]
 
     @pyqtProperty(QObject, notify = metadataChanged)
-    def packagesModel(self):
+    def packagesModel(self) -> PackagesModel:
         return self._models["packages"]
 
     @pyqtProperty(QObject, notify = metadataChanged)
-    def pluginsShowcaseModel(self):
+    def pluginsShowcaseModel(self) -> PackagesModel:
         return self._models["plugins_showcase"]
 
     @pyqtProperty(QObject, notify = metadataChanged)
-    def pluginsInstalledModel(self):
+    def pluginsInstalledModel(self) -> PackagesModel:
         return self._models["plugins_installed"]
 
     @pyqtProperty(QObject, notify = metadataChanged)
-    def materialsShowcaseModel(self):
+    def materialsShowcaseModel(self) -> PackagesModel:
         return self._models["materials_showcase"]
 
     @pyqtProperty(QObject, notify = metadataChanged)
-    def materialsInstalledModel(self):
+    def materialsInstalledModel(self) -> PackagesModel:
         return self._models["materials_installed"]
 
 
@@ -593,7 +595,7 @@ class Toolbox(QObject, Extension):
     # Filter Models:
     # --------------------------------------------------------------------------
     @pyqtSlot(str, str, str)
-    def filterModelByProp(self, modelType, filterType, parameter):
+    def filterModelByProp(self, modelType: str, filterType: str, parameter: str):
         if not self._models[modelType]:
             Logger.log("w", "Toolbox: Couldn't filter %s model because it doesn't exist.", modelType)
             return
@@ -601,7 +603,7 @@ class Toolbox(QObject, Extension):
         self.filterChanged.emit()
 
     @pyqtSlot()
-    def removeFilters(self, modelType):
+    def removeFilters(self, modelType: str):
         if not self._models[modelType]:
             Logger.log("w", "Toolbox: Couldn't remove filters on %s model because it doesn't exist.", modelType)
             return

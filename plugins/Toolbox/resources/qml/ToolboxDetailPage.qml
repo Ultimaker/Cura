@@ -12,11 +12,12 @@ Item
     id: base
     property var details: toolbox.packagesModel.items[0]
     anchors.fill: parent
+    width: parent.width
     ToolboxBackColumn
     {
         id: sidebar
     }
-    Rectangle
+    Item
     {
         id: header
         anchors

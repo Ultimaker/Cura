@@ -9,11 +9,11 @@ Item
 {
     id: header
     width: parent.width
-    height: UM.Theme.getSize("toolbox_header").height * 4
+    height: UM.Theme.getSize("toolbox_header").height
     Row
     {
         id: bar
-        spacing: 12
+        spacing: UM.Theme.getSize("default_margin").width
         height: childrenRect.height
         width: childrenRect.width
         anchors

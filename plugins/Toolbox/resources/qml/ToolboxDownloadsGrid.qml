@@ -13,6 +13,7 @@ Column
 {
     id: base
     height: childrenRect.height
+    width: parent.width
     spacing: UM.Theme.getSize("default_margin").height
     Label
     {
@@ -29,7 +30,7 @@ Column
         columns: 2
         columnSpacing: UM.Theme.getSize("default_margin").height
         rowSpacing: UM.Theme.getSize("default_margin").width
-
+        height: childrenRect.height
         Repeater
         {
             model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
