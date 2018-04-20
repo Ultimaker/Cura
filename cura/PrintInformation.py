@@ -337,7 +337,7 @@ class PrintInformation(QObject):
         if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
             # Only take the file name part
             self._base_name = filename_parts[0]
-        self._updateJobName()
+            self._updateJobName()
 
     @pyqtProperty(str, fset = setBaseName, notify = baseNameChanged)
     def baseName(self):
