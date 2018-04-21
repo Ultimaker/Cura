@@ -16,7 +16,7 @@
         "file_formats": "text/x-gcode",
         "has_variants": true,
         "has_materials": true,
-        "preferred_variant": "felixtec4_0.35",
+        "preferred_variant_name": "felixtec4_0.35",
         "variants_name": "Nozzle Diam"
     },
     "overrides": {
