@@ -4164,6 +4164,27 @@
                         }
                     }
                 },
+                "support_fan_enable":
+                {
+                    "label": "Fan Speed Override",
+                    "description": "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable",
+                    "settable_per_mesh": false
+                },
+                "support_supported_skin_fan_speed":
+                {
+                    "label": "Supported Skin Fan Speed",
+                    "description": "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove.",
+                    "unit": "%",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 100,
+                    "type": "float",
+                    "enabled": "support_enable and support_fan_enable",
+                    "settable_per_mesh": false
+                },
                 "support_use_towers":
                 {
                     "label": "Use Towers",
