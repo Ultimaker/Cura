@@ -249,13 +249,19 @@ Cura.MachineAction
                         {
                             if(base.selectedDevice)
                             {
-                                if(base.selectedDevice.printerType == "ultimaker3")
+                                if (base.selectedDevice.printerType == "ultimaker3")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3")
-                                } else if(base.selectedDevice.printerType == "ultimaker3_extended")
+                                    return "Ultimaker 3";
+                                }
+                                else if (base.selectedDevice.printerType == "ultimaker3_extended")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3 Extended")
-                                } else
+                                    return "Ultimaker 3 Extended";
+                                }
+                                else if (base.selectedDevice.printerType == "ultimaker_s5")
+                                {
+                                    return "Ultimaker S5";
+                                }
+                                else
                                 {
                                     return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
                                 }
