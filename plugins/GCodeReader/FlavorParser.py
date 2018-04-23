@@ -362,13 +362,13 @@ class FlavorParser:
                 else:
                     Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
-            # When the layer change is reached, the polygon is computed so we have just one layer per layer per extruder
+            # When the layer change is reached, the polygon is computed so we have just one layer per extruder
             if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                 try:
                     layer_number = int(line[len(self._layer_keyword):])
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
-                    # start the new layer at the end position of the last layer
+                    # Start the new layer at the end position of the last layer
                     current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
 
                     # When using a raft, the raft layers are stored as layers < 0, it mimics the same behavior
@@ -408,7 +408,11 @@ class FlavorParser:
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
 
+                    # When changing tool, store the end point of the previous path, then process the code and finally
+                    # add another point with the new position of the head.
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
                     current_position = self.processTCode(T, line, current_position, current_path)
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
 
             if line.startswith("M"):
                 M = self._getInt(line, "M")
