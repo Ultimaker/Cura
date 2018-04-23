@@ -249,16 +249,17 @@ Cura.MachineAction
                         {
                             if(base.selectedDevice)
                             {
-                                if(base.selectedDevice.printerType == "ultimaker3")
+                                if (base.selectedDevice.printerType == "ultimaker3")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3")
-                                } else if(base.selectedDevice.printerType == "ultimaker3_extended")
+                                    return "Ultimaker 3";
+                                }
+                                else if (base.selectedDevice.printerType == "ultimaker3_extended")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3 Extended")
+                                    return "Ultimaker 3 Extended";
                                 }
                                 else if (base.selectedDevice.printerType == "ultimaker_s5")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker S5")
+                                    return "Ultimaker S5";
                                 }
                                 else
                                 {
