@@ -9,6 +9,8 @@ def getMetaData():
     return {
         "version_upgrade": {
             # From                           To                              Upgrade function
+            ("preferences", 5000004):        ("preferences", 6000004,        upgrade.upgradePreferences),
+
             ("machine_stack", 3000004):      ("machine_stack", 4000004,      upgrade.upgradeStack),
             ("extruder_train", 3000004):     ("extruder_train", 4000004,     upgrade.upgradeStack),
 
@@ -18,6 +20,10 @@ def getMetaData():
             ("variant", 2000004):            ("variant", 3000004,            upgrade.upgradeVariants)
         },
         "sources": {
+            "preferences": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"."}
+            },
             "machine_stack": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./machine_instances"}

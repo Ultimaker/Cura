@@ -85,6 +85,34 @@ class VersionUpgrade32to33(VersionUpgrade):
         setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
         return format_version * 1000000 + setting_version
 
+    ##  Upgrades a preferences file from version 3.2 to 3.3.
+    #
+    #   \param serialised The serialised form of a preferences file.
+    #   \param filename The name of the file to upgrade.
+    def upgradePreferences(self, serialised, filename):
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialised)
+
+        # Update version numbers
+        if "general" not in parser:
+            parser["general"] = {}
+        parser["general"]["version"] = "6"
+        if "metadata" not in parser:
+            parser["metadata"] = {}
+        parser["metadata"]["setting_version"] = "4"
+
+        # The auto_slice preference changed its default value to "disabled" so if there is no value in previous versions,
+        # then it means the desired value is auto_slice "enabled"
+        if "auto_slice" not in parser["general"]:
+            parser["general"]["auto_slice"] = "True"
+        elif parser["general"]["auto_slice"] == "False":   # If the value is False, then remove the entry
+            del parser["general"]["auto_slice"]
+
+        # Re-serialise the file.
+        output = io.StringIO()
+        parser.write(output)
+        return [filename], [output.getvalue()]
+
     ##  Upgrades a container stack from version 3.2 to 3.3.
     #
     #   \param serialised The serialised form of a container stack.
