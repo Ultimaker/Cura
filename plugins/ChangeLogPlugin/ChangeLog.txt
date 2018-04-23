@@ -102,6 +102,7 @@ XML material profile files are now checked before import in Ultimaker Cura to av
 - Polypropylene 0.25mm print profile. Fixed the maximum number of allowed extrusions for all 0.25mm Polypropylene profile prints.
 - SolidWorks plugin. Replaced comtypes module with win32com to fix issues.
 - Font rendering issues. Fixed font rendering issues on Max OSX.
+- Slice engine avoids broken wall segments. Fixed an issue where narrow walls created broken line segments by testing for such situations and using slightly narrow lines in those cases.
 
 *Third party printers
 
