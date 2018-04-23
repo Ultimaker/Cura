@@ -1,5 +1,5 @@
 <!--
-The following template is useful for filing new issues. Processing an issue will go much faster when this is filled out, and issues which do not use this template will be removed.
+The following template is useful for filing new issues. Processing an issue will go much faster when this is filled out, and issues which do not use this template WILL BE REMOVED.
 
 Before filing, PLEASE check if the issue already exists (either open or closed) by using the search bar on the issues page. If it does, comment there. Even if it's closed, we can reopen it based on your comment.
 
