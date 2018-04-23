@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 UM.PreferencesPage
 {
@@ -97,14 +98,24 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("cura/choice_on_open_project")
         setDefaultOpenProjectOption(UM.Preferences.getValue("cura/choice_on_open_project"))
 
-        if (plugins.find("id", "SliceInfoPlugin") > -1) {
+        if (pluginExistsAndEnabled("SliceInfoPlugin")) {
             UM.Preferences.resetPreference("info/send_slice_info")
             sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         }
-        if (plugins.find("id", "UpdateChecker") > -1) {
+        if (pluginExistsAndEnabled("UpdateChecker")) {
             UM.Preferences.resetPreference("info/automatic_update_check")
             checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
         }
+    }
+
+    function pluginExistsAndEnabled(pluginName)
+    {
+        var pluginItem = plugins.find("id", pluginName)
+        if (pluginItem > -1)
+        {
+            return plugins.getItem(pluginItem).enabled
+        }
+        return false
     }
 
     ScrollView
@@ -366,7 +377,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width;
                 height: childrenRect.height;
                 text: catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?")
@@ -380,7 +392,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved so that they no longer intersect?")
@@ -393,7 +406,8 @@ UM.PreferencesPage
                     onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
                 }
             }
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved down to touch the build plate?")
@@ -426,7 +440,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should layer be forced into compatibility mode?")
@@ -453,7 +468,8 @@ UM.PreferencesPage
                 text: catalog.i18nc("@label","Opening and saving files")
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should models be scaled to the build volume if they are too large?")
@@ -467,7 +483,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?")
@@ -481,7 +498,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
@@ -495,7 +513,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should a summary be shown when saving a project file?")
@@ -508,7 +527,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Default behavior when opening a project file")
@@ -531,7 +551,8 @@ UM.PreferencesPage
                         {
                             id: openProjectOptionModel
 
-                            Component.onCompleted: {
+                            Component.onCompleted:
+                            {
                                 append({ text: catalog.i18nc("@option:openProject", "Always ask"), code: "always_ask" })
                                 append({ text: catalog.i18nc("@option:openProject", "Always open as a project"), code: "open_as_project" })
                                 append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
@@ -591,7 +612,8 @@ UM.PreferencesPage
                         {
                             id: discardOrKeepProfileListModel
 
-                            Component.onCompleted: {
+                            Component.onCompleted:
+                            {
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
@@ -631,8 +653,9 @@ UM.PreferencesPage
                 text: catalog.i18nc("@label","Privacy")
             }
 
-            UM.TooltipArea {
-                visible: plugins.find("id", "UpdateChecker") > -1
+            UM.TooltipArea
+            {
+                visible: pluginExistsAndEnabled("UpdateChecker")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -646,8 +669,9 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
-                visible: plugins.find("id", "SliceInfoPlugin") > -1
+            UM.TooltipArea
+            {
+                visible: pluginExistsAndEnabled("SliceInfoPlugin")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
@@ -658,6 +682,17 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Send (anonymous) print information")
                     checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                     onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
+                }
+
+                Button
+                {
+                    id: showMoreInfo
+                    anchors.top: sendDataCheckbox.bottom
+                    text: catalog.i18nc("@action:button", "More information")
+                    onClicked:
+                    {
+                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection();
+                    }
                 }
             }
 
@@ -674,7 +709,8 @@ UM.PreferencesPage
                 text: catalog.i18nc("@label","Experimental")
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Use multi build plate functionality")
@@ -688,21 +724,29 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width
                 height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip","Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
+                text: catalog.i18nc("@info:tooltip", "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
 
                 CheckBox
                 {
                     id: arrangeOnLoadCheckbox
-                    text: catalog.i18nc("@option:check","Do not arrange objects on load")
+                    text: catalog.i18nc("@option:check", "Do not arrange objects on load")
                     checked: boolCheck(UM.Preferences.getValue("cura/not_arrange_objects_on_load"))
                     onCheckedChanged: UM.Preferences.setValue("cura/not_arrange_objects_on_load", checked)
                 }
             }
 
-
+            Connections
+            {
+                target: UM.Preferences
+                onPreferenceChanged:
+                {
+                    sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+                }
+            }
         }
     }
 }
