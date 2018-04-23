@@ -59,7 +59,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         printer_type = self._properties.get(b"machine", b"").decode("utf-8")
         printer_type_identifiers = {
             "9066": "ultimaker3",
-            "9511": "ultimaker3_extended"
+            "9511": "ultimaker3_extended",
+            "9051": "ultimaker_s5"
         }
         self._printer_type = "Unknown"
         for key, value in printer_type_identifiers.items():

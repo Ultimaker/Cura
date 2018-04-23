@@ -324,8 +324,8 @@ class MachineManager(QObject):
                 Logger.log("i", "Machine '%s' quality changes set to '%s'",
                            global_stack.getName(), new_quality_changes_group.name)
         else:
-            if quality_type in quality_groups:
-                new_quality_group = quality_groups[quality_type]
+            new_quality_group = quality_groups.get(quality_type)
+            if new_quality_group is not None:
                 self._setQualityGroup(new_quality_group, empty_quality_changes = True)
                 same_quality_found = True
                 Logger.log("i", "Machine '%s' quality set to '%s'",
