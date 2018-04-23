@@ -11,6 +11,7 @@
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",
         "has_materials": true,
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "generic_pva", "generic_tough_pla"],
         "machine_extruder_trains":
         {
             "0": "ultimaker_original_dual_1st",
