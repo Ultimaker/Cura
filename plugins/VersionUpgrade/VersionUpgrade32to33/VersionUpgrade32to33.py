@@ -152,3 +152,19 @@ class VersionUpgrade32to33(VersionUpgrade):
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
+
+    ##  Upgrades a variant container to the new format.
+    def upgradeVariants(self, serialized, filename):
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+
+        #Add the hardware type to the variants
+        if "metadata" in parser and "hardware_type" not in parser["metadata"]:
+            parser["metadata"]["hardware_type"] = "nozzle"
+
+        #Update version number.
+        parser["general"]["version"] = "3"
+
+        result = io.StringIO()
+        parser.write(result)
+        return [filename], [result.getvalue()]

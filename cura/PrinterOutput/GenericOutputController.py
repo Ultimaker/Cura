@@ -58,14 +58,8 @@ class GenericOutputController(PrinterOutputController):
         self._output_device.sendCommand("G90")
 
     def homeHead(self, printer):
-        # Ultimaker+ firmware is 'Marlin V1' and UM2 is "Marlin Ultimaker2"
-        # For this reason UM2 should move only X, Y and not Z, otherwise it might brake the build plate
-        name = self._output_device.getFirmwareName()
-        if name and name.find("Ultimaker2") != -1:
-            self._output_device.sendCommand("G28 X")
-            self._output_device.sendCommand("G28 Y")
-        else:
-            self._output_device.sendCommand("G28")  # Move X-, Y- and Z-coordinate
+        self._output_device.sendCommand("G28 X")
+        self._output_device.sendCommand("G28 Y")
 
     def homeBed(self, printer):
         self._output_device.sendCommand("G28 Z")
@@ -158,3 +152,17 @@ class GenericOutputController(PrinterOutputController):
         for extruder in self._preheat_hotends:
             self.setTargetHotendTemperature(extruder.getPrinter(), extruder.getPosition(), 0)
         self._preheat_hotends = set()
+
+    # Cancel any ongoing preheating timers, without setting back the temperature to 0
+    # This can be used eg at the start of a print
+    def stopPreheatTimers(self):
+        if self._preheat_hotends_timer.isActive():
+            for extruder in self._preheat_hotends:
+                extruder.updateIsPreheating(False)
+            self._preheat_hotends = set()
+
+            self._preheat_hotends_timer.stop()
+
+        if self._preheat_bed_timer.isActive():
+            self._preheat_printer.updateIsPreheating(False)
+            self._preheat_bed_timer.stop()

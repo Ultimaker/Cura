@@ -84,7 +84,10 @@ class SolidView(View):
 
                     per_mesh_stack = node.callDecoration("getStack")
 
-                    extruder_index = int(node.callDecoration("getActiveExtruderPosition"))
+                    extruder_index = node.callDecoration("getActiveExtruderPosition")
+                    if extruder_index is None:
+                        extruder_index = "0"
+                    extruder_index = int(extruder_index)
 
                     # Use the support extruder instead of the active extruder if this is a support_mesh
                     if per_mesh_stack:

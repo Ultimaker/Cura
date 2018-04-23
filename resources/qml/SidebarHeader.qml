@@ -28,6 +28,9 @@ Column
         }
         return false;
     }
+    property bool buildplateCompatibilityError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
+    property bool buildplateCompatibilityWarning: Cura.MachineManager.variantBuildplateUsable
+
     spacing: Math.round(UM.Theme.getSize("sidebar_margin").width * 0.9)
 
     signal showTooltip(Item item, point location, string text)
@@ -391,14 +394,16 @@ Column
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
-            menu: MaterialMenu {
+            menu: MaterialMenu
+            {
                 extruderIndex: base.currentExtruderIndex
             }
 
             property var valueError: !isMaterialSupported()
             property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
-            function isMaterialSupported () {
+            function isMaterialSupported ()
+            {
                 if (!hasActiveExtruder)
                 {
                     return false;
@@ -434,7 +439,8 @@ Column
             color: UM.Theme.getColor("text");
         }
 
-        ToolButton {
+        ToolButton
+        {
             id: variantSelection
             text: Cura.MachineManager.activeVariantName
             tooltip: Cura.MachineManager.activeVariantName;
@@ -450,7 +456,8 @@ Column
         }
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: buildplateSeparator
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
@@ -465,7 +472,8 @@ Column
     {
         id: buildplateRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
+        // TODO Temporary hidden, add back again when feature ready
+        visible: false //Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
@@ -486,7 +494,8 @@ Column
             color: UM.Theme.getColor("text");
         }
 
-        ToolButton {
+        ToolButton
+        {
             id: buildplateSelection
             text: Cura.MachineManager.activeVariantBuildplateName
             tooltip: Cura.MachineManager.activeVariantBuildplateName
@@ -510,7 +519,7 @@ Column
     {
         id: materialInfoRow
         height: Math.round(UM.Theme.getSize("sidebar_setup").height / 2)
-        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariantBuildplates) && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
@@ -520,10 +529,26 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
-        Item {
+        Label
+        {
+            id: materialCompatibilityLabel
+            y: -Math.round(UM.Theme.getSize("sidebar_margin").height / 3)
+            anchors.left: parent.left
+            width: parent.width - materialCompatibilityLink.width
+            text: catalog.i18nc("@label", "Use adhesion sheet or glue with this material combination")
+            font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text")
+            visible: buildplateCompatibilityError || buildplateCompatibilityWarning
+            wrapMode: Text.WordWrap
+            opacity: 0.5
+        }
+
+        Item
+        {
+            id: materialCompatibilityLink
             height: UM.Theme.getSize("sidebar_setup").height
             anchors.right: parent.right
-            width: Math.round(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
+            width: childrenRect.width + UM.Theme.getSize("default_margin").width
 
             UM.RecolorImage {
                 id: warningImage
@@ -536,7 +561,7 @@ Column
                 sourceSize.width: width
                 sourceSize.height: height
                 color: UM.Theme.getColor("material_compatibility_warning")
-                visible: !Cura.MachineManager.isCurrentSetupSupported
+                visible: !Cura.MachineManager.isCurrentSetupSupported || buildplateCompatibilityError || buildplateCompatibilityWarning
             }
 
             Label {

@@ -106,6 +106,7 @@ import copy
 import os
 import argparse
 import json
+import time
 
 
 numpy.seterr(all="ignore")
@@ -143,6 +144,7 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self, **kwargs):
+        self._boot_loading_time = time.time()
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
@@ -209,6 +211,7 @@ class CuraApplication(QtApplication):
                 ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):               (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
+                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
@@ -498,11 +501,6 @@ class CuraApplication(QtApplication):
     def getStaticVersion(cls):
         return CuraVersion
 
-    ##  Handle removing the unneeded plugins
-    #   \sa PluginRegistry
-    def _removePlugins(self):
-        self._plugin_registry.removePlugins()
-
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
     def _loadPlugins(self):
@@ -688,15 +686,28 @@ class CuraApplication(QtApplication):
         else:
             self.runWithGUI()
 
-        # Pre-load files if requested
-        for file_name in self.getCommandLineOption("file", []):
-            self._openFile(file_name)
-        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
-            self._openFile(file_name)
-
         self.started = True
         self.initializationFinished.emit()
+        Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
+
+
+        # For now use a timer to postpone some things that need to be done after the application and GUI are
+        # initialized, for example opening files because they may show dialogs which can be closed due to incomplete
+        # GUI initialization.
+        self._post_start_timer = QTimer(self)
+        self._post_start_timer.setInterval(1000)
+        self._post_start_timer.setSingleShot(True)
+        self._post_start_timer.timeout.connect(self._onPostStart)
+        self._post_start_timer.start()
+
+        Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
         self.exec_()
+
+    def _onPostStart(self):
+        for file_name in self.getCommandLineOption("file", []):
+            self.callLater(self._openFile, file_name)
+        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
+            self.callLater(self._openFile, file_name)
 
     initializationFinished = pyqtSignal()
 
@@ -975,7 +986,7 @@ class CuraApplication(QtApplication):
         return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
 
     def updatePlatformActivityDelayed(self, node = None):
-        if node is not None and node.getMeshData() is not None:
+        if node is not None and (node.getMeshData() is not None or node.callDecoration("getLayerData")):
             self._update_platform_activity_timer.start()
 
     ##  Update scene bounding box for current build plate
@@ -1544,8 +1555,10 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    @pyqtSlot(QUrl)
-    def readLocalFile(self, file):
+    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+
+    @pyqtSlot(QUrl, bool)
+    def readLocalFile(self, file, skip_project_file_check = False):
         if not file.isValid():
             return
 
@@ -1555,6 +1568,10 @@ class CuraApplication(QtApplication):
             if node.callDecoration("isBlockSlicing"):
                 self.deleteAll()
                 break
+
+        if not skip_project_file_check and self.checkIsValidProjectFile(file):
+            self.callLater(self.openProjectFile.emit, file)
+            return
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
