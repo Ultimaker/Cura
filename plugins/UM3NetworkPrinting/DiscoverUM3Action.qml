@@ -255,7 +255,12 @@ Cura.MachineAction
                                 } else if(base.selectedDevice.printerType == "ultimaker3_extended")
                                 {
                                     return catalog.i18nc("@label", "Ultimaker 3 Extended")
-                                } else
+                                }
+                                else if (base.selectedDevice.printerType == "ultimaker_s5")
+                                {
+                                    return catalog.i18nc("@label", "Ultimaker S5")
+                                }
+                                else
                                 {
                                     return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
                                 }
