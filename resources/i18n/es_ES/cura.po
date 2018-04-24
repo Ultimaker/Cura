@@ -22,7 +22,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:528
 msgctxt "@label"
 msgid "Use adhesion sheet or glue with this material combination"
-msgstr "Use una lámina de adherencia o pegamento con esta combinación de materiales"
+msgstr "Use láminas de adherencia o pegamento con esta combinación de materiales"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"

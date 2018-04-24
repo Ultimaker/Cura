@@ -22,7 +22,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:528
 msgctxt "@label"
 msgid "Use adhesion sheet or glue with this material combination"
-msgstr "Utilisez une feuille d'adhérence ou de la colle avec cette combinaison des matériaux"
+msgstr "Utilisez feuilles d'adhérence ou de la colle avec cette combinaison des matériaux"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
