@@ -18,6 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.4\n"
 
+#Added after the string freeze.
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:528
+msgctxt "@label"
+msgid "Use adhesion sheet or glue with this material combination"
+msgstr "Verwenden Sie eiene Klebefolie oder Klebstoff mit dieser Materialcombination"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
 msgid "Machine Settings"

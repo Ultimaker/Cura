@@ -24,6 +24,9 @@ Refactored machine manager resulted in less manager classes. Changing settings, 
 *Multiply models faster
 Significant speed increase when multiplying models.
 
+*Auto slicing disabled by default
+The auto slice tool is now disabled by default. Users can still enable the feature in the user preferences dialog.
+
 *Updated fonts
 Default font changed to NotoSans to increase readability and consistency with Cura Connect.
 
