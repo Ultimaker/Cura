@@ -92,7 +92,7 @@ TabView
 
                     icon: StandardIcon.Question;
                     title: catalog.i18nc("@title:window", "Confirm Diameter Change")
-                    text: catalog.i18nc("@label (%1 is object name)", "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?".arg(new_diameter_value))
+                    text: catalog.i18nc("@label (%1 is a number)", "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?".arg(new_diameter_value))
                     standardButtons: StandardButton.Yes | StandardButton.No
                     modality: Qt.ApplicationModal
 

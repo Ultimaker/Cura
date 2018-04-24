@@ -1727,3 +1727,7 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
+
+    @pyqtSlot()
+    def showMoreInformationDialogForAnonymousDataCollection(self):
+        self._plugin_registry.getPluginObject("SliceInfoPlugin").showMoreInfoDialog()

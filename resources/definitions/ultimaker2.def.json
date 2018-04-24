@@ -14,6 +14,7 @@
         "platform_offset": [9, 0, 0],
         "has_materials": false,
         "has_machine_quality": true,
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "generic_pva", "generic_tough_pla"],
         "first_start_actions": ["UM2UpgradeSelection"],
         "supported_actions":["UM2UpgradeSelection", "UpgradeFirmware"]
     },
