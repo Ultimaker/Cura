@@ -8,8 +8,8 @@ import UM 1.1 as UM
 
 Item
 {
-    id: base
-    property var details: toolbox.viewSelection
+    id: page
+    property var details: base.selection
     anchors.fill: parent
     width: parent.width
     ToolboxBackColumn
@@ -149,9 +149,9 @@ Item
         anchors
         {
             top: header.bottom
-            bottom: base.bottom
+            bottom: page.bottom
             left: header.left
-            right: base.right
+            right: page.right
         }
     }
 }

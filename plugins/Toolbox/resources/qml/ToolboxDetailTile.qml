@@ -8,8 +8,9 @@ import UM 1.1 as UM
 
 Item
 {
+    id: tile
     property bool installed: toolbox.isInstalled(model.id)
-    width: base.width - UM.Theme.getSize("wide_margin").width
+    width: detailList.width - UM.Theme.getSize("wide_margin").width
     height: UM.Theme.getSize("toolbox_detail_tile").height
     Column
     {
@@ -55,9 +56,10 @@ Item
     Rectangle
     {
         id: controls
-        anchors.right: parent.right
-        anchors.top: parent.top
+        anchors.right: tile.right
+        anchors.top: tile.top
         width: childrenRect.width
+        color: "blue"
         Button
         {
             id: installButton
@@ -180,9 +182,9 @@ Item
     Rectangle
     {
         color: UM.Theme.getColor("lining")
-        width: parent.width
+        width: tile.width
         height: UM.Theme.getSize("default_lining").height
-        anchors.bottom: parent.bottom
+        anchors.bottom: tile.bottom
     }
     Connections
     {

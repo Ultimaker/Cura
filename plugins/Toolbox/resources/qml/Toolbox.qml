@@ -9,6 +9,7 @@ import UM 1.1 as UM
 Window
 {
     id: base
+    property var selection: null
     title: catalog.i18nc("@title", "Toolbox")
     modality: Qt.ApplicationModal
     width: 720 * screenScaleFactor

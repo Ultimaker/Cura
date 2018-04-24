@@ -10,7 +10,7 @@ import UM 1.1 as UM
 
 ScrollView
 {
-    id: base
+    id: page
     frameVisible: false
     width: parent.width
     height: parent.height
@@ -68,7 +68,7 @@ ScrollView
         Label
         {
             visible: toolbox.materialsInstalledModel.items.length > 0
-            width: base.width
+            width: page.width
             text: catalog.i18nc("@title:tab", "Materials")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")

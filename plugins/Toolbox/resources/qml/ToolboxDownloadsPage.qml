@@ -8,14 +8,14 @@ import UM 1.1 as UM
 
 ScrollView
 {
-    id: base
+    id: page
     frameVisible: false
     width: parent.width
     height: parent.height
     style: UM.Theme.styles.scrollview
     Column
     {
-        width: base.width
+        width: page.width
         spacing: UM.Theme.getSize("default_margin").height
         padding: UM.Theme.getSize("wide_margin").height
         height: childrenRect.height + 2 * padding

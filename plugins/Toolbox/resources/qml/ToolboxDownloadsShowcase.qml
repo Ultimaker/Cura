@@ -8,7 +8,6 @@ import UM 1.1 as UM
 
 Column
 {
-    id: base
     height: childrenRect.height
     spacing: UM.Theme.getSize("toolbox_showcase_spacing").width
     width: parent.width

@@ -64,7 +64,7 @@ Item
         anchors.fill: parent
         onClicked:
         {
-            toolbox.viewSelection = model
+            base.selection = model
             switch(toolbox.viewCategory)
             {
                 case "material":

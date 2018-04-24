@@ -9,7 +9,6 @@ import UM 1.1 as UM
 
 Item
 {
-    id: base
     height: childrenRect.height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
     Rectangle
@@ -88,7 +87,7 @@ Item
         }
         onClicked:
         {
-            toolbox.viewSelection = model
+            base.selection = model
             switch(toolbox.viewCategory)
             {
                 case "material":

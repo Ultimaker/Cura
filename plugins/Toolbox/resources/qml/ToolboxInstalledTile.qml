@@ -8,7 +8,6 @@ import UM 1.1 as UM
 
 Item
 {
-    id: base
     property bool canUpdate: false
     property bool isEnabled: true
     height: UM.Theme.getSize("toolbox_installed_tile").height

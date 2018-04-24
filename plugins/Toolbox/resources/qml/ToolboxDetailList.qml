@@ -6,19 +6,20 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-Item
+Rectangle
 {
-    id: base
+    id: detailList
+    // color: "green"
     ScrollView
     {
         frameVisible: false
-        anchors.fill: base
+        anchors.fill: detailList
         style: UM.Theme.styles.scrollview
         Column
         {
             anchors
             {
-                right: base.right
+                right: detailList.right
                 topMargin: UM.Theme.getSize("wide_margin").height
                 bottomMargin: UM.Theme.getSize("wide_margin").height
                 top: parent.top

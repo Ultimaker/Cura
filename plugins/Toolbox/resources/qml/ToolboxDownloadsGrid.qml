@@ -11,7 +11,6 @@ import UM 1.1 as UM
 
 Column
 {
-    id: base
     height: childrenRect.height
     width: parent.width
     spacing: UM.Theme.getSize("default_margin").height

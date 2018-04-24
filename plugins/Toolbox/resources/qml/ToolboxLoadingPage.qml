@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.4
 
 Rectangle
 {
-    id: base
+    id: page
     width: parent.width
     height: parent.height
     color: "transparent"
