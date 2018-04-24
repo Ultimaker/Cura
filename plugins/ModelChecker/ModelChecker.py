@@ -34,7 +34,7 @@ class ModelChecker(QObject, Extension):
         Application.getInstance().globalContainerStackChanged.connect(self._onChanged)
 
     ##  Pass-through to allow UM.Signal to connect with a pyqtSignal.
-    def _onChanged(self, _):
+    def _onChanged(self, *args, **kwargs):
         self.onChanged.emit()
 
     ##  Called when plug-ins are initialized.
