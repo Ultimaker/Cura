@@ -28,7 +28,6 @@ Item
             onClicked:
             {
                 toolbox.filterModelByProp("packages", "type", "plugin")
-                toolbox.filterModelByProp("authors", "type", "plugin")
                 toolbox.viewCategory = "plugin"
                 toolbox.viewPage = "overview"
             }
@@ -39,7 +38,6 @@ Item
             active: toolbox.viewCategory == "material"
             onClicked:
             {
-                toolbox.filterModelByProp("packages", "type", "material")
                 toolbox.filterModelByProp("authors", "type", "material")
                 toolbox.viewCategory = "material"
                 toolbox.viewPage = "overview"

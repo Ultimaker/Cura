@@ -122,7 +122,7 @@ class Toolbox(QObject, Extension):
         # View selection defines what is currently selected and should be
         # used in filtering. This could be an author name (if _view_page is set
         # to "author" or a plugin name if it is set to "detail").
-        self._view_selection = ""
+        self._view_selection = None
 
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
@@ -553,11 +553,13 @@ class Toolbox(QObject, Extension):
     def viewPage(self) -> str:
         return self._view_page
 
-    def setViewSelection(self, selection: str = ""):
+    def setViewSelection(self, selection: dict):
+        selection.setParent(self)
         self._view_selection = selection
         self.viewChanged.emit()
-    @pyqtProperty(str, fset = setViewSelection, notify = viewChanged)
-    def viewSelection(self) -> str:
+    @pyqtProperty(QObject, fset = setViewSelection, notify = viewChanged)
+    def viewSelection(self) -> dict:
+        print(dir(self._view_selection))
         return self._view_selection
 
 

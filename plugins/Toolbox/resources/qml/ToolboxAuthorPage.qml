@@ -9,7 +9,7 @@ import UM 1.1 as UM
 Item
 {
     id: base
-    property var details: toolbox.authorsModel.items[0]
+    property var details: toolbox.viewSelection
     anchors.fill: parent
     ToolboxBackColumn
     {

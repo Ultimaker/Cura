@@ -88,22 +88,15 @@ Item
         }
         onClicked:
         {
+            toolbox.viewSelection = model
             switch(toolbox.viewCategory)
             {
                 case "material":
-                    console.log("OKAY FILTER BY AUTHOR", model.name)
-                    toolbox.viewSelection = model.name
                     toolbox.viewPage = "author"
-                    console.log(toolbox)
-                    var name = model.name
-                    toolbox.filterModelByProp("authors", "name", name)
-                    toolbox.filterModelByProp("packages", "author_name", name)
-                    console.log(toolbox)
+                    toolbox.filterModelByProp("packages", "author_name", model.name)
                     break
                 default:
-                    toolbox.viewSelection = model.id
                     toolbox.viewPage = "detail"
-                    toolbox.filterModelByProp("authors", "name", model.author_name)
                     toolbox.filterModelByProp("packages", "id", model.id)
                     break
             }
