@@ -6,7 +6,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "visible": true,
-        "file_formats": "text/x-gcode;application/gzip",
+        "file_formats": "application/gzip;text/x-gcode",
         "platform": "ultimaker3_platform.obj",
         "platform_texture": "Ultimaker3backplate.png",
         "platform_offset": [0, 0, 0],
