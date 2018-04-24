@@ -31,6 +31,7 @@ class ModelChecker(QObject, Extension):
 
         Application.getInstance().initializationFinished.connect(self._pluginsInitialized)
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onChanged)
+        Application.getInstance().globalContainerStackChanged.connect(self._onChanged)
 
     ##  Pass-through to allow UM.Signal to connect with a pyqtSignal.
     def _onChanged(self, _):
@@ -53,7 +54,6 @@ class ModelChecker(QObject, Extension):
         # has not done yet.
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
-            Application.getInstance().callLater(lambda: self.onChanged.emit())
             return False
 
         material_shrinkage = self._getMaterialShrinkage()
