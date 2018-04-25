@@ -485,7 +485,7 @@ class Toolbox(QObject, Extension):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
             self.setDownloadProgress(new_progress)
-            if new_progress == 100.0:
+            if bytes_sent == bytes_total:
                 self.setIsDownloading(False)
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
                 # must not delete the temporary file on Windows
