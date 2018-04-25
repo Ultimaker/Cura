@@ -462,9 +462,6 @@ class Toolbox(QObject, Extension):
                             Logger.log("e", "%s", error["title"])
                         return
 
-                    # Create packages model with all packages:
-                    if not self._models["plugins_showcase"]:
-                        self._models["plugins_showcase"] = PackagesModel()
                     self._metadata["plugins_showcase"] = json_data["data"]
                     self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
                     self.metadataChanged.emit()
