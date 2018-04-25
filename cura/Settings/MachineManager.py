@@ -74,6 +74,7 @@ class MachineManager(QObject):
 
         self._stacks_have_errors = None  # type:Optional[bool]
 
+        self._empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
         self._empty_definition_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0]
         self._empty_variant_container = ContainerRegistry.getInstance().findContainers(id = "empty_variant")[0]
         self._empty_material_container = ContainerRegistry.getInstance().findContainers(id = "empty_material")[0]
@@ -301,6 +302,13 @@ class MachineManager(QObject):
 
     ## Given a global_stack, make sure that it's all valid by searching for this quality group and applying it again
     def _initMachineState(self, global_stack):
+        # Some stacks can have empty definition_changes containers which will cause problems.
+        # Make sure that all stacks here have non-empty definition_changes containers.
+        for stack in [global_stack] + list(global_stack.extruders.values()):
+            if isinstance(stack.definitionChanges, type(self._empty_container)):
+                from cura.Settings.CuraStackBuilder import CuraStackBuilder
+                CuraStackBuilder.createDefinitionChangesContainer(stack, stack.getId() + "_settings")
+
         material_dict = {}
         for position, extruder in global_stack.extruders.items():
             material_dict[position] = extruder.material.getMetaDataEntry("base_file")
