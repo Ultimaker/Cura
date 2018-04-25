@@ -3,7 +3,6 @@
 
 import gzip
 
-from UM.Platform import Platform
 from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementing.
 from UM.PluginRegistry import PluginRegistry
 
