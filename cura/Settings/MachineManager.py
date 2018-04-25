@@ -326,7 +326,7 @@ class MachineManager(QObject):
         if global_quality_changes.getId() != "empty_quality_changes":
             quality_changes_groups = self._application.getQualityManager().getQualityChangesGroups(global_stack)
             new_quality_changes_group = quality_changes_groups.get(global_quality_changes_name)
-            if new_quality_changes_group is not None and new_quality_changes_group.is_available:
+            if new_quality_changes_group is not None:
                 self._setQualityChangesGroup(new_quality_changes_group)
                 same_quality_found = True
                 Logger.log("i", "Machine '%s' quality changes set to '%s'",
@@ -1141,13 +1141,15 @@ class MachineManager(QObject):
 
         Logger.log("d", "Current quality type = [%s]", current_quality_type)
         if not self.activeMaterialsCompatible():
-            Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
-            self._setEmptyQuality()
+            if current_quality_type is not None:
+                Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
+                self._setEmptyQuality()
             return
 
         if not available_quality_types:
-            Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
-            self._setEmptyQuality()
+            if self._current_quality_changes_group is None:
+                Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
+                self._setEmptyQuality()
             return
 
         if current_quality_type in available_quality_types:
