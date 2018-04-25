@@ -74,6 +74,7 @@ class MachineManager(QObject):
 
         self._stacks_have_errors = None  # type:Optional[bool]
 
+        self._empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
         self._empty_definition_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0]
         self._empty_variant_container = ContainerRegistry.getInstance().findContainers(id = "empty_variant")[0]
         self._empty_material_container = ContainerRegistry.getInstance().findContainers(id = "empty_material")[0]
@@ -301,6 +302,13 @@ class MachineManager(QObject):
 
     ## Given a global_stack, make sure that it's all valid by searching for this quality group and applying it again
     def _initMachineState(self, global_stack):
+        # Some stacks can have empty definition_changes containers which will cause problems.
+        # Make sure that all stacks here have non-empty definition_changes containers.
+        for stack in [global_stack] + list(global_stack.extruders.values()):
+            if isinstance(stack.definitionChanges, type(self._empty_container)):
+                from cura.Settings.CuraStackBuilder import CuraStackBuilder
+                CuraStackBuilder.createDefinitionChangesContainer(stack, stack.getId() + "_settings")
+
         material_dict = {}
         for position, extruder in global_stack.extruders.items():
             material_dict[position] = extruder.material.getMetaDataEntry("base_file")
@@ -318,7 +326,7 @@ class MachineManager(QObject):
         if global_quality_changes.getId() != "empty_quality_changes":
             quality_changes_groups = self._application.getQualityManager().getQualityChangesGroups(global_stack)
             new_quality_changes_group = quality_changes_groups.get(global_quality_changes_name)
-            if new_quality_changes_group is not None and new_quality_changes_group.is_available:
+            if new_quality_changes_group is not None:
                 self._setQualityChangesGroup(new_quality_changes_group)
                 same_quality_found = True
                 Logger.log("i", "Machine '%s' quality changes set to '%s'",
@@ -1148,13 +1156,15 @@ class MachineManager(QObject):
 
         Logger.log("d", "Current quality type = [%s]", current_quality_type)
         if not self.activeMaterialsCompatible():
-            Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
-            self._setEmptyQuality()
+            if current_quality_type is not None:
+                Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
+                self._setEmptyQuality()
             return
 
         if not available_quality_types:
-            Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
-            self._setEmptyQuality()
+            if self._current_quality_changes_group is None:
+                Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
+                self._setEmptyQuality()
             return
 
         if current_quality_type in available_quality_types:
