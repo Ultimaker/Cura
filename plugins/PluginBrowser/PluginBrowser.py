@@ -309,8 +309,12 @@ class PluginBrowser(QObject, Extension):
         try:
             plugin_object = self._plugin_registry.getPluginObject(plugin_id)
         except PluginNotFoundError:
+            # CURA-5287
+            # At this point, we know that this plugin is installed because it passed the previous check, but we cannot
+            # get the PluginObject. This means there is a bug in the plugin or something. So, we always allow to upgrade
+            # this plugin and hopefully that fixes it.
             Logger.log("w", "Could not find plugin %s", plugin_id)
-            return False
+            return True
 
         # Scan plugin server data for plugin with the given id:
         for plugin in self._plugins_metadata:
