@@ -7,8 +7,6 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import UM 1.1 as UM
 
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 Column
 {
     height: childrenRect.height
@@ -25,14 +23,14 @@ Column
     GridLayout
     {
         id: grid
+        property var model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
         width: parent.width
         columns: 2
         columnSpacing: UM.Theme.getSize("default_margin").height
         rowSpacing: UM.Theme.getSize("default_margin").width
-        height: childrenRect.height
         Repeater
         {
-            model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
+            model: grid.model
             delegate: ToolboxDownloadsGridTile
             {
                 Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns

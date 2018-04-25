@@ -9,7 +9,7 @@ import UM 1.1 as UM
 Item
 {
     width: UM.Theme.getSize("toolbox_thumbnail_large").width
-    height: UM.Theme.getSize("toolbox_thumbnail_large").width
+    height: childrenRect.height
     visible:
     {
         if (toolbox.viewCategory == "material" && model.packages_count)
@@ -23,9 +23,17 @@ Item
     }
     Rectangle
     {
+        id: highlight
+        anchors.fill: parent
+        opacity: 0.0
+        color: UM.Theme.getColor("primary")
+    }
+    Rectangle
+    {
+        id: thumbnail
         color: "white"
-        width: UM.Theme.getSize("toolbox_thumbnail_medium").width
-        height: UM.Theme.getSize("toolbox_thumbnail_medium").height
+        width: UM.Theme.getSize("toolbox_thumbnail_large").width
+        height: UM.Theme.getSize("toolbox_thumbnail_large").height
         border
         {
             width: UM.Theme.getSize("default_lining").width
@@ -38,8 +46,8 @@ Item
         }
         Image {
             anchors.centerIn: parent
-            width: UM.Theme.getSize("toolbox_thumbnail_medium").width - 2 * UM.Theme.getSize("default_margin")
-            height: UM.Theme.getSize("toolbox_thumbnail_medium").height - 2 * UM.Theme.getSize("default_margin")
+            width: UM.Theme.getSize("toolbox_thumbnail_large").width - 2 * UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("toolbox_thumbnail_large").height - 2 * UM.Theme.getSize("default_margin").height
             fillMode: Image.PreserveAspectFit
             source: model.icon_url || "../images/logobot.svg"
         }
@@ -56,12 +64,24 @@ Item
         horizontalAlignment: Text.AlignHCenter
         height: UM.Theme.getSize("toolbox_heading_label").height
         width: parent.width
+        wrapMode: Text.WordWrap
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("medium_bold")
     }
     MouseArea
     {
         anchors.fill: parent
+        hoverEnabled: true
+        onEntered:
+        {
+            thumbnail.border.color = UM.Theme.getColor("primary")
+            highlight.opacity = 0.1
+        }
+        onExited:
+        {
+            thumbnail.border.color = UM.Theme.getColor("lining")
+            highlight.opacity = 0.0
+        }
         onClicked:
         {
             base.selection = model
