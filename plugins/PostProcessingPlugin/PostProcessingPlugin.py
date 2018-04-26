@@ -208,7 +208,7 @@ class PostProcessingPlugin(QObject, Extension):
         for script_str in scripts_list_strs.split("\n"): #Encoded config files should never contain three newlines in a row. At most 2, just before section headers.
             if not script_str: #There were no scripts in this one (or a corrupt file caused more than 3 consecutive newlines here).
                 continue
-            script_str = script_str.replace("\\n", "\n").replace("\\\\", "\\") #Unescape escape sequences.
+            script_str = script_str.replace(r"\\\n", "\n").replace(r"\\\\", "\\\\") #Unescape escape sequences.
             script_parser = configparser.ConfigParser(interpolation = None)
             script_parser.optionxform = str #Don't transform the setting keys as they are case-sensitive.
             script_parser.read_string(script_str)
@@ -241,7 +241,7 @@ class PostProcessingPlugin(QObject, Extension):
             parser.write(serialized)
             serialized.seek(0)
             script_str = serialized.read()
-            script_str = script_str.replace("\\", "\\\\").replace("\n", "\\n") #Escape newlines because configparser sees those as section delimiters.
+            script_str = script_str.replace("\\\\", r"\\\\").replace("\n", r"\\\n") #Escape newlines because configparser sees those as section delimiters.
             script_list_strs.append(script_str)
 
         script_list_strs = "\n".join(script_list_strs) #ConfigParser should never output three newlines in a row when serialised, so it's a safe delimiter.
