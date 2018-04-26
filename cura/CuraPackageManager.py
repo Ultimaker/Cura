@@ -10,6 +10,7 @@ import tempfile
 
 from PyQt5.QtCore import pyqtSlot, QObject, pyqtSignal
 
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
@@ -102,15 +103,20 @@ class CuraPackageManager(QObject):
 
         return None
 
-    def getAllInstalledPackagesInfo(self) -> dict:
+    def getAllInstalledPackagesInfo(self, includeRequired: bool = False) -> dict:
         installed_package_id_set = set(self._installed_package_dict.keys()) | set(self._to_install_package_dict.keys())
         installed_package_id_set = installed_package_id_set.difference(self._to_remove_package_set)
 
         managed_package_id_set = set(installed_package_id_set) | self._to_remove_package_set
 
+        # TODO: For absolutely no reason, this function seems to run in a loop
+        # even though no loop is ever called with it.
+
         # map of <package_type> -> <package_id> -> <package_info>
         installed_packages_dict = {}
         for package_id in installed_package_id_set:
+            if package_id in Application.getInstance().getRequiredPlugins():
+                continue
             if package_id in self._to_install_package_dict:
                 package_info = self._to_install_package_dict[package_id]["package_info"]
             else:
@@ -132,6 +138,8 @@ class CuraPackageManager(QObject):
             # Only gather the bundled plugins here.
             package_id = plugin_package_info["package_id"]
             if package_id in managed_package_id_set:
+                continue
+            if package_id in Application.getInstance().getRequiredPlugins():
                 continue
 
             plugin_package_info["is_bundled"] = True if plugin_package_info["author"]["name"] == "Ultimaker B.V." else False

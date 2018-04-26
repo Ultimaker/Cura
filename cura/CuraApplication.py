@@ -249,8 +249,6 @@ class CuraApplication(QtApplication):
 
         self.initialize()
 
-        self._cura_package_manager.getAllInstalledPackagesInfo()
-
         # FOR TESTING ONLY
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
             assert not "This crash is triggered by the trigger_early_crash command line argument."
@@ -262,21 +260,33 @@ class CuraApplication(QtApplication):
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
+            # Misc.:
+            "ConsoleLogger",
             "CuraEngineBackend",
             "UserAgreement",
-            "SolidView",
-            "SimulationView",
-            "STLReader",
-            "SelectionTool",
-            "CameraTool",
-            "GCodeWriter",
-            "LocalFileOutputDevice",
-            "TranslateTool",
             "FileLogger",
             "XmlMaterialProfile",
             "Toolbox",
             "PrepareStage",
-            "MonitorStage"
+            "MonitorStage",
+            "LocalFileOutputDevice",
+
+            # Views:
+            "SimpleView",
+            "SimulationView",
+            "SolidView",
+
+            # Readers & Writers:
+            "GCodeWriter",
+            "STLReader",
+
+            # Tools:
+            "CameraTool",
+            "MirrorTool",
+            "RotateTool",
+            "ScaleTool",
+            "SelectionTool",
+            "TranslateTool"
         ])
         self._physics = None
         self._volume = None

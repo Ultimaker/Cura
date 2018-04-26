@@ -9,7 +9,9 @@ import UM 1.1 as UM
 
 Column
 {
-    height: childrenRect.height
+    // HACK: GridLayouts don't render to the correct height with odd numbers of
+    // items, so if odd, add some extra space.
+    height: grid.model.items.length % 2 == 0 ? childrenRect.height : childrenRect.height + 3 * UM.Theme.getSize("wide_margin").height
     width: parent.width
     spacing: UM.Theme.getSize("default_margin").height
     Label

@@ -119,11 +119,6 @@ class Toolbox(QObject, Extension):
         # possible values include "overview", "detail" or "author".
         self._view_page = "loading"
 
-        # View selection defines what is currently selected and should be
-        # used in filtering. This could be an author name (if _view_page is set
-        # to "author" or a plugin name if it is set to "detail").
-        self._view_selection = None
-
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
         self._active_package = None
@@ -473,7 +468,6 @@ class Toolbox(QObject, Extension):
                     Logger.log("w", "Toolbox: Received invalid JSON for showcase.")
                     return
 
-
         else:
             # Ignore any operation that is not a get operation
             pass
@@ -509,6 +503,7 @@ class Toolbox(QObject, Extension):
 
         self.install(file_path)
         return
+
 
 
     # Getter & Setters for Properties:
@@ -549,15 +544,6 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(str, fset = setViewPage, notify = viewChanged)
     def viewPage(self) -> str:
         return self._view_page
-
-    def setViewSelection(self, selection: dict):
-        selection.setParent(self)
-        self._view_selection = selection
-        self.viewChanged.emit()
-    @pyqtProperty(QObject, fset = setViewSelection, notify = viewChanged)
-    def viewSelection(self) -> dict:
-        print(dir(self._view_selection))
-        return self._view_selection
 
 
 
