@@ -188,10 +188,10 @@ class Toolbox(QObject, Extension):
         # it was never called more than once ever.
         if self._network_manager:
             self._network_manager.finished.disconnect(self._onRequestFinished)
-            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
+            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccessibleChanged)
         self._network_manager = QNetworkAccessManager()
         self._network_manager.finished.connect(self._onRequestFinished)
-        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
+        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccessibleChanged)
 
         # Make remote requests:
         self._makeRequestByType("packages")
@@ -340,7 +340,7 @@ class Toolbox(QObject, Extension):
 
     # Handlers for Network Events
     # --------------------------------------------------------------------------
-    def _onNetworkAccesibleChanged(self, accessible: int):
+    def _onNetworkAccessibleChanged(self, accessible: int):
         if accessible == 0:
             self.setDownloadProgress(0)
             self.setIsDownloading(False)
