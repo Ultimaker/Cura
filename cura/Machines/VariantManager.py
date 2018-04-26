@@ -74,7 +74,11 @@ class VariantManager:
                 for variant_type in ALL_VARIANT_TYPES:
                     self._machine_to_variant_dict_map[variant_definition][variant_type] = dict()
 
-            variant_type = variant_metadata["hardware_type"]
+            try:
+                variant_type = variant_metadata["hardware_type"]
+            except KeyError:
+                Logger.log("w", "Variant %s does not specify a hardware_type; assuming 'nozzle'", variant_metadata["id"])
+                variant_type = VariantType.NOZZLE
             variant_type = VariantType(variant_type)
             variant_dict = self._machine_to_variant_dict_map[variant_definition][variant_type]
             if variant_name in variant_dict:
