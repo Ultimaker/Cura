@@ -243,10 +243,6 @@ class PauseAtHeight(Script):
                     prevLayer = data[index - i]
                     layer = prevLayer + layer
 
-                    with open("/home/djipey/Desktop/out.txt", "w") as f:
-                        ttt = "{} {}".format(x, y)
-                        f.write(ttt)
-
                     # Get extruder's absolute position at the
                     # begining of the first layer redone
                     # see https://github.com/nallath/PostProcessingPlugin/issues/55
