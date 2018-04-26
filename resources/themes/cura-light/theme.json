@@ -321,7 +321,6 @@
     },
 
     "sizes": {
-        "base_unit": [1.0, 1.0],
         "window_minimum_size": [70, 50],
 
         "default_lining": [0.08, 0.08],
