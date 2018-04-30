@@ -11,9 +11,14 @@ Item
     id: tile
     property bool installed: toolbox.isInstalled(model.id)
     width: detailList.width - UM.Theme.getSize("wide_margin").width
-    height: UM.Theme.getSize("toolbox_detail_tile").height
-    Column
+    // TODO: Without this line, every instance of this object has 0 height. With
+    // it, QML spits out tons of bugs claiming a binding loop (not true). Why?
+    // Because QT is garbage.
+    height: Math.max( UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
+    Item
     {
+        id: normalData
+        height: childrenRect.height
         anchors
         {
             left: parent.left
@@ -23,15 +28,17 @@ Item
         }
         Label
         {
+            id: packageName
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height
             text: model.name
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default_bold")
+            font: UM.Theme.getFont("medium_bold")
         }
         Label
         {
+            anchors.top: packageName.bottom
             width: parent.width
             text:
             {
@@ -53,13 +60,13 @@ Item
             font: UM.Theme.getFont("default")
         }
     }
-    Rectangle
+    Item
     {
         id: controls
         anchors.right: tile.right
         anchors.top: tile.top
         width: childrenRect.width
-        color: "blue"
+        height: childrenRect.height
         Button
         {
             id: installButton
@@ -179,6 +186,78 @@ Item
             }
         }
     }
+
+    Item
+    {
+        anchors.top: normalData.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        height: model.type == "material" ? childrenRect.height : 0
+        width: normalData.width
+        visible: model.type == "material"
+        Label
+        {
+            id: compatibilityHeading
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            width: parent.width
+            text: catalog.i18nc("@label", "Compatibility")
+            wrapMode: Text.WordWrap
+            color: UM.Theme.getColor("text_medium")
+            font: UM.Theme.getFont("default")
+        }
+        Column
+        {
+            id: compatibilityLabels
+            anchors
+            {
+                top: compatibilityHeading.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
+                bottomMargin: UM.Theme.getSize("default_margin").height
+            }
+            width: childrenRect.width
+            Label
+            {
+                text: catalog.i18nc("@label", "Machines") + ":"
+                font: UM.Theme.getFont("small")
+            }
+            Label
+            {
+                text: catalog.i18nc("@label", "Print Cores") + ":"
+                font: UM.Theme.getFont("small")
+            }
+            Label
+            {
+                text: catalog.i18nc("@label", "Quality Profiles") + ":"
+                font: UM.Theme.getFont("small")
+            }
+        }
+        Column
+        {
+            id: compatibilityValues
+            anchors
+            {
+                left: compatibilityLabels.right
+                leftMargin: UM.Theme.getSize("default_margin").height
+                top: compatibilityLabels.top
+                bottom: compatibilityLabels.bottom
+            }
+            Label
+            {
+                text: "Thingy"
+                font: UM.Theme.getFont("very_small")
+            }
+            Label
+            {
+                text: "Thingy"
+                font: UM.Theme.getFont("very_small")
+            }
+            Label
+            {
+                text: "Thingy"
+                font: UM.Theme.getFont("very_small")
+            }
+        }
+    }
+
     Rectangle
     {
         color: UM.Theme.getColor("lining")

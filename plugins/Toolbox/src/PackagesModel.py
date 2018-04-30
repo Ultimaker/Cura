@@ -21,14 +21,15 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 2, "type")
         self.addRoleName(Qt.UserRole + 3, "name")
         self.addRoleName(Qt.UserRole + 4, "version")
-        self.addRoleName(Qt.UserRole + 5, "author_name")
-        self.addRoleName(Qt.UserRole + 6, "author_email")
-        self.addRoleName(Qt.UserRole + 7, "description")
-        self.addRoleName(Qt.UserRole + 8, "icon_url")
-        self.addRoleName(Qt.UserRole + 9, "image_urls")
-        self.addRoleName(Qt.UserRole + 10, "download_url")
-        self.addRoleName(Qt.UserRole + 11, "last_updated")
-        self.addRoleName(Qt.UserRole + 12, "is_bundled")
+        self.addRoleName(Qt.UserRole + 5, "author_id")
+        self.addRoleName(Qt.UserRole + 6, "author_name")
+        self.addRoleName(Qt.UserRole + 7, "author_email")
+        self.addRoleName(Qt.UserRole + 8, "description")
+        self.addRoleName(Qt.UserRole + 9, "icon_url")
+        self.addRoleName(Qt.UserRole + 10, "image_urls")
+        self.addRoleName(Qt.UserRole + 11, "download_url")
+        self.addRoleName(Qt.UserRole + 12, "last_updated")
+        self.addRoleName(Qt.UserRole + 13, "is_bundled")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -46,8 +47,9 @@ class PackagesModel(ListModel):
                 "type": package["package_type"],
                 "name": package["display_name"],
                 "version": package["package_version"],
-                "author_name": package["author"]["name"],
-                "author_email": package["author"]["email"] if "email" in package["author"] else None,
+                "author_id": package["author"]["author_id"],
+                "author_name": package["author"]["display_name"],
+                "author_email": package["author"]["email"] if "email" in package["author"] else "None",
                 "description": package["description"],
                 "icon_url": package["icon_url"] if "icon_url" in package else None,
                 "image_urls": package["image_urls"] if "image_urls" in package else None,

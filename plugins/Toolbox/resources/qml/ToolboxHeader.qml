@@ -38,7 +38,7 @@ Item
             active: toolbox.viewCategory == "material"
             onClicked:
             {
-                toolbox.filterModelByProp("authors", "type", "material")
+                toolbox.filterModelByProp("authors", "package_types", "material")
                 toolbox.viewCategory = "material"
                 toolbox.viewPage = "overview"
             }

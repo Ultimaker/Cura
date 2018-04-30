@@ -15,13 +15,14 @@ class AuthorsModel(ListModel):
 
         self._metadata = None
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "email")
-        self.addRoleName(Qt.UserRole + 3, "website")
-        self.addRoleName(Qt.UserRole + 4, "type")
-        self.addRoleName(Qt.UserRole + 5, "icon_url")
-        self.addRoleName(Qt.UserRole + 6, "packages_count")
-        self.addRoleName(Qt.UserRole + 7, "description")
+        self.addRoleName(Qt.UserRole + 1, "id")
+        self.addRoleName(Qt.UserRole + 2, "name")
+        self.addRoleName(Qt.UserRole + 3, "email")
+        self.addRoleName(Qt.UserRole + 4, "website")
+        self.addRoleName(Qt.UserRole + 5, "package_count")
+        self.addRoleName(Qt.UserRole + 6, "package_types")
+        self.addRoleName(Qt.UserRole + 7, "icon_url")
+        self.addRoleName(Qt.UserRole + 8, "description")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str,str]
@@ -35,21 +36,24 @@ class AuthorsModel(ListModel):
 
         for author in self._metadata:
             items.append({
-                "name": author["name"],
-                "email": author["email"] if "email" in author else None,
-                "website": author["website"],
-                "type": author["type"] if "type" in author else None,
-                "icon_url": author["icon_url"] if "icon_url" in author else None,
-                "packages_count": author["packages_count"] if "packages_count" in author else 0,
-                "description": "Material and quality profiles from {author_name}".format( author_name = author["name"])
+                "id":             author["author_id"],
+                "name":           author["display_name"],
+                "email":          author["email"] if "email" in author else None,
+                "website":        author["website"],
+                "package_count":  author["package_count"] if "package_count" in author else 0,
+                "package_types":  author["package_types"],
+                "icon_url":       author["icon_url"] if "icon_url" in author else None,
+                "description":    "Material and quality profiles from {author_name}".format( author_name = author["display_name"])
             })
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if "*" in value:
-                key_filter = lambda candidate, key = key, value = value: self._matchRegExp(candidate, key, value)
+            if key is "package_types":
+                key_filter = lambda item, value = value: value in item["package_types"]
+            elif "*" in value:
+                key_filter = lambda item, key = key, value = value: self._matchRegExp(item, key, value)
             else:
-                key_filter = lambda candidate, key = key, value = value: self._matchString(candidate, key, value)
+                key_filter = lambda item, key = key, value = value: self._matchString(item, key, value)
             items = filter(key_filter, items)
 
         # Execute all filters.

@@ -6,10 +6,9 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-Rectangle
+Item
 {
     id: detailList
-    // color: "green"
     ScrollView
     {
         frameVisible: false
@@ -24,6 +23,8 @@ Rectangle
                 bottomMargin: UM.Theme.getSize("wide_margin").height
                 top: parent.top
             }
+            // TODO: Sometimes the height is not the childrenRect.height. Lord
+            // knows why. Probably because QT is garbage.
             height: childrenRect.height
             spacing: UM.Theme.getSize("default_margin").height
             Repeater

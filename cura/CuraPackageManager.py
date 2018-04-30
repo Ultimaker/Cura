@@ -142,7 +142,7 @@ class CuraPackageManager(QObject):
             if package_id in Application.getInstance().getRequiredPlugins():
                 continue
 
-            plugin_package_info["is_bundled"] = True if plugin_package_info["author"]["name"] == "Ultimaker B.V." else False
+            plugin_package_info["is_bundled"] = True if plugin_package_info["author"]["display_name"] == "Ultimaker B.V." else False
             plugin_package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
             package_type = "plugin"
             if package_type not in installed_packages_dict:
@@ -160,7 +160,8 @@ class CuraPackageManager(QObject):
                             "cura_version": int(plugin_metadata["plugin"]["api"]),
                             "website": "",
                             "author": {
-                                "name": plugin_metadata["plugin"].get("author", ""),
+                                "author_id": plugin_metadata["plugin"].get("author", ""),
+                                "display_name": plugin_metadata["plugin"].get("author", ""),
                                 "email": "",
                                 "website": "",
                             },

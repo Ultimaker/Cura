@@ -48,7 +48,6 @@ Item
         {
             toolbox.viewPage = "overview"
             toolbox.filterModelByProp("packages", "type", toolbox.viewCategory)
-            toolbox.filterModelByProp("authors", "type", toolbox.viewCategory)
         }
         style: ButtonStyle
         {

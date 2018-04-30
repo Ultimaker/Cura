@@ -56,10 +56,10 @@ class Toolbox(QObject, Extension):
             )
         ]
         self._request_urls = {
-            "authors": None,
-            "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
-            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
-            "materials_showcase": None
+            "authors":            QUrl("{base_url}/authors".format(base_url = self._api_url)),
+            "packages":           QUrl("{base_url}/packages".format(base_url = self._api_url)),
+            "plugins_showcase":   QUrl("{base_url}/showcase".format(base_url = self._api_url)),
+            "materials_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url))
         }
 
         # Data:
@@ -68,33 +68,7 @@ class Toolbox(QObject, Extension):
             "packages": [],
             "plugins_showcase": [],
             "plugins_installed": [],
-            # TODO: Replace this with a proper API call:
-            "materials_showcase": [
-                {
-                    "name": "Ultimaker",
-                    "email": "ian.paschal@gmail.com",
-                    "website": "ultimaker.com",
-                    "type": "material",
-                    "icon": None,
-                    "packages_count": 7
-                },
-                {
-                    "name": "DSM",
-                    "email": "contact@dsm.nl",
-                    "website": "www.dsm.nl",
-                    "type": "material",
-                    "icon": None,
-                    "packages_count": 0
-                },
-                {
-                    "name": "BASF",
-                    "email": "contact@basf.de",
-                    "website": "www.basf.de",
-                    "type": "material",
-                    "icon": None,
-                    "packages_count": 0
-                }
-            ],
+            "materials_showcase": [],
             "materials_installed": []
         }
 
@@ -103,8 +77,10 @@ class Toolbox(QObject, Extension):
             "authors": AuthorsModel(self),
             "packages": PackagesModel(self),
             "plugins_showcase": PackagesModel(self),
+            "plugins_available": PackagesModel(self),
             "plugins_installed": PackagesModel(self),
             "materials_showcase": AuthorsModel(self),
+            "materials_available": PackagesModel(self),
             "materials_installed": PackagesModel(self)
         }
 
@@ -190,7 +166,9 @@ class Toolbox(QObject, Extension):
 
         # Make remote requests:
         self._makeRequestByType("packages")
+        self._makeRequestByType("authors")
         self._makeRequestByType("plugins_showcase")
+        self._makeRequestByType("materials_showcase")
 
         # Gather installed packages:
         self._updateInstalledModels()
@@ -298,6 +276,15 @@ class Toolbox(QObject, Extension):
             return True
         return False
 
+    def loadingComplete(self) -> bool:
+        populated = 0
+        for list in self._metadata.items():
+            if len(list) > 0:
+                populated += 1
+        if populated == len(self._metadata.items()):
+            return True
+        return False
+
 
 
     # Make API Calls
@@ -362,111 +349,50 @@ class Toolbox(QObject, Extension):
             return
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            # TODO: In the future use the following to build any model from any
-            # request. Right now this doesn't work because the packages request
-            # is also responsible for populating other models.
-            # for type, url in self._request_urls.items():
-            #     if reply.url() == url:
-            #         try:
-            #             json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-            #
-            #             # Check for errors:
-            #             if "errors" in json_data:
-            #                 for error in json_data["errors"]:
-            #                     Logger.log("e", "%s", error["title"])
-            #                 return
-            #
-            #             # Create model and apply metadata:
-            #             if not self._models[type]:
-            #                 Logger.log("e", "Could not find the %s model.", type)
-            #                 break
-            #             self._metadata[type] = json_data["data"]
-            #             self._models[type].setMetadata(self._metadata[type])
-            #             self.metadataChanged.emit()
-            #             self.setViewPage("overview")
-            #             return
-            #         except json.decoder.JSONDecodeError:
-            #             Logger.log("w", "Toolbox: Received invalid JSON for %s.", type)
-            #             break
+            for type, url in self._request_urls.items():
+                if reply.url() == url:
+                    try:
+                        json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
-            if reply.url() == self._request_urls["packages"]:
-                try:
-                    json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                        # Check for errors:
+                        if "errors" in json_data:
+                            for error in json_data["errors"]:
+                                Logger.log("e", "%s", error["title"])
+                            return
 
-                    # Check for errors:
-                    if "errors" in json_data:
-                        for error in json_data["errors"]:
-                            Logger.log("e", "%s", error["title"])
+                        # Create model and apply metadata:
+                        if not self._models[type]:
+                            Logger.log("e", "Could not find the %s model.", type)
+                            break
+
+                        # HACK: Eventually get rid of the code from here...
+                        if type is "plugins_showcase" or type is "materials_showcase":
+                            self._metadata["plugins_showcase"] = json_data["data"]["plugin"]["packages"]
+                            self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
+                        else:
+                            # ...until here.
+                            # This hack arises for multiple reasons but the main
+                            # one is because there are not separate API calls
+                            # for different kinds of showcases.
+                            self._metadata[type] = json_data["data"]
+                        self._models[type].setMetadata(self._metadata[type])
+
+                        # Do some auto filtering
+                        # TODO: Make multiple API calls in the future to handle this
+                        if type is "packages":
+                            self._models[type].setFilter({"type": "plugin"})
+                        if type is "authors":
+                            self._models[type].setFilter({"package_types": "material"})
+
+                        self.metadataChanged.emit()
+
+                        if self.loadingComplete() is True:
+                            self.setViewPage("overview")
+
                         return
-
-                    # Create packages model with all packages:
-                    if not self._models["packages"]:
-                        self._models["packages"] = PackagesModel(self)
-                    self._metadata["packages"] = json_data["data"]
-                    self._models["packages"].setMetadata(self._metadata["packages"])
-                    self.metadataChanged.emit()
-
-                    # Create authors model with all authors:
-                    if not self._models["authors"]:
-                        self._models["authors"] = AuthorsModel()
-                    # TODO: Replace this with a proper API call:
-                    for package in self._metadata["packages"]:
-                        if package["author"] not in self._metadata["authors"]:
-                            self._metadata["authors"].append(package["author"])
-
-                    for author in self._metadata["authors"]:
-                        if "package_count" not in author:
-                            author["package_count"] = 0
-
-                        for package in self._metadata["packages"]:
-                            if package["author"]["name"] == author["name"]:
-                                author["package_count"] += 1
-                                author["type"] = package["package_type"]
-                                if "icon_url" in package:
-                                    author["icon_url"] = package["icon_url"]
-
-                    self._models["authors"].setMetadata(self._metadata["authors"])
-                    self.metadataChanged.emit()
-
-                    if not self._models["materials_showcase"]:
-                        self._models["materials_showcase"] = AuthorsModel(self)
-                    # TODO: Replace this with a proper API call:
-                    self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
-
-                    # This part is also needed for comparing downloaded packages to
-                    # installed packages.
-                    self._models["packages"].setMetadata(self._metadata["packages"])
-                    self._models["packages"].setFilter({"type": "plugin"})
-
-                    self.metadataChanged.emit()
-
-                    self.setViewPage("overview")
-                    return
-
-                except json.decoder.JSONDecodeError:
-                    Logger.log("w", "Toolbox: Received invalid JSON for package list.")
-                    return
-
-            if reply.url() == self._request_urls["plugins_showcase"]:
-                try:
-                    json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-
-                    # Check for errors:
-                    if "errors" in json_data:
-                        for error in json_data["errors"]:
-                            Logger.log("e", "%s", error["title"])
-                        return
-
-                    self._metadata["plugins_showcase"] = json_data["data"]
-                    self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
-                    self.metadataChanged.emit()
-
-                    self.setViewPage("overview")
-                    return
-
-                except json.decoder.JSONDecodeError:
-                    Logger.log("w", "Toolbox: Received invalid JSON for showcase.")
-                    return
+                    except json.decoder.JSONDecodeError:
+                        Logger.log("w", "Toolbox: Received invalid JSON for %s.", type)
+                        break
 
         else:
             # Ignore any operation that is not a get operation
@@ -531,7 +457,7 @@ class Toolbox(QObject, Extension):
     def activePackage(self) -> dict:
         return self._active_package
 
-    def setViewCategory(self, category: str = "plugins"):
+    def setViewCategory(self, category: str = "plugin"):
         self._view_category = category
         self.viewChanged.emit()
     @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
@@ -549,8 +475,6 @@ class Toolbox(QObject, Extension):
 
     # Expose Models:
     # --------------------------------------------------------------------------
-    # TODO: Maybe replace this with simply exposing self._models to Qt and then
-    # setting model: toolbox.models.foobar instead of toolbox.foobarModel
     @pyqtProperty(QObject, notify = metadataChanged)
     def authorsModel(self) -> AuthorsModel:
         return self._models["authors"]

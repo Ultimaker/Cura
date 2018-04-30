@@ -92,7 +92,7 @@ Item
             {
                 case "material":
                     toolbox.viewPage = "author"
-                    toolbox.filterModelByProp("packages", "author_name", model.name)
+                    toolbox.filterModelByProp("packages", "author_id", model.id)
                     break
                 default:
                     toolbox.viewPage = "detail"

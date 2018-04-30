@@ -10,17 +10,6 @@ Item
 {
     width: UM.Theme.getSize("toolbox_thumbnail_large").width
     height: childrenRect.height
-    visible:
-    {
-        if (toolbox.viewCategory == "material" && model.packages_count)
-        {
-            return model.packages_count > 0
-        }
-        else
-        {
-            return true
-        }
-    }
     Rectangle
     {
         id: highlight
