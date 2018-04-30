@@ -1354,7 +1354,7 @@ class CuraApplication(QtApplication):
         try:
             group_node = Selection.getAllSelectedObjects()[0]
         except Exception as e:
-            Logger.log("d", "mergeSelected: Exception: %s", e)
+            Logger.log("e", "mergeSelected: Exception: %s", e)
             return
 
         meshes = [node.getMeshData() for node in group_node.getAllChildren() if node.getMeshData()]
