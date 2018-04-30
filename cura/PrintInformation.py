@@ -1,23 +1,23 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict
-import math
-import os.path
-import unicodedata
 import json
+import math
+import os
+import unicodedata
 import re  # To create abbreviations for printer names.
+from typing import Dict
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
-from UM.Application import Application
-from UM.Logger import Logger
-from UM.Qt.Duration import Duration
-from UM.Preferences import Preferences
-from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
+from UM.Preferences import Preferences
+from UM.Qt.Duration import Duration
+from UM.Scene.SceneNode import SceneNode
 
 catalog = i18nCatalog("cura")
+
 
 ##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
 #
@@ -47,8 +47,9 @@ class PrintInformation(QObject):
         ActiveMachineChanged = 3
         Other = 4
 
-    def __init__(self, parent = None):
+    def __init__(self, application, parent = None):
         super().__init__(parent)
+        self._application = application
 
         self.initializeCuraMessagePrintTimeProperties()
 
@@ -59,10 +60,10 @@ class PrintInformation(QObject):
 
         self._pre_sliced = False
 
-        self._backend = Application.getInstance().getBackend()
+        self._backend = self._application.getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
+        self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
         self._base_name = ""
         self._abbr_machine = ""
@@ -71,7 +72,6 @@ class PrintInformation(QObject):
         self._active_build_plate = 0
         self._initVariablesWithBuildPlate(self._active_build_plate)
 
-        self._application = Application.getInstance()
         self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
 
         self._application.globalContainerStackChanged.connect(self._updateJobName)
@@ -199,7 +199,7 @@ class PrintInformation(QObject):
         self._current_print_time[build_plate_number].setDuration(total_estimated_time)
 
     def _calculateInformation(self, build_plate_number):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return
 
@@ -358,7 +358,7 @@ class PrintInformation(QObject):
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
     def _setAbbreviatedMachineName(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             self._abbr_machine = ""
             return

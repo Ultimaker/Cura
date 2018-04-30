@@ -275,7 +275,7 @@ class CuraEngineBackend(QObject, Backend):
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
 
-        if Application.getInstance().getCommandLineOption("external-backend", False):
+        if Application.getInstance().getUseExternalBackend():
             return
 
         if self._process is not None:

@@ -15,6 +15,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
+
 from typing import Optional, List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
@@ -29,6 +30,10 @@ class ExtruderManager(QObject):
 
     ##  Registers listeners and such to listen to changes to the extruders.
     def __init__(self, parent = None):
+        if ExtruderManager.__instance is not None:
+            raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
+        ExtruderManager.__instance = self
+
         super().__init__(parent)
 
         self._application = Application.getInstance()
@@ -91,28 +96,6 @@ class ExtruderManager(QObject):
             extruder = self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()][position]
             if extruder.getId() == extruder_stack_id:
                 return extruder.qualityChanges.getId()
-
-    ##  The instance of the singleton pattern.
-    #
-    #   It's None if the extruder manager hasn't been created yet.
-    __instance = None
-
-    @staticmethod
-    def createExtruderManager():
-        return ExtruderManager().getInstance()
-
-    ##  Gets an instance of the extruder manager, or creates one if no instance
-    #   exists yet.
-    #
-    #   This is an implementation of singleton. If an extruder manager already
-    #   exists, it is re-used.
-    #
-    #   \return The extruder manager.
-    @classmethod
-    def getInstance(cls) -> "ExtruderManager":
-        if not cls.__instance:
-            cls.__instance = ExtruderManager()
-        return cls.__instance
 
     ##  Changes the active extruder by index.
     #
@@ -746,3 +729,9 @@ class ExtruderManager(QObject):
         resolved_value = global_stack.getProperty(key, "value", context = context)
 
         return resolved_value
+
+    __instance = None
+
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "ExtruderManager":
+        return cls.__instance
