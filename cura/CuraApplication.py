@@ -724,12 +724,6 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
-        # Initialize UI state
-        controller.setActiveStage("PrepareStage")
-        controller.setActiveView("SolidView")
-        controller.setCameraTool("CameraTool")
-        controller.setSelectionTool("SelectionTool")
-
         t = controller.getTool("TranslateTool")
         if t:
             t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis, ToolHandle.ZAxis])
@@ -766,8 +760,11 @@ class CuraApplication(QtApplication):
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
 
-        # Make sure the correct stage is activated after QML is loaded
+        # Initialize UI state
         controller.setActiveStage("PrepareStage")
+        controller.setActiveView("SolidView")
+        controller.setCameraTool("CameraTool")
+        controller.setSelectionTool("SelectionTool")
 
         # Hide the splash screen
         self.closeSplash()
