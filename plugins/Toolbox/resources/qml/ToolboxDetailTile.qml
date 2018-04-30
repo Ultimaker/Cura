@@ -189,11 +189,12 @@ Item
 
     Item
     {
+        id: supportedConfigsChart
         anchors.top: normalData.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        height: model.type == "material" ? childrenRect.height : 0
+        height: visible ? childrenRect.height : 0
         width: normalData.width
-        visible: model.type == "material"
+        visible: model.type == "material" && model.supported_configs.length > 0
         Label
         {
             id: compatibilityHeading

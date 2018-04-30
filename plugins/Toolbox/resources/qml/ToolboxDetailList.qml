@@ -23,9 +23,7 @@ Item
                 bottomMargin: UM.Theme.getSize("wide_margin").height
                 top: parent.top
             }
-            // TODO: Sometimes the height is not the childrenRect.height. Lord
-            // knows why. Probably because QT is garbage.
-            height: childrenRect.height
+            height: childrenRect.height + UM.Theme.getSize("wide_margin").height
             spacing: UM.Theme.getSize("default_margin").height
             Repeater
             {

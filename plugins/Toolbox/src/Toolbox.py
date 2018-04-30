@@ -368,14 +368,17 @@ class Toolbox(QObject, Extension):
                         # HACK: Eventually get rid of the code from here...
                         if type is "plugins_showcase" or type is "materials_showcase":
                             self._metadata["plugins_showcase"] = json_data["data"]["plugin"]["packages"]
+                            self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
                             self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
+                            self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
+                            print("MATERIAL SHOWCASE", self._metadata["materials_showcase"])
                         else:
                             # ...until here.
                             # This hack arises for multiple reasons but the main
                             # one is because there are not separate API calls
                             # for different kinds of showcases.
                             self._metadata[type] = json_data["data"]
-                        self._models[type].setMetadata(self._metadata[type])
+                            self._models[type].setMetadata(self._metadata[type])
 
                         # Do some auto filtering
                         # TODO: Make multiple API calls in the future to handle this
