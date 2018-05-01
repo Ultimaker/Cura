@@ -294,7 +294,6 @@ class Toolbox(QObject, Extension):
         request = QNetworkRequest(self._request_urls[type])
         request.setRawHeader(*self._request_header)
         self._network_manager.get(request)
-    # TODO: Request authors and request material showcase
 
     @pyqtSlot(str)
     def startDownload(self, url: str):
@@ -311,6 +310,10 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def cancelDownload(self):
         Logger.log("i", "Toolbox: User cancelled the download of a plugin.")
+        self.resetDownload();
+        return
+
+    def resetDownload(self):
         self._download_reply.abort()
         self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
         self._download_reply = None
@@ -324,24 +327,13 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     def _onNetworkAccessibleChanged(self, accessible: int):
         if accessible == 0:
-            self.setDownloadProgress(0)
-            self.setIsDownloading(False)
-            if self._download_reply:
-                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-                self._download_reply.abort()
-                self._download_reply = None
+            self.resetDownload()
 
     def _onRequestFinished(self, reply: QNetworkReply):
 
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Got a timeout.")
-            # Reset everything.
-            self.setDownloadProgress(0)
-            self.setIsDownloading(False)
-            if self._download_plugin_reply:
-                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadProgress)
-                self._download_plugin_reply.abort()
-                self._download_plugin_reply = None
+            self.resetDownload()
             return
 
         if reply.error() == QNetworkReply.HostNotFoundError:
