@@ -109,7 +109,7 @@ class CuraPackageManager(QObject):
 
         return None
 
-    def getAllInstalledPackagesInfo(self, includeRequired: bool = False) -> dict:
+    def getAllInstalledPackagesInfo(self) -> dict:
         installed_package_id_set = set(self._installed_package_dict.keys()) | set(self._to_install_package_dict.keys())
         installed_package_id_set = installed_package_id_set.difference(self._to_remove_package_set)
 
