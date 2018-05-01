@@ -54,9 +54,9 @@ class CuraPackageManager(QObject):
             with open(self._package_management_file_path, "r", encoding = "utf-8") as f:
                 management_dict = json.load(f, encoding = "utf-8")
 
-                self._installed_package_dict = management_dict["installed"]
-                self._to_remove_package_set = set(management_dict["to_remove"])
-                self._to_install_package_dict = management_dict["to_install"]
+                self._installed_package_dict = management_dict.get("installed", {})
+                self._to_remove_package_set = set(management_dict.get("to_remove", []))
+                self._to_install_package_dict = management_dict.get("to_install", {})
 
                 Logger.log("i", "Package management file %s is loaded", self._package_management_file_path)
 
