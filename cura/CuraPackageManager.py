@@ -49,7 +49,7 @@ class CuraPackageManager(QObject):
             return
 
         with open(self._package_management_file_path, "r", encoding = "utf-8") as f:
-            management_dict = json.loads(f.read(), encoding = "utf-8")
+            management_dict = json.load(f, encoding = "utf-8")
 
             self._installed_package_dict = management_dict["installed"]
             self._to_remove_package_set = set(management_dict["to_remove"])
