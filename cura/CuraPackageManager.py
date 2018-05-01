@@ -48,23 +48,29 @@ class CuraPackageManager(QObject):
             Logger.log("i", "Package management file %s doesn't exist, do nothing", self._package_management_file_path)
             return
 
-        with open(self._package_management_file_path, "r", encoding = "utf-8") as f:
-            management_dict = json.load(f, encoding = "utf-8")
+        # Need to use the file lock here to prevent concurrent I/O from other processes/threads
+        container_registry = self._application.getContainerRegistry()
+        with container_registry.lockFile():
+            with open(self._package_management_file_path, "r", encoding = "utf-8") as f:
+                management_dict = json.load(f, encoding = "utf-8")
 
-            self._installed_package_dict = management_dict["installed"]
-            self._to_remove_package_set = set(management_dict["to_remove"])
-            self._to_install_package_dict = management_dict["to_install"]
+                self._installed_package_dict = management_dict["installed"]
+                self._to_remove_package_set = set(management_dict["to_remove"])
+                self._to_install_package_dict = management_dict["to_install"]
 
-            Logger.log("i", "Package management file %s is loaded", self._package_management_file_path)
+                Logger.log("i", "Package management file %s is loaded", self._package_management_file_path)
 
     def _saveManagementData(self) -> None:
-        with open(self._package_management_file_path, "w", encoding = "utf-8") as f:
-            data_dict = {"installed": self._installed_package_dict,
-                         "to_remove": list(self._to_remove_package_set),
-                         "to_install": self._to_install_package_dict}
-            data_dict["to_remove"] = list(data_dict["to_remove"])
-            json.dump(data_dict, f)
-            Logger.log("i", "Package management file %s is saved", self._package_management_file_path)
+        # Need to use the file lock here to prevent concurrent I/O from other processes/threads
+        container_registry = self._application.getContainerRegistry()
+        with container_registry.lockFile():
+            with open(self._package_management_file_path, "w", encoding = "utf-8") as f:
+                data_dict = {"installed": self._installed_package_dict,
+                             "to_remove": list(self._to_remove_package_set),
+                             "to_install": self._to_install_package_dict}
+                data_dict["to_remove"] = list(data_dict["to_remove"])
+                json.dump(data_dict, f)
+                Logger.log("i", "Package management file %s is saved", self._package_management_file_path)
 
     # (for initialize) Removes all packages that have been scheduled to be removed.
     def _removeAllScheduledPackages(self) -> None:
