@@ -43,13 +43,14 @@ class PackagesModel(ListModel):
         items = []
 
         for package in self._metadata:
+            print(package["author"])
             items.append({
                 "id":                package["package_id"],
                 "type":              package["package_type"],
                 "name":              package["display_name"],
                 "version":           package["package_version"],
-                "author_id":         package["author"]["author_id"],
-                "author_name":       package["author"]["display_name"],
+                "author_id":         package["author"]["author_id"] if "author_id" in package["author"] else package["author"]["name"],
+                "author_name":       package["author"]["display_name"] if "display_name" in package["author"] else package["author"]["name"],
                 "author_email":      package["author"]["email"] if "email" in package["author"] else "None",
                 "description":       package["description"],
                 "icon_url":          package["icon_url"] if "icon_url" in package else None,

@@ -23,7 +23,7 @@ Item
                 bottomMargin: UM.Theme.getSize("wide_margin").height
                 top: parent.top
             }
-            height: childrenRect.height + UM.Theme.getSize("wide_margin").height
+            height: childrenRect.height + 2 * UM.Theme.getSize("wide_margin").height
             spacing: UM.Theme.getSize("default_margin").height
             Repeater
             {

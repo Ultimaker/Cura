@@ -158,21 +158,23 @@ class CuraPackageManager(QObject):
         return installed_packages_dict
 
     def __convertPluginMetadataToPackageMetadata(self, plugin_metadata: dict) -> dict:
-        package_metadata = {"package_id": plugin_metadata["id"],
-                            "package_type": "plugin",
-                            "display_name": plugin_metadata["plugin"]["name"],
-                            "description": plugin_metadata["plugin"].get("description"),
-                            "package_version": plugin_metadata["plugin"]["version"],
-                            "cura_version": int(plugin_metadata["plugin"]["api"]),
-                            "website": "",
-                            "author": {
-                                "author_id": plugin_metadata["plugin"].get("author", ""),
-                                "display_name": plugin_metadata["plugin"].get("author", ""),
-                                "email": "",
-                                "website": "",
-                            },
-                            "tags": ["plugin"],
-                            }
+        package_metadata = {
+            "package_id": plugin_metadata["id"],
+            "package_type": "plugin",
+            "display_name": plugin_metadata["plugin"]["name"],
+            "description": plugin_metadata["plugin"].get("description"),
+            "package_version": plugin_metadata["plugin"]["version"],
+            "cura_version": int(plugin_metadata["plugin"]["api"]),
+            "website": "",
+            "author_id": plugin_metadata["plugin"].get("author", "UnknownID"),
+            "author": {
+                "author_id": plugin_metadata["plugin"].get("author", "UnknownID"),
+                "display_name": plugin_metadata["plugin"].get("author", ""),
+                "email": "",
+                "website": "",
+            },
+            "tags": ["plugin"],
+        }
         return package_metadata
 
     # Checks if the given package is installed.
