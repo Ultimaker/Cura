@@ -32,13 +32,18 @@ class MultiplyObjectsJob(Job):
 
         root = scene.getRoot()
         arranger = Arrange.create(scene_root=root)
+        processed_nodes = []
         nodes = []
 
         for node in self._objects:
             # If object is part of a group, multiply group
             current_node = node
-            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
+            while current_node.getParent() and (current_node.getParent().callDecoration("isGroup") or current_node.getParent().callDecoration("isSliceable")):
                 current_node = current_node.getParent()
+
+            if current_node in processed_nodes:
+                continue
+            processed_nodes.append(current_node)
 
             node_too_big = False
             if node.getBoundingBox().width < 300 or node.getBoundingBox().depth < 300:

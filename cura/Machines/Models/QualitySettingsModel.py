@@ -84,11 +84,14 @@ class QualitySettingsModel(ListModel):
         quality_group = self._selected_quality_item["quality_group"]
         quality_changes_group = self._selected_quality_item["quality_changes_group"]
 
-        if self._selected_position == self.GLOBAL_STACK_POSITION:
-            quality_node = quality_group.node_for_global
-        else:
-            quality_node = quality_group.nodes_for_extruders.get(str(self._selected_position))
-        settings_keys = quality_group.getAllKeys()
+        quality_node = None
+        settings_keys = set()
+        if quality_group:
+            if self._selected_position == self.GLOBAL_STACK_POSITION:
+                quality_node = quality_group.node_for_global
+            else:
+                quality_node = quality_group.nodes_for_extruders.get(str(self._selected_position))
+            settings_keys = quality_group.getAllKeys()
         quality_containers = []
         if quality_node is not None and quality_node.getContainer() is not None:
             quality_containers.append(quality_node.getContainer())

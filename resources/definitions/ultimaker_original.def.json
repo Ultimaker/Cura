@@ -11,6 +11,7 @@
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",
         "has_materials": true,
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "generic_pva", "generic_tough_pla"],
         "first_start_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
         "supported_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel", "UpgradeFirmware"]
     },

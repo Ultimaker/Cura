@@ -1,9 +1,10 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re #Regular expressions for parsing escape characters in the settings.
 import json
 
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
@@ -113,6 +114,9 @@ def readQualityProfileFromString(profile_string):
     profile = InstanceContainer("")
     try:
         profile.deserialize(profile_string)
+    except ContainerFormatError as e:
+        Logger.log("e", "Corrupt profile in this g-code file: %s", str(e))
+        return None
     except Exception as e:  # Not a valid g-code file.
         Logger.log("e", "Unable to serialise the profile: %s", str(e))
         return None

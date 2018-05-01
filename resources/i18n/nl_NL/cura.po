@@ -16,6 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#Added after the string freeze.
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:528
+msgctxt "@label"
+msgid "Use adhesion sheet or glue with this material combination"
+msgstr "Gebruik een hechtingsvel of lijm met deze materiaalcombinatie"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
 msgid "Machine Settings"

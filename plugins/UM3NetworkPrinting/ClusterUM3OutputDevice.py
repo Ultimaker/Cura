@@ -50,6 +50,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._number_of_extruders = 2
 
+        self._dummy_lambdas = set()
+
         self._print_jobs = []
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterMonitorItem.qml")
@@ -64,6 +66,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_state = AuthState.Authenticated
 
         self._error_message = None
+        self._write_job_progress_message = None
         self._progress_message = None
 
         self._active_printer = None  # type: Optional[PrinterOutputModel]
@@ -179,15 +182,32 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         job = WriteFileJob(writer, stream, nodes, preferred_format["mode"])
 
+        self._write_job_progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0, dismissable = False, progress = -1,
+                                                   title = i18n_catalog.i18nc("@info:title", "Sending Data"), use_inactivity_timer = False)
+        self._write_job_progress_message.show()
+
+        self._dummy_lambdas = (target_printer, preferred_format, stream)
+        job.finished.connect(self._sendPrintJobWaitOnWriteJobFinished)
+
+        job.start()
+
+        yield True #Return that we had success!
+        yield #To prevent having to catch the StopIteration exception.
+
+    from cura.Utils.Threading import call_on_qt_thread
+
+    def _sendPrintJobWaitOnWriteJobFinished(self, job):
+        self._write_job_progress_message.hide()
+
         self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0, dismissable = False, progress = -1,
                                          title = i18n_catalog.i18nc("@info:title", "Sending Data"))
         self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = None, description = "")
         self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
         self._progress_message.show()
 
-        job.start()
-
         parts = []
+
+        target_printer, preferred_format, stream = self._dummy_lambdas
 
         # If a specific printer was selected, it should be printed with that machine.
         if target_printer:
@@ -199,8 +219,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         file_name = Application.getInstance().getPrintInformation().jobName + "." + preferred_format["extension"]
 
-        while not job.isFinished():
-            sleep(0.1)
         output = stream.getvalue() #Either str or bytes depending on the output mode.
         if isinstance(stream, io.StringIO):
             output = output.encode("utf-8")
@@ -208,9 +226,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, output))
 
         self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
-
-        yield True #Return that we had success!
-        yield #To prevent having to catch the StopIteration exception.
 
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def activePrinter(self) -> Optional[PrinterOutputModel]:

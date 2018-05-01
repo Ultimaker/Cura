@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, QObject, QTimer, pyqtSignal, QVariant
@@ -174,6 +174,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtProperty(bool, notify=acceptsCommandsChanged)
     def acceptsCommands(self):
         return self._accepts_commands
+
+    @deprecated("Please use the protected function instead", "3.2")
+    def setAcceptsCommands(self, accepts_commands):
+        self._setAcceptsCommands(accepts_commands)
 
     ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
     def _setAcceptsCommands(self, accepts_commands):

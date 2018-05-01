@@ -283,6 +283,13 @@ class CuraContainerStack(ContainerStack):
 
         self._containers = new_containers
 
+        # CURA-5281
+        # Some stacks can have empty definition_changes containers which will cause problems.
+        # Make sure that all stacks here have non-empty definition_changes containers.
+        if isinstance(new_containers[_ContainerIndexes.DefinitionChanges], type(self._empty_instance_container)):
+            from cura.Settings.CuraStackBuilder import CuraStackBuilder
+            CuraStackBuilder.createDefinitionChangesContainer(self, self.getId() + "_settings")
+
     ## protected:
 
     # Helper to make sure we emit a PyQt signal on container changes.

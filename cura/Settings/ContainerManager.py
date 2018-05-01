@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -22,12 +22,10 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from UM.i18n import i18nCatalog
-
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ExtruderStack import ExtruderStack
+from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
@@ -289,7 +287,9 @@ class ContainerManager(QObject):
             with open(file_url, "rt", encoding = "utf-8") as f:
                 container.deserialize(f.read())
         except PermissionError:
-            return {"status": "error", "message": "Permission denied when trying to read the file"}
+            return {"status": "error", "message": "Permission denied when trying to read the file."}
+        except ContainerFormatError:
+            return {"status": "error", "Message": "The material file appears to be corrupt."}
         except Exception as ex:
             return {"status": "error", "message": str(ex)}
 

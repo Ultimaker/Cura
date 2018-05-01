@@ -58,8 +58,7 @@ class GenericOutputController(PrinterOutputController):
         self._output_device.sendCommand("G90")
 
     def homeHead(self, printer):
-        self._output_device.sendCommand("G28 X")
-        self._output_device.sendCommand("G28 Y")
+        self._output_device.sendCommand("G28 X Y")
 
     def homeBed(self, printer):
         self._output_device.sendCommand("G28 Z")
@@ -152,3 +151,17 @@ class GenericOutputController(PrinterOutputController):
         for extruder in self._preheat_hotends:
             self.setTargetHotendTemperature(extruder.getPrinter(), extruder.getPosition(), 0)
         self._preheat_hotends = set()
+
+    # Cancel any ongoing preheating timers, without setting back the temperature to 0
+    # This can be used eg at the start of a print
+    def stopPreheatTimers(self):
+        if self._preheat_hotends_timer.isActive():
+            for extruder in self._preheat_hotends:
+                extruder.updateIsPreheating(False)
+            self._preheat_hotends = set()
+
+            self._preheat_hotends_timer.stop()
+
+        if self._preheat_bed_timer.isActive():
+            self._preheat_printer.updateIsPreheating(False)
+            self._preheat_bed_timer.stop()

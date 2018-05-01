@@ -28,6 +28,11 @@ msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "透视视图"
 
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:528
+msgctxt "@label"
+msgid "Use adhesion sheet or glue with this material combination"
+msgstr "在此材料组合的情况下，请使用附着垫片或者胶水"
+
 #: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"

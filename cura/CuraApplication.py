@@ -746,12 +746,6 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
-        # Initialize UI state
-        controller.setActiveStage("PrepareStage")
-        controller.setActiveView("SolidView")
-        controller.setCameraTool("CameraTool")
-        controller.setSelectionTool("SelectionTool")
-
         t = controller.getTool("TranslateTool")
         if t:
             t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis, ToolHandle.ZAxis])
@@ -788,8 +782,11 @@ class CuraApplication(QtApplication):
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
 
-        # Make sure the correct stage is activated after QML is loaded
+        # Initialize UI state
         controller.setActiveStage("PrepareStage")
+        controller.setActiveView("SolidView")
+        controller.setCameraTool("CameraTool")
+        controller.setSelectionTool("SelectionTool")
 
         # Hide the splash screen
         self.closeSplash()
@@ -1012,7 +1009,7 @@ class CuraApplication(QtApplication):
         return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
 
     def updatePlatformActivityDelayed(self, node = None):
-        if node is not None and node.getMeshData() is not None:
+        if node is not None and (node.getMeshData() is not None or node.callDecoration("getLayerData")):
             self._update_platform_activity_timer.start()
 
     ##  Update scene bounding box for current build plate
@@ -1380,7 +1377,7 @@ class CuraApplication(QtApplication):
         try:
             group_node = Selection.getAllSelectedObjects()[0]
         except Exception as e:
-            Logger.log("d", "mergeSelected: Exception:", e)
+            Logger.log("e", "mergeSelected: Exception: %s", e)
             return
 
         meshes = [node.getMeshData() for node in group_node.getAllChildren() if node.getMeshData()]
@@ -1753,3 +1750,7 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
+
+    @pyqtSlot()
+    def showMoreInformationDialogForAnonymousDataCollection(self):
+        self._plugin_registry.getPluginObject("SliceInfoPlugin").showMoreInfoDialog()

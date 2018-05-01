@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -10,6 +10,7 @@ from typing import Optional
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -189,7 +190,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 return { "status": "ok", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "No custom profile to import in file <filename>{0}</filename>", file_name)}
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
-                Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))
+                Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name, profile_reader.getPluginId(), str(e))
                 return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "\n" + str(e))}
 
             if profile_or_list:
@@ -418,7 +419,6 @@ class CuraContainerRegistry(ContainerRegistry):
 
         Logger.log("d", "Converting ContainerStack {stack} to {type}", stack = container.getId(), type = container_type)
 
-        new_stack = None
         if container_type == "extruder_train":
             new_stack = ExtruderStack.ExtruderStack(container.getId())
         else:
@@ -704,7 +704,11 @@ class CuraContainerRegistry(ContainerRegistry):
                 instance_container = InstanceContainer(container_id)
                 with open(file_path, "r", encoding = "utf-8") as f:
                     serialized = f.read()
-                instance_container.deserialize(serialized, file_path)
+                try:
+                    instance_container.deserialize(serialized, file_path)
+                except ContainerFormatError:
+                    Logger.logException("e", "Unable to deserialize InstanceContainer %s", file_path)
+                    continue
                 self.addContainer(instance_container)
                 break
 
