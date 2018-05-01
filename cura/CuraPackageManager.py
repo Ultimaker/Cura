@@ -284,7 +284,7 @@ class CuraPackageManager(QObject):
         installation_dirs_dict = {
             "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
             "quality": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
-            "plugins": os.path.join(os.path.abspath(Resources.getDataStoragePath()), "plugins"),
+            "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
         }
 
         for sub_dir_name, installation_root_dir in installation_dirs_dict.items():
