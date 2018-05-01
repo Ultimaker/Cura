@@ -245,22 +245,17 @@ class CuraPackageManager(QObject):
 
     # Removes everything associated with the given package ID.
     def _purgePackage(self, package_id: str) -> None:
-        # Get all folders that need to be checked for installed packages, including:
-        #  - materials
-        #  - qualities
-        #  - plugins
-        from cura.CuraApplication import CuraApplication
-        dirs_to_check = [
-            Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
-            Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
-            os.path.join(os.path.abspath(Resources.getDataStoragePath()), "plugins"),
-        ]
+        # Iterate through all directories in the data storage directory and look for sub-directories that belong to
+        # the package we need to remove, that is the sub-dirs with the package_id as names, and remove all those dirs.
+        data_storage_dir = os.path.abspath(Resources.getDataStoragePath())
 
-        for root_dir in dirs_to_check:
-            package_dir = os.path.join(root_dir, package_id)
-            if os.path.exists(package_dir):
-                Logger.log("i", "Removing '%s' for package [%s]", package_dir, package_id)
+        for root, dir_names, _ in os.walk(data_storage_dir):
+            for dir_name in dir_names:
+                package_dir = os.path.join(root, dir_name, package_id)
+                if os.path.exists(package_dir):
+                    Logger.log("i", "Removing '%s' for package [%s]", package_dir, package_id)
                 shutil.rmtree(package_dir)
+            break
 
     # Installs all files associated with the given package.
     def _installPackage(self, installation_package_data: dict):
