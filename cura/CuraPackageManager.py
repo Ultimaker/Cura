@@ -106,8 +106,7 @@ class CuraPackageManager(QObject):
         for section, packages in self.getAllInstalledPackagesInfo().items():
             for package in packages:
                 if package["package_id"] == package_id:
-                    package_info = package
-                    return package_info
+                    return package
 
         return None
 
