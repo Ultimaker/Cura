@@ -40,21 +40,9 @@ Item
         {
             anchors.top: packageName.bottom
             width: parent.width
-            text:
-            {
-                if (model.description.length > 235)
-                {
-                    if (model.description.substring(234, 235) == " ")
-                    {
-                        return model.description.substring(0, 234) + "..."
-                    }
-                    else
-                    {
-                        return model.description.substring(0, 235) + "..."
-                    }
-                }
-                return model.description
-            }
+            text: model.description
+            maximumLineCount: 3
+            elide: Text.ElideRight
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
