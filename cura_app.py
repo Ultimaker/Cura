@@ -47,7 +47,7 @@ if Platform.isLinux(): # Needed for platform.linux_distribution, which is not av
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
     linux_distro_name = platform.linux_distribution()[0].lower()
     # The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
-	try:
+    try:
         import ctypes
         from ctypes.util import find_library
         libGL = find_library("GL")
