@@ -11,10 +11,7 @@ Item
     id: tile
     property bool installed: toolbox.isInstalled(model.id)
     width: detailList.width - UM.Theme.getSize("wide_margin").width
-    // TODO: Without this line, every instance of this object has 0 height. With
-    // it, QML spits out tons of bugs claiming a binding loop (not true). Why?
-    // Because QT is garbage.
-    height: Math.max( UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
+    height: Math.max(UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
     Item
     {
         id: normalData
@@ -238,7 +235,8 @@ Item
         color: UM.Theme.getColor("lining")
         width: tile.width
         height: UM.Theme.getSize("default_lining").height
-        anchors.bottom: tile.bottom
+        anchors.top: supportedConfigsChart.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height + UM.Theme.getSize("wide_margin").height //Normal margin for spacing after chart, wide margin between items.
     }
     Connections
     {
