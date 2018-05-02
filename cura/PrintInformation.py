@@ -335,8 +335,15 @@ class PrintInformation(QObject):
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
         is_empty = name == ""
         if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
-            # Only take the file name part
-            self._base_name = filename_parts[0]
+            # Only take the file name part, Note : file name might have 'dot' in name as well
+            if is_project_file:
+                self._base_name = ".".join(filename_parts)
+            elif len(filename_parts) > 1:
+                self._base_name = ".".join(filename_parts[0:-1])
+            else:
+                self._base_name = filename_parts[0]
+
+
             self._updateJobName()
 
     @pyqtProperty(str, fset = setBaseName, notify = baseNameChanged)
