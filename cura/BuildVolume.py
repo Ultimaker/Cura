@@ -187,7 +187,7 @@ class BuildVolume(SceneNode):
             self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
-        renderer.queueNode(self, mesh = self._origin_mesh)
+        renderer.queueNode(self, mesh = self._origin_mesh, backface_cull = True)
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)

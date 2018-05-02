@@ -13,6 +13,13 @@ vertex =
     }
 
 fragment =
+    #ifdef GL_ES
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+            precision highp float;
+        #else
+            precision mediump float;
+        #endif // GL_FRAGMENT_PRECISION_HIGH
+    #endif // GL_ES
     uniform sampler2D u_layer0;
     uniform sampler2D u_layer1;
     uniform sampler2D u_layer2;

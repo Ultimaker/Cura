@@ -100,7 +100,6 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import sys
-import os.path
 import numpy
 import copy
 import os
@@ -133,20 +132,21 @@ class CuraApplication(QtApplication):
         QmlFiles = Resources.UserType + 1
         Firmware = Resources.UserType + 2
         QualityInstanceContainer = Resources.UserType + 3
-        MaterialInstanceContainer = Resources.UserType + 4
-        VariantInstanceContainer = Resources.UserType + 5
-        UserInstanceContainer = Resources.UserType + 6
-        MachineStack = Resources.UserType + 7
-        ExtruderStack = Resources.UserType + 8
-        DefinitionChangesContainer = Resources.UserType + 9
-        SettingVisibilityPreset = Resources.UserType + 10
+        QualityChangesInstanceContainer = Resources.UserType + 4
+        MaterialInstanceContainer = Resources.UserType + 5
+        VariantInstanceContainer = Resources.UserType + 6
+        UserInstanceContainer = Resources.UserType + 7
+        MachineStack = Resources.UserType + 8
+        ExtruderStack = Resources.UserType + 9
+        DefinitionChangesContainer = Resources.UserType + 10
+        SettingVisibilityPreset = Resources.UserType + 11
 
     Q_ENUMS(ResourceTypes)
 
     def __init__(self, **kwargs):
         self._boot_loading_time = time.time()
         # this list of dir names will be used by UM to detect an old cura directory
-        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
+        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "quality_changes", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
 
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
@@ -182,6 +182,7 @@ class CuraApplication(QtApplication):
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
         Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
@@ -191,7 +192,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer, "variant")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer, "material")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer, "user")
@@ -205,7 +206,7 @@ class CuraApplication(QtApplication):
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", ContainerStack.Version * 1000000 + self.SettingVersion):         (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
                 ("extruder_train", ContainerStack.Version * 1000000 + self.SettingVersion):        (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
                 ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),
@@ -241,6 +242,13 @@ class CuraApplication(QtApplication):
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
+        # Initialize the package manager to remove and install scheduled packages.
+        from cura.CuraPackageManager import CuraPackageManager
+        self._cura_package_manager = CuraPackageManager(self)
+        self._cura_package_manager.initialize()
+
+        self.initialize()
+
         # FOR TESTING ONLY
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
             assert not "This crash is triggered by the trigger_early_crash command line argument."
@@ -252,21 +260,33 @@ class CuraApplication(QtApplication):
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
+            # Misc.:
+            "ConsoleLogger",
             "CuraEngineBackend",
             "UserAgreement",
-            "SolidView",
-            "SimulationView",
-            "STLReader",
-            "SelectionTool",
-            "CameraTool",
-            "GCodeWriter",
-            "LocalFileOutputDevice",
-            "TranslateTool",
             "FileLogger",
             "XmlMaterialProfile",
-            "PluginBrowser",
+            "Toolbox",
             "PrepareStage",
-            "MonitorStage"
+            "MonitorStage",
+            "LocalFileOutputDevice",
+
+            # Views:
+            "SimpleView",
+            "SimulationView",
+            "SolidView",
+
+            # Readers & Writers:
+            "GCodeWriter",
+            "STLReader",
+
+            # Tools:
+            "CameraTool",
+            "MirrorTool",
+            "RotateTool",
+            "ScaleTool",
+            "SelectionTool",
+            "TranslateTool"
         ])
         self._physics = None
         self._volume = None
@@ -388,15 +408,12 @@ class CuraApplication(QtApplication):
         self.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
 
-        self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
-
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
 
         CuraApplication.Created = True
-
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -526,7 +543,9 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     @classmethod
-    def addCommandLineOptions(self, parser, parsed_command_line = {}):
+    def addCommandLineOptions(cls, parser, parsed_command_line = None):
+        if parsed_command_line is None:
+            parsed_command_line = {}
         super().addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
@@ -583,7 +602,10 @@ class CuraApplication(QtApplication):
     #   This should be called directly before creating an instance of CuraApplication.
     #   \returns \type{bool} True if the whole Cura app should continue running.
     @classmethod
-    def preStartUp(cls, parser = None, parsed_command_line = {}):
+    def preStartUp(cls, parser = None, parsed_command_line = None):
+        if parsed_command_line is None:
+            parsed_command_line = {}
+
         # Peek the arguments and look for the 'single-instance' flag.
         if not parser:
             parser = argparse.ArgumentParser(prog = "cura", add_help = False)  # pylint: disable=bad-whitespace
@@ -700,7 +722,6 @@ class CuraApplication(QtApplication):
         self._post_start_timer.timeout.connect(self._onPostStart)
         self._post_start_timer.start()
 
-        Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
         self.exec_()
 
     def _onPostStart(self):
@@ -788,6 +809,10 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager.createExtruderManager()
         return self._extruder_manager
+
+    @pyqtSlot(result = QObject)
+    def getCuraPackageManager(self, *args):
+        return self._cura_package_manager
 
     def getVariantManager(self, *args):
         return self._variant_manager
