@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-import os.path
 import re
 import configparser
 
@@ -29,7 +28,7 @@ from . import GlobalStack
 
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-from cura.ProfileReader import NoProfileException
+from cura.ReaderWriters.ProfileReader import NoProfileException
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -676,7 +675,7 @@ class CuraContainerRegistry(ContainerRegistry):
         return extruder_stack
 
     def _findQualityChangesContainerInCuraFolder(self, name):
-        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityChangesInstanceContainer)
 
         instance_container = None
 

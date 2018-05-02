@@ -10,7 +10,7 @@ from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-from cura.ProfileReader import ProfileReader, NoProfileException
+from cura.ReaderWriters.ProfileReader import ProfileReader, NoProfileException
 
 ##  A class that reads profile data from g-code files.
 #
