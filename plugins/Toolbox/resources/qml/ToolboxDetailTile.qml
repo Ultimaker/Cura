@@ -79,8 +79,8 @@ Item
             {
                 background: Rectangle
                 {
-                    implicitWidth: 96
-                    implicitHeight: 30
+                    implicitWidth: 96 * screenScaleFactor
+                    implicitHeight: 30 * screenScaleFactor
                     color:
                     {
                         if (installed)
