@@ -6,7 +6,6 @@ from typing import Dict
 
 from PyQt5.QtCore import Qt, pyqtProperty
 
-from UM.Application import Application
 from UM.Qt.ListModel import ListModel
 
 
@@ -43,7 +42,6 @@ class PackagesModel(ListModel):
         items = []
 
         for package in self._metadata:
-            print(package["author"])
             items.append({
                 "id":                package["package_id"],
                 "type":              package["package_type"],
