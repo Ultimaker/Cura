@@ -95,12 +95,10 @@ class CuraPackageManager(QObject):
 
         if package_id in self._to_install_package_dict:
             package_info = self._to_install_package_dict[package_id]["package_info"]
-            package_info["is_bundled"] = False
             return package_info
 
         if package_id in self._installed_package_dict:
             package_info = self._installed_package_dict.get(package_id)
-            package_info["is_bundled"] = False
             return package_info
 
         for section, packages in self.getAllInstalledPackagesInfo().items():
