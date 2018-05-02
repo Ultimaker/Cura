@@ -10,6 +10,7 @@ Item
 {
     id: tile
     property bool installed: toolbox.isInstalled(model.id)
+    property var packageData: model
     width: detailList.width - UM.Theme.getSize("wide_margin").width
     height: Math.max(UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
     Item
@@ -158,76 +159,11 @@ Item
         }
     }
 
-    Item
+    ToolboxCompatibilityChart
     {
-        id: supportedConfigsChart
+        id: compatibilityChart
         anchors.top: normalData.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        height: visible ? childrenRect.height : 0
         width: normalData.width
-        visible: model.type == "material" && model.supported_configs.length > 0
-        Label
-        {
-            id: compatibilityHeading
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            width: parent.width
-            text: catalog.i18nc("@label", "Compatibility")
-            wrapMode: Text.WordWrap
-            color: UM.Theme.getColor("text_medium")
-            font: UM.Theme.getFont("default")
-        }
-        Column
-        {
-            id: compatibilityLabels
-            anchors
-            {
-                top: compatibilityHeading.bottom
-                topMargin: UM.Theme.getSize("default_margin").height
-                bottomMargin: UM.Theme.getSize("default_margin").height
-            }
-            width: childrenRect.width
-            Label
-            {
-                text: catalog.i18nc("@label", "Machines") + ":"
-                font: UM.Theme.getFont("small")
-            }
-            Label
-            {
-                text: catalog.i18nc("@label", "Print Cores") + ":"
-                font: UM.Theme.getFont("small")
-            }
-            Label
-            {
-                text: catalog.i18nc("@label", "Quality Profiles") + ":"
-                font: UM.Theme.getFont("small")
-            }
-        }
-        Column
-        {
-            id: compatibilityValues
-            anchors
-            {
-                left: compatibilityLabels.right
-                leftMargin: UM.Theme.getSize("default_margin").height
-                top: compatibilityLabels.top
-                bottom: compatibilityLabels.bottom
-            }
-            Label
-            {
-                text: "Thingy"
-                font: UM.Theme.getFont("very_small")
-            }
-            Label
-            {
-                text: "Thingy"
-                font: UM.Theme.getFont("very_small")
-            }
-            Label
-            {
-                text: "Thingy"
-                font: UM.Theme.getFont("very_small")
-            }
-        }
     }
 
     Rectangle
@@ -235,7 +171,7 @@ Item
         color: UM.Theme.getColor("lining")
         width: tile.width
         height: UM.Theme.getSize("default_lining").height
-        anchors.top: supportedConfigsChart.bottom
+        anchors.top: compatibilityChart.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height + UM.Theme.getSize("wide_margin").height //Normal margin for spacing after chart, wide margin between items.
     }
     Connections

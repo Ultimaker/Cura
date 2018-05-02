@@ -21,6 +21,7 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
+from .ConfigsModel import ConfigsModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -373,6 +374,7 @@ class Toolbox(QObject, Extension):
                             # one is because there are not separate API calls
                             # for different kinds of showcases.
                             self._metadata[type] = json_data["data"]
+                            print(json_data["data"])
                             self._models[type].setMetadata(self._metadata[type])
 
                         # Do some auto filtering
