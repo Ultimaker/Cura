@@ -374,7 +374,6 @@ class Toolbox(QObject, Extension):
                             # one is because there are not separate API calls
                             # for different kinds of showcases.
                             self._metadata[type] = json_data["data"]
-                            print(json_data["data"])
                             self._models[type].setMetadata(self._metadata[type])
 
                         # Do some auto filtering
