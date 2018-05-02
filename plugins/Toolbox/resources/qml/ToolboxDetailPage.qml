@@ -56,6 +56,7 @@ Item
             }
             text: details.name
             font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height
