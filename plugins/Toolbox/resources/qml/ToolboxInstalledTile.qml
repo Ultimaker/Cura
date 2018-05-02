@@ -130,7 +130,7 @@ Item
                         color: UM.Theme.getColor("lining")
                     }
                 }
-                label: Text
+                label: Label
                 {
                     text: control.text
                     color: UM.Theme.getColor("text")
