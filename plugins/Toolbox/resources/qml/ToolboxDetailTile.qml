@@ -12,7 +12,7 @@ Item
     property bool installed: toolbox.isInstalled(model.id)
     property var packageData: model
     width: detailList.width - UM.Theme.getSize("wide_margin").width
-    height: normalData.height + supportedConfigsChart.height + 3 * UM.Theme.getSize("default_margin").height
+    height: normalData.height + compatibilityChart.height + 3 * UM.Theme.getSize("default_margin").height
     Item
     {
         id: normalData

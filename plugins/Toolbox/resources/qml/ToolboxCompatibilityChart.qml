@@ -36,8 +36,8 @@ Item
             Label
             {
                 anchors.verticalCenter: parent.verticalCenter
-                elide: styleData.elideMode
-                text: styleData.value
+                elide: styleData.elideMode || Text.ElideNone
+                text: styleData.value || ""
                 color: UM.Theme.getColor("text")
                 font: UM.Theme.getFont("default_bold")
             }
@@ -55,8 +55,8 @@ Item
             Label
             {
                 anchors.verticalCenter: parent.verticalCenter
-                elide: styleData.elideMode
-                text: styleData.value
+                elide: styleData.elideMode || Text.ElideNone
+                text: styleData.value || ""
                 color: UM.Theme.getColor("text_medium")
                 font: UM.Theme.getFont("default")
             }
@@ -67,8 +67,8 @@ Item
             Label
             {
                 anchors.verticalCenter: parent.verticalCenter
-                elide: styleData.elideMode
-                text: styleData.value
+                elide: styleData.elideMode || Text.ElideNone
+                text: styleData.value || ""
                 color: UM.Theme.getColor("text_medium")
                 font: UM.Theme.getFont("default")
             }
