@@ -16,6 +16,7 @@ from UM.Resources import Resources
 from UM.Version import Version
 
 class CuraPackageManager(QObject):
+    Version = 1
 
     # The prefix that's added to all files for an installed package to avoid naming conflicts with user created
     # files.
@@ -65,7 +66,8 @@ class CuraPackageManager(QObject):
         container_registry = self._application.getContainerRegistry()
         with container_registry.lockFile():
             with open(self._package_management_file_path, "w", encoding = "utf-8") as f:
-                data_dict = {"installed": self._installed_package_dict,
+                data_dict = {"version": CuraPackageManager.Version,
+                             "installed": self._installed_package_dict,
                              "to_remove": list(self._to_remove_package_set),
                              "to_install": self._to_install_package_dict}
                 data_dict["to_remove"] = list(data_dict["to_remove"])
@@ -93,19 +95,16 @@ class CuraPackageManager(QObject):
 
         if package_id in self._to_install_package_dict:
             package_info = self._to_install_package_dict[package_id]["package_info"]
-            package_info["is_bundled"] = False
             return package_info
 
         if package_id in self._installed_package_dict:
             package_info = self._installed_package_dict.get(package_id)
-            package_info["is_bundled"] = False
             return package_info
 
         for section, packages in self.getAllInstalledPackagesInfo().items():
             for package in packages:
                 if package["package_id"] == package_id:
-                    package_info = package
-                    return package_info
+                    return package
 
         return None
 
@@ -113,7 +112,7 @@ class CuraPackageManager(QObject):
         installed_package_id_set = set(self._installed_package_dict.keys()) | set(self._to_install_package_dict.keys())
         installed_package_id_set = installed_package_id_set.difference(self._to_remove_package_set)
 
-        managed_package_id_set = set(installed_package_id_set) | self._to_remove_package_set
+        managed_package_id_set = installed_package_id_set | self._to_remove_package_set
 
         # TODO: For absolutely no reason, this function seems to run in a loop
         # even though no loop is ever called with it.
@@ -184,46 +183,51 @@ class CuraPackageManager(QObject):
     # Schedules the given package file to be installed upon the next start.
     @pyqtSlot(str)
     def installPackage(self, filename: str) -> None:
-        # Get package information
-        package_info = self.getPackageInfo(filename)
-        package_id = package_info["package_id"]
-
         has_changes = False
-        # Check the delayed installation and removal lists first
-        if package_id in self._to_remove_package_set:
-            self._to_remove_package_set.remove(package_id)
-            has_changes = True
+        try:
+            # Get package information
+            package_info = self.getPackageInfo(filename)
+            package_id = package_info["package_id"]
 
-        # Check if it is installed
-        installed_package_info = self.getInstalledPackageInfo(package_info["package_id"])
-        to_install_package = installed_package_info is None  # Install if the package has not been installed
-        if installed_package_info is not None:
-            # Compare versions and only schedule the installation if the given package is newer
-            new_version = package_info["package_version"]
-            installed_version = installed_package_info["package_version"]
-            if Version(new_version) > Version(installed_version):
-                Logger.log("i", "Package [%s] version [%s] is newer than the installed version [%s], update it.",
-                           package_id, new_version, installed_version)
-                to_install_package = True
+            # Check the delayed installation and removal lists first
+            if package_id in self._to_remove_package_set:
+                self._to_remove_package_set.remove(package_id)
+                has_changes = True
 
-        if to_install_package:
-            Logger.log("i", "Package [%s] version [%s] is scheduled to be installed.",
-                       package_id, package_info["package_version"])
-            # Copy the file to cache dir so we don't need to rely on the original file to be present
-            package_cache_dir = os.path.join(os.path.abspath(Resources.getCacheStoragePath()), "cura_packages")
-            if not os.path.exists(package_cache_dir):
-                os.makedirs(package_cache_dir, exist_ok=True)
+            # Check if it is installed
+            installed_package_info = self.getInstalledPackageInfo(package_info["package_id"])
+            to_install_package = installed_package_info is None  # Install if the package has not been installed
+            if installed_package_info is not None:
+                # Compare versions and only schedule the installation if the given package is newer
+                new_version = package_info["package_version"]
+                installed_version = installed_package_info["package_version"]
+                if Version(new_version) > Version(installed_version):
+                    Logger.log("i", "Package [%s] version [%s] is newer than the installed version [%s], update it.",
+                               package_id, new_version, installed_version)
+                    to_install_package = True
 
-            target_file_path = os.path.join(package_cache_dir, package_id + ".curapackage")
-            shutil.copy2(filename, target_file_path)
+            if to_install_package:
+                # Need to use the lock file to prevent concurrent I/O issues.
+                with self._container_registry.lockFile():
+                    Logger.log("i", "Package [%s] version [%s] is scheduled to be installed.",
+                               package_id, package_info["package_version"])
+                    # Copy the file to cache dir so we don't need to rely on the original file to be present
+                    package_cache_dir = os.path.join(os.path.abspath(Resources.getCacheStoragePath()), "cura_packages")
+                    if not os.path.exists(package_cache_dir):
+                        os.makedirs(package_cache_dir, exist_ok=True)
 
-            self._to_install_package_dict[package_id] = {"package_info": package_info,
-                                                         "filename": target_file_path}
-            has_changes = True
+                    target_file_path = os.path.join(package_cache_dir, package_id + ".curapackage")
+                    shutil.copy2(filename, target_file_path)
 
-        self._saveManagementData()
-        if has_changes:
-            self.installedPackagesChanged.emit()
+                    self._to_install_package_dict[package_id] = {"package_info": package_info,
+                                                                 "filename": target_file_path}
+                    has_changes = True
+        except:
+            Logger.logException("c", "Failed to install package file '%s'", filename)
+        finally:
+            self._saveManagementData()
+            if has_changes:
+                self.installedPackagesChanged.emit()
 
     # Schedules the given package to be removed upon the next start.
     @pyqtSlot(str)

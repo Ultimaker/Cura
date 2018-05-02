@@ -7,13 +7,13 @@ import io #To serialise the preference files afterwards.
 from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
 
 
-##  Upgrades configurations from the state they were in at version 3.2 to the
-#   state they should be in at version 3.3.
+##  Upgrades configurations from the state they were in at version 3.3 to the
+#   state they should be in at version 3.4.
 class VersionUpgrade33to34(VersionUpgrade):
 
-    ##  Gets the version number from a CFG file in Uranium's 3.2 format.
+    ##  Gets the version number from a CFG file in Uranium's 3.3 format.
     #
-    #   Since the format may change, this is implemented for the 3.2 format only
+    #   Since the format may change, this is implemented for the 3.3 format only
     #   and needs to be included in the version upgrade system rather than
     #   globally in Uranium.
     #

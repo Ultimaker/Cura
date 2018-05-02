@@ -153,7 +153,7 @@ Item
                 }
                 else
                 {
-                    toolbox.uninstall( model.id )
+                    toolbox.uninstall(model.id)
                 }
             }
         }
