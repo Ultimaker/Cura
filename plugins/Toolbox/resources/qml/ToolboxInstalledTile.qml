@@ -89,6 +89,7 @@ Item
             horizontalAlignment: Text.AlignLeft
             onLinkActivated: Qt.openUrlExternally("mailto:" + model.author_email + "?Subject=Cura: " + model.name + " Plugin")
             color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
+            linkColor: UM.Theme.getColor("text_link")
         }
     }
     Column
