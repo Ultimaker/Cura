@@ -33,7 +33,8 @@ Item
             top: parent.top
             horizontalCenter: parent.horizontalCenter
         }
-        Image {
+        Image
+        {
             anchors.centerIn: parent
             width: UM.Theme.getSize("toolbox_thumbnail_large").width - 2 * UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("toolbox_thumbnail_large").height - 2 * UM.Theme.getSize("default_margin").height
