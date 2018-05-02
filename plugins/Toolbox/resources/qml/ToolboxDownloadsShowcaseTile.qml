@@ -9,7 +9,7 @@ import UM 1.1 as UM
 Item
 {
     width: UM.Theme.getSize("toolbox_thumbnail_large").width
-    height: childrenRect.height
+    height: thumbnail.height + packageName.height
     Rectangle
     {
         id: highlight
@@ -44,10 +44,11 @@ Item
     }
     Label
     {
+        id: packageName
         text: model.name
         anchors
         {
-            bottom: parent.bottom
+            top: thumbnail.bottom
             horizontalCenter: parent.horizontalCenter
         }
         verticalAlignment: Text.AlignVCenter

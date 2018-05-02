@@ -11,7 +11,7 @@ Item
     id: tile
     property bool installed: toolbox.isInstalled(model.id)
     width: detailList.width - UM.Theme.getSize("wide_margin").width
-    height: Math.max(UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
+    height: normalData.height + supportedConfigsChart.height + 3 * UM.Theme.getSize("default_margin").height
     Item
     {
         id: normalData
