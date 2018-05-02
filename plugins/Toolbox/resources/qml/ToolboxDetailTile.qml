@@ -66,7 +66,7 @@ Item
                 }
                 else
                 {
-                    if ( toolbox.isDownloading && toolbox.activePackage == model )
+                    if (toolbox.isDownloading && toolbox.activePackage == model)
                     {
                         return catalog.i18nc("@action:button", "Cancel")
                     }
@@ -76,21 +76,7 @@ Item
                     }
                 }
             }
-            enabled:
-            {
-                if (installed)
-                {
-                    return true
-                }
-                if ( toolbox.isDownloading )
-                {
-                    return toolbox.activePackage == model ? true : false
-                }
-                else
-                {
-                    return true
-                }
-            }
+            enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model) //Don't allow installing while another download is running.
             opacity: enabled ? 1.0 : 0.5
             style: ButtonStyle
             {
