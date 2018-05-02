@@ -112,7 +112,7 @@ class CuraPackageManager(QObject):
         installed_package_id_set = set(self._installed_package_dict.keys()) | set(self._to_install_package_dict.keys())
         installed_package_id_set = installed_package_id_set.difference(self._to_remove_package_set)
 
-        managed_package_id_set = set(installed_package_id_set) | self._to_remove_package_set
+        managed_package_id_set = installed_package_id_set | self._to_remove_package_set
 
         # TODO: For absolutely no reason, this function seems to run in a loop
         # even though no loop is ever called with it.
