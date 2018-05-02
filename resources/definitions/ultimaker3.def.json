@@ -154,6 +154,6 @@
         "wall_0_inset": { "value": "0" },
         "wall_line_width_x": { "value": "round(wall_line_width * 0.3 / 0.35, 2)" },
         "wall_thickness": { "value": "1" },
-        "zig_zaggify_infill": { "value": "True" }
+        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
     }
 }
