@@ -201,7 +201,11 @@ Rectangle
             // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here
         }
 
-        onCurrentIndexChanged: viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+        onCurrentIndexChanged:
+        {
+            if (model.getItem(currentIndex).id != undefined)
+                viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+        }
         currentIndex: getActiveIndex()
 
         // watch the active view proxy for changes made from the menu item

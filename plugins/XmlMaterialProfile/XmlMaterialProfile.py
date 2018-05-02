@@ -71,12 +71,14 @@ class XmlMaterialProfile(InstanceContainer):
 
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
-        root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
+        if root_material_container is not None:
+            root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
             container = node.getContainer()
-            container.setMetaDataEntry(key, value, apply_to_all = False)
+            if container is not None:
+                container.setMetaDataEntry(key, value, apply_to_all = False)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container

@@ -5,6 +5,7 @@ from typing import Optional
 
 from collections import OrderedDict
 
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer
 
@@ -30,17 +31,20 @@ class ContainerNode:
     def getChildNode(self, child_key: str) -> Optional["ContainerNode"]:
         return self.children_map.get(child_key)
 
-    def getContainer(self) -> "InstanceContainer":
+    def getContainer(self) -> Optional["InstanceContainer"]:
         if self.metadata is None:
-            raise RuntimeError("Cannot get container for a ContainerNode without metadata")
+            Logger.log("e", "Cannot get container for a ContainerNode without metadata.")
+            return None
 
         if self.container is None:
             container_id = self.metadata["id"]
-            Logger.log("i", "Lazy-loading container [%s]", container_id)
             from UM.Settings.ContainerRegistry import ContainerRegistry
             container_list = ContainerRegistry.getInstance().findInstanceContainers(id = container_id)
             if not container_list:
-                raise RuntimeError("Failed to lazy-load container [%s], cannot find it" % container_id)
+                Logger.log("e", "Failed to lazy-load container [{container_id}]. Cannot find it.".format(container_id = container_id))
+                error_message = ConfigurationErrorMessage.getInstance()
+                error_message.addFaultyContainers(container_id)
+                return None
             self.container = container_list[0]
 
         return self.container

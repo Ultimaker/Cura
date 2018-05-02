@@ -271,9 +271,9 @@ UM.MainWindow
             Menu
             {
                 id: plugin_menu
-                title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
+                title: catalog.i18nc("@title:menu menubar:toplevel", "&Toolbox")
 
-                MenuItem { action: Cura.Actions.browsePlugins }
+                MenuItem { action: Cura.Actions.browsePackages }
             }
 
             Menu
@@ -323,31 +323,6 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
-                        // As the drop area also supports plugins, first check if it's a plugin that was dropped.
-                        if (drop.urls.length == 1)
-                        {
-                            if (PluginRegistry.isPluginFile(drop.urls[0]))
-                            {
-                                // Try to install plugin & close.
-                                var result = PluginRegistry.installPlugin(drop.urls[0]);
-                                pluginInstallDialog.text = result.message;
-                                if (result.status == "ok")
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Information;
-                                }
-                                else if (result.status == "duplicate")
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Warning;
-                                }
-                                else
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Critical;
-                                }
-                                pluginInstallDialog.open();
-                                return;
-                            }
-                        }
-
                         openDialog.handleOpenFileUrls(drop.urls);
                     }
                 }
@@ -669,9 +644,9 @@ UM.MainWindow
     // show the plugin browser dialog
     Connections
     {
-        target: Cura.Actions.browsePlugins
+        target: Cura.Actions.browsePackages
         onTriggered: {
-            curaExtensions.callExtensionMethod("Plugin Browser", "browsePlugins")
+            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
         }
     }
 
@@ -812,14 +787,6 @@ UM.MainWindow
                 openFilesIncludingProjectsDialog.loadModelFiles(fileUrlList.slice());
             }
         }
-    }
-
-    MessageDialog
-    {
-        id: pluginInstallDialog
-        title: catalog.i18nc("@window:title", "Install Plugin");
-        standardButtons: StandardButton.Ok
-        modality: Qt.ApplicationModal
     }
 
     MessageDialog {

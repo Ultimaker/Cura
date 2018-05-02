@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -22,12 +22,10 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from UM.i18n import i18nCatalog
-
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ExtruderStack import ExtruderStack
+from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
@@ -98,9 +96,10 @@ class ContainerManager(QObject):
             entry_value = root
 
         container = material_group.root_material_node.getContainer()
-        container.setMetaDataEntry(entry_name, entry_value)
-        if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
-            container.metaDataChanged.emit(container)
+        if container is not None:
+            container.setMetaDataEntry(entry_name, entry_value)
+            if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
+                container.metaDataChanged.emit(container)
 
     ##  Set a setting property of the specified container.
     #
@@ -288,7 +287,9 @@ class ContainerManager(QObject):
             with open(file_url, "rt", encoding = "utf-8") as f:
                 container.deserialize(f.read())
         except PermissionError:
-            return {"status": "error", "message": "Permission denied when trying to read the file"}
+            return {"status": "error", "message": "Permission denied when trying to read the file."}
+        except ContainerFormatError:
+            return {"status": "error", "Message": "The material file appears to be corrupt."}
         except Exception as ex:
             return {"status": "error", "message": str(ex)}
 
@@ -377,7 +378,8 @@ class ContainerManager(QObject):
         # NOTE: We only need to set the root material container because XmlMaterialProfile.setMetaDataEntry() will
         # take care of the derived containers too
         container = material_group.root_material_node.getContainer()
-        container.setMetaDataEntry("GUID", new_guid)
+        if container is not None:
+            container.setMetaDataEntry("GUID", new_guid)
 
     ##  Get the singleton instance for this class.
     @classmethod
@@ -466,5 +468,5 @@ class ContainerManager(QObject):
         if not path:
             return
 
-        container_list = [n.getContainer() for n in quality_changes_group.getAllNodes()]
+        container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
         self._container_registry.exportQualityProfile(container_list, path, file_type)

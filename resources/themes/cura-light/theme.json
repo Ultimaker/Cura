@@ -68,6 +68,9 @@
     },
 
     "colors": {
+
+
+
         "sidebar": [255, 255, 255, 255],
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [0, 0, 0, 192],
@@ -92,6 +95,7 @@
         "text_hover": [70, 84, 113, 255],
         "text_pressed": [12, 169, 227, 255],
         "text_subtext": [0, 0, 0, 255],
+        "text_medium": [128, 128, 128, 255],
         "text_emphasis": [255, 255, 255, 255],
         "text_scene": [31, 36, 39, 255],
         "text_scene_hover": [70, 84, 113, 255],
@@ -318,11 +322,15 @@
 
     "sizes": {
         "window_minimum_size": [70, 50],
-        "window_margin": [1.0, 1.0],
-        "default_margin": [1.0, 1.0],
+
         "default_lining": [0.08, 0.08],
         "default_arrow": [0.8, 0.8],
         "logo": [7.6, 1.6],
+
+        "default_margin": [1.0, 1.0],
+        "wide_margin": [2.0, 2.0],
+        "narrow_margin": [0.5, 0.5],
+        "window_margin": [1.0, 1.0],
 
         "extruder_button_material_margin": [0.70, 0.9],
         "extruder_button_material": [0.75, 0.75],
@@ -433,6 +441,24 @@
         "objects_menu_size": [20, 40],
         "objects_menu_size_collapsed": [20, 17],
         "build_plate_selection_size": [15, 5],
-        "objects_menu_button": [0.3, 2.7]
+        "objects_menu_button": [0.3, 2.7],
+
+        "toolbox_thumbnail_small": [6.0, 6.0],
+        "toolbox_thumbnail_medium": [8.0, 8.0],
+        "toolbox_thumbnail_large": [12.0, 12.0],
+        "toolbox_footer": [1.0, 4.5],
+        "toolbox_footer_button": [8.0, 2.5],
+        "toolbox_showcase_spacing": [1.0, 1.0],
+        "toolbox_header_tab": [8.0, 4.0],
+        "toolbox_detail_header": [1.0, 12.0],
+        "toolbox_detail_tile": [1.0, 8.0],
+        "toolbox_back_column": [6.0, 1.0],
+        "toolbox_back_button": [4.0, 2.0],
+        "toolbox_installed_tile": [1.0, 8.0],
+        "toolbox_property_label": [1.0, 2.0],
+        "toolbox_heading_label": [1.0, 4.0],
+        "toolbox_header": [1.0, 4.0],
+        "toolbox_action_button": [8.0, 2.5],
+        "toolbox_progress_bar": [8.0, 0.5]
     }
 }
