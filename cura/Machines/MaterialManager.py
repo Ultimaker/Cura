@@ -205,14 +205,22 @@ class MaterialManager(QObject):
             else:
                 # this material is variant-specific, so we save it in a variant-specific node under the
                 # machine-specific node
-                if variant_name not in machine_node.children_map:
-                    machine_node.children_map[variant_name] = MaterialNode()
 
-                variant_node = machine_node.children_map[variant_name]
-                if root_material_id in variant_node.material_map: #We shouldn't have duplicated variant-specific materials for the same machine.
-                    ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
-                    continue
-                variant_node.material_map[root_material_id] = MaterialNode(material_metadata)
+                # Check first if the variant exist in the manager
+                existing_variant = self._application.getVariantManager().getVariantNode(definition, variant_name)
+                if existing_variant is not None:
+                    if variant_name not in machine_node.children_map:
+                        machine_node.children_map[variant_name] = MaterialNode()
+
+                    variant_node = machine_node.children_map[variant_name]
+                    if root_material_id in variant_node.material_map:  # We shouldn't have duplicated variant-specific materials for the same machine.
+                        ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
+                        continue
+                    variant_node.material_map[root_material_id] = MaterialNode(material_metadata)
+                else:
+                    # Add this container id to the wrong containers list in the registry
+                    Logger.log("w", "Not adding {id} to the material manager because the variant does not exist.".format(id = material_metadata["id"]))
+                    self._container_registry.wrong_container_ids.append(material_metadata["id"])
 
         self.materialsUpdated.emit()
 
