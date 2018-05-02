@@ -9,7 +9,7 @@ import UM 1.1 as UM
 Item
 {
     id: page
-    property var details: base.selection
+    property var details: base.selection || {}
     anchors.fill: parent
     ToolboxBackColumn
     {
@@ -54,7 +54,7 @@ Item
                 rightMargin: UM.Theme.getSize("wide_margin").width
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
-            text: details.name
+            text: details.name || ""
             font: UM.Theme.getFont("large")
             wrapMode: Text.WordWrap
             width: parent.width
@@ -63,7 +63,7 @@ Item
         Label
         {
             id: description
-            text: details.description
+            text: details.description || ""
             anchors
             {
                 top: title.bottom
