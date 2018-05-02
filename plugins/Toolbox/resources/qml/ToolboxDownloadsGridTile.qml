@@ -56,14 +56,9 @@ Item
             Label
             {
                 id: info
-                text:
-                {
-                    if (model.description.length > 50)
-                    {
-                        return model.description.substring(0, 50) + "..."
-                    }
-                    return model.description
-                }
+                text: model.description
+                maximumLineCount: 2
+                elide: Text.ElideRight
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: UM.Theme.getColor("text_medium")
