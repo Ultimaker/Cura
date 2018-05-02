@@ -11,10 +11,7 @@ Item
     id: tile
     property bool installed: toolbox.isInstalled(model.id)
     width: detailList.width - UM.Theme.getSize("wide_margin").width
-    // TODO: Without this line, every instance of this object has 0 height. With
-    // it, QML spits out tons of bugs claiming a binding loop (not true). Why?
-    // Because QT is garbage.
-    height: Math.max( UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
+    height: Math.max(UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
     Item
     {
         id: normalData
@@ -40,21 +37,9 @@ Item
         {
             anchors.top: packageName.bottom
             width: parent.width
-            text:
-            {
-                if (model.description.length > 235)
-                {
-                    if (model.description.substring(234, 235) == " ")
-                    {
-                        return model.description.substring(0, 234) + "..."
-                    }
-                    else
-                    {
-                        return model.description.substring(0, 235) + "..."
-                    }
-                }
-                return model.description
-            }
+            text: model.description
+            maximumLineCount: 3
+            elide: Text.ElideRight
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
@@ -78,7 +63,7 @@ Item
                 }
                 else
                 {
-                    if ( toolbox.isDownloading && toolbox.activePackage == model )
+                    if (toolbox.isDownloading && toolbox.activePackage == model)
                     {
                         return catalog.i18nc("@action:button", "Cancel")
                     }
@@ -88,21 +73,7 @@ Item
                     }
                 }
             }
-            enabled:
-            {
-                if (installed)
-                {
-                    return true
-                }
-                if ( toolbox.isDownloading )
-                {
-                    return toolbox.activePackage == model ? true : false
-                }
-                else
-                {
-                    return true
-                }
-            }
+            enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model) //Don't allow installing while another download is running.
             opacity: enabled ? 1.0 : 0.5
             style: ButtonStyle
             {
@@ -264,7 +235,8 @@ Item
         color: UM.Theme.getColor("lining")
         width: tile.width
         height: UM.Theme.getSize("default_lining").height
-        anchors.bottom: tile.bottom
+        anchors.top: supportedConfigsChart.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height + UM.Theme.getSize("wide_margin").height //Normal margin for spacing after chart, wide margin between items.
     }
     Connections
     {

@@ -46,6 +46,11 @@ Window
                 id: viewLoading
                 visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "loading"
             }
+            ToolboxErrorPage
+            {
+                id: viewErrored
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "errored"
+            }
             ToolboxDownloadsPage
             {
                 id: viewDownloads

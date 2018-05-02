@@ -314,8 +314,9 @@ class Toolbox(QObject, Extension):
         return
 
     def resetDownload(self):
-        self._download_reply.abort()
-        self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+        if self._download_reply:
+            self._download_reply.abort()
+            self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
         self._download_reply = None
         self._download_request = None
         self.setDownloadProgress(0)
@@ -333,11 +334,13 @@ class Toolbox(QObject, Extension):
 
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Got a timeout.")
+            self.setViewPage("errored")
             self.resetDownload()
             return
 
         if reply.error() == QNetworkReply.HostNotFoundError:
             Logger.log("w", "Unable to reach server.")
+            self.setViewPage("errored")
             self.resetDownload()
             return
 
