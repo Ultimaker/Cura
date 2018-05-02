@@ -16,6 +16,7 @@ from UM.Resources import Resources
 from UM.Version import Version
 
 class CuraPackageManager(QObject):
+    Version = 1
 
     # The prefix that's added to all files for an installed package to avoid naming conflicts with user created
     # files.
@@ -65,7 +66,8 @@ class CuraPackageManager(QObject):
         container_registry = self._application.getContainerRegistry()
         with container_registry.lockFile():
             with open(self._package_management_file_path, "w", encoding = "utf-8") as f:
-                data_dict = {"installed": self._installed_package_dict,
+                data_dict = {"version": CuraPackageManager.Version,
+                             "installed": self._installed_package_dict,
                              "to_remove": list(self._to_remove_package_set),
                              "to_install": self._to_install_package_dict}
                 data_dict["to_remove"] = list(data_dict["to_remove"])
