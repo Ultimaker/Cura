@@ -254,7 +254,7 @@ class CuraPackageManager(QObject):
                 package_dir = os.path.join(root, dir_name, package_id)
                 if os.path.exists(package_dir):
                     Logger.log("i", "Removing '%s' for package [%s]", package_dir, package_id)
-                shutil.rmtree(package_dir)
+                    shutil.rmtree(package_dir)
             break
 
     # Installs all files associated with the given package.

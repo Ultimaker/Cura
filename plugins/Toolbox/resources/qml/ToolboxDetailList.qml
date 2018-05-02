@@ -18,7 +18,7 @@ Item
         {
             anchors
             {
-                right: detailList.right
+                right: parent.right
                 topMargin: UM.Theme.getSize("wide_margin").height
                 bottomMargin: UM.Theme.getSize("wide_margin").height
                 top: parent.top

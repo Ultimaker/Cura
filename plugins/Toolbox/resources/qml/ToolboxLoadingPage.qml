@@ -13,7 +13,7 @@ Rectangle
     color: "transparent"
     Label
     {
-        text: "Fetching packages..."
+        text: catalog.i18nc("@info", "Fetching packages...")
         anchors
         {
             centerIn: parent

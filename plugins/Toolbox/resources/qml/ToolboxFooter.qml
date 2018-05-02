@@ -15,7 +15,7 @@ Item
     Label
     {
         visible: toolbox.restartRequired
-        text: "You will need to restart Cura before changes in plugins have effect."
+        text: catalog.i18nc("@info", "You will need to restart Cura before changes in plugins have effect.")
         height: Math.floor(UM.Theme.getSize("toolbox_footer_button").height)
         verticalAlignment: Text.AlignVCenter
         anchors
@@ -30,7 +30,7 @@ Item
     Button
     {
         id: restartButton
-        text: "Quit Cura"
+        text: catalog.i18nc("@info:button", "Quit Cura")
         anchors
         {
             top: parent.top

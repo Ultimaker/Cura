@@ -310,7 +310,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def cancelDownload(self):
         Logger.log("i", "Toolbox: User cancelled the download of a plugin.")
-        self.resetDownload();
+        self.resetDownload()
         return
 
     def resetDownload(self):
@@ -338,6 +338,7 @@ class Toolbox(QObject, Extension):
 
         if reply.error() == QNetworkReply.HostNotFoundError:
             Logger.log("w", "Unable to reach server.")
+            self.resetDownload()
             return
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
@@ -363,7 +364,6 @@ class Toolbox(QObject, Extension):
                             self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
                             self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
                             self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
-                            print("MATERIAL SHOWCASE", self._metadata["materials_showcase"])
                         else:
                             # ...until here.
                             # This hack arises for multiple reasons but the main
