@@ -30,11 +30,11 @@ Button
             text: control.text
             color:
             {
-                if( control.hovered )
+                if(control.hovered)
                 {
                     return UM.Theme.getColor("topbar_button_text_hovered");
                 }
-                if( control.active )
+                if(control.active)
                 {
                     return UM.Theme.getColor("topbar_button_text_active");
                 }
