@@ -124,11 +124,11 @@ Item
                 {
                     if (details.author_email)
                     {
-                        return "<a href=\"mailto:"+details.author_email+"?Subject=Cura: "+details.name+"\">"+details.author_name+"</a>"
+                        return "<a href=\"mailto:" + details.author_email+"?Subject=Cura: " + details.name + "\">" + details.author_name + "</a>"
                     }
                     else
                     {
-                        return "<a href=\""+details.website+"\">"+details.author_name+"</a>"
+                        return "<a href=\"" + details.website + "\">" + details.author_name + "</a>"
                     }
                 }
                 font: UM.Theme.getFont("very_small")
