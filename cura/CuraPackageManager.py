@@ -15,6 +15,7 @@ from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
 
+
 class CuraPackageManager(QObject):
     Version = 1
 
