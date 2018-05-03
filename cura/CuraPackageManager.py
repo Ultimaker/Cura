@@ -190,6 +190,8 @@ class CuraPackageManager(QObject):
         try:
             # Get package information
             package_info = self.getPackageInfo(filename)
+            if not package_info:
+                return
             package_id = package_info["package_id"]
 
             # Check the delayed installation and removal lists first
@@ -282,30 +284,28 @@ class CuraPackageManager(QObject):
             self._purgePackage(package_id)
 
         # Install the package
-        archive = zipfile.ZipFile(filename, "r")
+        with zipfile.ZipFile(filename, "r") as archive:
 
-        temp_dir = tempfile.TemporaryDirectory()
-        archive.extractall(temp_dir.name)
+            temp_dir = tempfile.TemporaryDirectory()
+            archive.extractall(temp_dir.name)
 
-        from cura.CuraApplication import CuraApplication
-        installation_dirs_dict = {
-            "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
-            "quality": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
-            "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
-        }
+            from cura.CuraApplication import CuraApplication
+            installation_dirs_dict = {
+                "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
+                "quality": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
+                "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
+            }
 
-        for sub_dir_name, installation_root_dir in installation_dirs_dict.items():
-            src_dir_path = os.path.join(temp_dir.name, "files", sub_dir_name)
-            dst_dir_path = os.path.join(installation_root_dir, package_id)
+            for sub_dir_name, installation_root_dir in installation_dirs_dict.items():
+                src_dir_path = os.path.join(temp_dir.name, "files", sub_dir_name)
+                dst_dir_path = os.path.join(installation_root_dir, package_id)
 
-            if not os.path.exists(src_dir_path):
-                continue
+                if not os.path.exists(src_dir_path):
+                    continue
 
-            # Need to rename the container files so they don't get ID conflicts
-            to_rename_files = sub_dir_name not in ("plugins",)
-            self.__installPackageFiles(package_id, src_dir_path, dst_dir_path, need_to_rename_files= to_rename_files)
-
-        archive.close()
+                # Need to rename the container files so they don't get ID conflicts
+                to_rename_files = sub_dir_name not in ("plugins",)
+                self.__installPackageFiles(package_id, src_dir_path, dst_dir_path, need_to_rename_files= to_rename_files)
 
         # Remove the file
         os.remove(filename)
@@ -325,16 +325,15 @@ class CuraPackageManager(QObject):
 
     # Gets package information from the given file.
     def getPackageInfo(self, filename: str) -> dict:
-        archive = zipfile.ZipFile(filename, "r")
-        try:
-            # All information is in package.json
-            with archive.open("package.json", "r") as f:
-                package_info_dict = json.loads(f.read().decode("utf-8"))
-                return package_info_dict
-        except Exception as e:
-            raise RuntimeError("Could not get package information from file '%s': %s" % (filename, e))
-        finally:
-            archive.close()
+        with zipfile.ZipFile(filename, "r") as archive:
+            try:
+                # All information is in package.json
+                with archive.open("package.json", "r") as f:
+                    package_info_dict = json.loads(f.read().decode("utf-8"))
+                    return package_info_dict
+            except Exception as e:
+                Logger.logException("Could not get package information from file '%s': %s" % (filename, e))
+                return {}
 
     # Gets the license file content if present in the given package file.
     # Returns None if there is no license file found.

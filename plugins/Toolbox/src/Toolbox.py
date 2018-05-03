@@ -420,10 +420,9 @@ class Toolbox(QObject, Extension):
 
     def _onDownloadComplete(self, file_path: str):
         Logger.log("i", "Toolbox: Download complete.")
-        try:
-            package_info = self._package_manager.getPackageInfo(file_path)
-        except:
-            Logger.logException("w", "Toolbox: Package file [%s] was not a valid CuraPackage.", file_path)
+        package_info = self._package_manager.getPackageInfo(file_path)
+        if not package_info:
+            Logger.log("w", "Toolbox: Package file [%s] was not a valid CuraPackage.", file_path)
             return
 
         license_content = self._package_manager.getPackageLicense(file_path)
@@ -433,8 +432,6 @@ class Toolbox(QObject, Extension):
 
         self.install(file_path)
         return
-
-
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
