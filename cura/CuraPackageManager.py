@@ -25,7 +25,7 @@ class CuraPackageManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._application = parent
+        self._application = Application.getInstance()
         self._container_registry = self._application.getContainerRegistry()
         self._plugin_registry = self._application.getPluginRegistry()
 
