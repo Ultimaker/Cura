@@ -139,6 +139,9 @@ class CuraPackageManager(QObject):
         # Also get all bundled plugins
         all_metadata = self._plugin_registry.getAllMetaData()
         for item in all_metadata:
+            if item == {}:
+                continue
+
             plugin_package_info = self.__convertPluginMetadataToPackageMetadata(item)
             # Only gather the bundled plugins here.
             package_id = plugin_package_info["package_id"]
