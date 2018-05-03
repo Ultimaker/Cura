@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, Dict, Any
 import json
 import os
 import shutil
@@ -324,23 +324,22 @@ class CuraPackageManager(QObject):
                 os.rename(old_file_path, new_file_path)
 
     # Gets package information from the given file.
-    def getPackageInfo(self, filename: str) -> dict:
-        with zipfile.ZipFile(filename, "r") as archive:
+    def getPackageInfo(self, filename: str) -> Dict[str, Any]:
+        with zipfile.ZipFile(filename) as archive:
             try:
                 # All information is in package.json
-                with archive.open("package.json", "r") as f:
+                with archive.open("package.json") as f:
                     package_info_dict = json.loads(f.read().decode("utf-8"))
                     return package_info_dict
             except Exception as e:
-                Logger.logException("Could not get package information from file '%s': %s" % (filename, e))
+                Logger.logException("w", "Could not get package information from file '%s': %s" % (filename, e))
                 return {}
 
     # Gets the license file content if present in the given package file.
     # Returns None if there is no license file found.
     def getPackageLicense(self, filename: str) -> Optional[str]:
         license_string = None
-        archive = zipfile.ZipFile(filename)
-        try:
+        with zipfile.ZipFile(filename) as archive:
             # Go through all the files and use the first successful read as the result
             for file_info in archive.infolist():
                 is_dir = lambda file_info: file_info.filename.endswith('/')
@@ -350,7 +349,7 @@ class CuraPackageManager(QObject):
                 filename_parts = os.path.basename(file_info.filename.lower()).split(".")
                 stripped_filename = filename_parts[0]
                 if stripped_filename in ("license", "licence"):
-                    Logger.log("i", "Found potential license file '%s'", file_info.filename)
+                    Logger.log("d", "Found potential license file '%s'", file_info.filename)
                     try:
                         with archive.open(file_info.filename, "r") as f:
                             data = f.read()
@@ -360,8 +359,4 @@ class CuraPackageManager(QObject):
                         Logger.logException("e", "Failed to load potential license file '%s' as text file.",
                                             file_info.filename)
                         license_string = None
-        except Exception as e:
-            raise RuntimeError("Could not get package license from file '%s': %s" % (filename, e))
-        finally:
-            archive.close()
         return license_string
