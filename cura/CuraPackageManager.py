@@ -15,6 +15,28 @@ from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
 
+BUNDLED = [
+    "DagomaChromatikPLA",
+    "FABtotumABS",
+    "FABtotumNylon",
+    "FABtotumPLA",
+    "FABtotumTPU",
+    "FiberlogyHDPLA",
+    "Filo3DPLA",
+    "IMADE3DJellyBOXPETG",
+    "IMADE3DJellyBOXPLA",
+    "UltimakerABS",
+    "UltimakerCPE",
+    "UltimakerNylon",
+    "UltimakerPC",
+    "UltimakerPLA",
+    "UltimakerPVA",
+    "VertexDeltaABS",
+    "VertexDeltaPET",
+    "VertexDeltaPLA",
+    "VertexDeltaTPU"
+]
+
 class CuraPackageManager(QObject):
     Version = 1
 
@@ -114,8 +136,7 @@ class CuraPackageManager(QObject):
 
         managed_package_id_set = installed_package_id_set | self._to_remove_package_set
 
-        # TODO: For absolutely no reason, this function seems to run in a loop
-        # even though no loop is ever called with it.
+        # TODO: This function seems to run in a loop even though no loop is ever called with it.
 
         # map of <package_type> -> <package_id> -> <package_info>
         installed_packages_dict = {}
@@ -136,6 +157,31 @@ class CuraPackageManager(QObject):
             # We also need to get information from the plugin registry such as if a plugin is active
             package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
 
+        # HACK: This is to know which packages are bundled and therefore always installed.
+        for package_id in BUNDLED:
+            package_info = {
+                "package_id": package_id,
+                "package_type": "material",
+                "package_version": "1.0.0",
+                "description": "",
+                "cura_version": 4,
+                "website": "",
+                "display_name": package_id,
+                "author": {
+                    "author_id": "Ultimaker",
+                    "display_name": "Ultimaker B.V.",
+                    "email": "materials@ultimaker.com",
+                    "website": "http://www.ultimaker.com/materials"
+                },
+                "tags": [],
+                "is_active": True,
+                "is_bundled": True
+            }
+            package_type = package_info["package_type"]
+            if package_type not in installed_packages_dict:
+                installed_packages_dict[package_type] = []
+            installed_packages_dict[package_type].append( package_info )
+
         # Also get all bundled plugins
         all_metadata = self._plugin_registry.getAllMetaData()
         for item in all_metadata:
@@ -147,7 +193,7 @@ class CuraPackageManager(QObject):
             if package_id in Application.getInstance().getRequiredPlugins():
                 continue
 
-            plugin_package_info["is_bundled"] = True if plugin_package_info["author"]["display_name"] == "Ultimaker B.V." else False
+            plugin_package_info["is_bundled"] = plugin_package_info["package_id"] in BUNDLED
             plugin_package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
             package_type = "plugin"
             if package_type not in installed_packages_dict:
@@ -172,7 +218,7 @@ class CuraPackageManager(QObject):
                 "email": "",
                 "website": "",
             },
-            "tags": ["plugin"],
+            "tags": ["plugin"]
         }
         return package_metadata
 
