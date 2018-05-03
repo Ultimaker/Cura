@@ -21,6 +21,7 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
+from .ConfigsModel import ConfigsModel
 
 i18n_catalog = i18nCatalog("cura")
 

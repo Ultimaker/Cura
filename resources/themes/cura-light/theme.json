@@ -459,6 +459,7 @@
         "toolbox_heading_label": [1.0, 4.0],
         "toolbox_header": [1.0, 4.0],
         "toolbox_action_button": [8.0, 2.5],
-        "toolbox_progress_bar": [8.0, 0.5]
+        "toolbox_progress_bar": [8.0, 0.5],
+        "toolbox_chart_row": [1.0, 2.0]
     }
 }

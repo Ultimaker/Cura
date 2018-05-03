@@ -104,7 +104,7 @@ Item
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             Label
             {
-                text: details.version
+                text: details.version || catalog.i18nc("@label", "Unknown")
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
             }
