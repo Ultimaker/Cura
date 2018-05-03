@@ -341,7 +341,8 @@ class CuraPackageManager(QObject):
         try:
             # Go through all the files and use the first successful read as the result
             for file_info in archive.infolist():
-                if file_info.is_dir() or not file_info.filename.startswith("files/"):
+                is_dir = lambda file_info: file_info.filename.endswith('/')
+                if is_dir or not file_info.filename.startswith("files/"):
                     continue
 
                 filename_parts = os.path.basename(file_info.filename.lower()).split(".")
