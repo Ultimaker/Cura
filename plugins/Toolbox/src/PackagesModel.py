@@ -5,9 +5,8 @@ import re
 from typing import Dict
 
 from PyQt5.QtCore import Qt, pyqtProperty
-
 from UM.Qt.ListModel import ListModel
-
+from .ConfigsModel import ConfigsModel
 
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
@@ -29,7 +28,8 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 11, "download_url")
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
-        self.addRoleName(Qt.UserRole + 14, "supported_configs")
+        self.addRoleName(Qt.UserRole + 14, "has_configs")
+        self.addRoleName(Qt.UserRole + 15, "supported_configs")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -42,6 +42,16 @@ class PackagesModel(ListModel):
         items = []
 
         for package in self._metadata:
+
+            has_configs = False
+            configs_model = None
+            if "data" in package:
+                if "supported_configs" in package["data"]:
+                    if len(package["data"]["supported_configs"]) > 0:
+                        has_configs = True
+                        configs_model = ConfigsModel()
+                        configs_model.setConfigs(package["data"]["supported_configs"])
+
             items.append({
                 "id":                package["package_id"],
                 "type":              package["package_type"],
@@ -56,7 +66,8 @@ class PackagesModel(ListModel):
                 "download_url":      package["download_url"] if "download_url" in package else None,
                 "last_updated":      package["last_updated"] if "last_updated" in package else None,
                 "is_bundled":        package["is_bundled"] if "is_bundled" in package else False,
-                "supported_configs": package["supported_configs"] if "supported_configs" in package else []
+                "has_configs":       has_configs,
+                "supported_configs": configs_model
             })
 
         # Filter on all the key-word arguments.

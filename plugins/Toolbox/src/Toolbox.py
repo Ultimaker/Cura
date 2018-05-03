@@ -21,6 +21,7 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
+from .ConfigsModel import ConfigsModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -300,7 +301,7 @@ class Toolbox(QObject, Extension):
         Logger.log("i", "Toolbox: Attempting to download & install package from %s.", url)
         url = QUrl(url)
         self._download_request = QNetworkRequest(url)
-        self._download_request.setAttribute(QNetworkRequest.RedirectPolicyAttribute, QNetworkRequest.NoLessSafeRedirectPolicy)
+        self._download_request.setAttribute(QNetworkRequest.FollowRedirectsAttribute, True)
         self._download_request.setRawHeader(*self._request_header)
         self._download_reply = self._network_manager.get(self._download_request)
         self.setDownloadProgress(0)
