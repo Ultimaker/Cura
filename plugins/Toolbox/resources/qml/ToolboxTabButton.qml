@@ -25,7 +25,7 @@ Button
                 height: UM.Theme.getSize("sidebar_header_highlight").height
             }
         }
-        label: Text
+        label: Label
         {
             text: control.text
             color:

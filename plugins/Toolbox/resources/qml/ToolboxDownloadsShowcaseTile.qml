@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -9,7 +9,7 @@ import UM 1.1 as UM
 Item
 {
     width: UM.Theme.getSize("toolbox_thumbnail_large").width
-    height: childrenRect.height
+    height: thumbnail.height + packageName.height
     Rectangle
     {
         id: highlight
@@ -40,14 +40,16 @@ Item
             height: UM.Theme.getSize("toolbox_thumbnail_large").height - 2 * UM.Theme.getSize("default_margin").height
             fillMode: Image.PreserveAspectFit
             source: model.icon_url || "../images/logobot.svg"
+            mipmap: true
         }
     }
     Label
     {
+        id: packageName
         text: model.name
         anchors
         {
-            bottom: parent.bottom
+            top: thumbnail.bottom
             horizontalCenter: parent.horizontalCenter
         }
         verticalAlignment: Text.AlignVCenter
