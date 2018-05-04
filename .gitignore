@@ -14,6 +14,7 @@ CuraEngine.exe
 LC_MESSAGES
 .cache
 *.qmlc
+.mypy_cache
 
 #MacOS
 .DS_Store
