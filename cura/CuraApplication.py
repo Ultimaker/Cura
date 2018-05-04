@@ -270,6 +270,7 @@ class CuraApplication(QtApplication):
             "PrepareStage",
             "MonitorStage",
             "LocalFileOutputDevice",
+            "LocalContainerProvider",
 
             # Views:
             "SimpleView",

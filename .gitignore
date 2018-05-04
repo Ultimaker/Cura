@@ -38,6 +38,7 @@ plugins/cura-god-mode-plugin
 plugins/cura-siemensnx-plugin
 plugins/CuraBlenderPlugin
 plugins/CuraCloudPlugin
+plugins/CuraDrivePlugin
 plugins/CuraLiveScriptingPlugin
 plugins/CuraOpenSCADPlugin
 plugins/CuraPrintProfileCreator

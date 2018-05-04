@@ -220,7 +220,7 @@ class MaterialManager(QObject):
                 else:
                     # Add this container id to the wrong containers list in the registry
                     Logger.log("w", "Not adding {id} to the material manager because the variant does not exist.".format(id = material_metadata["id"]))
-                    self._container_registry.wrong_container_ids.append(material_metadata["id"])
+                    self._container_registry.addWrongContainerId(material_metadata["id"])
 
         self.materialsUpdated.emit()
 

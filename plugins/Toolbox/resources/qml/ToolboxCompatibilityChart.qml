@@ -8,6 +8,7 @@ import UM 1.1 as UM
 
 Item
 {
+    property var packageData
     anchors.topMargin: UM.Theme.getSize("default_margin").height
     height: visible ? childrenRect.height : 0
     visible: packageData.type == "material" && packageData.has_configs
@@ -36,8 +37,8 @@ Item
             Label
             {
                 anchors.verticalCenter: parent.verticalCenter
-                elide: styleData.elideMode
-                text: styleData.value
+                elide: Text.ElideRight
+                text: styleData.value || ""
                 color: UM.Theme.getColor("text")
                 font: UM.Theme.getFont("default_bold")
             }
@@ -55,8 +56,8 @@ Item
             Label
             {
                 anchors.verticalCenter: parent.verticalCenter
-                elide: styleData.elideMode
-                text: styleData.value
+                elide: Text.ElideRight
+                text: styleData.value || ""
                 color: UM.Theme.getColor("text_medium")
                 font: UM.Theme.getFont("default")
             }
@@ -67,8 +68,8 @@ Item
             Label
             {
                 anchors.verticalCenter: parent.verticalCenter
-                elide: styleData.elideMode
-                text: styleData.value
+                elide: Text.ElideRight
+                text: styleData.value || ""
                 color: UM.Theme.getColor("text_medium")
                 font: UM.Theme.getFont("default")
             }

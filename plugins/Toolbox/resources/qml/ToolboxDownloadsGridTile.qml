@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
@@ -34,10 +34,11 @@ Item
             Image
             {
                 anchors.centerIn: parent
-                width: UM.Theme.getSize("toolbox_thumbnail_small").width - 26
-                height: UM.Theme.getSize("toolbox_thumbnail_small").height - 26
+                width: UM.Theme.getSize("toolbox_thumbnail_small").width - UM.Theme.getSize("wide_margin").width
+                height: UM.Theme.getSize("toolbox_thumbnail_small").height - UM.Theme.getSize("wide_margin").width
                 fillMode: Image.PreserveAspectFit
                 source: model.icon_url || "../images/logobot.svg"
+                mipmap: true
             }
         }
         Column

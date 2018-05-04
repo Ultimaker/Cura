@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict
+from typing import Dict, Optional, Union, Any
 import json
 import os
 import tempfile
@@ -25,9 +25,10 @@ from .ConfigsModel import ConfigsModel
 
 i18n_catalog = i18nCatalog("cura")
 
+
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
         self._application = Application.getInstance()
@@ -142,7 +143,7 @@ class Toolbox(QObject, Extension):
     def getLicenseDialogLicenseContent(self) -> str:
         return self._license_dialog_license_content
 
-    def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str):
+    def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str) -> None:
         self._license_dialog_plugin_name = plugin_name
         self._license_dialog_license_content = license_content
         self._license_dialog_plugin_file_location = plugin_file_location
@@ -150,11 +151,11 @@ class Toolbox(QObject, Extension):
 
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
-    def _onAppInitialized(self):
+    def _onAppInitialized(self) -> None:
         self._package_manager = Application.getInstance().getCuraPackageManager()
 
     @pyqtSlot()
-    def browsePackages(self):
+    def browsePackages(self) -> None:
         # Create the network manager:
         # This was formerly its own function but really had no reason to be as
         # it was never called more than once ever.
@@ -181,14 +182,14 @@ class Toolbox(QObject, Extension):
         # Apply enabled/disabled state to installed plugins
         self.enabledChanged.emit()
 
-    def _createDialog(self, qml_name: str):
+    def _createDialog(self, qml_name: str) -> Optional[QObject]:
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
         dialog = Application.getInstance().createQmlComponent(path, {"toolbox": self})
         return dialog
 
     @pyqtSlot()
-    def _updateInstalledModels(self):
+    def _updateInstalledModels(self) -> None:
         all_packages = self._package_manager.getAllInstalledPackagesInfo()
         if "plugin" in all_packages:
             self._metadata["plugins_installed"] = all_packages["plugin"]
@@ -200,7 +201,7 @@ class Toolbox(QObject, Extension):
             self.metadataChanged.emit()
 
     @pyqtSlot(str)
-    def install(self, file_path: str):
+    def install(self, file_path: str) -> None:
         self._package_manager.installPackage(file_path)
         self.installChanged.emit()
         self._updateInstalledModels()
@@ -209,7 +210,7 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
-    def uninstall(self, plugin_id: str):
+    def uninstall(self, plugin_id: str) -> None:
         self._package_manager.removePackage(plugin_id)
         self.installChanged.emit()
         self._updateInstalledModels()
@@ -218,7 +219,7 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
-    def enable(self, plugin_id: str):
+    def enable(self, plugin_id: str) -> None:
         self._plugin_registry.enablePlugin(plugin_id)
         self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'active'.", plugin_id)
@@ -226,7 +227,7 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
-    def disable(self, plugin_id: str):
+    def disable(self, plugin_id: str) -> None:
         self._plugin_registry.disablePlugin(plugin_id)
         self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'deactive'.", plugin_id)
@@ -234,19 +235,17 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtProperty(bool, notify = metadataChanged)
-    def dataReady(self):
+    def dataReady(self) -> bool:
         return self._packages_model is not None
 
     @pyqtProperty(bool, notify = restartRequiredChanged)
-    def restartRequired(self):
+    def restartRequired(self) -> bool:
         return self._restart_required
 
     @pyqtSlot()
     def restart(self):
         self._package_manager._removeAllScheduledPackages()
         CuraApplication.getInstance().windowClosed()
-
-
 
     # Checks
     # --------------------------------------------------------------------------
@@ -286,22 +285,25 @@ class Toolbox(QObject, Extension):
             return True
         return False
 
-
-
     # Make API Calls
     # --------------------------------------------------------------------------
-    def _makeRequestByType(self, type: str):
+    def _makeRequestByType(self, type: str) -> None:
         Logger.log("i", "Toolbox: Requesting %s metadata from server.", type)
         request = QNetworkRequest(self._request_urls[type])
         request.setRawHeader(*self._request_header)
         self._network_manager.get(request)
 
     @pyqtSlot(str)
-    def startDownload(self, url: str):
+    def startDownload(self, url: str) -> None:
         Logger.log("i", "Toolbox: Attempting to download & install package from %s.", url)
         url = QUrl(url)
         self._download_request = QNetworkRequest(url)
-        self._download_request.setAttribute(QNetworkRequest.RedirectPolicyAttribute, QNetworkRequest.NoLessSafeRedirectPolicy)
+        if hasattr(QNetworkRequest, "FollowRedirectsAttribute"):
+            # Patch for Qt 5.6-5.8
+            self._download_request.setAttribute(QNetworkRequest.FollowRedirectsAttribute, True)
+        if hasattr(QNetworkRequest, "RedirectPolicyAttribute"):
+            # Patch for Qt 5.9+
+            self._download_request.setAttribute(QNetworkRequest.RedirectPolicyAttribute, True)
         self._download_request.setRawHeader(*self._request_header)
         self._download_reply = self._network_manager.get(self._download_request)
         self.setDownloadProgress(0)
@@ -309,12 +311,11 @@ class Toolbox(QObject, Extension):
         self._download_reply.downloadProgress.connect(self._onDownloadProgress)
 
     @pyqtSlot()
-    def cancelDownload(self):
+    def cancelDownload(self) -> None:
         Logger.log("i", "Toolbox: User cancelled the download of a plugin.")
         self.resetDownload()
-        return
 
-    def resetDownload(self):
+    def resetDownload(self) -> None:
         if self._download_reply:
             self._download_reply.abort()
             self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
@@ -323,15 +324,13 @@ class Toolbox(QObject, Extension):
         self.setDownloadProgress(0)
         self.setIsDownloading(False)
 
-
-
     # Handlers for Network Events
     # --------------------------------------------------------------------------
-    def _onNetworkAccessibleChanged(self, accessible: int):
+    def _onNetworkAccessibleChanged(self, accessible: int) -> None:
         if accessible == 0:
             self.resetDownload()
 
-    def _onRequestFinished(self, reply: QNetworkReply):
+    def _onRequestFinished(self, reply: QNetworkReply) -> None:
 
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Got a timeout.")
@@ -397,28 +396,26 @@ class Toolbox(QObject, Extension):
             # Ignore any operation that is not a get operation
             pass
 
-    def _onDownloadProgress(self, bytes_sent: int, bytes_total: int):
+    def _onDownloadProgress(self, bytes_sent: int, bytes_total: int) -> None:
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
             self.setDownloadProgress(new_progress)
             if bytes_sent == bytes_total:
                 self.setIsDownloading(False)
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-                # must not delete the temporary file on Windows
+                # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
-                # write first and close, otherwise on Windows, it cannot read the file
+                # Write first and close, otherwise on Windows, it cannot read the file
                 self._temp_plugin_file.write(self._download_reply.readAll())
                 self._temp_plugin_file.close()
                 self._onDownloadComplete(file_path)
-                return
 
     def _onDownloadComplete(self, file_path: str):
         Logger.log("i", "Toolbox: Download complete.")
-        try:
-            package_info = self._package_manager.getPackageInfo(file_path)
-        except:
-            Logger.logException("w", "Toolbox: Package file [%s] was not a valid CuraPackage.", file_path)
+        package_info = self._package_manager.getPackageInfo(file_path)
+        if not package_info:
+            Logger.log("w", "Toolbox: Package file [%s] was not a valid CuraPackage.", file_path)
             return
 
         license_content = self._package_manager.getPackageLicense(file_path)
@@ -429,43 +426,46 @@ class Toolbox(QObject, Extension):
         self.install(file_path)
         return
 
-
-
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
-    def setDownloadProgress(self, progress: int):
+    def setDownloadProgress(self, progress: Union[int, float]) -> None:
         if progress != self._download_progress:
             self._download_progress = progress
             self.onDownloadProgressChanged.emit()
+
     @pyqtProperty(int, fset = setDownloadProgress, notify = onDownloadProgressChanged)
     def downloadProgress(self) -> int:
         return self._download_progress
 
-    def setIsDownloading(self, is_downloading: bool):
+    def setIsDownloading(self, is_downloading: bool) -> None:
         if self._is_downloading != is_downloading:
             self._is_downloading = is_downloading
             self.onIsDownloadingChanged.emit()
+
     @pyqtProperty(bool, fset = setIsDownloading, notify = onIsDownloadingChanged)
     def isDownloading(self) -> bool:
         return self._is_downloading
 
-    def setActivePackage(self, package: dict):
+    def setActivePackage(self, package: Dict[str, Any]) -> None:
         self._active_package = package
         self.activePackageChanged.emit()
+
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
-    def activePackage(self) -> dict:
+    def activePackage(self) -> Optional[Dict[str, Any]]:
         return self._active_package
 
-    def setViewCategory(self, category: str = "plugin"):
+    def setViewCategory(self, category: str = "plugin") -> None:
         self._view_category = category
         self.viewChanged.emit()
+
     @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
     def viewCategory(self) -> str:
         return self._view_category
 
-    def setViewPage(self, page: str = "overview"):
+    def setViewPage(self, page: str = "overview") -> None:
         self._view_page = page
         self.viewChanged.emit()
+
     @pyqtProperty(str, fset = setViewPage, notify = viewChanged)
     def viewPage(self) -> str:
         return self._view_page

@@ -337,11 +337,20 @@ class PrintInformation(QObject):
         if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
             # Only take the file name part, Note : file name might have 'dot' in name as well
             if is_project_file:
+                # This is for .curaproject, loaded as project
                 self._base_name = ".".join(filename_parts)
             elif len(filename_parts) > 1:
-                self._base_name = ".".join(filename_parts[0:-1])
+                if "gcode" in filename_parts:
+                    gcode_index = filename_parts.index('gcode')
+                    self._base_name = ".".join(filename_parts[0:gcode_index])
+                elif "curaproject" in filename_parts:
+                    #load a project and import only models
+                    curaproject_index = filename_parts.index('curaproject')
+                    self._base_name = ".".join(filename_parts[0:curaproject_index])
+                else:
+                    self._base_name = name
             else:
-                self._base_name = filename_parts[0]
+                self._base_name = name
 
 
             self._updateJobName()

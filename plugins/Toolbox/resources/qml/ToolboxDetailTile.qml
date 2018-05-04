@@ -10,9 +10,8 @@ Item
 {
     id: tile
     property bool installed: toolbox.isInstalled(model.id)
-    property var packageData: model
     width: detailList.width - UM.Theme.getSize("wide_margin").width
-    height: Math.max(UM.Theme.getSize("toolbox_detail_tile").height, childrenRect.height + UM.Theme.getSize("default_margin").height)
+    height: normalData.height + compatibilityChart.height + 4 * UM.Theme.getSize("default_margin").height
     Item
     {
         id: normalData
@@ -46,6 +45,7 @@ Item
             font: UM.Theme.getFont("default")
         }
     }
+
     Item
     {
         id: controls
@@ -76,58 +76,9 @@ Item
             }
             enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model) //Don't allow installing while another download is running.
             opacity: enabled ? 1.0 : 0.5
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    implicitWidth: 96
-                    implicitHeight: 30
-                    color:
-                    {
-                        if (installed)
-                        {
-                            return UM.Theme.getColor("action_button_disabled")
-                        }
-                        else
-                        {
-                            if ( control.hovered )
-                            {
-                                return UM.Theme.getColor("primary_hover")
-                            }
-                            else
-                            {
-                                return UM.Theme.getColor("primary")
-                            }
-                        }
 
-                    }
-                }
-                label: Label
-                {
-                    text: control.text
-                    color:
-                    {
-                        if (installed)
-                        {
-                            return UM.Theme.getColor("action_button_disabled_text")
-                        }
-                        else
-                        {
-                            if ( control.hovered )
-                            {
-                                return UM.Theme.getColor("button_text_hover")
-                            }
-                            else
-                            {
-                                return UM.Theme.getColor("button_text")
-                            }
-                        }
-                    }
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font: UM.Theme.getFont("default_bold")
-                }
-            }
+            property alias installed: tile.installed
+            style: UM.Theme.styles.toolbox_action_button
             onClicked:
             {
                 if (installed)
@@ -164,6 +115,7 @@ Item
         id: compatibilityChart
         anchors.top: normalData.bottom
         width: normalData.width
+        packageData: model
     }
 
     Rectangle

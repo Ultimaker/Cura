@@ -12,6 +12,8 @@ Window
     property var selection: null
     title: catalog.i18nc("@title", "Toolbox")
     modality: Qt.ApplicationModal
+    flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
+
     width: 720 * screenScaleFactor
     height: 640 * screenScaleFactor
     minimumWidth: 720 * screenScaleFactor
