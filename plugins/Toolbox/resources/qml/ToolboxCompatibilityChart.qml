@@ -8,6 +8,7 @@ import UM 1.1 as UM
 
 Item
 {
+    property var packageData
     anchors.topMargin: UM.Theme.getSize("default_margin").height
     height: visible ? childrenRect.height : 0
     visible: packageData.type == "material" && packageData.has_configs
