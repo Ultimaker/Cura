@@ -11,7 +11,7 @@ Column
 {
     // HACK: GridLayouts don't render to the correct height with odd numbers of
     // items, so if odd, add some extra space.
-    height: grid.model.items.length % 2 == 0 ? childrenRect.height : childrenRect.height + UM.Theme.getSize("toolbox_thumbnail_small").height
+    height: childrenRect.height
     width: parent.width
     spacing: UM.Theme.getSize("default_margin").height
     Label
@@ -36,6 +36,7 @@ Column
             delegate: ToolboxDownloadsGridTile
             {
                 Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns
+                Layout.preferredHeight: UM.Theme.getSize("toolbox_thumbnail_small").height
             }
         }
     }
