@@ -34,8 +34,8 @@ Item
             Image
             {
                 anchors.centerIn: parent
-                width: UM.Theme.getSize("toolbox_thumbnail_small").width - UM.Theme.getSize("default_margin").width
-                height: UM.Theme.getSize("toolbox_thumbnail_small").height - UM.Theme.getSize("default_margin").width
+                width: UM.Theme.getSize("toolbox_thumbnail_small").width - UM.Theme.getSize("wide_margin").width
+                height: UM.Theme.getSize("toolbox_thumbnail_small").height - UM.Theme.getSize("wide_margin").width
                 fillMode: Image.PreserveAspectFit
                 source: model.icon_url || "../images/logobot.svg"
                 mipmap: true
