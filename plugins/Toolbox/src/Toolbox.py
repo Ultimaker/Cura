@@ -403,7 +403,7 @@ class Toolbox(QObject, Extension):
             if bytes_sent == bytes_total:
                 self.setIsDownloading(False)
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-                # <ust not delete the temporary file on Windows
+                # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
                 # Write first and close, otherwise on Windows, it cannot read the file
@@ -450,7 +450,7 @@ class Toolbox(QObject, Extension):
         self._active_package = package
         self.activePackageChanged.emit()
 
-    @pyqtProperty("QVariantMap", fset = setActivePackage, notify = activePackageChanged)
+    @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
     def activePackage(self) -> Optional[Dict[str, Any]]:
         return self._active_package
 
