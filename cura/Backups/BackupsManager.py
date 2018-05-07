@@ -2,6 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from zipfile import ZipFile
 
+from UM.Logger import Logger
+from cura.Backups.Backup import Backup
+
 
 class BackupsManager:
     """
@@ -9,15 +12,17 @@ class BackupsManager:
     Backups themselves are represented in a different class.
     """
 
-    def __init__(self):
-        pass
-
     def createBackup(self) -> ("ZipFile", dict):
         """
         Get a backup of the current configuration.
         :return: A Tuple containing a ZipFile (the actual backup) and a dict containing some meta data (like version).
         """
-        pass
+        self._disableAutoSave()
+        backup = Backup()
+        backup.makeFromCurrent()
+        self._enableAutoSave()
+        # We don't return a Backup here because we want plugins only to interact with our API and not full objects.
+        return backup.zip_file, backup.meta_data
 
     def restoreBackup(self, zip_file: "ZipFile", meta_data: dict) -> None:
         """
@@ -25,4 +30,22 @@ class BackupsManager:
         :param zip_file: A ZipFile containing the actual backup.
         :param meta_data: A dict containing some meta data that is needed to restore the backup correctly.
         """
-        pass
+        if not meta_data.get("cura_release", None):
+            # If there is no "cura_release" specified in the meta data, we don't execute a backup restore.
+            Logger.log("w", "Tried to restore a backup without specifying a Cura version number.")
+            return
+
+        # TODO: first make a new backup to prevent data loss when restoring fails.
+
+        self._disableAutoSave()
+
+        backup = Backup(zip_file = zip_file, meta_data = meta_data)
+        backup.restore()  # At this point, Cura will need to restart for the changes to take effect
+
+    def _disableAutoSave(self):
+        """Here we try to disable the auto-save plugin as it might interfere with restoring a backup."""
+        # TODO: Disable auto-save if possible.
+
+    def _enableAutoSave(self):
+        """Re-enable auto-save after we're done."""
+        # TODO: Enable auto-save if possible.

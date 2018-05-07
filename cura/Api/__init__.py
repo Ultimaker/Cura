@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from UM.PluginRegistry import PluginRegistry
 from cura.Api.Backups import Backups
 
 
@@ -10,6 +11,9 @@ class CuraApi:
     but this API provides a version-safe interface with proper deprecation warning etc.
     Usage of any other methods than the ones provided in this API can cause plugins to be unstable.
     """
+
+    # For now we use the same API version to be consistent.
+    VERSION = PluginRegistry.APIVersion
 
     # Backups API.
     backups = Backups()

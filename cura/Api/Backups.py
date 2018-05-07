@@ -10,8 +10,10 @@ class Backups:
     The backups API provides a version-proof bridge between Cura's BackupManager and plugins that hook into it.
 
     Usage:
-        cura.Api.backups.createBackup()
-        cura.Api.backups.restoreBackup(my_zip_file, {"cura_release": "3.1"})
+        from cura.Api import CuraApi
+        api = CuraApi()
+        api.backups.createBackup()
+        api.backups.restoreBackup(my_zip_file, {"cura_release": "3.1"})
     """
 
     manager = BackupsManager()  # Re-used instance of the backups manager.
@@ -19,9 +21,14 @@ class Backups:
     def createBackup(self) -> ("ZipFile", dict):
         """
         Create a new backup using the BackupsManager.
-        :return:
+        :return: Tuple containing a ZIP file with the backup data and a dict with meta data about the backup.
         """
         return self.manager.createBackup()
 
     def restoreBackup(self, zip_file: "ZipFile", meta_data: dict) -> None:
+        """
+        Restore a backup using the BackupManager.
+        :param zip_file: A ZIP file containing the actual backup data.
+        :param meta_data: Some meta data needed for restoring a backup, like the Cura version number.
+        """
         return self.manager.restoreBackup(zip_file, meta_data)
