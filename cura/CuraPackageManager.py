@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, Dict, Any
 import json
 import os
 import shutil
@@ -15,6 +15,7 @@ from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
 
+
 class CuraPackageManager(QObject):
     Version = 1
 
@@ -25,7 +26,7 @@ class CuraPackageManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._application = parent
+        self._application = Application.getInstance()
         self._container_registry = self._application.getContainerRegistry()
         self._plugin_registry = self._application.getPluginRegistry()
 
@@ -139,6 +140,9 @@ class CuraPackageManager(QObject):
         # Also get all bundled plugins
         all_metadata = self._plugin_registry.getAllMetaData()
         for item in all_metadata:
+            if item == {}:
+                continue
+
             plugin_package_info = self.__convertPluginMetadataToPackageMetadata(item)
             # Only gather the bundled plugins here.
             package_id = plugin_package_info["package_id"]
@@ -187,6 +191,8 @@ class CuraPackageManager(QObject):
         try:
             # Get package information
             package_info = self.getPackageInfo(filename)
+            if not package_info:
+                return
             package_id = package_info["package_id"]
 
             # Check the delayed installation and removal lists first
@@ -279,30 +285,28 @@ class CuraPackageManager(QObject):
             self._purgePackage(package_id)
 
         # Install the package
-        archive = zipfile.ZipFile(filename, "r")
+        with zipfile.ZipFile(filename, "r") as archive:
 
-        temp_dir = tempfile.TemporaryDirectory()
-        archive.extractall(temp_dir.name)
+            temp_dir = tempfile.TemporaryDirectory()
+            archive.extractall(temp_dir.name)
 
-        from cura.CuraApplication import CuraApplication
-        installation_dirs_dict = {
-            "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
-            "quality": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
-            "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
-        }
+            from cura.CuraApplication import CuraApplication
+            installation_dirs_dict = {
+                "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
+                "quality": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
+                "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
+            }
 
-        for sub_dir_name, installation_root_dir in installation_dirs_dict.items():
-            src_dir_path = os.path.join(temp_dir.name, "files", sub_dir_name)
-            dst_dir_path = os.path.join(installation_root_dir, package_id)
+            for sub_dir_name, installation_root_dir in installation_dirs_dict.items():
+                src_dir_path = os.path.join(temp_dir.name, "files", sub_dir_name)
+                dst_dir_path = os.path.join(installation_root_dir, package_id)
 
-            if not os.path.exists(src_dir_path):
-                continue
+                if not os.path.exists(src_dir_path):
+                    continue
 
-            # Need to rename the container files so they don't get ID conflicts
-            to_rename_files = sub_dir_name not in ("plugins",)
-            self.__installPackageFiles(package_id, src_dir_path, dst_dir_path, need_to_rename_files= to_rename_files)
-
-        archive.close()
+                # Need to rename the container files so they don't get ID conflicts
+                to_rename_files = sub_dir_name not in ("plugins",)
+                self.__installPackageFiles(package_id, src_dir_path, dst_dir_path, need_to_rename_files= to_rename_files)
 
         # Remove the file
         os.remove(filename)
@@ -321,33 +325,32 @@ class CuraPackageManager(QObject):
                 os.rename(old_file_path, new_file_path)
 
     # Gets package information from the given file.
-    def getPackageInfo(self, filename: str) -> dict:
-        archive = zipfile.ZipFile(filename, "r")
-        try:
-            # All information is in package.json
-            with archive.open("package.json", "r") as f:
-                package_info_dict = json.loads(f.read().decode("utf-8"))
-                return package_info_dict
-        except Exception as e:
-            raise RuntimeError("Could not get package information from file '%s': %s" % (filename, e))
-        finally:
-            archive.close()
+    def getPackageInfo(self, filename: str) -> Dict[str, Any]:
+        with zipfile.ZipFile(filename) as archive:
+            try:
+                # All information is in package.json
+                with archive.open("package.json") as f:
+                    package_info_dict = json.loads(f.read().decode("utf-8"))
+                    return package_info_dict
+            except Exception as e:
+                Logger.logException("w", "Could not get package information from file '%s': %s" % (filename, e))
+                return {}
 
     # Gets the license file content if present in the given package file.
     # Returns None if there is no license file found.
     def getPackageLicense(self, filename: str) -> Optional[str]:
         license_string = None
-        archive = zipfile.ZipFile(filename)
-        try:
+        with zipfile.ZipFile(filename) as archive:
             # Go through all the files and use the first successful read as the result
             for file_info in archive.infolist():
-                if file_info.is_dir() or not file_info.filename.startswith("files/"):
+                is_dir = lambda file_info: file_info.filename.endswith('/')
+                if is_dir or not file_info.filename.startswith("files/"):
                     continue
 
                 filename_parts = os.path.basename(file_info.filename.lower()).split(".")
                 stripped_filename = filename_parts[0]
                 if stripped_filename in ("license", "licence"):
-                    Logger.log("i", "Found potential license file '%s'", file_info.filename)
+                    Logger.log("d", "Found potential license file '%s'", file_info.filename)
                     try:
                         with archive.open(file_info.filename, "r") as f:
                             data = f.read()
@@ -357,8 +360,4 @@ class CuraPackageManager(QObject):
                         Logger.logException("e", "Failed to load potential license file '%s' as text file.",
                                             file_info.filename)
                         license_string = None
-        except Exception as e:
-            raise RuntimeError("Could not get package license from file '%s': %s" % (filename, e))
-        finally:
-            archive.close()
         return license_string

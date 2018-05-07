@@ -190,7 +190,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 b"address": address.encode("utf-8"),
                 b"firmware_version": system_info["firmware"].encode("utf-8"),
                 b"manual": b"true",
-                b"machine": system_info["variant"].encode("utf-8")
+                b"machine": str(system_info['hardware']["typeid"]).encode("utf-8")
             }
 
             if has_cluster_capable_firmware:

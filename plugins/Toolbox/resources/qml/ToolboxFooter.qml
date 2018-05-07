@@ -49,7 +49,7 @@ Item
                 implicitHeight: Math.floor(UM.Theme.getSize("toolbox_footer_button").height)
                 color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
             }
-            label: Text
+            label: Label
             {
                 color: UM.Theme.getColor("button_text")
                 font: UM.Theme.getFont("default_bold")
