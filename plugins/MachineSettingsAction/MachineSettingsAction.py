@@ -56,8 +56,6 @@ class MachineSettingsAction(MachineAction):
             if self._isEmptyDefinitionChanges(definition_changes_id):
                 return
 
-            self._container_registry.removeContainer(definition_changes_id)
-
     def _reset(self):
         if not self._global_container_stack:
             return

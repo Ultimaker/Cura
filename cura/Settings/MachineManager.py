@@ -6,6 +6,7 @@ import time
 #Type hinting.
 from typing import List, Dict, TYPE_CHECKING, Optional
 
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
@@ -167,8 +168,6 @@ class MachineManager(QObject):
         if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacksMetadata(id = active_machine_id):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
-            # Make sure _active_container_stack is properly initiated
-            ExtruderManager.getInstance().setActiveExtruderIndex(0)
 
     def _onOutputDevicesChanged(self) -> None:
         self._printer_output_devices = []
@@ -359,6 +358,10 @@ class MachineManager(QObject):
             return
 
         global_stack = containers[0]
+        if not global_stack.isValid():
+            # Mark global stack as invalid
+            ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
+            return  # We're done here
         ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
         self._global_container_stack = global_stack
         Application.getInstance().setGlobalContainerStack(global_stack)
