@@ -8,7 +8,7 @@ class CuraApi:
     """
     The official Cura API that plugins can use to interact with Cura.
     Python does not technically prevent talking to other classes as well,
-    but this API provides a version-safe interface with proper deprecation warning etc.
+    but this API provides a version-safe interface with proper deprecation warnings etc.
     Usage of any other methods than the ones provided in this API can cause plugins to be unstable.
     """
 
