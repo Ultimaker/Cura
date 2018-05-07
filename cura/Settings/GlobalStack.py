@@ -153,6 +153,23 @@ class GlobalStack(CuraContainerStack):
 
         return True
 
+    ##  Perform some sanity checks on the global stack
+    #   Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
+    def isValid(self):
+        container_registry = ContainerRegistry.getInstance()
+        extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = self.getId())
+
+        machine_extruder_count = self.getProperty("machine_extruder_count", "value")
+        extruder_check_position = set()
+        for extruder_train in extruder_trains:
+            extruder_position = extruder_train.getMetaDataEntry("position")
+            extruder_check_position.add(extruder_position)
+
+        for check_position in range(machine_extruder_count):
+            if str(check_position) not in extruder_check_position:
+                return False
+        return True
+
 
 ## private:
 global_stack_mime = MimeType(
