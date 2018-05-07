@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from zipfile import ZipFile
+from typing import Optional
 
 from UM.Logger import Logger
 from cura.Backups.Backup import Backup
@@ -12,7 +12,7 @@ class BackupsManager:
     Backups themselves are represented in a different class.
     """
 
-    def createBackup(self) -> ("ZipFile", dict):
+    def createBackup(self) -> (Optional[bytes], Optional[dict]):
         """
         Get a backup of the current configuration.
         :return: A Tuple containing a ZipFile (the actual backup) and a dict containing some meta data (like version).
@@ -24,7 +24,7 @@ class BackupsManager:
         # We don't return a Backup here because we want plugins only to interact with our API and not full objects.
         return backup.zip_file, backup.meta_data
 
-    def restoreBackup(self, zip_file: "ZipFile", meta_data: dict) -> None:
+    def restoreBackup(self, zip_file: bytes, meta_data: dict) -> None:
         """
         Restore a backup from a given ZipFile.
         :param zip_file: A ZipFile containing the actual backup.

@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import io
 import os
-from datetime import datetime
 from typing import Optional
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
 
@@ -16,9 +16,9 @@ class Backup:
     It is also responsible for reading and writing the zip file to the user data folder.
     """
 
-    def __init__(self, zip_file: "ZipFile" = None, meta_data: dict = None):
-        self.zip_file = zip_file  # type: Optional[ZipFile]
-        self.meta_data = meta_data  # type: Optional[dict
+    def __init__(self, zip_file: bytes = None, meta_data: dict = None):
+        self.zip_file = zip_file  # type: Optional[bytes]
+        self.meta_data = meta_data  # type: Optional[dict]
 
     def makeFromCurrent(self) -> (bool, Optional[str]):
         """
@@ -26,13 +26,12 @@ class Backup:
         """
         cura_release = CuraApplication.getInstance().getVersion()
         version_data_dir = Resources.getDataStoragePath()
-        timestamp = datetime.now().isoformat()
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
 
         # We're using an easy to parse filename for when we're restoring edge cases:
         # TIMESTAMP.backup.VERSION.cura.zip
-        archive = self._makeArchive("{}.backup.{}.cura.zip".format(timestamp, cura_release), version_data_dir)
+        archive = self._makeArchive(version_data_dir)
 
         self.zip_file = archive
         self.meta_data = {
@@ -41,30 +40,30 @@ class Backup:
         # TODO: fill meta data with machine/material/etc counts.
 
     @staticmethod
-    def _makeArchive(root_path: str, archive_name: str) -> Optional[ZipFile]:
+    def _makeArchive(root_path: str) -> Optional[bytes]:
         """
         Make a full archive from the given root path with the given name.
         :param root_path: The root directory to archive recursively.
-        :param archive_name: The name of the archive to create.
-        :return: The archive as ZipFile.
+        :return: The archive as bytes.
         """
         parent_folder = os.path.dirname(root_path)
         contents = os.walk(root_path)
         try:
-            archive = ZipFile(archive_name, "w", ZIP_DEFLATED)
+            buffer = io.BytesIO()
+            archive = ZipFile(buffer, "w", ZIP_DEFLATED)
             for root, folders, files in contents:
                 for folder_name in folders:
                     # Add all folders, even empty ones.
                     absolute_path = os.path.join(root, folder_name)
                     relative_path = absolute_path.replace(parent_folder + '\\', '')
-                    archive.write(absolute_path, relative_path)
+                    archive.write(relative_path)
                 for file_name in files:
                     # Add all files.
                     absolute_path = os.path.join(root, file_name)
                     relative_path = absolute_path.replace(parent_folder + '\\', '')
-                    archive.write(absolute_path, relative_path)
+                    archive.write(relative_path)
             archive.close()
-            return archive
+            return buffer.getvalue()
         except (IOError, OSError, BadZipfile) as error:
             Logger.log("e", "Could not create archive from user data directory: %s", error)
             return None

@@ -1,7 +1,5 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from zipfile import ZipFile
-
 from cura.Backups.BackupsManager import BackupsManager
 
 
@@ -18,14 +16,14 @@ class Backups:
 
     manager = BackupsManager()  # Re-used instance of the backups manager.
 
-    def createBackup(self) -> ("ZipFile", dict):
+    def createBackup(self) -> (bytes, dict):
         """
         Create a new backup using the BackupsManager.
         :return: Tuple containing a ZIP file with the backup data and a dict with meta data about the backup.
         """
         return self.manager.createBackup()
 
-    def restoreBackup(self, zip_file: "ZipFile", meta_data: dict) -> None:
+    def restoreBackup(self, zip_file: bytes, meta_data: dict) -> None:
         """
         Restore a backup using the BackupManager.
         :param zip_file: A ZIP file containing the actual backup data.
