@@ -125,7 +125,7 @@ class GlobalStack(CuraContainerStack):
     #
     #   This will simply raise an exception since the Global stack cannot have a next stack.
     @override(ContainerStack)
-    def setNextStack(self, next_stack: ContainerStack) -> None:
+    def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
     # protected:
