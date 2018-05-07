@@ -40,8 +40,7 @@ BUNDLED = [
 class CuraPackageManager(QObject):
     Version = 1
 
-    # The prefix that's added to all files for an installed package to avoid naming conflicts with user created
-    # files.
+    # The prefix that's added to all files for an installed package to avoid naming conflicts with user created files.
     PREFIX_PLACE_HOLDER = "-CP;"
 
     def __init__(self, parent = None):
@@ -54,11 +53,13 @@ class CuraPackageManager(QObject):
         # JSON file that keeps track of all installed packages.
         self._package_management_file_path = os.path.join(os.path.abspath(Resources.getDataStoragePath()),
                                                           "packages.json")
-        self._installed_package_dict = {}  # a dict of all installed packages
-        self._to_remove_package_set = set()  # a set of packages that need to be removed at the next start
-        self._to_install_package_dict = {}  # a dict of packages that need to be installed at the next start
 
-    installedPackagesChanged = pyqtSignal()  # Emitted whenever the installed packages collection have been changed.
+        self._bundled_package_dict = {}     # A dict of all bundled packages
+        self._installed_package_dict = {}   # A dict of all installed packages
+        self._to_remove_package_set = set() # A set of packages that need to be removed at the next start
+        self._to_install_package_dict = {}  # A dict of packages that need to be installed at the next start
+
+    installedPackagesChanged = pyqtSignal() # Emitted whenever the installed packages collection have been changed.
 
     def initialize(self):
         self._loadManagementData()
@@ -77,6 +78,7 @@ class CuraPackageManager(QObject):
             with open(self._package_management_file_path, "r", encoding = "utf-8") as f:
                 management_dict = json.load(f, encoding = "utf-8")
 
+                self._bundled_package_dict = management_dict.get("bundled", {})
                 self._installed_package_dict = management_dict.get("installed", {})
                 self._to_remove_package_set = set(management_dict.get("to_remove", []))
                 self._to_install_package_dict = management_dict.get("to_install", {})
@@ -89,11 +91,12 @@ class CuraPackageManager(QObject):
         with container_registry.lockFile():
             with open(self._package_management_file_path, "w", encoding = "utf-8") as f:
                 data_dict = {"version": CuraPackageManager.Version,
+                             "bundled": self._bundled_package_dict,
                              "installed": self._installed_package_dict,
                              "to_remove": list(self._to_remove_package_set),
                              "to_install": self._to_install_package_dict}
                 data_dict["to_remove"] = list(data_dict["to_remove"])
-                json.dump(data_dict, f)
+                json.dump(data_dict, f, sort_keys = True, indent = 4)
                 Logger.log("i", "Package management file %s is saved", self._package_management_file_path)
 
     # (for initialize) Removes all packages that have been scheduled to be removed.
@@ -120,88 +123,54 @@ class CuraPackageManager(QObject):
             return package_info
 
         if package_id in self._installed_package_dict:
-            package_info = self._installed_package_dict.get(package_id)
+            package_info = self._installed_package_dict[package_id]["package_info"]
             return package_info
 
-        for section, packages in self.getAllInstalledPackagesInfo().items():
-            for package in packages:
-                if package["package_id"] == package_id:
-                    return package
+        if package_id in self._bundled_package_dict:
+            package_info = self._bundled_package_dict[package_id]["package_info"]
+            return package_info
 
         return None
 
     def getAllInstalledPackagesInfo(self) -> dict:
-        installed_package_id_set = set(self._installed_package_dict.keys()) | set(self._to_install_package_dict.keys())
-        installed_package_id_set = installed_package_id_set.difference(self._to_remove_package_set)
 
-        managed_package_id_set = installed_package_id_set | self._to_remove_package_set
-
-        # TODO: This function seems to run in a loop even though no loop is ever called with it.
+        # Add bundled, installed, and to-install packages to the set of installed package IDs
+        all_installed_ids = set()
+        all_installed_ids = all_installed_ids.union(set(self._bundled_package_dict.keys()))
+        all_installed_ids = all_installed_ids.union(set(self._installed_package_dict.keys()))
+        all_installed_ids = all_installed_ids.union(set(self._to_install_package_dict.keys()))
+        all_installed_ids = all_installed_ids.difference(self._to_remove_package_set)
 
         # map of <package_type> -> <package_id> -> <package_info>
         installed_packages_dict = {}
-        for package_id in installed_package_id_set:
+        for package_id in all_installed_ids:
+
+            # Skip required plugins as they should not be tampered with
             if package_id in Application.getInstance().getRequiredPlugins():
                 continue
+
+            # Add bundled plugins
+            if package_id in self._bundled_package_dict:
+                package_info = self._bundled_package_dict[package_id]["package_info"]
+
+            # Add installed plugins
+            if package_id in self._installed_package_dict:
+                package_info = self._installed_package_dict[package_id]["package_info"]
+
+            # Add to install plugins
             if package_id in self._to_install_package_dict:
                 package_info = self._to_install_package_dict[package_id]["package_info"]
-            else:
-                package_info = self._installed_package_dict[package_id]
-            package_info["is_bundled"] = False
-
-            package_type = package_info["package_type"]
-            if package_type not in installed_packages_dict:
-                installed_packages_dict[package_type] = []
-            installed_packages_dict[package_type].append( package_info )
 
             # We also need to get information from the plugin registry such as if a plugin is active
             package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
 
-        # HACK: This is to know which packages are bundled and therefore always installed.
-        for package_id in BUNDLED:
-            package_info = {
-                "package_id": package_id,
-                "package_type": "material",
-                "package_version": "1.0.0",
-                "description": "",
-                "cura_version": 4,
-                "website": "",
-                "display_name": package_id,
-                "author": {
-                    "author_id": "Ultimaker",
-                    "display_name": "Ultimaker B.V.",
-                    "email": "materials@ultimaker.com",
-                    "website": "http://www.ultimaker.com/materials"
-                },
-                "tags": [],
-                "is_active": True,
-                "is_bundled": True
-            }
+            # If there is not a section in the dict for this type, add it
             package_type = package_info["package_type"]
             if package_type not in installed_packages_dict:
                 installed_packages_dict[package_type] = []
+
+            # Finally, add the data
             installed_packages_dict[package_type].append( package_info )
-
-        # Also get all bundled plugins
-        all_metadata = self._plugin_registry.getAllMetaData()
-        for item in all_metadata:
-            if item == {}:
-                continue
-
-            plugin_package_info = self.__convertPluginMetadataToPackageMetadata(item)
-            # Only gather the bundled plugins here.
-            package_id = plugin_package_info["package_id"]
-            if package_id in managed_package_id_set:
-                continue
-            if package_id in Application.getInstance().getRequiredPlugins():
-                continue
-
-            plugin_package_info["is_bundled"] = plugin_package_info["package_id"] in BUNDLED
-            plugin_package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
-            package_type = "plugin"
-            if package_type not in installed_packages_dict:
-                installed_packages_dict[package_type] = []
-            installed_packages_dict[package_type].append( plugin_package_info )
 
         return installed_packages_dict
 
