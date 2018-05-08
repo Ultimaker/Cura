@@ -65,7 +65,7 @@ class Backup:
                 for file_name in files:
                     # Add all files except the ignored ones.
                     if file_name in self.IGNORED_FILES:
-                        return
+                        continue
                     absolute_path = os.path.join(root, file_name)
                     relative_path = absolute_path[len(root_path) + len(os.sep):]
                     archive.write(absolute_path, relative_path)
