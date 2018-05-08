@@ -35,9 +35,13 @@ class Backup:
 
         self.zip_file = archive
         self.meta_data = {
-            "cura_release": cura_release
+            "cura_release": cura_release,
+            "machine_count": 0,
+            "material_count": 0,
+            "profile_count": 0,
+            "plugin_count": 0
         }
-        # TODO: fill meta data with machine/material/etc counts.
+        # TODO: fill meta data with real machine/material/etc counts.
 
     @staticmethod
     def _makeArchive(root_path: str) -> Optional[bytes]:
@@ -46,7 +50,6 @@ class Backup:
         :param root_path: The root directory to archive recursively.
         :return: The archive as bytes.
         """
-        parent_folder = os.path.dirname(root_path)
         contents = os.walk(root_path)
         try:
             buffer = io.BytesIO()
@@ -55,13 +58,13 @@ class Backup:
                 for folder_name in folders:
                     # Add all folders, even empty ones.
                     absolute_path = os.path.join(root, folder_name)
-                    relative_path = absolute_path.replace(parent_folder + '\\', '')
-                    archive.write(relative_path)
+                    relative_path = absolute_path[len(root_path) + len(os.sep):]
+                    archive.write(absolute_path, relative_path)
                 for file_name in files:
                     # Add all files.
                     absolute_path = os.path.join(root, file_name)
-                    relative_path = absolute_path.replace(parent_folder + '\\', '')
-                    archive.write(relative_path)
+                    relative_path = absolute_path[len(root_path) + len(os.sep):]
+                    archive.write(absolute_path, relative_path)
             archive.close()
             return buffer.getvalue()
         except (IOError, OSError, BadZipfile) as error:
