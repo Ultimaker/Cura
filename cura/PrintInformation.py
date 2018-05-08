@@ -16,6 +16,7 @@ from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+from UM.MimeTypeDatabase import MimeTypeDatabase
 
 catalog = i18nCatalog("cura")
 
@@ -322,7 +323,7 @@ class PrintInformation(QObject):
 
         # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
         # extension. This cuts the extension off if necessary.
-        name = os.path.splitext(name)[0]
+        check_name = os.path.splitext(name)[0]
         filename_parts = os.path.basename(base_name).split(".")
 
         # If it's a gcode, also always update the job name
@@ -333,25 +334,21 @@ class PrintInformation(QObject):
 
         # if this is a profile file, always update the job name
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
-        is_empty = name == ""
-        if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
+        is_empty = check_name == ""
+        if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != check_name)):
             # Only take the file name part, Note : file name might have 'dot' in name as well
-            if is_project_file:
-                # This is for .curaproject, loaded as project
-                self._base_name = ".".join(filename_parts)
-            elif len(filename_parts) > 1:
-                if "gcode" in filename_parts:
-                    gcode_index = filename_parts.index('gcode')
-                    self._base_name = ".".join(filename_parts[0:gcode_index])
-                elif "curaproject" in filename_parts:
-                    #load a project and import only models
-                    curaproject_index = filename_parts.index('curaproject')
-                    self._base_name = ".".join(filename_parts[0:curaproject_index])
-                else:
-                    self._base_name = name
-            else:
-                self._base_name = name
 
+            data = ''
+            try:
+                mime_type = MimeTypeDatabase.getMimeTypeForFile(name)
+                data = mime_type.stripExtension(name)
+            except:
+                Logger.log("w", "Unsupported Mime Type Database file extension")
+
+            if data is not None:
+                self._base_name = data
+            else:
+                self._base_name = ''
 
             self._updateJobName()
 
