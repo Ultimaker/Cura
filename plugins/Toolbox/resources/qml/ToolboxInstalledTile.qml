@@ -26,7 +26,7 @@ Item
     Column
     {
         id: pluginInfo
-        property var color: isEnabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
+        property var color: model.package_type === "plugin" && !isEnabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("text")
         height: parent.height
         anchors
         {
@@ -49,12 +49,11 @@ Item
         Text
         {
             text: model.description
+            maximumLineCount: 3
+            elide: Text.ElideRight
             width: parent.width
-            height: UM.Theme.getSize("toolbox_property_label").height
-            clip: true
             wrapMode: Text.WordWrap
             color: pluginInfo.color
-            elide: Text.ElideRight
         }
     }
     Column
@@ -104,19 +103,11 @@ Item
             right: parent.right
             topMargin: UM.Theme.getSize("default_margin").height
         }
-        Button {
-            id: removeButton
-            text:
-            {
-                if (model.is_bundled)
-                {
-                    return isEnabled ? catalog.i18nc("@action:button", "Disable") : catalog.i18nc("@action:button", "Enable")
-                }
-                else
-                {
-                    return catalog.i18nc("@action:button", "Uninstall")
-                }
-            }
+        Button
+        {
+            id: disableButton
+            text: isEnabled ? catalog.i18nc("@action:button", "Disable") : catalog.i18nc("@action:button", "Enable")
+            visible: model.type == "plugin"
             enabled: !toolbox.isDownloading
             style: ButtonStyle
             {
@@ -139,24 +130,36 @@ Item
                     horizontalAlignment: Text.AlignHCenter
                 }
             }
-            onClicked:
+            onClicked: toolbox.isEnabled(model.id) ? toolbox.disable(model.id) : toolbox.enable(model.id)
+        }
+        Button
+        {
+            id: removeButton
+            text: catalog.i18nc("@action:button", "Uninstall")
+            visible: !model.is_bundled
+            enabled: !toolbox.isDownloading
+            style: ButtonStyle
             {
-                if (model.is_bundled)
+                background: Rectangle
                 {
-                    if (toolbox.isEnabled(model.id))
+                    implicitWidth: UM.Theme.getSize("toolbox_action_button").width
+                    implicitHeight: UM.Theme.getSize("toolbox_action_button").height
+                    color: "transparent"
+                    border
                     {
-                        toolbox.disable(model.id)
-                    }
-                    else
-                    {
-                        toolbox.enable(model.id)
+                        width: UM.Theme.getSize("default_lining").width
+                        color: UM.Theme.getColor("lining")
                     }
                 }
-                else
+                label: Label
                 {
-                    toolbox.uninstall(model.id)
+                    text: control.text
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
                 }
             }
+            onClicked: toolbox.uninstall(model.id)
         }
         Button
         {
@@ -180,10 +183,7 @@ Item
                     font: UM.Theme.getFont("default_bold")
                 }
             }
-            onClicked:
-            {
-                toolbox.update(model.id);
-            }
+            onClicked: toolbox.update(model.id)
         }
         ProgressBar
         {

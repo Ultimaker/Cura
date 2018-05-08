@@ -28,8 +28,9 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 11, "download_url")
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
-        self.addRoleName(Qt.UserRole + 14, "has_configs")
-        self.addRoleName(Qt.UserRole + 15, "supported_configs")
+        self.addRoleName(Qt.UserRole + 14, "is_enabled")
+        self.addRoleName(Qt.UserRole + 15, "has_configs")
+        self.addRoleName(Qt.UserRole + 16, "supported_configs")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -52,20 +53,26 @@ class PackagesModel(ListModel):
                         configs_model = ConfigsModel()
                         configs_model.setConfigs(package["data"]["supported_configs"])
 
+            if "author_id" not in package["author"] or "display_name" not in package["author"]:
+                package["author"]["author_id"] = ""
+                package["author"]["display_name"] = ""
+                # raise Exception("Detected a package with malformed author data.")
+
             items.append({
                 "id":                package["package_id"],
                 "type":              package["package_type"],
                 "name":              package["display_name"],
                 "version":           package["package_version"],
-                "author_id":         package["author"]["author_id"] if "author_id" in package["author"] else package["author"]["name"],
-                "author_name":       package["author"]["display_name"] if "display_name" in package["author"] else package["author"]["name"],
+                "author_id":         package["author"]["author_id"],
+                "author_name":       package["author"]["display_name"],
                 "author_email":      package["author"]["email"] if "email" in package["author"] else None,
-                "description":       package["description"],
+                "description":       package["description"] if "description" in package else None,
                 "icon_url":          package["icon_url"] if "icon_url" in package else None,
                 "image_urls":        package["image_urls"] if "image_urls" in package else None,
                 "download_url":      package["download_url"] if "download_url" in package else None,
                 "last_updated":      package["last_updated"] if "last_updated" in package else None,
                 "is_bundled":        package["is_bundled"] if "is_bundled" in package else False,
+                "is_enabled":        package["is_enabled"] if "is_enabled" in package else False,
                 "has_configs":       has_configs,
                 "supported_configs": configs_model
             })
