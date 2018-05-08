@@ -100,12 +100,13 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Installs all packages that have been scheduled to be installed.
     def _installAllScheduledPackages(self) -> None:
-        for package_id, installation_package_data in self._to_install_package_dict.items():
-            self._installPackage(installation_package_data)
+
+        while self._to_install_package_dict:
+            package_id, package_info = list(self._to_install_package_dict.items())[0]
+            self._installPackage(package_info)
             self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
+            del self._to_install_package_dict[package_id]
             self._saveManagementData()
-        self._to_install_package_dict.clear()
-        self._saveManagementData()
 
     # Checks the given package is installed. If so, return a dictionary that contains the package's information.
     def getInstalledPackageInfo(self, package_id: str) -> Optional[dict]:
