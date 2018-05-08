@@ -731,7 +731,6 @@
         }
     },
     "DagomaChromatikPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/DagomaChromatikPLA.curapackage",
         "package_info": {
             "package_id": "DagomaChromatikPLA",
             "package_type": "material",
@@ -749,7 +748,6 @@
         }
     },
     "FABtotumABS": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/FABtotumABS.curapackage",
         "package_info": {
             "package_id": "FABtotumABS",
             "package_type": "material",
@@ -767,7 +765,6 @@
         }
     },
     "FABtotumNylon": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/FABtotumNylon.curapackage",
         "package_info": {
             "package_id": "FABtotumNylon",
             "package_type": "material",
@@ -785,7 +782,6 @@
         }
     },
     "FABtotumPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/FABtotumPLA.curapackage",
         "package_info": {
             "package_id": "FABtotumPLA",
             "package_type": "material",
@@ -803,7 +799,6 @@
         }
     },
     "FABtotumTPU": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/FABtotumTPU.curapackage",
         "package_info": {
             "package_id": "FABtotumTPU",
             "package_type": "material",
@@ -821,7 +816,6 @@
         }
     },
     "FiberlogyHDPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/FiberlogyHDPLA.curapackage",
         "package_info": {
             "package_id": "FiberlogyHDPLA",
             "package_type": "material",
@@ -839,7 +833,6 @@
         }
     },
     "Filo3DPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/Filo3DPLA.curapackage",
         "package_info": {
             "package_id": "Filo3DPLA",
             "package_type": "material",
@@ -857,7 +850,6 @@
         }
     },
     "IMADE3DJellyBOXPETG": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/IMADE3DJellyBOXPETG.curapackage",
         "package_info": {
             "package_id": "IMADE3DJellyBOXPETG",
             "package_type": "material",
@@ -875,7 +867,6 @@
         }
     },
     "IMADE3DJellyBOXPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/IMADE3DJellyBOXPLA.curapackage",
         "package_info": {
             "package_id": "IMADE3DJellyBOXPLA",
             "package_type": "material",
@@ -893,7 +884,6 @@
         }
     },
     "OctofiberPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/OctoFiberPLA.curapackage",
         "package_info": {
             "package_id": "OctofiberPLA",
             "package_type": "material",
@@ -911,7 +901,6 @@
         }
     },
     "PolyFlexPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/PolyFlexPLA.curapackage",
         "package_info": {
             "package_id": "PolyFlexPLA",
             "package_type": "material",
@@ -929,7 +918,6 @@
         }
     },
     "PolyMaxPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/PolyMaxPLA.curapackage",
         "package_info": {
             "package_id": "PolyMaxPLA",
             "package_type": "material",
@@ -947,7 +935,6 @@
         }
     },
     "PolyPlusPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/PolyPlusPLA.curapackage",
         "package_info": {
             "package_id": "PolyPlusPLA",
             "package_type": "material",
@@ -965,7 +952,6 @@
         }
     },
     "PolyWoodPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/PolyWoodPLA.curapackage",
         "package_info": {
             "package_id": "PolyWoodPLA",
             "package_type": "material",
@@ -983,7 +969,6 @@
         }
     },
     "UltimakerABS": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/UltimakerABS.curapackage",
         "package_info": {
             "package_id": "UltimakerABS",
             "package_type": "material",
@@ -1003,7 +988,6 @@
         }
     },
     "UltimakerCPE": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/UltimakerCPE.curapackage",
         "package_info": {
             "package_id": "UltimakerCPE",
             "package_type": "material",
@@ -1023,7 +1007,6 @@
         }
     },
     "UltimakerNylon": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/UltimakerNylon.curapackage",
         "package_info": {
             "package_id": "UltimakerNylon",
             "package_type": "material",
@@ -1043,7 +1026,6 @@
         }
     },
     "UltimakerPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/UltimakerPLA.curapackage",
         "package_info": {
             "package_id": "UltimakerPLA",
             "package_type": "material",
@@ -1063,7 +1045,6 @@
         }
     },
     "UltimakerPVA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/UltimakerPVA.curapackage",
         "package_info": {
             "package_id": "UltimakerPVA",
             "package_type": "material",
@@ -1083,7 +1064,6 @@
         }
     },
     "VertexDeltaABS": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/VertexDeltaABS.curapackage",
         "package_info": {
             "package_id": "VertexDeltaABS",
             "package_type": "material",
@@ -1101,7 +1081,6 @@
         }
     },
     "VertexDeltaPET": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/VertexDeltaPET.curapackage",
         "package_info": {
             "package_id": "VertexDeltaPET",
             "package_type": "material",
@@ -1119,7 +1098,6 @@
         }
     },
     "VertexDeltaPLA": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/VertexDeltaPLA.curapackage",
         "package_info": {
             "package_id": "VertexDeltaPLA",
             "package_type": "material",
@@ -1137,7 +1115,6 @@
         }
     },
     "VertexDeltaTPU": {
-        "filename": "/Users/i.paschal/Library/Application Support/cura/3.2/cache/cura_packages/VertexDeltaTPU.curapackage",
         "package_info": {
             "package_id": "VertexDeltaTPU",
             "package_type": "material",
