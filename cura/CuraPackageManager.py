@@ -15,28 +15,6 @@ from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
 
-BUNDLED = [
-    "DagomaChromatikPLA",
-    "FABtotumABS",
-    "FABtotumNylon",
-    "FABtotumPLA",
-    "FABtotumTPU",
-    "FiberlogyHDPLA",
-    "Filo3DPLA",
-    "IMADE3DJellyBOXPETG",
-    "IMADE3DJellyBOXPLA",
-    "UltimakerABS",
-    "UltimakerCPE",
-    "UltimakerNylon",
-    "UltimakerPC",
-    "UltimakerPLA",
-    "UltimakerPVA",
-    "VertexDeltaABS",
-    "VertexDeltaPET",
-    "VertexDeltaPLA",
-    "VertexDeltaTPU"
-]
-
 class CuraPackageManager(QObject):
     Version = 1
 
@@ -51,8 +29,14 @@ class CuraPackageManager(QObject):
         self._plugin_registry = self._application.getPluginRegistry()
 
         # JSON file that keeps track of all installed packages.
-        self._package_management_file_path = os.path.join(os.path.abspath(Resources.getDataStoragePath()),
-                                                          "packages.json")
+        self._bundled_package_management_file_path = os.path.join(
+            Application.getInstallPrefix(),
+            Application.getInstance().getApplicationName(),
+            "resources",
+            "packages.json"
+        )
+        self._user_package_management_file_path = os.path.join(os.path.abspath(Resources.getDataStoragePath()), "packages.json")
+
 
         self._bundled_package_dict = {}     # A dict of all bundled packages
         self._installed_package_dict = {}   # A dict of all installed packages
@@ -68,36 +52,42 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Loads the package management file if exists
     def _loadManagementData(self) -> None:
-        if not os.path.exists(self._package_management_file_path):
-            Logger.log("i", "Package management file %s doesn't exist, do nothing", self._package_management_file_path)
+        if not os.path.exists(self._bundled_package_management_file_path):
+            Logger.log("w", "Bundled package management file could not be found!")
+            return
+        if not os.path.exists(self._user_package_management_file_path):
+            Logger.log("i", "User package management file %s doesn't exist, do nothing", self._user_package_management_file_path)
             return
 
         # Need to use the file lock here to prevent concurrent I/O from other processes/threads
         container_registry = self._application.getContainerRegistry()
         with container_registry.lockFile():
-            with open(self._package_management_file_path, "r", encoding = "utf-8") as f:
-                management_dict = json.load(f, encoding = "utf-8")
 
-                self._bundled_package_dict = management_dict.get("bundled", {})
+            # Load the bundled packages:
+            with open(self._bundled_package_management_file_path, "r", encoding = "utf-8") as f:
+                self._bundled_package_dict = json.load(f, encoding = "utf-8")
+                Logger.log("i", "Loaded bundled packages data from %s", self._bundled_package_management_file_path)
+
+            # Load the user packages:
+            with open(self._user_package_management_file_path, "r", encoding="utf-8") as f:
+                management_dict = json.load(f, encoding="utf-8")
                 self._installed_package_dict = management_dict.get("installed", {})
                 self._to_remove_package_set = set(management_dict.get("to_remove", []))
                 self._to_install_package_dict = management_dict.get("to_install", {})
-
-                Logger.log("i", "Package management file %s is loaded", self._package_management_file_path)
+                Logger.log("i", "Loaded user packages management file from %s", self._user_package_management_file_path)
 
     def _saveManagementData(self) -> None:
         # Need to use the file lock here to prevent concurrent I/O from other processes/threads
         container_registry = self._application.getContainerRegistry()
         with container_registry.lockFile():
-            with open(self._package_management_file_path, "w", encoding = "utf-8") as f:
+            with open(self._user_package_management_file_path, "w", encoding = "utf-8") as f:
                 data_dict = {"version": CuraPackageManager.Version,
-                             "bundled": self._bundled_package_dict,
                              "installed": self._installed_package_dict,
                              "to_remove": list(self._to_remove_package_set),
                              "to_install": self._to_install_package_dict}
                 data_dict["to_remove"] = list(data_dict["to_remove"])
                 json.dump(data_dict, f, sort_keys = True, indent = 4)
-                Logger.log("i", "Package management file %s is saved", self._package_management_file_path)
+                Logger.log("i", "Package management file %s was saved", self._user_package_management_file_path)
 
     # (for initialize) Removes all packages that have been scheduled to be removed.
     def _removeAllScheduledPackages(self) -> None:
@@ -136,9 +126,13 @@ class CuraPackageManager(QObject):
 
         # Add bundled, installed, and to-install packages to the set of installed package IDs
         all_installed_ids = set()
-        all_installed_ids = all_installed_ids.union(set(self._bundled_package_dict.keys()))
-        all_installed_ids = all_installed_ids.union(set(self._installed_package_dict.keys()))
-        all_installed_ids = all_installed_ids.union(set(self._to_install_package_dict.keys()))
+
+        if self._bundled_package_dict.keys():
+            all_installed_ids = all_installed_ids.union(set(self._bundled_package_dict.keys()))
+        if self._installed_package_dict.keys():
+            all_installed_ids = all_installed_ids.union(set(self._installed_package_dict.keys()))
+        if self._to_install_package_dict.keys():
+            all_installed_ids = all_installed_ids.union(set(self._to_install_package_dict.keys()))
         all_installed_ids = all_installed_ids.difference(self._to_remove_package_set)
 
         # map of <package_type> -> <package_id> -> <package_info>
@@ -162,15 +156,23 @@ class CuraPackageManager(QObject):
                 package_info = self._to_install_package_dict[package_id]["package_info"]
 
             # We also need to get information from the plugin registry such as if a plugin is active
-            package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
+            if package_info["package_type"] == "plugin":
+                package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
+            else:
+                package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
+
+            # If the package ID is in bundled, label it as such
+            if package_info["package_id"] in self._bundled_package_dict.keys():
+                package_info["is_bundled"] = True
+            else:
+                package_info["is_bundled"] = False
 
             # If there is not a section in the dict for this type, add it
-            package_type = package_info["package_type"]
-            if package_type not in installed_packages_dict:
-                installed_packages_dict[package_type] = []
-
+            if package_info["package_type"] not in installed_packages_dict:
+                installed_packages_dict[package_info["package_type"]] = []
+                
             # Finally, add the data
-            installed_packages_dict[package_type].append( package_info )
+            installed_packages_dict[package_info["package_type"]].append( package_info )
 
         return installed_packages_dict
 
