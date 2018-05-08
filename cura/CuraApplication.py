@@ -406,8 +406,8 @@ class CuraApplication(QtApplication):
         )
 
     # Runs preparations that needs to be done before the starting process.
-    def startSlashWindowPhase(self):
-        super().startSlashWindowPhase()
+    def startSplashWindowPhase(self):
+        super().startSplashWindowPhase()
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 

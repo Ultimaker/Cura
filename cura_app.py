@@ -125,7 +125,7 @@ app.addCommandLineOptions()
 app.parseCliOptions()
 app.initialize()
 
-app.startSlashWindowPhase()
-app.startPostSlashWindowPhase()
+app.startSplashWindowPhase()
+app.startPostSplashWindowPhase()
 
 app.run()
