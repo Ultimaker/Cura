@@ -35,8 +35,10 @@ class CuraPackageManager(QObject):
             "resources",
             "packages.json"
         )
-        self._user_package_management_file_path = os.path.join(os.path.abspath(Resources.getDataStoragePath()), "packages.json")
-
+        self._user_package_management_file_path = os.path.join(
+            os.path.abspath(Resources.getDataStoragePath()),
+            "packages.json"
+        )
 
         self._bundled_package_dict = {}     # A dict of all bundled packages
         self._installed_package_dict = {}   # A dict of all installed packages
@@ -100,6 +102,8 @@ class CuraPackageManager(QObject):
     def _installAllScheduledPackages(self) -> None:
         for package_id, installation_package_data in self._to_install_package_dict.items():
             self._installPackage(installation_package_data)
+            self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
+            self._saveManagementData()
         self._to_install_package_dict.clear()
         self._saveManagementData()
 
