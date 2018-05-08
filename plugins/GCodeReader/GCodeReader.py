@@ -5,9 +5,19 @@ from UM.FileHandler.FileReader import FileReader
 from UM.Mesh.MeshReader import MeshReader
 from UM.i18n import i18nCatalog
 from UM.Preferences import Preferences
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 catalog = i18nCatalog("cura")
 from . import MarlinFlavorParser, RepRapFlavorParser
+
+
+MimeTypeDatabase.addMimeType(
+    MimeType(
+        name = "application/x-cura-gcode-file",
+        comment = "Cura GCode File",
+        suffixes = ["gcode", "gcode.gz"]
+    )
+)
 
 # Class for loading and parsing G-code files
 class GCodeReader(MeshReader):

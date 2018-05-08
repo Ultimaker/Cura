@@ -15,6 +15,7 @@ from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -24,6 +25,15 @@ from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 MYPY = False
+
+
+MimeTypeDatabase.addMimeType(
+    MimeType(
+        name = "application/x-cura-project-file",
+        comment = "Cura Project File",
+        suffixes = ["curaproject.3mf"]
+    )
+)
 
 try:
     if not MYPY:
