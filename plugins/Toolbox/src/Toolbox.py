@@ -18,6 +18,7 @@ from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
 
+import cura.CuraVersion
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
@@ -34,7 +35,7 @@ class Toolbox(QObject, Extension):
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
-        self._packages_version = self._plugin_registry.APIVersion
+        self._packages_version = cura.CuraVersion.CuraPackagesVersion if hasattr(cura.CuraVersion, "CuraPackagesVersion") else self._plugin_registry.APIVersion # type:ignore
         self._api_version = 1
         self._api_url = "https://api-staging.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
 
