@@ -16,6 +16,9 @@ class Backup:
     It is also responsible for reading and writing the zip file to the user data folder.
     """
 
+    # These files should be ignored when making a backup.
+    IGNORED_FILES = {"cura.log"}
+
     def __init__(self, zip_file: bytes = None, meta_data: dict = None):
         self.zip_file = zip_file  # type: Optional[bytes]
         self.meta_data = meta_data  # type: Optional[dict]
@@ -43,8 +46,7 @@ class Backup:
         }
         # TODO: fill meta data with real machine/material/etc counts.
 
-    @staticmethod
-    def _makeArchive(root_path: str) -> Optional[bytes]:
+    def _makeArchive(self, root_path: str) -> Optional[bytes]:
         """
         Make a full archive from the given root path with the given name.
         :param root_path: The root directory to archive recursively.
@@ -61,7 +63,9 @@ class Backup:
                     relative_path = absolute_path[len(root_path) + len(os.sep):]
                     archive.write(absolute_path, relative_path)
                 for file_name in files:
-                    # Add all files.
+                    # Add all files except the ignored ones.
+                    if file_name in self.IGNORED_FILES:
+                        return
                     absolute_path = os.path.join(root, file_name)
                     relative_path = absolute_path[len(root_path) + len(os.sep):]
                     archive.write(absolute_path, relative_path)
