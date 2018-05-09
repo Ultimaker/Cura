@@ -56,7 +56,6 @@ class FlavorParser:
         self._layer_number = 0
         self._previous_z = 0
         self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
-        self._center_is_zero = False
         self._is_absolute_positioning = True    # It can be absolute (G90) or relative (G91)
         self._is_absolute_extrusion = True  # It can become absolute (M82, default) or relative (M83)
 
@@ -262,8 +261,6 @@ class FlavorParser:
                     f = float(item[1:]) / 60
                 if item[0] == "E":
                     e = float(item[1:])
-            if self._is_absolute_positioning and ((x is not None and x < 0) or (y is not None and y < 0)):
-                self._center_is_zero = True
             params = self._position(x, y, z, f, e)
             return func(position, params, path)
         return position
@@ -275,7 +272,7 @@ class FlavorParser:
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         return position
 
-    def processMCode(self, M: int, line: str, position: Position, path: List[Position]) -> Position:
+    def processMCode(self, M: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
         pass
 
     _type_keyword = ";TYPE:"
@@ -458,10 +455,9 @@ class FlavorParser:
             Logger.log("w", "File doesn't contain any valid layers")
 
         settings = Application.getInstance().getGlobalContainerStack()
-        machine_width = settings.getProperty("machine_width", "value")
-        machine_depth = settings.getProperty("machine_depth", "value")
-
-        if not self._center_is_zero:
+        if not settings.getProperty("machine_center_is_zero", "value"):
+            machine_width = settings.getProperty("machine_width", "value")
+            machine_depth = settings.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
         Logger.log("d", "GCode loading finished")
