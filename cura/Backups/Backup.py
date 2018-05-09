@@ -17,7 +17,8 @@ class Backup:
     """
 
     # These files should be ignored when making a backup.
-    IGNORED_FILES = {"cura.log"}
+    # Cura.cfg might contain secret data, so we don't back it up for now.
+    IGNORED_FILES = {"cura.log", "cura.cfg"}
 
     def __init__(self, zip_file: bytes = None, meta_data: dict = None):
         self.zip_file = zip_file  # type: Optional[bytes]
