@@ -288,16 +288,6 @@ class CuraApplication(QtApplication):
             "ScaleTool",
             "SelectionTool",
             "TranslateTool",
-
-            # Version upgrades:
-            "VersionUpgrade21to22",
-            "VersionUpgrade22to24",
-            "VersionUpgrade25to26",
-            "VersionUpgrade26to27",
-            "VersionUpgrade27to30",
-            "VersionUpgrade30to31",
-            "VersionUpgrade32to33",
-            "VersionUpgrade33to34",
         ])
         self._physics = None
         self._volume = None
