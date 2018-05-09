@@ -27,7 +27,7 @@ class BackupsManager:
     def restoreBackup(self, zip_file: bytes, meta_data: dict) -> None:
         """
         Restore a backup from a given ZipFile.
-        :param zip_file: A ZipFile containing the actual backup.
+        :param zip_file: A bytes object containing the actual backup.
         :param meta_data: A dict containing some meta data that is needed to restore the backup correctly.
         """
         if not meta_data.get("cura_release", None):
