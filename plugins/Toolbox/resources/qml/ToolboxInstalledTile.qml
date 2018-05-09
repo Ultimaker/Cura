@@ -26,7 +26,7 @@ Item
     Column
     {
         id: pluginInfo
-        property var color: model.package_type === "plugin" && !isEnabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("text")
+        property var color: model.type === "plugin" && !isEnabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("text")
         height: parent.height
         anchors
         {
