@@ -545,7 +545,7 @@
     },
     "VersionUpgrade21to22": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade21to22",
             "package_type": "plugin",
             "display_name": "Version Upgrade 2.1 to 2.2",
             "description": "Upgrades configurations from Cura 2.1 to Cura 2.2.",
@@ -562,7 +562,7 @@
     },
     "VersionUpgrade22to24": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade22to24",
             "package_type": "plugin",
             "display_name": "Version Upgrade 2.2 to 2.4",
             "description": "Upgrades configurations from Cura 2.2 to Cura 2.4.",
@@ -579,7 +579,7 @@
     },
     "VersionUpgrade25to26": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade25to26",
             "package_type": "plugin",
             "display_name": "Version Upgrade 2.5 to 2.6",
             "description": "Upgrades configurations from Cura 2.5 to Cura 2.6.",
@@ -596,7 +596,7 @@
     },
     "VersionUpgrade26to27": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade26to27",
             "package_type": "plugin",
             "display_name": "Version Upgrade 2.6 to 2.7",
             "description": "Upgrades configurations from Cura 2.6 to Cura 2.7.",
@@ -613,7 +613,7 @@
     },
     "VersionUpgrade27to30": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade27to30",
             "package_type": "plugin",
             "display_name": "Version Upgrade 2.7 to 3.0",
             "description": "Upgrades configurations from Cura 2.7 to Cura 3.0.",
@@ -630,7 +630,7 @@
     },
     "VersionUpgrade30to31": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade30to31",
             "package_type": "plugin",
             "display_name": "Version Upgrade 3.0 to 3.1",
             "description": "Upgrades configurations from Cura 3.0 to Cura 3.1.",
@@ -647,7 +647,7 @@
     },
     "VersionUpgrade32to33": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade32to33",
             "package_type": "plugin",
             "display_name": "Version Upgrade 3.2 to 3.3",
             "description": "Upgrades configurations from Cura 3.2 to Cura 3.3.",
@@ -664,7 +664,7 @@
     },
     "VersionUpgrade33to34": {
         "package_info": {
-            "package_id": "VersionUpgrade",
+            "package_id": "VersionUpgrade33to34",
             "package_type": "plugin",
             "display_name": "Version Upgrade 3.3 to 3.4",
             "description": "Upgrades configurations from Cura 3.3 to Cura 3.4.",

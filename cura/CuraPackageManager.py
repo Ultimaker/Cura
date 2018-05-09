@@ -54,9 +54,16 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Loads the package management file if exists
     def _loadManagementData(self) -> None:
+        # The bundles package management file should always be there
         if not os.path.exists(self._bundled_package_management_file_path):
             Logger.log("w", "Bundled package management file could not be found!")
             return
+        # Load the bundled packages:
+        with open(self._bundled_package_management_file_path, "r", encoding = "utf-8") as f:
+            self._bundled_package_dict = json.load(f, encoding = "utf-8")
+            Logger.log("i", "Loaded bundled packages data from %s", self._bundled_package_management_file_path)
+
+        # Load the user package management file
         if not os.path.exists(self._user_package_management_file_path):
             Logger.log("i", "User package management file %s doesn't exist, do nothing", self._user_package_management_file_path)
             return
@@ -64,11 +71,6 @@ class CuraPackageManager(QObject):
         # Need to use the file lock here to prevent concurrent I/O from other processes/threads
         container_registry = self._application.getContainerRegistry()
         with container_registry.lockFile():
-
-            # Load the bundled packages:
-            with open(self._bundled_package_management_file_path, "r", encoding = "utf-8") as f:
-                self._bundled_package_dict = json.load(f, encoding = "utf-8")
-                Logger.log("i", "Loaded bundled packages data from %s", self._bundled_package_management_file_path)
 
             # Load the user packages:
             with open(self._user_package_management_file_path, "r", encoding="utf-8") as f:

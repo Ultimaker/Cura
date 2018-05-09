@@ -287,7 +287,7 @@ class CuraApplication(QtApplication):
             "RotateTool",
             "ScaleTool",
             "SelectionTool",
-            "TranslateTool"
+            "TranslateTool",
         ])
         self._physics = None
         self._volume = None
