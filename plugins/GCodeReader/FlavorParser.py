@@ -26,7 +26,7 @@ import re
 from typing import Dict, List, NamedTuple, Optional, Union
 from collections import namedtuple
 
-Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
+Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", float)])
 
 ##  This parser is intended to interpret the common firmware codes among all the
 #   different flavors
@@ -98,7 +98,7 @@ class FlavorParser:
     def _getNullBoundingBox() -> AxisAlignedBox:
         return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
 
-    def _createPolygon(self, layer_thickness: float, path: List[Position], extruder_offsets: List[float]) -> bool:
+    def _createPolygon(self, layer_thickness: float, path: List[List[Union[float, int]]], extruder_offsets: List[float]) -> bool:
         countvalid = 0
         for point in path:
             if point[5] > 0:
@@ -171,7 +171,7 @@ class FlavorParser:
             return 0.35
         return line_width
 
-    def _gCode0(self, position: Position, params: Position, path: List[Position]) -> Position:
+    def _gCode0(self, position: Position, params: Position, path: List[List[Union[float, int]]]) -> Position:
         x, y, z, f, e = position
 
         if self._is_absolute_positioning:
@@ -207,7 +207,7 @@ class FlavorParser:
     _gCode1 = _gCode0
 
     ##  Home the head.
-    def _gCode28(self, position: Position, params: Position, path: List[Position]) -> Position:
+    def _gCode28(self, position: Position, params: Position, path: List[List[Union[float, int]]]) -> Position:
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -216,20 +216,20 @@ class FlavorParser:
             position.e)
 
     ##  Set the absolute positioning
-    def _gCode90(self, position: Position, params: Position, path: List[Position]) -> Position:
+    def _gCode90(self, position: Position, params: Position, path: List[List[Union[float, int]]]) -> Position:
         self._is_absolute_positioning = True
         self._is_absolute_extrusion = True
         return position
 
     ##  Set the relative positioning
-    def _gCode91(self, position: Position, params: Position, path: List[Position]) -> Position:
+    def _gCode91(self, position: Position, params: Position, path: List[List[Union[float, int]]]) -> Position:
         self._is_absolute_positioning = False
         self._is_absolute_extrusion = False
         return position
 
     ##  Reset the current position to the values specified.
     #   For example: G92 X10 will set the X to 10 without any physical motion.
-    def _gCode92(self, position: Position, params: Position, path: List[Position]) -> Position:
+    def _gCode92(self, position: Position, params: Position, path: List[List[Union[float, int]]]) -> Position:
         if params.e is not None:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
             self._extrusion_length_offset[self._extruder_number] += position.e[self._extruder_number] - params.e
@@ -241,7 +241,7 @@ class FlavorParser:
             params.f if params.f is not None else position.f,
             position.e)
 
-    def processGCode(self, G: int, line: str, position: Position, path: List[Position]) -> Position:
+    def processGCode(self, G: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
         func = getattr(self, "_gCode%s" % G, None)
         line = line.split(";", 1)[0]  # Remove comments (if any)
         if func is not None:
@@ -268,7 +268,7 @@ class FlavorParser:
             return func(position, params, path)
         return position
 
-    def processTCode(self, T: int, line: str, position: Position, path: List[Position]) -> Position:
+    def processTCode(self, T: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
         self._extruder_number = T
         if self._extruder_number + 1 > len(position.e):
             self._extrusion_length_offset.extend([0] * (self._extruder_number - len(position.e) + 1))
@@ -282,7 +282,7 @@ class FlavorParser:
     _layer_keyword = ";LAYER:"
 
     ##  For showing correct x, y offsets for each extruder
-    def _extruderOffsets(self) -> Dict[int, float]:
+    def _extruderOffsets(self) -> Dict[int, List[float]]:
         result = {}
         for extruder in ExtruderManager.getInstance().getExtruderStacks():
             result[int(extruder.getMetaData().get("position", "0"))] = [
