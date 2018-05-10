@@ -26,7 +26,6 @@ from .ConfigsModel import ConfigsModel
 
 i18n_catalog = i18nCatalog("cura")
 
-
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
     def __init__(self, parent=None) -> None:
@@ -35,15 +34,7 @@ class Toolbox(QObject, Extension):
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
-
-        if hasattr(cura, "CuraVersion"):
-            if hasattr(cura.CuraVersion, "CuraPackagesVersion"):
-                self._packages_version = cura.CuraVersion.CuraPackagesVersion
-            else:
-                self._packages_version = self._plugin_registry.APIVersion
-        else:
-            self._packages_version = self._plugin_registry.APIVersion
-
+        self._packages_version = self._getPackagesVersion()
         self._api_version = 1
         self._api_url = "https://api-staging.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
 
@@ -75,22 +66,22 @@ class Toolbox(QObject, Extension):
 
         # Data:
         self._metadata = {
-            "authors": [],
-            "packages": [],
-            "plugins_showcase": [],
-            "plugins_installed": [],
-            "materials_showcase": [],
+            "authors":             [],
+            "packages":            [],
+            "plugins_showcase":    [],
+            "plugins_installed":   [],
+            "materials_showcase":  [],
             "materials_installed": []
         }
 
         # Models:
         self._models = {
-            "authors": AuthorsModel(self),
-            "packages": PackagesModel(self),
-            "plugins_showcase": PackagesModel(self),
-            "plugins_available": PackagesModel(self),
-            "plugins_installed": PackagesModel(self),
-            "materials_showcase": AuthorsModel(self),
+            "authors":             AuthorsModel(self),
+            "packages":            PackagesModel(self),
+            "plugins_showcase":    PackagesModel(self),
+            "plugins_available":   PackagesModel(self),
+            "plugins_installed":   PackagesModel(self),
+            "materials_showcase":  AuthorsModel(self),
             "materials_available": PackagesModel(self),
             "materials_installed": PackagesModel(self)
         }
@@ -162,6 +153,13 @@ class Toolbox(QObject, Extension):
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
         self._package_manager = Application.getInstance().getCuraPackageManager()
+
+    def _getPackagesVersion(self) -> int:
+        if not hasattr(cura, "CuraVersion"):
+            return self._plugin_registry.APIVersion
+        if not hasattr(cura.CuraVersion, "CuraPackagesVersion"):
+            return self._plugin_registry.APIVersion
+        return cura.CuraVersion.CuraPackagesVersion
 
     @pyqtSlot()
     def browsePackages(self) -> None:
