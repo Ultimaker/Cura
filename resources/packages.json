@@ -1025,6 +1025,25 @@
             }
         }
     },
+    "UltimakerPC": {
+        "package_info": {
+            "package_id": "UltimakerPC",
+            "package_type": "material",
+            "display_name": "Ultimaker PC",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "cura_version": 4,
+            "website": "https://ultimaker.com/products/materials/pc",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
     "UltimakerPLA": {
         "package_info": {
             "package_id": "UltimakerPLA",
