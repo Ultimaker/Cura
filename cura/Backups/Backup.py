@@ -2,6 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
 import os
+import shutil
+
 from typing import Optional
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
 
@@ -17,8 +19,7 @@ class Backup:
     """
 
     # These files should be ignored when making a backup.
-    # Cura.cfg might contain secret data, so we don't back it up for now.
-    IGNORED_FILES = {"cura.log", "cura.cfg"}
+    IGNORED_FILES = {"cura.log"}
 
     def __init__(self, zip_file: bytes = None, meta_data: dict = None):
         self.zip_file = zip_file  # type: Optional[bytes]
@@ -32,6 +33,9 @@ class Backup:
         version_data_dir = Resources.getDataStoragePath()
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
+
+        # Ensure all current settings are saved.
+        CuraApplication.getInstance().saveSettings()
 
         # We're using an easy to parse filename for when we're restoring edge cases:
         # TIMESTAMP.backup.VERSION.cura.zip
@@ -76,14 +80,31 @@ class Backup:
             Logger.log("e", "Could not create archive from user data directory: %s", error)
             return None
 
-    def restore(self) -> None:
+    def restore(self) -> bool:
         """
         Restore this backup.
         """
         if not self.zip_file or not self.meta_data or not self.meta_data.get("cura_release", None):
             # We can restore without the minimum required information.
             Logger.log("w", "Tried to restore a Cura backup without having proper data or meta data.")
-            return
+            return False
 
         # global_data_dir = os.path.dirname(version_data_dir)
-        # TODO: restore logic.
+        # TODO: handle restoring older data version.
+
+        version_data_dir = Resources.getDataStoragePath()
+        archive = ZipFile(io.BytesIO(self.zip_file), "r")
+        extracted = self._extractArchive(archive, version_data_dir)
+        if not extracted:
+            return False
+        return True
+
+    @staticmethod
+    def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
+        Logger.log("d", "Removing current data in location: %s", target_path)
+        shutil.rmtree(target_path)
+
+        Logger.log("d", "Extracting backup to location: %s", target_path)
+        archive.extractall(target_path)
+
+        return True

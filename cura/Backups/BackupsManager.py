@@ -4,6 +4,7 @@ from typing import Optional
 
 from UM.Logger import Logger
 from cura.Backups.Backup import Backup
+from cura.CuraApplication import CuraApplication
 
 
 class BackupsManager:
@@ -40,7 +41,11 @@ class BackupsManager:
         self._disableAutoSave()
 
         backup = Backup(zip_file = zip_file, meta_data = meta_data)
-        backup.restore()  # At this point, Cura will need to restart for the changes to take effect
+        restored = backup.restore()
+        if restored:
+            # At this point, Cura will need to restart for the changes to take effect.
+            # We don't want to store the data at this point as that would override the just-restored backup.
+            CuraApplication.getInstance().windowClosed(safe_data=False)
 
     def _disableAutoSave(self):
         """Here we try to disable the auto-save plugin as it might interfere with restoring a backup."""
