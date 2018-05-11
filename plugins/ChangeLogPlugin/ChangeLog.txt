@@ -1,3 +1,129 @@
+[3.3.0]
+
+*Profile for the Ultimaker S5
+New printer profile for the Ultimaker S5, our latest 3D printer.
+
+*Profile for Tough PLA
+New material profile for Tough PLA, a material that prints with the convenience of PLA but with toughness and impact strength similar to ABS.
+
+*Configuration/sync button
+Configuration and synchronization button now available for Ultimaker network-connected printers to easily synchronize all possible available configurations in your Cura Connect group. The name of the group host is automatically pulled from the API, and network printers and local printers are separated in the list for clarity.
+
+*Setting visibility preset
+Presets guide you to find the most important settings incrementally. A small menu is located next to the search bar to easily access these new setting visibility presets. Contributed by fieldOfView.
+
+*Print/save hotkey
+Send a print to the queue using Ctrl + P (Windows/Linux) or Cmd + P (Mac). If no printer is present on the network, it will save to file instead.
+
+*3D model assistant
+Models sliced to print with ABS, PC, PP or CPE+ that have a larger footprint than 150 x 150 x 150 mm will notify the user with an icon and popup of how they can achieve the best possible print quality and reliability.
+
+*Refactored machine manager
+Refactored machine manager resulted in less manager classes. Changing settings, materials, variants and machines is now clearer. This results in an overall speed up when making changes.
+
+*Multiply models faster
+Significant speed increase when multiplying models.
+
+*Auto slicing disabled by default
+The auto slice tool is now disabled by default. Users can still enable the feature in the user preferences dialog.
+
+*Updated fonts
+Default font changed to NotoSans to increase readability and consistency with Cura Connect.
+
+*Plugin browser look and feel
+The plugin browser has been updated with a better look and feel to bring it in line with other UI elements. The author name is clickable, which opens email for support. Plugins can now be uninstalled with an uninstall button.
+
+*Show tooltip for unavailable profile
+Tooltips have been added to incompatible settings, to give explanations why they are incompatible.
+
+*Empty material slots Ultimaker 3
+When a material is not loaded in the Ultimaker 3, it is now displayed as ‘Empty’ rather than ‘Unknown’.
+
+*Send over network confirmation
+When a print job is sent to a networked printer, a popup will confirm the job was sent, with a button to redirect the user to the monitor in Cura Connect.
+
+*Post processing scripts
+Fixed an issue where post processing scripts could be lost between sessions. Post processing scripts are now persistent between sessions.
+
+*Single extrusion mode
+Disable an extruder on a dual extrusion printer, so you are not limited by the other extruder’s parameters. To disable an extruder, right click it in the right panel, and select ‘Disable extruder’ to disable it. Re-enable by right clicking and selecting ‘enable extruder’. Printing profiles are optimized for the active extruder, as well as global settings, such as build plate temperature, to achieve better print quality. Using single extrusion mode also makes the ‘print one at a time’ feature available for the Ultimaker 3 and Ultimaker S5.
+
+*New UFP extension
+UFP (Ultimaker format package) is a new file extension that contains compressed gcode and a preview thumbnail. Using this extension enables a model preview (similar to the solid view) on the Ultimaker S5 touchscreen and in Cura Connect.
+
+*Compressed Gcode
+Gcode saved from Ultimaker Cura using the Ultimaker 3 profile is compressed (using gzip) to save space on printers.
+
+*Circular prime tower
+Prime towers are now circular, resulting in a less jerky print head action, a more robust structure, better layer adhesion, and better build plate adhesion compared to square prime towers, reducing the chance of prime tower failure mid-print.
+
+*Connected infill lines
+Grid and triangular infill patterns now have connected lines for a more constant flow, better model rigidity, and reduced impact on the quality of the outer wall.
+
+*Support blocker - fieldOfView
+Generate a cube mesh to prevent support material generation in specific areas of a model. Each cube can be scaled, rotated, and moved with the standard adjustment tools to fit your requirements. When the support blocker tool is selected, single click in the area you want to block support to generate a mesh. If it is positioned by accident, click it again to remove it.
+
+*Real bridging - smartavionics
+New experimental feature that detects bridges, adjusting the print speed, slow and fan speed to enhance print quality on bridging parts.
+
+*Updated CuraEngine executable - thopiekar
+The CuraEngine executable now contains a dedicated icon, author information and a license.
+
+*Use RapidJSON and ClipperLib from system libraries
+Application updated to use verified copies of libraries, reducing maintenance time keeping them up to date (the operating system is now responsible), as well as reducing the amount of code shipped (as necessary code is already on the user’s system).
+
+*Initial layer flow
+New setting in the ‘material’ category where the initial layer flow can be adjusted.
+
+*Initial travel move retraction - smartavionics
+Retraction has been added to the initial travel move, reducing the chance of prime blobs getting dragged into parts before brim/skirts are printed.
+
+*Unnecessary retractions in spiralize - smartavionics
+Removes retractions on layer change in spiralize mode, improving model quality.
+
+*Faster travel paths - smartavionics
+Until now, the path order optimizer worked on the basis that the shortest possible route could be taken from any one point to another. When combing is used, any route may longer, due to the need to route around obstacles. Now, it can use the combed distances to give more consistent results.
+
+*New plugins - Pheneeny
+Three new plugins have been added to Ultimaker Cura: Scalable extra prime, Print temperature offset, and Enclosure fan.
+
+*Pre-heat extruders - fieldOfView
+This new feature allows to preheat the extruders in the printer monitor.
+
+*Renamed TweakAtZ to ‘ChangeAtZ’
+This script has been renamed to be more consistent with other scripts.
+
+*Import XML material profile checks
+XML material profile files are now checked before import in Ultimaker Cura to avoid potential issues. Contributed by fieldOfView.
+
+*Bug fixes
+- Slice engine crash default temperature 0. Fixed an issue where the slicing engine could crash when slicing with a material at 0°C.
+- Network printer reconnect. Fixed an issue where the user could not connect to the printer after losing connection.
+- Pause at height ‘redo layers’ broken. Fixed an issue where setting ‘pause at height redo layers’ to 1 or more would cause failed prints.
+- Reset icon fix. Fixed an issue where manually reverting a default print profile value instead of using the reset button would cause the reset icon to remain.
+- Infill density for all extruders. The infill density in the recommended mode now applies to all extruders instead of extruder 1.
+- Polypropylene 0.25mm print profile. Fixed the maximum number of allowed extrusions for all 0.25mm Polypropylene profile prints.
+- SolidWorks plugin. Replaced comtypes module with win32com to fix issues.
+- Font rendering issues. Fixed font rendering issues on Max OSX.
+- Slice engine avoids broken wall segments. Fixed an issue where narrow walls created broken line segments by testing for such situations and using slightly narrow lines in those cases.
+
+*Third party printers
+
+- FABtotum TPU profiles. Added third-party material profiles for TPU. Contributed by krios-fabteam.
+- Dagoma profiles. Updated printer profiles contributed by dagoma3d.
+- uBuild profile. Updated printer profiles contributed by uBuild-3D.
+- Cartesio printer updates. Updated profiles contributed by maukcc.
+- Printrbot Simple Maker's Kit 1405. Profiles contributed by timur-tabi.
+- Added SeeMeCNC. Profiles contributed by pouncingiguana.
+- Velleman Vertex. Updated printer and quality profiles contributed by velbn.
+- gMax 1.5. Profiles contributed by gordo3di.
+
+[3.2.1]
+*Bug fixes
+- Fixed issues where Cura crashes on startup and loading profiles
+- Updated translations
+- Fixed an issue where the text would not render properly
+
 [3.2.0]
 *Tree support
 Experimental tree-like support structure that uses ‘branches’ to support prints. Branches ‘grow’ and multiply towards the model, with fewer contact points than alternative support methods. This results in better surface finishes for organic-shaped prints.

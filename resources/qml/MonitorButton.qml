@@ -15,7 +15,7 @@ Item
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var activePrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0].activePrinter : null
     property var activePrintJob: activePrinter ? activePrinter.activePrintJob: null
@@ -225,7 +225,7 @@ Item
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width;
         height: UM.Theme.getSize("progressbar").height;
         anchors.top: statusLabel.bottom;
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 4;
+        anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 4);
         anchors.left: parent.left;
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width;
     }

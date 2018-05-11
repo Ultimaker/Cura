@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional
 
 from PyQt5.QtCore import pyqtProperty
 
+from UM.Application import Application
 from UM.Decorators import override
 
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
@@ -104,6 +105,8 @@ class GlobalStack(CuraContainerStack):
         # Handle the "limit_to_extruder" property.
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
         if limit_to_extruder is not None:
+            if limit_to_extruder == -1:
+                limit_to_extruder = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
             limit_to_extruder = str(limit_to_extruder)
         if limit_to_extruder is not None and limit_to_extruder != "-1" and limit_to_extruder in self._extruders:
             if super().getProperty(key, "settable_per_extruder", context):
@@ -124,21 +127,6 @@ class GlobalStack(CuraContainerStack):
     @override(ContainerStack)
     def setNextStack(self, next_stack: ContainerStack) -> None:
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
-
-    ##  Gets the approximate filament diameter that the machine requires.
-    #
-    #   The approximate material diameter is the material diameter rounded to
-    #   the nearest millimetre.
-    #
-    #   If the machine has no requirement for the diameter, -1 is returned.
-    #
-    #   \return The approximate filament diameter for the printer, as a string.
-    @pyqtProperty(str)
-    def approximateMaterialDiameter(self) -> str:
-        material_diameter = self.definition.getProperty("material_diameter", "value")
-        if material_diameter is None:
-            return "-1"
-        return str(round(float(material_diameter))) #Round, then convert back to string.
 
     # protected:
 

@@ -23,9 +23,9 @@ class ChangeLog(Extension, QObject,):
         self._changelog_context = None
         version_string = Application.getInstance().getVersion()
         if version_string is not "master":
-            self._version = Version(version_string)
+            self._current_app_version = Version(version_string)
         else:
-            self._version = None
+            self._current_app_version = None
 
         self._change_logs = None
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
@@ -76,7 +76,7 @@ class ChangeLog(Extension, QObject,):
                     self._change_logs[open_version][open_header].append(line)
 
     def _onEngineCreated(self):
-        if not self._version:
+        if not self._current_app_version:
             return #We're on dev branch.
 
         if Preferences.getInstance().getValue("general/latest_version_changelog_shown") == "master":
@@ -91,7 +91,7 @@ class ChangeLog(Extension, QObject,):
         if not Application.getInstance().getGlobalContainerStack():
             return
 
-        if self._version > latest_version_shown:
+        if self._current_app_version > latest_version_shown:
             self.showChangelog()
 
     def showChangelog(self):

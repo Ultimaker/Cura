@@ -1,22 +1,20 @@
 // Copyright (c) 2016 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 import QtQuick.Window 2.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
+
 
 UM.ManagementPage
 {
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    model: UM.ContainerStacksModel
-    {
-        filter: {"type": "machine"}
-    }
+    model: Cura.MachineManagementModel { }
 
     activeId: Cura.MachineManager.activeMachineId
     activeIndex: activeMachineIndex()
@@ -56,7 +54,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Rename");
             iconName: "edit-rename";
-            enabled: base.currentItem != null
+            enabled: base.currentItem != null && base.currentItem.metadata.connect_group_name == null
             onClicked: renameDialog.open();
         }
     ]
@@ -140,7 +138,7 @@ UM.ManagementPage
 
             visible: base.currentItem
 
-            property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+            property bool printerConnected: Cura.MachineManager.printerConnected
             property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
             property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
             property var printJob: connectedPrinter != null ? connectedPrinter.activePrintJob: null

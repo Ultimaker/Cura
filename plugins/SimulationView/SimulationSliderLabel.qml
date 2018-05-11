@@ -49,7 +49,7 @@ UM.PointingRectangle {
 
         anchors {
             left: parent.left
-            leftMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+            leftMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
             verticalCenter: parent.verticalCenter
         }
 
@@ -91,7 +91,7 @@ UM.PointingRectangle {
 
         anchors {
             left: parent.right
-            leftMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+            leftMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
             verticalCenter: parent.verticalCenter
         }
 

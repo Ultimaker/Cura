@@ -18,7 +18,7 @@ Rectangle
     height: UM.Theme.getSize("sidebar_header").height
     color: UM.Controller.activeStage.stageId == "MonitorStage" ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
     property int rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
@@ -150,7 +150,7 @@ Rectangle
             visible: base.width - allItemsWidth - 1 * this.width > 0
         }
 
-        // #5 Left view
+        // #5 Right view
         Button
         {
             iconSource: UM.Theme.getIcon("view_right")
@@ -220,7 +220,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: viewModeButton.right
 
-        property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
+        property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
 
         height: childrenRect.height
         width: childrenRect.width

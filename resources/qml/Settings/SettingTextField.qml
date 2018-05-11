@@ -13,11 +13,17 @@ SettingItem
 
     property string textBeforeEdit
     property bool textHasChanged
+    property bool focusGainedByClick: false
     onFocusReceived:
     {
         textHasChanged = false;
         textBeforeEdit = focusItem.text;
-        focusItem.selectAll();
+
+        if(!focusGainedByClick)
+        {
+            // select all text when tabbing through fields (but not when selecting a field with the mouse)
+            focusItem.selectAll();
+        }
     }
 
     contents: Rectangle
@@ -26,7 +32,7 @@ SettingItem
 
         anchors.fill: parent
 
-        border.width: UM.Theme.getSize("default_lining").width
+        border.width: Math.round(UM.Theme.getSize("default_lining").width)
         border.color:
         {
             if(!enabled)
@@ -76,28 +82,21 @@ SettingItem
         Rectangle
         {
             anchors.fill: parent;
-            anchors.margins: UM.Theme.getSize("default_lining").width;
+            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width);
             color: UM.Theme.getColor("setting_control_highlight")
             opacity: !control.hovered ? 0 : propertyProvider.properties.validationState == "ValidatorState.Valid" ? 1.0 : 0.35;
         }
 
         Label
         {
-            anchors.right: parent.right;
-            anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
-            anchors.verticalCenter: parent.verticalCenter;
+            anchors.right: parent.right
+            anchors.rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
+            anchors.verticalCenter: parent.verticalCenter
 
-            text: definition.unit;
+            text: definition.unit
+            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
             font: UM.Theme.getFont("default")
-        }
-
-        MouseArea
-        {
-            id: mouseArea
-            anchors.fill: parent;
-            //hoverEnabled: true;
-            cursorShape: Qt.IBeamCursor
         }
 
         TextInput
@@ -107,9 +106,9 @@ SettingItem
             anchors
             {
                 left: parent.left
-                leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                leftMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
                 right: parent.right
-                rightMargin: UM.Theme.getSize("setting_unit_margin").width
+                rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
                 verticalCenter: parent.verticalCenter
             }
             renderType: Text.NativeRendering
@@ -141,6 +140,7 @@ SettingItem
                 {
                     base.focusReceived();
                 }
+                base.focusGainedByClick = false;
             }
 
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
@@ -176,6 +176,22 @@ SettingItem
                     }
                 }
                 when: !input.activeFocus
+            }
+
+            MouseArea
+            {
+                id: mouseArea
+                anchors.fill: parent;
+
+                cursorShape: Qt.IBeamCursor
+
+                onPressed: {
+                    if(!input.activeFocus) {
+                        base.focusGainedByClick = true;
+                        input.forceActiveFocus();
+                    }
+                    mouse.accepted = false;
+                }
             }
         }
     }

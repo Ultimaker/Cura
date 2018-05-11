@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
+import uuid
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
@@ -32,9 +33,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = PerObjectContainerStack(stack_id = "per_object_stack_" + str(id(self)))
+        self._stack = PerObjectContainerStack(container_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
-        self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
+        user_container = InstanceContainer(container_id = self._generateUniqueName())
+        user_container.addMetaDataEntry("type", "user")
+        self._stack.userChanges = user_container
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
         self._is_non_printing_mesh = False
@@ -47,11 +50,18 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self.activeExtruderChanged.connect(self._updateNextStack)
         self._updateNextStack()
 
+    def _generateUniqueName(self):
+        return "SettingOverrideInstanceContainer-%s" % uuid.uuid1()
+
     def __deepcopy__(self, memo):
         ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
+
         ## Copy the instance
         instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
+
+        # A unique name must be added, or replaceContainer will not replace it
+        instance_container.setMetaDataEntry("id", self._generateUniqueName)
 
         ## Set the copied instance as the first (and only) instance container of the stack.
         deep_copy._stack.replaceContainer(0, instance_container)
@@ -61,7 +71,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
         # has not been updated yet.
-        deep_copy._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+        deep_copy._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
         return deep_copy
 
@@ -89,10 +99,13 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def isNonPrintingMesh(self):
         return self._is_non_printing_mesh
 
+    def evaluateIsNonPrintingMesh(self):
+        return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
-        # Trigger slice/need slicing if the value has changed.
         if property_name == "value":
-            self._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+            # Trigger slice/need slicing if the value has changed.
+            self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()

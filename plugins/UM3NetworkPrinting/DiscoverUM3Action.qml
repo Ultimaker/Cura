@@ -5,6 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
+import QtQuick.Dialogs 1.2
 
 Cura.MachineAction
 {
@@ -32,12 +33,32 @@ Cura.MachineAction
         if(base.selectedDevice && base.completeProperties)
         {
             var printerKey = base.selectedDevice.key
-            if(manager.getStoredKey() != printerKey)
+            var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
+            if (manager.getStoredKey() != printerKey)
             {
-                manager.setKey(printerKey);
-                completed();
+                // Check if there is another instance with the same key
+                if (!manager.existsKey(printerKey))
+                {
+                    manager.setKey(printerKey)
+                    manager.setGroupName(printerName)   // TODO To change when the groups have a name
+                    completed()
+                }
+                else
+                {
+                    existingConnectionDialog.open()
+                }
             }
         }
+    }
+
+    MessageDialog
+    {
+        id: existingConnectionDialog
+        title: catalog.i18nc("@window:title", "Existing Connection")
+        icon: StandardIcon.Information
+        text: catalog.i18nc("@message:text", "This printer/group is already added to Cura. Please select another printer/group.")
+        standardButtons: StandardButton.Ok
+        modality: Qt.ApplicationModal
     }
 
     Column
@@ -114,7 +135,7 @@ Cura.MachineAction
 
             Column
             {
-                width: Math.floor(parent.width * 0.5)
+                width: Math.round(parent.width * 0.5)
                 spacing: UM.Theme.getSize("default_margin").height
 
                 ScrollView
@@ -198,7 +219,7 @@ Cura.MachineAction
             }
             Column
             {
-                width: Math.floor(parent.width * 0.5)
+                width: Math.round(parent.width * 0.5)
                 visible: base.selectedDevice ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
@@ -216,25 +237,31 @@ Cura.MachineAction
                     columns: 2
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Type")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text:
                         {
                             if(base.selectedDevice)
                             {
-                                if(base.selectedDevice.printerType == "ultimaker3")
+                                if (base.selectedDevice.printerType == "ultimaker3")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3")
-                                } else if(base.selectedDevice.printerType == "ultimaker3_extended")
+                                    return "Ultimaker 3";
+                                }
+                                else if (base.selectedDevice.printerType == "ultimaker3_extended")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3 Extended")
-                                } else
+                                    return "Ultimaker 3 Extended";
+                                }
+                                else if (base.selectedDevice.printerType == "ultimaker_s5")
+                                {
+                                    return "Ultimaker S5";
+                                }
+                                else
                                 {
                                     return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
                                 }
@@ -247,25 +274,25 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedDevice ? base.selectedDevice.firmwareVersion : ""
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedDevice ? base.selectedDevice.ipAddress : ""
                     }
@@ -303,7 +330,7 @@ Cura.MachineAction
                 Button
                 {
                     text: catalog.i18nc("@action:button", "Connect")
-                    enabled: (base.selectedDevice && base.completeProperties) ? true : false
+                    enabled: (base.selectedDevice && base.completeProperties && base.selectedDevice.clusterSize > 0) ? true : false
                     onClicked: connectToPrinter()
                 }
             }

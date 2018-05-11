@@ -1,12 +1,12 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # PluginBrowser is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Application import Application
-from UM.Qt.ListModel import ListModel
 from UM.Logger import Logger
+from UM.PluginError import PluginNotFoundError
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
@@ -20,7 +20,6 @@ import os
 import tempfile
 import platform
 import zipfile
-import shutil
 
 from cura.CuraApplication import CuraApplication
 
@@ -44,7 +43,7 @@ class PluginBrowser(QObject, Extension):
         self._plugins_metadata = []
         self._plugins_model = None
 
-        # Can be 'installed' or 'availble'
+        # Can be 'installed' or 'available'
         self._view = "available"
 
         self._restart_required = False
@@ -287,8 +286,7 @@ class PluginBrowser(QObject, Extension):
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
-        print("Updating plugins model...", self._view)
-        self._plugins_model = PluginsModel(self._view)
+        self._plugins_model = PluginsModel(None, self._view)
         # self._plugins_model.update()
 
         # Check each plugin the registry for matching plugin from server
@@ -304,19 +302,27 @@ class PluginBrowser(QObject, Extension):
 
         return self._plugins_model
 
+    def _checkCanUpgrade(self, plugin_id, version):
+        if not self._plugin_registry.isInstalledPlugin(plugin_id):
+            return False
 
-
-    def _checkCanUpgrade(self, id, version):
-
-        # TODO: This could maybe be done more efficiently using a dictionary...
+        try:
+            plugin_object = self._plugin_registry.getPluginObject(plugin_id)
+        except PluginNotFoundError:
+            # CURA-5287
+            # At this point, we know that this plugin is installed because it passed the previous check, but we cannot
+            # get the PluginObject. This means there is a bug in the plugin or something. So, we always allow to upgrade
+            # this plugin and hopefully that fixes it.
+            Logger.log("w", "Could not find plugin %s", plugin_id)
+            return True
 
         # Scan plugin server data for plugin with the given id:
         for plugin in self._plugins_metadata:
-            if id == plugin["id"]:
-                reg_version = Version(version)
+            if plugin_id == plugin["id"]:
+                reg_version = Version(plugin_object.getVersion())
                 new_version = Version(plugin["version"])
                 if new_version > reg_version:
-                    Logger.log("i", "%s has an update availible: %s", plugin["id"], plugin["version"])
+                    Logger.log("i", "%s has an update available: %s", plugin["id"], plugin["version"])
                     return True
         return False
 
@@ -367,7 +373,6 @@ class PluginBrowser(QObject, Extension):
 
                     # Add metadata to the manager:
                     self._plugins_metadata = json_data
-                    print(self._plugins_metadata)
                     self._plugin_registry.addExternalPlugins(self._plugins_metadata)
                     self.pluginsMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
@@ -395,14 +400,14 @@ class PluginBrowser(QObject, Extension):
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
 
-    @pyqtProperty(bool, notify=restartRequiredChanged)
+    @pyqtProperty(bool, notify = restartRequiredChanged)
     def restartRequired(self):
         return self._restart_required
 
-    @pyqtProperty(str, notify=viewChanged)
+    @pyqtProperty(str, notify = viewChanged)
     def viewing(self):
         return self._view
 
     @pyqtSlot()
     def restart(self):
-        CuraApplication.getInstance().quit()
+        CuraApplication.getInstance().windowClosed()

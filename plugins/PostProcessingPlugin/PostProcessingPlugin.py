@@ -8,6 +8,8 @@ from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
 
+import configparser #The script lists are stored in metadata as serialised config files.
+import io #To allow configparser to write to a string.
 import os.path
 import pkgutil
 import sys
@@ -35,6 +37,8 @@ class PostProcessingPlugin(QObject, Extension):
         self._selected_script_index = -1
 
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged) #When the current printer changes, update the list of scripts.
+        Application.getInstance().mainWindowChanged.connect(self._createView) #When the main window is created, create the view so that we can display the post-processing icon if necessary.
 
     selectedIndexChanged = pyqtSignal()
     @pyqtProperty("QVariant", notify = selectedIndexChanged)
@@ -62,7 +66,7 @@ class PostProcessingPlugin(QObject, Extension):
             return
 
         # get gcode list for the active build plate
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_list = gcode_dict[active_build_plate_id]
         if not gcode_list:
             return
@@ -110,36 +114,60 @@ class PostProcessingPlugin(QObject, Extension):
         self.selectedIndexChanged.emit()  # Ensure that settings are updated
         self._propertyChanged()
 
+    ##  Load all scripts from all paths where scripts can be found.
+    #
+    #   This should probably only be done on init.
+    def loadAllScripts(self):
+        if self._loaded_scripts: #Already loaded.
+            return
+
+        #The PostProcessingPlugin path is for built-in scripts.
+        #The Resources path is where the user should store custom scripts.
+        #The Preferences path is legacy, where the user may previously have stored scripts.
+        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+            path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                try:
+                    os.makedirs(path)
+                except OSError:
+                    Logger.log("w", "Unable to create a folder for scripts: " + path)
+                    continue
+
+            self.loadScripts(path)
+
     ##  Load all scripts from provided path.
     #   This should probably only be done on init.
     #   \param path Path to check for scripts.
-    def loadAllScripts(self, path):
+    def loadScripts(self, path):
+        ## Load all scripts in the scripts folders
         scripts = pkgutil.iter_modules(path = [path])
         for loader, script_name, ispkg in scripts:
             # Iterate over all scripts.
             if script_name not in sys.modules:
-                spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
-                loaded_script = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(loaded_script)
-                sys.modules[script_name] = loaded_script
-
-                loaded_class = getattr(loaded_script, script_name)
-                temp_object = loaded_class()
-                Logger.log("d", "Begin loading of script: %s", script_name)
                 try:
-                    setting_data = temp_object.getSettingData()
-                    if "name" in setting_data and "key" in setting_data:
-                        self._script_labels[setting_data["key"]] = setting_data["name"]
-                        self._loaded_scripts[setting_data["key"]] = loaded_class
-                    else:
-                        Logger.log("w", "Script %s.py has no name or key", script_name)
-                        self._script_labels[script_name] = script_name
-                        self._loaded_scripts[script_name] = loaded_class
-                except AttributeError:
-                    Logger.log("e", "Script %s.py is not a recognised script type. Ensure it inherits Script", script_name)
-                except NotImplementedError:
-                    Logger.log("e", "Script %s.py has no implemented settings", script_name)
-        self.loadedScriptListChanged.emit()
+                    spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
+                    loaded_script = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(loaded_script)
+                    sys.modules[script_name] = loaded_script #TODO: This could be a security risk. Overwrite any module with a user-provided name?
+
+                    loaded_class = getattr(loaded_script, script_name)
+                    temp_object = loaded_class()
+                    Logger.log("d", "Begin loading of script: %s", script_name)
+                    try:
+                        setting_data = temp_object.getSettingData()
+                        if "name" in setting_data and "key" in setting_data:
+                            self._script_labels[setting_data["key"]] = setting_data["name"]
+                            self._loaded_scripts[setting_data["key"]] = loaded_class
+                        else:
+                            Logger.log("w", "Script %s.py has no name or key", script_name)
+                            self._script_labels[script_name] = script_name
+                            self._loaded_scripts[script_name] = loaded_class
+                    except AttributeError:
+                        Logger.log("e", "Script %s.py is not a recognised script type. Ensure it inherits Script", script_name)
+                    except NotImplementedError:
+                        Logger.log("e", "Script %s.py has no implemented settings", script_name)
+                except Exception as e:
+                    Logger.logException("e", "Exception occurred while loading post processing plugin: {error_msg}".format(error_msg = str(e)))
 
     loadedScriptListChanged = pyqtSignal()
     @pyqtProperty("QVariantList", notify = loadedScriptListChanged)
@@ -165,24 +193,69 @@ class PostProcessingPlugin(QObject, Extension):
         self.scriptListChanged.emit()
         self._propertyChanged()
 
+    ##  When the global container stack is changed, swap out the list of active
+    #   scripts.
+    def _onGlobalContainerStackChanged(self):
+        self.loadAllScripts()
+        new_stack = Application.getInstance().getGlobalContainerStack()
+        self._script_list.clear()
+        if not new_stack.getMetaDataEntry("post_processing_scripts"): #Missing or empty.
+            self.scriptListChanged.emit() #Even emit this if it didn't change. We want it to write the empty list to the stack's metadata.
+            return
+
+        self._script_list.clear()
+        scripts_list_strs = new_stack.getMetaDataEntry("post_processing_scripts")
+        for script_str in scripts_list_strs.split("\n"): #Encoded config files should never contain three newlines in a row. At most 2, just before section headers.
+            if not script_str: #There were no scripts in this one (or a corrupt file caused more than 3 consecutive newlines here).
+                continue
+            script_str = script_str.replace("\\n", "\n").replace("\\\\", "\\") #Unescape escape sequences.
+            script_parser = configparser.ConfigParser(interpolation = None)
+            script_parser.optionxform = str #Don't transform the setting keys as they are case-sensitive.
+            script_parser.read_string(script_str)
+            for script_name, settings in script_parser.items(): #There should only be one, really! Otherwise we can't guarantee the order or allow multiple uses of the same script.
+                if script_name == "DEFAULT": #ConfigParser always has a DEFAULT section, but we don't fill it. Ignore this one.
+                    continue
+                if script_name not in self._loaded_scripts: #Don't know this post-processing plug-in.
+                    Logger.log("e", "Unknown post-processing script {script_name} was encountered in this global stack.".format(script_name = script_name))
+                    continue
+                new_script = self._loaded_scripts[script_name]()
+                for setting_key, setting_value in settings.items(): #Put all setting values into the script.
+                    new_script._instance.setProperty(setting_key, "value", setting_value)
+                self._script_list.append(new_script)
+
+        self.setSelectedScriptIndex(0)
+        self.scriptListChanged.emit()
+
+    @pyqtSlot()
+    def writeScriptsToStack(self):
+        script_list_strs = []
+        for script in self._script_list:
+            parser = configparser.ConfigParser(interpolation = None) #We'll encode the script as a config with one section. The section header is the key and its values are the settings.
+            parser.optionxform = str #Don't transform the setting keys as they are case-sensitive.
+            script_name = script.getSettingData()["key"]
+            parser.add_section(script_name)
+            for key in script.getSettingData()["settings"]:
+                value = script.getSettingValueByKey(key)
+                parser[script_name][key] = str(value)
+            serialized = io.StringIO() #ConfigParser can only write to streams. Fine.
+            parser.write(serialized)
+            serialized.seek(0)
+            script_str = serialized.read()
+            script_str = script_str.replace("\\", "\\\\").replace("\n", "\\n") #Escape newlines because configparser sees those as section delimiters.
+            script_list_strs.append(script_str)
+
+        script_list_strs = "\n".join(script_list_strs) #ConfigParser should never output three newlines in a row when serialised, so it's a safe delimiter.
+
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if "post_processing_scripts" not in global_stack.getMetaData():
+            global_stack.addMetaDataEntry("post_processing_scripts", "")
+        Application.getInstance().getGlobalContainerStack().setMetaDataEntry("post_processing_scripts", script_list_strs)
+
     ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
     def _createView(self):
         Logger.log("d", "Creating post processing plugin view.")
 
-        ## Load all scripts in the scripts folders
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]:
-            try:
-                path = os.path.join(root, "scripts")
-                if not os.path.isdir(path):
-                    try:
-                        os.makedirs(path)
-                    except OSError:
-                        Logger.log("w", "Unable to create a folder for scripts: " + path)
-                        continue
-
-                self.loadAllScripts(path)
-            except Exception as e:
-                Logger.logException("e", "Exception occurred while loading post processing plugin: {error_msg}".format(error_msg = str(e)))
+        self.loadAllScripts()
 
         # Create the plugin dialog component
         path = os.path.join(PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), "PostProcessingPlugin.qml")

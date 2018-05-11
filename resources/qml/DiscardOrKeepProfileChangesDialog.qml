@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
 import UM 1.2 as UM
-import Cura 1.1 as Cura
+import Cura 1.0 as Cura
 
 UM.Dialog
 {

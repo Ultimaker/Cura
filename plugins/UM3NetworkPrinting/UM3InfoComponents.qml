@@ -10,8 +10,9 @@ Item
 {
     id: base
 
-    property bool isUM3: Cura.MachineManager.activeQualityDefinitionId == "ultimaker3"
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property string activeQualityDefinitionId: Cura.MachineManager.activeQualityDefinitionId
+    property bool isUM3: activeQualityDefinitionId == "ultimaker3" || activeQualityDefinitionId.match("ultimaker_") != null
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property bool authenticationRequested: printerConnected && (Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 || Cura.MachineManager.printerOutputDevices[0].authenticationState == 5) // AuthState.AuthenticationRequested or AuthenticationReceived.
 
