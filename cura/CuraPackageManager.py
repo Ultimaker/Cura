@@ -97,6 +97,7 @@ class CuraPackageManager(QObject):
     def _removeAllScheduledPackages(self) -> None:
         for package_id in self._to_remove_package_set:
             self._purgePackage(package_id)
+            del self._installed_package_dict[package_id]
         self._to_remove_package_set.clear()
         self._saveManagementData()
 

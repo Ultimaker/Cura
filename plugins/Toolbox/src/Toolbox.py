@@ -251,7 +251,6 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def restart(self):
-        self._package_manager._removeAllScheduledPackages()
         CuraApplication.getInstance().windowClosed()
 
     # Checks
