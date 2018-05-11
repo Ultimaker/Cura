@@ -5,7 +5,6 @@ from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Signal import Signal, signalemitter
-from UM.Preferences import Preferences
 from UM.Version import Version
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
@@ -54,7 +53,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
 
         # Get list of manual instances from preferences
-        self._preferences = Preferences.getInstance()
+        self._preferences = Application.getInstance().getPreferences()
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 

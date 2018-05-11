@@ -459,7 +459,7 @@ class CuraApplication(QtApplication):
             self._container_registry.loadAllMetadata()
 
         # set the setting version for Preferences
-        preferences = Preferences.getInstance()
+        preferences = self.getPreferences()
         preferences.addPreference("metadata/setting_version", 0)
         preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
 
@@ -484,7 +484,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("view/filter_current_build_plate", False)
         preferences.addPreference("cura/sidebar_collapsed", False)
 
-        self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
+        self._need_to_show_user_agreement = not self.getPreferences().getValue("general/accepted_user_agreement")
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -546,7 +546,7 @@ class CuraApplication(QtApplication):
 
     def discardOrKeepProfileChanges(self):
         has_user_interaction = False
-        choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
+        choice = self.getPreferences().getValue("cura/choice_on_profile_override")
         if choice == "always_discard":
             # don't show dialog and DISCARD the profile
             self.discardOrKeepProfileChangesClosed("discard")
@@ -597,12 +597,12 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
-        default_path = Preferences.getInstance().getValue("local_file/%s" % key)
+        default_path = self.getPreferences().getValue("local_file/%s" % key)
         return QUrl.fromLocalFile(default_path)
 
     @pyqtSlot(str, str)
     def setDefaultPath(self, key, default_path):
-        Preferences.getInstance().setValue("local_file/%s" % key, QUrl(default_path).toLocalFile())
+        self.getPreferences().setValue("local_file/%s" % key, QUrl(default_path).toLocalFile())
 
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
@@ -672,7 +672,7 @@ class CuraApplication(QtApplication):
         # Initialize setting visibility presets model
         self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
         default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
-        Preferences.getInstance().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
+        self.getPreferences().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
@@ -934,7 +934,7 @@ class CuraApplication(QtApplication):
                     # Default
                     self.getController().setActiveTool("TranslateTool")
 
-            if Preferences.getInstance().getValue("view/center_on_select"):
+            if self.getPreferences().getValue("view/center_on_select"):
                 self._center_after_select = True
         else:
             if self.getController().getActiveTool():
@@ -1329,15 +1329,15 @@ class CuraApplication(QtApplication):
         categories = list(set(categories))
         categories.sort()
         joined = ";".join(categories)
-        if joined != Preferences.getInstance().getValue("cura/categories_expanded"):
-            Preferences.getInstance().setValue("cura/categories_expanded", joined)
+        if joined != self.getPreferences().getValue("cura/categories_expanded"):
+            self.getPreferences().setValue("cura/categories_expanded", joined)
             self.expandedCategoriesChanged.emit()
 
     expandedCategoriesChanged = pyqtSignal()
 
     @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
     def expandedCategories(self):
-        return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
+        return self.getPreferences().getValue("cura/categories_expanded").split(";")
 
     @pyqtSlot()
     def mergeSelected(self):
@@ -1600,8 +1600,8 @@ class CuraApplication(QtApplication):
 
         self.fileLoaded.emit(filename)
         arrange_objects_on_load = (
-            not Preferences.getInstance().getValue("cura/use_multi_build_plate") or
-            not Preferences.getInstance().getValue("cura/not_arrange_objects_on_load"))
+            not self.getPreferences().getValue("cura/use_multi_build_plate") or
+            not self.getPreferences().getValue("cura/not_arrange_objects_on_load"))
         target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         root = self.getController().getScene().getRoot()

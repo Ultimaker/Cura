@@ -4,7 +4,6 @@
 from PyQt5.QtCore import QTimer
 
 from UM.Extension import Extension
-from UM.Preferences import Preferences
 from UM.Application import Application
 from UM.Resources import Resources
 from UM.Logger import Logger
@@ -14,14 +13,14 @@ class AutoSave(Extension):
     def __init__(self):
         super().__init__()
 
-        Preferences.getInstance().preferenceChanged.connect(self._triggerTimer)
+        Application.getInstance().getPreferences().preferenceChanged.connect(self._triggerTimer)
 
         self._global_stack = None
 
-        Preferences.getInstance().addPreference("cura/autosave_delay", 1000 * 10)
+        Application.getInstance().getPreferences().addPreference("cura/autosave_delay", 1000 * 10)
 
         self._change_timer = QTimer()
-        self._change_timer.setInterval(Preferences.getInstance().getValue("cura/autosave_delay"))
+        self._change_timer.setInterval(Application.getInstance().getPreferences().getValue("cura/autosave_delay"))
         self._change_timer.setSingleShot(True)
 
         self._saving = False
@@ -72,6 +71,6 @@ class AutoSave(Extension):
 
         Application.getInstance().saveSettings()
 
-        Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences, Application.getInstance().getApplicationName() + ".cfg"))
+        Application.getInstance().getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, Application.getInstance().getApplicationName() + ".cfg"))
 
         self._saving = False

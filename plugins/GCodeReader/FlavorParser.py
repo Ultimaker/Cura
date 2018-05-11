@@ -10,7 +10,6 @@ from UM.Math.Vector import Vector
 from UM.Message import Message
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from UM.i18n import i18nCatalog
-from UM.Preferences import Preferences
 
 catalog = i18nCatalog("cura")
 
@@ -43,7 +42,7 @@ class FlavorParser:
         self._current_layer_thickness = 0.2  # default
         self._filament_diameter = 2.85       # default
 
-        Preferences.getInstance().addPreference("gcodereader/show_caution", True)
+        Application.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
     def _clearValues(self):
         self._extruder_number = 0
@@ -462,7 +461,7 @@ class FlavorParser:
 
         Logger.log("d", "GCode loading finished")
 
-        if Preferences.getInstance().getValue("gcodereader/show_caution"):
+        if Application.getInstance().getPreferences().getValue("gcodereader/show_caution"):
             caution_message = Message(catalog.i18nc(
                 "@info:generic",
                 "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."),

@@ -12,7 +12,6 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.Preferences import Preferences
 from UM.Qt.Duration import Duration
 from UM.Scene.SceneNode import SceneNode
 
@@ -80,7 +79,7 @@ class PrintInformation(QObject):
         self._application.workspaceLoaded.connect(self.setProjectName)
         self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
 
-        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+        self._application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._application.getMachineManager().rootMaterialChanged.connect(self._onActiveMaterialsChanged)
         self._onActiveMaterialsChanged()
@@ -208,7 +207,7 @@ class PrintInformation(QObject):
         self._material_costs[build_plate_number] = []
         self._material_names[build_plate_number] = []
 
-        material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
+        material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
 
         extruder_stacks = global_stack.extruders
         for position, extruder_stack in extruder_stacks.items():
@@ -299,7 +298,7 @@ class PrintInformation(QObject):
         self._setAbbreviatedMachineName()
         if self._pre_sliced:
             self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
-        elif Preferences.getInstance().getValue("cura/jobname_prefix"):
+        elif self._application.getInstance().getPreferences().getValue("cura/jobname_prefix"):
             # Don't add abbreviation if it already has the exact same abbreviation.
             if base_name.startswith(self._abbr_machine + "_"):
                 self._job_name = base_name

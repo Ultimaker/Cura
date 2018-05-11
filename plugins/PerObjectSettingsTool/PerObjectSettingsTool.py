@@ -5,7 +5,6 @@ from UM.Tool import Tool
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Application import Application
-from UM.Preferences import Preferences
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.SettingInstance import SettingInstance
@@ -27,7 +26,7 @@ class PerObjectSettingsTool(Tool):
 
         Selection.selectionChanged.connect(self.propertyChanged)
 
-        Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
+        Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferenceChanged)
         self._onPreferenceChanged("cura/active_mode")
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
@@ -106,7 +105,7 @@ class PerObjectSettingsTool(Tool):
 
     def _onPreferenceChanged(self, preference):
         if preference == "cura/active_mode":
-            self._advanced_mode = Preferences.getInstance().getValue(preference) == 1
+            self._advanced_mode = Application.getInstance().getPreferences().getValue(preference) == 1
             self._updateEnabled()
 
     def _onGlobalContainerChanged(self):

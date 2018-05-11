@@ -4,7 +4,7 @@
 from UM.FileHandler.FileReader import FileReader
 from UM.Mesh.MeshReader import MeshReader
 from UM.i18n import i18nCatalog
-from UM.Preferences import Preferences
+from UM.Application import Application
 
 catalog = i18nCatalog("cura")
 from . import MarlinFlavorParser, RepRapFlavorParser
@@ -22,7 +22,7 @@ class GCodeReader(MeshReader):
         self._supported_extensions = [".gcode", ".g"]
         self._flavor_reader = None
 
-        Preferences.getInstance().addPreference("gcodereader/show_caution", True)
+        Application.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
     def preReadFromStream(self, stream, *args, **kwargs):
         for line in stream.split("\n"):

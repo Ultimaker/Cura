@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Extension import Extension
-from UM.Preferences import Preferences
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
@@ -19,10 +18,10 @@ class UserAgreement(QObject, Extension):
         self._user_agreement_window = None
         self._user_agreement_context = None
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
-        Preferences.getInstance().addPreference("general/accepted_user_agreement", False)
+        Application.getInstance().getPreferences().addPreference("general/accepted_user_agreement", False)
 
     def _onEngineCreated(self):
-        if not Preferences.getInstance().getValue("general/accepted_user_agreement"):
+        if not Application.getInstance().getPreferences().getValue("general/accepted_user_agreement"):
             self.showUserAgreement()
 
     def showUserAgreement(self):
@@ -35,11 +34,11 @@ class UserAgreement(QObject, Extension):
     def didAgree(self, user_choice):
         if user_choice:
             Logger.log("i", "User agreed to the user agreement")
-            Preferences.getInstance().setValue("general/accepted_user_agreement", True)
+            Application.getInstance().getPreferences().setValue("general/accepted_user_agreement", True)
             self._user_agreement_window.hide()
         else:
             Logger.log("i", "User did NOT agree to the user agreement")
-            Preferences.getInstance().setValue("general/accepted_user_agreement", False)
+            Application.getInstance().getPreferences().setValue("general/accepted_user_agreement", False)
             CuraApplication.getInstance().quit()
         CuraApplication.getInstance().setNeedToShowUserAgreement(False)
 
