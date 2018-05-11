@@ -130,7 +130,6 @@ class CuraPackageManager(QObject):
         return None
 
     def getAllInstalledPackagesInfo(self) -> dict:
-
         # Add bundled, installed, and to-install packages to the set of installed package IDs
         all_installed_ids = set()
 
@@ -150,6 +149,7 @@ class CuraPackageManager(QObject):
             if package_id in Application.getInstance().getRequiredPlugins():
                 continue
 
+            package_info = None
             # Add bundled plugins
             if package_id in self._bundled_package_dict:
                 package_info = self._bundled_package_dict[package_id]["package_info"]
@@ -162,46 +162,23 @@ class CuraPackageManager(QObject):
             if package_id in self._to_install_package_dict:
                 package_info = self._to_install_package_dict[package_id]["package_info"]
 
+            if package_info is None:
+                continue
+
             # We also need to get information from the plugin registry such as if a plugin is active
-            if package_info["package_type"] == "plugin":
-                package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
-            else:
-                package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
+            package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
 
             # If the package ID is in bundled, label it as such
-            if package_info["package_id"] in self._bundled_package_dict.keys():
-                package_info["is_bundled"] = True
-            else:
-                package_info["is_bundled"] = False
+            package_info["is_bundled"] = package_info["package_id"] in self._bundled_package_dict.keys()
 
             # If there is not a section in the dict for this type, add it
             if package_info["package_type"] not in installed_packages_dict:
                 installed_packages_dict[package_info["package_type"]] = []
                 
             # Finally, add the data
-            installed_packages_dict[package_info["package_type"]].append( package_info )
+            installed_packages_dict[package_info["package_type"]].append(package_info)
 
         return installed_packages_dict
-
-    def __convertPluginMetadataToPackageMetadata(self, plugin_metadata: dict) -> dict:
-        package_metadata = {
-            "package_id": plugin_metadata["id"],
-            "package_type": "plugin",
-            "display_name": plugin_metadata["plugin"]["name"],
-            "description": plugin_metadata["plugin"].get("description"),
-            "package_version": plugin_metadata["plugin"]["version"],
-            "cura_version": int(plugin_metadata["plugin"]["api"]),
-            "website": "",
-            "author_id": plugin_metadata["plugin"].get("author", "UnknownID"),
-            "author": {
-                "author_id": plugin_metadata["plugin"].get("author", "UnknownID"),
-                "display_name": plugin_metadata["plugin"].get("author", ""),
-                "email": "",
-                "website": "",
-            },
-            "tags": ["plugin"]
-        }
-        return package_metadata
 
     # Checks if the given package is installed.
     def isPackageInstalled(self, package_id: str) -> bool:
