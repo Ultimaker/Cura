@@ -34,6 +34,9 @@ class Backup:
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
 
+        # Ensure all current settings are saved.
+        CuraApplication.getInstance().saveSettings()
+
         # We're using an easy to parse filename for when we're restoring edge cases:
         # TIMESTAMP.backup.VERSION.cura.zip
         archive = self._makeArchive(version_data_dir)

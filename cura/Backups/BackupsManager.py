@@ -44,7 +44,8 @@ class BackupsManager:
         restored = backup.restore()
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
-            CuraApplication.getInstance().windowClosed()
+            # We don't want to store the data at this point as that would override the just-restored backup.
+            CuraApplication.getInstance().windowClosed(safe_data=False)
 
     def _disableAutoSave(self):
         """Here we try to disable the auto-save plugin as it might interfere with restoring a backup."""

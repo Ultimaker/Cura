@@ -497,10 +497,10 @@ class CuraApplication(QtApplication):
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #
     #   Note that the AutoSave plugin also calls this method.
-    def saveSettings(self):
-        if not self.started: # Do not do saving during application start
+    def saveSettings(self, safe_data: bool = True):
+        if not self.started or not safe_data:
+            # Do not do saving during application start or when data should not be safed on quit.
             return
-
         ContainerRegistry.getInstance().saveDirtyContainers()
 
     def saveStack(self, stack):
