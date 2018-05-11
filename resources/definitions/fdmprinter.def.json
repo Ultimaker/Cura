@@ -1680,6 +1680,18 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_multiplier":
+                {
+                    "label": "Infill Line Multiplier",
+                    "description": "Convert each infill line to this many lines. This makes the ",
+                    "default_value": 1,
+                    "type": "int",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "infill_line_distance / infill_line_width",
+                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "sub_div_rad_add":
                 {
                     "label": "Cubic Subdivision Shell",
