@@ -69,8 +69,6 @@
 
     "colors": {
 
-
-
         "sidebar": [255, 255, 255, 255],
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [0, 0, 0, 192],
@@ -458,7 +456,6 @@
         "toolbox_property_label": [1.0, 2.0],
         "toolbox_heading_label": [1.0, 4.0],
         "toolbox_header": [1.0, 4.0],
-        "toolbox_action_button": [8.0, 2.5],
         "toolbox_progress_bar": [8.0, 0.5],
         "toolbox_chart_row": [1.0, 2.0],
         "toolbox_action_button": [8.0, 2.5]
