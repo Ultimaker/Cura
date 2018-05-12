@@ -251,7 +251,6 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def restart(self):
-        self._package_manager._removeAllScheduledPackages()
         CuraApplication.getInstance().windowClosed()
 
     # Checks
@@ -333,8 +332,8 @@ class Toolbox(QObject, Extension):
 
     # Handlers for Network Events
     # --------------------------------------------------------------------------
-    def _onNetworkAccessibleChanged(self, accessible: int) -> None:
-        if accessible == 0:
+    def _onNetworkAccessibleChanged(self, network_accessibility: QNetworkAccessManager.NetworkAccessibility) -> None:
+        if network_accessibility == QNetworkAccessManager.NotAccessible:
             self.resetDownload()
 
     def _onRequestFinished(self, reply: QNetworkReply) -> None:
@@ -354,50 +353,55 @@ class Toolbox(QObject, Extension):
         if reply.operation() == QNetworkAccessManager.GetOperation:
             for type, url in self._request_urls.items():
                 if reply.url() == url:
-                    try:
-                        json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                        try:
+                            json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
-                        # Check for errors:
-                        if "errors" in json_data:
-                            for error in json_data["errors"]:
-                                Logger.log("e", "%s", error["title"])
+                            # Check for errors:
+                            if "errors" in json_data:
+                                for error in json_data["errors"]:
+                                    Logger.log("e", "%s", error["title"])
+                                return
+
+                            # Create model and apply metadata:
+                            if not self._models[type]:
+                                Logger.log("e", "Could not find the %s model.", type)
+                                break
+
+                            # HACK: Eventually get rid of the code from here...
+                            if type is "plugins_showcase" or type is "materials_showcase":
+                                self._metadata["plugins_showcase"] = json_data["data"]["plugin"]["packages"]
+                                self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
+                                self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
+                                self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
+                            else:
+                                # ...until here.
+                                # This hack arises for multiple reasons but the main
+                                # one is because there are not separate API calls
+                                # for different kinds of showcases.
+                                self._metadata[type] = json_data["data"]
+                                self._models[type].setMetadata(self._metadata[type])
+
+                            # Do some auto filtering
+                            # TODO: Make multiple API calls in the future to handle this
+                            if type is "packages":
+                                self._models[type].setFilter({"type": "plugin"})
+                            if type is "authors":
+                                self._models[type].setFilter({"package_types": "material"})
+
+                            self.metadataChanged.emit()
+
+                            if self.loadingComplete() is True:
+                                self.setViewPage("overview")
+
                             return
-
-                        # Create model and apply metadata:
-                        if not self._models[type]:
-                            Logger.log("e", "Could not find the %s model.", type)
+                        except json.decoder.JSONDecodeError:
+                            Logger.log("w", "Toolbox: Received invalid JSON for %s.", type)
                             break
-
-                        # HACK: Eventually get rid of the code from here...
-                        if type is "plugins_showcase" or type is "materials_showcase":
-                            self._metadata["plugins_showcase"] = json_data["data"]["plugin"]["packages"]
-                            self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
-                            self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
-                            self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
-                        else:
-                            # ...until here.
-                            # This hack arises for multiple reasons but the main
-                            # one is because there are not separate API calls
-                            # for different kinds of showcases.
-                            self._metadata[type] = json_data["data"]
-                            self._models[type].setMetadata(self._metadata[type])
-
-                        # Do some auto filtering
-                        # TODO: Make multiple API calls in the future to handle this
-                        if type is "packages":
-                            self._models[type].setFilter({"type": "plugin"})
-                        if type is "authors":
-                            self._models[type].setFilter({"package_types": "material"})
-
-                        self.metadataChanged.emit()
-
-                        if self.loadingComplete() is True:
-                            self.setViewPage("overview")
-
+                    else:
+                        self.setViewPage("errored")
+                        self.resetDownload()
                         return
-                    except json.decoder.JSONDecodeError:
-                        Logger.log("w", "Toolbox: Received invalid JSON for %s.", type)
-                        break
 
         else:
             # Ignore any operation that is not a get operation

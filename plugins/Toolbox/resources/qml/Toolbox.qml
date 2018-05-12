@@ -78,7 +78,7 @@ Window
         {
             id: footer
             visible: toolbox.restartRequired
-            height: toolbox.restartRequired ? UM.Theme.getSize("toolbox_footer").height : 0
+            height: visible ? UM.Theme.getSize("toolbox_footer").height : 0
         }
         // TODO: Clean this up:
         Connections
