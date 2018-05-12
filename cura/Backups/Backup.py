@@ -33,6 +33,8 @@ class Backup:
         version_data_dir = Resources.getDataStoragePath()
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
+        
+        # TODO: support preferences file in backup under Linux (is in different directory).
 
         # Ensure all current settings are saved.
         CuraApplication.getInstance().saveSettings()
@@ -99,6 +101,7 @@ class Backup:
             return False
 
         # TODO: handle restoring older data version.
+        # TODO: support preferences file in backup under Linux (is in different directory).
         # global_data_dir = os.path.dirname(version_data_dir)
 
         version_data_dir = Resources.getDataStoragePath()
