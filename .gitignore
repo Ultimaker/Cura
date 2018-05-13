@@ -40,6 +40,7 @@ plugins/cura-siemensnx-plugin
 plugins/CuraBlenderPlugin
 plugins/CuraCloudPlugin
 plugins/CuraDrivePlugin
+plugins/CuraDrive
 plugins/CuraLiveScriptingPlugin
 plugins/CuraOpenSCADPlugin
 plugins/CuraPrintProfileCreator
