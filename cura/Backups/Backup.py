@@ -38,15 +38,17 @@ class Backup:
         """
         cura_release = CuraApplication.getInstance().getVersion()
         version_data_dir = Resources.getDataStoragePath()
-        preferences_file_name = CuraApplication.getInstance().getApplicationName()
-        preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
 
         # We copy the preferences file to the user data directory in Linux as it's in a different location there.
-        # When restoring a backup on Linux, we copy it back.
+        # When restoring a backup on Linux, we move it back.
         if Platform.isLinux():
-            shutil.copyfile(preferences_file, os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name)))
+            preferences_file_name = CuraApplication.getInstance().getApplicationName()
+            preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
+            backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
+            Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
+            shutil.copyfile(preferences_file, backup_preferences_file)
 
         # Ensure all current settings are saved.
         CuraApplication.getInstance().saveSettings()
@@ -127,10 +129,12 @@ class Backup:
         extracted = self._extractArchive(archive, version_data_dir)
 
         # Under Linux, preferences are stored elsewhere, so we copy the file to there.
-        preferences_file_name = CuraApplication.getInstance().getApplicationName()
-        preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
         if Platform.isLinux():
-            shutil.move(os.path.join(version_data_dir, "{}.cfg".format(preferences_file)), preferences_file)
+            preferences_file_name = CuraApplication.getInstance().getApplicationName()
+            preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
+            backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
+            Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
+            shutil.move(backup_preferences_file, preferences_file)
 
         return extracted
 

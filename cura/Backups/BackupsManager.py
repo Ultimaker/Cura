@@ -36,8 +36,6 @@ class BackupsManager:
             Logger.log("w", "Tried to restore a backup without specifying a Cura version number.")
             return
 
-        # TODO: first make a new backup to prevent data loss when restoring fails.
-
         self._disableAutoSave()
 
         backup = Backup(zip_file = zip_file, meta_data = meta_data)
@@ -45,7 +43,7 @@ class BackupsManager:
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
             # We don't want to store the data at this point as that would override the just-restored backup.
-            CuraApplication.getInstance().windowClosed(safe_data=False)
+            CuraApplication.getInstance().windowClosed(save_data=False)
 
     def _disableAutoSave(self):
         """Here we try to disable the auto-save plugin as it might interfere with restoring a backup."""
