@@ -294,7 +294,7 @@ class CuraPackageManager(QObject):
             from cura.CuraApplication import CuraApplication
             installation_dirs_dict = {
                 "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
-                "quality": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
+                "qualities": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
                 "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
             }
 
