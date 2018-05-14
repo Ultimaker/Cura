@@ -3558,7 +3558,7 @@ msgstr "Druckeinrichtung deaktiviert\nG-Code-Dateien können nicht geändert wer
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:380
 msgctxt "@label Hours and minutes"
 msgid "00h 00min"
-msgstr "00 Stunden 00 Minuten"
+msgstr "00 St. 00 M."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:398
 msgctxt "@tooltip"
@@ -5493,7 +5493,7 @@ msgstr "Cura-Profil-Reader"
 
 #~ msgctxt "@label"
 #~ msgid "00h 00min"
-#~ msgstr "00 Stunden 00 Minuten"
+#~ msgstr "00 St. 00 M."
 
 #~ msgctxt "@tooltip"
 #~ msgid "<b>Time information</b>"
@@ -5517,7 +5517,7 @@ msgstr "Cura-Profil-Reader"
 
 #~ msgctxt "@label"
 #~ msgid "<a href='%1'>Check material compatibility</a>"
-#~ msgstr "<a href='%1‘>Materialkompatibilität prüfen</a>"
+#~ msgstr "<a href='%1'>Materialkompatibilität prüfen</a>"
 
 #~ msgctxt "name"
 #~ msgid "UM3 Network Connection (Cluster)"

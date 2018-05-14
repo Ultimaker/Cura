@@ -115,7 +115,7 @@ Item
                 text:
                 {
                     var date = new Date(details.last_updated)
-                    return date.toLocaleString(Qt.locale())
+                    return date.toLocaleString(UM.Preferences.getValue("general/language"))
                 }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")

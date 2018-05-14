@@ -14,8 +14,7 @@ Item
     height: visible ? Math.floor(UM.Theme.getSize("toolbox_footer").height) : 0
     Label
     {
-        visible: toolbox.restartRequired
-        text: catalog.i18nc("@info", "You will need to restart Cura before changes in plugins have effect.")
+        text: catalog.i18nc("@info", "You will need to restart Cura before changes in packages have effect.")
         height: Math.floor(UM.Theme.getSize("toolbox_footer_button").height)
         verticalAlignment: Text.AlignVCenter
         anchors
@@ -38,7 +37,6 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
-        visible: toolbox.restartRequired
         iconName: "dialog-restart"
         onClicked: toolbox.restart()
         style: ButtonStyle
@@ -61,7 +59,7 @@ Item
     }
     ToolboxShadow
     {
-        visible: toolbox.restartRequired
+        visible: footer.visible
         anchors.bottom: footer.top
         reversed: true
     }
