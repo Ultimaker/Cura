@@ -194,11 +194,6 @@ class CuraPackageManager(QObject):
                 return
             package_id = package_info["package_id"]
 
-            # # Check the delayed installation and removal lists first
-            # if package_id in self._to_remove_package_set:
-            #     self._to_remove_package_set.remove(package_id)
-            #     has_changes = True
-
             # Check if it is installed
             installed_package_info = self.getInstalledPackageInfo(package_info["package_id"])
             to_install_package = installed_package_info is None  # Install if the package has not been installed

@@ -228,9 +228,15 @@ class Toolbox(QObject, Extension):
     def _update(self) -> None:
         if self._to_update:
             plugin_id = self._to_update.pop(0)
-            Logger.log("d", "Updating package [%s]..." % plugin_id)
-            self.uninstall(plugin_id)
-            self.startDownload(self.getRemotePackageURL(plugin_id))
+            remote_package = self.getRemotePackage(plugin_id)
+            if remote_package:
+                download_url = remote_package["download_url"]
+                Logger.log("d", "Updating package [%s]..." % plugin_id)
+                self.uninstall(plugin_id)
+                self.startDownload(download_url)
+            else:
+                Logger.log("e", "Could not update package [%s] because there is no remote package info available.", plugin_id)
+
         if self._to_update:
             self._application.callLater(self._update)
 
@@ -276,14 +282,6 @@ class Toolbox(QObject, Extension):
                 remote_package = package
                 break
         return remote_package
-
-    @pyqtSlot(str, result = str)
-    def getRemotePackageURL(self, package_id: str) -> str:
-        remote_package = self.getRemotePackage(package_id)
-        if remote_package:
-            return remote_package["download_url"]
-        else:
-            return ""
 
     # Checks
     # --------------------------------------------------------------------------
