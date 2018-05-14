@@ -54,7 +54,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         self._check_updates = True
         self._update_thread.start()
 
-    def stop(self):
+    def stop(self, store_data: bool = True):
         self._check_updates = False
 
     def _onConnectionStateChanged(self, serial_port):
