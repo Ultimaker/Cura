@@ -37,7 +37,10 @@ Column
                     font: UM.Theme.getFont("default_bold")
                 }
             }
-            onClicked: toolbox.update(model.id)
+            onClicked: {
+                // Must do all stuff in 1 function as the current ToolboxInstalledTile object is going to disappear...
+                toolbox.update(model.id)
+            }
         }
         ProgressBar
         {
