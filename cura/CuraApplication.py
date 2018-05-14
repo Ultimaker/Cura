@@ -1018,6 +1018,8 @@ class CuraApplication(QtApplication):
         scene_bounding_box = None
         is_block_slicing_node = False
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
+
+        print_information = self.getPrintInformation()
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if (
                 not issubclass(type(node), CuraSceneNode) or
@@ -1029,6 +1031,11 @@ class CuraApplication(QtApplication):
                 is_block_slicing_node = True
 
             count += 1
+
+            # After clicking the Undo button, if the build plate empty the project name needs to be set
+            if print_information.baseName == '':
+                print_information.setBaseName(node.getName())
+
             if not scene_bounding_box:
                 scene_bounding_box = node.getBoundingBox()
             else:
@@ -1036,7 +1043,7 @@ class CuraApplication(QtApplication):
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
 
-        print_information = self.getPrintInformation()
+
         if print_information:
             print_information.setPreSliced(is_block_slicing_node)
 
