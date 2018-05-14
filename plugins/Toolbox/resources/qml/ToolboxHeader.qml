@@ -24,7 +24,8 @@ Item
         ToolboxTabButton
         {
             text: catalog.i18nc("@title:tab", "Plugins")
-            active: toolbox.viewCategory == "plugin"
+            active: toolbox.viewCategory == "plugin" && enabled
+            enabled: toolbox.viewPage != "loading" && toolbox.viewPage != "errored"
             onClicked:
             {
                 toolbox.filterModelByProp("packages", "type", "plugin")
@@ -35,7 +36,8 @@ Item
         ToolboxTabButton
         {
             text: catalog.i18nc("@title:tab", "Materials")
-            active: toolbox.viewCategory == "material"
+            active: toolbox.viewCategory == "material" && enabled
+            enabled: toolbox.viewPage != "loading" && toolbox.viewPage != "errored"
             onClicked:
             {
                 toolbox.filterModelByProp("authors", "package_types", "material")

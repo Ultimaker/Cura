@@ -25,7 +25,7 @@ Button
                 height: UM.Theme.getSize("sidebar_header_highlight").height
             }
         }
-        label: Text
+        label: Label
         {
             text: control.text
             color:
@@ -43,7 +43,7 @@ Button
                     return UM.Theme.getColor("topbar_button_text_inactive");
                 }
             }
-            font: control.active ? UM.Theme.getFont("medium_bold") : UM.Theme.getFont("medium")
+            font: control.enabled ? (control.active ? UM.Theme.getFont("medium_bold") : UM.Theme.getFont("medium")) : UM.Theme.getFont("default_italic")
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }

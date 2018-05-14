@@ -66,8 +66,8 @@ Generate a cube mesh to prevent support material generation in specific areas of
 *Real bridging - smartavionics
 New experimental feature that detects bridges, adjusting the print speed, slow and fan speed to enhance print quality on bridging parts.
 
-*Updated CuraEngine executable - thopiekar
-The CuraEngine executable now contains a dedicated icon, author information and a license.
+*Updated CuraEngine executable - thopiekar & Ultimaker B.V. ❤️
+The CuraEngine executable contains a dedicated icon, author and license info on Windows now. The icon has been designed by Ultimaker B.V.
 
 *Use RapidJSON and ClipperLib from system libraries
 Application updated to use verified copies of libraries, reducing maintenance time keeping them up to date (the operating system is now responsible), as well as reducing the amount of code shipped (as necessary code is already on the user’s system).

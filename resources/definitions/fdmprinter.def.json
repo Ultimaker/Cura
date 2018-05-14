@@ -227,6 +227,7 @@
                 {
                     "label": "Outer nozzle diameter",
                     "description": "The outer diameter of the tip of the nozzle.",
+                    "unit": "mm",
                     "default_value": 1,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -238,6 +239,7 @@
                 {
                     "label": "Nozzle length",
                     "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
+                    "unit": "mm",
                     "default_value": 3,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -261,6 +263,7 @@
                 {
                     "label": "Heat zone length",
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
+                    "unit": "mm",
                     "default_value": 16,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -271,6 +274,7 @@
                 {
                     "label": "Filament Park Distance",
                     "description": "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used.",
+                    "unit": "mm",
                     "default_value": 16,
                     "value": "machine_heat_zone_length",
                     "type": "float",

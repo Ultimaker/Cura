@@ -188,13 +188,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 b"name": system_info["name"].encode("utf-8"),
                 b"address": address.encode("utf-8"),
                 b"firmware_version": system_info["firmware"].encode("utf-8"),
-                b"manual": b"true"
+                b"manual": b"true",
+                b"machine": str(system_info['hardware']["typeid"]).encode("utf-8")
             }
-
-            if "hardware" in system_info and 'typeid' in system_info["hardware"]:
-                properties[b"machine"] = str(system_info['hardware']["typeid"]).encode("utf-8")
-            else:
-                properties[b"machine"] = system_info["variant"].encode("utf-8")
 
             if has_cluster_capable_firmware:
                 # Cluster needs an additional request, before it's completed.

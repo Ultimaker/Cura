@@ -66,9 +66,9 @@ class GCodeWriter(MeshWriter):
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
-        gcode_dict = getattr(scene, "gcode_dict")
-        if not gcode_dict:
+        if not hasattr(scene, "gcode_dict"):
             return False
+        gcode_dict = getattr(scene, "gcode_dict")
         gcode_list = gcode_dict.get(active_build_plate, None)
         if gcode_list is not None:
             has_settings = False

@@ -12,11 +12,14 @@ Window
     property var selection: null
     title: catalog.i18nc("@title", "Toolbox")
     modality: Qt.ApplicationModal
+    flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
+
     width: 720 * screenScaleFactor
     height: 640 * screenScaleFactor
-    minimumWidth: 720 * screenScaleFactor
-    maximumWidth: 720 * screenScaleFactor
-    minimumHeight: 350 * screenScaleFactor
+    minimumWidth: width
+    maximumWidth: minimumWidth
+    minimumHeight: height
+    maximumHeight: minimumHeight
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog
     {
@@ -76,7 +79,7 @@ Window
         {
             id: footer
             visible: toolbox.restartRequired
-            height: toolbox.restartRequired ? UM.Theme.getSize("toolbox_footer").height : 0
+            height: visible ? UM.Theme.getSize("toolbox_footer").height : 0
         }
         // TODO: Clean this up:
         Connections

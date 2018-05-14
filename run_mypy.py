@@ -46,14 +46,9 @@ def main():
         print("------------- Checking module {mod}".format(**locals()))
         result = subprocess.run([sys.executable, mypyModule, "-p", mod])
         if result.returncode != 0:
-            print("""
-    Module {mod} failed checking. :(
-    """.format(**locals()))
-            break
+            print("\nModule {mod} failed checking. :(".format(**locals()))
+            return 1
     else:
-        print("""
-
-    Done checking. All is good.
-    """)
+        print("\n\nDone checking. All is good.")
     return 0
 sys.exit(main())

@@ -13,18 +13,16 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkRepl
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
-from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
 
+import cura
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
-from .ConfigsModel import ConfigsModel
 
 i18n_catalog = i18nCatalog("cura")
-
 
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
@@ -34,7 +32,7 @@ class Toolbox(QObject, Extension):
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
-        self._packages_version = self._plugin_registry.APIVersion
+        self._packages_version = self._getPackagesVersion()
         self._api_version = 1
         self._api_url = "https://api-staging.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
 
@@ -66,22 +64,22 @@ class Toolbox(QObject, Extension):
 
         # Data:
         self._metadata = {
-            "authors": [],
-            "packages": [],
-            "plugins_showcase": [],
-            "plugins_installed": [],
-            "materials_showcase": [],
+            "authors":             [],
+            "packages":            [],
+            "plugins_showcase":    [],
+            "plugins_installed":   [],
+            "materials_showcase":  [],
             "materials_installed": []
         }
 
         # Models:
         self._models = {
-            "authors": AuthorsModel(self),
-            "packages": PackagesModel(self),
-            "plugins_showcase": PackagesModel(self),
-            "plugins_available": PackagesModel(self),
-            "plugins_installed": PackagesModel(self),
-            "materials_showcase": AuthorsModel(self),
+            "authors":             AuthorsModel(self),
+            "packages":            PackagesModel(self),
+            "plugins_showcase":    PackagesModel(self),
+            "plugins_available":   PackagesModel(self),
+            "plugins_installed":   PackagesModel(self),
+            "materials_showcase":  AuthorsModel(self),
             "materials_available": PackagesModel(self),
             "materials_installed": PackagesModel(self)
         }
@@ -153,6 +151,13 @@ class Toolbox(QObject, Extension):
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
         self._package_manager = Application.getInstance().getCuraPackageManager()
+
+    def _getPackagesVersion(self) -> int:
+        if not hasattr(cura, "CuraVersion"):
+            return self._plugin_registry.APIVersion
+        if not hasattr(cura.CuraVersion, "CuraPackagesVersion"):
+            return self._plugin_registry.APIVersion
+        return cura.CuraVersion.CuraPackagesVersion
 
     @pyqtSlot()
     def browsePackages(self) -> None:
@@ -244,7 +249,6 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def restart(self):
-        self._package_manager._removeAllScheduledPackages()
         CuraApplication.getInstance().windowClosed()
 
     # Checks
@@ -326,8 +330,8 @@ class Toolbox(QObject, Extension):
 
     # Handlers for Network Events
     # --------------------------------------------------------------------------
-    def _onNetworkAccessibleChanged(self, accessible: int) -> None:
-        if accessible == 0:
+    def _onNetworkAccessibleChanged(self, network_accessibility: QNetworkAccessManager.NetworkAccessibility) -> None:
+        if network_accessibility == QNetworkAccessManager.NotAccessible:
             self.resetDownload()
 
     def _onRequestFinished(self, reply: QNetworkReply) -> None:
@@ -347,50 +351,55 @@ class Toolbox(QObject, Extension):
         if reply.operation() == QNetworkAccessManager.GetOperation:
             for type, url in self._request_urls.items():
                 if reply.url() == url:
-                    try:
-                        json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                        try:
+                            json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
-                        # Check for errors:
-                        if "errors" in json_data:
-                            for error in json_data["errors"]:
-                                Logger.log("e", "%s", error["title"])
+                            # Check for errors:
+                            if "errors" in json_data:
+                                for error in json_data["errors"]:
+                                    Logger.log("e", "%s", error["title"])
+                                return
+
+                            # Create model and apply metadata:
+                            if not self._models[type]:
+                                Logger.log("e", "Could not find the %s model.", type)
+                                break
+
+                            # HACK: Eventually get rid of the code from here...
+                            if type is "plugins_showcase" or type is "materials_showcase":
+                                self._metadata["plugins_showcase"] = json_data["data"]["plugin"]["packages"]
+                                self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
+                                self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
+                                self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
+                            else:
+                                # ...until here.
+                                # This hack arises for multiple reasons but the main
+                                # one is because there are not separate API calls
+                                # for different kinds of showcases.
+                                self._metadata[type] = json_data["data"]
+                                self._models[type].setMetadata(self._metadata[type])
+
+                            # Do some auto filtering
+                            # TODO: Make multiple API calls in the future to handle this
+                            if type is "packages":
+                                self._models[type].setFilter({"type": "plugin"})
+                            if type is "authors":
+                                self._models[type].setFilter({"package_types": "material"})
+
+                            self.metadataChanged.emit()
+
+                            if self.loadingComplete() is True:
+                                self.setViewPage("overview")
+
                             return
-
-                        # Create model and apply metadata:
-                        if not self._models[type]:
-                            Logger.log("e", "Could not find the %s model.", type)
+                        except json.decoder.JSONDecodeError:
+                            Logger.log("w", "Toolbox: Received invalid JSON for %s.", type)
                             break
-
-                        # HACK: Eventually get rid of the code from here...
-                        if type is "plugins_showcase" or type is "materials_showcase":
-                            self._metadata["plugins_showcase"] = json_data["data"]["plugin"]["packages"]
-                            self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
-                            self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
-                            self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
-                        else:
-                            # ...until here.
-                            # This hack arises for multiple reasons but the main
-                            # one is because there are not separate API calls
-                            # for different kinds of showcases.
-                            self._metadata[type] = json_data["data"]
-                            self._models[type].setMetadata(self._metadata[type])
-
-                        # Do some auto filtering
-                        # TODO: Make multiple API calls in the future to handle this
-                        if type is "packages":
-                            self._models[type].setFilter({"type": "plugin"})
-                        if type is "authors":
-                            self._models[type].setFilter({"package_types": "material"})
-
-                        self.metadataChanged.emit()
-
-                        if self.loadingComplete() is True:
-                            self.setViewPage("overview")
-
+                    else:
+                        self.setViewPage("errored")
+                        self.resetDownload()
                         return
-                    except json.decoder.JSONDecodeError:
-                        Logger.log("w", "Toolbox: Received invalid JSON for %s.", type)
-                        break
 
         else:
             # Ignore any operation that is not a get operation
@@ -403,7 +412,7 @@ class Toolbox(QObject, Extension):
             if bytes_sent == bytes_total:
                 self.setIsDownloading(False)
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-                # <ust not delete the temporary file on Windows
+                # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
                 # Write first and close, otherwise on Windows, it cannot read the file
@@ -450,7 +459,7 @@ class Toolbox(QObject, Extension):
         self._active_package = package
         self.activePackageChanged.emit()
 
-    @pyqtProperty("QVariantMap", fset = setActivePackage, notify = activePackageChanged)
+    @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
     def activePackage(self) -> Optional[Dict[str, Any]]:
         return self._active_package
 

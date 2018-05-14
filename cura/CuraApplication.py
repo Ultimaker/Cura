@@ -295,7 +295,9 @@ class CuraApplication(QtApplication):
 
         Resources.addSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
+            resource_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources")
+            Resources.addSearchPath(resource_path)
+            Resources.setBundledResourcesPath(resource_path)
 
     # Adds custom property types, settings types, and extra operators (functions) that need to be registered in
     # SettingDefinition and SettingFunction.
@@ -439,7 +441,7 @@ class CuraApplication(QtApplication):
             "RotateTool",
             "ScaleTool",
             "SelectionTool",
-            "TranslateTool"
+            "TranslateTool",
         ])
         self._i18n_catalog = i18nCatalog("cura")
 
@@ -986,6 +988,8 @@ class CuraApplication(QtApplication):
         scene_bounding_box = None
         is_block_slicing_node = False
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
+
+        print_information = self.getPrintInformation()
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if (
                 not issubclass(type(node), CuraSceneNode) or
@@ -997,6 +1001,11 @@ class CuraApplication(QtApplication):
                 is_block_slicing_node = True
 
             count += 1
+
+            # After clicking the Undo button, if the build plate empty the project name needs to be set
+            if print_information.baseName == '':
+                print_information.setBaseName(node.getName())
+
             if not scene_bounding_box:
                 scene_bounding_box = node.getBoundingBox()
             else:
@@ -1004,7 +1013,7 @@ class CuraApplication(QtApplication):
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
 
-        print_information = self.getPrintInformation()
+
         if print_information:
             print_information.setPreSliced(is_block_slicing_node)
 
@@ -1120,39 +1129,6 @@ class CuraApplication(QtApplication):
                 continue  # i.e. node with layer data
 
             Selection.add(node)
-
-    ##  Delete all nodes containing mesh data in the scene.
-    #   \param only_selectable. Set this to False to delete objects from all build plates
-    @pyqtSlot()
-    def deleteAll(self, only_selectable = True):
-        Logger.log("i", "Clearing scene")
-        if not self.getController().getToolsEnabled():
-            return
-
-        nodes = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, SceneNode):
-                continue
-            if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
-            if only_selectable and not node.isSelectable():
-                continue
-            if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData") and not node.callDecoration("isGroup"):
-                continue  # Only remove nodes that are selectable.
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            nodes.append(node)
-        if nodes:
-            op = GroupedOperation()
-
-            for node in nodes:
-                op.addOperation(RemoveSceneNodeOperation(node))
-
-                # Reset the print information
-                self.getController().getScene().sceneChanged.emit(node)
-
-            op.push()
-            Selection.clear()
 
     ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
