@@ -151,7 +151,9 @@ class CuraApplication(QtApplication):
 
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
+            resource_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources")
+            Resources.addSearchPath(resource_path)
+            Resources.setBundledResourcesPath(resource_path)
 
         self._use_gui = True
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
