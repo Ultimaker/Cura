@@ -30,9 +30,7 @@ class CuraPackageManager(QObject):
 
         # JSON file that keeps track of all installed packages.
         self._bundled_package_management_file_path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "..",
-            "resources",
+            os.path.abspath(Resources.getBundledResourcesPath()),
             "packages.json"
         )
         self._user_package_management_file_path = os.path.join(
@@ -294,7 +292,7 @@ class CuraPackageManager(QObject):
             from cura.CuraApplication import CuraApplication
             installation_dirs_dict = {
                 "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
-                "quality": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
+                "qualities": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
                 "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
             }
 

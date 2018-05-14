@@ -13,7 +13,6 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkRepl
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
-from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
@@ -22,7 +21,6 @@ import cura
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
-from .ConfigsModel import ConfigsModel
 
 i18n_catalog = i18nCatalog("cura")
 
