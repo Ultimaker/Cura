@@ -30,9 +30,7 @@ class CuraPackageManager(QObject):
 
         # JSON file that keeps track of all installed packages.
         self._bundled_package_management_file_path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "..",
-            "resources",
+            os.path.abspath(Resources.getBundledResourcesPath()),
             "packages.json"
         )
         self._user_package_management_file_path = os.path.join(
