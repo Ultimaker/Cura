@@ -295,9 +295,9 @@ class Toolbox(QObject, Extension):
         if remote_package is None:
             return False
 
-        local_version = local_package["package_version"]
-        remote_version = remote_package["package_version"]
-        return Version(remote_version) > Version(local_version)
+        local_version = Version(local_package["package_version"])
+        remote_version = Version(remote_package["package_version"])
+        return remote_version > local_version
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
