@@ -20,7 +20,7 @@ Item
         {
             left: parent.left
             right: controls.left
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("default_margin").width * 2 + UM.Theme.getSize("toolbox_loader").width
             top: parent.top
         }
         Label
@@ -53,60 +53,25 @@ Item
         anchors.top: tile.top
         width: childrenRect.width
         height: childrenRect.height
-        Button
+
+        ToolboxProgressButton
         {
             id: installButton
-            text:
-            {
-                if (installed)
-                {
-                    return catalog.i18nc("@action:button", "Installed")
-                }
-                else
-                {
-                    if (toolbox.isDownloading && toolbox.activePackage == model)
-                    {
-                        return catalog.i18nc("@action:button", "Cancel")
-                    }
-                    else
-                    {
-                        return catalog.i18nc("@action:button", "Install")
-                    }
-                }
+            active: toolbox.isDownloading && toolbox.activePackage == model
+            complete: tile.installed
+            readyAction: function() {
+                toolbox.activePackage = model
+                toolbox.startDownload(model.download_url)
             }
-            enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model) //Don't allow installing while another download is running.
+            activeAction: function() {
+                toolbox.cancelDownload()
+            }
+            completeAction: function() {
+                toolbox.viewCategory = "installed"
+            }
+            // Don't allow installing while another download is running
+            enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model)
             opacity: enabled ? 1.0 : 0.5
-
-            property alias installed: tile.installed
-            style: UM.Theme.styles.toolbox_action_button
-            onClicked:
-            {
-                if (installed)
-                {
-                    toolbox.viewCategory = "installed"
-                }
-                else
-                {
-                    // if ( toolbox.isDownloading && toolbox.activePackage == model )
-                    if ( toolbox.isDownloading )
-                    {
-                        toolbox.cancelDownload();
-                    }
-                    else
-                    {
-                        toolbox.activePackage = model
-                        // toolbox.activePackage = model;
-                        if ( model.can_upgrade )
-                        {
-                            // toolbox.downloadAndInstallPlugin( model.update_url );
-                        }
-                        else
-                        {
-                            toolbox.startDownload( model.download_url );
-                        }
-                    }
-                }
-            }
         }
     }
 

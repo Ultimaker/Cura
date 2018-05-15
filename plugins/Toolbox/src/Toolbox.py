@@ -350,8 +350,8 @@ class Toolbox(QObject, Extension):
 
     def resetDownload(self) -> None:
         if self._download_reply:
-            self._download_reply.abort()
             self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            self._download_reply.abort()
         self._download_reply = None
         self._download_request = None
         self.setDownloadProgress(0)
