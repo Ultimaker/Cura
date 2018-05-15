@@ -61,6 +61,7 @@ class Toolbox(QObject, Extension):
             "plugins_showcase":   QUrl("{base_url}/showcase".format(base_url = self._api_url)),
             "materials_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url))
         }
+        self._to_update = []  # Package_ids that are waiting to be updated
 
         # Data:
         self._metadata = {
@@ -216,12 +217,34 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def uninstall(self, plugin_id: str) -> None:
-        self._package_manager.removePackage(plugin_id)
+        self._package_manager.removePackage(plugin_id, force_add = True)
         self.installChanged.emit()
         self._updateInstalledModels()
         self.metadataChanged.emit()
         self._restart_required = True
         self.restartRequiredChanged.emit()
+
+    ##  Actual update packages that are in self._to_update
+    def _update(self) -> None:
+        if self._to_update:
+            plugin_id = self._to_update.pop(0)
+            remote_package = self.getRemotePackage(plugin_id)
+            if remote_package:
+                download_url = remote_package["download_url"]
+                Logger.log("d", "Updating package [%s]..." % plugin_id)
+                self.uninstall(plugin_id)
+                self.startDownload(download_url)
+            else:
+                Logger.log("e", "Could not update package [%s] because there is no remote package info available.", plugin_id)
+
+        if self._to_update:
+            self._application.callLater(self._update)
+
+    ##  Update a plugin by plugin_id
+    @pyqtSlot(str)
+    def update(self, plugin_id: str) -> None:
+        self._to_update.append(plugin_id)
+        self._application.callLater(self._update)
 
     @pyqtSlot(str)
     def enable(self, plugin_id: str) -> None:
@@ -251,6 +274,15 @@ class Toolbox(QObject, Extension):
     def restart(self):
         CuraApplication.getInstance().windowClosed()
 
+    def getRemotePackage(self, package_id: str) -> Optional[Dict]:
+        # TODO: make the lookup in a dict, not a loop. canUpdate is called for every item.
+        remote_package = None
+        for package in self._metadata["packages"]:
+            if package["package_id"] == package_id:
+                remote_package = package
+                break
+        return remote_package
+
     # Checks
     # --------------------------------------------------------------------------
     @pyqtSlot(str, result = bool)
@@ -259,10 +291,7 @@ class Toolbox(QObject, Extension):
         if local_package is None:
             return False
 
-        remote_package = None
-        for package in self._metadata["packages"]:
-            if package["package_id"] == package_id:
-                remote_package = package
+        remote_package = self.getRemotePackage(package_id)
         if remote_package is None:
             return False
 
