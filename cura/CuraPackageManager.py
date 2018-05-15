@@ -28,15 +28,18 @@ class CuraPackageManager(QObject):
         self._container_registry = self._application.getContainerRegistry()
         self._plugin_registry = self._application.getPluginRegistry()
 
-        # JSON file that keeps track of all installed packages.
-        self._bundled_package_management_file_path = os.path.join(
-            os.path.abspath(Resources.getBundledResourcesPath()),
-            "packages.json"
-        )
-        self._user_package_management_file_path = os.path.join(
-            os.path.abspath(Resources.getDataStoragePath()),
-            "packages.json"
-        )
+        #JSON files that keep track of all installed packages.
+        self._user_package_management_file_path = None
+        self._bundled_package_management_file_path = None
+        for search_path in Resources.getSearchPaths():
+            candidate_bundled_path = os.path.join(search_path, "bundled_packages.json")
+            if os.path.exists(candidate_bundled_path):
+                self._bundled_package_management_file_path = candidate_bundled_path
+            candidate_user_path = os.path.join(search_path, "packages.json")
+            if os.path.exists(candidate_user_path):
+                self._user_package_management_file_path = candidate_user_path
+        if self._user_package_management_file_path is None: #Doesn't exist yet.
+            self._user_package_management_file_path = os.path.join(Resources.getDataStoragePath(), "packages.json")
 
         self._bundled_package_dict = {}     # A dict of all bundled packages
         self._installed_package_dict = {}   # A dict of all installed packages
@@ -136,14 +139,14 @@ class CuraPackageManager(QObject):
             all_installed_ids = all_installed_ids.union(set(self._bundled_package_dict.keys()))
         if self._installed_package_dict.keys():
             all_installed_ids = all_installed_ids.union(set(self._installed_package_dict.keys()))
+        all_installed_ids = all_installed_ids.difference(self._to_remove_package_set)
+        # If it's going to be installed and to be removed, then the package is being updated and it should be listed.
         if self._to_install_package_dict.keys():
             all_installed_ids = all_installed_ids.union(set(self._to_install_package_dict.keys()))
-        all_installed_ids = all_installed_ids.difference(self._to_remove_package_set)
 
         # map of <package_type> -> <package_id> -> <package_info>
         installed_packages_dict = {}
         for package_id in all_installed_ids:
-
             # Skip required plugins as they should not be tampered with
             if package_id in Application.getInstance().getRequiredPlugins():
                 continue
@@ -194,11 +197,6 @@ class CuraPackageManager(QObject):
                 return
             package_id = package_info["package_id"]
 
-            # Check the delayed installation and removal lists first
-            if package_id in self._to_remove_package_set:
-                self._to_remove_package_set.remove(package_id)
-                has_changes = True
-
             # Check if it is installed
             installed_package_info = self.getInstalledPackageInfo(package_info["package_id"])
             to_install_package = installed_package_info is None  # Install if the package has not been installed
@@ -235,19 +233,27 @@ class CuraPackageManager(QObject):
                 self.installedPackagesChanged.emit()
 
     # Schedules the given package to be removed upon the next start.
+    # \param package_id id of the package
+    # \param force_add is used when updating. In that case you actually want to uninstall & install
     @pyqtSlot(str)
-    def removePackage(self, package_id: str) -> None:
+    def removePackage(self, package_id: str, force_add: bool = False) -> None:
         # Check the delayed installation and removal lists first
         if not self.isPackageInstalled(package_id):
             Logger.log("i", "Attempt to remove package [%s] that is not installed, do nothing.", package_id)
             return
 
-        # Remove from the delayed installation list if present
-        if package_id in self._to_install_package_dict:
-            del self._to_install_package_dict[package_id]
+        # Temp hack
+        if package_id not in self._installed_package_dict and package_id in self._bundled_package_dict:
+            Logger.log("i", "Not uninstalling [%s] because it is a bundled package.")
+            return
 
-        # Schedule for a delayed removal:
-        self._to_remove_package_set.add(package_id)
+        if package_id not in self._to_install_package_dict or force_add:
+            # Schedule for a delayed removal:
+            self._to_remove_package_set.add(package_id)
+        else:
+            if package_id in self._to_install_package_dict:
+                # Remove from the delayed installation list if present
+                del self._to_install_package_dict[package_id]
 
         self._saveManagementData()
         self.installedPackagesChanged.emit()
