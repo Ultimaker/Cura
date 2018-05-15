@@ -207,6 +207,7 @@ class CuraApplication(QtApplication):
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
+                ("quality", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", ContainerStack.Version * 1000000 + self.SettingVersion):         (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
                 ("extruder_train", ContainerStack.Version * 1000000 + self.SettingVersion):        (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),

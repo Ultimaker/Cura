@@ -18,9 +18,6 @@ from UM.Version import Version
 class CuraPackageManager(QObject):
     Version = 1
 
-    # The prefix that's added to all files for an installed package to avoid naming conflicts with user created files.
-    PREFIX_PLACE_HOLDER = "-CP;"
-
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -171,7 +168,7 @@ class CuraPackageManager(QObject):
             package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
 
             # If the package ID is in bundled, label it as such
-            package_info["is_bundled"] = package_info["package_id"] in self._bundled_package_dict.keys()
+            package_info["is_bundled"] = package_info["package_id"] in self._bundled_package_dict.keys() and not self.isUserInstalledPackage(package_info["package_id"])
 
             # If there is not a section in the dict for this type, add it
             if package_info["package_type"] not in installed_packages_dict:
@@ -182,7 +179,7 @@ class CuraPackageManager(QObject):
 
         return installed_packages_dict
 
-    # Checks if the given package is installed.
+    # Checks if the given package is installed (at all).
     def isPackageInstalled(self, package_id: str) -> bool:
         return self.getInstalledPackageInfo(package_id) is not None
 
@@ -242,7 +239,7 @@ class CuraPackageManager(QObject):
             Logger.log("i", "Attempt to remove package [%s] that is not installed, do nothing.", package_id)
             return
 
-        # Temp hack
+        # Extra safety check
         if package_id not in self._installed_package_dict and package_id in self._bundled_package_dict:
             Logger.log("i", "Not uninstalling [%s] because it is a bundled package.")
             return
@@ -257,6 +254,10 @@ class CuraPackageManager(QObject):
 
         self._saveManagementData()
         self.installedPackagesChanged.emit()
+
+    ##  Is the package an user installed package?
+    def isUserInstalledPackage(self, package_id: str):
+        return package_id in self._installed_package_dict
 
     # Removes everything associated with the given package ID.
     def _purgePackage(self, package_id: str) -> None:
@@ -308,26 +309,14 @@ class CuraPackageManager(QObject):
 
                 if not os.path.exists(src_dir_path):
                     continue
-
-                # Need to rename the container files so they don't get ID conflicts
-                to_rename_files = sub_dir_name not in ("plugins",)
-                self.__installPackageFiles(package_id, src_dir_path, dst_dir_path, need_to_rename_files= to_rename_files)
+                self.__installPackageFiles(package_id, src_dir_path, dst_dir_path)
 
         # Remove the file
         os.remove(filename)
 
-    def __installPackageFiles(self, package_id: str, src_dir: str, dst_dir: str, need_to_rename_files: bool = True) -> None:
+    def __installPackageFiles(self, package_id: str, src_dir: str, dst_dir: str) -> None:
+        Logger.log("i", "Moving package {package_id} from {src_dir} to {dst_dir}".format(package_id=package_id, src_dir=src_dir, dst_dir=dst_dir))
         shutil.move(src_dir, dst_dir)
-
-        # Rename files if needed
-        if not need_to_rename_files:
-            return
-        for root, _, file_names in os.walk(dst_dir):
-            for filename in file_names:
-                new_filename = self.PREFIX_PLACE_HOLDER + package_id + "-" + filename
-                old_file_path = os.path.join(root, filename)
-                new_file_path = os.path.join(root, new_filename)
-                os.rename(old_file_path, new_file_path)
 
     # Gets package information from the given file.
     def getPackageInfo(self, filename: str) -> Dict[str, Any]:

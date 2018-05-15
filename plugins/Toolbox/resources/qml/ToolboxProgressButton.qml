@@ -14,9 +14,9 @@ Item
     property var active: false
     property var complete: false
 
-    property var readyLabel: "Install"
-    property var activeLabel: "Installing"
-    property var completeLabel: "Installed"
+    property var readyLabel: catalog.i18nc("@action:button", "Install")
+    property var activeLabel: catalog.i18nc("@action:button", "Cancel")
+    property var completeLabel: catalog.i18nc("@action:button", "Installed")
 
     property var readyAction: null          // Action when button is ready and clicked (likely install)
     property var activeAction: null         // Action when button is active and clicked (likely cancel)
@@ -32,15 +32,15 @@ Item
         {
             if (complete)
             {
-                return catalog.i18nc("@action:button", "Installed")
+                return completeLabel
             }
             else if (active)
             {
-                return catalog.i18nc("@action:button", "Cancel")
+                return activeLabel
             }
             else
             {
-                return catalog.i18nc("@action:button", "Install")
+                return readyLabel
             }
         }
         onClicked:
