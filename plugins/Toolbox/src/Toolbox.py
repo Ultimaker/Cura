@@ -34,7 +34,7 @@ class Toolbox(QObject, Extension):
         self._plugin_registry = Application.getInstance().getPluginRegistry()
         self._packages_version = self._getPackagesVersion()
         self._api_version = 1
-        self._api_url = "https://api-staging.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
+        self._api_url = "https://api.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
 
         # Network:
         self._get_packages_request = None
