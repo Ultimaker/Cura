@@ -18,9 +18,6 @@ from UM.Version import Version
 class CuraPackageManager(QObject):
     Version = 1
 
-    # The prefix that's added to all files for an installed package to avoid naming conflicts with user created files.
-    PREFIX_PLACE_HOLDER = "-CP;"
-
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -305,26 +302,14 @@ class CuraPackageManager(QObject):
 
                 if not os.path.exists(src_dir_path):
                     continue
-
-                # Need to rename the container files so they don't get ID conflicts
-                to_rename_files = sub_dir_name not in ("plugins",)
-                self.__installPackageFiles(package_id, src_dir_path, dst_dir_path, need_to_rename_files= to_rename_files)
+                self.__installPackageFiles(package_id, src_dir_path, dst_dir_path)
 
         # Remove the file
         os.remove(filename)
 
-    def __installPackageFiles(self, package_id: str, src_dir: str, dst_dir: str, need_to_rename_files: bool = True) -> None:
+    def __installPackageFiles(self, package_id: str, src_dir: str, dst_dir: str) -> None:
+        Logger.log("i", "Moving package {package_id} from {src_dir} to {dst_dir}".format(package_id=package_id, src_dir=src_dir, dst_dir=dst_dir))
         shutil.move(src_dir, dst_dir)
-
-        # Rename files if needed
-        if not need_to_rename_files:
-            return
-        for root, _, file_names in os.walk(dst_dir):
-            for filename in file_names:
-                new_filename = self.PREFIX_PLACE_HOLDER + package_id + "-" + filename
-                old_file_path = os.path.join(root, filename)
-                new_file_path = os.path.join(root, new_filename)
-                os.rename(old_file_path, new_file_path)
 
     # Gets package information from the given file.
     def getPackageInfo(self, filename: str) -> Dict[str, Any]:
