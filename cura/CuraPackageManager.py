@@ -29,6 +29,8 @@ class CuraPackageManager(QObject):
         self._plugin_registry = self._application.getPluginRegistry()
 
         #JSON files that keep track of all installed packages.
+        self._user_package_management_file_path = None
+        self._bundled_package_management_file_path = None
         for search_path in Resources.getSearchPaths():
             candidate_bundled_path = os.path.join(search_path, "bundled_packages.json")
             if os.path.exists(candidate_bundled_path):
@@ -36,6 +38,8 @@ class CuraPackageManager(QObject):
             candidate_user_path = os.path.join(search_path, "packages.json")
             if os.path.exists(candidate_user_path):
                 self._user_package_management_file_path = candidate_user_path
+        if self._user_package_management_file_path is None: #Doesn't exist yet.
+            self._user_package_management_file_path = os.path.join(Resources.getDataStoragePath(), "packages.json")
 
         self._bundled_package_dict = {}     # A dict of all bundled packages
         self._installed_package_dict = {}   # A dict of all installed packages
