@@ -136,14 +136,14 @@ class CuraPackageManager(QObject):
             all_installed_ids = all_installed_ids.union(set(self._bundled_package_dict.keys()))
         if self._installed_package_dict.keys():
             all_installed_ids = all_installed_ids.union(set(self._installed_package_dict.keys()))
+        all_installed_ids = all_installed_ids.difference(self._to_remove_package_set)
+        # If it's going to be installed and to be removed, then the package is being updated and it should be listed.
         if self._to_install_package_dict.keys():
             all_installed_ids = all_installed_ids.union(set(self._to_install_package_dict.keys()))
-        all_installed_ids = all_installed_ids.difference(self._to_remove_package_set)
 
         # map of <package_type> -> <package_id> -> <package_info>
         installed_packages_dict = {}
         for package_id in all_installed_ids:
-
             # Skip required plugins as they should not be tampered with
             if package_id in Application.getInstance().getRequiredPlugins():
                 continue
@@ -168,7 +168,7 @@ class CuraPackageManager(QObject):
             package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
 
             # If the package ID is in bundled, label it as such
-            package_info["is_bundled"] = package_info["package_id"] in self._bundled_package_dict.keys()
+            package_info["is_bundled"] = package_info["package_id"] in self._bundled_package_dict.keys() and not self.isUserInstalledPackage(package_info["package_id"])
 
             # If there is not a section in the dict for this type, add it
             if package_info["package_type"] not in installed_packages_dict:
@@ -179,7 +179,7 @@ class CuraPackageManager(QObject):
 
         return installed_packages_dict
 
-    # Checks if the given package is installed.
+    # Checks if the given package is installed (at all).
     def isPackageInstalled(self, package_id: str) -> bool:
         return self.getInstalledPackageInfo(package_id) is not None
 
@@ -193,11 +193,6 @@ class CuraPackageManager(QObject):
             if not package_info:
                 return
             package_id = package_info["package_id"]
-
-            # Check the delayed installation and removal lists first
-            if package_id in self._to_remove_package_set:
-                self._to_remove_package_set.remove(package_id)
-                has_changes = True
 
             # Check if it is installed
             installed_package_info = self.getInstalledPackageInfo(package_info["package_id"])
@@ -235,22 +230,34 @@ class CuraPackageManager(QObject):
                 self.installedPackagesChanged.emit()
 
     # Schedules the given package to be removed upon the next start.
+    # \param package_id id of the package
+    # \param force_add is used when updating. In that case you actually want to uninstall & install
     @pyqtSlot(str)
-    def removePackage(self, package_id: str) -> None:
+    def removePackage(self, package_id: str, force_add: bool = False) -> None:
         # Check the delayed installation and removal lists first
         if not self.isPackageInstalled(package_id):
             Logger.log("i", "Attempt to remove package [%s] that is not installed, do nothing.", package_id)
             return
 
-        # Remove from the delayed installation list if present
-        if package_id in self._to_install_package_dict:
-            del self._to_install_package_dict[package_id]
+        # Extra safety check
+        if package_id not in self._installed_package_dict and package_id in self._bundled_package_dict:
+            Logger.log("i", "Not uninstalling [%s] because it is a bundled package.")
+            return
 
-        # Schedule for a delayed removal:
-        self._to_remove_package_set.add(package_id)
+        if package_id not in self._to_install_package_dict or force_add:
+            # Schedule for a delayed removal:
+            self._to_remove_package_set.add(package_id)
+        else:
+            if package_id in self._to_install_package_dict:
+                # Remove from the delayed installation list if present
+                del self._to_install_package_dict[package_id]
 
         self._saveManagementData()
         self.installedPackagesChanged.emit()
+
+    ##  Is the package an user installed package?
+    def isUserInstalledPackage(self, package_id: str):
+        return package_id in self._installed_package_dict
 
     # Removes everything associated with the given package ID.
     def _purgePackage(self, package_id: str) -> None:
