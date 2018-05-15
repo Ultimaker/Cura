@@ -113,8 +113,6 @@ class MaterialManager(QObject):
         grouped_by_type_dict = dict()
         material_types_without_fallback = set()
         for root_material_id, material_node in self._material_group_map.items():
-            if not self._container_registry.isReadOnly(root_material_id):
-                continue
             material_type = material_node.root_material_node.metadata["material"]
             if material_type not in grouped_by_type_dict:
                 grouped_by_type_dict[material_type] = {"generic": None,
@@ -127,9 +125,15 @@ class MaterialManager(QObject):
                     diameter = material_node.root_material_node.metadata.get("approximate_diameter")
                     if diameter != self._default_approximate_diameter_for_quality_search:
                         to_add = False  # don't add if it's not the default diameter
+
                 if to_add:
-                    grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
-                    material_types_without_fallback.remove(material_type)
+                    # Checking this first allow us to differentiate between not read only materials:
+                    #  - if it's in the list, it means that is a new material without fallback
+                    #  - if it is not, then it is a custom material with a fallback material (parent)
+                    if material_type in material_types_without_fallback:
+                        grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
+                        material_types_without_fallback.remove(material_type)
+
         # Remove the materials that have no fallback materials
         for material_type in material_types_without_fallback:
             del grouped_by_type_dict[material_type]
@@ -147,9 +151,6 @@ class MaterialManager(QObject):
         material_group_dict = dict()
         keys_to_fetch = ("name", "material", "brand", "color")
         for root_material_id, machine_node in self._material_group_map.items():
-            if not self._container_registry.isReadOnly(root_material_id):
-                continue
-
             root_material_metadata = machine_node.root_material_node.metadata
 
             key_data = []
@@ -157,8 +158,13 @@ class MaterialManager(QObject):
                 key_data.append(root_material_metadata.get(key))
             key_data = tuple(key_data)
 
+            # If the key_data doesn't exist, no matter if the material is read only...
             if key_data not in material_group_dict:
                 material_group_dict[key_data] = dict()
+            else:
+                # ...but if key_data exists, we just overrite it if the material is read only, otherwise we skip it
+                if not machine_node.is_read_only:
+                    continue
             approximate_diameter = root_material_metadata.get("approximate_diameter")
             material_group_dict[key_data][approximate_diameter] = root_material_metadata["id"]
 
