@@ -232,7 +232,8 @@ class Toolbox(QObject, Extension):
             if remote_package:
                 download_url = remote_package["download_url"]
                 Logger.log("d", "Updating package [%s]..." % plugin_id)
-                self.uninstall(plugin_id)
+                if self._package_manager.isUserInstalledPackage(plugin_id):
+                    self.uninstall(plugin_id)
                 self.startDownload(download_url)
             else:
                 Logger.log("e", "Could not update package [%s] because there is no remote package info available.", plugin_id)

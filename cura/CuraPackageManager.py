@@ -171,7 +171,7 @@ class CuraPackageManager(QObject):
             package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
 
             # If the package ID is in bundled, label it as such
-            package_info["is_bundled"] = package_info["package_id"] in self._bundled_package_dict.keys()
+            package_info["is_bundled"] = package_info["package_id"] in self._bundled_package_dict.keys() and not self.isUserInstalledPackage(package_info["package_id"])
 
             # If there is not a section in the dict for this type, add it
             if package_info["package_type"] not in installed_packages_dict:
@@ -182,7 +182,7 @@ class CuraPackageManager(QObject):
 
         return installed_packages_dict
 
-    # Checks if the given package is installed.
+    # Checks if the given package is installed (at all).
     def isPackageInstalled(self, package_id: str) -> bool:
         return self.getInstalledPackageInfo(package_id) is not None
 
@@ -242,7 +242,7 @@ class CuraPackageManager(QObject):
             Logger.log("i", "Attempt to remove package [%s] that is not installed, do nothing.", package_id)
             return
 
-        # Temp hack
+        # Extra safety check
         if package_id not in self._installed_package_dict and package_id in self._bundled_package_dict:
             Logger.log("i", "Not uninstalling [%s] because it is a bundled package.")
             return
@@ -257,6 +257,10 @@ class CuraPackageManager(QObject):
 
         self._saveManagementData()
         self.installedPackagesChanged.emit()
+
+    ##  Is the package an user installed package?
+    def isUserInstalledPackage(self, package_id: str):
+        return package_id in self._installed_package_dict
 
     # Removes everything associated with the given package ID.
     def _purgePackage(self, package_id: str) -> None:
