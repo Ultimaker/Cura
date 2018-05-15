@@ -24,17 +24,26 @@ from .PackagesModel import PackagesModel
 
 i18n_catalog = i18nCatalog("cura")
 
+
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
+
+    DEFAULT_PACKAGES_API_ROOT = "https://api.ultimaker.com"
+
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
+        self._packages_api_root = self._getPackagesApiRoot()
         self._packages_version = self._getPackagesVersion()
         self._api_version = 1
-        self._api_url = "https://api.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
+        self._api_url = "{api_root}/cura-packages/v{api_version}/cura/v{package_version}".format(
+            api_root = self._packages_api_root,
+            api_version = self._api_version,
+            package_version = self._packages_version
+        )
 
         # Network:
         self._get_packages_request = None
@@ -152,6 +161,15 @@ class Toolbox(QObject, Extension):
     def _onAppInitialized(self) -> None:
         self._package_manager = Application.getInstance().getCuraPackageManager()
 
+    # Get the API root for the packages API depending on Cura version settings.
+    def _getPackagesApiRoot(self) -> str:
+        if not hasattr(cura, "CuraVersion"):
+            return self.DEFAULT_PACKAGES_API_ROOT
+        if not hasattr(cura.CuraVersion, "CuraPackagesApiRoot"):
+            return self.DEFAULT_PACKAGES_API_ROOT
+        return cura.CuraVersion.CuraPackagesApiRoot
+
+    # Get the packages version depending on Cura version settings.
     def _getPackagesVersion(self) -> int:
         if not hasattr(cura, "CuraVersion"):
             return self._plugin_registry.APIVersion
