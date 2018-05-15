@@ -239,12 +239,18 @@ class CuraPackageManager(QObject):
             Logger.log("i", "Attempt to remove package [%s] that is not installed, do nothing.", package_id)
             return
 
+        # Temp hack
+        if package_id not in self._installed_package_dict and package_id in self._bundled_package_dict:
+            Logger.log("i", "Not uninstalling [%s] because it is a bundled package.")
+            return
+
         if package_id not in self._to_install_package_dict or force_add:
             # Schedule for a delayed removal:
             self._to_remove_package_set.add(package_id)
         else:
-            # Remove from the delayed installation list if present
-            del self._to_install_package_dict[package_id]
+            if package_id in self._to_install_package_dict:
+                # Remove from the delayed installation list if present
+                del self._to_install_package_dict[package_id]
 
         self._saveManagementData()
         self.installedPackagesChanged.emit()
