@@ -18,11 +18,13 @@ Column
         readyLabel: catalog.i18nc("@action:button", "Update")
         activeLabel: catalog.i18nc("@action:button", "Updating")
         completeLabel: catalog.i18nc("@action:button", "Updated")
-        readyAction: function() {
+        readyAction: function()
+        {
             toolbox.activePackage = model
             toolbox.update(model.id)
         }
-        activeAction: function() {
+        activeAction: function()
+        {
             toolbox.cancelDownload()
         }
         // Don't allow installing while another download is running

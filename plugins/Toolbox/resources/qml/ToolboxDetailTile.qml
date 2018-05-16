@@ -59,14 +59,17 @@ Item
             id: installButton
             active: toolbox.isDownloading && toolbox.activePackage == model
             complete: tile.installed
-            readyAction: function() {
+            readyAction: function()
+            {
                 toolbox.activePackage = model
                 toolbox.startDownload(model.download_url)
             }
-            activeAction: function() {
+            activeAction: function()
+            {
                 toolbox.cancelDownload()
             }
-            completeAction: function() {
+            completeAction: function()
+            {
                 toolbox.viewCategory = "installed"
             }
             // Don't allow installing while another download is running
