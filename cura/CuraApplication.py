@@ -75,12 +75,11 @@ from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 from cura.Machines.VariantManager import VariantManager
 
 from cura.Operations import PlatformPhysics
-from . import BuildVolume
 from cura.Backend import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
-from cura.Rendering import CameraAnimation, CameraImageProvider
+from cura.Rendering import CameraAnimation, CameraImageProvider, BuildVolume
 from cura.Machines import MachineActionManager
 
 from cura.Settings.MachineManager import MachineManager
