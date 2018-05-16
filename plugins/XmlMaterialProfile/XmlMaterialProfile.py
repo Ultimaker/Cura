@@ -540,7 +540,8 @@ class XmlMaterialProfile(InstanceContainer):
 
         validation_message = XmlMaterialValidator.validateMaterialMetaData(meta_data)
         if validation_message is not None:
-            raise Exception("Not valid material profile: %s" % (validation_message))
+            return
+            # raise Exception("Not valid material profile: %s" % (validation_message))
 
         property_values = {}
         properties = data.iterfind("./um:properties/*", self.__namespaces)
