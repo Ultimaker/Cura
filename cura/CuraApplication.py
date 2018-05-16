@@ -555,7 +555,7 @@ class CuraApplication(QtApplication):
         elif choice == "always_keep":
             # don't show dialog and KEEP the profile
             self.discardOrKeepProfileChangesClosed("keep")
-        elif self._use_gui:
+        elif not self._is_headless:
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
             has_user_interaction = True
