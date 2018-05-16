@@ -345,7 +345,7 @@ class PrintInformation(QObject):
             except:
                 Logger.log("w", "Unsupported Mime Type Database file extension")
 
-            if data is not None:
+            if data is not None and check_name is not None:
                 self._base_name = data
             else:
                 self._base_name = ''

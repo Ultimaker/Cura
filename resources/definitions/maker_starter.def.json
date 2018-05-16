@@ -8,7 +8,8 @@
         "manufacturer": "3DMaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
         "icon": "icon_ultimaker2.png",
-        "platform": "makerstarter_platform.stl"
+        "platform": "makerstarter_platform.stl",
+        "preferred_quality_type": "draft"
     },
 
     "overrides": {
@@ -48,9 +49,6 @@
         },
         "machine_nozzle_expansion_angle": {
             "default_value": 45
-        },
-        "layer_height": {
-            "default_value": 0.2
         },
         "layer_height_0": {
             "default_value": 0.2

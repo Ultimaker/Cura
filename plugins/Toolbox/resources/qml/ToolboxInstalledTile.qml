@@ -90,6 +90,16 @@ Item
                 color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
                 linkColor: UM.Theme.getColor("text_link")
             }
+
+            Label
+            {
+                text: model.version
+                width: parent.width
+                height: UM.Theme.getSize("toolbox_property_label").height
+                color: UM.Theme.getColor("text")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignLeft
+            }
         }
         ToolboxInstalledTileActions
         {

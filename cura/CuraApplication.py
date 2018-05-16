@@ -297,7 +297,6 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             resource_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources")
             Resources.addSearchPath(resource_path)
-            Resources.setBundledResourcesPath(resource_path)
 
     # Adds custom property types, settings types, and extra operators (functions) that need to be registered in
     # SettingDefinition and SettingFunction.
@@ -397,6 +396,7 @@ class CuraApplication(QtApplication):
     def __setLatestResouceVersionsForVersionUpgrade(self):
         self._version_upgrade_manager.setCurrentVersions(
             {
+                ("quality", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", ContainerStack.Version * 1000000 + self.SettingVersion):         (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
                 ("extruder_train", ContainerStack.Version * 1000000 + self.SettingVersion):        (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
