@@ -1,6 +1,6 @@
 from UM.Application import Application
 from UM.Settings.DefinitionContainer import DefinitionContainer
-from cura.MachineAction import MachineAction
+from cura.Machines.MachineAction import MachineAction
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 

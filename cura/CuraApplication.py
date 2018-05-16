@@ -38,7 +38,7 @@ from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
-from cura.MultiplyObjectsJob import MultiplyObjectsJob
+from cura.Arranging.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
@@ -74,15 +74,14 @@ from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
 
-from . import PlatformPhysics
+from cura.Operations import PlatformPhysics
 from . import BuildVolume
-from . import CameraAnimation
-from . import PrintInformation
+from cura.Backend import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
-from . import CameraImageProvider
-from . import MachineActionManager
+from cura.Rendering import CameraAnimation, CameraImageProvider
+from cura.Machines import MachineActionManager
 
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -91,7 +90,7 @@ from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
 
-from cura.ObjectsModel import ObjectsModel
+from cura.Arranging.ObjectsModel import ObjectsModel
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot

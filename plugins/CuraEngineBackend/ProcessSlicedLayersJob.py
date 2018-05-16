@@ -18,9 +18,7 @@ from UM.Math.Vector import Vector
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura import LayerDataBuilder
-from cura import LayerDataDecorator
-from cura import LayerPolygon
+from cura.Backend import LayerDataBuilder, LayerDataDecorator, LayerPolygon
 
 import numpy
 from time import time

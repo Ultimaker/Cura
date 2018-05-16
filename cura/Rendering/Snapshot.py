@@ -5,14 +5,11 @@ import numpy
 from PyQt5 import QtCore
 from PyQt5.QtGui import QImage
 
-from cura.PreviewPass import PreviewPass
-from cura.Scene import ConvexHullNode
+from cura.Rendering.PreviewPass import PreviewPass
 
 from UM.Application import Application
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
-from UM.Mesh.MeshData import transformVertices
 from UM.Scene.Camera import Camera
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 

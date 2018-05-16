@@ -2,10 +2,9 @@
 
 import pytest
 # QtApplication needs to be imported first to prevent import errors.
-from UM.Qt.QtApplication import QtApplication
 
-from cura.MachineAction import MachineAction
-from cura.MachineActionManager import MachineActionManager, NotUniqueMachineActionError, UnknownMachineActionError
+from cura.Machines.MachineAction import MachineAction
+from cura.Machines.MachineActionManager import MachineActionManager, NotUniqueMachineActionError, UnknownMachineActionError
 
 class Machine:
     def __init__(self, key = ""):
