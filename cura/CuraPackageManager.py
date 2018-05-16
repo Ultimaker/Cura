@@ -32,6 +32,7 @@ class CuraPackageManager(QObject):
             candidate_bundled_path = os.path.join(search_path, "bundled_packages.json")
             if os.path.exists(candidate_bundled_path):
                 self._bundled_package_management_file_path = candidate_bundled_path
+        for search_path in (Resources.getDataStoragePath(), Resources.getConfigStoragePath()):
             candidate_user_path = os.path.join(search_path, "packages.json")
             if os.path.exists(candidate_user_path):
                 self._user_package_management_file_path = candidate_user_path
