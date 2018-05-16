@@ -26,8 +26,8 @@ class CuraPackageManager(QObject):
         self._plugin_registry = self._application.getPluginRegistry()
 
         #JSON files that keep track of all installed packages.
-        self._user_package_management_file_path = None
-        self._bundled_package_management_file_path = None
+        self._user_package_management_file_path = None #type: str
+        self._bundled_package_management_file_path = None #type: str
         for search_path in Resources.getSearchPaths():
             candidate_bundled_path = os.path.join(search_path, "bundled_packages.json")
             if os.path.exists(candidate_bundled_path):
