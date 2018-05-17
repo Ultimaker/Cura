@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import fnmatch
 import io
 import os
 import shutil
@@ -22,7 +23,7 @@ class Backup:
     """
 
     # These files should be ignored when making a backup.
-    IGNORED_FILES = {"cura.log", "cache"}
+    IGNORED_FILES = {"cura.log", "cache", "(?s).qmlc"}
 
     # Re-use translation catalog.
     catalog = i18nCatalog("cura")
@@ -84,14 +85,17 @@ class Backup:
             archive = ZipFile(buffer, "w", ZIP_DEFLATED)
             for root, folders, files in contents:
                 for folder_name in folders:
-                    if folder_name in self.IGNORED_FILES:
-                        continue
+                    for ignore_rule in self.IGNORED_FILES:
+                        if fnmatch.fnmatch(ignore_rule, folder_name):
+                            continue
                     absolute_path = os.path.join(root, folder_name)
                     relative_path = absolute_path[len(root_path) + len(os.sep):]
                     archive.write(absolute_path, relative_path)
                 for file_name in files:
-                    if file_name in self.IGNORED_FILES:
-                        continue
+                    for ignore_rule in self.IGNORED_FILES:
+                        if fnmatch.fnmatch(ignore_rule, file_name):
+                            print("FNMATCH=====", ignore_rule, file_name)
+                            continue
                     absolute_path = os.path.join(root, file_name)
                     relative_path = absolute_path[len(root_path) + len(os.sep):]
                     archive.write(absolute_path, relative_path)
@@ -145,18 +149,7 @@ class Backup:
         :return: A boolean whether we had success or not.
         """
         Logger.log("d", "Removing current data in location: %s", target_path)
-        try:
-            shutil.rmtree(target_path, ignore_errors=True, onerror=self._handleRemovalError)
-        except PermissionError as error:
-            # This happens if a file is already opened by another program, usually only the log file.
-            # For now we just ignore this as it doesn't harm the restore process.
-            Logger.log("w", "Permission error while trying to remove tree: %s", error)
-            pass
+        Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
         archive.extractall(target_path)
         return True
-
-    @staticmethod
-    def _handleRemovalError(*args):
-        func, path, _ = args
-        Logger.log("w", "Could not remove path %s when doing recursive delete, ignoring...", path)
