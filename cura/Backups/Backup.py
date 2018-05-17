@@ -11,7 +11,6 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
-from UM.Preferences import Preferences
 from UM.Resources import Resources
 from cura.CuraApplication import CuraApplication
 
