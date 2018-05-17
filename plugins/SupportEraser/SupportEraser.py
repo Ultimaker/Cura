@@ -1,9 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os
-import os.path
-
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication
 
@@ -14,10 +11,9 @@ from UM.Event import Event, MouseEvent
 
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Scene.Selection import Selection
-from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
-from cura.PickingPass import PickingPass
+from cura.Rendering.PickingPass import PickingPass
 
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
@@ -26,8 +22,6 @@ from cura.Operations.SetParentOperation import SetParentOperation
 
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from UM.Scene.GroupDecorator import GroupDecorator
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 from UM.Settings.SettingInstance import SettingInstance
 

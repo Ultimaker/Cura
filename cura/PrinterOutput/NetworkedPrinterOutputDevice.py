@@ -5,12 +5,12 @@ from UM.Application import Application
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, pyqtSignal, QUrl, QCoreApplication
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal, QUrl, QCoreApplication
 from time import time
-from typing import Callable, Any, Optional, Dict, Tuple
+from typing import Callable, Any, Optional, Dict
 from enum import IntEnum
 from typing import List
 

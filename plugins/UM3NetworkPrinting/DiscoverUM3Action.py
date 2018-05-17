@@ -8,7 +8,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 
-from cura.MachineAction import MachineAction
+from cura.Machines.MachineAction import MachineAction
 
 catalog = i18nCatalog("cura")
 

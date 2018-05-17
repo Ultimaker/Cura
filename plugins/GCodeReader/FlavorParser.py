@@ -14,9 +14,9 @@ from UM.Preferences import Preferences
 
 catalog = i18nCatalog("cura")
 
-from cura import LayerDataBuilder
-from cura.LayerDataDecorator import LayerDataDecorator
-from cura.LayerPolygon import LayerPolygon
+from cura.Backend import LayerDataBuilder
+from cura.Backend.LayerDataDecorator import LayerDataDecorator
+from cura.Backend.LayerPolygon import LayerPolygon
 from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 

@@ -7,7 +7,7 @@ from UM.Application import Application
 from UM.Qt.Duration import DurationFormat
 from UM.PluginRegistry import PluginRegistry
 
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.GenericOutputController import GenericOutputController

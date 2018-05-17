@@ -8,11 +8,11 @@ from UM.Logger import Logger
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.i18n import i18nCatalog
 
-from cura.PrinterOutputDevice import ConnectionState
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 from cura.CuraApplication import CuraApplication
 
 from . import USBPrinterOutputDevice
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 
 import threading
 import platform

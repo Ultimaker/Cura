@@ -9,7 +9,7 @@ from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
 
-from cura.MachineAction import MachineAction
+from cura.Machines.MachineAction import MachineAction
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 
 catalog = UM.i18n.i18nCatalog("cura")

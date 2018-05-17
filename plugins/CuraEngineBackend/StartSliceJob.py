@@ -17,7 +17,7 @@ from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.OneAtATimeIterator import OneAtATimeIterator
+from cura.Utils.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 
 

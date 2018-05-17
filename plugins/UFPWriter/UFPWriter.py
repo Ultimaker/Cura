@@ -11,7 +11,7 @@ from UM.Mesh.MeshWriter import MeshWriter #The writer we need to implement.
 from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
-from cura.Snapshot import Snapshot
+from cura.Rendering.Snapshot import Snapshot
 
 
 class UFPWriter(MeshWriter):
