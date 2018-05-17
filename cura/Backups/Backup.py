@@ -138,8 +138,7 @@ class Backup:
 
         return extracted
 
-    @staticmethod
-    def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
+    def _extractArchive(self, archive: "ZipFile", target_path: str) -> bool:
         """
         Extract the whole archive to the given target path.
         :param archive: The archive as ZipFile.
@@ -148,7 +147,7 @@ class Backup:
         """
         Logger.log("d", "Removing current data in location: %s", target_path)
         try:
-            shutil.rmtree(target_path)
+            shutil.rmtree(target_path, ignore_errors=True, onerror=self._handleRemovalError)
         except PermissionError as error:
             # This happens if a file is already opened by another program, usually only the log file.
             # For now we just ignore this as it doesn't harm the restore process.
@@ -157,3 +156,8 @@ class Backup:
         Logger.log("d", "Extracting backup to location: %s", target_path)
         archive.extractall(target_path)
         return True
+
+    @staticmethod
+    def _handleRemovalError(*args):
+        func, path, _ = args
+        Logger.log("w", "Could not remove path %s when doing recursive delete, ignoring...", path)
