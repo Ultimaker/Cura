@@ -1,8 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import fnmatch
 import io
 import os
+import re
+
 import shutil
 
 from typing import Optional
@@ -23,7 +24,7 @@ class Backup:
     """
 
     # These files should be ignored when making a backup.
-    IGNORED_FILES = {"cura.log", "cache", "(?s).qmlc"}
+    IGNORED_FILES = [r"cura\.log", r"plugins\.json", r"cache", r"__pycache__", r"\.qmlc", r"\.pyc"]
 
     # Re-use translation catalog.
     catalog = i18nCatalog("cura")
@@ -80,25 +81,15 @@ class Backup:
         :param root_path: The root directory to archive recursively.
         :return: The archive as bytes.
         """
-        contents = os.walk(root_path)
+        ignore_string = re.compile("|".join(self.IGNORED_FILES))
         try:
             archive = ZipFile(buffer, "w", ZIP_DEFLATED)
-            for root, folders, files in contents:
-                for folder_name in folders:
-                    for ignore_rule in self.IGNORED_FILES:
-                        if fnmatch.fnmatch(ignore_rule, folder_name):
-                            continue
-                    absolute_path = os.path.join(root, folder_name)
-                    relative_path = absolute_path[len(root_path) + len(os.sep):]
-                    archive.write(absolute_path, relative_path)
-                for file_name in files:
-                    for ignore_rule in self.IGNORED_FILES:
-                        if fnmatch.fnmatch(ignore_rule, file_name):
-                            print("FNMATCH=====", ignore_rule, file_name)
-                            continue
-                    absolute_path = os.path.join(root, file_name)
-                    relative_path = absolute_path[len(root_path) + len(os.sep):]
-                    archive.write(absolute_path, relative_path)
+            for root, folders, files in os.walk(root_path):
+                for item_name in folders + files:
+                    absolute_path = os.path.join(root, item_name)
+                    if ignore_string.search(absolute_path):
+                        continue
+                    archive.write(absolute_path, absolute_path[len(root_path) + len(os.sep):])
             archive.close()
             return archive
         except (IOError, OSError, BadZipfile) as error:
@@ -141,7 +132,8 @@ class Backup:
 
         return extracted
 
-    def _extractArchive(self, archive: "ZipFile", target_path: str) -> bool:
+    @staticmethod
+    def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
         """
         Extract the whole archive to the given target path.
         :param archive: The archive as ZipFile.
