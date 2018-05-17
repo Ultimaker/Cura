@@ -1196,6 +1196,16 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "connect_skin_polygons":
+                {
+                    "label": "Connect Top/Bottom Polygons",
+                    "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "top_bottom_pattern == 'concentric'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "skin_angles":
                 {
                     "label": "Top/Bottom Line Directions",
@@ -1645,6 +1655,17 @@
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
                     "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "connect_infill_polygons":
+                {
+                    "label": "Connect Infill Polygons",
+                    "description": "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "enabled": "infill_pattern == 'concentric_3d' or infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
