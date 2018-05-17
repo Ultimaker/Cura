@@ -147,7 +147,13 @@ class Backup:
         :return: A boolean whether we had success or not.
         """
         Logger.log("d", "Removing current data in location: %s", target_path)
-        shutil.rmtree(target_path)
+        try:
+            shutil.rmtree(target_path)
+        except PermissionError as error:
+            # This happens if a file is already opened by another program, usually only the log file.
+            # For now we just ignore this as it doesn't harm the restore process.
+            Logger.log("w", "Permission error while trying to remove tree: %s", error)
+            pass
         Logger.log("d", "Extracting backup to location: %s", target_path)
         archive.extractall(target_path)
         return True
