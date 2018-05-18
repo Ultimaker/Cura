@@ -354,12 +354,10 @@ Cura.MachineAction
         onShowDialog:
         {
             printerKey = key;
-
             addressText = address;
+            manualPrinterDialog.show();
             addressField.selectAll();
             addressField.focus = true;
-
-            manualPrinterDialog.show();
         }
 
         onAccepted:
