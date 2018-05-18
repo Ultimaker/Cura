@@ -14,12 +14,20 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 class CuraPackageManager(QObject):
     Version = 1
 
     def __init__(self, parent = None):
         super().__init__(parent)
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-cura-package",
+                comment="Cura Package",
+                suffixes=["curapackage"]
+            )
+        )
 
         self._application = Application.getInstance()
         self._container_registry = self._application.getContainerRegistry()
@@ -185,50 +193,59 @@ class CuraPackageManager(QObject):
         return self.getInstalledPackageInfo(package_id) is not None
 
     # Schedules the given package file to be installed upon the next start.
-    @pyqtSlot(str)
-    def installPackage(self, filename: str) -> None:
+    @pyqtSlot(str, result="QVariantMap")
+    def installPackage(self, filename: str) -> Optional[dict]:
         has_changes = False
-        try:
-            # Get package information
-            package_info = self.getPackageInfo(filename)
-            if not package_info:
-                return
-            package_id = package_info["package_id"]
+        result = {}
 
-            # Check if it is installed
-            installed_package_info = self.getInstalledPackageInfo(package_info["package_id"])
-            to_install_package = installed_package_info is None  # Install if the package has not been installed
-            if installed_package_info is not None:
-                # Compare versions and only schedule the installation if the given package is newer
-                new_version = package_info["package_version"]
-                installed_version = installed_package_info["package_version"]
-                if Version(new_version) > Version(installed_version):
-                    Logger.log("i", "Package [%s] version [%s] is newer than the installed version [%s], update it.",
-                               package_id, new_version, installed_version)
-                    to_install_package = True
+        # Get package information
+        package_info = self.getPackageInfo(filename)
+        if not package_info:
+            result["status"] = "failed"
+            result["message"] = "Failed to install package file {file_path}.".format(file_path=filename)
+            return result
+        package_id = package_info["package_id"]
 
-            if to_install_package:
-                # Need to use the lock file to prevent concurrent I/O issues.
-                with self._container_registry.lockFile():
-                    Logger.log("i", "Package [%s] version [%s] is scheduled to be installed.",
-                               package_id, package_info["package_version"])
-                    # Copy the file to cache dir so we don't need to rely on the original file to be present
-                    package_cache_dir = os.path.join(os.path.abspath(Resources.getCacheStoragePath()), "cura_packages")
-                    if not os.path.exists(package_cache_dir):
-                        os.makedirs(package_cache_dir, exist_ok=True)
+        # Check if it is installed
+        installed_package_info = self.getInstalledPackageInfo(package_info["package_id"])
+        to_install_package = installed_package_info is None  # Install if the package has not been installed
+        if installed_package_info is not None:
+            # Compare versions and only schedule the installation if the given package is newer
+            new_version = package_info["package_version"]
+            installed_version = installed_package_info["package_version"]
+            print("NEW:", new_version, "OLD:", installed_version)
+            if Version(new_version) > Version(installed_version):
+                Logger.log("i", "Package [%s] version [%s] is newer than the installed version [%s], updating it.",
+                           package_id, new_version, installed_version)
+                to_install_package = True
+            else:
+                result["status"] = "duplicate"
+                result["message"] = "{name} is already installed.".format(name=package_info["display_name"])
+                return result
 
-                    target_file_path = os.path.join(package_cache_dir, package_id + ".curapackage")
-                    shutil.copy2(filename, target_file_path)
+        if to_install_package:
+            # Need to use the lock file to prevent concurrent I/O issues.
+            with self._container_registry.lockFile():
+                Logger.log("i", "Package [%s] version [%s] is scheduled to be installed.",
+                           package_id, package_info["package_version"])
+                # Copy the file to cache dir so we don't need to rely on the original file to be present
+                package_cache_dir = os.path.join(os.path.abspath(Resources.getCacheStoragePath()), "cura_packages")
+                if not os.path.exists(package_cache_dir):
+                    os.makedirs(package_cache_dir, exist_ok=True)
 
-                    self._to_install_package_dict[package_id] = {"package_info": package_info,
-                                                                 "filename": target_file_path}
-                    has_changes = True
-        except:
-            Logger.logException("c", "Failed to install package file '%s'", filename)
-        finally:
+                target_file_path = os.path.join(package_cache_dir, package_id + ".curapackage")
+                shutil.copy2(filename, target_file_path)
+
+                self._to_install_package_dict[package_id] = {"package_info": package_info,
+                                                             "filename": target_file_path}
+                has_changes = True
+
             self._saveManagementData()
             if has_changes:
                 self.installedPackagesChanged.emit()
+            result["status"] = "ok"
+            result["message"] = "Package {name} will be installed after restarting.".format(name=package_info["display_name"])
+            return result
 
     # Schedules the given package to be removed upon the next start.
     # \param package_id id of the package
@@ -320,6 +337,7 @@ class CuraPackageManager(QObject):
         shutil.move(src_dir, dst_dir)
 
     # Gets package information from the given file.
+    @pyqtSlot(str, result="QVariantMap")
     def getPackageInfo(self, filename: str) -> Dict[str, Any]:
         with zipfile.ZipFile(filename) as archive:
             try:
@@ -333,6 +351,7 @@ class CuraPackageManager(QObject):
 
     # Gets the license file content if present in the given package file.
     # Returns None if there is no license file found.
+    @pyqtSlot(str, result=str)
     def getPackageLicense(self, filename: str) -> Optional[str]:
         license_string = None
         with zipfile.ZipFile(filename) as archive:
