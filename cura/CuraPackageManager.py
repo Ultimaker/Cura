@@ -14,20 +14,12 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 class CuraPackageManager(QObject):
     Version = 1
 
     def __init__(self, parent = None):
         super().__init__(parent)
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name="application/x-cura-package",
-                comment="Cura Package",
-                suffixes=["curapackage"]
-            )
-        )
 
         self._application = Application.getInstance()
         self._container_registry = self._application.getContainerRegistry()
@@ -213,7 +205,6 @@ class CuraPackageManager(QObject):
             # Compare versions and only schedule the installation if the given package is newer
             new_version = package_info["package_version"]
             installed_version = installed_package_info["package_version"]
-            print("NEW:", new_version, "OLD:", installed_version)
             if Version(new_version) > Version(installed_version):
                 Logger.log("i", "Package [%s] version [%s] is newer than the installed version [%s], updating it.",
                            package_id, new_version, installed_version)
