@@ -43,7 +43,8 @@ class Snapshot:
         render_width, render_height = active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
-        preview_pass = PreviewPass(render_width, render_height)
+        skip_non_printed_objects = True
+        preview_pass = PreviewPass(render_width, render_height, skip_non_printed_objects)
 
         root = scene.getRoot()
         camera = Camera("snapshot", root)
@@ -51,7 +52,7 @@ class Snapshot:
         # determine zoom and look at
         bbox = None
         for node in DepthFirstIterator(root):
-            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
+            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh"):
                 if bbox is None:
                     bbox = node.getBoundingBox()
                 else:

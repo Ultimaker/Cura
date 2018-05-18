@@ -34,9 +34,10 @@ def prettier_color(color_list):
 #
 #   This is useful to get a preview image of a scene taken from a different location as the active camera.
 class PreviewPass(RenderPass):
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, skip_non_printed_objects: bool = False):
         super().__init__("preview", width, height, 0)
 
+        self._skip_non_printed_objects = skip_non_printed_objects
         self._camera = None  # type: Optional[Camera]
 
         self._renderer = Application.getInstance().getRenderer()
@@ -112,7 +113,9 @@ class PreviewPass(RenderPass):
 
         batch.render(render_camera)
         batch_support_mesh.render(render_camera)
-        batch_non_printing.render(render_camera)
+
+        if not self._skip_non_printed_objects:
+            batch_non_printing.render(render_camera)
 
         self.release()
 
