@@ -122,6 +122,9 @@ class Backup:
         if current_version != version_to_restore:
             # Cannot restore version older or newer than current because settings might have changed.
             # Restoring this will cause a lot of issues so we don't allow this for now.
+            self._showMessage(
+                self.catalog.i18nc("@info:backup_failed",
+                                   "Tried to restore a Cura backup that does not match your current version."))
             return False
 
         version_data_dir = Resources.getDataStoragePath()
