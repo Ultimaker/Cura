@@ -6,13 +6,10 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QImage
 
 from cura.PreviewPass import PreviewPass
-from cura.Scene import ConvexHullNode
 
 from UM.Application import Application
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
-from UM.Mesh.MeshData import transformVertices
 from UM.Scene.Camera import Camera
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
@@ -43,8 +40,7 @@ class Snapshot:
         render_width, render_height = active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
-        skip_non_printed_objects = True
-        preview_pass = PreviewPass(render_width, render_height, skip_non_printed_objects)
+        preview_pass = PreviewPass(render_width, render_height)
 
         root = scene.getRoot()
         camera = Camera("snapshot", root)
