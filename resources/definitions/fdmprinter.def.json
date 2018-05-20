@@ -6703,6 +6703,19 @@
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
                     "settable_per_mesh": false
+                },
+                "small_feature_speed_factor_0":
+                {
+                    "label": "First Layer Speed",
+                    "description": "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 50,
+                    "value": "small_feature_speed_factor",
+                    "minimum_value": "10",
+                    "minimum_value_warning": "25",
+                    "maximum_value": "100",
+                    "settable_per_mesh": false
                 }
             }
         },
