@@ -1572,6 +1572,8 @@ class CuraApplication(QtApplication):
             self.callLater(self.openProjectFile.emit, file)
             return
 
+        Selection.clear()
+
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
         filename = os.path.basename(f)
@@ -1695,6 +1697,8 @@ class CuraApplication(QtApplication):
 
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
+
+            Selection.add(node)
 
         self.fileCompleted.emit(filename)
 
