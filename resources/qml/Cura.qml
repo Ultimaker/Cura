@@ -323,6 +323,21 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
+                        // As the drop area also supports plugins, first check if it's a plugin that was dropped.
+                        if (drop.urls.length == 1)
+                        {
+                            var filename = drop.urls[0];
+                            if (filename.endsWith(".curapackage"))
+                            {
+                                // Try to install plugin & close.
+                                CuraApplication.getCuraPackageManager().installPackageViaDragAndDrop(filename);
+                                packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
+                                packageInstallDialog.icon = StandardIcon.Information;
+                                packageInstallDialog.open();
+                                return;
+                            }
+                        }
+
                         openDialog.handleOpenFileUrls(drop.urls);
                     }
                 }
@@ -489,6 +504,7 @@ UM.MainWindow
                     horizontalCenterOffset: -(Math.round(UM.Theme.getSize("sidebar").width / 2))
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
+                    bottomMargin:  UM.Theme.getSize("default_margin").height
                 }
             }
         }
@@ -787,6 +803,14 @@ UM.MainWindow
                 openFilesIncludingProjectsDialog.loadModelFiles(fileUrlList.slice());
             }
         }
+    }
+
+    MessageDialog
+    {
+        id: packageInstallDialog
+        title: catalog.i18nc("@window:title", "Install Package");
+        standardButtons: StandardButton.Ok
+        modality: Qt.ApplicationModal
     }
 
     MessageDialog {

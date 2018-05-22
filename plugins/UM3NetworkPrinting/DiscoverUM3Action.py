@@ -45,6 +45,8 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot()
     def reset(self):
         Logger.log("d", "Reset the list of found devices.")
+        if self._network_plugin:
+            self._network_plugin.resetLastManualDevice()
         self.discoveredDevicesChanged.emit()
 
     @pyqtSlot()
@@ -83,15 +85,8 @@ class DiscoverUM3Action(MachineAction):
     @pyqtProperty("QVariantList", notify = discoveredDevicesChanged)
     def foundDevices(self):
         if self._network_plugin:
-            # TODO: Check if this needs to stay.
-            if Application.getInstance().getGlobalContainerStack():
-                global_printer_type = Application.getInstance().getGlobalContainerStack().getBottom().getId()
-            else:
-                global_printer_type = "unknown"
 
             printers = list(self._network_plugin.getDiscoveredDevices().values())
-            # TODO; There are still some testing printers that don't have a correct printer type, so don't filter out unkown ones just yet.
-            #printers = [printer for printer in printers if printer.printerType == global_printer_type or printer.printerType == "unknown"]
             printers.sort(key = lambda k: k.name)
             return printers
         else:
@@ -138,13 +133,19 @@ class DiscoverUM3Action(MachineAction):
             self._network_plugin.reCheckConnections()
 
     @pyqtSlot(result = str)
-    def getStoredKey(self):
+    def getStoredKey(self) -> str:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             meta_data = global_container_stack.getMetaData()
             if "um_network_key" in meta_data:
                 return global_container_stack.getMetaDataEntry("um_network_key")
 
+        return ""
+
+    @pyqtSlot(result = str)
+    def getLastManualEntryKey(self) -> str:
+        if self._network_plugin:
+            return self._network_plugin.getLastManualDevice()
         return ""
 
     @pyqtSlot(str, result = bool)
