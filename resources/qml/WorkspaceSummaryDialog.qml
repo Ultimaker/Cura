@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
@@ -61,236 +61,219 @@ UM.Dialog
         {
             id: palette
         }
-
-        Column
+        Label
         {
-            anchors.fill: parent
-            spacing: 2 * screenScaleFactor
-            Label
+            id: mainHeading
+            width: parent.width
+            text: catalog.i18nc("@action:title", "Summary - Cura Project")
+            font.pointSize: 18
+            anchors.top: parent.top
+        }
+        ScrollView
+        {
+            id: scroll
+            width: parent.width
+            anchors
             {
-                id: titleLabel
-                text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                font.pointSize: 18
+                top: mainHeading.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
+                bottom: controls.top
+                bottomMargin: UM.Theme.getSize("default_margin").height
             }
-            Rectangle
+            style: UM.Theme.styles.scrollview
+            ColumnLayout
             {
-                id: separator
-                color: palette.text
-                width: parent.width
-                height: 1
-            }
-            Item // Spacer
-            {
-                height: spacerHeight
-                width: height
-            }
-
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Printer settings")
-                font.bold: true
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                Label
+                spacing: UM.Theme.getSize("default_margin").height
+                Column
                 {
-                    text: catalog.i18nc("@action:label", "Type")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: (Cura.MachineManager.activeMachine == null) ? "" : Cura.MachineManager.activeMachine.definition.name
-                    width: (parent.width / 3) | 0
-                }
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                Label
-                {
-                    text: catalog.i18nc("@action:label", Cura.MachineManager.activeMachineNetworkGroupName != "" ? "Printer Group" : "Name")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
-                    width: (parent.width / 3) | 0
-                }
-            }
-            Column
-            {
-                width: parent.width
-                visible: Cura.MachineManager.hasVariantBuildplates
-                Item // Spacer
-                {
-                    height: spacerHeight
-                    width: height
-                }
-                Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
                     Label
                     {
-                        text: catalog.i18nc("@action:label", "Build plate")
-                        width: (parent.width / 3) | 0
+                        id: settingsHeading
+                        text: catalog.i18nc("@action:label", "Printer settings")
+                        font.bold: true
                     }
-                    Label
-                    {
-                        text: Cura.MachineManager.activeVariantBuildplateName
-                        width: (parent.width / 3) | 0
-                    }
-                }
-            }
-
-            Repeater
-            {
-                model: Cura.MachineManager.currentExtruderPositions
-                delegate: Column
-                {
-                    Item // Spacer
-                    {
-                        height: spacerHeight
-                        width: height
-                    }
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "Extruder %1").arg(modelData)
-                    }
-                    height: childrenRect.height
-                    width: parent.width
                     Row
                     {
                         width: parent.width
                         height: childrenRect.height
                         Label
                         {
-                            text: catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
-                            width: (parent.width / 3) | 0
+                            text: catalog.i18nc("@action:label", "Type")
+                            width: Math.floor(scroll.width / 3) | 0
                         }
                         Label
                         {
-                            text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.getExtruder(modelData).material.name
-                            width: (parent.width / 3) | 0
+                            text: (Cura.MachineManager.activeMachine == null) ? "" : Cura.MachineManager.activeMachine.definition.name
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                    }
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", Cura.MachineManager.activeMachineNetworkGroupName != "" ? "Printer Group" : "Name")
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                        Label
+                        {
+                            text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                    }
+                }
+                Row
+                {
+                    visible: Cura.MachineManager.hasVariantBuildplates
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Build plate")
+                        width: Math.floor(scroll.width / 3) | 0
+                    }
+                    Label
+                    {
+                        text: Cura.MachineManager.activeVariantBuildplateName
+                        width: Math.floor(scroll.width / 3) | 0
+                    }
+                }
+                Repeater
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    model: Cura.MachineManager.currentExtruderPositions
+                    delegate: Column
+                    {
+                        height: childrenRect.height
+                        width: parent.width
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "Extruder %1").arg(modelData)
+                            font.bold: true
+                        }
+                        Row
+                        {
+                            width: parent.width
+                            height: childrenRect.height
+                            Label
+                            {
+                                text: catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
+                                width: Math.floor(scroll.width / 3) | 0
+                            }
+                            Label
+                            {
+                                text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.getExtruder(modelData).material.name
+                                width: Math.floor(scroll.width / 3) | 0
+                            }
+                        }
+                    }
+                }
+                Column
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Profile settings")
+                        font.bold: true
+                    }
+                    Row
+                    {
+                        width: parent.width
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "Not in profile")
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                        Label
+                        {
+                            text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                        visible: Cura.MachineManager.numUserSettings
+                    }
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "Name")
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                        Label
+                        {
+                            text: Cura.MachineManager.activeQualityOrQualityChangesName
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+
+                    }
+                }
+                Column
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Setting visibility")
+                        font.bold: true
+                    }
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "Visible settings:")
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(definitionsModel.visibleCount).arg(Cura.MachineManager.totalNumberOfSettings)
+                            width: Math.floor(scroll.width / 3) | 0
                         }
                     }
                 }
             }
-
-            Item // Spacer
-            {
-                height: spacerHeight
-                width: height
-            }
-
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Profile settings")
-                font.bold: true
-            }
-            Row
-            {
-                width: parent.width
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Not in profile")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
-                    width: (parent.width / 3) | 0
-                }
-                visible: Cura.MachineManager.numUserSettings
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Name")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: Cura.MachineManager.activeQualityOrQualityChangesName
-                    width: (parent.width / 3) | 0
-                }
-
-            }
-
-            Item // Spacer
-            {
-                height: spacerHeight
-                width: height
-            }
-
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Setting visibility")
-                font.bold: true
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Visible settings:")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(definitionsModel.visibleCount).arg(Cura.MachineManager.totalNumberOfSettings)
-                    width: (parent.width / 3) | 0
-                }
-            }
-
-            Item // Spacer
-            {
-                height: spacerHeight
-                width: height
-            }
         }
-
-        CheckBox
+        Item
         {
-            id: dontShowAgainCheckbox
-            anchors.bottom: cancel_button.top
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-
-            text: catalog.i18nc("@action:label", "Don't show project summary on save again")
-            checked: dontShowAgain
-        }
-
-        Button
-        {
-            id: cancel_button
+            id: controls
+            width: parent.width
+            height: childrenRect.height
             anchors.bottom: parent.bottom
-            anchors.right: ok_button.left
-            anchors.rightMargin: 2
-
-            text: catalog.i18nc("@action:button","Cancel");
-            enabled: true
-            onClicked: close()
-        }
-
-        Button
-        {
-            id: ok_button
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-
-            text: catalog.i18nc("@action:button","Save");
-            enabled: true
-            onClicked: {
-                close()
-                yes()
+            CheckBox
+            {
+                id: dontShowAgainCheckbox
+                anchors.left: parent.left
+                text: catalog.i18nc("@action:label", "Don't show project summary on save again")
+                checked: dontShowAgain
+            }
+            Button
+            {
+                id: cancel_button
+                anchors
+                {
+                    right: ok_button.left
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                }
+                text: catalog.i18nc("@action:button","Cancel");
+                enabled: true
+                onClicked: close()
+            }
+            Button
+            {
+                id: ok_button
+                anchors.right: parent.right
+                text: catalog.i18nc("@action:button","Save");
+                enabled: true
+                onClicked:
+                {
+                    close()
+                    yes()
+                }
             }
         }
     }
