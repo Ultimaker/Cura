@@ -45,6 +45,8 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot()
     def reset(self):
         Logger.log("d", "Reset the list of found devices.")
+        if self._network_plugin:
+            self._network_plugin.resetLastManualDevice()
         self.discoveredDevicesChanged.emit()
 
     @pyqtSlot()
@@ -131,13 +133,19 @@ class DiscoverUM3Action(MachineAction):
             self._network_plugin.reCheckConnections()
 
     @pyqtSlot(result = str)
-    def getStoredKey(self):
+    def getStoredKey(self) -> str:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             meta_data = global_container_stack.getMetaData()
             if "um_network_key" in meta_data:
                 return global_container_stack.getMetaDataEntry("um_network_key")
 
+        return ""
+
+    @pyqtSlot(result = str)
+    def getLastManualEntryKey(self) -> str:
+        if self._network_plugin:
+            return self._network_plugin.getLastManualDevice()
         return ""
 
     @pyqtSlot(str, result = bool)

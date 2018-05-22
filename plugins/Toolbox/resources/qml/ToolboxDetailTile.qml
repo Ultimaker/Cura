@@ -9,7 +9,6 @@ import UM 1.1 as UM
 Item
 {
     id: tile
-    property bool installed: toolbox.isInstalled(model.id)
     width: detailList.width - UM.Theme.getSize("wide_margin").width
     height: normalData.height + compatibilityChart.height + 4 * UM.Theme.getSize("default_margin").height
     Item
@@ -46,7 +45,7 @@ Item
         }
     }
 
-    Item
+    ToolboxDetailTileActions
     {
         id: controls
         anchors.right: tile.right
@@ -54,28 +53,6 @@ Item
         width: childrenRect.width
         height: childrenRect.height
 
-        ToolboxProgressButton
-        {
-            id: installButton
-            active: toolbox.isDownloading && toolbox.activePackage == model
-            complete: tile.installed
-            readyAction: function()
-            {
-                toolbox.activePackage = model
-                toolbox.startDownload(model.download_url)
-            }
-            activeAction: function()
-            {
-                toolbox.cancelDownload()
-            }
-            completeAction: function()
-            {
-                toolbox.viewCategory = "installed"
-            }
-            // Don't allow installing while another download is running
-            enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model)
-            opacity: enabled ? 1.0 : 0.5
-        }
     }
 
     ToolboxCompatibilityChart
@@ -93,10 +70,5 @@ Item
         height: UM.Theme.getSize("default_lining").height
         anchors.top: compatibilityChart.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height + UM.Theme.getSize("wide_margin").height //Normal margin for spacing after chart, wide margin between items.
-    }
-    Connections
-    {
-        target: toolbox
-        onInstallChanged: installed = toolbox.isInstalled(model.id)
     }
 }
