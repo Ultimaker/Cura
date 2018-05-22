@@ -323,6 +323,7 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
+
                         openDialog.handleOpenFileUrls(drop.urls);
                     }
                 }
@@ -686,6 +687,69 @@ UM.MainWindow
         onTriggered: base.toggleFullscreen();
     }
 
+    MessageDialog
+    {
+        id: packageInstallDialog
+        title: catalog.i18nc("@window:title", "Install Plugin");
+        standardButtons: StandardButton.Ok
+        modality: Qt.ApplicationModal
+    }
+    UM.Dialog
+    {
+        id: packageLicenseDialog
+        title: catalog.i18nc("@title:window", "Package License Agreement")
+        minimumWidth: UM.Theme.getSize("license_window_minimum").width
+        minimumHeight: UM.Theme.getSize("license_window_minimum").height
+        width: minimumWidth
+        height: minimumHeight
+        property var packageName;
+        property var packageLicenseText;
+        property var packageFileLocation;
+        property var onAccept;
+        property var onDecline;
+        Item
+        {
+            anchors.fill: parent
+            Label
+            {
+                id: licenseTitle
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: packageLicenseDialog.packageName + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
+                wrapMode: Text.Wrap
+            }
+            TextArea
+            {
+                id: licenseText
+                anchors.top: licenseTitle.bottom
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.topMargin: UM.Theme.getSize("default_margin").height
+                readOnly: true
+                text: packageLicenseDialog.packageLicenseText || ""
+            }
+        }
+        rightButtons:
+        [
+            Button
+            {
+                id: acceptButton
+                anchors.margins: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@action:button", "Accept")
+                onClicked: packageLicenseDialog.onAccept()
+            },
+            Button
+            {
+                id: declineButton
+                anchors.margins: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@action:button", "Decline")
+                onClicked: packageLicenseDialog.onDecline()
+            }
+        ]
+    }
+
     FileDialog
     {
         id: openDialog;
@@ -714,6 +778,57 @@ UM.MainWindow
         // and view here may require more effort but make things more difficult to understand.
         function handleOpenFileUrls(fileUrlList)
         {
+            // As the drop area also supports plugins, first check if it's a plugin that was dropped.
+            if (fileUrlList.length == 1)
+            {
+                var filePath = fileUrlList[ 0 ].replace(/file:\/\//, "");
+                var curaPackageExtension = /\.curapackage$/;
+
+                if ( curaPackageExtension.test( filePath ) )
+                {
+                    var manager = CuraApplication.getCuraPackageManager();
+                    var packageInfo = manager.getPackageInfo( filePath );
+                    var licenseText = manager.getPackageLicense( filePath );
+                    if ( licenseText )
+                    {
+                        packageLicenseDialog.packageName = packageInfo[ "display_name" ];
+                        packageLicenseDialog.packageLicenseText = licenseText;
+                        packageLicenseDialog.packageFileLocation = filePath;
+                        packageLicenseDialog.onAccept = function()
+                        {
+                            packageLicenseDialog.close();
+                            install();
+                        }
+                        packageLicenseDialog.onDecline = function()
+                        {
+                            packageLicenseDialog.close();
+                        }
+                        packageLicenseDialog.open();
+                    }
+                    else
+                    {
+                        install();
+                    }
+                    function install()
+                    {
+                        var result = manager.installPackage( filePath );
+                        packageInstallDialog.text = result.message;
+                        if ( result.status == "ok" )
+                        {
+                            packageInstallDialog.icon = StandardIcon.Information;
+                        }
+                        else if ( result.status == "duplicate" )
+                        {
+                            packageInstallDialog.icon = StandardIcon.Warning;
+                        }
+                        else
+                        {
+                            packageInstallDialog.icon = StandardIcon.Critical;
+                        }
+                        packageInstallDialog.open();
+                    }
+                }
+            }
             // look for valid project files
             var projectFileUrlList = [];
             var hasGcode = false;
