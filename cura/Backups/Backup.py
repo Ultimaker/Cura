@@ -43,6 +43,9 @@ class Backup:
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
 
+        # Ensure all current settings are saved.
+        CuraApplication.getInstance().saveSettings()
+
         # We copy the preferences file to the user data directory in Linux as it's in a different location there.
         # When restoring a backup on Linux, we move it back.
         if Platform.isLinux():
@@ -51,9 +54,6 @@ class Backup:
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
             shutil.copyfile(preferences_file, backup_preferences_file)
-
-        # Ensure all current settings are saved.
-        CuraApplication.getInstance().saveSettings()
 
         # Create an empty buffer and write the archive to it.
         buffer = io.BytesIO()
