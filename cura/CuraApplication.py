@@ -1260,29 +1260,6 @@ class CuraApplication(QtApplication):
                     nodes.append(node)
         self.arrange(nodes, fixed_nodes = [])
 
-    ##  Arrange Selection
-    @pyqtSlot()
-    def arrangeSelection(self):
-        nodes = Selection.getAllSelectedObjects()
-
-        # What nodes are on the build plate and are not being moved
-        fixed_nodes = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, SceneNode):
-                continue
-            if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            if not node.isSelectable():
-                continue  # i.e. node with layer data
-            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
-                continue  # i.e. node with layer data
-            if node in nodes:  # exclude selected node from fixed_nodes
-                continue
-            fixed_nodes.append(node)
-        self.arrange(nodes, fixed_nodes)
-
     ##  Arrange a set of nodes given a set of fixed nodes
     #   \param nodes nodes that we have to place
     #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes

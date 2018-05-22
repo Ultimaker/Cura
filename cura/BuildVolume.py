@@ -25,6 +25,7 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import math
+import copy
 
 from typing import List, Optional
 
@@ -61,6 +62,7 @@ class BuildVolume(SceneNode):
         self._grid_shader = None
 
         self._disallowed_areas = []
+        self._disallowed_areas_no_brim = []
         self._disallowed_area_mesh = None
 
         self._error_areas = []
@@ -170,6 +172,9 @@ class BuildVolume(SceneNode):
 
     def getDisallowedAreas(self) -> List[Polygon]:
         return self._disallowed_areas
+
+    def getDisallowedAreasNoBrim(self) -> List[Polygon]:
+        return self._disallowed_areas_no_brim
 
     def setDisallowedAreas(self, areas: List[Polygon]):
         self._disallowed_areas = areas
@@ -658,7 +663,8 @@ class BuildVolume(SceneNode):
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
         prime_areas = self._computeDisallowedAreasPrimeBlob(disallowed_border_size, used_extruders)
-        prime_disallowed_areas = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
+        result_areas_no_brim = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
+        prime_disallowed_areas = copy.deepcopy(result_areas_no_brim)
 
         #Check if prime positions intersect with disallowed areas.
         for extruder in used_extruders:
@@ -687,12 +693,15 @@ class BuildVolume(SceneNode):
                     break
 
             result_areas[extruder_id].extend(prime_areas[extruder_id])
+            result_areas_no_brim[extruder_id].extend(prime_areas[extruder_id])
 
             nozzle_disallowed_areas = extruder.getProperty("nozzle_disallowed_areas", "value")
             for area in nozzle_disallowed_areas:
                 polygon = Polygon(numpy.array(area, numpy.float32))
-                polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
-                result_areas[extruder_id].append(polygon) #Don't perform the offset on these.
+                polygon_disallowed_border = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                result_areas[extruder_id].append(polygon_disallowed_border) #Don't perform the offset on these.
+                #polygon_minimal_border = polygon.getMinkowskiHull(5)
+                result_areas_no_brim[extruder_id].append(polygon)  # no brim
 
         # Add prime tower location as disallowed area.
         if len(used_extruders) > 1: #No prime tower in single-extrusion.
@@ -708,6 +717,7 @@ class BuildVolume(SceneNode):
                         break
                 if not prime_tower_collision:
                     result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
+                    result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
                 else:
                     self._error_areas.extend(prime_tower_areas[extruder_id])
 
@@ -716,6 +726,9 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []
         for extruder_id in result_areas:
             self._disallowed_areas.extend(result_areas[extruder_id])
+        self._disallowed_areas_no_brim = []
+        for extruder_id in result_areas_no_brim:
+            self._disallowed_areas_no_brim.extend(result_areas_no_brim[extruder_id])
 
     ##  Computes the disallowed areas for objects that are printed with print
     #   features.
