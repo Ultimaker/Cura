@@ -18,7 +18,7 @@ Button
 
     UM.I18nCatalog{id: catalog; name:"cura"}
 
-    visible: manager.runChecks
+    visible: manager.hasWarnings
     tooltip: catalog.i18nc("@info:tooltip", "Some things could be problematic in this print. Click to see tips for adjustment.")
     onClicked: manager.showWarnings()
 

@@ -1218,7 +1218,7 @@
                 "optimize_wall_printing_order":
                 {
                     "label": "Optimize Wall Printing Order",
-                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
@@ -4998,7 +4998,7 @@
                     "unit": "mm³",
                     "default_value": 0,
                     "minimum_value": "0",
-                    "maximum_value_warning": "1",
+                    "maximum_value_warning": "2.5",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -6584,6 +6584,14 @@
                     "default_value": 0,
                     "type": "float",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "wall_try_line_thickness":
+                {
+                    "label": "Try Multiple Line Thicknesses",
+                    "description": "When creating inner walls, try various line thicknesses to fit the wall lines better in narrow spaces. This reduces or increases the inner wall line width by up to 0.01mm.",
+                    "default_value": false,
+                    "type": "bool",
                     "settable_per_mesh": true
                 }
             }

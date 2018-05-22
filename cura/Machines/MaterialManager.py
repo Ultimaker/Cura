@@ -18,7 +18,10 @@ from .MaterialNode import MaterialNode
 from .MaterialGroup import MaterialGroup
 
 if TYPE_CHECKING:
+    from UM.Settings.DefinitionContainer import DefinitionContainer
+    from UM.Settings.InstanceContainer import InstanceContainer
     from cura.Settings.GlobalStack import GlobalStack
+    from cura.Settings.ExtruderStack import ExtruderStack
 
 
 #
@@ -233,7 +236,7 @@ class MaterialManager(QObject):
         return self._material_group_map.get(root_material_id)
 
     def getRootMaterialIDForDiameter(self, root_material_id: str, approximate_diameter: str) -> str:
-        return self._material_diameter_map.get(root_material_id).get(approximate_diameter, root_material_id)
+        return self._material_diameter_map.get(root_material_id, {}).get(approximate_diameter, root_material_id)
 
     def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
         return self._diameter_material_map.get(root_material_id)
@@ -244,13 +247,15 @@ class MaterialManager(QObject):
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
-    def getAvailableMaterials(self, machine_definition_id: str, extruder_variant_name: Optional[str],
+    def getAvailableMaterials(self, machine_definition: "DefinitionContainer", extruder_variant_name: Optional[str],
                               diameter: float) -> dict:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:
             Logger.log("i", "Cannot find materials with diameter [%s] (rounded to [%s])", diameter, rounded_diameter)
             return dict()
+
+        machine_definition_id = machine_definition.getId()
 
         # If there are variant materials, get the variant material
         machine_variant_material_map = self._diameter_machine_variant_material_map[rounded_diameter]
@@ -266,10 +271,18 @@ class MaterialManager(QObject):
         #  1. variant-specific material
         #  2. machine-specific material
         #  3. generic material (for fdmprinter)
+        machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
+
         material_id_metadata_dict = dict()
         for node in nodes_to_check:
             if node is not None:
                 for material_id, node in node.material_map.items():
+                    fallback_id = self.getFallbackMaterialIdByMaterialType(node.metadata["material"])
+                    if fallback_id in machine_exclude_materials:
+                        Logger.log("d", "Exclude material [%s] for machine [%s]",
+                                   material_id, machine_definition.getId())
+                        continue
+
                     if material_id not in material_id_metadata_dict:
                         material_id_metadata_dict[material_id] = node
 
@@ -280,14 +293,13 @@ class MaterialManager(QObject):
     #
     def getAvailableMaterialsForMachineExtruder(self, machine: "GlobalStack",
                                                 extruder_stack: "ExtruderStack") -> Optional[dict]:
-        machine_definition_id = machine.definition.getId()
         variant_name = None
         if extruder_stack.variant.getId() != "empty_variant":
             variant_name = extruder_stack.variant.getName()
         diameter = extruder_stack.approximateMaterialDiameter
 
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
-        return self.getAvailableMaterials(machine_definition_id, variant_name, diameter)
+        return self.getAvailableMaterials(machine.definition, variant_name, diameter)
 
     #
     # Gets MaterialNode for the given extruder and machine with the given material name.

@@ -19,8 +19,10 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from cura.PickingPass import PickingPass
 
+from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
+from cura.Operations.SetParentOperation import SetParentOperation
 
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -56,7 +58,7 @@ class SupportEraser(Tool):
         modifiers = QApplication.keyboardModifiers()
         ctrl_is_active = modifiers & Qt.ControlModifier
 
-        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+        if event.type == Event.MousePressEvent and MouseEvent.LeftButton in event.buttons and self._controller.getToolsEnabled():
             if ctrl_is_active:
                 self._controller.setActiveTool("TranslateTool")
                 return
@@ -117,7 +119,10 @@ class SupportEraser(Tool):
         new_instance.resetState()  # Ensure that the state is not seen as a user state.
         settings.addInstance(new_instance)
 
-        op = AddSceneNodeOperation(node, parent)
+        op = GroupedOperation()
+        # First add node to the scene at the correct position/scale, before parenting, so the eraser mesh does not get scaled with the parent
+        op.addOperation(AddSceneNodeOperation(node, self._controller.getScene().getRoot()))
+        op.addOperation(SetParentOperation(node, parent))
         op.push()
         node.setPosition(position, CuraSceneNode.TransformSpace.World)
 

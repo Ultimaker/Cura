@@ -71,7 +71,7 @@ Item
         {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            enabled: !isCurrentItemActivated
+            enabled: !isCurrentItemActivated && base.currentItem.quality_group != undefined
             onClicked: {
                 if (base.currentItem.is_read_only) {
                     Cura.MachineManager.setQualityGroup(base.currentItem.quality_group);
@@ -101,7 +101,7 @@ Item
         {
             text: catalog.i18nc("@label", "Duplicate")
             iconName: "list-add"
-            enabled: !base.canCreateProfile
+            enabled: !base.canCreateProfile && base.currentItem.quality_group != undefined
             visible: !base.canCreateProfile
 
             onClicked: {
