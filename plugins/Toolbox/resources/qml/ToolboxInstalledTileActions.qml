@@ -49,7 +49,17 @@ Column
                 border
                 {
                     width: UM.Theme.getSize("default_lining").width
-                    color: UM.Theme.getColor("lining")
+                    color:
+                    {
+                        if (control.hovered)
+                        {
+                            return UM.Theme.getColor("primary_hover")
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("lining")
+                        }
+                    }
                 }
             }
             label: Label
@@ -58,6 +68,7 @@ Column
                 color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
+                font: UM.Theme.getFont("default")
             }
         }
         onClicked: toolbox.uninstall(model.id)
