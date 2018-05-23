@@ -1627,6 +1627,8 @@ class CuraApplication(QtApplication):
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
 
+        select_models_on_load = Preferences.getInstance().getValue("cura/select_models_on_load")
+
         for original_node in nodes:
 
             # Create a CuraSceneNode just if the original node is not that type
@@ -1700,7 +1702,7 @@ class CuraApplication(QtApplication):
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
 
-            if Preferences.getInstance().getValue("cura/select_models_on_load"):
+            if select_models_on_load:
                 Selection.add(node)
 
         self.fileCompleted.emit(filename)
