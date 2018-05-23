@@ -38,14 +38,14 @@ class Shape:
         self.name = name
 
 class X3DReader(MeshReader):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, application):
+        super().__init__(application)
         self._supported_extensions = [".x3d"]
         self._namespaces = {}
 
     # Main entry point
     # Reads the file, returns a SceneNode (possibly with nested ones), or None
-    def read(self, file_name):
+    def _read(self, file_name):
         try:
             self.defs = {}
             self.shapes = []

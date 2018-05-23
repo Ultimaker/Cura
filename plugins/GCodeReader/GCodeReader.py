@@ -27,8 +27,8 @@ class GCodeReader(MeshReader):
     _flavor_readers_dict = {"RepRap" : RepRapFlavorParser.RepRapFlavorParser(),
                             "Marlin" : MarlinFlavorParser.MarlinFlavorParser()}
 
-    def __init__(self):
-        super(GCodeReader, self).__init__()
+    def __init__(self, application):
+        super(GCodeReader, self).__init__(application)
         self._supported_extensions = [".gcode", ".g"]
         self._flavor_reader = None
 
@@ -57,7 +57,7 @@ class GCodeReader(MeshReader):
     def readFromStream(self, stream):
         return self._flavor_reader.processGCodeStream(stream)
 
-    def read(self, file_name):
+    def _read(self, file_name):
         with open(file_name, "r", encoding = "utf-8") as file:
             file_data = file.read()
         return self.readFromStream(file_data)
