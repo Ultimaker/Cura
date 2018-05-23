@@ -5,15 +5,25 @@ from cura.Arranging.ShapeArray import ShapeArray
 
 
 ##  Triangle of area 12
+def gimmeTriangle():
+    return numpy.array([[-3, 1], [3, 1], [0, -3]], dtype=numpy.int32)
+
+
+##  Boring square
+def gimmeSquare():
+    return numpy.array([[-2, -2], [2, -2], [2, 2], [-2, 2]], dtype=numpy.int32)
+
+
+##  Triangle of area 12
 def gimmeShapeArray(scale = 1.0):
-    vertices = numpy.array([[-3, 1], [3, 1], [0, -3]], dtype=numpy.int32)
+    vertices = gimmeTriangle()
     shape_arr = ShapeArray.fromPolygon(vertices, scale = scale)
     return shape_arr
 
 
 ##  Boring square
 def gimmeShapeArraySquare(scale = 1.0):
-    vertices = numpy.array([[-2, -2], [2, -2], [2, 2], [-2, 2]], dtype=numpy.int32)
+    vertices = gimmeSquare()
     shape_arr = ShapeArray.fromPolygon(vertices, scale = scale)
     return shape_arr
 
@@ -69,7 +79,7 @@ def test_ShapeArray_scaling2():
 
 ##  Test centerFirst
 def test_centerFirst():
-    ar = Arrange(300, 300, 150, 150)
+    ar = Arrange(300, 300, 150, 150, scale = 1)
     ar.centerFirst()
     assert ar._priority[150][150] < ar._priority[170][150]
     assert ar._priority[150][150] < ar._priority[150][170]
@@ -81,7 +91,7 @@ def test_centerFirst():
 
 ##  Test centerFirst
 def test_centerFirst_rectangular():
-    ar = Arrange(400, 300, 200, 150)
+    ar = Arrange(400, 300, 200, 150, scale = 1)
     ar.centerFirst()
     assert ar._priority[150][200] < ar._priority[150][220]
     assert ar._priority[150][200] < ar._priority[170][200]
@@ -93,7 +103,7 @@ def test_centerFirst_rectangular():
 
 ##  Test centerFirst
 def test_centerFirst_rectangular():
-    ar = Arrange(10, 20, 5, 10)
+    ar = Arrange(10, 20, 5, 10, scale = 1)
     ar.centerFirst()
     print(ar._priority)
     assert ar._priority[10][5] < ar._priority[10][7]
@@ -101,7 +111,7 @@ def test_centerFirst_rectangular():
 
 ##  Test backFirst
 def test_backFirst():
-    ar = Arrange(300, 300, 150, 150)
+    ar = Arrange(300, 300, 150, 150, scale = 1)
     ar.backFirst()
     assert ar._priority[150][150] < ar._priority[170][150]
     assert ar._priority[150][150] < ar._priority[170][170]
@@ -111,7 +121,7 @@ def test_backFirst():
 
 ##  See if the result of bestSpot has the correct form
 def test_smoke_bestSpot():
-    ar = Arrange(30, 30, 15, 15)
+    ar = Arrange(30, 30, 15, 15, scale = 1)
     ar.centerFirst()
 
     shape_arr = gimmeShapeArray()
@@ -124,7 +134,7 @@ def test_smoke_bestSpot():
 
 ##  Real life test
 def test_bestSpot():
-    ar = Arrange(16, 16, 8, 8)
+    ar = Arrange(16, 16, 8, 8, scale = 1)
     ar.centerFirst()
 
     shape_arr = gimmeShapeArray()
@@ -144,7 +154,7 @@ def test_bestSpot():
 
 ##  Real life test rectangular build plate
 def test_bestSpot_rectangular_build_plate():
-    ar = Arrange(16, 40, 8, 20)
+    ar = Arrange(16, 40, 8, 20, scale = 1)
     ar.centerFirst()
 
     shape_arr = gimmeShapeArray()
@@ -283,7 +293,7 @@ def test_checkShape_place():
 
 ##  Test the whole sequence
 def test_smoke_place_objects():
-    ar = Arrange(20, 20, 10, 10)
+    ar = Arrange(20, 20, 10, 10, scale = 1)
     ar.centerFirst()
     shape_arr = gimmeShapeArray()
 
@@ -342,3 +352,28 @@ def test_check2():
     assert check_array[3][4]
 
 
+##  Just adding some stuff to ensure fromNode works as expected. Some parts should actually be in UM
+def test_parts_of_fromNode():
+    from UM.Math.Polygon import Polygon
+    p = Polygon(numpy.array([[-2, -2], [2, -2], [2, 2], [-2, 2]], dtype=numpy.int32))
+    offset = 1
+    print(p._points)
+    p_offset = p.getMinkowskiHull(Polygon.approximatedCircle(offset))
+    print("--------------")
+    print(p_offset._points)
+    assert len(numpy.where(p_offset._points[:, 0] >= 2.9)) > 0
+    assert len(numpy.where(p_offset._points[:, 0] <= -2.9)) > 0
+    assert len(numpy.where(p_offset._points[:, 1] >= 2.9)) > 0
+    assert len(numpy.where(p_offset._points[:, 1] <= -2.9)) > 0
+
+
+def test_parts_of_fromNode2():
+    from UM.Math.Polygon import Polygon
+    p = Polygon(numpy.array([[-2, -2], [2, -2], [2, 2], [-2, 2]], dtype=numpy.int32) * 2)  # 4x4
+    offset = 13.3
+    scale = 0.5
+    p_offset = p.getMinkowskiHull(Polygon.approximatedCircle(offset))
+    shape_arr1 = ShapeArray.fromPolygon(p._points, scale = scale)
+    shape_arr2 = ShapeArray.fromPolygon(p_offset._points, scale = scale)
+    assert shape_arr1.arr.shape[0] >= (4 * scale) - 1  # -1 is to account for rounding errors
+    assert shape_arr2.arr.shape[0] >= (2 * offset + 4) * scale - 1

@@ -460,7 +460,7 @@ class BuildVolume(SceneNode):
             minimum = Vector(min_w, min_h - 1.0, min_d),
             maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d))
 
-        bed_adhesion_size = self._getEdgeDisallowedSize()
+        bed_adhesion_size = self.getEdgeDisallowedSize()
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
@@ -652,7 +652,7 @@ class BuildVolume(SceneNode):
 
         extruder_manager = ExtruderManager.getInstance()
         used_extruders = extruder_manager.getUsedExtruderStacks()
-        disallowed_border_size = self._getEdgeDisallowedSize()
+        disallowed_border_size = self.getEdgeDisallowedSize()
 
         if not used_extruders:
             # If no extruder is used, assume that the active extruder is used (else nothing is drawn)
@@ -962,12 +962,12 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
-    ##  Convenience function to calculate the disallowed radius around the edge.
+    ##  Calculate the disallowed radius around the edge.
     #
     #   This disallowed radius is to allow for space around the models that is
     #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
     #   and travel avoid distance.
-    def _getEdgeDisallowedSize(self):
+    def getEdgeDisallowedSize(self):
         if not self._global_container_stack or not self._global_container_stack.extruders:
             return 0
 

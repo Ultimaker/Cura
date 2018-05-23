@@ -1264,7 +1264,8 @@ class CuraApplication(QtApplication):
     #   \param nodes nodes that we have to place
     #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes
     def arrange(self, nodes, fixed_nodes):
-        job = ArrangeObjectsJob(nodes, fixed_nodes)
+        min_offset = self.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8))
         job.start()
 
     ##  Reload all mesh data on the screen from file.
@@ -1612,7 +1613,6 @@ class CuraApplication(QtApplication):
                 #Setting meshdata does not apply scaling.
                 if(original_node.getScale() != Vector(1.0, 1.0, 1.0)):
                     node.scale(original_node.getScale())
-
 
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
