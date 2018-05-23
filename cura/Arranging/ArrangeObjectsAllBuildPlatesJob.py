@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
@@ -18,7 +18,7 @@ from cura.Arranging.ShapeArray import ShapeArray
 from typing import List
 
 
-##  Do an arrangements on a bunch of build plates
+##  Do arrangements on multiple build plates (aka builtiplexer)
 class ArrangeArray:
     def __init__(self, x: int, y: int, fixed_nodes: List[SceneNode]):
         self._x = x

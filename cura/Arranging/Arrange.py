@@ -1,3 +1,6 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from UM.Math.Vector import Vector
