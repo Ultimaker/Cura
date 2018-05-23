@@ -279,9 +279,11 @@ class PrintInformation(QObject):
         for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
             self._calculateInformation(build_plate_number)
 
+    # prefix can be added to the manually added name, not the old base name
     @pyqtSlot(str)
     def setJobName(self, name):
         self._job_name = name
+        self._base_name = name
         self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
