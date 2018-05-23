@@ -1615,7 +1615,10 @@ class CuraApplication(QtApplication):
         for node_ in DepthFirstIterator(root):
             if node_.callDecoration("isSliceable") and node_.callDecoration("getBuildPlateNumber") == target_build_plate:
                 fixed_nodes.append(node_)
-        arranger = Arrange.create(fixed_nodes = fixed_nodes)
+        global_container_stack = self.getGlobalContainerStack()
+        machine_width = global_container_stack.getProperty("machine_width", "value")
+        machine_depth = global_container_stack.getProperty("machine_depth", "value")
+        arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = fixed_nodes)
         min_offset = 8
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
