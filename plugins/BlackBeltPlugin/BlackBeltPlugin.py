@@ -16,6 +16,7 @@ from . import BlackBeltDecorator
 from . import BlackBeltSingleton
 from . import BuildVolumePatches
 from . import CuraEngineBackendPatches
+from . import MaterialManagerPatches
 
 from PyQt5.QtQml import qmlRegisterSingletonType
 
@@ -31,7 +32,8 @@ class BlackBeltPlugin(Extension):
         self._application = Application.getInstance()
 
         self._build_volume_patches = None
-        self._cura_engine_backend_patched = None
+        self._cura_engine_backend_patches = None
+        self._material_manager_patches = None
 
         self._global_container_stack = None
         self._application.globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
@@ -81,7 +83,8 @@ class BlackBeltPlugin(Extension):
 
         # Apply patches
         self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
-        self._cura_engine_backend_patched = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
+        self._cura_engine_backend_patches = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
+        self._material_manager_patches = MaterialManagerPatches.MaterialManagerPatches(self._application.getMaterialManager())
 
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 
