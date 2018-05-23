@@ -262,17 +262,17 @@ class CuraApplication(QtApplication):
     def initialize(self) -> None:
         super().initialize()
 
-        # Initialize the package manager to remove and install scheduled packages.
-        from cura.CuraPackageManager import CuraPackageManager
-        self._cura_package_manager = CuraPackageManager(self)
-        self._cura_package_manager.initialize()
-
         self.__sendCommandToSingleInstance()
         self.__addExpectedResourceDirsAndSearchPaths()
         self.__initializeSettingDefinitionsAndFunctions()
         self.__addAllResourcesAndContainerResources()
         self.__addAllEmptyContainers()
         self.__setLatestResouceVersionsForVersionUpgrade()
+
+        # Initialize the package manager to remove and install scheduled packages.
+        from cura.CuraPackageManager import CuraPackageManager
+        self._cura_package_manager = CuraPackageManager(self)
+        self._cura_package_manager.initialize()
 
         self._machine_action_manager = MachineActionManager.MachineActionManager(self)
         self._machine_action_manager.initialize()
