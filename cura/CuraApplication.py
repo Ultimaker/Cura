@@ -505,6 +505,9 @@ class CuraApplication(QtApplication):
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
 
+        Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences,
+                                                                       self._application_name + ".cfg"))
+
     def saveStack(self, stack):
         ContainerRegistry.getInstance().saveContainer(stack)
 

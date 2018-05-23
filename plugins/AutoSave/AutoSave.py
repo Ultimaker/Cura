@@ -72,6 +72,4 @@ class AutoSave(Extension):
 
         Application.getInstance().saveSettings()
 
-        Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences, Application.getInstance().getApplicationName() + ".cfg"))
-
         self._saving = False
