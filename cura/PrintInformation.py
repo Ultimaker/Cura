@@ -284,7 +284,7 @@ class PrintInformation(QObject):
     @pyqtSlot(str)
     def setJobName(self, name):
         self._job_name = name
-        self._base_name = name
+        self._base_name = name.replace(self._abbr_machine + "_", "")
         self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
