@@ -2,6 +2,7 @@
 # The Blackbelt plugin is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QObject
 
@@ -66,7 +67,9 @@ class BlackBeltSingleton(QObject):
     def setActiveVariantTerm(self, index, term):
         self._variants_terms[index] = term
         variant_id = self._variants_terms_pattern.replace("(.*?)", "%s") % tuple(self._variants_terms)
-        self._machine_manager.setActiveVariant(variant_id)
+        containers = ContainerRegistry.getInstance().findContainers(id = variant_id, type = "variant")
+        if containers:
+            self._global_container_stack.extruders["0"].setVariant(containers[0])
 
 
     ##  Get the singleton instance for this class.
