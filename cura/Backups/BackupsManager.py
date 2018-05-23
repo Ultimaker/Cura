@@ -48,7 +48,9 @@ class BackupsManager:
     def _disableAutoSave(self):
         """Here we try to disable the auto-save plugin as it might interfere with restoring a backup."""
         # TODO: Disable auto-save if possible.
+        CuraApplication.getInstance().setSaveDataEnabled(False)
 
     def _enableAutoSave(self):
         """Re-enable auto-save after we're done."""
         # TODO: Enable auto-save if possible.
+        CuraApplication.getInstance().setSaveDataEnabled(True)
