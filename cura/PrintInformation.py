@@ -279,6 +279,7 @@ class PrintInformation(QObject):
         for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
             self._calculateInformation(build_plate_number)
 
+    # Manual override of job name should also set the base name so that when the printer prefix is updated, it the
     # prefix can be added to the manually added name, not the old base name
     @pyqtSlot(str)
     def setJobName(self, name):
