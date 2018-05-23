@@ -805,8 +805,6 @@ class XmlMaterialProfile(InstanceContainer):
                 color = entry.find("./um:color", cls.__namespaces)
                 label = entry.find("./um:label", cls.__namespaces)
 
-                if "Rigid" in brand.text:
-                    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", label, label is not None, label.text if label is not None else ":")
                 if label is not None and label.text is not None:
                     base_metadata["name"] = label.text
                 else:
