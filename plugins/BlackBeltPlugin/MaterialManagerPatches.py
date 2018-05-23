@@ -13,6 +13,8 @@ class MaterialManagerPatches():
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
+    # Copied verbatim from MaterialManager.getAvailableMaterials, with a minor patch to limit shown materials
+    # if they are so specified in the machine definition
     def getAvailableMaterials(self, machine_definition: "DefinitionContainer", extruder_variant_name: Optional[str],
                               diameter: float) -> dict:
         # round the diameter to get the approximate diameter
@@ -39,12 +41,18 @@ class MaterialManagerPatches():
         #  3. generic material (for fdmprinter)
         machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
 
+        ### START PATCH
+        machine_limit_materials = machine_definition.getMetaDataEntry("limit_materials", [])
+        ### END PATCH
+
         material_id_metadata_dict = dict()
         for node in nodes_to_check:
             if node is not None:
                 for material_id, node in node.material_map.items():
-                    if machine_definition_id == "blackbelt" and material_id not in ["generic_pla_175", "blackbelt_ht", "blackbelt_ngen"]:
+                    ### START PATCH
+                    if machine_limit_materials and material_id not in machine_limit_materials:
                         continue
+                    ### END PATCH
 
                     fallback_id = self._material_manager.getFallbackMaterialIdByMaterialType(node.metadata["material"])
                     if fallback_id in machine_exclude_materials:
