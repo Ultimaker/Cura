@@ -14,7 +14,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.Resources import Resources
-from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 
 

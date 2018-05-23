@@ -12,6 +12,8 @@ class BackupsManager:
     The BackupsManager is responsible for managing the creating and restoring of backups.
     Backups themselves are represented in a different class.
     """
+    def __init__(self):
+        self._application = CuraApplication.getInstance()
 
     def createBackup(self) -> (Optional[bytes], Optional[dict]):
         """
@@ -43,14 +45,12 @@ class BackupsManager:
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
             # We don't want to store the data at this point as that would override the just-restored backup.
-            CuraApplication.getInstance().windowClosed(save_data=False)
+            self._application.windowClosed(save_data=False)
 
     def _disableAutoSave(self):
         """Here we try to disable the auto-save plugin as it might interfere with restoring a backup."""
-        # TODO: Disable auto-save if possible.
-        CuraApplication.getInstance().setSaveDataEnabled(False)
+        self._application.setSaveDataEnabled(False)
 
     def _enableAutoSave(self):
         """Re-enable auto-save after we're done."""
-        # TODO: Enable auto-save if possible.
-        CuraApplication.getInstance().setSaveDataEnabled(True)
+        self._application.setSaveDataEnabled(True)
