@@ -74,6 +74,7 @@ from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
 
+from .AutoSave import AutoSave
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -234,6 +235,8 @@ class CuraApplication(QtApplication):
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
+        self._auto_save = None
+        self._save_data_enabled = True
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -497,14 +500,20 @@ class CuraApplication(QtApplication):
 
     showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
 
+    def setSaveDataEnabled(self, enabled: bool) -> None:
+        self._save_data_enabled = enabled
+
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #
     #   Note that the AutoSave plugin also calls this method.
     def saveSettings(self):
-        if not self.started: # Do not do saving during application start
+        if not self.started or not self._save_data_enabled:
+            # Do not do saving during application start or when data should not be safed on quit.
             return
-
         ContainerRegistry.getInstance().saveDirtyContainers()
+
+        Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences,
+                                                                       self._application_name + ".cfg"))
 
     def saveStack(self, stack):
         ContainerRegistry.getInstance().saveContainer(stack)
@@ -726,6 +735,9 @@ class CuraApplication(QtApplication):
         self._post_start_timer.timeout.connect(self._onPostStart)
         self._post_start_timer.start()
 
+        self._auto_save = AutoSave(self)
+        self._auto_save.initialize()
+
         self.exec_()
 
     def _onPostStart(self):
@@ -876,6 +888,9 @@ class CuraApplication(QtApplication):
                 self._open_file_queue.append(event.file())
 
         return super().event(event)
+
+    def getAutoSave(self):
+        return self._auto_save
 
     ##  Get print information (duration / material used)
     def getPrintInformation(self):
