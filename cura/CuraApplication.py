@@ -377,6 +377,7 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("cura/categories_expanded", "")
         preferences.addPreference("cura/jobname_prefix", True)
+        preferences.addPreference("cura/select_models_on_load", False)
         preferences.addPreference("view/center_on_select", False)
         preferences.addPreference("mesh/scale_to_fit", False)
         preferences.addPreference("mesh/scale_tiny_meshes", True)
@@ -1572,6 +1573,9 @@ class CuraApplication(QtApplication):
             self.callLater(self.openProjectFile.emit, file)
             return
 
+        if Preferences.getInstance().getValue("cura/select_models_on_load"):
+            Selection.clear()
+
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
         filename = os.path.basename(f)
@@ -1622,6 +1626,8 @@ class CuraApplication(QtApplication):
         min_offset = 8
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
+
+        select_models_on_load = Preferences.getInstance().getValue("cura/select_models_on_load")
 
         for original_node in nodes:
 
@@ -1695,6 +1701,9 @@ class CuraApplication(QtApplication):
 
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
+
+            if select_models_on_load:
+                Selection.add(node)
 
         self.fileCompleted.emit(filename)
 
