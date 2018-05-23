@@ -1,3 +1,6 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from UM.Math.Vector import Vector
@@ -18,17 +21,20 @@ LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points
 #   good locations for objects that you try to put on a build place.
 #   Different priority schemes can be defined so it alters the behavior while using
 #   the same logic.
+#
+#   Note: Make sure the scale is the same between ShapeArray objects and the Arrange instance.
 class Arrange:
     build_volume = None
 
-    def __init__(self, x, y, offset_x, offset_y, scale= 1.0):
-        self.shape = (y, x)
-        self._priority = numpy.zeros((x, y), dtype=numpy.int32)
-        self._priority_unique_values = []
-        self._occupied = numpy.zeros((x, y), dtype=numpy.int32)
+    def __init__(self, x, y, offset_x, offset_y, scale= 0.5):
         self._scale = scale  # convert input coordinates to arrange coordinates
-        self._offset_x = offset_x
-        self._offset_y = offset_y
+        world_x, world_y = int(x * self._scale), int(y * self._scale)
+        self._shape = (world_y, world_x)
+        self._priority = numpy.zeros((world_y, world_x), dtype=numpy.int32)  # beware: these are indexed (y, x)
+        self._priority_unique_values = []
+        self._occupied = numpy.zeros((world_y, world_x), dtype=numpy.int32)  # beware: these are indexed (y, x)
+        self._offset_x = int(offset_x * self._scale)
+        self._offset_y = int(offset_y * self._scale)
         self._last_priority = 0
         self._is_empty = True
 
@@ -39,7 +45,7 @@ class Arrange:
     #   \param scene_root   Root for finding all scene nodes
     #   \param fixed_nodes  Scene nodes to be placed
     @classmethod
-    def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 220, y = 220):
+    def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250):
         arranger = Arrange(x, y, x // 2, y // 2, scale = scale)
         arranger.centerFirst()
 
@@ -61,12 +67,16 @@ class Arrange:
 
         # If a build volume was set, add the disallowed areas
         if Arrange.build_volume:
-            disallowed_areas = Arrange.build_volume.getDisallowedAreas()
+            disallowed_areas = Arrange.build_volume.getDisallowedAreasNoBrim()
             for area in disallowed_areas:
                 points = copy.deepcopy(area._points)
                 shape_arr = ShapeArray.fromPolygon(points, scale = scale)
                 arranger.place(0, 0, shape_arr, update_empty = False)
         return arranger
+
+    ##  This resets the optimization for finding location based on size
+    def resetLastPriority(self):
+        self._last_priority = 0
 
     ##  Find placement for a node (using offset shape) and place it (using hull shape)
     #   return the nodes that should be placed
@@ -104,7 +114,7 @@ class Arrange:
     def centerFirst(self):
         # Square distance: creates a more round shape
         self._priority = numpy.fromfunction(
-            lambda i, j: (self._offset_x - i) ** 2 + (self._offset_y - j) ** 2, self.shape, dtype=numpy.int32)
+            lambda j, i: (self._offset_x - i) ** 2 + (self._offset_y - j) ** 2, self._shape, dtype=numpy.int32)
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
@@ -112,7 +122,7 @@ class Arrange:
     #   This is a strategy for the arranger.
     def backFirst(self):
         self._priority = numpy.fromfunction(
-            lambda i, j: 10 * j + abs(self._offset_x - i), self.shape, dtype=numpy.int32)
+            lambda j, i: 10 * j + abs(self._offset_x - i), self._shape, dtype=numpy.int32)
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
@@ -126,9 +136,15 @@ class Arrange:
         y = int(self._scale * y)
         offset_x = x + self._offset_x + shape_arr.offset_x
         offset_y = y + self._offset_y + shape_arr.offset_y
+        if offset_x < 0 or offset_y < 0:
+            return None  # out of bounds in self._occupied
+        occupied_x_max = offset_x + shape_arr.arr.shape[1]
+        occupied_y_max = offset_y + shape_arr.arr.shape[0]
+        if occupied_x_max > self._occupied.shape[1] + 1 or occupied_y_max > self._occupied.shape[0] + 1:
+            return None  # out of bounds in self._occupied
         occupied_slice = self._occupied[
-            offset_y:offset_y + shape_arr.arr.shape[0],
-            offset_x:offset_x + shape_arr.arr.shape[1]]
+            offset_y:occupied_y_max,
+            offset_x:occupied_x_max]
         try:
             if numpy.any(occupied_slice[numpy.where(shape_arr.arr == 1)]):
                 return None
@@ -140,7 +156,7 @@ class Arrange:
         return numpy.sum(prio_slice[numpy.where(shape_arr.arr == 1)])
 
     ##  Find "best" spot for ShapeArray
-    #   Return namedtuple with properties x, y, penalty_points, priority
+    #   Return namedtuple with properties x, y, penalty_points, priority.
     #   \param shape_arr ShapeArray
     #   \param start_prio Start with this priority value (and skip the ones before)
     #   \param step Slicing value, higher = more skips = faster but less accurate
@@ -153,12 +169,11 @@ class Arrange:
         for priority in self._priority_unique_values[start_idx::step]:
             tryout_idx = numpy.where(self._priority == priority)
             for idx in range(len(tryout_idx[0])):
-                x = tryout_idx[0][idx]
-                y = tryout_idx[1][idx]
-                projected_x = x - self._offset_x
-                projected_y = y - self._offset_y
+                x = tryout_idx[1][idx]
+                y = tryout_idx[0][idx]
+                projected_x = int((x - self._offset_x) / self._scale)
+                projected_y = int((y - self._offset_y) / self._scale)
 
-                # array to "world" coordinates
                 penalty_points = self.checkShape(projected_x, projected_y, shape_arr)
                 if penalty_points is not None:
                     return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = priority)
@@ -191,8 +206,12 @@ class Arrange:
 
         # Set priority to low (= high number), so it won't get picked at trying out.
         prio_slice = self._priority[min_y:max_y, min_x:max_x]
-        prio_slice[numpy.where(shape_arr.arr[
-            min_y - offset_y:max_y - offset_y, min_x - offset_x:max_x - offset_x] == 1)] = 999
+        prio_slice[new_occupied] = 999
+
+        # If you want to see how the rasterized arranger build plate looks like, uncomment this code
+        # numpy.set_printoptions(linewidth=500, edgeitems=200)
+        # print(self._occupied.shape)
+        # print(self._occupied)
 
     @property
     def isEmpty(self):

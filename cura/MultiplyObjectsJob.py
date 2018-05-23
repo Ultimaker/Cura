@@ -30,10 +30,17 @@ class MultiplyObjectsJob(Job):
         total_progress = len(self._objects) * self._count
         current_progress = 0
 
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        machine_width = global_container_stack.getProperty("machine_width", "value")
+        machine_depth = global_container_stack.getProperty("machine_depth", "value")
+
         root = scene.getRoot()
-        arranger = Arrange.create(scene_root=root)
+        scale = 0.5
+        arranger = Arrange.create(x = machine_width, y = machine_depth, scene_root = root, scale = scale)
         processed_nodes = []
         nodes = []
+
+        not_fit_count = 0
 
         for node in self._objects:
             # If object is part of a group, multiply group
@@ -46,12 +53,13 @@ class MultiplyObjectsJob(Job):
             processed_nodes.append(current_node)
 
             node_too_big = False
-            if node.getBoundingBox().width < 300 or node.getBoundingBox().depth < 300:
-                offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset=self._min_offset)
+            if node.getBoundingBox().width < machine_width or node.getBoundingBox().depth < machine_depth:
+                offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset = self._min_offset, scale = scale)
             else:
                 node_too_big = True
 
             found_solution_for_all = True
+            arranger.resetLastPriority()
             for i in range(self._count):
                 # We do place the nodes one by one, as we want to yield in between.
                 if not node_too_big:
@@ -59,8 +67,9 @@ class MultiplyObjectsJob(Job):
                 if node_too_big or not solution_found:
                     found_solution_for_all = False
                     new_location = new_node.getPosition()
-                    new_location = new_location.set(z = 100 - i * 20)
+                    new_location = new_location.set(z = - not_fit_count * 20)
                     new_node.setPosition(new_location)
+                    not_fit_count += 1
 
                 # Same build plate
                 build_plate_number = current_node.callDecoration("getBuildPlateNumber")
