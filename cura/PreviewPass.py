@@ -79,10 +79,10 @@ class PreviewPass(RenderPass):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                 per_mesh_stack = node.callDecoration("getStack")
-                if node.callDecoration("isNonPrintingMesh"):
+                if node.callDecoration("isNonThumbnailVisibleMesh"):
                     # Non printing mesh
                     continue
-                elif per_mesh_stack is not None and per_mesh_stack.getProperty("support_mesh", "value") == True:
+                elif per_mesh_stack is not None and per_mesh_stack.getProperty("support_mesh", "value"):
                     # Support mesh
                     uniforms = {}
                     shade_factor = 0.6
@@ -112,4 +112,3 @@ class PreviewPass(RenderPass):
         batch_support_mesh.render(render_camera)
 
         self.release()
-
