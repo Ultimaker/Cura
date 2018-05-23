@@ -79,6 +79,8 @@ UM.PreferencesPage
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
         UM.Preferences.resetPreference("mesh/scale_tiny_meshes")
         scaleTinyCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
+        UM.Preferences.resetPreference("cura/select_models_on_load")
+        selectModelsOnLoadCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/select_models_on_load"))
         UM.Preferences.resetPreference("cura/jobname_prefix")
         prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
         UM.Preferences.resetPreference("view/show_overhang");
@@ -495,6 +497,21 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Scale extremely small models")
                     checked: boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
                     onCheckedChanged: UM.Preferences.setValue("mesh/scale_tiny_meshes", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should models be selected after they are loaded?")
+
+                CheckBox
+                {
+                    id: selectModelsOnLoadCheckbox
+                    text: catalog.i18nc("@option:check","Select models when loaded")
+                    checked: boolCheck(UM.Preferences.getValue("cura/select_models_on_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/select_models_on_load", checked)
                 }
             }
 
