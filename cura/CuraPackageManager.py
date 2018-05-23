@@ -8,12 +8,13 @@ import shutil
 import zipfile
 import tempfile
 
-from PyQt5.QtCore import pyqtSlot, QObject, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, QObject, pyqtSignal, QUrl
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Version import Version
+
 
 class CuraPackageManager(QObject):
     Version = 1
@@ -183,6 +184,12 @@ class CuraPackageManager(QObject):
     # Checks if the given package is installed (at all).
     def isPackageInstalled(self, package_id: str) -> bool:
         return self.getInstalledPackageInfo(package_id) is not None
+
+    # This is called by drag-and-dropping curapackage files.
+    @pyqtSlot(QUrl)
+    def installPackageViaDragAndDrop(self, file_url: str) -> None:
+        filename = QUrl(file_url).toLocalFile()
+        return self.installPackage(filename)
 
     # Schedules the given package file to be installed upon the next start.
     @pyqtSlot(str)

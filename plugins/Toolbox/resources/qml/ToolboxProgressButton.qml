@@ -68,7 +68,7 @@ Item
                 {
                     if (base.complete)
                     {
-                        return UM.Theme.getColor("action_button_disabled")
+                        return "transparent"
                     }
                     else
                     {
@@ -82,6 +82,31 @@ Item
                         }
                     }
                 }
+                border
+                {
+                    width:
+                    {
+                        if (base.complete)
+                        {
+                            UM.Theme.getSize("default_lining").width
+                        }
+                        else
+                        {
+                            return 0
+                        }
+                    }
+                    color:
+                    {
+                        if (control.hovered)
+                        {
+                            return UM.Theme.getColor("primary_hover")
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("lining")
+                        }
+                    }
+                }
             }
             label: Label
             {
@@ -90,7 +115,7 @@ Item
                 {
                     if (base.complete)
                     {
-                        return UM.Theme.getColor("action_button_disabled_text")
+                        return UM.Theme.getColor("text")
                     }
                     else
                     {
@@ -106,7 +131,17 @@ Item
                 }
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font: UM.Theme.getFont("default_bold")
+                font:
+                {
+                    if (base.complete)
+                    {
+                        return UM.Theme.getFont("default")
+                    }
+                    else
+                    {
+                        return UM.Theme.getFont("default_bold")
+                    }
+                }
             }
         }
     }

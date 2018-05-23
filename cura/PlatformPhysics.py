@@ -35,7 +35,7 @@ class PlatformPhysics:
         self._max_overlap_checks = 10  # How many times should we try to find a new spot per tick?
         self._minimum_gap = 2  # It is a minimum distance (in mm) between two models, applicable for small models
 
-        Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", True)
+        Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
         Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
 
     def _onSceneChanged(self, source):

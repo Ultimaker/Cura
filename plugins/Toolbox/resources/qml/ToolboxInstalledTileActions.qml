@@ -8,6 +8,8 @@ import UM 1.1 as UM
 
 Column
 {
+    property bool canUpdate: false
+    property bool canDowngrade: false
     width: UM.Theme.getSize("toolbox_action_button").width
     spacing: UM.Theme.getSize("narrow_margin").height
 
@@ -36,7 +38,7 @@ Column
     Button
     {
         id: removeButton
-        text: catalog.i18nc("@action:button", "Uninstall")
+        text: canDowngrade ? catalog.i18nc("@action:button", "Downgrade") : catalog.i18nc("@action:button", "Uninstall")
         visible: !model.is_bundled
         enabled: !toolbox.isDownloading
         style: ButtonStyle
@@ -49,7 +51,17 @@ Column
                 border
                 {
                     width: UM.Theme.getSize("default_lining").width
-                    color: UM.Theme.getColor("lining")
+                    color:
+                    {
+                        if (control.hovered)
+                        {
+                            return UM.Theme.getColor("primary_hover")
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("lining")
+                        }
+                    }
                 }
             }
             label: Label
@@ -58,8 +70,18 @@ Column
                 color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
+                font: UM.Theme.getFont("default")
             }
         }
         onClicked: toolbox.uninstall(model.id)
+        Connections
+        {
+            target: toolbox
+            onMetadataChanged:
+            {
+                canUpdate = toolbox.canUpdate(model.id)
+                canDowngrade = toolbox.canDowngrade(model.id)
+            }
+        }
     }
 }

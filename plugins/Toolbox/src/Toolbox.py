@@ -300,6 +300,20 @@ class Toolbox(QObject, Extension):
         remote_version = Version(remote_package["package_version"])
         return remote_version > local_version
 
+    @pyqtSlot(str, result=bool)
+    def canDowngrade(self, package_id: str) -> bool:
+        local_package = self._package_manager.getInstalledPackageInfo(package_id)
+        if local_package is None:
+            return False
+
+        remote_package = self.getRemotePackage(package_id)
+        if remote_package is None:
+            return False
+
+        local_version = Version(local_package["package_version"])
+        remote_version = Version(remote_package["package_version"])
+        return remote_version < local_version
+
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
         return self._package_manager.isPackageInstalled(package_id)

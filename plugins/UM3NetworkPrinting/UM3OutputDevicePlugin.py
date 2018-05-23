@@ -59,6 +59,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
 
+        # Store the last manual entry key
+        self._last_manual_entry_key = "" # type: str
+
         # The zero-conf service changed requests are handled in a separate thread, so we can re-schedule the requests
         # which fail to get detailed service info.
         # Any new or re-scheduled requests will be appended to the request queue, and the handling thread will pick
@@ -70,6 +73,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     def getDiscoveredDevices(self):
         return self._discovered_devices
+
+    def getLastManualDevice(self) -> str:
+        return self._last_manual_entry_key
+
+    def resetLastManualDevice(self) -> None:
+        self._last_manual_entry_key = ""
 
     ##  Start looking for devices on network.
     def start(self):
@@ -92,6 +101,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         for address in self._manual_instances:
             if address:
                 self.addManualDevice(address)
+        self.resetLastManualDevice()
 
     def reCheckConnections(self):
         active_machine = Application.getInstance().getGlobalContainerStack()
@@ -135,6 +145,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if not address:
                 address = self._discovered_devices[key].ipAddress
             self._onRemoveDevice(key)
+            self.resetLastManualDevice()
 
         if address in self._manual_instances:
             self._manual_instances.remove(address)
@@ -156,6 +167,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if instance_name not in self._discovered_devices:
             # Add a preliminary printer instance
             self._onAddDevice(instance_name, address, properties)
+        self._last_manual_entry_key = instance_name
 
         self._checkManualDevice(address)
 

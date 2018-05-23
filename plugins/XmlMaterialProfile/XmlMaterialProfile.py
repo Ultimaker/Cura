@@ -514,7 +514,7 @@ class XmlMaterialProfile(InstanceContainer):
                 color = entry.find("./um:color", self.__namespaces)
                 label = entry.find("./um:label", self.__namespaces)
 
-                if label is not None:
+                if label is not None and label.text is not None:
                     meta_data["name"] = label.text
                 else:
                     meta_data["name"] = self._profile_name(material.text, color.text)
@@ -805,7 +805,7 @@ class XmlMaterialProfile(InstanceContainer):
                 color = entry.find("./um:color", cls.__namespaces)
                 label = entry.find("./um:label", cls.__namespaces)
 
-                if label is not None:
+                if label is not None and label.text is not None:
                     base_metadata["name"] = label.text
                 else:
                     base_metadata["name"] = cls._profile_name(material.text, color.text)

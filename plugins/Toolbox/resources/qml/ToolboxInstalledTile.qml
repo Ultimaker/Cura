@@ -10,7 +10,6 @@ Item
 {
     height: UM.Theme.getSize("toolbox_installed_tile").height
     width: parent.width
-    property bool canUpdate: false
     property bool isEnabled: true
 
     Rectangle
@@ -109,7 +108,6 @@ Item
         {
             target: toolbox
             onEnabledChanged: isEnabled = toolbox.isEnabled(model.id)
-            onMetadataChanged: canUpdate = toolbox.canUpdate(model.id)
         }
     }
 }

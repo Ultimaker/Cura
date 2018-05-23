@@ -76,10 +76,12 @@ class MaterialManager(QObject):
 
     def initialize(self):
         # Find all materials and put them in a matrix for quick search.
-        material_metadatas = {metadata["id"]: metadata for metadata in self._container_registry.findContainersMetadata(type = "material")}
+        material_metadatas = {metadata["id"]: metadata for metadata in
+                              self._container_registry.findContainersMetadata(type = "material") if
+                              metadata.get("GUID")}
 
         self._material_group_map = dict()
-
+                
         # Map #1
         #    root_material_id -> MaterialGroup
         for material_id, material_metadata in material_metadatas.items():
@@ -93,7 +95,7 @@ class MaterialManager(QObject):
                 self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
             group = self._material_group_map[root_material_id]
 
-            #Store this material in the group of the appropriate root material.
+            # Store this material in the group of the appropriate root material.
             if material_id != root_material_id:
                 new_node = MaterialNode(material_metadata)
                 group.derived_material_node_list.append(new_node)
@@ -158,11 +160,11 @@ class MaterialManager(QObject):
                 key_data.append(root_material_metadata.get(key))
             key_data = tuple(key_data)
 
-            # If the key_data doesn't exist, no matter if the material is read only...
+            # If the key_data doesn't exist, it doesn't matter if the material is read only...
             if key_data not in material_group_dict:
                 material_group_dict[key_data] = dict()
             else:
-                # ...but if key_data exists, we just overrite it if the material is read only, otherwise we skip it
+                # ...but if key_data exists, we just overwrite it if the material is read only, otherwise we skip it
                 if not machine_node.is_read_only:
                     continue
             approximate_diameter = root_material_metadata.get("approximate_diameter")

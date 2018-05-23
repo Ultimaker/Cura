@@ -15,7 +15,7 @@ Column
     Label
     {
         id: heading
-        text: toolbox.viewCategory == "material" ? catalog.i18nc("@label", "Maker Choices") : catalog.i18nc("@label", "Community Plugins")
+        text: toolbox.viewCategory == "material" ? catalog.i18nc("@label", "Community contributions") : catalog.i18nc("@label", "Community plugins")
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
