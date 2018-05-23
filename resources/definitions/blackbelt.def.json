@@ -392,9 +392,6 @@
         "retraction_min_travel": {
             "value": "0.8"
         },
-        "cool_fan_speed": {
-            "value": "0"
-        },
         "z_seam_type": {
             "value": "'shortest'"
         }

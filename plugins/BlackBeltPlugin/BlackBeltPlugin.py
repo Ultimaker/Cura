@@ -235,7 +235,7 @@ class BlackBeltPlugin(Extension):
     def _filterGcode(self, output_device):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
-        enable_secondary_fans = global_stack.getProperty("blackbelt_secondary_fans_enabled", "value")
+        enable_secondary_fans = global_stack.extruders["0"].getProperty("blackbelt_secondary_fans_enabled", "value")
         repetitions = global_stack.getProperty("blackbelt_repetitions", "value") or 1
         if not (enable_secondary_fans or repetitions > 1):
             return
@@ -257,7 +257,7 @@ class BlackBeltPlugin(Extension):
                 if ";BLACKBELTPROCESSED" not in gcode_list[0]:
                     # secondary fans should do the same as print cooling fans
                     if enable_secondary_fans:
-                        search_regex = re.compile(r"M106 S(\d*\.?\d*?)")
+                        search_regex = re.compile(r"M106 S(\d*\.?\d*)")
                         replace_pattern = r"M106 P1 S\1\nM106 S\1"
 
                         for layer_number, layer in enumerate(gcode_list):
