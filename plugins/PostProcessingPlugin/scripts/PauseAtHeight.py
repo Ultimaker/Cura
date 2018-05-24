@@ -117,34 +117,21 @@ class PauseAtHeight(Script):
             }
         }"""
 
-
     def getNextXY(self, layer: str):
-
         """
         Get the X and Y values for a layer (will be used to get X and Y of
         the layer after the pause
         """
-
         lines = layer.split("\n")
-
         for line in lines:
-
             if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
-
                 x = self.getValue(line, "X")
                 y = self.getValue(line, "Y")
-
-                return (x, y)
-
-        return (0, 0)
-
+                return x, y
+        return 0, 0
 
     def execute(self, data: list):
-
         """data is a list. Each index contains a layer"""
-
-        x = 0.
-        y = 0.
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")
@@ -173,15 +160,12 @@ class PauseAtHeight(Script):
 
             # Scroll each line of instruction for each layer in the G-code
             for line in lines:
-
                 # Fist positive layer reached
                 if ";LAYER:0" in line:
                     layers_started = True
-
                 # Count nbr of negative layers (raft)
                 elif ";LAYER:-" in line:
                     nbr_negative_layers += 1
-
                 if not layers_started:
                     continue
 
@@ -190,7 +174,6 @@ class PauseAtHeight(Script):
                     current_z = self.getValue(line, "Z")
 
                 if pause_at == "height":
-
                     # Ignore if the line is not G1 or G0
                     if self.getValue(line, "G") != 1 and self.getValue(line, "G") != 0:
                         continue
@@ -208,7 +191,6 @@ class PauseAtHeight(Script):
 
                 # Pause at layer
                 else:
-
                     if not line.startswith(";LAYER:"):
                         continue
                     current_layer = line[len(";LAYER:"):]
@@ -224,36 +206,35 @@ class PauseAtHeight(Script):
 
                 # Get X and Y from the next layer (better position for
                 # the nozzle)
-                nextLayer = data[index + 1]
-                x, y = self.getNextXY(nextLayer)
+                next_layer = data[index + 1]
+                x, y = self.getNextXY(next_layer)
 
-                prevLayer = data[index - 1]
-                prevLines = prevLayer.split("\n")
+                prev_layer = data[index - 1]
+                prev_lines = prev_layer.split("\n")
                 current_e = 0.
 
                 # Access last layer, browse it backwards to find
                 # last extruder absolute position
-                for prevLine in reversed(prevLines):
+                for prevLine in reversed(prev_lines):
                     current_e = self.getValue(prevLine, "E", -1)
                     if current_e >= 0:
                         break
 
                 # include a number of previous layers
                 for i in range(1, redo_layers + 1):
-                    prevLayer = data[index - i]
-                    layer = prevLayer + layer
+                    prev_layer = data[index - i]
+                    layer = prev_layer + layer
 
                     # Get extruder's absolute position at the
-                    # begining of the first layer redone
+                    # beginning of the first layer redone
                     # see https://github.com/nallath/PostProcessingPlugin/issues/55
                     if i == redo_layers:
                         # Get X and Y from the next layer (better position for
                         # the nozzle)
                         x, y = self.getNextXY(layer)
-                        prevLines = prevLayer.split("\n")
-                        for line in prevLines:
+                        prev_lines = prev_layer.split("\n")
+                        for line in prev_lines:
                             new_e = self.getValue(line, 'E', current_e)
-
                             if new_e != current_e:
                                 current_e = new_e
                                 break
@@ -318,7 +299,6 @@ class PauseAtHeight(Script):
                 prepend_gcode += self.putValue(G=92, E=current_e) + "\n"
 
                 layer = prepend_gcode + layer
-
 
                 # Override the data of this layer with the
                 # modified data
