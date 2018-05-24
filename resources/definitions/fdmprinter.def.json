@@ -1746,6 +1746,21 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_sparse_layer":
+                {
+                    "label": "Print Infill Every",
+                    "description": "Number of layers printed before printing one infill layer. This is the ratio between layers printed at layer height and infill layers. Higher number results in thicker infill layers.",
+                    "unit": "layers",
+                    "type": "int",
+                    "default_value": 1,
+                    "minimum_value": 1,
+                    "maximum_value_warning": "int(0.75 * extruderValue(infill_extruder_nr, 'machine_nozzle_size') / layer_height)",
+                    "maximum_value": "int(1.45 / resolveOrValue('layer_height')) if spaghetti_infill_enabled else int(8 / resolveOrValue('layer_height'))",
+                    "value": 1,
+                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "infill_sparse_thickness":
                 {
                     "label": "Infill Layer Thickness",
@@ -1756,8 +1771,8 @@
                     "minimum_value": "resolveOrValue('layer_height')",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * (1.45 if spaghetti_infill_enabled else 8)",
-                    "value": "resolveOrValue('layer_height')",
-                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
+                    "value": "infill_sparse_layer * resolveOrValue('layer_height')",
+                    "enabled": false,
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -3911,6 +3926,21 @@
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
+                "support_infill_sparse_layer":
+                {
+                    "label": "Print Support Infill Every",
+                    "description": "Number of layers printed before printing one support infill layer. This is the ratio between layers printed at layer height and support infill layers. Higher number results in thicker infill layers.",
+                    "unit": "layers",
+                    "type": "int",
+                    "default_value": 1,
+                    "minimum_value": 1,
+                    "maximum_value_warning": "int(0.75 * extruderValue(support_infill_extruder_nr, 'machine_nozzle_size') / layer_height)",
+                    "maximum_value": "int(8 / resolveOrValue('layer_height'))",
+                    "value": 1,
+                    "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "support_infill_sparse_thickness":
                 {
                     "label": "Support Infill Layer Thickness",
@@ -3921,8 +3951,8 @@
                     "minimum_value": "resolveOrValue('layer_height')",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * 8",
-                    "value": "resolveOrValue('layer_height')",
-                    "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
+                    "value": "support_infill_sparse_layer * resolveOrValue('layer_height')",
+                    "enabled": false,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
                 },
