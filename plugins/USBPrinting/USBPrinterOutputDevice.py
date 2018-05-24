@@ -318,7 +318,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         continue
                     matched_extruder_nrs.append(extruder_nr)
 
-                    if extruder_nr >= len(self._printers[0].extruders)
+                    if extruder_nr >= len(self._printers[0].extruders):
                         Logger.log("w", "Printer reports more temperatures than the number of configured extruders")
                         continue
 
