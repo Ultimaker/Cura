@@ -160,7 +160,7 @@ class Toolbox(QObject, Extension):
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
-        self._package_manager = Application.getInstance().getCuraPackageManager()
+        self._package_manager = Application.getInstance().getPackageManager()
 
     # Get the API root for the packages API depending on Cura version settings.
     def _getPackagesApiRoot(self) -> str:

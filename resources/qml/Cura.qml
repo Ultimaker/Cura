@@ -330,7 +330,7 @@ UM.MainWindow
                             if (filename.endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
-                                CuraApplication.getCuraPackageManager().installPackageViaDragAndDrop(filename);
+                                CuraApplication.getPackageManager().installPackageViaDragAndDrop(filename);
                                 packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
                                 packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();

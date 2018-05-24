@@ -247,11 +247,6 @@ class CuraApplication(QtApplication):
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
-        # Initialize the package manager to remove and install scheduled packages.
-        from cura.CuraPackageManager import CuraPackageManager
-        self._cura_package_manager = CuraPackageManager(self)
-        self._cura_package_manager.initialize()
-
         self.initialize()
 
         # FOR TESTING ONLY
@@ -822,10 +817,6 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager.createExtruderManager()
         return self._extruder_manager
-
-    @pyqtSlot(result = QObject)
-    def getCuraPackageManager(self, *args):
-        return self._cura_package_manager
 
     def getVariantManager(self, *args):
         return self._variant_manager
