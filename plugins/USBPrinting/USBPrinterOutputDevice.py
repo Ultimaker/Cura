@@ -385,7 +385,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._gcode.clear()
         self._printers[0].updateActivePrintJob(None)
         self._is_printing = False
-        self._is_paused = False
+        self._paused = False
 
         # Turn off temperatures, fan and steppers
         self._sendCommand("M140 S0")
