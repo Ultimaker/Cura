@@ -379,6 +379,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def resumePrint(self):
         self._paused = False
+        self._sendNextGcodeLine() #Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
 
     def cancelPrint(self):
         self._gcode_position = 0
