@@ -10,7 +10,6 @@ import time
 import numpy
 
 from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
-from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
@@ -597,8 +596,7 @@ class CuraApplication(QtApplication):
             # Do not do saving during application start or when data should not be safed on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
-        Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences,
-                                                                       self._application_name + ".cfg"))
+        self.savePreferences()
 
     def saveStack(self, stack):
         ContainerRegistry.getInstance().saveContainer(stack)
