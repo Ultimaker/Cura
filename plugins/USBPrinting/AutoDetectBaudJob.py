@@ -58,7 +58,7 @@ class AutoDetectBaudJob(Job):
 
                 while timeout_time > time():
                     line = serial.readline()
-                    if b"ok T:" in line:
+                    if b"ok " in line and b"T:" in line:
                         successful_responses += 1
                         if successful_responses >= 3:
                             self.setResult(baud_rate)
