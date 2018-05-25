@@ -1,6 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Application import Application
 from UM.Job import Job
 from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
@@ -17,6 +18,7 @@ from cura.Arranging.ShapeArray import ShapeArray
 from typing import List
 
 
+##  Do arrangements on multiple build plates (aka builtiplexer)
 class ArrangeArray:
     def __init__(self, x: int, y: int, fixed_nodes: List[SceneNode]):
         self._x = x
@@ -79,7 +81,11 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
         nodes_arr.sort(key=lambda item: item[0])
         nodes_arr.reverse()
 
-        x, y = 200, 200
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        machine_width = global_container_stack.getProperty("machine_width", "value")
+        machine_depth = global_container_stack.getProperty("machine_depth", "value")
+
+        x, y = machine_width, machine_depth
 
         arrange_array = ArrangeArray(x = x, y = y, fixed_nodes = [])
         arrange_array.add()
@@ -93,19 +99,10 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
         for idx, (size, node, offset_shape_arr, hull_shape_arr) in enumerate(nodes_arr):
             # For performance reasons, we assume that when a location does not fit,
             # it will also not fit for the next object (while what can be untrue).
-            # We also skip possibilities by slicing through the possibilities (step = 10)
 
             try_placement = True
 
             current_build_plate_number = 0  # always start with the first one
-
-            # # Only for first build plate
-            # if last_size == size and last_build_plate_number == current_build_plate_number:
-            #     # This optimization works if many of the objects have the same size
-            #     # Continue with same build plate number
-            #     start_priority = last_priority
-            # else:
-            #     start_priority = 0
 
             while try_placement:
                 # make sure that current_build_plate_number is not going crazy or you'll have a lot of arrange objects
@@ -113,7 +110,7 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
                     arrange_array.add()
                 arranger = arrange_array.get(current_build_plate_number)
 
-                best_spot = arranger.bestSpot(offset_shape_arr, start_prio=start_priority, step=10)
+                best_spot = arranger.bestSpot(offset_shape_arr, start_prio=start_priority)
                 x, y = best_spot.x, best_spot.y
                 node.removeDecorator(ZOffsetDecorator)
                 if node.getBoundingBox():

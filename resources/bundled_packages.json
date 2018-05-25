@@ -33,23 +33,6 @@
             }
         }
     },
-    "AutoSave": {
-        "package_info": {
-            "package_id": "AutoSave",
-            "package_type": "plugin",
-            "display_name": "Auto-Save",
-            "description": "Automatically saves Preferences, Machines and Profiles after changes.",
-            "package_version": "1.0.0",
-            "cura_version": 4,
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "Ultimaker",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
     "ChangeLogPlugin": {
         "package_info": {
             "package_id": "ChangeLogPlugin",

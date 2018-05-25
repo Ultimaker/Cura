@@ -85,6 +85,7 @@ from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 from cura.Machines.VariantManager import VariantManager
 
 from .SingleInstance import SingleInstance
+from .AutoSave import AutoSave
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -154,9 +155,6 @@ class CuraApplication(QtApplication):
 
         self._boot_loading_time = time.time()
 
-        self._currently_loading_files = []
-        self._non_sliceable_extensions = []
-
         # Variables set from CLI
         self._files_to_open = []
         self._use_single_instance = False
@@ -222,6 +220,10 @@ class CuraApplication(QtApplication):
         self._update_platform_activity_timer = None
 
         self._need_to_show_user_agreement = True
+
+        # Backups
+        self._auto_save = None
+        self._save_data_enabled = True
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
@@ -469,6 +471,7 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("cura/categories_expanded", "")
         preferences.addPreference("cura/jobname_prefix", True)
+        preferences.addPreference("cura/select_models_on_load", False)
         preferences.addPreference("view/center_on_select", False)
         preferences.addPreference("mesh/scale_to_fit", False)
         preferences.addPreference("mesh/scale_tiny_meshes", True)
@@ -585,14 +588,17 @@ class CuraApplication(QtApplication):
 
     showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
 
-    ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
-    #
-    #   Note that the AutoSave plugin also calls this method.
-    def saveSettings(self):
-        if not self.started: # Do not do saving during application start
-            return
+    def setSaveDataEnabled(self, enabled: bool) -> None:
+        self._save_data_enabled = enabled
 
+    # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
+    def saveSettings(self):
+        if not self.started or not self._save_data_enabled:
+            # Do not do saving during application start or when data should not be safed on quit.
+            return
         ContainerRegistry.getInstance().saveDirtyContainers()
+        Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences,
+                                                                       self._application_name + ".cfg"))
 
     def saveStack(self, stack):
         ContainerRegistry.getInstance().saveContainer(stack)
@@ -694,6 +700,9 @@ class CuraApplication(QtApplication):
         self._post_start_timer.setSingleShot(True)
         self._post_start_timer.timeout.connect(self._onPostStart)
         self._post_start_timer.start()
+
+        self._auto_save = AutoSave(self)
+        self._auto_save.initialize()
 
         self.exec_()
 
@@ -843,6 +852,9 @@ class CuraApplication(QtApplication):
                 self._open_file_queue.append(event.file())
 
         return super().event(event)
+
+    def getAutoSave(self):
+        return self._auto_save
 
     ##  Get print information (duration / material used)
     def getPrintInformation(self):
@@ -1228,34 +1240,12 @@ class CuraApplication(QtApplication):
                     nodes.append(node)
         self.arrange(nodes, fixed_nodes = [])
 
-    ##  Arrange Selection
-    @pyqtSlot()
-    def arrangeSelection(self):
-        nodes = Selection.getAllSelectedObjects()
-
-        # What nodes are on the build plate and are not being moved
-        fixed_nodes = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, SceneNode):
-                continue
-            if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            if not node.isSelectable():
-                continue  # i.e. node with layer data
-            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
-                continue  # i.e. node with layer data
-            if node in nodes:  # exclude selected node from fixed_nodes
-                continue
-            fixed_nodes.append(node)
-        self.arrange(nodes, fixed_nodes)
-
     ##  Arrange a set of nodes given a set of fixed nodes
     #   \param nodes nodes that we have to place
     #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes
     def arrange(self, nodes, fixed_nodes):
-        job = ArrangeObjectsJob(nodes, fixed_nodes)
+        min_offset = self.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8))
         job.start()
 
     ##  Reload all mesh data on the screen from file.
@@ -1539,6 +1529,9 @@ class CuraApplication(QtApplication):
             self.callLater(self.openProjectFile.emit, file)
             return
 
+        if Preferences.getInstance().getValue("cura/select_models_on_load"):
+            Selection.clear()
+
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
         filename = os.path.basename(f)
@@ -1585,10 +1578,15 @@ class CuraApplication(QtApplication):
         for node_ in DepthFirstIterator(root):
             if node_.callDecoration("isSliceable") and node_.callDecoration("getBuildPlateNumber") == target_build_plate:
                 fixed_nodes.append(node_)
-        arranger = Arrange.create(fixed_nodes = fixed_nodes)
+        global_container_stack = self.getGlobalContainerStack()
+        machine_width = global_container_stack.getProperty("machine_width", "value")
+        machine_depth = global_container_stack.getProperty("machine_depth", "value")
+        arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = fixed_nodes)
         min_offset = 8
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
+
+        select_models_on_load = Preferences.getInstance().getValue("cura/select_models_on_load")
 
         for original_node in nodes:
 
@@ -1602,7 +1600,6 @@ class CuraApplication(QtApplication):
                 #Setting meshdata does not apply scaling.
                 if(original_node.getScale() != Vector(1.0, 1.0, 1.0)):
                     node.scale(original_node.getScale())
-
 
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
@@ -1662,6 +1659,9 @@ class CuraApplication(QtApplication):
 
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
+
+            if select_models_on_load:
+                Selection.add(node)
 
         self.fileCompleted.emit(filename)
 

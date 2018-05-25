@@ -48,7 +48,7 @@ class Snapshot:
         # determine zoom and look at
         bbox = None
         for node in DepthFirstIterator(root):
-            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh"):
+            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonThumbnailVisibleMesh"):
                 if bbox is None:
                     bbox = node.getBoundingBox()
                 else:

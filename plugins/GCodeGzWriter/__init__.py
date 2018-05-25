@@ -9,7 +9,7 @@ from . import GCodeGzWriter
 catalog = i18nCatalog("cura")
 
 def getMetaData():
-    file_extension = "gz" if Platform.isOSX() else "gcode.gz"
+    file_extension = "gcode.gz"
     return {
         "mesh_writer": {
             "output": [{

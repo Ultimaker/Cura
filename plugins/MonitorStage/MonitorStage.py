@@ -69,10 +69,11 @@ class MonitorStage(CuraStage):
         self._updateSidebar()
 
     def _updateMainOverlay(self):
-        main_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("MonitorStage"), "MonitorMainView.qml")
+        main_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("MonitorStage"),
+                                           "MonitorMainView.qml")
         self.addDisplayComponent("main", main_component_path)
 
     def _updateSidebar(self):
-        # TODO: currently the sidebar component for prepare and monitor stages is the same, this will change with the printer output device refactor!
-        sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles), "Sidebar.qml")
+        sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles),
+                                              "MonitorSidebar.qml")
         self.addDisplayComponent("sidebar", sidebar_component_path)
