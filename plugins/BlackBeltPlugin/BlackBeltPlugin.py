@@ -146,7 +146,7 @@ class BlackBeltPlugin(Extension):
                         self._global_container_stack.addMetaDataEntry("approximate_diameter", approximate_diameter)
 
                     # Make sure the extruder quality is a blackbelt quality profile
-                    if extruder_stack.quality.getDefinition().getId() != "blackbelt":
+                    if extruder_stack.quality != self._application.empty_quality_container and extruder_stack.quality.getDefinition().getId() != "blackbelt":
                         blackbelt_normal_quality = ContainerRegistry.getInstance().findContainers(id = "blackbelt_normal")[0]
                         extruder_stack.setQuality(blackbelt_normal_quality)
                         self._global_container_stack.setQuality(blackbelt_normal_quality)
