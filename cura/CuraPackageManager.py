@@ -111,6 +111,12 @@ class CuraPackageManager(QObject):
             del self._to_install_package_dict[package_id]
             self._saveManagementData()
 
+    def getBundledPackageInfo(self, package_id: str) -> Optional[dict]:
+        package_info = None
+        if package_id in self._bundled_package_dict:
+            package_info = self._bundled_package_dict[package_id]["package_info"]
+        return package_info
+
     # Checks the given package is installed. If so, return a dictionary that contains the package's information.
     def getInstalledPackageInfo(self, package_id: str) -> Optional[dict]:
         if package_id in self._to_remove_package_set:
