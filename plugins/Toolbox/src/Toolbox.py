@@ -250,8 +250,6 @@ class Toolbox(QObject, Extension):
             if remote_package:
                 download_url = remote_package["download_url"]
                 Logger.log("d", "Updating package [%s]..." % plugin_id)
-                if self._package_manager.isUserInstalledPackage(plugin_id):
-                    self.uninstall(plugin_id)
                 self.startDownload(download_url)
             else:
                 Logger.log("e", "Could not update package [%s] because there is no remote package info available.", plugin_id)
@@ -318,19 +316,21 @@ class Toolbox(QObject, Extension):
         remote_version = Version(remote_package["package_version"])
         return remote_version > local_version
 
-    @pyqtSlot(str, result=bool)
+    @pyqtSlot(str, result = bool)
     def canDowngrade(self, package_id: str) -> bool:
+        # If the currently installed version is higher than the bundled version (if present), the we can downgrade
+        # this package.
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
         if local_package is None:
             return False
 
-        remote_package = self.getRemotePackage(package_id)
-        if remote_package is None:
+        bundled_package = self._package_manager.getBundledPackageInfo(package_id)
+        if bundled_package is None:
             return False
 
         local_version = Version(local_package["package_version"])
-        remote_version = Version(remote_package["package_version"])
-        return remote_version < local_version
+        bundled_version = Version(bundled_package["package_version"])
+        return bundled_version < local_version
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:

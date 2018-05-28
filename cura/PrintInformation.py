@@ -66,6 +66,7 @@ class PrintInformation(QObject):
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
         self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
+        self._is_user_specified_job_name = False
         self._base_name = ""
         self._abbr_machine = ""
         self._job_name = ""
@@ -281,10 +282,13 @@ class PrintInformation(QObject):
 
     # Manual override of job name should also set the base name so that when the printer prefix is updated, it the
     # prefix can be added to the manually added name, not the old base name
-    @pyqtSlot(str)
-    def setJobName(self, name):
+    @pyqtSlot(str, bool)
+    def setJobName(self, name, is_user_specified_job_name = False):
+        self._is_user_specified_job_name = is_user_specified_job_name
         self._job_name = name
         self._base_name = name.replace(self._abbr_machine + "_", "")
+        if name == "":
+            self._is_user_specified_job_name = False
         self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
@@ -296,21 +300,25 @@ class PrintInformation(QObject):
     def _updateJobName(self):
         if self._base_name == "":
             self._job_name = ""
+            self._is_user_specified_job_name = False
             self.jobNameChanged.emit()
             return
 
         base_name = self._stripAccents(self._base_name)
         self._setAbbreviatedMachineName()
-        if self._pre_sliced:
-            self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
-        elif self._application.getInstance().getPreferences().getValue("cura/jobname_prefix"):
-            # Don't add abbreviation if it already has the exact same abbreviation.
-            if base_name.startswith(self._abbr_machine + "_"):
-                self._job_name = base_name
+
+        # Only update the job name when it's not user-specified.
+        if not self._is_user_specified_job_name:
+            if self._pre_sliced:
+                self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
+            elif self._application.getInstance().getPreferences().getValue("cura/jobname_prefix"):
+                # Don't add abbreviation if it already has the exact same abbreviation.
+                if base_name.startswith(self._abbr_machine + "_"):
+                    self._job_name = base_name
+                else:
+                    self._job_name = self._abbr_machine + "_" + base_name
             else:
-                self._job_name = self._abbr_machine + "_" + base_name
-        else:
-            self._job_name = base_name
+                self._job_name = base_name
 
         self.jobNameChanged.emit()
 

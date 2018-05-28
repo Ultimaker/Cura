@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
@@ -12,10 +12,10 @@ import xml.etree.ElementTree as ET
 from UM.Resources import Resources
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
-
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from .XmlMaterialValidator import XmlMaterialValidator
 
@@ -540,7 +540,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         validation_message = XmlMaterialValidator.validateMaterialMetaData(meta_data)
         if validation_message is not None:
-            raise Exception("Not valid material profile: %s" % (validation_message))
+            ConfigurationErrorMessage.getInstance().addFaultyContainers(self.getId())
+            Logger.log("e", "Not a valid material profile: {message}".format(message = validation_message))
+            return
 
         property_values = {}
         properties = data.iterfind("./um:properties/*", self.__namespaces)
