@@ -36,13 +36,16 @@ class Toolbox(QObject, Extension):
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
-        self._packages_api_root = self._getPackagesApiRoot()
-        self._packages_version = self._getPackagesVersion()
-        self._api_version = 1
-        self._api_url = "{api_root}/cura-packages/v{api_version}/cura/v{package_version}".format(
-            api_root = self._packages_api_root,
-            api_version = self._api_version,
-            package_version = self._packages_version
+
+        self._sdk_version = self._getPackagesVersion()
+
+        self._cloud_api_version = 1
+        self._cloud_api_root = self._getPackagesApiRoot()
+
+        self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
+            cloud_api_root = self._cloud_api_root,
+            cloud_api_version = self._cloud_api_version,
+            sdk_version = self._sdk_version
         )
 
         # Network:
