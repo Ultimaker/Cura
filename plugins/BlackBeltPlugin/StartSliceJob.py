@@ -23,6 +23,7 @@ from UM.Math.Vector import Vector
 from UM.Mesh.MeshData import transformVertices
 from UM.Mesh.MeshBuilder import MeshBuilder
 from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -191,15 +192,19 @@ class StartSliceJob(Job):
             else:
                 temp_list = []
                 has_printing_mesh = False
+                # print convex hull nodes as "faux-raft"
+                print_convex_hulls = stack.getProperty("blackbelt_raft", "value")
                 for node in DepthFirstIterator(self._scene.getRoot()):
-                    if node.callDecoration("isSliceable") and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                    slice_node = (print_convex_hulls and type(node) is ConvexHullNode) or node.callDecoration("isSliceable")
+                    if slice_node and node.getMeshData() and node.getMeshData().getVertices() is not None:
                         per_object_stack = node.callDecoration("getStack")
                         is_non_printing_mesh = False
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                         # Find a reason not to add the node
-                        if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
+                        if node.callDecoration("getBuildPlateNumber") != self._build_plate_number and type(node) is not ConvexHullNode:
+                            # NB: ConvexHullNodes get none of the usual decorators, so skip checking for them
                             continue
                         if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                             continue
@@ -224,7 +229,8 @@ class StartSliceJob(Job):
                 stack = Application.getInstance().getGlobalContainerStack()
                 skip_group = False
                 for node in group:
-                    if not extruders_enabled[node.callDecoration("getActiveExtruderPosition")]:
+                    # ConvexHullNodes get none of the usual decorators. If it made it here, it is meant to be printed
+                    if type(node) is not ConvexHullNode and not extruders_enabled[node.callDecoration("getActiveExtruderPosition")]:
                         skip_group = True
                         break
                 if not skip_group:
@@ -258,6 +264,9 @@ class StartSliceJob(Job):
                 # support_enable is set in the frontend so support options are settable,
                 # but CuraEngine support structures don't work for slanted gantry
                 stack.setProperty("support_enable", "value", False)
+                # Make sure CuraEngine does not create a raft (we create one manually)
+                # Adhsion type is used in the frontend to show the raft in the viewport
+                stack.setProperty("adhesion_type", "value", "none")
 
                 # HOTFIX: make sure the bed temperature is taken from the extruder stack
                 extruder_stack = ExtruderManager.getInstance().getMachineExtruders(stack_id)[0]
@@ -305,7 +314,8 @@ class StartSliceJob(Job):
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if not is_non_printing_mesh and not object.getName().startswith("beltLayerModifierMesh"):
+                        # ConvexHullNodes get none of the usual decorators. If it made it here, it is meant to be printed
+                        if not is_non_printing_mesh and not object.getName().startswith("beltLayerModifierMesh") and type(node) is not ConvexHullNode:
                             extruder_stack_index = object.callDecoration("getActiveExtruderPosition")
                             if not extruder_stack_index:
                                 extruder_stack_index = 0
@@ -356,6 +366,10 @@ class StartSliceJob(Job):
             transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
             front_offset = None
 
+            vertical_offset = 0
+            if stack.getProperty("blackbelt_raft", "value"):
+                vertical_offset = extruder_stack.getProperty("raft_surface_layers", "value") * extruder_stack.getProperty("raft_surface_thickness", "value")
+                extra_vertical_offset = extruder_stack.getProperty("raft_airgap", "value")
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
@@ -364,6 +378,11 @@ class StartSliceJob(Job):
                     mesh_data = object.getMeshData()
                     rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
                     translate = object.getWorldTransformation().getData()[:3, 3]
+                    # offset all objects if rafts are enabled, or they end up under the belt
+                    # air gap is applied here to vertically offset objects from the raft
+                    translate[1] = translate[1] + vertical_offset
+                    if type(object) is not ConvexHullNode:
+                        translate[1] = translate[1] + extra_vertical_offset
 
                     # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                     verts = mesh_data.getVertices()

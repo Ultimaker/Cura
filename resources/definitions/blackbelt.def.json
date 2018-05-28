@@ -57,27 +57,35 @@
             "icon": "category_machine",
             "children":
             {
-                "blackbelt_z_offset_gap":
+                "blackbelt_repetitions":
                 {
-                    "label": "Belt Offset",
-                    "description": "The distance between the part and the conveyor belt. Adjust the gap to the belt to control adhesion between the print and the belt. Smaller gap means more adhesion, a bigger gap means less adhesion.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.2,
-                    "minimum_value": "0",
-                    "maximum_value": "5",
+                    "label": "Copies",
+                    "description": "The number of times the objects on the build plate are printed. Note that the repetitions will not be visible in Layer View.",
+                    "type": "int",
+                    "minimum_value": "1",
+                    "default_value": 1,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "blackbelt_secondary_fans_enabled":
+                "blackbelt_repetitions_distance":
                 {
-                    "label": "Enable Secondary Print Fans",
-                    "description": "Enables the secondary print cooling fans while printing. The secondary fans are set to the same speed as the primary cooling fan.",
+                    "label": "Distance Between Copies",
+                    "description": "The distance the belt moves between repetitions.",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 300,
+                    "enabled": "blackbelt_repetitions > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft":
+                {
+                    "label": "Print Raft",
+                    "description": "Adds a thick layer below the model to help the adhesion to the belt and to improve stability during printing.",
                     "type": "bool",
-                    "enabled": "cool_fan_enabled",
                     "default_value": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": false
                 },
                 "blackbelt_belt_wall_enabled":
                 {
@@ -118,26 +126,27 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
-                "blackbelt_repetitions":
+                "blackbelt_z_offset_gap":
                 {
-                    "label": "Copies",
-                    "description": "The number of times the objects on the build plate are printed. Note that the repetitions will not be visible in Layer View.",
-                    "type": "int",
-                    "minimum_value": "1",
-                    "default_value": 1,
+                    "label": "Belt Offset",
+                    "description": "The distance between the part and the conveyor belt. Adjust the gap to the belt to control adhesion between the print and the belt. Smaller gap means more adhesion, a bigger gap means less adhesion.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.2,
+                    "minimum_value": "0",
+                    "maximum_value": "5",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "blackbelt_repetitions_distance":
+                "blackbelt_secondary_fans_enabled":
                 {
-                    "label": "Distance Between Copies",
-                    "description": "The distance the belt moves between repetitions.",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "default_value": 300,
-                    "enabled": "blackbelt_repetitions > 1",
+                    "label": "Enable Secondary Print Fans",
+                    "description": "Enables the secondary print cooling fans while printing. The secondary fans are set to the same speed as the primary cooling fan.",
+                    "type": "bool",
+                    "enabled": "cool_fan_enabled",
+                    "default_value": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -264,7 +273,10 @@
         },
         "adhesion_type": {
             "enabled": false,
-            "value": "'none'"
+            "value": "'raft' if blackbelt_raft else 'none'"
+        },
+        "raft_margin": {
+            "default_value": 0
         },
         "z_offset_layer_0": {
             "enabled": false
