@@ -368,7 +368,7 @@ class StartSliceJob(Job):
 
             vertical_offset = 0
             if stack.getProperty("blackbelt_raft", "value"):
-                vertical_offset = extruder_stack.getProperty("raft_surface_layers", "value") * extruder_stack.getProperty("raft_surface_thickness", "value")
+                vertical_offset = extruder_stack.getProperty("raft_base_thickness", "value")
                 extra_vertical_offset = extruder_stack.getProperty("raft_airgap", "value")
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")

@@ -87,6 +87,64 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "blackbelt_raft_thickness":
+                {
+                    "label": "Raft Thickness",
+                    "description": "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.3,
+                    "value": "resolveOrValue('layer_height_0') * 1.2",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.04",
+                    "maximum_value_warning": "0.75 * raft_base_line_width",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_gap":
+                {
+                    "label": "Raft Air Gap",
+                    "description": "The gap between the raft and the bottom wall of the model. Makes it easier to peel off the raft.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.3,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "min(extruderValues('machine_nozzle_size'))",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_speed":
+                {
+                    "label": "Raft Speed",
+                    "description": "The speed at which the raft is printed. Printing the raft at a lower speed improves adhesion.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "minimum_value": "0.1",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "150",
+                    "default_value": 30,
+                    "value": "speed_wall_0 * 0.6",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_flow":
+                {
+                    "label": "Raft Flow",
+                    "description": "The extrusion multiplier for the raft.",
+                    "type": "float",
+                    "unit": "%",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "default_value": 100,
+                    "value": "material_flow",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "blackbelt_belt_wall_enabled":
                 {
                     "label": "Adjust Belt Wall",
@@ -276,8 +334,129 @@
             "value": "'raft' if blackbelt_raft else 'none'"
         },
         "raft_margin": {
-            "default_value": 0
+            "default_value": 0,
+            "enabled": false
         },
+        "raft_surface_layers": {
+            "default_value": 0,
+            "enabled": false
+        },
+        "layer_0_z_overlap": {
+            "default_value": 0,
+            "enabled": false
+        },
+        "raft_base_thickness":
+        {
+            "value": "blackbelt_raft_thickness",
+            "enabled": false
+        },
+        "raft_airgap":
+        {
+            "value": "blackbelt_raft_gap",
+            "enabled": false
+        },
+
+        "raft_smoothing":
+        {
+            "enabled": false
+        },
+        "raft_surface_thickness":
+        {
+            "enabled": false
+        },
+        "raft_surface_line_width":
+        {
+            "enabled": false
+        },
+        "raft_surface_line_spacing":
+        {
+            "enabled": false
+        },
+        "raft_interface_thickness":
+        {
+            "enabled": false
+        },
+        "raft_interface_line_width":
+        {
+            "enabled": false
+        },
+        "raft_interface_line_spacing":
+        {
+            "enabled": false
+        },
+        "raft_base_line_width":
+        {
+            "enabled": false
+        },
+        "raft_base_line_spacing":
+        {
+            "enabled": false
+        },
+        "raft_speed":
+        {
+            "enabled": false
+        },
+        "raft_surface_speed":
+        {
+            "enabled": false
+        },
+        "raft_interface_speed":
+        {
+            "enabled": false
+        },
+        "raft_base_speed":
+        {
+            "enabled": false
+        },
+        "raft_acceleration":
+        {
+            "enabled": false
+        },
+        "raft_surface_acceleration":
+        {
+            "enabled": false
+        },
+        "raft_interface_acceleration":
+        {
+            "enabled": false
+        },
+        "raft_base_acceleration":
+        {
+            "enabled": false
+        },
+        "raft_jerk":
+        {
+            "enabled": false
+        },
+        "raft_surface_jerk":
+        {
+            "enabled": false
+        },
+        "raft_interface_jerk":
+        {
+            "enabled": false
+        },
+        "raft_base_jerk":
+        {
+            "enabled": false
+        },
+        "raft_fan_speed":
+        {
+            "enabled": false
+        },
+        "raft_surface_fan_speed":
+        {
+            "enabled": false
+        },
+        "raft_interface_fan_speed":
+        {
+            "enabled": false
+        },
+        "raft_base_fan_speed":
+        {
+            "enabled": false
+        },
+
         "z_offset_layer_0": {
             "enabled": false
         },
