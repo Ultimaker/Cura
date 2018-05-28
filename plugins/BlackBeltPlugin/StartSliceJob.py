@@ -366,10 +366,14 @@ class StartSliceJob(Job):
             transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
             front_offset = None
 
-            vertical_offset = 0
+            raft_thickness = 0
+            raft_gap = 0
+            hull_scale = 1.0
             if stack.getProperty("blackbelt_raft", "value"):
-                vertical_offset = extruder_stack.getProperty("raft_base_thickness", "value")
-                extra_vertical_offset = extruder_stack.getProperty("raft_airgap", "value")
+                raft_thickness = extruder_stack.getProperty("blackbelt_raft_thickness", "value")
+                raft_gap = extruder_stack.getProperty("blackbelt_raft_gap", "value")
+                hull_scale = raft_thickness / (raft_thickness + raft_gap)
+
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
@@ -380,12 +384,14 @@ class StartSliceJob(Job):
                     translate = object.getWorldTransformation().getData()[:3, 3]
                     # offset all objects if rafts are enabled, or they end up under the belt
                     # air gap is applied here to vertically offset objects from the raft
-                    translate[1] = translate[1] + vertical_offset
+                    translate[1] = translate[1] + raft_thickness
                     if type(object) is not ConvexHullNode:
-                        translate[1] = translate[1] + extra_vertical_offset
+                        translate[1] = translate[1] + raft_gap - (raft_gap / 2)
 
                     # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                     verts = mesh_data.getVertices()
+                    if type(object) is ConvexHullNode:
+                        verts = verts * numpy.array([1, hull_scale, 1], numpy.float32)
                     verts = verts.dot(rot_scale)
                     verts += translate
 
