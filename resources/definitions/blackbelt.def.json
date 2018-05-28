@@ -151,6 +151,7 @@
                     "description": "Adjust settings for the wall touching the belt.",
                     "type": "bool",
                     "default_value": false,
+                    "enabled": "not blackbelt_raft",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
@@ -165,7 +166,7 @@
                     "maximum_value_warning": "150",
                     "default_value": 30,
                     "value": "speed_wall_0 * 0.6",
-                    "enabled": "blackbelt_belt_wall_enabled",
+                    "enabled": "blackbelt_belt_wall_enabled and not blackbelt_raft",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
@@ -180,7 +181,7 @@
                     "maximum_value_warning": "150",
                     "default_value": 100,
                     "value": "material_flow",
-                    "enabled": "blackbelt_belt_wall_enabled",
+                    "enabled": "blackbelt_belt_wall_enabled and not blackbelt_raft",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },

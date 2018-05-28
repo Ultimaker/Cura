@@ -302,8 +302,9 @@ class StartSliceJob(Job):
                             extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
                 self._buildExtruderMessage(extruder_stack)
 
+            raft_enabled = stack.getProperty("blackbelt_raft", "value")
             belt_layer_mesh_data = {}
-            if gantry_angle: # not 0 or None
+            if gantry_angle and not raft_enabled: # not 0 or None
                 # Add a modifier mesh to all printable meshes touching the belt
                 for group in filtered_object_groups:
                     added_meshes = []
@@ -372,7 +373,7 @@ class StartSliceJob(Job):
             raft_speed = None
             raft_flow = 1.0
 
-            if stack.getProperty("blackbelt_raft", "value"):
+            if raft_enabled:
                 raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
                 raft_gap = stack.getProperty("blackbelt_raft_gap", "value")
                 hull_scale = raft_thickness / (raft_thickness + raft_gap)
