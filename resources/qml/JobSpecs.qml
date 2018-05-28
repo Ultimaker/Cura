@@ -81,7 +81,7 @@ Item {
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
                 onTextChanged: {
-                    PrintInformation.setJobName(text);
+                    PrintInformation.setJobName(text, true);
                 }
                 onEditingFinished: {
                     if (printJobTextfield.text != ''){
