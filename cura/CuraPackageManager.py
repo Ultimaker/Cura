@@ -89,7 +89,6 @@ class CuraPackageManager(QObject):
                              "installed": self._installed_package_dict,
                              "to_remove": list(self._to_remove_package_set),
                              "to_install": self._to_install_package_dict}
-                data_dict["to_remove"] = list(data_dict["to_remove"])
                 json.dump(data_dict, f, sort_keys = True, indent = 4)
                 Logger.log("i", "Package management file %s was saved", self._user_package_management_file_path)
 
@@ -103,7 +102,6 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Installs all packages that have been scheduled to be installed.
     def _installAllScheduledPackages(self) -> None:
-
         while self._to_install_package_dict:
             package_id, package_info = list(self._to_install_package_dict.items())[0]
             self._installPackage(package_info)
