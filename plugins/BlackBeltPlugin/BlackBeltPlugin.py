@@ -119,8 +119,10 @@ class BlackBeltPlugin(Extension):
 
             # HACK: Move blackbelt_settings to the top of the list of settings
             definition_container = self._global_container_stack.getBottom()
-            if definition_container._definitions[len(definition_container._definitions) -1].key == "blackbelt_settings":
-                definition_container._definitions.insert(0, definition_container._definitions.pop(len(definition_container._definitions) -1))
+            if definition_container._definitions[0].key != "blackbelt_settings":
+                for index, definition in enumerate(definition_container._definitions):
+                    if definition.key == "blackbelt_settings":
+                        definition_container._definitions.insert(0, definition_container._definitions.pop(index))
 
             # HOTFIXES for Blackbelt stacks
             if definition_container.getId() == "blackbelt" and self._application._machine_manager:
