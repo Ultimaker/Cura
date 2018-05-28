@@ -21,7 +21,7 @@ def getMetaData():
             },
             "quality_changes": {
                 "get_version": upgrade.getCfgVersion,
-                "location": {"./quality"}
+                "location": {"./quality_changes"}
             },
             "user": {
                 "get_version": upgrade.getCfgVersion,
