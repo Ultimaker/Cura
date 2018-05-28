@@ -369,10 +369,16 @@ class StartSliceJob(Job):
             raft_thickness = 0
             raft_gap = 0
             hull_scale = 1.0
+            raft_speed = None
+            raft_flow = 1.0
+
             if stack.getProperty("blackbelt_raft", "value"):
-                raft_thickness = extruder_stack.getProperty("blackbelt_raft_thickness", "value")
-                raft_gap = extruder_stack.getProperty("blackbelt_raft_gap", "value")
+                raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
+                raft_gap = stack.getProperty("blackbelt_raft_gap", "value")
                 hull_scale = raft_thickness / (raft_thickness + raft_gap)
+                raft_speed = stack.getProperty("blackbelt_raft_speed", "value")
+                if gantry_angle:
+                    raft_flow = stack.getProperty("blackbelt_raft_flow", "value") * math.sin(gantry_angle)
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -422,6 +428,17 @@ class StartSliceJob(Job):
                         flat_verts = numpy.array(verts)
 
                     obj.vertices = flat_verts
+
+                    if type(object) is ConvexHullNode:
+                        for (key, value) in {
+                            "wall_line_count": 99999999,
+                            "speed_wall_0": raft_speed,
+                            "speed_wall_x": raft_speed,
+                            "material_flow": raft_flow
+                        }.items():
+                            setting = obj.addRepeatedMessage("settings")
+                            setting.name = key
+                            setting.value = str(value).encode("utf-8")
 
                     if object.getName() in belt_layer_mesh_data:
                         data = belt_layer_mesh_data[object.getName()]
