@@ -75,9 +75,19 @@ class FirmwareUpdateCheckerJob(Job):
                         machine_name=machine_name),
                         title=i18n_catalog.i18nc(
                                           "@info:title The %s gets replaced with the printer name.",
-                                          "New %s firmware available") % machine_name,
-                        footer = footer_message)
+                                          "New %s firmware available") % machine_name)
 
+                    message.addAction("download",
+                                      i18n_catalog.i18nc("@action:button", "How to update"),
+                                      "[no_icon]",
+                                      "[no_description]",
+                                      button_style=Message.ActionButtonStyle.LINK,
+                                      button_align=Message.ActionButtonStyle.BUTTON_ALIGN_LEFT)
+
+
+                    # If we do this in a cool way, the download url should be available in the JSON file
+                    if self._set_download_url_callback:
+                        self._set_download_url_callback("https://ultimaker.com/en/resources/20500-upgrade-firmware")
                     message.actionTriggered.connect(self._callback)
                     message.show()
 
