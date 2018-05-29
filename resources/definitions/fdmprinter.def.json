@@ -5772,16 +5772,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "cross_infill_apply_pockets_alternatingly":
-                {
-                    "label": "Alternate Cross 3D Pockets",
-                    "description": "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "infill_pattern == 'cross_3d'",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "cross_infill_density_image":
                 {
                     "label": "Cross Infill Density Image",
