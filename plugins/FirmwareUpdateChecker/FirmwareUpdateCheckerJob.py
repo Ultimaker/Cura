@@ -64,11 +64,6 @@ class FirmwareUpdateCheckerJob(Job):
                 if (checked_version != "") and (checked_version != current_version):
                     Logger.log("i", "SHOWING FIRMWARE UPDATE MESSAGE")
 
-                    footer_text = i18n_catalog.i18nc("@action:info", "Read more on how to update printer firmware")
-                    footer_link = "?url=https://ultimaker.com/en/resources/23129-updating-the-firmware?utm_source=cura&utm_medium=software&utm_campaign=hw-update"
-
-                    footer_message = footer_text + " " + footer_link
-
                     message = Message(i18n_catalog.i18nc(
                         "@info Don't translate {machine_name}, since it gets replaced by a printer name!",
                         "New features are available for your {machine_name}! It is recommended to update the firmware on your printer.").format(
