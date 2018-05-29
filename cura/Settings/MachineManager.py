@@ -1331,6 +1331,10 @@ class MachineManager(QObject):
             self._setMaterial(position, container_node)
             self._updateQualityWithMaterial()
 
+        # See if we need to show the Discard or Keep changes screen
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            self._application.discardOrKeepProfileChanges()
+
     @pyqtSlot(str, str)
     def setVariantByName(self, position: str, variant_name: str) -> None:
         machine_definition_id = self._global_container_stack.definition.id
