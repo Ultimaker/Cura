@@ -80,10 +80,8 @@ Item {
                 property int unremovableSpacing: 5
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
-                onTextChanged: {
-                    PrintInformation.setJobName(text, true);
-                }
                 onEditingFinished: {
+                    PrintInformation.setJobName(text, true);
                     if (printJobTextfield.text != ''){
                         printJobTextfield.focus = false;
                     }
