@@ -1032,6 +1032,10 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _setQualityGroup(self, quality_group, empty_quality_changes: bool = True) -> None:
+        if quality_group is None:
+            self._setEmptyQuality()
+            return
+
         if quality_group.node_for_global.getContainer() is None:
             return
         for node in quality_group.nodes_for_extruders.values():
@@ -1041,10 +1045,6 @@ class MachineManager(QObject):
         self._current_quality_group = quality_group
         if empty_quality_changes:
             self._current_quality_changes_group = None
-
-        if quality_group is None:
-            self._setEmptyQuality()
-            return
 
         # Set quality and quality_changes for the GlobalStack
         self._global_container_stack.quality = quality_group.node_for_global.getContainer()
