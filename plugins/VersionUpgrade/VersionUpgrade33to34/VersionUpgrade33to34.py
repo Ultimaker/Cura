@@ -41,12 +41,16 @@ class VersionUpgrade33to34(VersionUpgrade):
         # Update version number.
         parser["general"]["version"] = "4"
 
-        #Renamed settings.
         if "values" in parser:
+            #If infill_hollow was enabled and the overhang angle was adjusted, copy that overhang angle to the new infill support angle.
+            if "infill_hollow" in parser["values"] and parser["values"]["infill_hollow"] and "support_angle" in parser["values"]:
+                parser["values"]["infill_support_angle"] = parser["values"]["support_angle"]
+
+            #Renamed settings.
             for original, replacement in _renamed_settings.items():
-                if original in parser["value"]:
-                    parser["value"][replacement] = parser["value"][original]
-                    del parser["value"][original]
+                if original in parser["values"]:
+                    parser["values"][replacement] = parser["values"][original]
+                    del parser["values"][original]
 
         result = io.StringIO()
         parser.write(result)
