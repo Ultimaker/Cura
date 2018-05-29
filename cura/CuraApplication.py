@@ -1500,11 +1500,15 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        mesh_data = job.getResult()[0].getMeshData()
-        if mesh_data:
-            job._node.setMeshData(mesh_data)
-        else:
+        job_result = job.getResult()
+        if len(job_result) == 0:
+            Logger.log("e", "Reloading the mesh failed.")
+            return
+        mesh_data = job_result[0].getMeshData()
+        if not mesh_data:
             Logger.log("w", "Could not find a mesh in reloaded node.")
+            return
+        job._node.setMeshData(mesh_data)
 
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
