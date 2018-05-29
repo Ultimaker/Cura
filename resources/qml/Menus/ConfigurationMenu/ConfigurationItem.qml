@@ -92,6 +92,7 @@ Rectangle
                 anchors.verticalCenter: buildplateIcon.verticalCenter
                 anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").height / 2)
                 text: configuration.buildplateConfiguration
+                renderType: Text.NativeRendering
                 color: textColor
             }
         }
