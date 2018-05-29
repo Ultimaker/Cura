@@ -6,6 +6,9 @@ import io #To serialise the preference files afterwards.
 
 from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
 
+_renamed_settings = {
+    "infill_hollow": "infill_support_enabled"
+}
 
 ##  Upgrades configurations from the state they were in at version 3.3 to the
 #   state they should be in at version 3.4.
@@ -37,6 +40,13 @@ class VersionUpgrade33to34(VersionUpgrade):
 
         # Update version number.
         parser["general"]["version"] = "4"
+
+        #Renamed settings.
+        if "values" in parser:
+            for original, replacement in _renamed_settings.items():
+                if original in parser["value"]:
+                    parser["value"][replacement] = parser["value"][original]
+                    del parser["value"][original]
 
         result = io.StringIO()
         parser.write(result)
