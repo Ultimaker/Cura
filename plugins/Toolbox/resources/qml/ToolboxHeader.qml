@@ -33,6 +33,8 @@ Item
                 toolbox.viewPage = "overview"
             }
         }
+
+        /* Hide for 3.4
         ToolboxTabButton
         {
             text: catalog.i18nc("@title:tab", "Materials")
@@ -45,6 +47,7 @@ Item
                 toolbox.viewPage = "overview"
             }
         }
+        */
     }
     ToolboxTabButton
     {
