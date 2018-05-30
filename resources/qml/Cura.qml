@@ -338,7 +338,7 @@ UM.MainWindow
                             }
                             else
                             {
-                                others.push(filename);
+                                nonPackages.push(filename);
                             }
                         }
                         openDialog.handleOpenFileUrls(nonPackages);
