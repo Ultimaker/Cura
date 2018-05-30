@@ -1350,6 +1350,10 @@ class MachineManager(QObject):
             self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
 
+        # See if we need to show the Discard or Keep changes screen
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            self._application.discardOrKeepProfileChanges()
+
     @pyqtSlot(str)
     def setQualityGroupByQualityType(self, quality_type: str) -> None:
         if self._global_container_stack is None:

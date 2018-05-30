@@ -46,10 +46,11 @@ class SliceInfo(QObject, Extension):
                                                    dismissable = False,
                                                    title = catalog.i18nc("@info:title", "Collecting Data"))
 
-            self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
-                    description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
             self.send_slice_info_message.addAction("MoreInfo", name = catalog.i18nc("@action:button", "More info"), icon = None,
                     description = catalog.i18nc("@action:tooltip", "See more information on what data Cura sends."), button_style = Message.ActionButtonStyle.LINK)
+
+            self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
+                    description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 
