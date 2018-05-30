@@ -20,6 +20,8 @@ endif()
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
 set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
 set(CURA_PACKAGES_VERSION "" CACHE STRING "Packages version of Cura")
+set(CURA_CLOUD_API_ROOT "" CACHE STRING "Alternative cloud API root of Cura")
+
 configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desktop @ONLY)
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
