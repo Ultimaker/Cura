@@ -6678,14 +6678,6 @@
                     "type": "float",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
-                },
-                "wall_try_line_thickness":
-                {
-                    "label": "Try Multiple Line Thicknesses",
-                    "description": "When creating inner walls, try various line thicknesses to fit the wall lines better in narrow spaces. This reduces or increases the inner wall line width by up to 0.01mm.",
-                    "default_value": false,
-                    "type": "bool",
-                    "settable_per_mesh": true
                 }
             }
         },
