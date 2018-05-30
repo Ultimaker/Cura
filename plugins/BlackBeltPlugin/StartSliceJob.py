@@ -304,7 +304,9 @@ class StartSliceJob(Job):
 
             raft_enabled = stack.getProperty("blackbelt_raft", "value")
             belt_layer_mesh_data = {}
-            if gantry_angle and not raft_enabled: # not 0 or None
+            bottom_cutting_meshes = []
+            nodes_to_be_removed = []
+            if gantry_angle: # not 0 or None
                 # Add a modifier mesh to all printable meshes touching the belt
                 for group in filtered_object_groups:
                     added_meshes = []
@@ -322,24 +324,12 @@ class StartSliceJob(Job):
                                 extruder_stack_index = 0
                             extruder_stack = ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId())[int(extruder_stack_index)]
 
-                            belt_wall_enabled = extruder_stack.getProperty("blackbelt_belt_wall_enabled", "value")
-                            belt_wall_speed = extruder_stack.getProperty("blackbelt_belt_wall_speed", "value")
-                            belt_wall_flow = extruder_stack.getProperty("blackbelt_belt_wall_flow", "value")
-                            wall_line_width = extruder_stack.getProperty("wall_line_width_0", "value")
-
-                            if per_object_stack:
-                                belt_wall_enabled = per_object_stack.getProperty("blackbelt_belt_wall_enabled", "value")
-                                belt_wall_speed = per_object_stack.getProperty("blackbelt_belt_wall_speed", "value")
-                                belt_wall_flow = per_object_stack.getProperty("blackbelt_belt_wall_flow", "value")
-                                wall_line_width = per_object_stack.getProperty("wall_line_width_0", "value")
-
-                            if not belt_wall_enabled:
-                                continue
-
                             aabb = object.getBoundingBox()
-                            if aabb.bottom <= 0:
-                                height = wall_line_width * math.sin(gantry_angle)
-                                center = Vector(aabb.center.x, height/2, aabb.center.z)
+
+                            if aabb.bottom < 0:
+                                # mesh extends below the belt; add a cutting mesh to cut off the part below the bottom
+                                height = -aabb.bottom
+                                center = Vector(aabb.center.x, -height/2, aabb.center.z)
 
                                 mb = MeshBuilder()
 
@@ -352,15 +342,52 @@ class StartSliceJob(Job):
 
                                 new_node = CuraSceneNode(parent = self._scene.getRoot())
                                 new_node.setMeshData(mb.build())
-                                node_name = "beltLayerModifierMesh" + hex(id(new_node))
+                                node_name = "bottomCuttingMesh" + hex(id(new_node))
                                 new_node.setName(node_name)
-                                belt_layer_mesh_data[node_name] = {
-                                    "blackbelt_belt_wall_speed": belt_wall_speed,
-                                    "blackbelt_belt_wall_flow" : belt_wall_flow * math.sin(gantry_angle)
-                                }
 
                                 # Note: adding a SettingOverrideDecorator here causes a slicing loop
                                 added_meshes.append(new_node)
+                                bottom_cutting_meshes.append(node_name)
+                                nodes_to_be_removed.append(new_node)
+
+                            belt_wall_enabled = extruder_stack.getProperty("blackbelt_belt_wall_enabled", "value")
+                            belt_wall_speed = extruder_stack.getProperty("blackbelt_belt_wall_speed", "value")
+                            belt_wall_flow = extruder_stack.getProperty("blackbelt_belt_wall_flow", "value")
+                            wall_line_width = extruder_stack.getProperty("wall_line_width_0", "value")
+
+                            if per_object_stack:
+                                belt_wall_enabled = per_object_stack.getProperty("blackbelt_belt_wall_enabled", "value")
+                                belt_wall_speed = per_object_stack.getProperty("blackbelt_belt_wall_speed", "value")
+                                belt_wall_flow = per_object_stack.getProperty("blackbelt_belt_wall_flow", "value")
+                                wall_line_width = per_object_stack.getProperty("wall_line_width_0", "value")
+
+                            if belt_wall_enabled and not raft_enabled:
+                                # add a thin cutting mesh to influence the walls touching the belt
+                                if aabb.bottom <= 0:
+                                    height = wall_line_width * math.sin(gantry_angle)
+                                    center = Vector(aabb.center.x, height/2, aabb.center.z)
+
+                                    mb = MeshBuilder()
+
+                                    mb.addCube(
+                                        width = aabb.width,
+                                        height = height,
+                                        depth = aabb.depth,
+                                        center = center
+                                    )
+
+                                    new_node = CuraSceneNode(parent = self._scene.getRoot())
+                                    new_node.setMeshData(mb.build())
+                                    node_name = "beltLayerModifierMesh" + hex(id(new_node))
+                                    new_node.setName(node_name)
+                                    belt_layer_mesh_data[node_name] = {
+                                        "blackbelt_belt_wall_speed": belt_wall_speed,
+                                        "blackbelt_belt_wall_flow" : belt_wall_flow * math.sin(gantry_angle)
+                                    }
+
+                                    # Note: adding a SettingOverrideDecorator here causes a slicing loop
+                                    added_meshes.append(new_node)
+                                    nodes_to_be_removed.append(new_node)
                     if added_meshes:
                         group += added_meshes
 
@@ -441,10 +468,26 @@ class StartSliceJob(Job):
                             setting.name = key
                             setting.value = str(value).encode("utf-8")
 
-                    if object.getName() in belt_layer_mesh_data:
-                        data = belt_layer_mesh_data[object.getName()]
+                            Job.yieldThread()
+
+                    elif object.getName() in bottom_cutting_meshes:
                         for (key, value) in {
-                            "cutting_mesh": "True",
+                            "cutting_mesh": True,
+                            "wall_line_count": 0,
+                            "top_layers": 0,
+                            "bottom_layers": 0,
+                            "infill_line_distance": 0
+                        }.items():
+                            setting = obj.addRepeatedMessage("settings")
+                            setting.name = key
+                            setting.value = str(value).encode("utf-8")
+                            Job.yieldThread()
+
+                    elif object.getName() in belt_layer_mesh_data:
+                        data = belt_layer_mesh_data[object.getName()]
+
+                        for (key, value) in {
+                            "cutting_mesh": True,
                             "wall_line_count": 1,
                             "magic_mesh_surface_mode": "normal",
                             "speed_wall_0": data["blackbelt_belt_wall_speed"],
@@ -454,15 +497,19 @@ class StartSliceJob(Job):
                             setting = obj.addRepeatedMessage("settings")
                             setting.name = key
                             setting.value = str(value).encode("utf-8")
+                            Job.yieldThread()
 
-                    self._handlePerObjectSettings(object, obj)
-
-                    Job.yieldThread()
+                    else:
+                        self._handlePerObjectSettings(object, obj)
+                        Job.yieldThread()
 
                 # Store the front-most coordinate of the scene so the scene can be moved back into place post slicing
                 # TODO: this should be handled per mesh-group instead of per scene
                 # One-at-a-time printing should be disabled for slanted gantry printers for now
                 self._scene.getRoot().callDecoration("setSceneFrontOffset", front_offset)
+
+            for node in nodes_to_be_removed:
+                self._scene.getRoot().removeChild(node)
 
         self.setResult(StartJobResult.Finished)
 
