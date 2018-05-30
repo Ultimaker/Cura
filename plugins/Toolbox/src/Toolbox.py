@@ -175,6 +175,8 @@ class Toolbox(QObject, Extension):
             return self.DEFAULT_CLOUD_API_ROOT
         if not hasattr(cura.CuraVersion, "CuraCloudAPIRoot"):
             return self.DEFAULT_CLOUD_API_ROOT
+        if not cura.CuraVersion.CuraCloudAPIRoot:
+            return self.DEFAULT_CLOUD_API_ROOT
         return cura.CuraVersion.CuraCloudAPIRoot
 
     # Get the cloud API version from CuraVersion
@@ -183,6 +185,8 @@ class Toolbox(QObject, Extension):
             return self.DEFAULT_CLOUD_API_VERSION
         if not hasattr(cura.CuraVersion, "CuraCloudAPIVersion"):
             return self.DEFAULT_CLOUD_API_VERSION
+        if not cura.CuraVersion.CuraCloudAPIVersion:
+            return self.DEFAULT_CLOUD_API_VERSION
         return cura.CuraVersion.CuraCloudAPIVersion
 
     # Get the packages version depending on Cura version settings.
@@ -190,6 +194,8 @@ class Toolbox(QObject, Extension):
         if not hasattr(cura, "CuraVersion"):
             return self._plugin_registry.APIVersion
         if not hasattr(cura.CuraVersion, "CuraSDKVersion"):
+            return self._plugin_registry.APIVersion
+        if not cura.CuraVersion.CuraSDKVersion:
             return self._plugin_registry.APIVersion
         return cura.CuraVersion.CuraSDKVersion
 
