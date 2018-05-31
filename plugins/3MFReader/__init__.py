@@ -42,7 +42,7 @@ def getMetaData() -> Dict:
 
 def register(app):
     if "3MFReader.ThreeMFReader" in sys.modules:
-        return {"mesh_reader": ThreeMFReader.ThreeMFReader(),
+        return {"mesh_reader": ThreeMFReader.ThreeMFReader(app),
                 "workspace_reader": ThreeMFWorkspaceReader.ThreeMFWorkspaceReader()}
     else:
         return {}

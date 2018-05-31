@@ -3,21 +3,20 @@
 
 from PyQt5.QtCore import QTimer
 
-from UM.Preferences import Preferences
 from UM.Logger import Logger
 
 
 class AutoSave:
     def __init__(self, application):
         self._application = application
-        Preferences.getInstance().preferenceChanged.connect(self._triggerTimer)
+        self._application.getPreferences().preferenceChanged.connect(self._triggerTimer)
 
         self._global_stack = None
 
-        Preferences.getInstance().addPreference("cura/autosave_delay", 1000 * 10)
+        self._application.getPreferences().addPreference("cura/autosave_delay", 1000 * 10)
 
         self._change_timer = QTimer()
-        self._change_timer.setInterval(Preferences.getInstance().getValue("cura/autosave_delay"))
+        self._change_timer.setInterval(self._application.getPreferences().getValue("cura/autosave_delay"))
         self._change_timer.setSingleShot(True)
 
         self._saving = False
