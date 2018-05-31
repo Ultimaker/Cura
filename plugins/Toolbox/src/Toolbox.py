@@ -28,7 +28,8 @@ i18n_catalog = i18nCatalog("cura")
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
 
-    DEFAULT_PACKAGES_API_ROOT = "https://api.ultimaker.com"
+    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"
+    DEFAULT_CLOUD_API_VERSION = 1
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -36,14 +37,11 @@ class Toolbox(QObject, Extension):
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
-        self._packages_api_root = self._getPackagesApiRoot()
-        self._packages_version = self._getPackagesVersion()
-        self._api_version = 1
-        self._api_url = "{api_root}/cura-packages/v{api_version}/cura/v{package_version}".format(
-            api_root = self._packages_api_root,
-            api_version = self._api_version,
-            package_version = self._packages_version
-        )
+
+        self._sdk_version = None
+        self._cloud_api_version = None
+        self._cloud_api_root = None
+        self._api_url = None
 
         # Network:
         self._get_packages_request = None
@@ -64,12 +62,7 @@ class Toolbox(QObject, Extension):
                 )
             )
         ]
-        self._request_urls = {
-            "authors":            QUrl("{base_url}/authors".format(base_url = self._api_url)),
-            "packages":           QUrl("{base_url}/packages".format(base_url = self._api_url)),
-            "plugins_showcase":   QUrl("{base_url}/showcase".format(base_url = self._api_url)),
-            "materials_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url))
-        }
+        self._request_urls = {}
         self._to_update = []  # Package_ids that are waiting to be updated
 
         # Data:
@@ -161,22 +154,50 @@ class Toolbox(QObject, Extension):
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
         self._package_manager = Application.getInstance().getCuraPackageManager()
+        self._sdk_version = self._getSDKVersion()
+        self._cloud_api_version = self._getCloudAPIVersion()
+        self._cloud_api_root = self._getCloudAPIRoot()
+        self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
+            cloud_api_root=self._cloud_api_root,
+            cloud_api_version=self._cloud_api_version,
+            sdk_version=self._sdk_version
+        )
+        self._request_urls = {
+            "authors": QUrl("{base_url}/authors".format(base_url=self._api_url)),
+            "packages": QUrl("{base_url}/packages".format(base_url=self._api_url)),
+            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
+            "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url))
+        }
 
     # Get the API root for the packages API depending on Cura version settings.
-    def _getPackagesApiRoot(self) -> str:
+    def _getCloudAPIRoot(self) -> str:
         if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_PACKAGES_API_ROOT
-        if not hasattr(cura.CuraVersion, "CuraPackagesApiRoot"):
-            return self.DEFAULT_PACKAGES_API_ROOT
-        return cura.CuraVersion.CuraPackagesApiRoot
+            return self.DEFAULT_CLOUD_API_ROOT
+        if not hasattr(cura.CuraVersion, "CuraCloudAPIRoot"):
+            return self.DEFAULT_CLOUD_API_ROOT
+        if not cura.CuraVersion.CuraCloudAPIRoot:
+            return self.DEFAULT_CLOUD_API_ROOT
+        return cura.CuraVersion.CuraCloudAPIRoot
+
+    # Get the cloud API version from CuraVersion
+    def _getCloudAPIVersion(self) -> int:
+        if not hasattr(cura, "CuraVersion"):
+            return self.DEFAULT_CLOUD_API_VERSION
+        if not hasattr(cura.CuraVersion, "CuraCloudAPIVersion"):
+            return self.DEFAULT_CLOUD_API_VERSION
+        if not cura.CuraVersion.CuraCloudAPIVersion:
+            return self.DEFAULT_CLOUD_API_VERSION
+        return cura.CuraVersion.CuraCloudAPIVersion
 
     # Get the packages version depending on Cura version settings.
-    def _getPackagesVersion(self) -> int:
+    def _getSDKVersion(self) -> int:
         if not hasattr(cura, "CuraVersion"):
             return self._plugin_registry.APIVersion
-        if not hasattr(cura.CuraVersion, "CuraPackagesVersion"):
+        if not hasattr(cura.CuraVersion, "CuraSDKVersion"):
             return self._plugin_registry.APIVersion
-        return cura.CuraVersion.CuraPackagesVersion
+        if not cura.CuraVersion.CuraSDKVersion:
+            return self._plugin_registry.APIVersion
+        return cura.CuraVersion.CuraSDKVersion
 
     @pyqtSlot()
     def browsePackages(self) -> None:
@@ -383,7 +404,10 @@ class Toolbox(QObject, Extension):
 
     def resetDownload(self) -> None:
         if self._download_reply:
-            self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            try:
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            except TypeError: #Raised when the method is not connected to the signal yet.
+                pass #Don't need to disconnect.
             self._download_reply.abort()
         self._download_reply = None
         self._download_request = None

@@ -1274,6 +1274,29 @@
                             "value": "travel_compensate_overlapping_walls_enabled",
                             "limit_to_extruder": "wall_x_extruder_nr",
                             "settable_per_mesh": true
+                        },
+                        "wall_min_flow":
+                        {
+                            "label": "Minimum Wall Flow",
+                            "description": "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls.",
+                            "unit": "%",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "default_value": 0,
+                            "type": "float",
+                            "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "wall_min_flow_retract":
+                        {
+                            "label": "Prefer Retract",
+                            "description": "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold.",
+                            "type": "bool",
+                            "default_value": false,
+                            "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -1804,6 +1827,30 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_support_enabled":
+                {
+                    "label": "Infill Support",
+                    "description": "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_support_angle":
+                {
+                    "label": "Infill Overhang Angle",
+                    "description": "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 40,
+                    "enabled": "infill_sparse_density > 0 and infill_support_enabled",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -5772,16 +5819,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "cross_infill_apply_pockets_alternatingly":
-                {
-                    "label": "Alternate Cross 3D Pockets",
-                    "description": "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "infill_pattern == 'cross_3d'",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "cross_infill_density_image":
                 {
                     "label": "Cross Infill Density Image",
@@ -5798,7 +5835,7 @@
                     "description": "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support.",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "enabled": "support_pattern == 'cross' or support_pattern == 'cross_3d'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -5926,14 +5963,6 @@
                     "type": "float",
                     "enabled": "support_conical_enabled and support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "infill_hollow":
-                {
-                    "label": "Hollow Out Objects",
-                    "description": "Remove all infill and make the inside of the object eligible for support.",
-                    "type": "bool",
-                    "default_value": false,
                     "settable_per_mesh": true
                 },
                 "magic_fuzzy_skin_enabled":
@@ -6671,14 +6700,6 @@
                     "default_value": 0,
                     "type": "float",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "wall_try_line_thickness":
-                {
-                    "label": "Try Multiple Line Thicknesses",
-                    "description": "When creating inner walls, try various line thicknesses to fit the wall lines better in narrow spaces. This reduces or increases the inner wall line width by up to 0.01mm.",
-                    "default_value": false,
-                    "type": "bool",
                     "settable_per_mesh": true
                 }
             }

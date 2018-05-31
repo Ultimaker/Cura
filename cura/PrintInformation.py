@@ -329,6 +329,8 @@ class PrintInformation(QObject):
     baseNameChanged = pyqtSignal()
 
     def setBaseName(self, base_name: str, is_project_file: bool = False):
+        self._is_user_specified_job_name = False
+
         # Ensure that we don't use entire path but only filename
         name = os.path.basename(base_name)
 

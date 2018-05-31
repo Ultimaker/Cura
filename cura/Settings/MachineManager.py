@@ -1031,6 +1031,10 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _setQualityGroup(self, quality_group, empty_quality_changes: bool = True) -> None:
+        if quality_group is None:
+            self._setEmptyQuality()
+            return
+
         if quality_group.node_for_global.getContainer() is None:
             return
         for node in quality_group.nodes_for_extruders.values():
@@ -1040,10 +1044,6 @@ class MachineManager(QObject):
         self._current_quality_group = quality_group
         if empty_quality_changes:
             self._current_quality_changes_group = None
-
-        if quality_group is None:
-            self._setEmptyQuality()
-            return
 
         # Set quality and quality_changes for the GlobalStack
         self._global_container_stack.quality = quality_group.node_for_global.getContainer()
@@ -1330,6 +1330,10 @@ class MachineManager(QObject):
             self._setMaterial(position, container_node)
             self._updateQualityWithMaterial()
 
+        # See if we need to show the Discard or Keep changes screen
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            self._application.discardOrKeepProfileChanges()
+
     @pyqtSlot(str, str)
     def setVariantByName(self, position: str, variant_name: str) -> None:
         machine_definition_id = self._global_container_stack.definition.id
@@ -1344,6 +1348,10 @@ class MachineManager(QObject):
             self._setVariantNode(position, container_node)
             self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
+
+        # See if we need to show the Discard or Keep changes screen
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            self._application.discardOrKeepProfileChanges()
 
     @pyqtSlot(str)
     def setQualityGroupByQualityType(self, quality_type: str) -> None:

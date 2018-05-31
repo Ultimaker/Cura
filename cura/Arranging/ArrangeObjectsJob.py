@@ -43,6 +43,9 @@ class ArrangeObjectsJob(Job):
         nodes_arr = []  # fill with (size, node, offset_shape_arr, hull_shape_arr)
         for node in self._nodes:
             offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = self._min_offset)
+            if offset_shape_arr is None:
+                Logger.log("w", "Node [%s] could not be converted to an array for arranging...", str(node))
+                continue
             nodes_arr.append((offset_shape_arr.arr.shape[0] * offset_shape_arr.arr.shape[1], node, offset_shape_arr, hull_shape_arr))
 
         # Sort the nodes with the biggest area first.
