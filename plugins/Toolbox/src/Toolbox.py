@@ -404,7 +404,10 @@ class Toolbox(QObject, Extension):
 
     def resetDownload(self) -> None:
         if self._download_reply:
-            self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            try:
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            except TypeError: #Raised when the method is not connected to the signal yet.
+                pass #Don't need to disconnect.
             self._download_reply.abort()
         self._download_reply = None
         self._download_request = None
