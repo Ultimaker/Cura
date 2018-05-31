@@ -81,10 +81,9 @@ Item {
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
                 onEditingFinished: {
-                    PrintInformation.setJobName(text, true);
-                    if (printJobTextfield.text != ''){
-                        printJobTextfield.focus = false;
-                    }
+                    text = text == "" ? "unnamed" : text;
+                    PrintInformation.setJobName(printJobTextfield.text, true);
+                    printJobTextfield.focus = false;
                 }
                 validator: RegExpValidator {
                     regExp: /^[^\\ \/ \*\?\|\[\]]*$/
