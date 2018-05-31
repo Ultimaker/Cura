@@ -392,7 +392,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._updatePrintJob(print_job, print_job_data)
 
             if print_job.state != "queued":  # Print job should be assigned to a printer.
-                if print_job.state in ["failed", "finished", "aborted"]:
+                if print_job.state in ["failed", "finished", "aborted", "none"]:
                     # Print job was already completed, so don't attach it to a printer.
                     printer = None
                 else:
