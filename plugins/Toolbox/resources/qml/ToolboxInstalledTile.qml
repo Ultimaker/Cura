@@ -40,9 +40,9 @@ Item
         Column
         {
             id: pluginInfo
-            topPadding: UM.Theme.getSize("default_margin").height / 2
+            topPadding: Math.floor(UM.Theme.getSize("default_margin").height / 2)
             property var color: model.type === "plugin" && !isEnabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("text")
-            width: tileRow.width - (authorInfo.width + pluginActions.width + 2 * tileRow.spacing + ((disableButton.visible) ? disableButton.width + tileRow.spacing : 0))
+            width: Math.floor(tileRow.width - (authorInfo.width + pluginActions.width + 2 * tileRow.spacing + ((disableButton.visible) ? disableButton.width + tileRow.spacing : 0)))
             Label
             {
                 text: model.name
