@@ -1,13 +1,13 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from UM.Logger import Logger
-from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as plugin type
-
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.DefinitionContainer import DefinitionContainer
 
 from PyQt5.QtCore import QObject
+
 from UM.FlameProfiler import pyqtSlot
+from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as plugin type
+from UM.Settings.DefinitionContainer import DefinitionContainer
+
 
 ##  Raised when trying to add an unknown machine action as a required action
 class UnknownMachineActionError(Exception):
@@ -20,23 +20,27 @@ class NotUniqueMachineActionError(Exception):
 
 
 class MachineActionManager(QObject):
-    def __init__(self, parent = None):
+    def __init__(self, application, parent = None):
         super().__init__(parent)
+        self._application = application
 
         self._machine_actions = {}  # Dict of all known machine actions
         self._required_actions = {}  # Dict of all required actions by definition ID
         self._supported_actions = {}  # Dict of all supported actions by definition ID
         self._first_start_actions = {}  # Dict of all actions that need to be done when first added by definition ID
 
+    def initialize(self):
+        container_registry = self._application.getContainerRegistry()
+
         # Add machine_action as plugin type
         PluginRegistry.addType("machine_action", self.addMachineAction)
 
         # Ensure that all containers that were registered before creation of this registry are also handled.
         # This should not have any effect, but it makes it safer if we ever refactor the order of things.
-        for container in ContainerRegistry.getInstance().findDefinitionContainers():
+        for container in container_registry.findDefinitionContainers():
             self._onContainerAdded(container)
 
-        ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+        container_registry.containerAdded.connect(self._onContainerAdded)
 
     def _onContainerAdded(self, container):
         ## Ensure that the actions are added to this manager
