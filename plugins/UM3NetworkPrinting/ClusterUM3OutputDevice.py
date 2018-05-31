@@ -148,6 +148,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def selectPrinter(self, target_printer: str = "") -> None:
         self._sending_job.send(target_printer)
 
+    @pyqtSlot()
+    def cancelPrintSelection(self) -> None:
+        self._sending_gcode = False
+
     ##  Greenlet to send a job to the printer over the network.
     #
     #   This greenlet gets called asynchronously in requestWrite. It is a
