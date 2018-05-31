@@ -247,8 +247,6 @@ class CuraApplication(QtApplication):
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
-        self.initialize()
-
         # FOR TESTING ONLY
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
             assert not "This crash is triggered by the trigger_early_crash command line argument."
