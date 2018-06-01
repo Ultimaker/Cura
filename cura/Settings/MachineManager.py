@@ -3,7 +3,7 @@
 
 import collections
 import time
-from typing import Any, List, Dict, TYPE_CHECKING, Optional
+from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -79,12 +79,12 @@ class MachineManager(QObject):
 
         self._stacks_have_errors = None  # type: Optional[bool]
 
-        self._empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer() #type: InstanceContainer
-        self._empty_definition_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0] #type: InstanceContainer
-        self._empty_variant_container = ContainerRegistry.getInstance().findContainers(id = "empty_variant")[0] #type: InstanceContainer
-        self._empty_material_container = ContainerRegistry.getInstance().findContainers(id = "empty_material")[0] #type: InstanceContainer
-        self._empty_quality_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0] #type: InstanceContainer
-        self._empty_quality_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality_changes")[0] #type: InstanceContainer
+        self._empty_container = CuraContainerRegistry.getInstance().getEmptyInstanceContainer() #type: InstanceContainer
+        self._empty_definition_changes_container = CuraContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0] #type: InstanceContainer
+        self._empty_variant_container = CuraContainerRegistry.getInstance().findContainers(id = "empty_variant")[0] #type: InstanceContainer
+        self._empty_material_container = CuraContainerRegistry.getInstance().findContainers(id = "empty_material")[0] #type: InstanceContainer
+        self._empty_quality_container = CuraContainerRegistry.getInstance().findContainers(id = "empty_quality")[0] #type: InstanceContainer
+        self._empty_quality_changes_container = CuraContainerRegistry.getInstance().findContainers(id = "empty_quality_changes")[0] #type: InstanceContainer
 
         self._onGlobalContainerChanged()
 
@@ -791,10 +791,11 @@ class MachineManager(QObject):
     #   \param machine_id string machine id to get the definition ID of
     #   \returns DefinitionID if found, None otherwise
     @pyqtSlot(str, result = str)
-    def getDefinitionByMachineId(self, machine_id: str) -> str:
+    def getDefinitionByMachineId(self, machine_id: str) -> Optional[str]:
         containers = CuraContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             return containers[0].definition.getId()
+        return None
 
     def getIncompatibleSettingsOnEnabledExtruders(self, container: InstanceContainer) -> List[str]:
         extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
@@ -856,7 +857,7 @@ class MachineManager(QObject):
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
         root_node = self._application.getController().getScene().getRoot()
-        for node in DepthFirstIterator(root_node):
+        for node in DepthFirstIterator(root_node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.getMeshData():
                 extruder_nr = node.callDecoration("getActiveExtruderPosition")
 
@@ -871,7 +872,7 @@ class MachineManager(QObject):
         global_user_container = self._global_container_stack.userChanges
 
         # Make sure extruder_stacks exists
-        extruder_stacks = []
+        extruder_stacks = [] #type: List[ExtruderStack]
 
         if previous_extruder_count == 1:
             extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
