@@ -1,15 +1,12 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
-
-from typing import Any, Optional
-
+from typing import Any, List, Optional
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
-from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
 from UM.Decorators import override
+from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -42,16 +39,16 @@ class CuraContainerStack(ContainerStack):
     def __init__(self, container_id: str):
         super().__init__(container_id)
 
-        self._container_registry = ContainerRegistry.getInstance()
+        self._container_registry = ContainerRegistry.getInstance() #type: ContainerRegistry
 
-        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer()
+        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer() #type: InstanceContainer
 
-        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
-        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
-        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
-        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0]
+        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0] #type: InstanceContainer
+        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0] #type: InstanceContainer
+        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0] #type: InstanceContainer
+        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0] #type: InstanceContainer
 
-        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))]
+        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[ContainerInterface]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
         self._containers[_ContainerIndexes.Quality] = self._empty_quality
         self._containers[_ContainerIndexes.Material] = self._empty_material
@@ -94,7 +91,7 @@ class CuraContainerStack(ContainerStack):
     ##  Set the quality container.
     #
     #   \param new_quality The new quality container. It is expected to have a "type" metadata entry with the value "quality".
-    def setQuality(self, new_quality: InstanceContainer, postpone_emit = False) -> None:
+    def setQuality(self, new_quality: InstanceContainer, postpone_emit: bool = False) -> None:
         self.replaceContainer(_ContainerIndexes.Quality, new_quality, postpone_emit = postpone_emit)
 
     ##  Get the quality container.
@@ -107,7 +104,7 @@ class CuraContainerStack(ContainerStack):
     ##  Set the material container.
     #
     #   \param new_material The new material container. It is expected to have a "type" metadata entry with the value "material".
-    def setMaterial(self, new_material: InstanceContainer, postpone_emit = False) -> None:
+    def setMaterial(self, new_material: InstanceContainer, postpone_emit: bool = False) -> None:
         self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
 
     ##  Get the material container.
