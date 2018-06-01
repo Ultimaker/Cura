@@ -10,7 +10,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QUrl, QCoreApplication
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
 from time import time
 from typing import Any, Callable, Dict, List, Optional
 from enum import IntEnum
@@ -29,7 +29,7 @@ class AuthState(IntEnum):
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
 
-    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent = None) -> None:
+    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent)
         self._manager = None    # type: QNetworkAccessManager
         self._last_manager_create_time = None       # type: float
@@ -69,7 +69,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                 self._printer_type = value
                 break
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: str = None, filter_by_machine: bool = False, file_handler: FileHandler = None, **kwargs: Dict[str, Any]) -> None:
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     def setAuthenticationState(self, authentication_state: AuthState) -> None:
@@ -123,7 +123,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._compressing_gcode = False
         return b"".join(file_data_bytes_list)
 
-    def _update(self) -> bool:
+    def _update(self) -> None:
         if self._last_response_time:
             time_since_last_response = time() - self._last_response_time
         else:
@@ -152,8 +152,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             # Go out of timeout.
             self.setConnectionState(self._connection_state_before_timeout)
             self._connection_state_before_timeout = None
-
-        return True
 
     def _createEmptyRequest(self, target: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         url = QUrl("http://" + self._address + self._api_prefix + target)
