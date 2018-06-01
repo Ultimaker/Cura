@@ -14,15 +14,13 @@ from UM.Signal import Signal
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
 from UM import Util
-
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
+import cura.CuraApplication
 from cura.Machines.ContainerNode import ContainerNode #For typing.
 from cura.Machines.QualityChangesGroup import QualityChangesGroup #For typing.
 from cura.Machines.QualityGroup import QualityGroup #For typing.
@@ -31,6 +29,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 
@@ -47,7 +46,7 @@ if TYPE_CHECKING:
     from cura.Machines.VariantManager import VariantManager
 
 class MachineManager(QObject):
-    def __init__(self, parent: QObject = None):
+    def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
 
         self._active_container_stack = None     # type: Optional[ExtruderManager]
@@ -59,14 +58,14 @@ class MachineManager(QObject):
 
         self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
 
-        self.machine_extruder_material_update_dict = collections.defaultdict(list)
+        self.machine_extruder_material_update_dict = collections.defaultdict(list) #type: Dict[str, List[Callable[[], None]]]
 
         self._instance_container_timer = QTimer() #type: QTimer
         self._instance_container_timer.setInterval(250)
         self._instance_container_timer.setSingleShot(True)
         self._instance_container_timer.timeout.connect(self.__emitChangedSignals)
 
-        self._application = Application.getInstance() #type: Application
+        self._application = cura.CuraApplication.CuraApplication.getInstance() #type: cura.CuraApplication.CuraApplication
         self._application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._application.getContainerRegistry().containerLoadComplete.connect(self._onContainersChanged)
 
@@ -120,7 +119,7 @@ class MachineManager(QObject):
                                                 "The selected material is incompatible with the selected machine or configuration."),
                                                 title = catalog.i18nc("@info:title", "Incompatible Material")) #type: Message
 
-        containers = ContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId) #type: List[InstanceContainer]
+        containers = CuraContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId) #type: List[InstanceContainer]
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
@@ -166,7 +165,7 @@ class MachineManager(QObject):
 
     def setInitialActiveMachine(self) -> None:
         active_machine_id = self._application.getPreferences().getValue("cura/active_machine")
-        if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacksMetadata(id = active_machine_id):
+        if active_machine_id != "" and CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = active_machine_id):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
 
@@ -217,7 +216,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(int, constant=True)
     def totalNumberOfSettings(self) -> int:
-        return len(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0].getAllKeys())
+        return len(CuraContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0].getAllKeys())
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_container_stack:
@@ -352,7 +351,7 @@ class MachineManager(QObject):
     def setActiveMachine(self, stack_id: str) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
 
-        container_registry = ContainerRegistry.getInstance()
+        container_registry = CuraContainerRegistry.getInstance()
 
         containers = container_registry.findContainerStacks(id = stack_id)
         if not containers:
@@ -378,7 +377,7 @@ class MachineManager(QObject):
     #   \param metadata_filter \type{dict} list of metadata keys and values used for filtering
     @staticmethod
     def getMachine(definition_id: str, metadata_filter: Dict[str, str] = None) -> Optional["GlobalStack"]:
-        machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+        machines = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
         for machine in machines:
             if machine.definition.getId() == definition_id:
                 return machine
@@ -622,7 +621,7 @@ class MachineManager(QObject):
     ## Check if a container is read_only
     @pyqtSlot(str, result = bool)
     def isReadOnly(self, container_id: str) -> bool:
-        return ContainerRegistry.getInstance().isReadOnly(container_id)
+        return CuraContainerRegistry.getInstance().isReadOnly(container_id)
 
     ## Copy the value of the setting of the current extruder to all other extruders as well as the global container.
     @pyqtSlot(str)
@@ -692,7 +691,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id: str, new_name: str) -> None:
-        container_registry = ContainerRegistry.getInstance()
+        container_registry = CuraContainerRegistry.getInstance()
         machine_stack = container_registry.findContainerStacks(id = machine_id)
         if machine_stack:
             new_name = container_registry.createUniqueName("machine", machine_stack[0].getName(), new_name, machine_stack[0].definition.getName())
@@ -706,23 +705,23 @@ class MachineManager(QObject):
 
         # activate a new machine before removing a machine because this is safer
         if activate_new_machine:
-            machine_stacks = ContainerRegistry.getInstance().findContainerStacksMetadata(type = "machine")
+            machine_stacks = CuraContainerRegistry.getInstance().findContainerStacksMetadata(type = "machine")
             other_machine_stacks = [s for s in machine_stacks if s["id"] != machine_id]
             if other_machine_stacks:
                 self.setActiveMachine(other_machine_stacks[0]["id"])
 
-        metadata = ContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)[0]
+        metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)[0]
         network_key = metadata["um_network_key"] if "um_network_key" in metadata else None
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
-        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
+        containers = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
-            ContainerRegistry.getInstance().removeContainer(container["id"])
-        ContainerRegistry.getInstance().removeContainer(machine_id)
+            CuraContainerRegistry.getInstance().removeContainer(container["id"])
+        CuraContainerRegistry.getInstance().removeContainer(machine_id)
 
         # If the printer that is being removed is a network printer, the hidden printers have to be also removed
         if network_key:
             metadata_filter = {"um_network_key": network_key}
-            hidden_containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+            hidden_containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
             if hidden_containers:
                 # This reuses the method and remove all printers recursively
                 self.removeMachine(hidden_containers[0].getId())
@@ -790,10 +789,10 @@ class MachineManager(QObject):
 
     ##  Get the Definition ID of a machine (specified by ID)
     #   \param machine_id string machine id to get the definition ID of
-    #   \returns DefinitionID (string) if found, None otherwise
+    #   \returns DefinitionID if found, None otherwise
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id: str) -> str:
-        containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
+        containers = CuraContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             return containers[0].definition.getId()
 
@@ -1233,7 +1232,7 @@ class MachineManager(QObject):
         if self.activeMachineDefinitionName == machine_name:
             return
         # Get the definition id corresponding to this machine name
-        machine_definition_id = ContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
+        machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
         new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey})
         # If there is no machine, then create a new one and set it to the non-hidden instance
@@ -1287,7 +1286,7 @@ class MachineManager(QObject):
 
     ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
     def replaceContainersMetadata(self, key: str, value: str, new_value: str) -> None:
-        machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        machines = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
         for machine in machines:
             if machine.getMetaDataEntry(key) == value:
                 machine.setMetaDataEntry(key, new_value)
@@ -1300,14 +1299,14 @@ class MachineManager(QObject):
             # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
             if self.activeMachineNetworkGroupName != group_name:
                 metadata_filter = {"um_network_key": self.activeMachineNetworkKey}
-                hidden_containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+                hidden_containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
                 for container in hidden_containers:
                     container.setMetaDataEntry("connect_group_name", group_name)
 
     ##  This method checks if there is an instance connected to the given network_key
     def existNetworkInstances(self, network_key: str) -> bool:
         metadata_filter = {"um_network_key": network_key}
-        containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+        containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
         return bool(containers)
 
     @pyqtSlot("QVariant")

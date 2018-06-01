@@ -5,7 +5,7 @@ import os
 import re
 import configparser
 
-from typing import Optional
+from typing import cast, Optional
 
 from PyQt5.QtWidgets import QMessageBox
 
@@ -731,3 +731,9 @@ class CuraContainerRegistry(ContainerRegistry):
                 extruder_stack.setNextStack(machines[0])
             else:
                 Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
+
+    #Override just for the type.
+    @override
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "CuraContainerRegistry":
+        return cast(CuraContainerRegistry, super().getInstance(*args, **kwargs))
