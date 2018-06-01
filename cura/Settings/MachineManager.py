@@ -1280,7 +1280,7 @@ class MachineManager(QObject):
             self._updateQualityWithMaterial()
 
         # See if we need to show the Discard or Keep changes screen
-        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+        if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
     ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
@@ -1335,7 +1335,7 @@ class MachineManager(QObject):
             self._updateQualityWithMaterial()
 
         # See if we need to show the Discard or Keep changes screen
-        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+        if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
     @pyqtSlot(str, str)
@@ -1354,7 +1354,7 @@ class MachineManager(QObject):
             self._updateQualityWithMaterial()
 
         # See if we need to show the Discard or Keep changes screen
-        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+        if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
     @pyqtSlot(str)
