@@ -1280,6 +1280,10 @@ class MachineManager(QObject):
                 self._global_container_stack.variant = self._empty_variant_container
             self._updateQualityWithMaterial()
 
+        # See if we need to show the Discard or Keep changes screen
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            self._application.discardOrKeepProfileChanges()
+
     ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
     def replaceContainersMetadata(self, key: str, value: str, new_value: str) -> None:
         machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
