@@ -200,7 +200,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QVariantList", notify = uniqueConfigurationsChanged)
-    def uniqueConfigurations(self) -> List[ConfigurationModel]:
+    def uniqueConfigurations(self) -> List["ConfigurationModel"]:
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:
