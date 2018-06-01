@@ -143,7 +143,7 @@ class CuraStackBuilder:
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
-        stack = ExtruderStack(new_stack_id, parent = global_stack)
+        stack = ExtruderStack(new_stack_id)
         stack.setName(extruder_definition.getName())
         stack.setDefinition(extruder_definition)
 
