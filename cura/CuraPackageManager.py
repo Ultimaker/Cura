@@ -158,14 +158,17 @@ class CuraPackageManager(QObject):
             # Add bundled plugins
             if package_id in self._bundled_package_dict:
                 package_info = self._bundled_package_dict[package_id]["package_info"]
+                package_info["is_installed"] = True
 
             # Add installed plugins
             if package_id in self._installed_package_dict:
                 package_info = self._installed_package_dict[package_id]["package_info"]
+                package_info["is_installed"] = True
 
             # Add to install plugins
             if package_id in self._to_install_package_dict:
                 package_info = self._to_install_package_dict[package_id]["package_info"]
+                package_info["is_installed"] = False
 
             if package_info is None:
                 continue
