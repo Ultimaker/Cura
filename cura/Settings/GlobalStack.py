@@ -23,8 +23,8 @@ from .CuraContainerStack import CuraContainerStack
 ##  Represents the Global or Machine stack and its related containers.
 #
 class GlobalStack(CuraContainerStack):
-    def __init__(self, container_id: str, *args, **kwargs):
-        super().__init__(container_id, *args, **kwargs)
+    def __init__(self, container_id: str):
+        super().__init__(container_id)
 
         self.addMetaDataEntry("type", "machine")  # For backward compatibility
 
