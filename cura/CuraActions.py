@@ -3,9 +3,10 @@
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from UM.FlameProfiler import pyqtSlot
+from typing import List, TYPE_CHECKING
 
 from UM.Event import CallFunctionEvent
+from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -23,6 +24,8 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 
 from UM.Logger import Logger
 
+if TYPE_CHECKING:
+    from UM.Scene.SceneNode import SceneNode
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
@@ -82,7 +85,7 @@ class CuraActions(QObject):
         if not CuraApplication.getInstance().getController().getToolsEnabled():
             return
 
-        removed_group_nodes = []
+        removed_group_nodes = [] #type: List[SceneNode]
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
