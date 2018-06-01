@@ -1536,10 +1536,11 @@ class CuraApplication(QtApplication):
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
+        extension = extension.lower()
         filename = os.path.basename(f)
         if len(self._currently_loading_files) > 0:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
-            if extension.lower() in self._non_sliceable_extensions:
+            if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
@@ -1548,7 +1549,8 @@ class CuraApplication(QtApplication):
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
             extension = os.path.splitext(self._currently_loading_files[0])[1]
-            if extension.lower() in self._non_sliceable_extensions:
+            extension = extension.lower()
+            if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",
