@@ -1,29 +1,30 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict
 import threading
-from typing import Any, Dict, Optional
-
+from typing import Any, Dict, Optional, Set, TYPE_CHECKING
 from PyQt5.QtCore import pyqtProperty
 
-from UM.Application import Application
 from UM.Decorators import override
-
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.SettingInstance import InstanceState
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Logger import Logger
+import cura.CuraApplication
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
 
+if TYPE_CHECKING:
+    from cura.Settings.ExtruderStack import ExtruderStack
+
 ##  Represents the Global or Machine stack and its related containers.
 #
 class GlobalStack(CuraContainerStack):
-    def __init__(self, container_id: str):
+    def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
         self.addMetaDataEntry("type", "machine")  # For backward compatibility
@@ -34,7 +35,7 @@ class GlobalStack(CuraContainerStack):
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
         # if the resolve function tried to access the same property it is a resolve for.
         # Per thread we have our own resolving_settings, or strange things sometimes occur.
-        self._resolving_settings = defaultdict(set)  # keys are thread names
+        self._resolving_settings = defaultdict(set) #type: Dict[str, Set[str]] # keys are thread names
 
     ##  Get the list of extruders of this stack.
     #
@@ -94,6 +95,7 @@ class GlobalStack(CuraContainerStack):
         context.pushContainer(self)
 
         # Handle the "resolve" property.
+        #TODO: Why the hell does this involve threading?
         if self._shouldResolve(key, property_name, context):
             current_thread = threading.current_thread()
             self._resolving_settings[current_thread.name].add(key)
@@ -106,7 +108,7 @@ class GlobalStack(CuraContainerStack):
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
         if limit_to_extruder is not None:
             if limit_to_extruder == -1:
-                limit_to_extruder = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
+                limit_to_extruder = int(cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition)
             limit_to_extruder = str(limit_to_extruder)
         if limit_to_extruder is not None and limit_to_extruder != "-1" and limit_to_extruder in self._extruders:
             if super().getProperty(key, "settable_per_extruder", context):
@@ -155,7 +157,7 @@ class GlobalStack(CuraContainerStack):
 
     ##  Perform some sanity checks on the global stack
     #   Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
-    def isValid(self):
+    def isValid(self) -> bool:
         container_registry = ContainerRegistry.getInstance()
         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = self.getId())
 
