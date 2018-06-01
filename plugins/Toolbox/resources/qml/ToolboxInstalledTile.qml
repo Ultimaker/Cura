@@ -16,7 +16,7 @@ Item
     {
         color: UM.Theme.getColor("lining")
         width: parent.width
-        height: Math.floor(UM.Theme.getSize("default_lining").height)
+        height: UM.Theme.getSize("default_lining").height
         anchors.bottom: parent.bottom
     }
     Row
@@ -47,7 +47,7 @@ Item
             {
                 text: model.name
                 width: parent.width
-                height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
+                height: UM.Theme.getSize("toolbox_property_label").height
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("default_bold")
                 color: pluginInfo.color
@@ -81,7 +81,7 @@ Item
                     }
                 }
                 width: parent.width
-                height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
+                height: UM.Theme.getSize("toolbox_property_label").height
                 wrapMode: Text.WordWrap
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignLeft
