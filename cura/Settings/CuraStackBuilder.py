@@ -99,8 +99,7 @@ class CuraStackBuilder:
                 position = position,
                 variant_container = extruder_variant_container,
                 material_container = material_container,
-                quality_container = application.empty_quality_container,
-                global_stack = new_global_stack,
+                quality_container = application.empty_quality_container
             )
             new_extruder.setNextStack(new_global_stack)
             new_global_stack.addExtruder(new_extruder)
@@ -139,11 +138,11 @@ class CuraStackBuilder:
     @classmethod
     def createExtruderStack(cls, new_stack_id: str, extruder_definition: DefinitionContainerInterface, machine_definition_id: str,
                             position: int,
-                            variant_container, material_container, quality_container, global_stack) -> ExtruderStack:
+                            variant_container, material_container, quality_container) -> ExtruderStack:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
 
-        stack = ExtruderStack(new_stack_id, parent = global_stack)
+        stack = ExtruderStack(new_stack_id)
         stack.setName(extruder_definition.getName())
         stack.setDefinition(extruder_definition)
 
