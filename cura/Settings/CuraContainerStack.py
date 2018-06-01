@@ -186,9 +186,9 @@ class CuraContainerStack(ContainerStack):
     #   \param key The key of the setting to set.
     #   \param property_name The name of the property to set.
     #   \param new_value The new value to set the property to.
-    def setProperty(self, key: str, property_name: str, new_value: Any) -> None:
+    def setProperty(self, key: str, property_name: str, property_value: Any, container: "ContainerInterface" = None, set_from_cache: bool = False) -> None:
         container_index = _ContainerIndexes.UserChanges
-        self._containers[container_index].setProperty(key, property_name, new_value)
+        self._containers[container_index].setProperty(key, property_name, property_value, container, set_from_cache)
 
     ##  Overridden from ContainerStack
     #
