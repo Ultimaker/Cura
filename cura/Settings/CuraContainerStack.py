@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
@@ -36,7 +36,7 @@ from . import Exceptions
 #   This also means that operations on the stack that modifies the container ordering is prohibited and
 #   will raise an exception.
 class CuraContainerStack(ContainerStack):
-    def __init__(self, container_id: str):
+    def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
         self._container_registry = ContainerRegistry.getInstance() #type: ContainerRegistry
@@ -48,7 +48,7 @@ class CuraContainerStack(ContainerStack):
         self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0] #type: InstanceContainer
         self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0] #type: InstanceContainer
 
-        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[ContainerInterface]
+        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[Union[InstanceContainer, DefinitionContainer]]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
         self._containers[_ContainerIndexes.Quality] = self._empty_quality
         self._containers[_ContainerIndexes.Material] = self._empty_material
@@ -186,13 +186,9 @@ class CuraContainerStack(ContainerStack):
     #   \param key The key of the setting to set.
     #   \param property_name The name of the property to set.
     #   \param new_value The new value to set the property to.
-    #   \param target_container The type of the container to set the property of. Defaults to "user".
-    def setProperty(self, key: str, property_name: str, new_value: Any, target_container: str = "user") -> None:
-        container_index = _ContainerIndexes.TypeIndexMap.get(target_container, -1)
-        if container_index != -1:
-            self._containers[container_index].setProperty(key, property_name, new_value)
-        else:
-            raise IndexError("Invalid target container {type}".format(type = target_container))
+    def setProperty(self, key: str, property_name: str, new_value: Any) -> None:
+        container_index = _ContainerIndexes.UserChanges
+        self._containers[container_index].setProperty(key, property_name, new_value)
 
     ##  Overridden from ContainerStack
     #
