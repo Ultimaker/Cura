@@ -179,7 +179,7 @@ class Toolbox(QObject, Extension):
                    'cura-siemensnx-plugin']
 
     # check for plugins that were installed with the old plugin-browser
-    def _isOldPlugin(self, plugin_id) -> bool:
+    def _isOldPlugin(self, plugin_id: str) -> bool:
         if plugin_id in self.OLD_PLUGINS and plugin_id in self._plugin_registry.getInstalledPlugins():
             Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
             if not self._package_manager.isPackageInstalled(plugin_id):
