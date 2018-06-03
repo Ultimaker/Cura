@@ -169,6 +169,27 @@ class Toolbox(QObject, Extension):
             "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url))
         }
 
+    OLD_PLUGINS = ['3DPrinterOS',
+                   'BarbarianPlugin',
+                   'CuraSolidWorksPlugin',
+                   'MakePrintablePlugin',
+                   'OctoPrintPlugin',
+                   'OrientationPlugin',
+                   'ZOffsetPlugin',
+                   'cura-siemensnx-plugin']
+
+    # check for plugins that were installed with the old plugin-browser
+    def _isOldPlugin(self, plugin_id) -> bool:
+        if plugin_id in self.OLD_PLUGINS and plugin_id in self._plugin_registry.getInstalledPlugins():
+            Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
+            if not self._package_manager.isPackageInstalled(plugin_id):
+                Logger.log('i', 'Plugin was not found in package.json: %s', self._package_manager.getInstalledPackageInfo(plugin_id))
+                return True
+        return False
+
+
+
+
     # Get the API root for the packages API depending on Cura version settings.
     def _getCloudAPIRoot(self) -> str:
         if not hasattr(cura, "CuraVersion"):
@@ -325,6 +346,9 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     @pyqtSlot(str, result = bool)
     def canUpdate(self, package_id: str) -> bool:
+        if self._isOldPlugin(package_id):
+            return True
+
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
         if local_package is None:
             return False
@@ -355,7 +379,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
-        return self._package_manager.isPackageInstalled(package_id)
+        return self._package_manager.isPackageInstalled(package_id) or self._isOldPlugin(package_id)
 
     @pyqtSlot(str, result = bool)
     def isEnabled(self, package_id: str) -> bool:
