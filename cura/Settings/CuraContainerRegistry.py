@@ -733,7 +733,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
 
     #Override just for the type.
-    @override
     @classmethod
+    @override(ContainerRegistry)
     def getInstance(cls, *args, **kwargs) -> "CuraContainerRegistry":
         return cast(CuraContainerRegistry, super().getInstance(*args, **kwargs))
