@@ -194,7 +194,7 @@ class BuildVolumePatches():
             minimum = Vector(min_w, min_h - 1.0, min_d),
             maximum = Vector(max_w, max_h - self._build_volume._raft_thickness - self._build_volume._extra_z_clearance, max_d))
 
-        bed_adhesion_size = self._build_volume._getEdgeDisallowedSize()
+        bed_adhesion_size = self._build_volume.getEdgeDisallowedSize()
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
