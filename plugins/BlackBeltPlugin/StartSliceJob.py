@@ -306,6 +306,7 @@ class StartSliceJob(Job):
             raft_enabled = stack.getProperty("blackbelt_raft", "value")
             belt_layer_mesh_data = {}
             bottom_cutting_meshes = []
+            raft_meshes = []
             if gantry_angle: # not 0 or None
                 # Add a modifier mesh to all printable meshes touching the belt
                 for group in filtered_object_groups:
@@ -318,7 +319,23 @@ class StartSliceJob(Job):
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                         # ConvexHullNodes get none of the usual decorators. If it made it here, it is meant to be printed
-                        if not is_non_printing_mesh and not object.getName().startswith("beltLayerModifierMesh") and type(node) is not ConvexHullNode:
+                        if type(node) is ConvexHullNode:
+                            raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
+
+                            mb = MeshBuilder()
+
+                            mb.addConvexPolygonExtrusion(node.getHull().getPoints()[::-1], 0, raft_thickness)
+
+                            new_node = SceneNode()
+                            new_node.setMeshData(mb.build())
+                            node_name = "raftMesh" + hex(id(new_node))
+                            new_node.setName(node_name)
+
+                            # Note: adding a SettingOverrideDecorator here causes a slicing loop
+                            added_meshes.append(new_node)
+                            raft_meshes.append(node_name)
+
+                        elif not is_non_printing_mesh:
                             extruder_stack_index = object.callDecoration("getActiveExtruderPosition")
                             if not extruder_stack_index:
                                 extruder_stack_index = 0
@@ -393,33 +410,30 @@ class StartSliceJob(Job):
             transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
             front_offset = None
 
-            raft_thickness = 0
-            raft_gap = 0
-            hull_scale = 1.0
+            raft_offset = 0
             raft_speed = None
             raft_flow = 1.0
 
             if raft_enabled:
-                raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
-                raft_gap = stack.getProperty("blackbelt_raft_gap", "value")
-                hull_scale = raft_thickness / (raft_thickness + raft_gap)
+                raft_offset = stack.getProperty("blackbelt_raft_thickness", "value") + stack.getProperty("blackbelt_raft_gap", "value")
                 raft_speed = stack.getProperty("blackbelt_raft_speed", "value")
-                if gantry_angle:
-                    raft_flow = stack.getProperty("blackbelt_raft_flow", "value") * math.sin(gantry_angle)
+                raft_flow = stack.getProperty("blackbelt_raft_flow", "value") * math.sin(gantry_angle)
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
                 for object in group:
+                    if type(object) is ConvexHullNode:
+                        continue
+
                     mesh_data = object.getMeshData()
                     rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
                     translate = object.getWorldTransformation().getData()[:3, 3]
-                    # offset all objects if rafts are enabled, or they end up under the belt
+                    # offset all non-raft objects if rafts are enabled
                     # air gap is applied here to vertically offset objects from the raft
-                    translate[1] = translate[1] + raft_thickness
-                    if type(object) is not ConvexHullNode:
-                        translate[1] = translate[1] + raft_gap - (raft_gap / 2)
+                    if object.getName() not in raft_meshes:
+                        translate[1] = translate[1] + raft_offset
 
                     # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                     verts = mesh_data.getVertices()
@@ -456,7 +470,7 @@ class StartSliceJob(Job):
 
                     obj.vertices = flat_verts
 
-                    if type(object) is ConvexHullNode:
+                    if object.getName() in raft_meshes:
                         for (key, value) in {
                             "wall_line_count": 99999999,
                             "speed_wall_0": raft_speed,
