@@ -25,8 +25,8 @@ if TYPE_CHECKING:
 #
 #
 class ExtruderStack(CuraContainerStack):
-    def __init__(self, container_id: str, *args, **kwargs):
-        super().__init__(container_id, *args, **kwargs)
+    def __init__(self, container_id: str):
+        super().__init__(container_id)
 
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
 

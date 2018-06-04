@@ -452,7 +452,7 @@ class CuraApplication(QtApplication):
 
     ## A reusable dialogbox
     #
-    showMessageBox = pyqtSignal(str, str, str, str, str, int, int, arguments = ["title", "footer", "text", "informativeText", "detailedText", "buttons", "icon"])
+    showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
 
     def messageBox(self, title, text, informativeText = "", detailedText = "", buttons = QMessageBox.Ok, icon = QMessageBox.NoIcon, callback = None, callback_arguments = []):
         self._message_box_callback = callback
@@ -1500,11 +1500,15 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        mesh_data = job.getResult()[0].getMeshData()
-        if mesh_data:
-            job._node.setMeshData(mesh_data)
-        else:
+        job_result = job.getResult()
+        if len(job_result) == 0:
+            Logger.log("e", "Reloading the mesh failed.")
+            return
+        mesh_data = job_result[0].getMeshData()
+        if not mesh_data:
             Logger.log("w", "Could not find a mesh in reloaded node.")
+            return
+        job._node.setMeshData(mesh_data)
 
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
@@ -1568,10 +1572,11 @@ class CuraApplication(QtApplication):
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
+        extension = extension.lower()
         filename = os.path.basename(f)
         if len(self._currently_loading_files) > 0:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
-            if extension.lower() in self._non_sliceable_extensions:
+            if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
@@ -1580,7 +1585,8 @@ class CuraApplication(QtApplication):
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
             extension = os.path.splitext(self._currently_loading_files[0])[1]
-            if extension.lower() in self._non_sliceable_extensions:
+            extension = extension.lower()
+            if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",

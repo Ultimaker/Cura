@@ -16,7 +16,7 @@ Item
     {
         color: UM.Theme.getColor("lining")
         width: parent.width
-        height: UM.Theme.getSize("default_lining").height
+        height: Math.floor(UM.Theme.getSize("default_lining").height)
         anchors.bottom: parent.bottom
     }
     Row
@@ -40,14 +40,14 @@ Item
         Column
         {
             id: pluginInfo
-            topPadding: UM.Theme.getSize("default_margin").height / 2
+            topPadding: Math.floor(UM.Theme.getSize("default_margin").height / 2)
             property var color: model.type === "plugin" && !isEnabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("text")
-            width: tileRow.width - (authorInfo.width + pluginActions.width + 2 * tileRow.spacing + ((disableButton.visible) ? disableButton.width + tileRow.spacing : 0))
+            width: Math.floor(tileRow.width - (authorInfo.width + pluginActions.width + 2 * tileRow.spacing + ((disableButton.visible) ? disableButton.width + tileRow.spacing : 0)))
             Label
             {
                 text: model.name
                 width: parent.width
-                height: UM.Theme.getSize("toolbox_property_label").height
+                height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("default_bold")
                 color: pluginInfo.color
@@ -81,7 +81,7 @@ Item
                     }
                 }
                 width: parent.width
-                height: UM.Theme.getSize("toolbox_property_label").height
+                height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
                 wrapMode: Text.WordWrap
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignLeft
