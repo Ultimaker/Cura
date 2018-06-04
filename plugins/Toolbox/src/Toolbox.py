@@ -64,14 +64,17 @@ class Toolbox(QObject, Extension):
         ]
         self._request_urls = {}
         self._to_update = []  # Package_ids that are waiting to be updated
+        self._old_plugin_ids = []
 
         # Data:
         self._metadata = {
             "authors":             [],
             "packages":            [],
             "plugins_showcase":    [],
+            "plugins_available":   [],
             "plugins_installed":   [],
             "materials_showcase":  [],
+            "materials_available": [],
             "materials_installed": []
         }
 
@@ -166,29 +169,10 @@ class Toolbox(QObject, Extension):
             "authors": QUrl("{base_url}/authors".format(base_url=self._api_url)),
             "packages": QUrl("{base_url}/packages".format(base_url=self._api_url)),
             "plugins_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
-            "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url))
+            "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url=self._api_url)),
+            "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
+            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url))
         }
-
-    OLD_PLUGINS = ['3DPrinterOS',
-                   'BarbarianPlugin',
-                   'CuraSolidWorksPlugin',
-                   'MakePrintablePlugin',
-                   'OctoPrintPlugin',
-                   'OrientationPlugin',
-                   'ZOffsetPlugin',
-                   'cura-siemensnx-plugin']
-
-    # check for plugins that were installed with the old plugin-browser
-    def _isOldPlugin(self, plugin_id: str) -> bool:
-        if plugin_id in self.OLD_PLUGINS and plugin_id in self._plugin_registry.getInstalledPlugins():
-            Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
-            if not self._package_manager.isPackageInstalled(plugin_id):
-                Logger.log('i', 'Plugin was not found in package.json: %s', self._package_manager.getInstalledPackageInfo(plugin_id))
-                return True
-        return False
-
-
-
 
     # Get the API root for the packages API depending on Cura version settings.
     def _getCloudAPIRoot(self) -> str:
@@ -256,6 +240,17 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def _updateInstalledModels(self) -> None:
+
+        # This is moved here to avoid code duplication and so that after installing plugins they get removed from the
+        # list of old plugins
+        old_plugin_ids = self._plugin_registry.getInstalledPlugins()
+        installed_package_ids = self._package_manager.getAllInstalledPackageIDs()
+        self._old_plugin_ids = []
+        for plugin_id in old_plugin_ids:
+            if plugin_id not in installed_package_ids:
+                Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
+                self._old_plugin_ids.append(plugin_id)
+
         all_packages = self._package_manager.getAllInstalledPackagesInfo()
         if "plugin" in all_packages:
             self._metadata["plugins_installed"] = all_packages["plugin"]
@@ -346,7 +341,7 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     @pyqtSlot(str, result = bool)
     def canUpdate(self, package_id: str) -> bool:
-        if self._isOldPlugin(package_id):
+        if self.isOldPlugin(package_id):
             return True
 
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
@@ -379,11 +374,17 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
-        return self._package_manager.isPackageInstalled(package_id) or self._isOldPlugin(package_id)
+        return self._package_manager.isPackageInstalled(package_id)
 
     @pyqtSlot(str, result = bool)
     def isEnabled(self, package_id: str) -> bool:
         if package_id in self._plugin_registry.getActivePlugins():
+            return True
+        return False
+
+    # Check for plugins that were installed with the old plugin browser
+    def isOldPlugin(self, plugin_id: str) -> bool:
+        if plugin_id in self._old_plugin_ids:
             return True
         return False
 
