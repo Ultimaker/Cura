@@ -2,12 +2,13 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from copy import deepcopy
-from typing import Dict, List, Optional
+from typing import cast, Dict, List, Optional
 
 from UM.Application import Application
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon #For typing.
 from UM.Scene.SceneNode import SceneNode
+from UM.Scene.SceneNodeDecorator import SceneNodeDecorator #To cast the deepcopy of every decorator back to SceneNodeDecorator.
 
 from cura.CuraApplication import CuraApplication #To get the build plate.
 from cura.Settings.ExtruderStack import ExtruderStack #For typing.
@@ -129,14 +130,14 @@ class CuraSceneNode(SceneNode):
         copy = CuraSceneNode(no_setting_override = True)  # Setting override will be added later
         copy.setTransformation(self.getLocalTransformation())
         copy.setMeshData(self._mesh_data)
-        copy.setVisible(deepcopy(self._visible, memo))
-        copy._selectable = deepcopy(self._selectable, memo)
-        copy._name = deepcopy(self._name, memo)
+        copy.setVisible(cast(bool, deepcopy(self._visible, memo)))
+        copy._selectable = cast(bool, deepcopy(self._selectable, memo))
+        copy._name = cast(str, deepcopy(self._name, memo))
         for decorator in self._decorators:
-            copy.addDecorator(deepcopy(decorator, memo))
+            copy.addDecorator(cast(SceneNodeDecorator, deepcopy(decorator, memo)))
 
         for child in self._children:
-            copy.addChild(deepcopy(child, memo))
+            copy.addChild(cast(SceneNode, deepcopy(child, memo)))
         self.calculateBoundingBoxMesh()
         return copy
 
