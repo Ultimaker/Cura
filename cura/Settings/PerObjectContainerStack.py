@@ -1,3 +1,6 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Any, Optional
 
 from UM.Application import Application
@@ -9,7 +12,6 @@ from .CuraContainerStack import CuraContainerStack
 
 
 class PerObjectContainerStack(CuraContainerStack):
-
     @override(CuraContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         if context is None:
@@ -53,7 +55,7 @@ class PerObjectContainerStack(CuraContainerStack):
         return result
 
     @override(CuraContainerStack)
-    def setNextStack(self, stack: CuraContainerStack):
+    def setNextStack(self, stack: CuraContainerStack) -> None:
         super().setNextStack(stack)
 
         # trigger signal to re-evaluate all default settings
