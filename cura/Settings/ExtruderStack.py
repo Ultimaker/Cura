@@ -1,7 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, TYPE_CHECKING, Optional
+from typing import Any, Dict, TYPE_CHECKING, Optional
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 #
 #
 class ExtruderStack(CuraContainerStack):
-    def __init__(self, container_id: str):
+    def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
@@ -50,14 +50,14 @@ class ExtruderStack(CuraContainerStack):
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
 
-    def setEnabled(self, enabled):
+    def setEnabled(self, enabled: bool) -> None:
         if "enabled" not in self._metadata:
             self.addMetaDataEntry("enabled", "True")
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
     @pyqtProperty(bool, notify = enabledChanged)
-    def isEnabled(self):
+    def isEnabled(self) -> bool:
         return parseBool(self.getMetaDataEntry("enabled", "True"))
 
     @classmethod
@@ -142,7 +142,7 @@ class ExtruderStack(CuraContainerStack):
         if stacks:
             self.setNextStack(stacks[0])
 
-    def _onPropertiesChanged(self, key, properties):
+    def _onPropertiesChanged(self, key: str, properties: Dict[str, Any]) -> None:
         # When there is a setting that is not settable per extruder that depends on a value from a setting that is,
         # we do not always get properly informed that we should re-evaluate the setting. So make sure to indicate
         # something changed for those settings.
