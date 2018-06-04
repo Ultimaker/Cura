@@ -5,13 +5,14 @@ from typing import Any, Dict, TYPE_CHECKING, Optional
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
-from UM.Application import Application
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
 from UM.Util import parseBool
+
+import cura.CuraApplication
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
@@ -113,7 +114,7 @@ class ExtruderStack(CuraContainerStack):
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
         if limit_to_extruder is not None:
             if limit_to_extruder == -1:
-                limit_to_extruder = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
+                limit_to_extruder = int(cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition)
             limit_to_extruder = str(limit_to_extruder)
         if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
             if str(limit_to_extruder) in self.getNextStack().extruders:
