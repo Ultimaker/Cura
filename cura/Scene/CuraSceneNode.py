@@ -13,9 +13,9 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 ##  Scene nodes that are models are only seen when selecting the corresponding build plate
 #   Note that many other nodes can just be UM SceneNode objects.
 class CuraSceneNode(SceneNode):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if "no_setting_override" not in kwargs:
+    def __init__(self, parent: Optional["SceneNode"] = None, visible: bool = True, name: str = "", no_settings_override: bool = False):
+        super().__init__(parent = parent, visible = visible, name = name)
+        if not "no_setting_override":
             self.addDecorator(SettingOverrideDecorator())  # now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
 
