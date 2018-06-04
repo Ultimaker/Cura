@@ -39,6 +39,9 @@ class BlackBeltSingleton(QObject):
             self.activeMachineChanged.emit()
 
     def _onActiveVariantChanged(self, emit = True):
+        if not self._global_container_stack:
+            return
+
         active_variant_id = self._global_container_stack.variant.getId()
 
         result = re.match("^%s$" % self._variants_terms_pattern, active_variant_id)
@@ -65,6 +68,9 @@ class BlackBeltSingleton(QObject):
 
     @pyqtSlot(int, str)
     def setActiveVariantTerm(self, index, term):
+        if not self._global_container_stack:
+            return
+
         self._variants_terms[index] = term
         variant_id = self._variants_terms_pattern.replace("(.*?)", "%s") % tuple(self._variants_terms)
         containers = ContainerRegistry.getInstance().findContainers(id = variant_id, type = "variant")
