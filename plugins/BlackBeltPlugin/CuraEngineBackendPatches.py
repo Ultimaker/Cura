@@ -19,6 +19,7 @@ class CuraEngineBackendPatches():
         self._backend._startProcessSlicedLayersJob = self._startProcessSlicedLayersJob
 
     ##  Perform a slice of the scene.
+    #   This is a verbatim copy of CuranEngineBackend.slice(), with the only difference being the local imports
     def slice(self):
         Logger.log("d", "Starting to slice...")
         self._backend._slice_start_time = time()
@@ -74,6 +75,7 @@ class CuraEngineBackendPatches():
         self._backend._start_slice_job.start()
         self._backend._start_slice_job.finished.connect(self._backend._onStartSliceCompleted)
 
+    #   This is a verbatim copy of CuranEngineBackend._startProcessSlicedLayersJob(), with the only difference being the local imports
     def _startProcessSlicedLayersJob(self, build_plate_number):
         self._backend._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._backend._stored_optimized_layer_data[build_plate_number])
         self._backend._process_layers_job.setBuildPlate(build_plate_number)
