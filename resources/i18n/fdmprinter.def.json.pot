@@ -3107,6 +3107,18 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "travel_avoid_supports label"
+msgid "Avoid Supports When Traveling"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports description"
+msgid ""
+"The nozzle avoids already printed supports when traveling. This option is only "
+"available when combing is enabled."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
 msgid "Travel Avoid Distance"
 msgstr ""

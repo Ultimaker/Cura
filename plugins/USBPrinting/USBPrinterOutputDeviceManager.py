@@ -42,11 +42,19 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice)
 
+        Application.getInstance().globalContainerStackChanged.connect(self.updateUSBPrinterOutputDevices)
+
+    # The method updates/reset the USB settings for all connected USB devices
+    def updateUSBPrinterOutputDevices(self):
+        for key, device in self._usb_output_devices.items():
+            if isinstance(device, USBPrinterOutputDevice.USBPrinterOutputDevice):
+                device.resetDeviceSettings()
+
     def start(self):
         self._check_updates = True
         self._update_thread.start()
 
-    def stop(self):
+    def stop(self, store_data: bool = True):
         self._check_updates = False
 
     def _onConnectionStateChanged(self, serial_port):
@@ -65,10 +73,11 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
             if container_stack is None:
                 time.sleep(5)
                 continue
+            port_list = []  # Just an empty list; all USB devices will be removed.
             if container_stack.getMetaDataEntry("supports_usb_connection"):
-                port_list = self.getSerialPortList(only_list_usb=True)
-            else:
-                port_list = []  # Just use an empty list; all USB devices will be removed.
+                machine_file_formats = [file_type.strip() for file_type in container_stack.getMetaDataEntry("file_formats").split(";")]
+                if "text/x-gcode" in machine_file_formats:
+                    port_list = self.getSerialPortList(only_list_usb=True)
             self._addRemovePorts(port_list)
             time.sleep(5)
 

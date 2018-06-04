@@ -3,10 +3,9 @@
 
 import gzip
 
-from io import TextIOWrapper
-
 from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementing.
 from UM.PluginRegistry import PluginRegistry
+
 
 ##  A file reader that reads gzipped g-code.
 #

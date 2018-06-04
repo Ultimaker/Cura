@@ -63,13 +63,26 @@ class FirmwareUpdateCheckerJob(Job):
                 # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
                     Logger.log("i", "SHOWING FIRMWARE UPDATE MESSAGE")
-                    message = Message(i18n_catalog.i18nc("@info Don't translate {machine_name}, since it gets replaced by a printer name!", "New features are available for your {machine_name}! It is recommended to update the firmware on your printer.").format(machine_name = machine_name),
-                                      title = i18n_catalog.i18nc("@info:title The %s gets replaced with the printer name.", "New %s firmware available") % machine_name)
-                    message.addAction("download", i18n_catalog.i18nc("@action:button", "How to update"), "[no_icon]", "[no_description]")
+
+                    message = Message(i18n_catalog.i18nc(
+                        "@info Don't translate {machine_name}, since it gets replaced by a printer name!",
+                        "New features are available for your {machine_name}! It is recommended to update the firmware on your printer.").format(
+                        machine_name=machine_name),
+                        title=i18n_catalog.i18nc(
+                                          "@info:title The %s gets replaced with the printer name.",
+                                          "New %s firmware available") % machine_name)
+
+                    message.addAction("download",
+                                      i18n_catalog.i18nc("@action:button", "How to update"),
+                                      "[no_icon]",
+                                      "[no_description]",
+                                      button_style=Message.ActionButtonStyle.LINK,
+                                      button_align=Message.ActionButtonStyle.BUTTON_ALIGN_LEFT)
+
 
                     # If we do this in a cool way, the download url should be available in the JSON file
                     if self._set_download_url_callback:
-                        self._set_download_url_callback("https://ultimaker.com/en/resources/23129-updating-the-firmware?utm_source=cura&utm_medium=software&utm_campaign=hw-update")
+                        self._set_download_url_callback("https://ultimaker.com/en/resources/20500-upgrade-firmware")
                     message.actionTriggered.connect(self._callback)
                     message.show()
 

@@ -271,9 +271,9 @@ UM.MainWindow
             Menu
             {
                 id: plugin_menu
-                title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
+                title: catalog.i18nc("@title:menu menubar:toplevel", "&Toolbox")
 
-                MenuItem { action: Cura.Actions.browsePlugins }
+                MenuItem { action: Cura.Actions.browsePackages }
             }
 
             Menu
@@ -323,32 +323,25 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
-                        // As the drop area also supports plugins, first check if it's a plugin that was dropped.
-                        if (drop.urls.length == 1)
+
+                        var nonPackages = [];
+                        for (var i = 0; i < drop.urls.length; i++)
                         {
-                            if (PluginRegistry.isPluginFile(drop.urls[0]))
+                            var filename = drop.urls[i];
+                            if (filename.endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
-                                var result = PluginRegistry.installPlugin(drop.urls[0]);
-                                pluginInstallDialog.text = result.message;
-                                if (result.status == "ok")
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Information;
-                                }
-                                else if (result.status == "duplicate")
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Warning;
-                                }
-                                else
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Critical;
-                                }
-                                pluginInstallDialog.open();
-                                return;
+                                CuraApplication.getCuraPackageManager().installPackageViaDragAndDrop(filename);
+                                packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
+                                packageInstallDialog.icon = StandardIcon.Information;
+                                packageInstallDialog.open();
+                            }
+                            else
+                            {
+                                nonPackages.push(filename);
                             }
                         }
-
-                        openDialog.handleOpenFileUrls(drop.urls);
+                        openDialog.handleOpenFileUrls(nonPackages);
                     }
                 }
             }
@@ -514,6 +507,7 @@ UM.MainWindow
                     horizontalCenterOffset: -(Math.round(UM.Theme.getSize("sidebar").width / 2))
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
+                    bottomMargin:  UM.Theme.getSize("default_margin").height
                 }
             }
         }
@@ -669,9 +663,9 @@ UM.MainWindow
     // show the plugin browser dialog
     Connections
     {
-        target: Cura.Actions.browsePlugins
+        target: Cura.Actions.browsePackages
         onTriggered: {
-            curaExtensions.callExtensionMethod("Plugin Browser", "browsePlugins")
+            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
         }
     }
 
@@ -816,8 +810,8 @@ UM.MainWindow
 
     MessageDialog
     {
-        id: pluginInstallDialog
-        title: catalog.i18nc("@window:title", "Install Plugin");
+        id: packageInstallDialog
+        title: catalog.i18nc("@window:title", "Install Package");
         standardButtons: StandardButton.Ok
         modality: Qt.ApplicationModal
     }

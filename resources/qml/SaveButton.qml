@@ -100,8 +100,8 @@ Item {
             if (saveToButton.enabled) {
                 saveToButton.clicked();
             }
-            // prepare button
-            if (prepareButton.enabled) {
+            // slice button
+            if (sliceButton.enabled) {
                 sliceOrStopSlicing();
             }
         }
@@ -131,7 +131,7 @@ Item {
         Row {
             id: additionalComponentsRow
             anchors.top: parent.top
-            anchors.right: saveToButton.visible ? saveToButton.left : (prepareButton.visible ? prepareButton.left : parent.right)
+            anchors.right: saveToButton.visible ? saveToButton.left : (sliceButton.visible ? sliceButton.left : parent.right)
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
@@ -159,14 +159,14 @@ Item {
             onPreferenceChanged:
             {
                 var autoSlice = UM.Preferences.getValue("general/auto_slice");
-                prepareButton.autoSlice = autoSlice;
+                sliceButton.autoSlice = autoSlice;
                 saveToButton.autoSlice = autoSlice;
             }
         }
 
-        // Prepare button, only shows if auto_slice is off
+        // Slice button, only shows if auto_slice is off
         Button {
-            id: prepareButton
+            id: sliceButton
 
             tooltip: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
@@ -180,7 +180,7 @@ Item {
             anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             // 1 = not started, 4 = error, 5 = disabled
-            text: [1, 4, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
+            text: [1, 4, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Slice") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
                 sliceOrStopSlicing();

@@ -38,6 +38,9 @@ class QualityManagementModel(ListModel):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         global_stack = self._machine_manager.activeMachine
+        if not global_stack:
+            self.setItems([])
+            return
 
         quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
         quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(global_stack)

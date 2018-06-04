@@ -433,7 +433,7 @@ msgstr "Repetier"
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract label"
 msgid "Firmware Retraction"
-msgstr "펌웨어 제거"
+msgstr "펌웨어 리트렉션"
 
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract description"
@@ -521,7 +521,7 @@ msgstr "노즐의 내경. 비표준 노즐 크기를 사용할 때 이 설정을
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset With Extruder"
-msgstr "압출기로 오프셋"
+msgstr "익스트루더로 오프셋"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -531,7 +531,7 @@ msgstr "익스트루더 오프셋을 좌표계에 적용하십시오."
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "압출기 프라임 Z 포지션"
+msgstr "익스트루더 프라임 Z 포지션"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z description"
@@ -543,7 +543,7 @@ msgstr "프린팅가 시작될 때 노즐 위치의 Z 좌표입니다."
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
-msgstr "독립 압출 기 프라임 포지션"
+msgstr "독립 익스트루더 프라임 포지션"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs description"
@@ -667,7 +667,7 @@ msgstr "Z 방향 모터의 기본 Jerk."
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e label"
 msgid "Default Filament Jerk"
-msgstr "기본 Filament Jerk"
+msgstr "기본 필라멘트 Jerk"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e description"
@@ -1868,7 +1868,7 @@ msgstr "내부채움 패턴이 Y축을 따라 이 거리만큼 이동합니다."
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
 msgid "Cubic Subdivision Shell"
-msgstr "입방 세분 내관"
+msgstr "입방 세분 쉘"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add description"
@@ -2339,7 +2339,7 @@ msgctxt "material_flow description"
 msgid ""
 "Flow compensation: the amount of material extruded is multiplied by this "
 "value."
-msgstr "유량 보상: 압출 된 재료의 양에 이 값을 곱합니다."
+msgstr "압출량 보상: 압출 된 재료의 양에 이 값을 곱합니다."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2420,7 +2420,7 @@ msgstr "리트렉션 이동 중에 필라멘트가 프라이밍되는 속도입�
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
-msgstr "후퇴 Extra 초기 속도"
+msgstr "추가적인 리트렉션 정도"
 
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount description"
@@ -2433,7 +2433,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel label"
 msgid "Retraction Minimum Travel"
-msgstr "리트렉션 최소 움직임"
+msgstr "리트렉션 최소 이동"
 
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel description"
@@ -2724,7 +2724,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_travel label"
 msgid "Travel Speed"
-msgstr "움직임 속도"
+msgstr "이동 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_travel description"
@@ -2841,7 +2841,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_max label"
 msgid "Maximum Speed for Flow Equalization"
-msgstr "유량 균등화를위한 최대 속도"
+msgstr "압출량 균등화를위한 최대 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_max description"
@@ -3008,7 +3008,7 @@ msgstr "프라임 타워가 프린팅되는 가속도."
 #: fdmprinter.def.json
 msgctxt "acceleration_travel label"
 msgid "Travel Acceleration"
-msgstr "움직임 가속"
+msgstr "이동 가속"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel description"
@@ -3038,7 +3038,7 @@ msgstr "초기 레이어 프린팅 중 가속도."
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_layer_0 label"
 msgid "Initial Layer Travel Acceleration"
-msgstr "초기 레이어 움직임 가속도"
+msgstr "초기 레이어 이동 가속도"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_layer_0 description"
@@ -3229,7 +3229,7 @@ msgstr "프라임 타워가 프린팅되는 최대 순간 속도 변화."
 #: fdmprinter.def.json
 msgctxt "jerk_travel label"
 msgid "Travel Jerk"
-msgstr "움직임 Jerk"
+msgstr "이동 Jerk"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel description"
@@ -3262,7 +3262,7 @@ msgstr "초기 층의 프린팅 중 최대 순간 속도 변화."
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 label"
 msgid "Initial Layer Travel Jerk"
-msgstr "초기 레이어 움직임 Jerk"
+msgstr "초기 레이어 이동 Jerk"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 description"
@@ -3284,12 +3284,12 @@ msgstr "스커트와 브림이 프린팅되는 최대 순간 속도 변화."
 #: fdmprinter.def.json
 msgctxt "travel label"
 msgid "Travel"
-msgstr "움직임"
+msgstr "이동"
 
 #: fdmprinter.def.json
 msgctxt "travel description"
 msgid "travel"
-msgstr "움직임"
+msgstr "이동"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing label"
@@ -3320,7 +3320,7 @@ msgstr "모두"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "No Skin"
-msgstr "피부가 없다"
+msgstr "스킨이 없음"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3349,7 +3349,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
 msgid "Travel Avoid Distance"
-msgstr "움직일 때 피하기 거리"
+msgstr "이동중 피하는 거리"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance description"
@@ -3826,7 +3826,7 @@ msgstr "십자"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
 msgid "Connect Support Lines"
-msgstr "지지대 선 연결"
+msgstr "서포트 선 연결"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support description"
@@ -3966,7 +3966,7 @@ msgstr "X/Y 방향에서 오버행으로부터 서포트까지의 거리. "
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
 msgid "Support Stair Step Height"
-msgstr "계단 Step Height 지지대"
+msgstr "계단 Step Height 서포트"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height description"
@@ -3998,7 +3998,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
 msgid "Support Join Distance"
-msgstr "지지대 Join 거리"
+msgstr "서포트 Join 거리"
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance description"
@@ -4013,7 +4013,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_offset label"
 msgid "Support Horizontal Expansion"
-msgstr "수평 확장 지지대"
+msgstr "수평 확장 서포트"
 
 #: fdmprinter.def.json
 msgctxt "support_offset description"
@@ -5879,7 +5879,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
-msgstr "Chunk 라인 카운트 지지대"
+msgstr "Chunk 라인 카운트 서포트"
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
@@ -6046,7 +6046,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation label"
 msgid "Alternate Skin Rotation"
-msgstr "대체 피부 회전"
+msgstr "대체 스킨 회전"
 
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation description"
@@ -6429,7 +6429,7 @@ msgid ""
 "Flow compensation: the amount of material extruded is multiplied by this "
 "value. Only applies to Wire Printing."
 msgstr ""
-"유량 보상 : 압출 된 재료의 양에 이 값을 곱합니다. 와이어 프린팅에만 적용됩니"
+"압출량 보상 : 압출 된 재료의 양에 이 값을 곱합니다. 와이어 프린팅에만 적용됩니"
 "다."
 
 #: fdmprinter.def.json
@@ -6440,7 +6440,7 @@ msgstr "WP 연결 흐름"
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_connection description"
 msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "위 또는 아래로 이동할 때 유량 보정. 와이어 프린팅에만 적용됩니다."
+msgstr "위 또는 아래로 이동할 때 압출량 보정. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_flat label"
@@ -6451,7 +6451,7 @@ msgstr "WP 플랫 플로우"
 msgctxt "wireframe_flow_flat description"
 msgid ""
 "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "평평한 선을 프린팅 할 때 유량 보정. 와이어 프린팅에만 적용됩니다."
+msgstr "평평한 선을 프린팅 할 때 압출량 보정. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_delay label"
@@ -6496,7 +6496,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_up_half_speed label"
 msgid "WP Ease Upward"
-msgstr "WP는 쉽게 상향 조정"
+msgstr "WP 상향 조정"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_up_half_speed description"
@@ -6761,7 +6761,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang label"
 msgid "Bridge Wall Max Overhang"
-msgstr "브리지 벽 최대 돌출"
+msgstr "브리지 벽 최대 오버행"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang description"
@@ -6808,7 +6808,7 @@ msgstr "브릿지 벽이 프린팅되는 속도."
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow label"
 msgid "Bridge Wall Flow"
-msgstr "브리지 벽 유량"
+msgstr "브리지 벽 압출량"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow description"
@@ -6831,7 +6831,7 @@ msgstr "브릿지 스킨 층이 프린팅되는 속도."
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow label"
 msgid "Bridge Skin Flow"
-msgstr "브리지 스킨 유량"
+msgstr "브리지 스킨 압출량"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
@@ -6892,7 +6892,7 @@ msgstr "두번째 브릿지 스킨 레이어를 인쇄 할 때 사용할 인쇄 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 label"
 msgid "Bridge Second Skin Flow"
-msgstr "브리지 두 번째 스킨 유량"
+msgstr "브리지 두 번째 스킨 압출량"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 description"
@@ -6939,7 +6939,7 @@ msgstr "세번째 브릿지 스킨 레이어를 인쇄 할 때 사용할 인쇄 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 label"
 msgid "Bridge Third Skin Flow"
-msgstr "브리지 세 번째 스킨 유량"
+msgstr "브리지 세 번째 스킨 압출량"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 description"

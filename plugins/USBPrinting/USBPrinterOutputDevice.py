@@ -18,7 +18,7 @@ from .avr_isp import stk500v2, intelHex
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
 from serial import Serial, SerialException, SerialTimeoutException
-from threading import Thread
+from threading import Thread, Event
 from time import time, sleep
 from queue import Queue
 from enum import IntEnum
@@ -82,8 +82,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
-        # Queue for commands that need to be send. Used when command is sent when a print is active.
+        # Queue for commands that need to be sent.
         self._command_queue = Queue()
+        # Event to indicate that an "ok" was received from the printer after sending a command.
+        self._command_received = Event()
+        self._command_received.set()
+
+    ## Reset USB device settings
+    #
+    def resetDeviceSettings(self):
+        self._firmware_name = None
 
     ##  Request the current scene to be sent to a USB-connected printer.
     #
@@ -228,6 +236,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._baud_rate = baud_rate
 
     def connect(self):
+        self._firmware_name = None # after each connection ensure that the firmware name is removed
+
         if self._baud_rate is None:
             if self._use_auto_detect:
                 auto_detect_job = AutoDetectBaudJob(self._serial_port)
@@ -259,23 +269,24 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send a command to printer.
     def sendCommand(self, command: Union[str, bytes]):
-        if self._is_printing:
+        if not self._command_received.is_set():
             self._command_queue.put(command)
-        elif self._connection_state == ConnectionState.connected:
+        else:
             self._sendCommand(command)
-
     def _sendCommand(self, command: Union[str, bytes]):
-        if self._serial is None:
+        if self._serial is None or self._connection_state != ConnectionState.connected:
             return
 
         if type(command == str):
-            command = (command + "\n").encode()
+            command = command.encode()
         if not command.endswith(b"\n"):
             command += b"\n"
         try:
+            self._command_received.clear()
             self._serial.write(command)
         except SerialTimeoutException:
             Logger.log("w", "Timeout when sending command to printer via USB.")
+            self._command_received.set()
 
     def _update(self):
         while self._connection_state == ConnectionState.connected and self._serial is not None:
@@ -286,13 +297,32 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
                 # Timeout, or no request has been sent at all.
+                self._command_received.set() # We haven't really received the ok, but we need to send a new command
+
                 self.sendCommand("M105")
                 self._last_temperature_request = time()
+
+                if self._firmware_name is None:
+                    self.sendCommand("M115")
 
             if b"ok T:" in line or line.startswith(b"T:") or b"ok B:" in line or line.startswith(b"B:"):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
                 # Update all temperature values
-                for match, extruder in zip(extruder_temperature_matches, self._printers[0].extruders):
+                matched_extruder_nrs = []
+                for match in extruder_temperature_matches:
+                    extruder_nr = 0
+                    if match[0] != b"":
+                        extruder_nr = int(match[0])
+
+                    if extruder_nr in matched_extruder_nrs:
+                        continue
+                    matched_extruder_nrs.append(extruder_nr)
+
+                    if extruder_nr >= len(self._printers[0].extruders):
+                        Logger.log("w", "Printer reports more temperatures than the number of configured extruders")
+                        continue
+
+                    extruder = self._printers[0].extruders[extruder_nr]
                     if match[1]:
                         extruder.updateHotendTemperature(float(match[1]))
                     if match[2]:
@@ -306,17 +336,23 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     if match[1]:
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
 
+            if b"FIRMWARE_NAME:" in line:
+                self._setFirmwareName(line)
+
+            if b"ok" in line:
+                self._command_received.set()
+                if not self._command_queue.empty():
+                    self._sendCommand(self._command_queue.get())
+                if self._is_printing:
+                    if self._paused:
+                        pass  # Nothing to do!
+                    else:
+                        self._sendNextGcodeLine()
+
             if self._is_printing:
                 if line.startswith(b'!!'):
                     Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
                     self.cancelPrint()
-                if b"ok" in line:
-                    if not self._command_queue.empty():
-                        self._sendCommand(self._command_queue.get())
-                    elif self._paused:
-                        pass  # Nothing to do!
-                    else:
-                        self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:
                     # A resend can be requested either by Resend, resend or rs.
                     try:
@@ -326,18 +362,31 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                             # In some cases of the RS command it needs to be handled differently.
                             self._gcode_position = int(line.split()[1])
 
+    def _setFirmwareName(self, name):
+        new_name = re.findall(r"FIRMWARE_NAME:(.*);", str(name))
+        if  new_name:
+            self._firmware_name = new_name[0]
+            Logger.log("i", "USB output device Firmware name: %s", self._firmware_name)
+        else:
+            self._firmware_name = "Unknown"
+            Logger.log("i", "Unknown USB output device Firmware name: %s", str(name))
+
+    def getFirmwareName(self):
+        return self._firmware_name
+
     def pausePrint(self):
         self._paused = True
 
     def resumePrint(self):
         self._paused = False
+        self._sendNextGcodeLine() #Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
 
     def cancelPrint(self):
         self._gcode_position = 0
         self._gcode.clear()
         self._printers[0].updateActivePrintJob(None)
         self._is_printing = False
-        self._is_paused = False
+        self._paused = False
 
         # Turn off temperatures, fan and steppers
         self._sendCommand("M140 S0")

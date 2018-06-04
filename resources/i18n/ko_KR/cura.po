@@ -675,7 +675,7 @@ msgstr "G 코드 수정"
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
-msgstr "지지대 차단기"
+msgstr "서포트 차단기"
 
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:13
 msgctxt "@info:tooltip"
@@ -971,7 +971,7 @@ msgstr "펌웨어 업그레이드"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:14
 msgctxt "@action"
 msgid "Checkup"
-msgstr "대조"
+msgstr "검사"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:21
 msgctxt "@action"
@@ -991,7 +991,7 @@ msgstr "내벽"
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:98
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr "외판"
+msgstr "스킨"
 
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:99
 msgctxt "@tooltip"
@@ -2348,7 +2348,7 @@ msgstr "밀리미터 단위의 빌드 플레이트에서 기저부 높이."
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:61
 msgctxt "@action:label"
 msgid "Base (mm)"
-msgstr "바다 (mm)"
+msgstr "바닥 (mm)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:79
 msgctxt "@info:tooltip"
@@ -2420,7 +2420,7 @@ msgstr "서포터로 프린팅"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:84
 msgctxt "@label"
 msgid "Don't support overlap with other models"
-msgstr "다른 모델과 오버랩되도록 지지하지 않음"
+msgstr "다른 모델과 오버랩되도록 지원하지 않음"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:92
 msgctxt "@label"
@@ -3631,7 +3631,7 @@ msgstr "버전: %1"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:56
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
-msgstr "3D 인쇄를 위해 필라멘트를 한줄로 용."
+msgstr "3D 프린팅을 위한 엔드 투 엔트 솔루션."
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
 msgctxt "@info:credit"

@@ -25,8 +25,8 @@ if TYPE_CHECKING:
 #
 #
 class ExtruderStack(CuraContainerStack):
-    def __init__(self, container_id: str, *args, **kwargs):
-        super().__init__(container_id, *args, **kwargs)
+    def __init__(self, container_id: str):
+        super().__init__(container_id)
 
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
 
@@ -38,7 +38,7 @@ class ExtruderStack(CuraContainerStack):
     #
     #   This will set the next stack and ensure that we register this stack as an extruder.
     @override(ContainerStack)
-    def setNextStack(self, stack: CuraContainerStack) -> None:
+    def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
         self.addMetaDataEntry("machine", stack.id)

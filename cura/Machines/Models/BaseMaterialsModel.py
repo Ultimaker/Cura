@@ -39,6 +39,8 @@ class BaseMaterialsModel(ListModel):
 
         self._extruder_position = 0
         self._extruder_stack = None
+        # Update the stack and the model data when the machine changes
+        self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
@@ -50,9 +52,11 @@ class BaseMaterialsModel(ListModel):
         self._extruder_stack = global_stack.extruders.get(str(self._extruder_position))
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.connect(self._update)
+        # Force update the model when the extruder stack changes
+        self._update()
 
     def setExtruderPosition(self, position: int):
-        if self._extruder_position != position:
+        if self._extruder_stack is None or self._extruder_position != position:
             self._extruder_position = position
             self._updateExtruderStack()
             self.extruderPositionChanged.emit()

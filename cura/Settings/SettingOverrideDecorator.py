@@ -30,6 +30,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #   Note that Support Mesh is not in here because it actually generates
     #   g-code in the volume of the mesh.
     _non_printing_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+    _non_thumbnail_visible_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh", "support_mesh"}
 
     def __init__(self):
         super().__init__()
@@ -41,6 +42,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
         self._is_non_printing_mesh = False
+        self._is_non_thumbnail_visible_mesh = False
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
@@ -72,6 +74,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
         # has not been updated yet.
         deep_copy._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
+        deep_copy._is_non_thumbnail_visible_mesh = self.evaluateIsNonThumbnailVisibleMesh()
 
         return deep_copy
 
@@ -102,10 +105,17 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def evaluateIsNonPrintingMesh(self):
         return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
 
+    def isNonThumbnailVisibleMesh(self):
+        return self._is_non_thumbnail_visible_mesh
+
+    def evaluateIsNonThumbnailVisibleMesh(self):
+        return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_thumbnail_visible_settings)
+
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
         if property_name == "value":
             # Trigger slice/need slicing if the value has changed.
             self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
+            self._is_non_thumbnail_visible_mesh = self.evaluateIsNonThumbnailVisibleMesh()
 
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()

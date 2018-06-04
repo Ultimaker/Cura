@@ -76,9 +76,9 @@ def test_addContainerExtruderStack(container_registry, definition_container):
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
         container_registry.addContainer(container_stack)
 
-    assert len(mock_super_add_container.call_args_list) == 1 #Called only once.
-    assert len(mock_super_add_container.call_args_list[0][0]) == 1 #Called with one parameter.
-    assert type(mock_super_add_container.call_args_list[0][0][0]) == ExtruderStack
+    assert len(mock_super_add_container.call_args_list) == 2 #Called only once.
+    assert len(mock_super_add_container.call_args_list[1][0]) == 1 #Called with one parameter.
+    assert type(mock_super_add_container.call_args_list[1][0][0]) == ExtruderStack
 
 ##  Tests whether addContainer properly converts to GlobalStack.
 def test_addContainerGlobalStack(container_registry, definition_container):
@@ -92,9 +92,9 @@ def test_addContainerGlobalStack(container_registry, definition_container):
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
         container_registry.addContainer(container_stack)
 
-    assert len(mock_super_add_container.call_args_list) == 1 #Called only once.
-    assert len(mock_super_add_container.call_args_list[0][0]) == 1 #Called with one parameter.
-    assert type(mock_super_add_container.call_args_list[0][0][0]) == GlobalStack
+    assert len(mock_super_add_container.call_args_list) == 2 #Called only once.
+    assert len(mock_super_add_container.call_args_list[1][0]) == 1 #Called with one parameter.
+    assert type(mock_super_add_container.call_args_list[1][0][0]) == GlobalStack
 
 def test_addContainerGoodSettingVersion(container_registry, definition_container):
     from cura.CuraApplication import CuraApplication

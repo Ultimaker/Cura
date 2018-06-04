@@ -39,8 +39,8 @@ from . import Exceptions
 #   This also means that operations on the stack that modifies the container ordering is prohibited and
 #   will raise an exception.
 class CuraContainerStack(ContainerStack):
-    def __init__(self, container_id: str, *args, **kwargs):
-        super().__init__(container_id, *args, **kwargs)
+    def __init__(self, container_id: str):
+        super().__init__(container_id)
 
         self._container_registry = ContainerRegistry.getInstance()
 
@@ -282,6 +282,13 @@ class CuraContainerStack(ContainerStack):
                     new_containers[index] = self._empty_instance_container
 
         self._containers = new_containers
+
+        # CURA-5281
+        # Some stacks can have empty definition_changes containers which will cause problems.
+        # Make sure that all stacks here have non-empty definition_changes containers.
+        if isinstance(new_containers[_ContainerIndexes.DefinitionChanges], type(self._empty_instance_container)):
+            from cura.Settings.CuraStackBuilder import CuraStackBuilder
+            CuraStackBuilder.createDefinitionChangesContainer(self, self.getId() + "_settings")
 
     ## protected:
 

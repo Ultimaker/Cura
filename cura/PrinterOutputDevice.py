@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, QObject, QTimer, pyqtSignal, QVariant
@@ -71,6 +71,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self._connection_state = ConnectionState.closed
 
+        self._firmware_name = None
         self._address = ""
         self._connection_text = ""
         self.printersChanged.connect(self._onPrintersChanged)
@@ -174,6 +175,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def acceptsCommands(self):
         return self._accepts_commands
 
+    @deprecated("Please use the protected function instead", "3.2")
+    def setAcceptsCommands(self, accepts_commands):
+        self._setAcceptsCommands(accepts_commands)
+
     ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
     def _setAcceptsCommands(self, accepts_commands):
         if self._accepts_commands != accepts_commands:
@@ -197,6 +202,18 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         # At this point there may be non-updated configurations
         self._updateUniqueConfigurations()
+
+    ##  Set the device firmware name
+    #
+    #   \param name \type{str} The name of the firmware.
+    def _setFirmwareName(self, name):
+        self._firmware_name = name
+
+    ##  Get the name of device firmware
+    #
+    #   This name can be used to define device type
+    def getFirmwareName(self):
+        return self._firmware_name
 
 
 ##  The current processing state of the backend.

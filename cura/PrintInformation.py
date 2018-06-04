@@ -16,6 +16,7 @@ from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+from UM.MimeTypeDatabase import MimeTypeDatabase
 
 catalog = i18nCatalog("cura")
 
@@ -64,6 +65,7 @@ class PrintInformation(QObject):
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
+        self._is_user_specified_job_name = False
         self._base_name = ""
         self._abbr_machine = ""
         self._job_name = ""
@@ -278,9 +280,15 @@ class PrintInformation(QObject):
         for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
             self._calculateInformation(build_plate_number)
 
-    @pyqtSlot(str)
-    def setJobName(self, name):
+    # Manual override of job name should also set the base name so that when the printer prefix is updated, it the
+    # prefix can be added to the manually added name, not the old base name
+    @pyqtSlot(str, bool)
+    def setJobName(self, name, is_user_specified_job_name = False):
+        self._is_user_specified_job_name = is_user_specified_job_name
         self._job_name = name
+        self._base_name = name.replace(self._abbr_machine + "_", "")
+        if name == "":
+            self._is_user_specified_job_name = False
         self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
@@ -292,21 +300,25 @@ class PrintInformation(QObject):
     def _updateJobName(self):
         if self._base_name == "":
             self._job_name = ""
+            self._is_user_specified_job_name = False
             self.jobNameChanged.emit()
             return
 
         base_name = self._stripAccents(self._base_name)
         self._setAbbreviatedMachineName()
-        if self._pre_sliced:
-            self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
-        elif Preferences.getInstance().getValue("cura/jobname_prefix"):
-            # Don't add abbreviation if it already has the exact same abbreviation.
-            if base_name.startswith(self._abbr_machine + "_"):
-                self._job_name = base_name
+
+        # Only update the job name when it's not user-specified.
+        if not self._is_user_specified_job_name:
+            if self._pre_sliced:
+                self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
+            elif Preferences.getInstance().getValue("cura/jobname_prefix"):
+                # Don't add abbreviation if it already has the exact same abbreviation.
+                if base_name.startswith(self._abbr_machine + "_"):
+                    self._job_name = base_name
+                else:
+                    self._job_name = self._abbr_machine + "_" + base_name
             else:
-                self._job_name = self._abbr_machine + "_" + base_name
-        else:
-            self._job_name = base_name
+                self._job_name = base_name
 
         self.jobNameChanged.emit()
 
@@ -317,12 +329,14 @@ class PrintInformation(QObject):
     baseNameChanged = pyqtSignal()
 
     def setBaseName(self, base_name: str, is_project_file: bool = False):
+        self._is_user_specified_job_name = False
+
         # Ensure that we don't use entire path but only filename
         name = os.path.basename(base_name)
 
         # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
         # extension. This cuts the extension off if necessary.
-        name = os.path.splitext(name)[0]
+        check_name = os.path.splitext(name)[0]
         filename_parts = os.path.basename(base_name).split(".")
 
         # If it's a gcode, also always update the job name
@@ -333,10 +347,22 @@ class PrintInformation(QObject):
 
         # if this is a profile file, always update the job name
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
-        is_empty = name == ""
-        if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
-            # Only take the file name part
-            self._base_name = filename_parts[0]
+        is_empty = check_name == ""
+        if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != check_name)):
+            # Only take the file name part, Note : file name might have 'dot' in name as well
+
+            data = ''
+            try:
+                mime_type = MimeTypeDatabase.getMimeTypeForFile(name)
+                data = mime_type.stripExtension(name)
+            except:
+                Logger.log("w", "Unsupported Mime Type Database file extension")
+
+            if data is not None and check_name is not None:
+                self._base_name = data
+            else:
+                self._base_name = ''
+
             self._updateJobName()
 
     @pyqtProperty(str, fset = setBaseName, notify = baseNameChanged)

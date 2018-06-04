@@ -227,6 +227,7 @@
                 {
                     "label": "Outer nozzle diameter",
                     "description": "The outer diameter of the tip of the nozzle.",
+                    "unit": "mm",
                     "default_value": 1,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -238,6 +239,7 @@
                 {
                     "label": "Nozzle length",
                     "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
+                    "unit": "mm",
                     "default_value": 3,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -261,6 +263,7 @@
                 {
                     "label": "Heat zone length",
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
+                    "unit": "mm",
                     "default_value": 16,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -271,6 +274,7 @@
                 {
                     "label": "Filament Park Distance",
                     "description": "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used.",
+                    "unit": "mm",
                     "default_value": 16,
                     "value": "machine_heat_zone_length",
                     "type": "float",
@@ -1803,6 +1807,30 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_support_enabled":
+                {
+                    "label": "Infill Support",
+                    "description": "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_support_angle":
+                {
+                    "label": "Infill Overhang Angle",
+                    "description": "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 40,
+                    "enabled": "infill_sparse_density > 0 and infill_support_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "skin_preshrink":
                 {
                     "label": "Skin Removal Width",
@@ -2268,6 +2296,16 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "limit_support_retractions":
+                {
+                    "label": "Limit Support Retractions",
+                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "retraction_enable and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3271,12 +3309,24 @@
                     {
                         "off": "Off",
                         "all": "All",
-                        "noskin": "No Skin"
+                        "noskin": "Not in Skin"
                     },
                     "default_value": "all",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "retraction_combing_max_distance":
+                {
+                    "label": "Max Comb Distance With No Retract",
+                    "description": "When non-zero, combing travel moves that are longer than this distance will use retraction.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "travel_retract_before_outer_wall":
                 {
@@ -3295,6 +3345,16 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "resolveOrValue('retraction_combing') != 'off'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "travel_avoid_supports":
+                {
+                    "label": "Avoid Supports When Traveling",
+                    "description": "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3676,6 +3736,20 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "support_wall_count":
+                {
+                    "label": "Support Wall Line Count",
+                    "description": "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
+                    "maximum_value_warning": "3",
+                    "type": "int",
+                    "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
+                    "enabled": "support_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true
                 },
                 "zig_zaggify_support":
                 {
@@ -5522,6 +5596,20 @@
                     "maximum_value_warning": "0.1",
                     "settable_per_mesh": true
                 },
+                "meshfix_maximum_travel_resolution":
+                {
+                    "label": "Maximum Travel Resolution",
+                    "description": "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.02,
+                    "value": "meshfix_maximum_resolution * speed_travel / speed_print",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.005",
+                    "maximum_value_warning": "1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_skip_some_zags":
                 {
                     "label": "Break Up Support In Chunks",
@@ -5708,15 +5796,26 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "cross_infill_apply_pockets_alternatingly":
+                "cross_infill_density_image":
                 {
-                    "label": "Alternate Cross 3D Pockets",
-                    "description": "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "infill_pattern == 'cross_3d'",
+                    "label": "Cross Infill Density Image",
+                    "description": "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "cross_support_density_image":
+                {
+                    "label": "Cross Fill Density Image for Support",
+                    "description": "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": "support_pattern == 'cross' or support_pattern == 'cross_3d'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "spaghetti_infill_enabled":
                 {
@@ -5841,14 +5940,6 @@
                     "type": "float",
                     "enabled": "support_conical_enabled and support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "infill_hollow":
-                {
-                    "label": "Hollow Out Objects",
-                    "description": "Remove all infill and make the inside of the object eligible for support.",
-                    "type": "bool",
-                    "default_value": false,
                     "settable_per_mesh": true
                 },
                 "magic_fuzzy_skin_enabled":
@@ -6304,9 +6395,10 @@
                 "adaptive_layer_height_variation":
                 {
                     "label": "Adaptive layers maximum variation",
-                    "description": "The maximum allowed height different from the base layer height in mm.",
+                    "description": "The maximum allowed height different from the base layer height.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
+                    "unit": "mm",
                     "default_value": 0.1,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -6319,6 +6411,7 @@
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
                     "default_value": 0.01,
+                    "unit": "mm",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -6585,14 +6678,6 @@
                     "type": "float",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
-                },
-                "wall_try_line_thickness":
-                {
-                    "label": "Try Multiple Line Thicknesses",
-                    "description": "When creating inner walls, try various line thicknesses to fit the wall lines better in narrow spaces. This reduces or increases the inner wall line width by up to 0.01mm.",
-                    "default_value": false,
-                    "type": "bool",
-                    "settable_per_mesh": true
                 }
             }
         },
@@ -6605,28 +6690,28 @@
                 "center_object": {
                     "description": "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved.",
                     "type": "bool",
-                    "label": "Center object",
+                    "label": "Center Object",
                     "default_value": false,
                     "enabled": false
                 },
                 "mesh_position_x": {
                     "description": "Offset applied to the object in the x direction.",
                     "type": "float",
-                    "label": "Mesh position x",
+                    "label": "Mesh Position X",
                     "default_value": 0,
                     "enabled": false
                 },
                 "mesh_position_y": {
                     "description": "Offset applied to the object in the y direction.",
                     "type": "float",
-                    "label": "Mesh position y",
+                    "label": "Mesh Position Y",
                     "default_value": 0,
                     "enabled": false
                 },
                 "mesh_position_z": {
                     "description": "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'.",
                     "type": "float",
-                    "label": "Mesh position z",
+                    "label": "Mesh Position Z",
                     "default_value": 0,
                     "enabled": false
                 },

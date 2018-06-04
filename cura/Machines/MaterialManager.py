@@ -9,6 +9,7 @@ from typing import Optional, TYPE_CHECKING
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
@@ -75,10 +76,12 @@ class MaterialManager(QObject):
 
     def initialize(self):
         # Find all materials and put them in a matrix for quick search.
-        material_metadatas = {metadata["id"]: metadata for metadata in self._container_registry.findContainersMetadata(type = "material")}
+        material_metadatas = {metadata["id"]: metadata for metadata in
+                              self._container_registry.findContainersMetadata(type = "material") if
+                              metadata.get("GUID")}
 
         self._material_group_map = dict()
-
+                
         # Map #1
         #    root_material_id -> MaterialGroup
         for material_id, material_metadata in material_metadatas.items():
@@ -92,7 +95,7 @@ class MaterialManager(QObject):
                 self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
             group = self._material_group_map[root_material_id]
 
-            #Store this material in the group of the appropriate root material.
+            # Store this material in the group of the appropriate root material.
             if material_id != root_material_id:
                 new_node = MaterialNode(material_metadata)
                 group.derived_material_node_list.append(new_node)
@@ -112,8 +115,6 @@ class MaterialManager(QObject):
         grouped_by_type_dict = dict()
         material_types_without_fallback = set()
         for root_material_id, material_node in self._material_group_map.items():
-            if not self._container_registry.isReadOnly(root_material_id):
-                continue
             material_type = material_node.root_material_node.metadata["material"]
             if material_type not in grouped_by_type_dict:
                 grouped_by_type_dict[material_type] = {"generic": None,
@@ -126,9 +127,15 @@ class MaterialManager(QObject):
                     diameter = material_node.root_material_node.metadata.get("approximate_diameter")
                     if diameter != self._default_approximate_diameter_for_quality_search:
                         to_add = False  # don't add if it's not the default diameter
+
                 if to_add:
-                    grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
-                    material_types_without_fallback.remove(material_type)
+                    # Checking this first allow us to differentiate between not read only materials:
+                    #  - if it's in the list, it means that is a new material without fallback
+                    #  - if it is not, then it is a custom material with a fallback material (parent)
+                    if material_type in material_types_without_fallback:
+                        grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
+                        material_types_without_fallback.remove(material_type)
+
         # Remove the materials that have no fallback materials
         for material_type in material_types_without_fallback:
             del grouped_by_type_dict[material_type]
@@ -146,9 +153,6 @@ class MaterialManager(QObject):
         material_group_dict = dict()
         keys_to_fetch = ("name", "material", "brand", "color")
         for root_material_id, machine_node in self._material_group_map.items():
-            if not self._container_registry.isReadOnly(root_material_id):
-                continue
-
             root_material_metadata = machine_node.root_material_node.metadata
 
             key_data = []
@@ -156,8 +160,13 @@ class MaterialManager(QObject):
                 key_data.append(root_material_metadata.get(key))
             key_data = tuple(key_data)
 
+            # If the key_data doesn't exist, it doesn't matter if the material is read only...
             if key_data not in material_group_dict:
                 material_group_dict[key_data] = dict()
+            else:
+                # ...but if key_data exists, we just overwrite it if the material is read only, otherwise we skip it
+                if not machine_node.is_read_only:
+                    continue
             approximate_diameter = root_material_metadata.get("approximate_diameter")
             material_group_dict[key_data][approximate_diameter] = root_material_metadata["id"]
 
@@ -204,16 +213,22 @@ class MaterialManager(QObject):
             else:
                 # this material is variant-specific, so we save it in a variant-specific node under the
                 # machine-specific node
-                if variant_name not in machine_node.children_map:
-                    machine_node.children_map[variant_name] = MaterialNode()
 
-                variant_node = machine_node.children_map[variant_name]
-                if root_material_id not in variant_node.material_map:
+                # Check first if the variant exist in the manager
+                existing_variant = self._application.getVariantManager().getVariantNode(definition, variant_name)
+                if existing_variant is not None:
+                    if variant_name not in machine_node.children_map:
+                        machine_node.children_map[variant_name] = MaterialNode()
+
+                    variant_node = machine_node.children_map[variant_name]
+                    if root_material_id in variant_node.material_map:  # We shouldn't have duplicated variant-specific materials for the same machine.
+                        ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
+                        continue
                     variant_node.material_map[root_material_id] = MaterialNode(material_metadata)
                 else:
-                    # Sanity check: make sure we don't have duplicated variant-specific materials for the same machine
-                    raise RuntimeError("Found duplicate variant name [%s] for machine [%s] in material [%s]" %
-                                       (variant_name, definition, material_metadata["id"]))
+                    # Add this container id to the wrong containers list in the registry
+                    Logger.log("w", "Not adding {id} to the material manager because the variant does not exist.".format(id = material_metadata["id"]))
+                    self._container_registry.addWrongContainerId(material_metadata["id"])
 
         self.materialsUpdated.emit()
 
@@ -276,9 +291,10 @@ class MaterialManager(QObject):
         material_id_metadata_dict = dict()
         for node in nodes_to_check:
             if node is not None:
+                # Only exclude the materials that are explicitly specified in the "exclude_materials" field.
+                # Do not exclude other materials that are of the same type.
                 for material_id, node in node.material_map.items():
-                    fallback_id = self.getFallbackMaterialIdByMaterialType(node.metadata["material"])
-                    if fallback_id in machine_exclude_materials:
+                    if material_id in machine_exclude_materials:
                         Logger.log("d", "Exclude material [%s] for machine [%s]",
                                    material_id, machine_definition.getId())
                         continue
@@ -435,7 +451,8 @@ class MaterialManager(QObject):
             return
 
         material_group = self.getMaterialGroup(root_material_id)
-        material_group.root_material_node.getContainer().setName(name)
+        if material_group:
+            material_group.root_material_node.getContainer().setName(name)
 
     #
     # Removes the given material.
@@ -459,6 +476,8 @@ class MaterialManager(QObject):
             return None
 
         base_container = material_group.root_material_node.getContainer()
+        if not base_container:
+            return None
 
         # Ensure all settings are saved.
         self._application.saveSettings()
@@ -478,6 +497,8 @@ class MaterialManager(QObject):
         # Clone all of them.
         for node in material_group.derived_material_node_list:
             container_to_copy = node.getContainer()
+            if not container_to_copy:
+                continue
             # Create unique IDs for every clone.
             new_id = new_base_id
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":

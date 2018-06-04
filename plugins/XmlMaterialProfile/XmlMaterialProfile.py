@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
@@ -12,10 +12,10 @@ import xml.etree.ElementTree as ET
 from UM.Resources import Resources
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
-
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from .XmlMaterialValidator import XmlMaterialValidator
 
@@ -71,12 +71,14 @@ class XmlMaterialProfile(InstanceContainer):
 
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
-        root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
+        if root_material_container is not None:
+            root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
             container = node.getContainer()
-            container.setMetaDataEntry(key, value, apply_to_all = False)
+            if container is not None:
+                container.setMetaDataEntry(key, value, apply_to_all = False)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
@@ -512,7 +514,7 @@ class XmlMaterialProfile(InstanceContainer):
                 color = entry.find("./um:color", self.__namespaces)
                 label = entry.find("./um:label", self.__namespaces)
 
-                if label is not None:
+                if label is not None and label.text is not None:
                     meta_data["name"] = label.text
                 else:
                     meta_data["name"] = self._profile_name(material.text, color.text)
@@ -538,7 +540,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         validation_message = XmlMaterialValidator.validateMaterialMetaData(meta_data)
         if validation_message is not None:
-            raise Exception("Not valid material profile: %s" % (validation_message))
+            ConfigurationErrorMessage.getInstance().addFaultyContainers(self.getId())
+            Logger.log("e", "Not a valid material profile: {message}".format(message = validation_message))
+            return
 
         property_values = {}
         properties = data.iterfind("./um:properties/*", self.__namespaces)
@@ -803,7 +807,7 @@ class XmlMaterialProfile(InstanceContainer):
                 color = entry.find("./um:color", cls.__namespaces)
                 label = entry.find("./um:label", cls.__namespaces)
 
-                if label is not None:
+                if label is not None and label.text is not None:
                     base_metadata["name"] = label.text
                 else:
                     base_metadata["name"] = cls._profile_name(material.text, color.text)

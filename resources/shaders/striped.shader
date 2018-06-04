@@ -32,7 +32,7 @@ fragment =
     uniform highp vec3 u_viewPosition;
 
     uniform mediump float u_width;
-    uniform mediump bool u_vertical_stripes;
+    uniform bool u_vertical_stripes;
 
     varying highp vec3 v_position;
     varying highp vec3 v_vertex;

@@ -25,6 +25,7 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import math
+import copy
 
 from typing import List, Optional
 
@@ -61,6 +62,7 @@ class BuildVolume(SceneNode):
         self._grid_shader = None
 
         self._disallowed_areas = []
+        self._disallowed_areas_no_brim = []
         self._disallowed_area_mesh = None
 
         self._error_areas = []
@@ -171,6 +173,9 @@ class BuildVolume(SceneNode):
     def getDisallowedAreas(self) -> List[Polygon]:
         return self._disallowed_areas
 
+    def getDisallowedAreasNoBrim(self) -> List[Polygon]:
+        return self._disallowed_areas_no_brim
+
     def setDisallowedAreas(self, areas: List[Polygon]):
         self._disallowed_areas = areas
 
@@ -187,7 +192,7 @@ class BuildVolume(SceneNode):
             self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
-        renderer.queueNode(self, mesh = self._origin_mesh)
+        renderer.queueNode(self, mesh = self._origin_mesh, backface_cull = True)
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
@@ -455,7 +460,7 @@ class BuildVolume(SceneNode):
             minimum = Vector(min_w, min_h - 1.0, min_d),
             maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d))
 
-        bed_adhesion_size = self._getEdgeDisallowedSize()
+        bed_adhesion_size = self.getEdgeDisallowedSize()
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
@@ -647,7 +652,7 @@ class BuildVolume(SceneNode):
 
         extruder_manager = ExtruderManager.getInstance()
         used_extruders = extruder_manager.getUsedExtruderStacks()
-        disallowed_border_size = self._getEdgeDisallowedSize()
+        disallowed_border_size = self.getEdgeDisallowedSize()
 
         if not used_extruders:
             # If no extruder is used, assume that the active extruder is used (else nothing is drawn)
@@ -658,7 +663,8 @@ class BuildVolume(SceneNode):
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
         prime_areas = self._computeDisallowedAreasPrimeBlob(disallowed_border_size, used_extruders)
-        prime_disallowed_areas = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
+        result_areas_no_brim = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
+        prime_disallowed_areas = copy.deepcopy(result_areas_no_brim)
 
         #Check if prime positions intersect with disallowed areas.
         for extruder in used_extruders:
@@ -687,12 +693,15 @@ class BuildVolume(SceneNode):
                     break
 
             result_areas[extruder_id].extend(prime_areas[extruder_id])
+            result_areas_no_brim[extruder_id].extend(prime_areas[extruder_id])
 
             nozzle_disallowed_areas = extruder.getProperty("nozzle_disallowed_areas", "value")
             for area in nozzle_disallowed_areas:
                 polygon = Polygon(numpy.array(area, numpy.float32))
-                polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
-                result_areas[extruder_id].append(polygon) #Don't perform the offset on these.
+                polygon_disallowed_border = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                result_areas[extruder_id].append(polygon_disallowed_border) #Don't perform the offset on these.
+                #polygon_minimal_border = polygon.getMinkowskiHull(5)
+                result_areas_no_brim[extruder_id].append(polygon)  # no brim
 
         # Add prime tower location as disallowed area.
         if len(used_extruders) > 1: #No prime tower in single-extrusion.
@@ -708,6 +717,7 @@ class BuildVolume(SceneNode):
                         break
                 if not prime_tower_collision:
                     result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
+                    result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
                 else:
                     self._error_areas.extend(prime_tower_areas[extruder_id])
 
@@ -716,6 +726,9 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []
         for extruder_id in result_areas:
             self._disallowed_areas.extend(result_areas[extruder_id])
+        self._disallowed_areas_no_brim = []
+        for extruder_id in result_areas_no_brim:
+            self._disallowed_areas_no_brim.extend(result_areas_no_brim[extruder_id])
 
     ##  Computes the disallowed areas for objects that are printed with print
     #   features.
@@ -949,12 +962,12 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
-    ##  Convenience function to calculate the disallowed radius around the edge.
+    ##  Calculate the disallowed radius around the edge.
     #
     #   This disallowed radius is to allow for space around the models that is
     #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
     #   and travel avoid distance.
-    def _getEdgeDisallowedSize(self):
+    def getEdgeDisallowedSize(self):
         if not self._global_container_stack or not self._global_container_stack.extruders:
             return 0
 
@@ -1035,6 +1048,6 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
     _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
