@@ -357,11 +357,12 @@ class PrintInformation(QObject):
                 data = mime_type.stripExtension(name)
             except:
                 Logger.log("w", "Unsupported Mime Type Database file extension")
+                data = 'unnamed'
 
             if data is not None and check_name is not None:
                 self._base_name = data
             else:
-                self._base_name = ''
+                self._base_name = 'unnamed'
 
             self._updateJobName()
 
