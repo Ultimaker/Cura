@@ -981,6 +981,14 @@ class MachineManager(QObject):
             container = extruder.userChanges
             container.setProperty(setting_name, property_name, property_value)
 
+    ##  Reset all setting properties of a setting for all extruders.
+    #   \param setting_name The ID of the setting to reset.
+    @pyqtSlot(str)
+    def resetSettingForAllExtruders(self, setting_name: str) -> None:
+        for key, extruder in self._global_container_stack.extruders.items():
+            container = extruder.userChanges
+            container.removeInstance(setting_name)
+
     @pyqtProperty("QVariantList", notify = globalContainerChanged)
     def currentExtruderPositions(self) -> List[str]:
         if self._global_container_stack is None:

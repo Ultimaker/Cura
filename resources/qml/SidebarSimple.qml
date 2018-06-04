@@ -626,6 +626,7 @@ Item
                         if (active_mode == 0 || active_mode == "simple")
                         {
                             Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
+                            Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
                         }
                     }
 
