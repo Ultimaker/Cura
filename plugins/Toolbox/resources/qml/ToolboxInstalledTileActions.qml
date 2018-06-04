@@ -13,6 +13,16 @@ Column
     width: UM.Theme.getSize("toolbox_action_button").width
     spacing: UM.Theme.getSize("narrow_margin").height
 
+    Label
+    {
+        visible: !model.is_installed
+        text: catalog.i18nc("@label", "Will install upon restarting")
+        color: UM.Theme.getColor("lining")
+        font: UM.Theme.getFont("default")
+        wrapMode: Text.WordWrap
+        width: parent.width
+    }
+
     ToolboxProgressButton
     {
         id: updateButton
@@ -39,7 +49,7 @@ Column
     {
         id: removeButton
         text: canDowngrade ? catalog.i18nc("@action:button", "Downgrade") : catalog.i18nc("@action:button", "Uninstall")
-        visible: !model.is_bundled
+        visible: !model.is_bundled && model.is_installed
         enabled: !toolbox.isDownloading
         style: ButtonStyle
         {
