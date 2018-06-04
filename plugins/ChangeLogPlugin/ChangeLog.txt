@@ -38,9 +38,6 @@ Experimental setting that allows you to input a path to an image to manipulate t
 *Backup and restore
 Added functionality to backup and restore settings and profiles to cloud using the Cura Backups plugin.
 
-*Cryptography and update packages
-Cloud login data is encrypted, so that someone who has access to a users computer can't steal login data.
-
 *Auto-select model after import
 User can now set preferences for the behavior of selecting a newly imported model or not.
 
