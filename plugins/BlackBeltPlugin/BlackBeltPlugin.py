@@ -77,7 +77,7 @@ class BlackBeltPlugin(Extension):
         self._application._engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
 
         # Substitute our own sidebar
-        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "Sidebar.qml")
+        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "PrepareSidebar.qml")
         prepare_stage = Application.getInstance().getController().getStage("PrepareStage")
         prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
 

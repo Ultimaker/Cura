@@ -247,17 +247,19 @@ Item
                     {
                         function showTooltip (showTooltip)
                         {
-                            if (showTooltip) {
+                            if (showTooltip)
+                            {
                                 var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
                                 base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height), content)
                             }
-                            else {
+                            else
+                            {
                                 base.hideTooltip()
                             }
                         }
 
                         id: unavailableLineToolTip
-                        height: 20 // hovered area height
+                        height: 20 * screenScaleFactor // hovered area height
                         z: parent.z + 1 // should be higher, otherwise the area can be hovered
                         x: 0
                         anchors.verticalCenter: qualitySlider.verticalCenter
@@ -267,7 +269,8 @@ Item
                             id: leftArea
                             width:
                             {
-                                if (qualityModel.availableTotalTicks == 0) {
+                                if (qualityModel.availableTotalTicks == 0)
+                                {
                                     return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
                                 }
                                 return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
