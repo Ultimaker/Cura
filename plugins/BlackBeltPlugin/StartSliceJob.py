@@ -22,6 +22,7 @@ from cura.Settings.CuraContainerStack import CuraContainerStack
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshData import transformVertices
 from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Scene.SceneNode import SceneNode
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
@@ -305,7 +306,6 @@ class StartSliceJob(Job):
             raft_enabled = stack.getProperty("blackbelt_raft", "value")
             belt_layer_mesh_data = {}
             bottom_cutting_meshes = []
-            nodes_to_be_removed = []
             if gantry_angle: # not 0 or None
                 # Add a modifier mesh to all printable meshes touching the belt
                 for group in filtered_object_groups:
@@ -340,7 +340,7 @@ class StartSliceJob(Job):
                                     center = center
                                 )
 
-                                new_node = CuraSceneNode(parent = self._scene.getRoot())
+                                new_node = SceneNode()
                                 new_node.setMeshData(mb.build())
                                 node_name = "bottomCuttingMesh" + hex(id(new_node))
                                 new_node.setName(node_name)
@@ -348,7 +348,6 @@ class StartSliceJob(Job):
                                 # Note: adding a SettingOverrideDecorator here causes a slicing loop
                                 added_meshes.append(new_node)
                                 bottom_cutting_meshes.append(node_name)
-                                nodes_to_be_removed.append(new_node)
 
                             belt_wall_enabled = extruder_stack.getProperty("blackbelt_belt_wall_enabled", "value")
                             belt_wall_speed = extruder_stack.getProperty("blackbelt_belt_wall_speed", "value")
@@ -376,7 +375,7 @@ class StartSliceJob(Job):
                                         center = center
                                     )
 
-                                    new_node = CuraSceneNode(parent = self._scene.getRoot())
+                                    new_node = SceneNode()
                                     new_node.setMeshData(mb.build())
                                     node_name = "beltLayerModifierMesh" + hex(id(new_node))
                                     new_node.setName(node_name)
@@ -387,7 +386,7 @@ class StartSliceJob(Job):
 
                                     # Note: adding a SettingOverrideDecorator here causes a slicing loop
                                     added_meshes.append(new_node)
-                                    nodes_to_be_removed.append(new_node)
+
                     if added_meshes:
                         group += added_meshes
 
@@ -507,9 +506,6 @@ class StartSliceJob(Job):
                 # TODO: this should be handled per mesh-group instead of per scene
                 # One-at-a-time printing should be disabled for slanted gantry printers for now
                 self._scene.getRoot().callDecoration("setSceneFrontOffset", front_offset)
-
-            for node in nodes_to_be_removed:
-                self._scene.getRoot().removeChild(node)
 
         self.setResult(StartJobResult.Finished)
 
