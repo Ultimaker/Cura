@@ -110,7 +110,7 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
                     arrange_array.add()
                 arranger = arrange_array.get(current_build_plate_number)
 
-                best_spot = arranger.bestSpot(offset_shape_arr, start_prio=start_priority)
+                best_spot = arranger.bestSpot(hull_shape_arr, start_prio=start_priority)
                 x, y = best_spot.x, best_spot.y
                 node.removeDecorator(ZOffsetDecorator)
                 if node.getBoundingBox():
@@ -118,7 +118,7 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
                 else:
                     center_y = 0
                 if x is not None:  # We could find a place
-                    arranger.place(x, y, hull_shape_arr)  # place the object in the arranger
+                    arranger.place(x, y, offset_shape_arr)  # place the object in the arranger
 
                     node.callDecoration("setBuildPlateNumber", current_build_plate_number)
                     grouped_operation.addOperation(TranslateOperation(node, Vector(x, center_y, y), set_position = True))
