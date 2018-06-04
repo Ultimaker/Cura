@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from copy import deepcopy
-from typing import List
+from typing import List, Optional
 
 from UM.Application import Application
 from UM.Math.AxisAlignedBox import AxisAlignedBox
