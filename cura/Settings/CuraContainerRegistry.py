@@ -26,7 +26,7 @@ from UM.Resources import Resources
 from . import ExtruderStack
 from . import GlobalStack
 
-from cura.CuraApplication import CuraApplication
+import cura.CuraApplication
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.ReaderWriters.ProfileReader import NoProfileException
 
@@ -57,7 +57,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
         if isinstance(container, InstanceContainer) and type(container) != type(self.getEmptyInstanceContainer()):
             # Check against setting version of the definition.
-            required_setting_version = CuraApplication.SettingVersion
+            required_setting_version = cura.CuraApplication.CuraApplication.SettingVersion
             actual_setting_version = int(container.getMetaDataEntry("setting_version", default = 0))
             if required_setting_version != actual_setting_version:
                 Logger.log("w", "Instance container {container_id} is outdated. Its setting version is {actual_setting_version} but it should be {required_setting_version}.".format(container_id = container.getId(), actual_setting_version = actual_setting_version, required_setting_version = required_setting_version))
@@ -260,7 +260,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         profile_id = ContainerRegistry.getInstance().uniqueName(global_stack.getId() + "_extruder_" + str(idx + 1))
                         profile = InstanceContainer(profile_id)
                         profile.setName(quality_name)
-                        profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+                        profile.addMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
                         profile.addMetaDataEntry("type", "quality_changes")
                         profile.addMetaDataEntry("definition", expected_machine_definition)
                         profile.addMetaDataEntry("quality_type", quality_type)
@@ -362,7 +362,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
         # successfully imported but then fail to show up.
-        quality_manager = CuraApplication.getInstance()._quality_manager
+        quality_manager = cura.CuraApplication.CuraApplication.getInstance()._quality_manager
         quality_group_dict = quality_manager.getQualityGroupsForMachineDefinition(global_stack)
         if quality_type not in quality_group_dict:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
@@ -465,7 +465,7 @@ class CuraContainerRegistry(ContainerRegistry):
     def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id, new_global_quality_changes = None, create_new_ids = True):
         new_extruder_id = extruder_id
 
-        application = CuraApplication.getInstance()
+        application = cura.CuraApplication.CuraApplication.getInstance()
 
         extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
         if not extruder_definitions:
@@ -485,7 +485,7 @@ class CuraContainerRegistry(ContainerRegistry):
         definition_changes_name = definition_changes_id
         definition_changes = InstanceContainer(definition_changes_id, parent = application)
         definition_changes.setName(definition_changes_name)
-        definition_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        definition_changes.addMetaDataEntry("setting_version", application.SettingVersion)
         definition_changes.addMetaDataEntry("type", "definition_changes")
         definition_changes.addMetaDataEntry("definition", extruder_definition.getId())
 
@@ -514,7 +514,7 @@ class CuraContainerRegistry(ContainerRegistry):
         user_container.setName(user_container_name)
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", machine.getId())
-        user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        user_container.addMetaDataEntry("setting_version", application.SettingVersion)
         user_container.setDefinition(machine.definition.getId())
         user_container.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
 
@@ -587,7 +587,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_quality_changes_container = InstanceContainer(container_id, parent = application)
                     extruder_quality_changes_container.setName(container_name)
                     extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
-                    extruder_quality_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+                    extruder_quality_changes_container.addMetaDataEntry("setting_version", application.SettingVersion)
                     extruder_quality_changes_container.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
                     extruder_quality_changes_container.addMetaDataEntry("quality_type", machine_quality_changes.getMetaDataEntry("quality_type"))
                     extruder_quality_changes_container.setDefinition(machine_quality_changes.getDefinition().getId())
@@ -675,7 +675,7 @@ class CuraContainerRegistry(ContainerRegistry):
         return extruder_stack
 
     def _findQualityChangesContainerInCuraFolder(self, name):
-        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityChangesInstanceContainer)
+        quality_changes_dir = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QualityChangesInstanceContainer)
 
         instance_container = None
 

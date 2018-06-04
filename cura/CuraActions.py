@@ -14,7 +14,7 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
-from cura.CuraApplication import CuraApplication
+import cura.CuraApplication
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
@@ -37,17 +37,17 @@ class CuraActions(QObject):
         # So instead, defer the call to the next run of the event loop, since that does work.
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
         event = CallFunctionEvent(self._openUrl, [QUrl("http://ultimaker.com/en/support/software")], {})
-        CuraApplication.getInstance().functionEvent(event)
+        cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:
         event = CallFunctionEvent(self._openUrl, [QUrl("http://github.com/Ultimaker/Cura/issues")], {})
-        CuraApplication.getInstance().functionEvent(event)
+        cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     ##  Reset camera position and direction to default
     @pyqtSlot()
     def homeCamera(self) -> None:
-        scene = CuraApplication.getInstance().getController().getScene()
+        scene = cura.CuraApplication.CuraApplication.getInstance().getController().getScene()
         camera = scene.getActiveCamera()
         camera.setPosition(Vector(-80, 250, 700))
         camera.setPerspective(True)
@@ -75,14 +75,14 @@ class CuraActions(QObject):
     #   \param count The number of times to multiply the selection.
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
-        min_offset = CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
         job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
         job.start()
 
     ##  Delete all selected objects.
     @pyqtSlot()
     def deleteSelection(self) -> None:
-        if not CuraApplication.getInstance().getController().getToolsEnabled():
+        if not cura.CuraApplication.CuraApplication.getInstance().getController().getToolsEnabled():
             return
 
         removed_group_nodes = [] #type: List[SceneNode]
@@ -99,7 +99,7 @@ class CuraActions(QObject):
                     op.addOperation(RemoveSceneNodeOperation(group_node))
 
             # Reset the print information
-            CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
+            cura.CuraApplication.CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
 
         op.push()
 
@@ -146,7 +146,7 @@ class CuraActions(QObject):
         Logger.log("d", "Setting build plate number... %d" % build_plate_nr)
         operation = GroupedOperation()
 
-        root = CuraApplication.getInstance().getController().getScene().getRoot()
+        root = cura.CuraApplication.CuraApplication.getInstance().getController().getScene().getRoot()
 
         nodes_to_change = []
         for node in Selection.getAllSelectedObjects():
