@@ -238,6 +238,23 @@ class Toolbox(QObject, Extension):
         dialog = Application.getInstance().createQmlComponent(path, {"toolbox": self})
         return dialog
 
+
+    def _convertPluginMetadata(self, plugin: dict) -> dict:
+        formatted = {
+            "package_id": plugin["id"],
+            "package_type": "plugin",
+            "display_name": plugin["plugin"]["name"],
+            "package_version": plugin["plugin"]["version"],
+            "sdk_version": plugin["plugin"]["api"],
+            "author": {
+                "author_id": plugin["plugin"]["author"],
+                "display_name": plugin["plugin"]["author"]
+            },
+            "is_installed": True,
+            "description": plugin["plugin"]["description"]
+        }
+        return formatted
+
     @pyqtSlot()
     def _updateInstalledModels(self) -> None:
 
@@ -245,19 +262,28 @@ class Toolbox(QObject, Extension):
         # list of old plugins
         old_plugin_ids = self._plugin_registry.getInstalledPlugins()
         installed_package_ids = self._package_manager.getAllInstalledPackageIDs()
+
         self._old_plugin_ids = []
+        self._old_plugin_metadata = []
+
         for plugin_id in old_plugin_ids:
             if plugin_id not in installed_package_ids:
                 Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
+
+                old_metadata = self._plugin_registry.getMetaData(plugin_id)
+                new_metadata = self._convertPluginMetadata(old_metadata)
+
                 self._old_plugin_ids.append(plugin_id)
+                self._old_plugin_metadata.append(new_metadata)
 
         all_packages = self._package_manager.getAllInstalledPackagesInfo()
         if "plugin" in all_packages:
-            self._metadata["plugins_installed"] = all_packages["plugin"]
+            self._metadata["plugins_installed"] = all_packages["plugin"] + self._old_plugin_metadata
             self._models["plugins_installed"].setMetadata(self._metadata["plugins_installed"])
             self.metadataChanged.emit()
         if "material" in all_packages:
             self._metadata["materials_installed"] = all_packages["material"]
+            # TODO: ADD MATERIALS HERE ONCE MATERIALS PORTION OF TOOLBOX IS LIVE
             self._models["materials_installed"].setMetadata(self._metadata["materials_installed"])
             self.metadataChanged.emit()
 
@@ -383,6 +409,7 @@ class Toolbox(QObject, Extension):
         return False
 
     # Check for plugins that were installed with the old plugin browser
+    @pyqtSlot(str, result = bool)
     def isOldPlugin(self, plugin_id: str) -> bool:
         if plugin_id in self._old_plugin_ids:
             return True
