@@ -37,7 +37,7 @@ class ArrangeObjectsJob(Job):
         machine_width = global_container_stack.getProperty("machine_width", "value")
         machine_depth = global_container_stack.getProperty("machine_depth", "value")
 
-        arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = self._fixed_nodes)
+        arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = self._fixed_nodes, min_offset = self._min_offset)
 
         # Collect nodes to be placed
         nodes_arr = []  # fill with (size, node, offset_shape_arr, hull_shape_arr)
@@ -66,7 +66,7 @@ class ArrangeObjectsJob(Job):
                 start_priority = last_priority
             else:
                 start_priority = 0
-            best_spot = arranger.bestSpot(offset_shape_arr, start_prio=start_priority)
+            best_spot = arranger.bestSpot(hull_shape_arr, start_prio = start_priority)
             x, y = best_spot.x, best_spot.y
             node.removeDecorator(ZOffsetDecorator)
             if node.getBoundingBox():
@@ -77,7 +77,7 @@ class ArrangeObjectsJob(Job):
                 last_size = size
                 last_priority = best_spot.priority
 
-                arranger.place(x, y, hull_shape_arr)  # take place before the next one
+                arranger.place(x, y, offset_shape_arr)  # take place before the next one
                 grouped_operation.addOperation(TranslateOperation(node, Vector(x, center_y, y), set_position = True))
             else:
                 Logger.log("d", "Arrange all: could not find spot!")

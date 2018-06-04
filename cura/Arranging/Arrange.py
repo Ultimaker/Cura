@@ -3,6 +3,7 @@
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
+from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from cura.Arranging.ShapeArray import ShapeArray
 from cura.Scene import ZOffsetDecorator
@@ -45,7 +46,7 @@ class Arrange:
     #   \param scene_root   Root for finding all scene nodes
     #   \param fixed_nodes  Scene nodes to be placed
     @classmethod
-    def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250):
+    def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250, min_offset = 8):
         arranger = Arrange(x, y, x // 2, y // 2, scale = scale)
         arranger.centerFirst()
 
@@ -58,9 +59,10 @@ class Arrange:
 
         # Place all objects fixed nodes
         for fixed_node in fixed_nodes:
-            vertices = fixed_node.callDecoration("getConvexHull")
+            vertices = fixed_node.callDecoration("getConvexHullHead") or fixed_node.callDecoration("getConvexHull")
             if not vertices:
                 continue
+            vertices = vertices.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
             points = copy.deepcopy(vertices._points)
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
             arranger.place(0, 0, shape_arr)
@@ -81,12 +83,12 @@ class Arrange:
     ##  Find placement for a node (using offset shape) and place it (using hull shape)
     #   return the nodes that should be placed
     #   \param node
-    #   \param offset_shape_arr ShapeArray with offset, used to find location
-    #   \param hull_shape_arr ShapeArray without offset, for placing the shape
+    #   \param offset_shape_arr ShapeArray with offset, for placing the shape
+    #   \param hull_shape_arr ShapeArray without offset, used to find location
     def findNodePlacement(self, node, offset_shape_arr, hull_shape_arr, step = 1):
         new_node = copy.deepcopy(node)
         best_spot = self.bestSpot(
-            offset_shape_arr, start_prio = self._last_priority, step = step)
+            hull_shape_arr, start_prio = self._last_priority, step = step)
         x, y = best_spot.x, best_spot.y
 
         # Save the last priority.
@@ -102,7 +104,7 @@ class Arrange:
         if x is not None:  # We could find a place
             new_node.setPosition(Vector(x, center_y, y))
             found_spot = True
-            self.place(x, y, hull_shape_arr)  # place the object in arranger
+            self.place(x, y, offset_shape_arr)  # place the object in arranger
         else:
             Logger.log("d", "Could not find spot!"),
             found_spot = False
