@@ -34,6 +34,7 @@ Column
         // Don't allow installing while another download is running
         enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model)
         opacity: enabled ? 1.0 : 0.5
+        visible: !updateButton.visible // Don't show when the update button is visible
     }
 
     ToolboxProgressButton
@@ -55,7 +56,7 @@ Column
         // Don't allow installing while another download is running
         enabled: !(toolbox.isDownloading && toolbox.activePackage != model)
         opacity: enabled ? 1.0 : 0.5
-        visible: installed && canUpdate
+        visible: canUpdate
     }
     Connections
     {

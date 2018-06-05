@@ -133,7 +133,7 @@ class CuraPackageManager(QObject):
 
         return None
 
-    def getAllInstalledPackagesInfo(self) -> dict:
+    def getAllInstalledPackageIDs(self) -> set:
         # Add bundled, installed, and to-install packages to the set of installed package IDs
         all_installed_ids = set()
 
@@ -145,6 +145,12 @@ class CuraPackageManager(QObject):
         # If it's going to be installed and to be removed, then the package is being updated and it should be listed.
         if self._to_install_package_dict.keys():
             all_installed_ids = all_installed_ids.union(set(self._to_install_package_dict.keys()))
+
+        return all_installed_ids
+
+    def getAllInstalledPackagesInfo(self) -> dict:
+
+        all_installed_ids = self.getAllInstalledPackageIDs()
 
         # map of <package_type> -> <package_id> -> <package_info>
         installed_packages_dict = {}
