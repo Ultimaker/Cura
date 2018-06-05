@@ -299,7 +299,7 @@ class PrintInformation(QObject):
 
     def _updateJobName(self):
         if self._base_name == "":
-            self._job_name = ""
+            self._job_name = "unnamed"
             self._is_user_specified_job_name = False
             self.jobNameChanged.emit()
             return
@@ -351,18 +351,17 @@ class PrintInformation(QObject):
         if is_gcode or is_project_file or (is_empty or (self._base_name == "" and self._base_name != check_name)):
             # Only take the file name part, Note : file name might have 'dot' in name as well
 
-            data = ''
+            data = ""
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(name)
                 data = mime_type.stripExtension(name)
             except:
-                Logger.log("w", "Unsupported Mime Type Database file extension")
-                data = 'unnamed'
+                Logger.log("w", "Unsupported Mime Type Database file extension %s", name)
 
             if data is not None and check_name is not None:
                 self._base_name = data
             else:
-                self._base_name = 'unnamed'
+                self._base_name = ""
 
             self._updateJobName()
 

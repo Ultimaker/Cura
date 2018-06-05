@@ -4,7 +4,6 @@
 from configparser import ConfigParser
 import zipfile
 import os
-import threading
 from typing import List, Tuple
 
 
@@ -21,7 +20,7 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.MimeTypeDatabase import MimeTypeDatabase
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
 
@@ -84,6 +83,15 @@ class ExtruderInfo:
 class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self):
         super().__init__()
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-cura-project-file",
+                comment="Cura Project File",
+                suffixes=["curaproject.3mf"]
+            )
+        )
+
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None

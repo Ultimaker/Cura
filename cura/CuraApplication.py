@@ -199,7 +199,6 @@ class CuraApplication(QtApplication):
         self._platform_activity = False
         self._scene_bounding_box = AxisAlignedBox.Null
 
-        self._job_name = None
         self._center_after_select = False
         self._camera_animation = None
         self._cura_actions = None

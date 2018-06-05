@@ -655,6 +655,15 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
+    def activeVariantId(self) -> str:
+        if self._active_container_stack:
+            variant = self._active_container_stack.variant
+            if variant:
+                return variant.getId()
+
+        return ""
+
+    @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
