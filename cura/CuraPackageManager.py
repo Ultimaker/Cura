@@ -105,7 +105,6 @@ class CuraPackageManager(QObject):
         while self._to_install_package_dict:
             package_id, package_info = list(self._to_install_package_dict.items())[0]
             self._installPackage(package_info)
-            self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
             del self._to_install_package_dict[package_id]
             self._saveManagementData()
 
@@ -328,6 +327,8 @@ class CuraPackageManager(QObject):
 
         # Remove the file
         os.remove(filename)
+        # Move the info to the installed list of packages only when it succeeds
+        self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
 
     def __installPackageFiles(self, package_id: str, src_dir: str, dst_dir: str) -> None:
         Logger.log("i", "Moving package {package_id} from {src_dir} to {dst_dir}".format(package_id=package_id, src_dir=src_dir, dst_dir=dst_dir))
