@@ -13,23 +13,9 @@ from . import ThreeMFWorkspaceReader
 
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
+
 catalog = i18nCatalog("cura")
 
-MimeTypeDatabase.addMimeType(
-    MimeType(
-        name = "application/x-cura-project-file",
-        comment = "Cura Project File",
-        suffixes = ["curaproject.3mf"]
-    )
-)
-MimeTypeDatabase.addMimeType(
-    MimeType(
-        name = "application/x-cura-project-file",
-        comment = "Cura Project File",
-        suffixes = ["3mf"]
-    )
-)
 
 def getMetaData() -> Dict:
     # Workarround for osx not supporting double file extensions correctly.
