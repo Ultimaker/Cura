@@ -306,9 +306,8 @@ class CuraPackageManager(QObject):
 
         Logger.log("i", "Installing package [%s] from file [%s]", package_id, filename)
 
-        # If it's installed, remove it first and then install
-        if package_id in self._installed_package_dict:
-            self._purgePackage(package_id)
+        # remove it first and then install
+        self._purgePackage(package_id)
 
         # Install the package
         with zipfile.ZipFile(filename, "r") as archive:
