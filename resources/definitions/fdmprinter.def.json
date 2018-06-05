@@ -5051,6 +5051,46 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "prime_tower_sparse_on_nochange":
+                {
+                    "label": "Use sparse infill where possible",
+                    "description": "If enabled, the prime tower will be printed using a grid infill when the extruder does not change between layers. Mostly usefull for n-in-1-out printers where a relatively large prime tower is needed and the unused extruders don't ooze.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "prime_tower_infill_sparse_density":
+                {
+                    "label": "Prime Tower Infill Density",
+                    "description": "Infill Density for prime tower in layers where the extruder does not change.",
+                    "unit": "%",
+                    "type": "float",
+                    "enabled": "prime_tower_sparse_on_nochange",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "children":
+                    {
+                        "prime_tower_infill_line_distance":
+                        {
+                            "label": "Prime Tower Infill Line Distance",
+                            "description": "Distance between the printed infill lines. This setting is calculated by the infill density and the infill line width for the prime tower.",
+                            "unit": "mm",
+                            "type": "float",
+                            "enabled": "prime_tower_sparse_on_nochange",
+                            "default_value": 3,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "prime_tower_line_width",
+                            "value": "0 if prime_tower_infill_sparse_density == 0 else 2 * prime_tower_line_width * 100 / prime_tower_infill_sparse_density",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
+                },
                 "prime_tower_flow":
                 {
                     "label": "Prime Tower Flow",
