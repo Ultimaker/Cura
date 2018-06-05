@@ -323,17 +323,11 @@ class StartSliceJob(Job):
                             raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
 
                             mb = MeshBuilder()
-
                             mb.addConvexPolygonExtrusion(node.getHull().getPoints()[::-1], 0, raft_thickness)
 
-                            new_node = SceneNode()
-                            new_node.setMeshData(mb.build())
-                            node_name = "raftMesh" + hex(id(new_node))
-                            new_node.setName(node_name)
-
-                            # Note: adding a SettingOverrideDecorator here causes a slicing loop
+                            new_node = self._addMesh(mb, "raftMesh")
                             added_meshes.append(new_node)
-                            raft_meshes.append(node_name)
+                            raft_meshes.append(new_node.getName())
 
                         elif not is_non_printing_mesh:
                             extruder_stack_index = object.callDecoration("getActiveExtruderPosition")
@@ -349,7 +343,6 @@ class StartSliceJob(Job):
                                 center = Vector(aabb.center.x, -height/2, aabb.center.z)
 
                                 mb = MeshBuilder()
-
                                 mb.addCube(
                                     width = aabb.width,
                                     height = height,
@@ -357,14 +350,9 @@ class StartSliceJob(Job):
                                     center = center
                                 )
 
-                                new_node = SceneNode()
-                                new_node.setMeshData(mb.build())
-                                node_name = "bottomCuttingMesh" + hex(id(new_node))
-                                new_node.setName(node_name)
-
-                                # Note: adding a SettingOverrideDecorator here causes a slicing loop
+                                new_node = self._addMesh(mb, "bottomCuttingMesh")
                                 added_meshes.append(new_node)
-                                bottom_cutting_meshes.append(node_name)
+                                bottom_cutting_meshes.append(new_node.getName())
 
                             belt_wall_enabled = extruder_stack.getProperty("blackbelt_belt_wall_enabled", "value")
                             belt_wall_speed = extruder_stack.getProperty("blackbelt_belt_wall_speed", "value")
@@ -392,16 +380,12 @@ class StartSliceJob(Job):
                                         center = center
                                     )
 
-                                    new_node = SceneNode()
-                                    new_node.setMeshData(mb.build())
-                                    node_name = "beltLayerModifierMesh" + hex(id(new_node))
-                                    new_node.setName(node_name)
-                                    belt_layer_mesh_data[node_name] = {
+                                    new_node = self._addMesh(mb, "beltLayerModifierMesh")
+                                    added_meshes.append(new_node)
+                                    belt_layer_mesh_data[new_node.getName()] = {
                                         "blackbelt_belt_wall_speed": belt_wall_speed,
                                         "blackbelt_belt_wall_flow" : belt_wall_flow * math.sin(gantry_angle)
                                     }
-
-                                    # Note: adding a SettingOverrideDecorator here causes a slicing loop
                                     added_meshes.append(new_node)
 
                     if added_meshes:
@@ -471,46 +455,32 @@ class StartSliceJob(Job):
                     obj.vertices = flat_verts
 
                     if object.getName() in raft_meshes:
-                        for (key, value) in {
+                        self._addSettingsMessage(obj, {
                             "wall_line_count": 99999999,
                             "speed_wall_0": raft_speed,
                             "speed_wall_x": raft_speed,
                             "material_flow": raft_flow
-                        }.items():
-                            setting = obj.addRepeatedMessage("settings")
-                            setting.name = key
-                            setting.value = str(value).encode("utf-8")
-
-                            Job.yieldThread()
+                        })
 
                     elif object.getName() in bottom_cutting_meshes:
-                        for (key, value) in {
+                        self._addSettingsMessage(obj, {
                             "cutting_mesh": True,
                             "wall_line_count": 0,
                             "top_layers": 0,
                             "bottom_layers": 0,
                             "infill_line_distance": 0
-                        }.items():
-                            setting = obj.addRepeatedMessage("settings")
-                            setting.name = key
-                            setting.value = str(value).encode("utf-8")
-                            Job.yieldThread()
+                        })
 
                     elif object.getName() in belt_layer_mesh_data:
                         data = belt_layer_mesh_data[object.getName()]
-
-                        for (key, value) in {
+                        self._addSettingsMessage(obj, {
                             "cutting_mesh": True,
                             "wall_line_count": 1,
                             "magic_mesh_surface_mode": "normal",
                             "speed_wall_0": data["blackbelt_belt_wall_speed"],
                             "speed_wall_x": data["blackbelt_belt_wall_speed"],
                             "material_flow": data["blackbelt_belt_wall_flow"]
-                        }.items():
-                            setting = obj.addRepeatedMessage("settings")
-                            setting.name = key
-                            setting.value = str(value).encode("utf-8")
-                            Job.yieldThread()
+                        })
 
                     else:
                         self._handlePerObjectSettings(object, obj)
@@ -522,6 +492,21 @@ class StartSliceJob(Job):
                 self._scene.getRoot().callDecoration("setSceneFrontOffset", front_offset)
 
         self.setResult(StartJobResult.Finished)
+
+    def _addMesh(self, mesh_builder, base_name = ""):
+        new_node = SceneNode()
+        new_node.setMeshData(mesh_builder.build())
+        node_name = base_name + hex(id(new_node))
+        new_node.setName(node_name)
+
+        return new_node
+
+    def _addSettingsMessage(self, obj, settings):
+        for (key, value) in settings.items():
+            setting = obj.addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(value).encode("utf-8")
+            Job.yieldThread()
 
     def cancel(self):
         super().cancel()
