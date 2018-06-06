@@ -54,7 +54,7 @@ Column
     {
         id: printerTypeSelectionRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: printerConnected && hasManyPrinterTypes && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: printerConnected && hasManyPrinterTypes && !sidebar.hideSettings
 
         anchors
         {
@@ -104,7 +104,7 @@ Column
         id: extruderSelectionRow
         width: parent.width
         height: Math.round(UM.Theme.getSize("sidebar_tabs").height * 2 / 3)
-        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
+        visible: machineExtruderCount.properties.value > 1
 
         anchors
         {
@@ -356,7 +356,7 @@ Column
     {
         id: materialRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasMaterials && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: Cura.MachineManager.hasMaterials && !sidebar.hideSettings
 
         anchors
         {
@@ -418,7 +418,7 @@ Column
     {
         id: variantRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: Cura.MachineManager.hasVariants && !sidebar.hideSettings
 
         anchors
         {
@@ -473,7 +473,7 @@ Column
         id: buildplateRow
         height: UM.Theme.getSize("sidebar_setup").height
         // TODO Temporary hidden, add back again when feature ready
-        visible: false //Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: false //Cura.MachineManager.hasVariantBuildplates && !sidebar.hideSettings
 
         anchors
         {
@@ -519,7 +519,7 @@ Column
     {
         id: materialInfoRow
         height: Math.round(UM.Theme.getSize("sidebar_setup").height / 2)
-        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariantBuildplates) && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariantBuildplates) && !sidebar.hideSettings
 
         anchors
         {
