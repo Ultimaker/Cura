@@ -13,7 +13,7 @@ Button
     id: base
     property var outputDevice: null
     property var matched: updateOnSync()
-    text: matched == true ? "Yes" : "No"
+    text: matched == true ? catalog.i18nc("@label:extruder label", "Yes") : catalog.i18nc("@label:extruder label", "No")
     width: parent.width
     height: parent.height
 

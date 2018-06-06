@@ -4,7 +4,6 @@
 from configparser import ConfigParser
 import zipfile
 import os
-import threading
 from typing import List, Tuple
 
 
@@ -21,7 +20,7 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.MimeTypeDatabase import MimeTypeDatabase
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
 
@@ -84,6 +83,15 @@ class ExtruderInfo:
 class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self):
         super().__init__()
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-cura-project-file",
+                comment="Cura Project File",
+                suffixes=["curaproject.3mf"]
+            )
+        )
+
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
@@ -456,7 +464,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 num_visible_settings = len(visible_settings_string.split(";"))
             active_mode = temp_preferences.getValue("cura/active_mode")
             if not active_mode:
-                active_mode = Preferences.getInstance().getValue("cura/active_mode")
+                active_mode = Application.getInstance().getPreferences().getValue("cura/active_mode")
         except KeyError:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
@@ -575,7 +583,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
-        global_preferences = Preferences.getInstance()
+        global_preferences = application.getInstance().getPreferences()
 
         visible_settings = temp_preferences.getValue("general/visible_settings")
         if visible_settings is None:

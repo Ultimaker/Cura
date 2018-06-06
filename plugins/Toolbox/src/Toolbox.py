@@ -28,7 +28,8 @@ i18n_catalog = i18nCatalog("cura")
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
 
-    DEFAULT_PACKAGES_API_ROOT = "https://api.ultimaker.com"
+    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"
+    DEFAULT_CLOUD_API_VERSION = 1
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -36,14 +37,11 @@ class Toolbox(QObject, Extension):
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
-        self._packages_api_root = self._getPackagesApiRoot()
-        self._packages_version = self._getPackagesVersion()
-        self._api_version = 1
-        self._api_url = "{api_root}/cura-packages/v{api_version}/cura/v{package_version}".format(
-            api_root = self._packages_api_root,
-            api_version = self._api_version,
-            package_version = self._packages_version
-        )
+
+        self._sdk_version = None
+        self._cloud_api_version = None
+        self._cloud_api_root = None
+        self._api_url = None
 
         # Network:
         self._get_packages_request = None
@@ -64,21 +62,19 @@ class Toolbox(QObject, Extension):
                 )
             )
         ]
-        self._request_urls = {
-            "authors":            QUrl("{base_url}/authors".format(base_url = self._api_url)),
-            "packages":           QUrl("{base_url}/packages".format(base_url = self._api_url)),
-            "plugins_showcase":   QUrl("{base_url}/showcase".format(base_url = self._api_url)),
-            "materials_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url))
-        }
+        self._request_urls = {}
         self._to_update = []  # Package_ids that are waiting to be updated
+        self._old_plugin_ids = []
 
         # Data:
         self._metadata = {
             "authors":             [],
             "packages":            [],
             "plugins_showcase":    [],
+            "plugins_available":   [],
             "plugins_installed":   [],
             "materials_showcase":  [],
+            "materials_available": [],
             "materials_installed": []
         }
 
@@ -161,22 +157,52 @@ class Toolbox(QObject, Extension):
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
         self._package_manager = Application.getInstance().getPackageManager()
+        self._sdk_version = self._getSDKVersion()
+        self._cloud_api_version = self._getCloudAPIVersion()
+        self._cloud_api_root = self._getCloudAPIRoot()
+        self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
+            cloud_api_root=self._cloud_api_root,
+            cloud_api_version=self._cloud_api_version,
+            sdk_version=self._sdk_version
+        )
+        self._request_urls = {
+            "authors": QUrl("{base_url}/authors".format(base_url=self._api_url)),
+            "packages": QUrl("{base_url}/packages".format(base_url=self._api_url)),
+            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
+            "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url=self._api_url)),
+            "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
+            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url))
+        }
 
     # Get the API root for the packages API depending on Cura version settings.
-    def _getPackagesApiRoot(self) -> str:
+    def _getCloudAPIRoot(self) -> str:
         if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_PACKAGES_API_ROOT
-        if not hasattr(cura.CuraVersion, "CuraPackagesApiRoot"):
-            return self.DEFAULT_PACKAGES_API_ROOT
-        return cura.CuraVersion.CuraPackagesApiRoot
+            return self.DEFAULT_CLOUD_API_ROOT
+        if not hasattr(cura.CuraVersion, "CuraCloudAPIRoot"):
+            return self.DEFAULT_CLOUD_API_ROOT
+        if not cura.CuraVersion.CuraCloudAPIRoot:
+            return self.DEFAULT_CLOUD_API_ROOT
+        return cura.CuraVersion.CuraCloudAPIRoot
+
+    # Get the cloud API version from CuraVersion
+    def _getCloudAPIVersion(self) -> int:
+        if not hasattr(cura, "CuraVersion"):
+            return self.DEFAULT_CLOUD_API_VERSION
+        if not hasattr(cura.CuraVersion, "CuraCloudAPIVersion"):
+            return self.DEFAULT_CLOUD_API_VERSION
+        if not cura.CuraVersion.CuraCloudAPIVersion:
+            return self.DEFAULT_CLOUD_API_VERSION
+        return cura.CuraVersion.CuraCloudAPIVersion
 
     # Get the packages version depending on Cura version settings.
-    def _getPackagesVersion(self) -> int:
+    def _getSDKVersion(self) -> int:
         if not hasattr(cura, "CuraVersion"):
             return self._plugin_registry.APIVersion
-        if not hasattr(cura.CuraVersion, "CuraPackagesVersion"):
+        if not hasattr(cura.CuraVersion, "CuraSDKVersion"):
             return self._plugin_registry.APIVersion
-        return cura.CuraVersion.CuraPackagesVersion
+        if not cura.CuraVersion.CuraSDKVersion:
+            return self._plugin_registry.APIVersion
+        return cura.CuraVersion.CuraSDKVersion
 
     @pyqtSlot()
     def browsePackages(self) -> None:
@@ -212,15 +238,52 @@ class Toolbox(QObject, Extension):
         dialog = Application.getInstance().createQmlComponent(path, {"toolbox": self})
         return dialog
 
+
+    def _convertPluginMetadata(self, plugin: dict) -> dict:
+        formatted = {
+            "package_id": plugin["id"],
+            "package_type": "plugin",
+            "display_name": plugin["plugin"]["name"],
+            "package_version": plugin["plugin"]["version"],
+            "sdk_version": plugin["plugin"]["api"],
+            "author": {
+                "author_id": plugin["plugin"]["author"],
+                "display_name": plugin["plugin"]["author"]
+            },
+            "is_installed": True,
+            "description": plugin["plugin"]["description"]
+        }
+        return formatted
+
     @pyqtSlot()
     def _updateInstalledModels(self) -> None:
+
+        # This is moved here to avoid code duplication and so that after installing plugins they get removed from the
+        # list of old plugins
+        old_plugin_ids = self._plugin_registry.getInstalledPlugins()
+        installed_package_ids = self._package_manager.getAllInstalledPackageIDs()
+
+        self._old_plugin_ids = []
+        self._old_plugin_metadata = []
+
+        for plugin_id in old_plugin_ids:
+            if plugin_id not in installed_package_ids:
+                Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
+
+                old_metadata = self._plugin_registry.getMetaData(plugin_id)
+                new_metadata = self._convertPluginMetadata(old_metadata)
+
+                self._old_plugin_ids.append(plugin_id)
+                self._old_plugin_metadata.append(new_metadata)
+
         all_packages = self._package_manager.getAllInstalledPackagesInfo()
         if "plugin" in all_packages:
-            self._metadata["plugins_installed"] = all_packages["plugin"]
+            self._metadata["plugins_installed"] = all_packages["plugin"] + self._old_plugin_metadata
             self._models["plugins_installed"].setMetadata(self._metadata["plugins_installed"])
             self.metadataChanged.emit()
         if "material" in all_packages:
             self._metadata["materials_installed"] = all_packages["material"]
+            # TODO: ADD MATERIALS HERE ONCE MATERIALS PORTION OF TOOLBOX IS LIVE
             self._models["materials_installed"].setMetadata(self._metadata["materials_installed"])
             self.metadataChanged.emit()
 
@@ -250,8 +313,6 @@ class Toolbox(QObject, Extension):
             if remote_package:
                 download_url = remote_package["download_url"]
                 Logger.log("d", "Updating package [%s]..." % plugin_id)
-                if self._package_manager.isUserInstalledPackage(plugin_id):
-                    self.uninstall(plugin_id)
                 self.startDownload(download_url)
             else:
                 Logger.log("e", "Could not update package [%s] because there is no remote package info available.", plugin_id)
@@ -306,6 +367,9 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     @pyqtSlot(str, result = bool)
     def canUpdate(self, package_id: str) -> bool:
+        if self.isOldPlugin(package_id):
+            return True
+
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
         if local_package is None:
             return False
@@ -318,19 +382,21 @@ class Toolbox(QObject, Extension):
         remote_version = Version(remote_package["package_version"])
         return remote_version > local_version
 
-    @pyqtSlot(str, result=bool)
+    @pyqtSlot(str, result = bool)
     def canDowngrade(self, package_id: str) -> bool:
+        # If the currently installed version is higher than the bundled version (if present), the we can downgrade
+        # this package.
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
         if local_package is None:
             return False
 
-        remote_package = self.getRemotePackage(package_id)
-        if remote_package is None:
+        bundled_package = self._package_manager.getBundledPackageInfo(package_id)
+        if bundled_package is None:
             return False
 
         local_version = Version(local_package["package_version"])
-        remote_version = Version(remote_package["package_version"])
-        return remote_version < local_version
+        bundled_version = Version(bundled_package["package_version"])
+        return bundled_version < local_version
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
@@ -339,6 +405,13 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = bool)
     def isEnabled(self, package_id: str) -> bool:
         if package_id in self._plugin_registry.getActivePlugins():
+            return True
+        return False
+
+    # Check for plugins that were installed with the old plugin browser
+    @pyqtSlot(str, result = bool)
+    def isOldPlugin(self, plugin_id: str) -> bool:
+        if plugin_id in self._old_plugin_ids:
             return True
         return False
 
@@ -383,7 +456,10 @@ class Toolbox(QObject, Extension):
 
     def resetDownload(self) -> None:
         if self._download_reply:
-            self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            try:
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            except TypeError: #Raised when the method is not connected to the signal yet.
+                pass #Don't need to disconnect.
             self._download_reply.abort()
         self._download_reply = None
         self._download_request = None

@@ -29,8 +29,9 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
         self.addRoleName(Qt.UserRole + 14, "is_enabled")
-        self.addRoleName(Qt.UserRole + 15, "has_configs")
-        self.addRoleName(Qt.UserRole + 16, "supported_configs")
+        self.addRoleName(Qt.UserRole + 15, "is_installed") # Scheduled pkgs are included in the model but should not be marked as actually installed
+        self.addRoleName(Qt.UserRole + 16, "has_configs")
+        self.addRoleName(Qt.UserRole + 17, "supported_configs")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -73,6 +74,7 @@ class PackagesModel(ListModel):
                 "last_updated":      package["last_updated"] if "last_updated" in package else None,
                 "is_bundled":        package["is_bundled"] if "is_bundled" in package else False,
                 "is_enabled":        package["is_enabled"] if "is_enabled" in package else False,
+                "is_installed":      package["is_installed"] if "is_installed" in package else False,
                 "has_configs":       has_configs,
                 "supported_configs": configs_model
             })

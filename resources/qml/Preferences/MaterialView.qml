@@ -404,10 +404,17 @@ TabView
                         id: spinBox
                         anchors.left: label.right
                         value: {
+                            // In case the setting is not in the material...
                             if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
                             {
                                 return parseFloat(materialPropertyProvider.properties.value);
                             }
+                            // ... we search in the variant, and if it is not there...
+                            if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
+                            {
+                                return parseFloat(variantPropertyProvider.properties.value);
+                            }
+                            // ... then look in the definition container.
                             if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
                             {
                                 return parseFloat(machinePropertyProvider.properties.value);
@@ -427,6 +434,13 @@ TabView
                     {
                         id: materialPropertyProvider
                         containerId: base.containerId
+                        watchedProperties: [ "value" ]
+                        key: model.key
+                    }
+                    UM.ContainerPropertyProvider
+                    {
+                        id: variantPropertyProvider
+                        containerId: Cura.MachineManager.activeVariantId
                         watchedProperties: [ "value" ]
                         key: model.key
                     }

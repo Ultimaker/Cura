@@ -291,9 +291,10 @@ class MaterialManager(QObject):
         material_id_metadata_dict = dict()
         for node in nodes_to_check:
             if node is not None:
+                # Only exclude the materials that are explicitly specified in the "exclude_materials" field.
+                # Do not exclude other materials that are of the same type.
                 for material_id, node in node.material_map.items():
-                    fallback_id = self.getFallbackMaterialIdByMaterialType(node.metadata["material"])
-                    if fallback_id in machine_exclude_materials:
+                    if material_id in machine_exclude_materials:
                         Logger.log("d", "Exclude material [%s] for machine [%s]",
                                    material_id, machine_definition.getId())
                         continue

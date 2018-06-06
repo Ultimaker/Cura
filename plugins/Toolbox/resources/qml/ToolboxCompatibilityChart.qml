@@ -31,8 +31,9 @@ Item
         frameVisible: false
         selectionMode: 0
         model: packageData.supported_configs
-        headerDelegate: Item
+        headerDelegate: Rectangle
         {
+            color: UM.Theme.getColor("sidebar")
             height: UM.Theme.getSize("toolbox_chart_row").height
             Label
             {

@@ -80,13 +80,10 @@ Item {
                 property int unremovableSpacing: 5
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
-                onTextChanged: {
-                    PrintInformation.setJobName(text);
-                }
                 onEditingFinished: {
-                    if (printJobTextfield.text != ''){
-                        printJobTextfield.focus = false;
-                    }
+                    var new_name = text == "" ? "unnamed" : text;
+                    PrintInformation.setJobName(new_name, true);
+                    printJobTextfield.focus = false;
                 }
                 validator: RegExpValidator {
                     regExp: /^[^\\ \/ \*\?\|\[\]]*$/

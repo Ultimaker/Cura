@@ -8,7 +8,6 @@ from UM.Qt.ListModel import ListModel
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
-from UM.Preferences import Preferences
 from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
@@ -20,7 +19,7 @@ class ObjectsModel(ListModel):
         super().__init__()
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateDelayed)
-        Preferences.getInstance().preferenceChanged.connect(self._updateDelayed)
+        Application.getInstance().getPreferences().preferenceChanged.connect(self._updateDelayed)
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(100)
@@ -38,7 +37,7 @@ class ObjectsModel(ListModel):
 
     def _update(self, *args):
         nodes = []
-        filter_current_build_plate = Preferences.getInstance().getValue("view/filter_current_build_plate")
+        filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
         active_build_plate_number = self._build_plate_number
         group_nr = 1
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):

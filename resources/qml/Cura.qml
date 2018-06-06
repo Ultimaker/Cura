@@ -323,10 +323,11 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
-                        // As the drop area also supports plugins, first check if it's a plugin that was dropped.
-                        if (drop.urls.length == 1)
+
+                        var nonPackages = [];
+                        for (var i = 0; i < drop.urls.length; i++)
                         {
-                            var filename = drop.urls[0];
+                            var filename = drop.urls[i];
                             if (filename.endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
@@ -334,11 +335,13 @@ UM.MainWindow
                                 packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
                                 packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();
-                                return;
+                            }
+                            else
+                            {
+                                nonPackages.push(filename);
                             }
                         }
-
-                        openDialog.handleOpenFileUrls(drop.urls);
+                        openDialog.handleOpenFileUrls(nonPackages);
                     }
                 }
             }

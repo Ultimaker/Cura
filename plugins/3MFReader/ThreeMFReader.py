@@ -27,14 +27,6 @@ from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 MYPY = False
 
 
-MimeTypeDatabase.addMimeType(
-    MimeType(
-        name = "application/x-cura-project-file",
-        comment = "Cura Project File",
-        suffixes = ["curaproject.3mf"]
-    )
-)
-
 try:
     if not MYPY:
         import xml.etree.cElementTree as ET
@@ -42,10 +34,20 @@ except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
 
+
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, application):
+        super().__init__(application)
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                comment="3MF",
+                suffixes=["3mf"]
+            )
+        )
+
         self._supported_extensions = [".3mf"]
         self._root = None
         self._base_name = ""
@@ -158,7 +160,7 @@ class ThreeMFReader(MeshReader):
             um_node.addDecorator(sliceable_decorator)
         return um_node
 
-    def read(self, file_name):
+    def _read(self, file_name):
         result = []
         self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.

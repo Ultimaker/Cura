@@ -33,6 +33,7 @@ Item
                 toolbox.viewPage = "overview"
             }
         }
+
         ToolboxTabButton
         {
             text: catalog.i18nc("@title:tab", "Materials")

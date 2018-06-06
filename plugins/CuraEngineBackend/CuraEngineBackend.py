@@ -4,7 +4,6 @@
 from UM.Backend.Backend import Backend, BackendState
 from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
-from UM.Preferences import Preferences
 from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Message import Message
@@ -72,7 +71,7 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("i", "Found CuraEngine at: %s", default_engine_location)
 
         default_engine_location = os.path.abspath(default_engine_location)
-        Preferences.getInstance().addPreference("backend/location", default_engine_location)
+        Application.getInstance().getPreferences().addPreference("backend/location", default_engine_location)
 
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False
@@ -121,7 +120,7 @@ class CuraEngineBackend(QObject, Backend):
         self._slice_start_time = None
         self._is_disabled = False
 
-        Preferences.getInstance().addPreference("general/auto_slice", False)
+        Application.getInstance().getPreferences().addPreference("general/auto_slice", False)
 
         self._use_timer = False
         # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
@@ -131,7 +130,7 @@ class CuraEngineBackend(QObject, Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.setInterval(500)
         self.determineAutoSlicing()
-        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+        Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._application.initializationFinished.connect(self.initialize)
 
@@ -170,7 +169,7 @@ class CuraEngineBackend(QObject, Backend):
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
         json_path = Resources.getPath(Resources.DefinitionContainers, "fdmprinter.def.json")
-        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, ""]
+        return [Application.getInstance().getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, ""]
 
     ##  Emitted when we get a message containing print duration and material amount.
     #   This also implies the slicing has finished.
@@ -275,7 +274,7 @@ class CuraEngineBackend(QObject, Backend):
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
 
-        if Application.getInstance().getCommandLineOption("external-backend", False):
+        if Application.getInstance().getUseExternalBackend():
             return
 
         if self._process is not None:
@@ -408,7 +407,7 @@ class CuraEngineBackend(QObject, Backend):
         enable_timer = True
         self._is_disabled = False
 
-        if not Preferences.getInstance().getValue("general/auto_slice"):
+        if not Application.getInstance().getPreferences().getValue("general/auto_slice"):
             enable_timer = False
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isBlockSlicing"):

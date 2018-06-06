@@ -150,7 +150,7 @@ Item
     {
         id: loader
         visible: active
-        source: "../images/loading.gif"
+        source: visible ? "../images/loading.gif" : ""
         width: UM.Theme.getSize("toolbox_loader").width
         height: UM.Theme.getSize("toolbox_loader").height
         anchors.right: button.left

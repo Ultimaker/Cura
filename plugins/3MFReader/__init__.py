@@ -13,7 +13,9 @@ from . import ThreeMFWorkspaceReader
 
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
+
 catalog = i18nCatalog("cura")
+
 
 def getMetaData() -> Dict:
     # Workarround for osx not supporting double file extensions correctly.
@@ -42,7 +44,7 @@ def getMetaData() -> Dict:
 
 def register(app):
     if "3MFReader.ThreeMFReader" in sys.modules:
-        return {"mesh_reader": ThreeMFReader.ThreeMFReader(),
+        return {"mesh_reader": ThreeMFReader.ThreeMFReader(app),
                 "workspace_reader": ThreeMFWorkspaceReader.ThreeMFWorkspaceReader()}
     else:
         return {}

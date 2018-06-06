@@ -379,13 +379,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def resumePrint(self):
         self._paused = False
+        self._sendNextGcodeLine() #Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
 
     def cancelPrint(self):
         self._gcode_position = 0
         self._gcode.clear()
         self._printers[0].updateActivePrintJob(None)
         self._is_printing = False
-        self._is_paused = False
+        self._paused = False
 
         # Turn off temperatures, fan and steppers
         self._sendCommand("M140 S0")
