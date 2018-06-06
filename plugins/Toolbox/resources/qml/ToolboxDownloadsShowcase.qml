@@ -19,10 +19,11 @@ Column
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
     }
-    Row
+    Grid
     {
         height: childrenRect.height
         spacing: UM.Theme.getSize("wide_margin").width
+        columns: 3
         anchors
         {
             horizontalCenter: parent.horizontalCenter
