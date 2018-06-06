@@ -1308,8 +1308,8 @@ class MachineManager(QObject):
             # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
             if self.activeMachineNetworkGroupName != group_name:
                 metadata_filter = {"um_network_key": self.activeMachineNetworkKey}
-                hidden_containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-                for container in hidden_containers:
+                containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+                for container in containers:
                     container.setMetaDataEntry("connect_group_name", group_name)
 
     ##  This method checks if there is an instance connected to the given network_key
