@@ -161,7 +161,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             b"name": address.encode("utf-8"),
             b"address": address.encode("utf-8"),
             b"manual": b"true",
-            b"incomplete": b"true"
+            b"incomplete": b"true",
+            b"temporary": b"true"   # Still a temporary device until all the info is retrieved in _onNetworkRequestFinished
         }
 
         if instance_name not in self._discovered_devices:
