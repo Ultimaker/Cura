@@ -93,14 +93,7 @@ SettingItem
         {
             target: control
             property: "currentIndex"
-            value:
-            {
-                if(propertyProvider.properties.value == -1)
-                {
-                    return control.getIndexByPosition(Cura.MachineManager.defaultExtruderPosition);
-                }
-                return propertyProvider.properties.value
-            }
+            value: control.getIndexByPosition(propertyProvider.properties.value)
             // Sometimes when the value is already changed, the model is still being built.
             // The when clause ensures that the current index is not updated when this happens.
             when: control.model.items.length > 0

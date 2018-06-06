@@ -324,6 +324,7 @@ class CuraApplication(QtApplication):
         SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
         SettingFunction.registerOperator("extruderValue", ExtruderManager.getExtruderValue)
         SettingFunction.registerOperator("resolveOrValue", ExtruderManager.getResolveOrValue)
+        SettingFunction.registerOperator("defaultExtruderPosition", ExtruderManager.getDefaultExtruderPosition)
 
     # Adds all resources and container related resources.
     def __addAllResourcesAndContainerResources(self) -> None:
