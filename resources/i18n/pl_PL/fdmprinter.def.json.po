@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.3\n"
+"Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
 "PO-Revision-Date: 2018-04-17 16:45+0200\n"
@@ -1087,8 +1087,8 @@ msgstr "Optymalizuj Kolejność Drukowania Ścian"
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
-msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr "Optymalizuj kolejność, według której drukowane są ściany, aby zredukować ilość retrakcji i długości ruchu jałowego. Większość części powinno na tym zyskać, ale niektóre mogą drukować się dłużej, dlatego prosimy o porównaniu czasu drukowania z i bez włączonej opcji."
+msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1676,6 +1676,26 @@ msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "Nie generuj obszarów wypełnienia mniejszych niż to (zamiast tego używaj skóry)."
 
 #: fdmprinter.def.json
+msgctxt "infill_support_enabled label"
+msgid "Infill Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled description"
+msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle label"
+msgid "Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle description"
+msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
 msgstr "Szerokość Usuwania Skóry"
@@ -2014,6 +2034,16 @@ msgstr "Okno Min. Dług. Ekstruzji"
 msgctxt "retraction_extrusion_window description"
 msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
 msgstr "Okno, w którym wymuszona jest maksymalna liczba retrakcji. Wartość ta powinna być w przybliżeniu taka sama jak odległość retrakcji, dzięki czemu skuteczna liczba retrakcji używająca tej samej cząstki materiału jest limitowana."
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2707,8 +2737,18 @@ msgstr "Wszędzie"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
-msgid "No Skin"
-msgstr "Bez skóry"
+msgid "Not in Skin"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance label"
+msgid "Max Comb Distance With No Retract"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance description"
+msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2729,6 +2769,16 @@ msgstr "Unikaj Wydruk. Części Podczas Ruchu Jałowego"
 msgctxt "travel_avoid_other_parts description"
 msgid "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled."
 msgstr "Dysza unika już wydrukowanych części podczas ruchu jałowego. Ta opcja jest dostępna tylko w przypadku włączonego trybu kombinowania."
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports label"
+msgid "Avoid Supports When Traveling"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports description"
+msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -3084,6 +3134,16 @@ msgstr "Zygzak"
 msgctxt "support_pattern option cross"
 msgid "Cross"
 msgstr "Krzyż"
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count label"
+msgid "Support Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count description"
+msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
@@ -4615,6 +4675,16 @@ msgid "The minimum size of a line segment after slicing. If you increase this, t
 msgstr "Minimalny rozmiar linii segmentu po pocięciu. Jeżeli to zwiększysz, siatka będzie miała mniejszą rozdzielczość. Może to spowodować przyspieszenie prędkości przetwarzania g-code i przyspieszenie prędkości cięcia poprzez usunięcie detali siatki, których tak czy tak nie można przetworzyć."
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr "Podziel Podpory na Kawałki"
@@ -4775,14 +4845,24 @@ msgid "The size of pockets at four-way crossings in the cross 3D pattern at heig
 msgstr "Rozmiar kieszeni na czterostronnych skrzyżowaniach we wzorze krzyż 3D na wysokościach gdzie wzór tego siebie samego."
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly label"
-msgid "Alternate Cross 3D Pockets"
-msgstr "Zamieniaj Kieszenie Krzyża 3D"
+msgctxt "cross_infill_density_image label"
+msgid "Cross Infill Density Image"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly description"
-msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr "Twórz kieszenie tylko w połowie czterostronnych skrzyżowań we wzorze krzyż 3D i zamieniaj pozycję kieszonek pomiędzy wysokościami gdzie wzór dotyka samego siebie."
+msgctxt "cross_infill_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image label"
+msgid "Cross Fill Density Image for Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4883,16 +4963,6 @@ msgstr "Min. Szerokość Podpory Stożkowej"
 msgctxt "support_conical_min_width description"
 msgid "Minimum width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures."
 msgstr "Minimalna szerokość, do której można zmniejszyć bazę podpory stożkowej. Małe szerokości mogą prowadzić do niestabilnych struktur nośnych."
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow label"
-msgid "Hollow Out Objects"
-msgstr "Wydrąż Model"
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow description"
-msgid "Remove all infill and make the inside of the object eligible for support."
-msgstr "Usuń całe wypełnienie i spowoduj, aby środek modelu był wybieralny dla podpór."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
@@ -5230,8 +5300,8 @@ msgstr "Maks. zmiana zmiennych warstw"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
-msgid "The maximum allowed height different from the base layer height in mm."
-msgstr "Maksymalna dozwolona różnica wysokości od podstawowej wysokości warstwy w mm."
+msgid "The maximum allowed height different from the base layer height."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
@@ -5465,8 +5535,8 @@ msgstr "Ustawienia, które są używane tylko wtedy, gdy CuraEngine nie jest wyw
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
-msgid "Center object"
-msgstr "Wyśrodkuj Obiekt"
+msgid "Center Object"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
@@ -5475,8 +5545,8 @@ msgstr "Czy wyśrodkować obiekt na środku stołu (0,0), zamiast używać ukła
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
-msgid "Mesh position x"
-msgstr "Pozycja siatki X"
+msgid "Mesh Position X"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5485,8 +5555,8 @@ msgstr "Przesunięcie zastosowane dla obiektu w kierunku X."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
-msgid "Mesh position y"
-msgstr "Pozycja siatki Y"
+msgid "Mesh Position Y"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5495,8 +5565,8 @@ msgstr "Przesunięcie zastosowane dla obiektu w kierunku Y."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
-msgid "Mesh position z"
-msgstr "Pozycja siatki Z"
+msgid "Mesh Position Z"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
@@ -5512,6 +5582,50 @@ msgstr "Forma Obrotu Siatki"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Forma przesunięcia, która ma być zastosowana do modelu podczas ładowania z pliku."
+
+#~ msgctxt "optimize_wall_printing_order description"
+#~ msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
+#~ msgstr "Optymalizuj kolejność, według której drukowane są ściany, aby zredukować ilość retrakcji i długości ruchu jałowego. Większość części powinno na tym zyskać, ale niektóre mogą drukować się dłużej, dlatego prosimy o porównaniu czasu drukowania z i bez włączonej opcji."
+
+#~ msgctxt "retraction_combing option noskin"
+#~ msgid "No Skin"
+#~ msgstr "Bez skóry"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly label"
+#~ msgid "Alternate Cross 3D Pockets"
+#~ msgstr "Zamieniaj Kieszenie Krzyża 3D"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly description"
+#~ msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
+#~ msgstr "Twórz kieszenie tylko w połowie czterostronnych skrzyżowań we wzorze krzyż 3D i zamieniaj pozycję kieszonek pomiędzy wysokościami gdzie wzór dotyka samego siebie."
+
+#~ msgctxt "infill_hollow label"
+#~ msgid "Hollow Out Objects"
+#~ msgstr "Wydrąż Model"
+
+#~ msgctxt "infill_hollow description"
+#~ msgid "Remove all infill and make the inside of the object eligible for support."
+#~ msgstr "Usuń całe wypełnienie i spowoduj, aby środek modelu był wybieralny dla podpór."
+
+#~ msgctxt "adaptive_layer_height_variation description"
+#~ msgid "The maximum allowed height different from the base layer height in mm."
+#~ msgstr "Maksymalna dozwolona różnica wysokości od podstawowej wysokości warstwy w mm."
+
+#~ msgctxt "center_object label"
+#~ msgid "Center object"
+#~ msgstr "Wyśrodkuj Obiekt"
+
+#~ msgctxt "mesh_position_x label"
+#~ msgid "Mesh position x"
+#~ msgstr "Pozycja siatki X"
+
+#~ msgctxt "mesh_position_y label"
+#~ msgid "Mesh position y"
+#~ msgstr "Pozycja siatki Y"
+
+#~ msgctxt "mesh_position_z label"
+#~ msgid "Mesh position z"
+#~ msgstr "Pozycja siatki Z"
 
 #~ msgctxt "machine_start_gcode label"
 #~ msgid "Start GCode"
