@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse
@@ -27,7 +27,7 @@ known_args = vars(parser.parse_known_args()[0])
 if not known_args["debug"]:
     def get_cura_dir_path():
         if Platform.isWindows():
-            return os.path.expanduser("~/AppData/Roaming/cura/")
+            return os.path.expanduser("~/AppData/Roaming/cura")
         elif Platform.isLinux():
             return os.path.expanduser("~/.local/share/cura")
         elif Platform.isOSX():
