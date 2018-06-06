@@ -65,7 +65,6 @@ ScrollView
                 }
             }
         }
-        /* Hidden in 3.4
         Label
         {
             visible: toolbox.materialsInstalledModel.items.length > 0
@@ -103,6 +102,5 @@ ScrollView
                 }
             }
         }
-        */
     }
 }
