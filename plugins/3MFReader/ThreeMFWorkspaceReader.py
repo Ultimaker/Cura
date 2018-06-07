@@ -86,7 +86,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name="application/x-cura-project-file",
+                name="application/x-curaproject+xml",
                 comment="Cura Project File",
                 suffixes=["curaproject.3mf"]
             )
