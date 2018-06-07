@@ -482,7 +482,7 @@ Item
             {
                 var currentItem = materialsModel.getItem(materialListView.currentIndex);
 
-                materialProperties.name = currentItem.name;
+                materialProperties.name = currentItem.name ? currentItem.name : "Unknown";
                 materialProperties.guid = currentItem.guid;
 
                 materialProperties.brand = currentItem.brand ? currentItem.brand : "Unknown";
