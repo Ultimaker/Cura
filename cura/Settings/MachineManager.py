@@ -1236,7 +1236,7 @@ class MachineManager(QObject):
     ##  Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
     #   instance with the same network key.
     @pyqtSlot(str)
-    def switchPrinterType(self, machine_name: str):
+    def switchPrinterType(self, machine_name: str) -> None:
         # Don't switch if the user tries to change to the same type of printer
         if self.activeMachineDefinitionName == machine_name:
             return
@@ -1247,6 +1247,8 @@ class MachineManager(QObject):
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
+            if not new_machine:
+                return
             new_machine.addMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
             new_machine.addMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
             new_machine.addMetaDataEntry("hidden", False)
