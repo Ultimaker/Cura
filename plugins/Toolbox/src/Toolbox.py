@@ -156,7 +156,7 @@ class Toolbox(QObject, Extension):
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
-        self._package_manager = Application.getInstance().getCuraPackageManager()
+        self._package_manager = Application.getInstance().getPackageManager()
         self._sdk_version = self._getSDKVersion()
         self._cloud_api_version = self._getCloudAPIVersion()
         self._cloud_api_root = self._getCloudAPIRoot()
