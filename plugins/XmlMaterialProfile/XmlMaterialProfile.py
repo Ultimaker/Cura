@@ -518,9 +518,10 @@ class XmlMaterialProfile(InstanceContainer):
                     meta_data["name"] = label.text
                 else:
                     meta_data["name"] = self._profile_name(material.text, color.text)
-                meta_data["brand"] = brand.text
-                meta_data["material"] = material.text
-                meta_data["color_name"] = color.text
+
+                meta_data["brand"] = brand.text if brand.text is not None else "Unknown Brand"
+                meta_data["material"] = material.text if material.text is not None else "Unknown Type"
+                meta_data["color_name"] = color.text if color.text is not None else "Unknown Color"
                 continue
 
             # setting_version is derived from the "version" tag in the schema earlier, so don't set it here
@@ -811,9 +812,10 @@ class XmlMaterialProfile(InstanceContainer):
                     base_metadata["name"] = label.text
                 else:
                     base_metadata["name"] = cls._profile_name(material.text, color.text)
-                base_metadata["brand"] = brand.text
-                base_metadata["material"] = material.text
-                base_metadata["color_name"] = color.text
+
+                base_metadata["brand"] = brand.text if brand.text is not None else "Unknown Brand"
+                base_metadata["material"] = material.text if material.text is not None else "Unknown Type"
+                base_metadata["color_name"] = color.text if color.text is not None else "Unknown Color"
                 continue
 
             #Setting_version is derived from the "version" tag in the schema earlier, so don't set it here.
@@ -976,6 +978,8 @@ class XmlMaterialProfile(InstanceContainer):
 
     @classmethod
     def _profile_name(cls, material_name, color_name):
+        if material_name is None:
+            return "Unknown Material"
         if color_name != "Generic":
             return "%s %s" % (color_name, material_name)
         else:

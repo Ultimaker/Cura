@@ -86,7 +86,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name="application/x-cura-project-file",
+                name="application/x-curaproject+xml",
                 comment="Cura Project File",
                 suffixes=["curaproject.3mf"]
             )
@@ -606,9 +606,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id)
-            extruder_stack_dict = global_stack.extruders
+            if global_stack: #Only switch if creating the machine was successful.
+                extruder_stack_dict = global_stack.extruders
 
-            self._container_registry.addContainer(global_stack)
+                self._container_registry.addContainer(global_stack)
         else:
             # Find the machine
             global_stack = self._container_registry.findContainerStacks(name = self._machine_info.name, type = "machine")[0]

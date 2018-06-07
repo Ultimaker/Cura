@@ -5394,7 +5394,6 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "machine_gcode_flavor==\"RepRap (RepRap)\"",
-                    "enabled": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }
