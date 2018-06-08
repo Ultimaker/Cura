@@ -44,7 +44,7 @@ def main():
 
     for mod in mods:
         print("------------- Checking module {mod}".format(**locals()))
-        result = subprocess.run([sys.executable, mypyModule, "-p", mod])
+        result = subprocess.run([sys.executable, mypyModule, "-p", mod, "--ignore-missing-imports"])
         if result.returncode != 0:
             print("\nModule {mod} failed checking. :(".format(**locals()))
             return 1
