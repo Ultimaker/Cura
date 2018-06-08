@@ -83,7 +83,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         self.setItems(item_list)
 
-    def _fetchLayerHeight(self, quality_group: "QualityGroup"):
+    def _fetchLayerHeight(self, quality_group: "QualityGroup") -> float:
         global_stack = self._machine_manager.activeMachine
         if not self._layer_height_unit:
             unit = global_stack.definition.getProperty("layer_height", "unit")

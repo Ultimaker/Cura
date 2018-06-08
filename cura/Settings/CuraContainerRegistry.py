@@ -356,6 +356,8 @@ class CuraContainerRegistry(ContainerRegistry):
             return catalog.i18nc("@info:status", "Profile is missing a quality type.")
 
         global_stack = Application.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return None
         definition_id = getMachineDefinitionIDForQualitySearch(global_stack.definition)
         profile.setDefinition(definition_id)
 
