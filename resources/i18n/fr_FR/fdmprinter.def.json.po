@@ -1998,7 +1998,7 @@ msgstr "La vitesse à laquelle le filament est préparé pendant une rétraction
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
-msgstr "Degré supplémentaire de rétraction primaire"
+msgstr "Volume supplémentaire à l'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount description"
