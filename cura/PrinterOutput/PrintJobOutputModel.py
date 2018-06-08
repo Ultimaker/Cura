@@ -18,7 +18,7 @@ class PrintJobOutputModel(QObject):
     assignedPrinterChanged = pyqtSignal()
     ownerChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
         self._output_controller = output_controller
         self._state = ""
