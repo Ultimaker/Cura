@@ -7,12 +7,12 @@ from typing import List, Optional
 
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 
+from UM.Application import Application #For typing.
 from UM.Logger import Logger
 
 
 class SingleInstance:
-
-    def __init__(self, application, files_to_open: Optional[List[str]]):
+    def __init__(self, application: Application, files_to_open: Optional[List[str]]) -> None:
         self._application = application
         self._files_to_open = files_to_open
 
@@ -64,14 +64,14 @@ class SingleInstance:
         self._single_instance_server.newConnection.connect(self._onClientConnected)
         self._single_instance_server.listen("ultimaker-cura")
 
-    def _onClientConnected(self):
+    def _onClientConnected(self) -> None:
         Logger.log("i", "New connection recevied on our single-instance server")
         connection = self._single_instance_server.nextPendingConnection()
 
         if connection is not None:
             connection.readyRead.connect(lambda c = connection: self.__readCommands(c))
 
-    def __readCommands(self, connection):
+    def __readCommands(self, connection: QLocalSocket) -> None:
         line = connection.readLine()
         while len(line) != 0:    # There is also a .canReadLine()
             try:
