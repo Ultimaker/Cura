@@ -12,7 +12,11 @@
         "icon": "icon_uBuild-3D",
         "platform": "mr_bot_280_platform.stl",
         "has_materials": true,
-        "preferred_quality_type": "draft"
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "ubuild-3d_mr_bot_280_extruder_0"
+        }
     },
 
     "overrides": {

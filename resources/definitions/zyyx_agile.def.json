@@ -12,7 +12,11 @@
         "quality_definition": "zyyx_agile",
         "preferred_material": "zyyx_pro_pla",
         "preferred_quality_type": "normal",
-        "machine_x3g_variant": "z"
+        "machine_x3g_variant": "z",
+        "machine_extruder_trains":
+        {
+            "0": "zyyx_agile_extruder_0"
+        }
     },
 
     "overrides": {

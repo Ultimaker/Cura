@@ -8,7 +8,11 @@
         "manufacturer": "Raise3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
-        "has_materials": true
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "raise3D_N2_plus_single_extruder_0"
+        }
     },
 
     "overrides": {

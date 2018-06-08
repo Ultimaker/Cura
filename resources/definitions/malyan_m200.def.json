@@ -15,7 +15,11 @@
         "supports_usb_connection": true,
         "visible": true,
         "first_start_actions": ["MachineSettingsAction"],
-        "supported_actions": ["MachineSettingsAction"]    
+        "supported_actions": ["MachineSettingsAction"],
+        "machine_extruder_trains":
+        {
+            "0": "malyan_m200_extruder_0"
+        }
    },
 
     "overrides": {

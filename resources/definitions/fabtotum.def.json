@@ -15,7 +15,11 @@
     "variants_name": "Head",
     "preferred_variant_name": "Lite 0.4 mm",
     "preferred_material": "fabtotum_pla",
-    "supports_usb_connection": false
+    "supports_usb_connection": false,
+    "machine_extruder_trains":
+    {
+      "0": "fabtotum_extruder_0"
+    }
  },
 
   "overrides": {

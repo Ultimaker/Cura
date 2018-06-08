@@ -10,7 +10,11 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "deltacomb.stl",
-        "has_machine_quality": true
+        "has_machine_quality": true,
+        "machine_extruder_trains":
+        {
+            "0": "deltacomb_extruder_0"
+        }
     },
 
     "overrides": {
@@ -28,7 +32,6 @@
         "retraction_hop_enabled":                { "default_value": true },
         "retraction_amount" :                    { "default_value": 3.5 },
         "retraction_speed" :                     { "default_value": 50 },
-        "material_diameter":                     { "default_value": 1.75 },
         "material_final_print_temperature":      { "value": "material_print_temperature - 5" },
         "material_initial_print_temperature":    { "value": "material_print_temperature" },
         "material_print_temperature_layer_0":    { "value": "material_print_temperature + 5" },

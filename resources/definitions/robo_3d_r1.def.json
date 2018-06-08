@@ -7,7 +7,11 @@
         "author": "Ultimaker",
         "manufacturer": "Robo 3D",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "robo_3d_r1_extruder_0"
+        }
     },
 
     "overrides": {

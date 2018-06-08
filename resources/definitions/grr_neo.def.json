@@ -8,7 +8,11 @@
         "manufacturer": "German RepRap",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
-        "platform": "grr_neo_platform.stl"
+        "platform": "grr_neo_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "grr_neo_extruder_0"
+        }
     },
 
     "overrides": {

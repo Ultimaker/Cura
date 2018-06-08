@@ -14,7 +14,11 @@
         "has_materials": true,
         "has_variants": true,
         "has_machine_materials": true,
-        "has_machine_quality": true
+        "has_machine_quality": true,
+        "machine_extruder_trains":
+        {
+            "0": "imade3d_jellybox_extruder_0"
+        }
       },
 
     "overrides": {

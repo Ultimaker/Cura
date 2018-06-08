@@ -6,7 +6,11 @@
         "visible": true,
         "author": "Timur Tabi",
         "manufacturer": "Printrbot",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "printrbot_simple_makers_kit_extruder_0"
+        }
     },
 
     "overrides": {

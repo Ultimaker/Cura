@@ -6,7 +6,11 @@
         "visible": true,
         "author": "nliaudat",
         "manufacturer": "EasyArts (discontinued)",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "easyarts_ares_extruder_0"
+        }
     },
     "overrides": {
         "machine_start_gcode": {

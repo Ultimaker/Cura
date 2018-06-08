@@ -9,7 +9,11 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "kossel_platform.stl",
-        "platform_offset": [0, -0.25, 0]
+        "platform_offset": [0, -0.25, 0],
+        "machine_extruder_trains":
+        {
+            "0": "kossel_mini_extruder_0"
+        }
     },
 
     "overrides": {

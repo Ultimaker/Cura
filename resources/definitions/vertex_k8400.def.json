@@ -10,7 +10,11 @@
         "platform": "Vertex_build_panel.stl",
         "platform_offset": [0, -3, 0],
         "supports_usb_connection": true,
-        "supported_actions": ["MachineSettingsAction"]
+        "supported_actions": ["MachineSettingsAction"],
+        "machine_extruder_trains":
+        {
+            "0": "vertex_k8400_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": { "default_value": "Vertex K8400" },

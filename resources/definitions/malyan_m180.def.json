@@ -8,7 +8,11 @@
         "author": "Ruben Dulek",
         "manufacturer": "Malyan",
         "machine_x3g_variant": "r1d",
-        "file_formats": "application/x3g"
+        "file_formats": "application/x3g",
+        "machine_extruder_trains":
+        {
+            "0": "malyan_m180_extruder_0"
+        }
     },
 
     "overrides": {

@@ -6,7 +6,11 @@
         "visible": true,
         "author": "ALYA",
         "manufacturer": "ALYA",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "alya3dp_extruder_0"
+        }
     },
 
     "overrides": {
