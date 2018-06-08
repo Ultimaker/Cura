@@ -544,7 +544,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     #   if that has any performance impact. If not, we can try sending ALL
     #   profiles. If it has, we may need to limit it to the profiles that are
     #   active in the current machine.
-    def sendMaterialProfiles(self):
+    def sendMaterialProfiles(self) -> None:
         container_registry = ContainerRegistry.getInstance()
 
         base_files = set()
@@ -556,7 +556,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         for file in base_files:
             Logger.log("d", "Syncing material profile with printer: {file}".format(file = file))
-            #TODO Call API to send profile.
+
+            parts = []
+            material = container_registry.findContainers(id = file)[0]
+            serialized_material = material.serialize().encode("utf-8")
+            parts.append(self._createFormPart("name=\"file\"; filename=\"{file_name}.xml.fdm_material\"".format(file_name = file), serialized_material))
+            parts.append(self._createFormPart("name=\"filename\"", (file + ".xml.fdm_material").encode("utf-8"), "text/plain"))
+
+            self.postFormWithParts(target = "/materials", parts = parts)
 
 def loadJsonFromReply(reply):
     try:
