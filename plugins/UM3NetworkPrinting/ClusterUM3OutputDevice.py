@@ -541,22 +541,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     #
     #   This gets called when connecting to a printer as well as when sending a
     #   print.
-    #
-    #   TODO: For now we send all material profiles that are fully loaded. See
-    #   if that has any performance impact. If not, we can try sending ALL
-    #   profiles. If it has, we may need to limit it to the profiles that are
-    #   active in the current machine.
     def sendMaterialProfiles(self) -> None:
-        container_registry = ContainerRegistry.getInstance()
-
-        base_files = set()
-        for material_metadata in container_registry.findContainersMetadata(type = "material"):
-            if container_registry.isLoaded(material_metadata["id"]):
-                if "base_file" not in material_metadata:
-                    continue #If there's no base file then there was no file for it (such as empty_material).
-                base_files.add(material_metadata["base_file"])
-
-        job = SendMaterialJob(material_ids = base_files, device = self)
+        job = SendMaterialJob(device = self)
         job.run()
 
 def loadJsonFromReply(reply):
