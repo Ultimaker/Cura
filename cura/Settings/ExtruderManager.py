@@ -393,77 +393,9 @@ class ExtruderManager(QObject):
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
-            self._fixMaterialDiameterAndNozzleSize(global_stack, extruder_trains)
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
                 self.setActiveExtruderIndex(0)
-
-    #
-    # This function tries to fix the problem with per-extruder-settable nozzle size and material diameter problems
-    # in early versions (3.0 - 3.2.1).
-    #
-    # In earlier versions, "nozzle size" and "material diameter" are only applicable to the complete machine, so all
-    # extruders share the same values. In this case, "nozzle size" and "material diameter" are saved in the
-    # GlobalStack's DefinitionChanges container.
-    #
-    # Later, we could have different "nozzle size" for each extruder, but "material diameter" could only be set for
-    # the entire machine. In this case, "nozzle size" should be saved in each ExtruderStack's DefinitionChanges, but
-    # "material diameter" still remains in the GlobalStack's DefinitionChanges.
-    #
-    # Lateer, both "nozzle size" and "material diameter" are settable per-extruder, and both settings should be saved
-    # in the ExtruderStack's DefinitionChanges.
-    #
-    # There were some bugs in upgrade so the data weren't saved correct as described above. This function tries fix
-    # this.
-    #
-    # One more thing is about material diameter and single-extrusion machines. Most single-extrusion machines don't
-    # specifically define their extruder definition, so they reuse "fdmextruder", but for those machines, they may
-    # define "material diameter = 1.75" in their machine definition, but in "fdmextruder", it's still "2.85". This
-    # causes a problem with incorrect default values.
-    #
-    # This is also fixed here in this way: If no "material diameter" is specified, it will look for the default value
-    # in both the Extruder's definition and the Global's definition. If 2 values don't match, we will use the value
-    # from the Global definition by setting it in the Extruder's DefinitionChanges container.
-    #
-    def _fixMaterialDiameterAndNozzleSize(self, global_stack, extruder_stack_list):
-        keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
-
-        extruder_positions_to_update = set()
-        for extruder_stack in extruder_stack_list:
-            for key in keys_to_copy:
-                # Only copy the value when this extruder doesn't have the value.
-                if extruder_stack.definitionChanges.hasProperty(key, "value"):
-                    continue
-
-                setting_value_in_global_def_changes = global_stack.definitionChanges.getProperty(key, "value")
-                setting_value_in_global_def = global_stack.definition.getProperty(key, "value")
-                setting_value = setting_value_in_global_def
-                if setting_value_in_global_def_changes is not None:
-                    setting_value = setting_value_in_global_def_changes
-                if setting_value == extruder_stack.definition.getProperty(key, "value"):
-                    continue
-
-                setting_definition = global_stack.getSettingDefinition(key)
-                new_instance = SettingInstance(setting_definition, extruder_stack.definitionChanges)
-                new_instance.setProperty("value", setting_value)
-                new_instance.resetState()  # Ensure that the state is not seen as a user state.
-                extruder_stack.definitionChanges.addInstance(new_instance)
-                extruder_stack.definitionChanges.setDirty(True)
-
-                # Make sure the material diameter is up to date for the extruder stack.
-                if key == "material_diameter":
-                    position = int(extruder_stack.getMetaDataEntry("position"))
-                    extruder_positions_to_update.add(position)
-
-        # We have to remove those settings here because we know that those values have been copied to all
-        # the extruders at this point.
-        for key in keys_to_copy:
-            if global_stack.definitionChanges.hasProperty(key, "value"):
-                global_stack.definitionChanges.removeInstance(key, postpone_emit = True)
-
-        # Update material diameter for extruders
-        for position in extruder_positions_to_update:
-            self.updateMaterialForDiameter(position, global_stack = global_stack)
 
     ##  Get all extruder values for a certain setting.
     #
