@@ -38,7 +38,7 @@ class MultiplyObjectsJob(Job):
 
         root = scene.getRoot()
         scale = 0.5
-        arranger = Arrange.create(x = machine_width, y = machine_depth, scene_root = root, scale = scale)
+        arranger = Arrange.create(x = machine_width, y = machine_depth, scene_root = root, scale = scale, min_offset = self._min_offset)
         processed_nodes = []
         nodes = []
 

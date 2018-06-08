@@ -475,7 +475,7 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_definition = extruder_definitions[0]
         unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id) if create_new_ids else machine.getName() + " " + new_extruder_id
 
-        extruder_stack = ExtruderStack.ExtruderStack(unique_name, parent = machine)
+        extruder_stack = ExtruderStack.ExtruderStack(unique_name)
         extruder_stack.setName(extruder_definition.getName())
         extruder_stack.setDefinition(extruder_definition)
         extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))

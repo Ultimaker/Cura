@@ -119,7 +119,7 @@
         "raft_margin": { "value": "10" },
         "raft_speed": { "value": "25" },
         "raft_surface_layers": { "value": "1" },
-        "retraction_amount": { "value": "2" },
+        "retraction_amount": { "value": "6.5" },
         "retraction_count_max": { "value": "10" },
         "retraction_extrusion_window": { "value": "1" },
         "retraction_hop": { "value": "2" },

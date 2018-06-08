@@ -4,7 +4,6 @@
 from configparser import ConfigParser
 import zipfile
 import os
-import threading
 from typing import List, Tuple
 
 
@@ -21,7 +20,7 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.MimeTypeDatabase import MimeTypeDatabase
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
 
@@ -84,6 +83,15 @@ class ExtruderInfo:
 class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self):
         super().__init__()
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-curaproject+xml",
+                comment="Cura Project File",
+                suffixes=["curaproject.3mf"]
+            )
+        )
+
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
@@ -598,9 +606,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id)
-            extruder_stack_dict = global_stack.extruders
+            if global_stack: #Only switch if creating the machine was successful.
+                extruder_stack_dict = global_stack.extruders
 
-            self._container_registry.addContainer(global_stack)
+                self._container_registry.addContainer(global_stack)
         else:
             # Find the machine
             global_stack = self._container_registry.findContainerStacks(name = self._machine_info.name, type = "machine")[0]

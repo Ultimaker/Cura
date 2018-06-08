@@ -19,7 +19,6 @@ ScrollView
         padding: UM.Theme.getSize("wide_margin").height
         height: childrenRect.height + 2 * padding
 
-        /* Hide for 3.4
         ToolboxDownloadsShowcase
         {
             id: showcase
@@ -31,7 +30,6 @@ ScrollView
             width: parent.width
             height: UM.Theme.getSize("default_lining").height
         }
-        */
 
         ToolboxDownloadsGrid
         {

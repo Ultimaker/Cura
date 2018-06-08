@@ -3,29 +3,42 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import argparse
 import faulthandler
 import os
 import sys
 
 from UM.Platform import Platform
 
+parser = argparse.ArgumentParser(prog = "cura",
+                                 add_help = False)
+parser.add_argument('--debug',
+                    action='store_true',
+                    default = False,
+                    help = "Turn on the debug mode by setting this option."
+                    )
+parser.add_argument('--trigger-early-crash',
+                    dest = 'trigger_early_crash',
+                    action = 'store_true',
+                    default = False,
+                    help = "FOR TESTING ONLY. Trigger an early crash to show the crash dialog."
+                    )
+known_args = vars(parser.parse_known_args()[0])
 
-# Gets the directory for stdout and stderr
-def get_cura_dir_for_stdoutputs() -> str:
-    if Platform.isWindows():
-        return os.path.expanduser("~/AppData/Roaming/cura/")
-    elif Platform.isLinux():
-        return os.path.expanduser("~/.local/share/cura")
-    elif Platform.isOSX():
-        return os.path.expanduser("~/Library/Logs/cura")
+if not known_args["debug"]:
+    def get_cura_dir_path():
+        if Platform.isWindows():
+            return os.path.expanduser("~/AppData/Roaming/cura")
+        elif Platform.isLinux():
+            return os.path.expanduser("~/.local/share/cura")
+        elif Platform.isOSX():
+            return os.path.expanduser("~/Library/Logs/cura")
 
-
-# Change stdout and stderr to files if Cura is running as a packaged application.
-if hasattr(sys, "frozen"):
-    dir_path = get_cura_dir_for_stdoutputs()
-    os.makedirs(dir_path, exist_ok = True)
-    sys.stdout = open(os.path.join(dir_path, "stdout.log"), "w", encoding = "utf-8")
-    sys.stderr = open(os.path.join(dir_path, "stderr.log"), "w", encoding = "utf-8")
+    if hasattr(sys, "frozen"):
+        dirpath = get_cura_dir_path()
+        os.makedirs(dirpath, exist_ok = True)
+        sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w", encoding = "utf-8")
+        sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w", encoding = "utf-8")
 
 
 # WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612

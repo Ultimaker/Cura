@@ -20,7 +20,7 @@ class CuraSceneNode(SceneNode):
     def __init__(self, parent: Optional["SceneNode"] = None, visible: bool = True, name: str = "", no_setting_override: bool = False) -> None:
         super().__init__(parent = parent, visible = visible, name = name)
         if not no_setting_override:
-            self.addDecorator(SettingOverrideDecorator())
+            self.addDecorator(SettingOverrideDecorator())  # now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
 
     def setOutsideBuildArea(self, new_value: bool) -> None:

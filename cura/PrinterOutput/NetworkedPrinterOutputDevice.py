@@ -254,8 +254,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        machine_manager.checkCorrectGroupName(self.getId(), self.name)
+        if self._properties.get(b"temporary", b"false") != b"true":
+            Application.getInstance().getMachineManager().checkCorrectGroupName(self.getId(), self.name)
 
     def _registerOnFinishedCallback(self, reply: QNetworkReply, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         if on_finished is not None:

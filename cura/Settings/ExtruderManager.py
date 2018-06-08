@@ -540,6 +540,11 @@ class ExtruderManager(QObject):
 
         return result
 
+    ##  Return the default extruder position from the machine manager
+    @staticmethod
+    def getDefaultExtruderPosition() -> str:
+        return Application.getInstance().getMachineManager().defaultExtruderPosition
+
     ##  Get all extruder values for a certain setting.
     #
     #   This is exposed to qml for display purposes

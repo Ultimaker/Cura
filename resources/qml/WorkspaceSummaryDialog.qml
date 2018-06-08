@@ -148,9 +148,22 @@ UM.Dialog
                     {
                         height: childrenRect.height
                         width: parent.width
-                        Label
+                         Label
                         {
-                            text: catalog.i18nc("@action:label", "Extruder %1").arg(modelData)
+                            text: {
+                                var extruder = Number(modelData)
+                                var extruder_id = ""
+                                if(!isNaN(extruder))
+                                {
+                                    extruder_id = extruder + 1 // The extruder counter start from One and not Zero
+                                }
+                                else
+                                {
+                                    extruder_id = modelData
+                                }
+
+                                return catalog.i18nc("@action:label", "Extruder %1").arg(extruder_id)
+                            }
                             font.bold: true
                         }
                         Row
