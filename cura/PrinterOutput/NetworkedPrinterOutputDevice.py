@@ -213,7 +213,14 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             reply.uploadProgress.connect(onProgress)
         self._registerOnFinishedCallback(reply, onFinished)
 
-    def postFormWithParts(self, target:str, parts: List[QHttpPart], onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None) -> None:
+    ##  Send an API call to the printer via HTTP POST.
+    #   \param target The target URL on the printer.
+    #   \param parts The parts of a form. One must be provided for each form
+    #   element in the POST call. Create form parts using _createFormPart.
+    #   \param onFinished A function to call when the call has been completed.
+    #   \param onProgress A function to call when progress has been made. Use
+    #   this to update a progress bar.
+    def postFormWithParts(self, target: str, parts: List[QHttpPart], onFinished: Optional[Callable[[Any, QNetworkReply], None]] = None, onProgress: Callable = None) -> None:
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target, content_type=None)
