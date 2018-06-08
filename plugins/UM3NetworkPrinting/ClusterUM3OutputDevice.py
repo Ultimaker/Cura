@@ -198,8 +198,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         yield True #Return that we had success!
         yield #To prevent having to catch the StopIteration exception.
 
-    from cura.Utils.Threading import call_on_qt_thread
-
     def _sendPrintJobWaitOnWriteJobFinished(self, job):
         self._write_job_progress_message.hide()
 
