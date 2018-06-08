@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Set
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
@@ -21,7 +21,7 @@ from PyQt5.QtCore import QObject, pyqtSlot
 #
 class QualityGroup(QObject):
 
-    def __init__(self, name: str, quality_type: str, parent = None):
+    def __init__(self, name: str, quality_type: str, parent = None) -> None:
         super().__init__(parent)
         self.name = name
         self.node_for_global = None  # type: Optional["QualityGroup"]
@@ -33,8 +33,8 @@ class QualityGroup(QObject):
     def getName(self) -> str:
         return self.name
 
-    def getAllKeys(self) -> set:
-        result = set()
+    def getAllKeys(self) -> Set[str]:
+        result = set() #type: Set[str]
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
             if node is None:
                 continue
