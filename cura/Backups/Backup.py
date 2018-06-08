@@ -29,11 +29,11 @@ class Backup:
     # Re-use translation catalog.
     catalog = i18nCatalog("cura")
 
-    def __init__(self, zip_file: bytes = None, meta_data: dict = None):
+    def __init__(self, zip_file: bytes = None, meta_data: dict = None) -> None:
         self.zip_file = zip_file  # type: Optional[bytes]
         self.meta_data = meta_data  # type: Optional[dict]
 
-    def makeFromCurrent(self) -> (bool, Optional[str]):
+    def makeFromCurrent(self) -> None:
         """
         Create a backup from the current user config folder.
         """
@@ -57,6 +57,8 @@ class Backup:
         # Create an empty buffer and write the archive to it.
         buffer = io.BytesIO()
         archive = self._makeArchive(buffer, version_data_dir)
+        if archive is None:
+            return
         files = archive.namelist()
         
         # Count the metadata items. We do this in a rather naive way at the moment.
