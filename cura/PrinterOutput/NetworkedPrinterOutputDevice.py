@@ -32,12 +32,12 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent)
         self._manager = None    # type: QNetworkAccessManager
-        self._last_manager_create_time = None       # type: float
+        self._last_manager_create_time = None       # type: Optional[float]
         self._recreate_network_manager_time = 30
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
 
-        self._last_response_time = None     # type: float
-        self._last_request_time = None      # type: float
+        self._last_response_time = None     # type: Optional[float]
+        self._last_request_time = None      # type: Optional[float]
 
         self._api_prefix = ""
         self._address = address
@@ -146,12 +146,13 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             if time_since_last_response > self._recreate_network_manager_time:
                 if self._last_manager_create_time is None:
                     self._createNetworkManager()
-                if time() - self._last_manager_create_time > self._recreate_network_manager_time:
+                elif time() - self._last_manager_create_time > self._recreate_network_manager_time:
                     self._createNetworkManager()
         elif self._connection_state == ConnectionState.closed:
             # Go out of timeout.
-            self.setConnectionState(self._connection_state_before_timeout)
-            self._connection_state_before_timeout = None
+            if self._connection_state_before_timeout is not None:   # sanity check, but it should never be None here
+                self.setConnectionState(self._connection_state_before_timeout)
+                self._connection_state_before_timeout = None
 
     def _createEmptyRequest(self, target: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         url = QUrl("http://" + self._address + self._api_prefix + target)
