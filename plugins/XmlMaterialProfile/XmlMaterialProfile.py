@@ -632,35 +632,36 @@ class XmlMaterialProfile(InstanceContainer):
 
                     machine_manufacturer = identifier.get("manufacturer", definition.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
-                    if machine_compatibility:
-                        new_material_id = self.getId() + "_" + machine_id
+                    # Always create the instance of the material even if it is not compatible, otherwise it will never
+                    # show as incompatible if the material profile doesn't define hotends in the machine - CURA-5444
+                    new_material_id = self.getId() + "_" + machine_id
 
-                        # The child or derived material container may already exist. This can happen when a material in a
-                        # project file and the a material in Cura have the same ID.
-                        # In the case if a derived material already exists, override that material container because if
-                        # the data in the parent material has been changed, the derived ones should be updated too.
-                        if ContainerRegistry.getInstance().isLoaded(new_material_id):
-                            new_material = ContainerRegistry.getInstance().findContainers(id = new_material_id)[0]
-                            is_new_material = False
-                        else:
-                            new_material = XmlMaterialProfile(new_material_id)
-                            is_new_material = True
+                    # The child or derived material container may already exist. This can happen when a material in a
+                    # project file and the a material in Cura have the same ID.
+                    # In the case if a derived material already exists, override that material container because if
+                    # the data in the parent material has been changed, the derived ones should be updated too.
+                    if ContainerRegistry.getInstance().isLoaded(new_material_id):
+                        new_material = ContainerRegistry.getInstance().findContainers(id = new_material_id)[0]
+                        is_new_material = False
+                    else:
+                        new_material = XmlMaterialProfile(new_material_id)
+                        is_new_material = True
 
-                        new_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                        new_material.getMetaData()["id"] = new_material_id
-                        new_material.getMetaData()["name"] = self.getName()
-                        new_material.setDefinition(machine_id)
-                        # Don't use setMetadata, as that overrides it for all materials with same base file
-                        new_material.getMetaData()["compatible"] = machine_compatibility
-                        new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
-                        new_material.getMetaData()["definition"] = machine_id
+                    new_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                    new_material.getMetaData()["id"] = new_material_id
+                    new_material.getMetaData()["name"] = self.getName()
+                    new_material.setDefinition(machine_id)
+                    # Don't use setMetadata, as that overrides it for all materials with same base file
+                    new_material.getMetaData()["compatible"] = machine_compatibility
+                    new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
+                    new_material.getMetaData()["definition"] = machine_id
 
-                        new_material.setCachedValues(cached_machine_setting_properties)
+                    new_material.setCachedValues(cached_machine_setting_properties)
 
-                        new_material._dirty = False
+                    new_material._dirty = False
 
-                        if is_new_material:
-                            containers_to_add.append(new_material)
+                    if is_new_material:
+                        containers_to_add.append(new_material)
 
                     # Find the buildplates compatibility
                     buildplates = machine.iterfind("./um:buildplate", self.__namespaces)
