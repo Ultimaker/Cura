@@ -872,22 +872,23 @@ class XmlMaterialProfile(InstanceContainer):
 
                     machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
-                    if machine_compatibility:
-                        new_material_id = container_id + "_" + machine_id
+                    # Always create the instance of the material even if it is not compatible, otherwise it will never
+                    # show as incompatible if the material profile doesn't define hotends in the machine - CURA-5444
+                    new_material_id = container_id + "_" + machine_id
 
-                        # Do not look for existing container/container metadata with the same ID although they may exist.
-                        # In project loading and perhaps some other places, we only want to get information (metadata)
-                        # from a file without changing the current state of the system. If we overwrite the existing
-                        # metadata here, deserializeMetadata() will not be safe for retrieving information.
-                        new_material_metadata = {}
+                    # Do not look for existing container/container metadata with the same ID although they may exist.
+                    # In project loading and perhaps some other places, we only want to get information (metadata)
+                    # from a file without changing the current state of the system. If we overwrite the existing
+                    # metadata here, deserializeMetadata() will not be safe for retrieving information.
+                    new_material_metadata = {}
 
-                        new_material_metadata.update(base_metadata)
-                        new_material_metadata["id"] = new_material_id
-                        new_material_metadata["compatible"] = machine_compatibility
-                        new_material_metadata["machine_manufacturer"] = machine_manufacturer
-                        new_material_metadata["definition"] = machine_id
+                    new_material_metadata.update(base_metadata)
+                    new_material_metadata["id"] = new_material_id
+                    new_material_metadata["compatible"] = machine_compatibility
+                    new_material_metadata["machine_manufacturer"] = machine_manufacturer
+                    new_material_metadata["definition"] = machine_id
 
-                        result_metadata.append(new_material_metadata)
+                    result_metadata.append(new_material_metadata)
 
                     buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
                     buildplate_map = {}
