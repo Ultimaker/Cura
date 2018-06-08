@@ -39,6 +39,9 @@ class CuraSceneNode(SceneNode):
     #   TODO The best way to do it is by adding the setActiveExtruder decorator to every node when is loaded
     def getPrintingExtruder(self) -> Optional[ExtruderStack]:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None:
+            return None
+
         per_mesh_stack = self.callDecoration("getStack")
         extruders = list(global_container_stack.extruders.values())
 
@@ -85,10 +88,10 @@ class CuraSceneNode(SceneNode):
     ##  Return if the provided bbox collides with the bbox of this scene node
     def collidesWithBbox(self, check_bbox: AxisAlignedBox) -> bool:
         bbox = self.getBoundingBox()
-
-        # Mark the node as outside the build volume if the bounding box test fails.
-        if check_bbox.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
-            return True
+        if bbox is not None:
+            # Mark the node as outside the build volume if the bounding box test fails.
+            if check_bbox.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                return True
 
         return False
 
