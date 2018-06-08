@@ -25,7 +25,7 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
-from time import time, sleep
+from time import time
 from datetime import datetime
 from typing import Optional, Dict, List
 
@@ -90,6 +90,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def requestWrite(self, nodes: List[SceneNode], file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         self.writeStarted.emit(self)
+
+        self.sendMaterialProfiles()
 
         #Formats supported by this application (file types that we can actually write).
         if file_handler:
@@ -533,6 +535,28 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._active_printer = None
             self.activePrinterChanged.emit()
 
+    ##  Sync the material profiles in Cura with the printer.
+    #
+    #   This gets called when connecting to a printer as well as when sending a
+    #   print.
+    #
+    #   TODO: For now we send all material profiles that are fully loaded. See
+    #   if that has any performance impact. If not, we can try sending ALL
+    #   profiles. If it has, we may need to limit it to the profiles that are
+    #   active in the current machine.
+    def sendMaterialProfiles(self):
+        container_registry = ContainerRegistry.getInstance()
+
+        base_files = set()
+        for material_metadata in container_registry.findContainersMetadata(type = "material"):
+            if container_registry.isLoaded(material_metadata["id"]):
+                if "base_file" not in material_metadata:
+                    continue #If there's no base file then there was no file for it (such as empty_material).
+                base_files.add(material_metadata["base_file"])
+
+        for file in base_files:
+            Logger.log("d", "Syncing material profile with printer: {file}".format(file = file))
+            #TODO Call API to send profile.
 
 def loadJsonFromReply(reply):
     try:
