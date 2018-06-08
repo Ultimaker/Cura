@@ -4,6 +4,7 @@
 from UM.FileHandler.FileWriter import FileWriter #To choose based on the output file mode (text vs. binary).
 from UM.FileHandler.WriteFileJob import WriteFileJob #To call the file writer asynchronously.
 from UM.Logger import Logger
+from UM.JobQueue import JobQueue #To send material profiles in the background.
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
@@ -20,6 +21,7 @@ from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
+from .SendMaterialJob import SendMaterialJob
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
@@ -27,7 +29,7 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
 from time import time
 from datetime import datetime
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Set
 
 import io #To create the correct buffers for sending data to the printer.
 import json
@@ -554,16 +556,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     continue #If there's no base file then there was no file for it (such as empty_material).
                 base_files.add(material_metadata["base_file"])
 
-        for file in base_files:
-            Logger.log("d", "Syncing material profile with printer: {file}".format(file = file))
-
-            parts = []
-            material = container_registry.findContainers(id = file)[0]
-            serialized_material = material.serialize().encode("utf-8")
-            parts.append(self._createFormPart("name=\"file\"; filename=\"{file_name}.xml.fdm_material\"".format(file_name = file), serialized_material))
-            parts.append(self._createFormPart("name=\"filename\"", (file + ".xml.fdm_material").encode("utf-8"), "text/plain"))
-
-            self.postFormWithParts(target = "/materials", parts = parts)
+        job = SendMaterialJob(material_ids = base_files, device = self)
+        job.run()
 
 def loadJsonFromReply(reply):
     try:
