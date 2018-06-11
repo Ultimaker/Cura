@@ -33,8 +33,7 @@ class SendMaterialJob(Job):
             with open(file_path, "rb") as f:
                 parts.append(self.device._createFormPart("name=\"file\"; filename=\"{file_name}\"".format(file_name = file_name), f.read()))
 
-            without_extension, _ = os.path.splitext(file_path)
-            signature_file_path = without_extension + ".sig"
+            signature_file_path = file_path + ".sig"
             if os.path.exists(signature_file_path):
                 _, signature_file_name = os.path.split(signature_file_path)
                 with open(signature_file_path, "rb") as f:
