@@ -18,6 +18,7 @@
             }
         },
         "has_machine_quality": true,
+        "preferred_quality_type": "normal",
         "has_machine_materials": true,
         "preferred_material": "blackbelt_ngen",
         "limit_materials": ["generic_pla_175", "blackbelt_ngen", "blackbelt_ht"],

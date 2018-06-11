@@ -64,7 +64,7 @@ class BlackBeltPlugin(Extension):
 
         # Handle default setting visibility
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
-        if self._application.getVersion() != "master" and Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) < Version("3.2.1"):
+        if self._application.getVersion() != "master" and Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) < Version("3.4.0"):
             self._force_visibility_update = True
 
         # Disable USB printing output device
@@ -113,7 +113,9 @@ class BlackBeltPlugin(Extension):
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingValueChanged)
+
         self._global_container_stack = self._application.getGlobalContainerStack()
+
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingValueChanged)
 
@@ -198,23 +200,20 @@ class BlackBeltPlugin(Extension):
 
         if "blackbelt_settings" in visible_settings and not forced:
             return
+
+        self._application.getSettingVisibilityPresetsModel().setActivePreset("blackbelt")
+
         visible_settings_changed = False
         default_visible_settings = [
-            "blackbelt_settings", "blackbelt_z_offset_gap", "blackbelt_secondary_fans_enabled", "blackbelt_belt_wall_enabled", "blackbelt_belt_wall_speed", "blackbelt_repetitions", "blackbelt_repetitions_distance",
-            "wall_line_count", "top_layers", "bottom_layers", "top_bottom_pattern", "fill_perimeter_gaps", "xy_offset", "z_seam_type", "z_seam_x", "z_seam_y", "z_seam_corner",
-            "infill_line_distance", "min_infill_area", "retraction_amount", "retraction_speed", "retraction_extra_prime_amount", "speed_infill", "speed_wall_0", "speed_slowdown_layers",
-            "cool_fan_speed", "cool_fan_full_at_height", "cool_fan_full_at_layer", "cool_min_layer_time", "meshfix_union_all", "meshfix_union_all_remove_holes", "meshfix_extensive_stiching",
-            "meshfix_keep_open_polygons", "multiple_mesh_overlap", "carve_multiple_volumes", "magic_spiralize", "coasting_enable"
+            "blackbelt_settings", "blackbelt_repetitions"
         ]
         for key in default_visible_settings:
             if key not in visible_settings:
                 visible_settings += ";%s" % key
                 visible_settings_changed = True
 
-        if not visible_settings_changed:
-            return
-
-        preferences.setValue("general/visible_settings", visible_settings)
+        if visible_settings_changed:
+            preferences.setValue("general/visible_settings", visible_settings)
 
 
     def _onActiveViewChanged(self):
