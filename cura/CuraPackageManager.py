@@ -7,8 +7,11 @@ from UM.Resources import Resources #To find storage paths for some resource type
 
 
 class CuraPackageManager(PackageManager):
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, application, parent = None):
+        super().__init__(application, parent)
 
+    def initialize(self):
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+
+        super().initialize()

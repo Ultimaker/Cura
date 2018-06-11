@@ -225,6 +225,8 @@ class CuraApplication(QtApplication):
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
+        from cura.CuraPackageManager import CuraPackageManager
+        self._package_manager_class = CuraPackageManager
 
     # Adds command line options to the command line parser. This should be called after the application is created and
     # before the pre-start.

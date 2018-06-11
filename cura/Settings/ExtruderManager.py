@@ -501,15 +501,6 @@ class ExtruderManager(QObject):
     def getInstanceExtruderValues(self, key):
         return ExtruderManager.getExtruderValues(key)
 
-    ##  Updates the material container to a material that matches the material diameter set for the printer
-    def updateMaterialForDiameter(self, extruder_position: int, global_stack = None):
-        if not global_stack:
-            global_stack = Application.getInstance().getGlobalContainerStack()
-            if not global_stack:
-                return
-
-        Application.getInstance().getMachineManager()._updateMaterialWithVariant(extruder_position)
-
     ##  Get the value for a setting from a specific extruder.
     #
     #   This is exposed to SettingFunction to use in value functions.

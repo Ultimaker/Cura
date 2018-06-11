@@ -9,6 +9,7 @@ from UM.Signal import Signal, signalemitter
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
+from UM.Util import parseBool
 
 from UM.Application import Application
 
@@ -39,7 +40,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         user_container = InstanceContainer(container_id = self._generateUniqueName())
         user_container.addMetaDataEntry("type", "user")
         self._stack.userChanges = user_container
-        self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
+        self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
 
         self._is_non_printing_mesh = False
         self._is_non_thumbnail_visible_mesh = False
@@ -48,12 +49,24 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         Application.getInstance().getContainerRegistry().addContainer(self._stack)
 
-        Application.getInstance().globalContainerStackChanged.connect(self._updateNextStack)
+        Application.getInstance().globalContainerStackChanged.connect(self._onNumberOfExtrudersEnabledChanged)
+        Application.getInstance().getMachineManager().numberExtrudersEnabledChanged.connect(self._onNumberOfExtrudersEnabledChanged)
+
         self.activeExtruderChanged.connect(self._updateNextStack)
         self._updateNextStack()
 
     def _generateUniqueName(self):
         return "SettingOverrideInstanceContainer-%s" % uuid.uuid1()
+
+    def _onNumberOfExtrudersEnabledChanged(self, *args, **kwargs):
+        if not parseBool(self._extruder_stack.getMetaDataEntry("enabled", "True")):
+            # switch to the first extruder that's available
+            global_stack = Application.getInstance().getMachineManager().activeMachine
+            for _, extruder in sorted(list(global_stack.extruders.items())):
+                if parseBool(extruder.getMetaDataEntry("enabled", "True")):
+                    self._extruder_stack = extruder
+                    self._updateNextStack()
+                    break
 
     def __deepcopy__(self, memo):
         ## Create a fresh decorator object
@@ -63,13 +76,13 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
 
         # A unique name must be added, or replaceContainer will not replace it
-        instance_container.setMetaDataEntry("id", self._generateUniqueName)
+        instance_container.setMetaDataEntry("id", self._generateUniqueName())
 
         ## Set the copied instance as the first (and only) instance container of the stack.
         deep_copy._stack.replaceContainer(0, instance_container)
 
         # Properly set the right extruder on the copy
-        deep_copy.setActiveExtruder(self._extruder_stack)
+        deep_copy.setActiveExtruder(self._extruder_stack.getId())
 
         # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
         # has not been updated yet.
@@ -82,7 +95,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #
     #   \return An extruder's container stack.
     def getActiveExtruder(self):
-        return self._extruder_stack
+        return self._extruder_stack.getId()
 
     ##  Gets the signal that emits if the active extruder changed.
     #
@@ -124,20 +137,16 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #   kept up to date.
     def _updateNextStack(self):
         if self._extruder_stack:
-            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = self._extruder_stack)
-            if extruder_stack:
-                if self._stack.getNextStack():
-                    old_extruder_stack_id = self._stack.getNextStack().getId()
-                else:
-                    old_extruder_stack_id = ""
-
-                self._stack.setNextStack(extruder_stack[0])
-                # Trigger slice/need slicing if the extruder changed.
-                if self._stack.getNextStack().getId() != old_extruder_stack_id:
-                    Application.getInstance().getBackend().needsSlicing()
-                    Application.getInstance().getBackend().tickle()
+            if self._stack.getNextStack():
+                old_extruder_stack_id = self._stack.getNextStack().getId()
             else:
-                Logger.log("e", "Extruder stack %s below per-object settings does not exist.", self._extruder_stack)
+                old_extruder_stack_id = ""
+
+            self._stack.setNextStack(self._extruder_stack)
+            # Trigger slice/need slicing if the extruder changed.
+            if self._stack.getNextStack().getId() != old_extruder_stack_id:
+                Application.getInstance().getBackend().needsSlicing()
+                Application.getInstance().getBackend().tickle()
         else:
             self._stack.setNextStack(Application.getInstance().getGlobalContainerStack())
 
@@ -145,7 +154,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #
     #   \param extruder_stack_id The new extruder stack to print with.
     def setActiveExtruder(self, extruder_stack_id):
-        self._extruder_stack = extruder_stack_id
+        if self._extruder_stack.getId() == extruder_stack_id:
+            return
+
+        global_stack = Application.getInstance().getMachineManager().activeMachine
+        for extruder in global_stack.extruders.values():
+            if extruder.getId() == extruder_stack_id:
+                self._extruder_stack = extruder
+                break
         self._updateNextStack()
         ExtruderManager.getInstance().resetSelectedObjectExtruders()
         self.activeExtruderChanged.emit()
