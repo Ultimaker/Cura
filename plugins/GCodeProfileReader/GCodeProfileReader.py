@@ -57,7 +57,7 @@ class GCodeProfileReader(ProfileReader):
         # TODO: Consider moving settings to the start?
         serialized = ""  # Will be filled with the serialized profile.
         try:
-            with open(file_name, "r") as f:
+            with open(file_name, "r", encoding = "utf-8") as f:
                 for line in f:
                     if line.startswith(prefix):
                         # Remove the prefix and the newline from the line and add it to the rest.

@@ -1018,7 +1018,7 @@ class XmlMaterialProfile(InstanceContainer):
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
         product_to_id_file = os.path.join(os.path.dirname(sys.modules[cls.__module__].__file__), "product_to_id.json")
-        with open(product_to_id_file) as f:
+        with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
         return product_to_id_map
