@@ -139,13 +139,15 @@ UM.MainWindow
                     text: catalog.i18nc("@title:menu menubar:file","Save &Project...")
                     onTriggered:
                     {
+                        var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetype": "application/x-curaproject+xml" };
                         if(UM.Preferences.getValue("cura/dialog_on_project_save"))
                         {
+                            saveWorkspaceDialog.args = args;
                             saveWorkspaceDialog.open()
                         }
                         else
                         {
-                            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
+                            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
                         }
                     }
                 }
@@ -557,7 +559,8 @@ UM.MainWindow
     WorkspaceSummaryDialog
     {
         id: saveWorkspaceDialog
-        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
+        property var args
+        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
     }
 
     Connections

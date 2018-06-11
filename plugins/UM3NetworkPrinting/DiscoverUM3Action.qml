@@ -14,20 +14,6 @@ Cura.MachineAction
     property var selectedDevice: null
     property bool completeProperties: true
 
-    Connections
-    {
-        target: dialog ? dialog : null
-        ignoreUnknownSignals: true
-        onNextClicked:
-        {
-            // Connect to the printer if the MachineAction is currently shown
-            if(base.parent.wizard == dialog)
-            {
-                connectToPrinter();
-            }
-        }
-    }
-
     function connectToPrinter()
     {
         if(base.selectedDevice && base.completeProperties)

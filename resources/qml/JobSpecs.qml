@@ -81,8 +81,8 @@ Item {
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
                 onEditingFinished: {
-                    text = text == "" ? "unnamed" : text;
-                    PrintInformation.setJobName(printJobTextfield.text, true);
+                    var new_name = text == "" ? "unnamed" : text;
+                    PrintInformation.setJobName(new_name, true);
                     printJobTextfield.focus = false;
                 }
                 validator: RegExpValidator {

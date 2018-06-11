@@ -656,6 +656,15 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
+    def activeVariantId(self) -> str:
+        if self._active_container_stack:
+            variant = self._active_container_stack.variant
+            if variant:
+                return variant.getId()
+
+        return ""
+
+    @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -1227,7 +1236,7 @@ class MachineManager(QObject):
     ##  Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
     #   instance with the same network key.
     @pyqtSlot(str)
-    def switchPrinterType(self, machine_name: str):
+    def switchPrinterType(self, machine_name: str) -> None:
         # Don't switch if the user tries to change to the same type of printer
         if self.activeMachineDefinitionName == machine_name:
             return
@@ -1238,6 +1247,8 @@ class MachineManager(QObject):
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
+            if not new_machine:
+                return
             new_machine.addMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
             new_machine.addMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
             new_machine.addMetaDataEntry("hidden", False)
@@ -1299,8 +1310,8 @@ class MachineManager(QObject):
             # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
             if self.activeMachineNetworkGroupName != group_name:
                 metadata_filter = {"um_network_key": self.activeMachineNetworkKey}
-                hidden_containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-                for container in hidden_containers:
+                containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+                for container in containers:
                     container.setMetaDataEntry("connect_group_name", group_name)
 
     ##  This method checks if there is an instance connected to the given network_key

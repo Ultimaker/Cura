@@ -15,6 +15,7 @@ from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -25,6 +26,7 @@ from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 MYPY = False
 
+
 try:
     if not MYPY:
         import xml.etree.cElementTree as ET
@@ -32,10 +34,20 @@ except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
 
+
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
     def __init__(self):
         super().__init__()
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                comment="3MF",
+                suffixes=["3mf"]
+            )
+        )
+
         self._supported_extensions = [".3mf"]
         self._root = None
         self._base_name = ""
