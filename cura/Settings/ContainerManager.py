@@ -1,31 +1,24 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
+import os
 import urllib.parse
 import uuid
 from typing import Dict, Union
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
-from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 
-from UM.PluginRegistry import PluginRegistry
-from UM.SaveFile import SaveFile
-from UM.Platform import Platform
-from UM.MimeTypeDatabase import MimeTypeDatabase
-
+from UM.i18n import i18nCatalog
+from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
-from UM.Application import Application
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
+from UM.Platform import Platform
+from UM.SaveFile import SaveFile
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
-
-from UM.MimeTypeDatabase import MimeTypeNotFoundError
-from UM.Settings.ContainerFormatError import ContainerFormatError
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from cura.Settings.ExtruderManager import ExtruderManager
-from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
@@ -36,11 +29,17 @@ catalog = i18nCatalog("cura")
 #   from within QML. We want to be able to trigger things like removing a container
 #   when a certain action happens. This can be done through this class.
 class ContainerManager(QObject):
-    def __init__(self, parent = None):
-        super().__init__(parent)
 
-        self._application = Application.getInstance()
-        self._container_registry = ContainerRegistry.getInstance()
+    def __init__(self, application):
+        if ContainerManager.__instance is not None:
+            raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
+        ContainerManager.__instance = self
+
+        super().__init__(parent = application)
+
+        self._application = application
+        self._plugin_registry = self._application.getPluginRegistry()
+        self._container_registry = self._application.getContainerRegistry()
         self._machine_manager = self._application.getMachineManager()
         self._material_manager = self._application.getMaterialManager()
         self._container_name_filters = {}
@@ -129,7 +128,7 @@ class ContainerManager(QObject):
         container.setProperty(setting_key, property_name, property_value)
 
         basefile = container.getMetaDataEntry("base_file", container_id)
-        for sibbling_container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+        for sibbling_container in self._container_registry.findInstanceContainers(base_file = basefile):
             if sibbling_container != container:
                 sibbling_container.setProperty(setting_key, property_name, property_value)
 
@@ -307,13 +306,15 @@ class ContainerManager(QObject):
     #   \return \type{bool} True if successful, False if not.
     @pyqtSlot(result = bool)
     def updateQualityChanges(self):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._machine_manager.activeMachine
         if not global_stack:
             return False
 
         self._machine_manager.blurSettings.emit()
 
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        global_stack = self._machine_manager.activeMachine
+        extruder_stacks = list(global_stack.extruders.values())
+        for stack in [global_stack] + extruder_stacks:
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
             quality_changes = stack.qualityChanges
             if not quality_changes or self._container_registry.isReadOnly(quality_changes.getId()):
@@ -334,13 +335,15 @@ class ContainerManager(QObject):
         send_emits_containers = []
 
         # Go through global and extruder stacks and clear their topmost container (the user settings).
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        global_stack = self._machine_manager.activeMachine
+        extruder_stacks = list(global_stack.extruders.values())
+        for stack in [global_stack] + extruder_stacks:
             container = stack.userChanges
             container.clear()
             send_emits_containers.append(container)
 
         # user changes are possibly added to make the current setup match the current enabled extruders
-        Application.getInstance().getMachineManager().correctExtruderSettings()
+        self._machine_manager.correctExtruderSettings()
 
         for container in send_emits_containers:
             container.sendPostponedEmits()
@@ -381,21 +384,6 @@ class ContainerManager(QObject):
         if container is not None:
             container.setMetaDataEntry("GUID", new_guid)
 
-    ##  Get the singleton instance for this class.
-    @classmethod
-    def getInstance(cls) -> "ContainerManager":
-        # Note: Explicit use of class name to prevent issues with inheritance.
-        if ContainerManager.__instance is None:
-            ContainerManager.__instance = cls()
-        return ContainerManager.__instance
-
-    __instance = None   # type: "ContainerManager"
-
-    # Factory function, used by QML
-    @staticmethod
-    def createContainerManager(engine, js_engine):
-        return ContainerManager.getInstance()
-
     def _performMerge(self, merge_into, merge, clear_settings = True):
         if merge == merge_into:
             return
@@ -415,7 +403,7 @@ class ContainerManager(QObject):
 
             serialize_type = ""
             try:
-                plugin_metadata = PluginRegistry.getInstance().getMetaData(plugin_id)
+                plugin_metadata = self._plugin_registry.getMetaData(plugin_id)
                 if plugin_metadata:
                     serialize_type = plugin_metadata["settings_container"]["type"]
                 else:
@@ -470,3 +458,9 @@ class ContainerManager(QObject):
 
         container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
         self._container_registry.exportQualityProfile(container_list, path, file_type)
+
+    __instance = None
+
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "ContainerManager":
+        return cls.__instance

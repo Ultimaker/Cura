@@ -464,7 +464,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 num_visible_settings = len(visible_settings_string.split(";"))
             active_mode = temp_preferences.getValue("cura/active_mode")
             if not active_mode:
-                active_mode = Preferences.getInstance().getValue("cura/active_mode")
+                active_mode = Application.getInstance().getPreferences().getValue("cura/active_mode")
         except KeyError:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
@@ -583,7 +583,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
-        global_preferences = Preferences.getInstance()
+        global_preferences = application.getInstance().getPreferences()
 
         visible_settings = temp_preferences.getValue("general/visible_settings")
         if visible_settings is None:
