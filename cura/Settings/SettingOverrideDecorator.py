@@ -63,7 +63,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
 
         # A unique name must be added, or replaceContainer will not replace it
-        instance_container.setMetaDataEntry("id", self._generateUniqueName)
+        instance_container.setMetaDataEntry("id", self._generateUniqueName())
 
         ## Set the copied instance as the first (and only) instance container of the stack.
         deep_copy._stack.replaceContainer(0, instance_container)
