@@ -153,8 +153,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "not blackbelt_raft",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "blackbelt_belt_wall_speed":
                 {
@@ -168,8 +168,8 @@
                     "default_value": 30,
                     "value": "speed_wall_0 * 0.6",
                     "enabled": "blackbelt_belt_wall_enabled and not blackbelt_raft",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "blackbelt_belt_wall_flow":
                 {
@@ -183,8 +183,8 @@
                     "default_value": 100,
                     "value": "material_flow",
                     "enabled": "blackbelt_belt_wall_enabled and not blackbelt_raft",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "blackbelt_z_offset_gap":
                 {
