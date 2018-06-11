@@ -3,14 +3,13 @@
 from UM.PluginRegistry import PluginRegistry
 from cura.API.Backups import Backups
 
-
+##  The official Cura API that plug-ins can use to interact with Cura.
+#
+#   Python does not technically prevent talking to other classes as well, but
+#   this API provides a version-safe interface with proper deprecation warnings
+#   etc. Usage of any other methods than the ones provided in this API can cause
+#   plug-ins to be unstable.
 class CuraAPI:
-    """
-    The official Cura API that plugins can use to interact with Cura.
-    Python does not technically prevent talking to other classes as well,
-    but this API provides a version-safe interface with proper deprecation warnings etc.
-    Usage of any other methods than the ones provided in this API can cause plugins to be unstable.
-    """
 
     # For now we use the same API version to be consistent.
     VERSION = PluginRegistry.APIVersion
