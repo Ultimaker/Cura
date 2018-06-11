@@ -393,14 +393,14 @@ class ExtruderManager(QObject):
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
-            self._fixSingleExtrusionMahineExtruderDefinition(global_stack)
+            self._fixSingleExtrusionMachineExtruderDefinition(global_stack)
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
                 self.setActiveExtruderIndex(0)
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
-    def _fixSingleExtrusionMahineExtruderDefinition(self, global_stack):
+    def _fixSingleExtrusionMachineExtruderDefinition(self, global_stack):
         expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
         extruder_stack_0 = global_stack.extruders["0"]
         if extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
