@@ -158,4 +158,4 @@ class MachineSettingsAction(MachineAction):
     @pyqtSlot(int)
     def updateMaterialForDiameter(self, extruder_position: int):
         # Updates the material container to a material that matches the material diameter set for the printer
-        self._application.getMachineManager()._updateMaterialWithVariant(extruder_position)
+        self._application.getMachineManager().updateMaterialWithVariant(extruder_position)
