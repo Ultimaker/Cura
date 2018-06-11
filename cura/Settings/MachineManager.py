@@ -306,6 +306,11 @@ class MachineManager(QObject):
         for position, extruder in global_stack.extruders.items():
             material_dict[position] = extruder.material.getMetaDataEntry("base_file")
         self._current_root_material_id = material_dict
+
+        # Update materials to make sure that the diameters match with the machine's
+        for position in global_stack.extruders:
+            self._updateMaterialWithVariant(position)
+
         global_quality = global_stack.quality
         quality_type = global_quality.getMetaDataEntry("quality_type")
         global_quality_changes = global_stack.qualityChanges
