@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 #
 #   This way it won't freeze up the interface while sending those materials.
 class SendMaterialJob(Job):
-    def __init__(self, device: "NetworkedPrinterDevice"):
+    def __init__(self, device: "ClusterUM3OutputDevice"):
         super().__init__()
         self.device = device
 
@@ -32,7 +32,6 @@ class SendMaterialJob(Job):
             parts = []
             with open(file_path, "rb") as f:
                 parts.append(self.device._createFormPart("name=\"file\"; filename=\"{file_name}\"".format(file_name = file_name), f.read()))
-            parts.append(self.device._createFormPart("name=\"filename\"", file_name.encode("utf-8"), "text/plain"))
 
             without_extension, _ = os.path.splitext(file_path)
             signature_file_path = without_extension + ".sig"
@@ -41,4 +40,4 @@ class SendMaterialJob(Job):
                 with open(signature_file_path, "rb") as f:
                     parts.append(self.device._createFormPart("name=\"signature_file\"; filename=\"{file_name}\"".format(file_name = signature_file_name), f.read()))
 
-            self.device.postFormWithParts(target = "/materials", parts = parts)
+            self.device.postFormWithParts(target = self.device._api_prefix + "materials/", parts = parts)
