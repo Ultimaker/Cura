@@ -404,9 +404,10 @@ class ExtruderManager(QObject):
         expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
         extruder_stack_0 = global_stack.extruders["0"]
         if extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
-            extruder_definition_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
+            Logger.log("e", "Single extruder printer [{printer}] expected extruder [{expected}], but got [{got}]. I'm making it [{expected}].".format(
+                printer = global_stack.getId(), expected = expected_extruder_definition_0_id, got = extruder_stack_0.definition.getId()))
             container_registry = ContainerRegistry.getInstance()
-            extruder_definition = container_registry.findDefinitionContainers(id = extruder_definition_id)[0]
+            extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
             extruder_stack_0.definition = extruder_definition
 
     ##  Get all extruder values for a certain setting.
