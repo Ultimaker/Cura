@@ -12,6 +12,9 @@ class CuraEngineBackendPatches():
     def __init__(self, backend):
         self._backend = backend
 
+        Application.getInstance().pluginsLoaded.connect(self._onPluginsLoaded)
+
+    def _onPluginsLoaded(self):
         self._backend._change_timer.timeout.disconnect(self._backend.slice)
         self._backend.slice = self.slice
         self._backend._change_timer.timeout.connect(self.slice)
