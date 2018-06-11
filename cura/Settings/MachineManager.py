@@ -306,6 +306,11 @@ class MachineManager(QObject):
         for position, extruder in global_stack.extruders.items():
             material_dict[position] = extruder.material.getMetaDataEntry("base_file")
         self._current_root_material_id = material_dict
+
+        # Update materials to make sure that the diameters match with the machine's
+        for position in global_stack.extruders:
+            self.updateMaterialWithVariant(position)
+
         global_quality = global_stack.quality
         quality_type = global_quality.getMetaDataEntry("quality_type")
         global_quality_changes = global_stack.qualityChanges
@@ -1200,7 +1205,7 @@ class MachineManager(QObject):
                    current_quality_type, quality_type)
         self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
 
-    def _updateMaterialWithVariant(self, position: Optional[str]):
+    def updateMaterialWithVariant(self, position: Optional[str]):
         if self._global_container_stack is None:
             return
         if position is None:
@@ -1286,7 +1291,7 @@ class MachineManager(QObject):
                     self._setMaterial(position, material_container_node)
                 else:
                     self._global_container_stack.extruders[position].material = self._empty_material_container
-                self._updateMaterialWithVariant(position)
+                self.updateMaterialWithVariant(position)
 
             if configuration.buildplateConfiguration is not None:
                 global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
@@ -1332,7 +1337,7 @@ class MachineManager(QObject):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setGlobalVariant(container_node)
-            self._updateMaterialWithVariant(None)  # Update all materials
+            self.updateMaterialWithVariant(None)  # Update all materials
             self._updateQualityWithMaterial()
 
     @pyqtSlot(str, str)
@@ -1369,7 +1374,7 @@ class MachineManager(QObject):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setVariantNode(position, container_node)
-            self._updateMaterialWithVariant(position)
+            self.updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
 
         # See if we need to show the Discard or Keep changes screen
@@ -1433,5 +1438,5 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._updateMaterialWithVariant(None)
+            self.updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()
