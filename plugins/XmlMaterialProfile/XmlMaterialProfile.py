@@ -563,7 +563,16 @@ class XmlMaterialProfile(InstanceContainer):
         for entry in settings:
             key = entry.get("key")
             if key in self.__material_settings_setting_map:
-                common_setting_values[self.__material_settings_setting_map[key]] = entry.text
+                if key == "processing temperature graph": #This setting has no setting text but subtags.
+                    graph_nodes = entry.iterfind("./um:point", self.__namespaces)
+                    graph_points = []
+                    for graph_node in graph_nodes:
+                        flow = float(graph_node.get("flow"))
+                        temperature = float(graph_node.get("temperature"))
+                        graph_points.append([flow, temperature])
+                    common_setting_values[self.__material_settings_setting_map[key]] = str(graph_points)
+                else:
+                    common_setting_values[self.__material_settings_setting_map[key]] = entry.text
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
                     common_compatibility = self._parseCompatibleValue(entry.text)
@@ -596,7 +605,16 @@ class XmlMaterialProfile(InstanceContainer):
             for entry in settings:
                 key = entry.get("key")
                 if key in self.__material_settings_setting_map:
-                    machine_setting_values[self.__material_settings_setting_map[key]] = entry.text
+                    if key == "processing temperature graph": #This setting has no setting text but subtags.
+                        graph_nodes = entry.iterfind("./um:point", self.__namespaces)
+                        graph_points = []
+                        for graph_node in graph_nodes:
+                            flow = float(graph_node.get("flow"))
+                            temperature = float(graph_node.get("temperature"))
+                            graph_points.append([flow, temperature])
+                        machine_setting_values[self.__material_settings_setting_map[key]] = str(graph_points)
+                    else:
+                        machine_setting_values[self.__material_settings_setting_map[key]] = entry.text
                 elif key in self.__unmapped_settings:
                     if key == "hardware compatible":
                         machine_compatibility = self._parseCompatibleValue(entry.text)
@@ -713,7 +731,16 @@ class XmlMaterialProfile(InstanceContainer):
                         for entry in settings:
                             key = entry.get("key")
                             if key in self.__material_settings_setting_map:
-                                hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
+                                if key == "processing temperature graph": #This setting has no setting text but subtags.
+                                    graph_nodes = entry.iterfind("./um:point", self.__namespaces)
+                                    graph_points = []
+                                    for graph_node in graph_nodes:
+                                        flow = float(graph_node.get("flow"))
+                                        temperature = float(graph_node.get("temperature"))
+                                        graph_points.append([flow, temperature])
+                                    hotend_setting_values[self.__material_settings_setting_map[key]] = str(graph_points)
+                                else:
+                                    hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
                             elif key in self.__unmapped_settings:
                                 if key == "hardware compatible":
                                     hotend_compatibility = self._parseCompatibleValue(entry.text)
