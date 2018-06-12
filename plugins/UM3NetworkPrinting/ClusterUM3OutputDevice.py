@@ -4,7 +4,6 @@
 from UM.FileHandler.FileWriter import FileWriter #To choose based on the output file mode (text vs. binary).
 from UM.FileHandler.WriteFileJob import WriteFileJob #To call the file writer asynchronously.
 from UM.Logger import Logger
-from UM.JobQueue import JobQueue #To send material profiles in the background.
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
@@ -19,6 +18,7 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkCamera import NetworkCamera
+from cura.PrinterOutputDevice import ConnectionState #To see when we're fully connected.
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .SendMaterialJob import SendMaterialJob
@@ -61,6 +61,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         # See comments about this hack with the clusterPrintersChanged signal
         self.printersChanged.connect(self.clusterPrintersChanged)
+
+        self.connectionStateChanged.connect(self._onConnectionStateChanged)
 
         self._accepts_commands = True
 
@@ -368,6 +370,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # Keep a list of all completed jobs so we know if something changed next time.
         self._finished_jobs = finished_jobs
 
+    ##  Called when the connection to the cluster changes.
+    def _onConnectionStateChanged(self) -> None:
+        if self.connectionState == ConnectionState.connected:
+            self.sendMaterialProfiles()
+
     def _update(self) -> None:
         if not super()._update():
             return
@@ -417,6 +424,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self.printJobsChanged.emit()  # Do a single emit for all print job changes.
 
     def _onGetPrintersDataFinished(self, reply: QNetworkReply) -> None:
+        self.connect()
         if not checkValidGetReply(reply):
             return
 
