@@ -365,11 +365,12 @@ class MaterialManager(QObject):
     #  1. the given machine doesn't have materials;
     #  2. cannot find any material InstanceContainers with the given settings.
     #
-    def getMaterialNodeByType(self, global_stack: "GlobalStack", extruder_variant_name: str, material_guid: str) -> Optional["MaterialNode"]:
+    def getMaterialNodeByType(self, global_stack: "GlobalStack", position: str, extruder_variant_name: str, material_guid: str) -> Optional["MaterialNode"]:
         node = None
         machine_definition = global_stack.definition
+        extruder_definition = global_stack.extruders[position].definition
         if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
-            material_diameter = machine_definition.getProperty("material_diameter", "value")
+            material_diameter = extruder_definition.getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)
 
