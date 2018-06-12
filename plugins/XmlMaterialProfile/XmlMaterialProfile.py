@@ -331,9 +331,9 @@ class XmlMaterialProfile(InstanceContainer):
         stream = io.BytesIO()
         tree = ET.ElementTree(root)
         # this makes sure that the XML header states encoding="utf-8"
-        tree.write(stream, encoding="utf-8", xml_declaration=True)
+        tree.write(stream, encoding = "utf-8", xml_declaration=True)
 
-        return stream.getvalue().decode('utf-8')
+        return stream.getvalue().decode("utf-8")
 
     # Recursively resolve loading inherited files
     def _resolveInheritance(self, file_name):
@@ -349,7 +349,7 @@ class XmlMaterialProfile(InstanceContainer):
     def _loadFile(self, file_name):
         path = Resources.getPath(CuraApplication.getInstance().ResourceTypes.MaterialInstanceContainer, file_name + ".xml.fdm_material")
 
-        with open(path, encoding="utf-8") as f:
+        with open(path, encoding = "utf-8") as f:
             contents = f.read()
 
         self._inherited_files.append(path)
@@ -955,7 +955,7 @@ class XmlMaterialProfile(InstanceContainer):
     def _addSettingElement(self, builder, instance):
         key = instance.definition.key
         if key in self.__material_settings_setting_map.values():
-            # Setting has a key in the stabndard namespace
+            # Setting has a key in the standard namespace
             key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
             tag_name = "setting"
         elif key not in self.__material_properties_setting_map.values() and key not in self.__material_metadata_setting_map.values():
