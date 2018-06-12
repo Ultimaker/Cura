@@ -985,6 +985,18 @@ class XmlMaterialProfile(InstanceContainer):
             # Setting has a key in the standard namespace
             key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
             tag_name = "setting"
+
+            if key == "processing temperature graph": #The Processing Temperature Graph has its own little structure that we need to implement separately.
+                builder.start(tag_name, {"key": key})
+                graph_str = str(instance.value)
+                graph = graph_str.replace("[", "").replace("]", "").split(", ") #Crude parsing of this list: Flatten the list by removing all brackets, then split on ", ". Safe to eval attacks though!
+                graph = [graph[i:i + 2] for i in range(0, len(graph) - 1, 2)] #Convert to 2D array.
+                for point in graph:
+                    builder.start("point", {"flow": point[0], "temperature": point[1]})
+                    builder.end("point")
+                builder.end(tag_name)
+                return
+
         elif key not in self.__material_properties_setting_map.values() and key not in self.__material_metadata_setting_map.values():
             # Setting is not in the standard namespace, and not a material property (eg diameter) or metadata (eg GUID)
             tag_name = "cura:setting"
