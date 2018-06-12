@@ -422,7 +422,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self.printJobsChanged.emit()  # Do a single emit for all print job changes.
 
     def _onGetPrintersDataFinished(self, reply: QNetworkReply) -> None:
-        self.connect()
         if not checkValidGetReply(reply):
             return
 
