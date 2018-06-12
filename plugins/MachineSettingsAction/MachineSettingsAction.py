@@ -141,7 +141,6 @@ class MachineSettingsAction(MachineAction):
 
             # Set the material container for each extruder to a sane default
             material_manager = self._application.getMaterialManager()
-            material_node = material_manager.getDefaultMaterial(self._global_container_stack, None)
 
         else:
             # The metadata entry is stored in an ini, and ini files are parsed as strings only.
@@ -151,6 +150,8 @@ class MachineSettingsAction(MachineAction):
 
         # set materials
         for position in extruder_positions:
+            if has_materials:
+                material_node = material_manager.getDefaultMaterial(self._global_container_stack, position, None)
             machine_manager.setMaterial(position, material_node)
 
         self._application.globalContainerStackChanged.emit()

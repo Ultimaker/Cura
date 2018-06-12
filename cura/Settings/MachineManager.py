@@ -1241,7 +1241,7 @@ class MachineManager(QObject):
                 continue
 
             # The current material is not available, find the preferred one
-            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, current_variant_name)
+            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, position, current_variant_name)
             if material_node is not None:
                 self._setMaterial(position, material_node)
 
