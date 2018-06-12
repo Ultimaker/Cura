@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, Any, Dict
 
 from collections import OrderedDict
 
@@ -23,10 +23,16 @@ from UM.Settings.InstanceContainer import InstanceContainer
 class ContainerNode:
     __slots__ = ("metadata", "container", "children_map")
 
-    def __init__(self, metadata: Optional[dict] = None):
+    def __init__(self, metadata: Optional[Dict[str, Any]] = None):
         self.metadata = metadata
         self.container = None
         self.children_map = OrderedDict()
+
+    ##  Get an entry value from the metadata
+    def getMetaDataEntry(self, entry: str, default: Any = None) -> Any:
+        if self.metadata is None:
+            return default
+        return self.metadata.get(entry, default)
 
     def getChildNode(self, child_key: str) -> Optional["ContainerNode"]:
         return self.children_map.get(child_key)
