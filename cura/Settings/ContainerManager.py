@@ -313,7 +313,6 @@ class ContainerManager(QObject):
 
         self._machine_manager.blurSettings.emit()
 
-        global_stack = self._machine_manager.activeMachine
         current_quality_changes_name = global_stack.qualityChanges.getName()
         current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
         extruder_stacks = list(global_stack.extruders.values())
