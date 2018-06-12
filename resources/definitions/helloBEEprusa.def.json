@@ -28,7 +28,6 @@
         "machine_center_is_zero": { "default_value": false },
         "material_print_temperature": { "default_value": 200 },
         "material_bed_temperature": { "default_value": 60 },
-        "material_diameter": { "default_value": 1.75 },
         "line_width": { "default_value": 0.48 },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.2 },

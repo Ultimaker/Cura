@@ -34,7 +34,6 @@
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_depth": { "default_value": 170 },
         "machine_width": { "default_value": 180 },
-        "material_diameter": { "default_value": 1.75 },
         "retraction_speed": {"default_value":100},
         "cool_fan_speed_min": {"default_value": 20},
         "cool_fan_speed_max": {"default_value": 70},

@@ -69,9 +69,6 @@
         "prime_tower_position_y": {
             "value": "160"
         },
-        "material_diameter": {
-          "default_value": 1.75
-        },
         "layer_height": {
           "default_value": 0.2
         },

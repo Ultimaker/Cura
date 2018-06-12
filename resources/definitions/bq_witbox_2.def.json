@@ -47,9 +47,6 @@
         "material_bed_temperature": {
             "default_value": 0
         },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "layer_height": {
             "default_value": 0.2
         },

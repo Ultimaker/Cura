@@ -27,7 +27,6 @@
         "machine_gcode_flavor": { "default_value": "BFB" },
         "machine_depth": { "default_value": 265 },
         "speed_infill": { "default_value": 30 },
-        "material_diameter": { "default_value": 1.7 },
         "machine_center_is_zero": { "default_value": true },
         "machine_height": { "default_value": 240 },
         "layer_height": { "default_value": 0.25 },

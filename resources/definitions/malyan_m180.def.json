@@ -66,11 +66,6 @@
         },
         "machine_end_gcode": {
             "default_value": "G92 Z0\nG1 Z10 F400\nM18\nM109 S0 T0\nM104 S0 T0\nM73 P100 (end  build progress)\nG162 X Y F3000\nM18"
-        },
-        "material_diameter": {
-            "default_value": 1.75,
-            "minimum_value_warning": "1.5",
-            "maximum_value_warning": "2.0"
         }
     }
 }

@@ -58,9 +58,6 @@
         "material_bed_temperature": {
             "default_value": 0
         },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "speed_print": {
             "default_value": 40
         },

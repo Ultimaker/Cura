@@ -49,10 +49,6 @@
         {
             "default_value": 0.4
         },
-        "material_diameter":
-        {
-            "default_value": 1.75
-        },
         "gantry_height":
         {
             "default_value": 0

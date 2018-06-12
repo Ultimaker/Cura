@@ -138,10 +138,6 @@
         "material_bed_temperature": {
             "enabled": false
         },
-        "material_diameter": {
-            "enabled": false,
-            "default_value": 1.75
-        },
         "cool_fan_enabled": {
             "enabled": false,
             "value": "False"

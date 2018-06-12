@@ -80,9 +80,6 @@
         "material_bed_temperature": {
             "enabled": false
         },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "material_flow": {
             "value": "110"
         },

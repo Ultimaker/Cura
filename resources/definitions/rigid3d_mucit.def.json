@@ -39,9 +39,6 @@
         "material_print_temperature": {
             "value": "205"
         },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "speed_print": {
             "default_value": 40
         },

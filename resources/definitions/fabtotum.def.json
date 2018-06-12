@@ -51,7 +51,6 @@
     "machine_max_jerk_z": { "default_value": 0.4 },
     "machine_max_jerk_e": { "default_value": 1.0 },
     "retraction_hop_enabled": { "default_value": false },
-    "material_diameter": { "default_value": 1.75 },
     "material_final_print_temperature": { "value": "material_print_temperature - 5" },
     "material_initial_print_temperature": { "value": "material_print_temperature" },
     "travel_avoid_distance": { "default_value": 1, "value": 1 },
