@@ -94,6 +94,8 @@ class QualityProfilesDropDownMenuModel(ListModel):
         default_layer_height = global_stack.definition.getProperty("layer_height", "value")
 
         # Get layer_height from the quality profile for the GlobalStack
+        if quality_group.node_for_global is None:
+            return float(default_layer_height)
         container = quality_group.node_for_global.getContainer()
 
         layer_height = default_layer_height
