@@ -53,7 +53,7 @@ UM.PointingRectangle {
             verticalCenter: parent.verticalCenter
         }
 
-        width: maximumValue.toString().length * 10 * screenScaleFactor
+        width: maximumValue.toString().length * 12 * screenScaleFactor
         text: sliderLabelRoot.value + startFrom // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignRight
 
