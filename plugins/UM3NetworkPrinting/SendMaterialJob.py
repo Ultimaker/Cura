@@ -5,7 +5,7 @@ import json #To understand the list of materials from the printer reply.
 import os #To walk over material files.
 import os.path #To filter on material files.
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest #To listen to the reply from the printer.
-from typing import TYPE_CHECKING
+from typing import Any, Dict, Set, TYPE_CHECKING
 import urllib.parse #For getting material IDs from their file names.
 
 from UM.Job import Job #The interface we're implementing.
@@ -48,26 +48,38 @@ class SendMaterialJob(Job):
             return
 
         container_registry = ContainerRegistry.getInstance()
+        local_materials_list = filter(lambda material: ("GUID" in material and "version" in material and "id" in material), container_registry.findContainersMetadata(type = "material"))
+        local_materials_by_guid = {material["GUID"]: material for material in local_materials_list if material["id"] == material["base_file"]}
+        for material in local_materials_list: #For each GUID get the material with the highest version number.
+            try:
+                if int(material["version"]) > local_materials_by_guid[material["GUID"]]["version"]:
+                    local_materials_by_guid[material["GUID"]] = material
+            except ValueError:
+                Logger.log("e", "Material {material_id} has invalid version number {number}.".format(material_id = material["id"], number = material["version"]))
+                continue
+
+        materials_to_send = set() #type: Set[Dict[str, Any]]
+        for guid, material in local_materials_by_guid.items():
+            if guid not in remote_materials_by_guid:
+                materials_to_send.add(material["id"])
+                continue
+            try:
+                if int(material["version"]) > remote_materials_by_guid[guid]["version"]:
+                    materials_to_send.add(material["id"])
+                    continue
+            except KeyError:
+                Logger.log("e", "Current material storage on printer was an invalid reply (missing version).")
+                return
+
         for file_path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.MaterialInstanceContainer):
             if not file_path.startswith(Resources.getDataStoragePath() + os.sep): #No built-in profiles.
                 continue
             mime_type = MimeTypeDatabase.getMimeTypeForFile(file_path)
             _, file_name = os.path.split(file_path)
             material_id = urllib.parse.unquote_plus(mime_type.stripExtension(file_name))
-            material_metadata = container_registry.findContainersMetadata(id = material_id)
-            if len(material_metadata) == 0: #This profile is not loaded. It's probably corrupt and deactivated. Don't send it.
+            if material_id not in materials_to_send:
                 continue
-            material_metadata = material_metadata[0]
-            if "GUID" not in material_metadata or "version" not in material_metadata: #Missing metadata? Faulty profile.
-                continue
-            material_guid = material_metadata["GUID"]
-            material_version = material_metadata["version"]
-            if material_guid in remote_materials_by_guid:
-                if "version" not in remote_materials_by_guid:
-                    Logger.log("e", "Current material storage on printer was an invalid reply (missing version).")
-                    return
-                if remote_materials_by_guid[material_guid]["version"] >= material_version: #Printer already knows this material and is up to date.
-                    continue
+
             parts = []
             with open(file_path, "rb") as f:
                 parts.append(self.device._createFormPart("name=\"file\"; filename=\"{file_name}\"".format(file_name = file_name), f.read()))
