@@ -3,6 +3,7 @@
 
 import copy
 import uuid
+from typing import cast
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
@@ -12,6 +13,7 @@ from UM.Logger import Logger
 from UM.Util import parseBool
 
 from UM.Application import Application
+from cura.Settings.CuraContainerStack import CuraContainerStack
 
 from cura.Settings.PerObjectContainerStack import PerObjectContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -62,6 +64,8 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if not parseBool(self._extruder_stack.getMetaDataEntry("enabled", "True")):
             # switch to the first extruder that's available
             global_stack = Application.getInstance().getMachineManager().activeMachine
+            if global_stack is None:
+                return
             for _, extruder in sorted(list(global_stack.extruders.items())):
                 if parseBool(extruder.getMetaDataEntry("enabled", "True")):
                     self._extruder_stack = extruder
@@ -82,7 +86,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         deep_copy._stack.replaceContainer(0, instance_container)
 
         # Properly set the right extruder on the copy
-        deep_copy.setActiveExtruder(self._extruder_stack.getId())
+        if self._extruder_stack is None:
+            deep_copy._extruder_stack = None
+        else:
+            deep_copy.setActiveExtruder(self._extruder_stack.getId())
 
         # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
         # has not been updated yet.
@@ -148,12 +155,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
                 Application.getInstance().getBackend().needsSlicing()
                 Application.getInstance().getBackend().tickle()
         else:
-            self._stack.setNextStack(Application.getInstance().getGlobalContainerStack())
+            global_stack = Application.getInstance().getGlobalContainerStack()
+            if global_stack:
+                self._stack.setNextStack(cast(CuraContainerStack, global_stack))
 
     ##  Changes the extruder with which to print this node.
     #
     #   \param extruder_stack_id The new extruder stack to print with.
-    def setActiveExtruder(self, extruder_stack_id):
+    def setActiveExtruder(self, extruder_stack_id: str) -> None:
         if self._extruder_stack is None or self._extruder_stack.getId() == extruder_stack_id:
             return
 
