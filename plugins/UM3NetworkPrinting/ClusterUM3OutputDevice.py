@@ -62,8 +62,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # See comments about this hack with the clusterPrintersChanged signal
         self.printersChanged.connect(self.clusterPrintersChanged)
 
-        self.connectionStateChanged.connect(self._onConnectionStateChanged)
-
         self._accepts_commands = True
 
         # Cluster does not have authentication, so default to authenticated
@@ -371,9 +369,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._finished_jobs = finished_jobs
 
     ##  Called when the connection to the cluster changes.
-    def _onConnectionStateChanged(self) -> None:
-        if self.connectionState == ConnectionState.connected:
-            self.sendMaterialProfiles()
+    def connect(self) -> None:
+        super().connect()
+        self.sendMaterialProfiles()
 
     def _update(self) -> None:
         if not super()._update():
