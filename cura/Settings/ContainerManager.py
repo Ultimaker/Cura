@@ -459,7 +459,7 @@ class ContainerManager(QObject):
         container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
         self._container_registry.exportQualityProfile(container_list, path, file_type)
 
-    __instance = None
+    __instance = None   # type: ContainerManager
 
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "ContainerManager":
