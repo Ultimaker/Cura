@@ -72,9 +72,10 @@ class SendMaterialJob(Job):
                 return
 
         for file_path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.MaterialInstanceContainer):
-            if not file_path.startswith(Resources.getDataStoragePath() + os.sep): #No built-in profiles.
-                continue
-            mime_type = MimeTypeDatabase.getMimeTypeForFile(file_path)
+            try:
+                mime_type = MimeTypeDatabase.getMimeTypeForFile(file_path)
+            except MimeTypeDatabase.MimeTypeNotFoundError:
+                continue #Not the sort of file we'd like to send then.
             _, file_name = os.path.split(file_path)
             material_id = urllib.parse.unquote_plus(mime_type.stripExtension(file_name))
             if material_id not in materials_to_send:
