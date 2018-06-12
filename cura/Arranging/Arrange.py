@@ -86,7 +86,7 @@ class Arrange:
     #   \param offset_shape_arr ShapeArray with offset, for placing the shape
     #   \param hull_shape_arr ShapeArray without offset, used to find location
     def findNodePlacement(self, node, offset_shape_arr, hull_shape_arr, step = 1):
-        new_node = copy.deepcopy(node)
+        new_node = node
         best_spot = self.bestSpot(
             hull_shape_arr, start_prio = self._last_priority, step = step)
         x, y = best_spot.x, best_spot.y
