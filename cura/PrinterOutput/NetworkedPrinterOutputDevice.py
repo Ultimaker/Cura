@@ -161,7 +161,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
-    def _createFormPart(self, content_header, data, content_type = None) -> QHttpPart:
+    def createFormPart(self, content_header, data, content_type = None) -> QHttpPart:
         part = QHttpPart()
 
         if not content_header.startswith("form-data;"):

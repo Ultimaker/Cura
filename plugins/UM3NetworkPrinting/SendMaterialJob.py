@@ -83,12 +83,12 @@ class SendMaterialJob(Job):
 
             parts = []
             with open(file_path, "rb") as f:
-                parts.append(self.device._createFormPart("name=\"file\"; filename=\"{file_name}\"".format(file_name = file_name), f.read()))
+                parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\"".format(file_name = file_name), f.read()))
             signature_file_path = file_path + ".sig"
             if os.path.exists(signature_file_path):
                 _, signature_file_name = os.path.split(signature_file_path)
                 with open(signature_file_path, "rb") as f:
-                    parts.append(self.device._createFormPart("name=\"signature_file\"; filename=\"{file_name}\"".format(file_name = signature_file_name), f.read()))
+                    parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\"".format(file_name = signature_file_name), f.read()))
 
             Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
             self.device.postFormWithParts(target = "materials/", parts = parts, onFinished = self.sendingFinished)
