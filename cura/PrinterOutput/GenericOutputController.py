@@ -1,13 +1,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+
+from typing import TYPE_CHECKING
+
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from PyQt5.QtCore import QTimer
 
-MYPY = False
-if MYPY:
+if TYPE_CHECKING:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
 
 
 class GenericOutputController(PrinterOutputController):
@@ -121,7 +123,7 @@ class GenericOutputController(PrinterOutputController):
         if not self._preheat_hotends:
             self._preheat_hotends_timer.stop()
 
-    def preheatHotend(self, extruder: ExtruderOutputModel, temperature, duration):
+    def preheatHotend(self, extruder: "ExtruderOutputModel", temperature, duration):
         position = extruder.getPosition()
         number_of_extruders = len(extruder.getPrinter().extruders)
         if position >= number_of_extruders:
@@ -139,7 +141,7 @@ class GenericOutputController(PrinterOutputController):
         self._preheat_hotends.add(extruder)
         extruder.updateIsPreheating(True)
 
-    def cancelPreheatHotend(self, extruder: ExtruderOutputModel):
+    def cancelPreheatHotend(self, extruder: "ExtruderOutputModel"):
         self.setTargetHotendTemperature(extruder.getPrinter(), extruder.getPosition(), temperature=0)
         if extruder in self._preheat_hotends:
             extruder.updateIsPreheating(False)

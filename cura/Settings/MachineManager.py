@@ -1109,7 +1109,8 @@ class MachineManager(QObject):
         nodes = [quality_changes_group.node_for_global] + list(quality_changes_group.nodes_for_extruders.values())
         containers = [n.getContainer() for n in nodes if n is not None]
         for container in containers:
-            container.setMetaDataEntry("quality_type", "not_supported")
+            if container:
+                container.setMetaDataEntry("quality_type", "not_supported")
         quality_changes_group.quality_type = "not_supported"
 
     def _setQualityChangesGroup(self, quality_changes_group: QualityChangesGroup) -> None:

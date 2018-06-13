@@ -23,10 +23,10 @@ from UM.Settings.InstanceContainer import InstanceContainer
 class ContainerNode:
     __slots__ = ("metadata", "container", "children_map")
 
-    def __init__(self, metadata: Optional[Dict[str, Any]] = None):
+    def __init__(self, metadata: Optional[Dict[str, Any]] = None) -> None:
         self.metadata = metadata
         self.container = None
-        self.children_map = OrderedDict()
+        self.children_map = OrderedDict() #type: OrderedDict[str, ContainerNode]
 
     ##  Get an entry value from the metadata
     def getMetaDataEntry(self, entry: str, default: Any = None) -> Any:
@@ -56,4 +56,4 @@ class ContainerNode:
         return self.container
 
     def __str__(self) -> str:
-        return "%s[%s]" % (self.__class__.__name__, self.metadata.get("id"))
+        return "%s[%s]" % (self.__class__.__name__, self.getMetaDataEntry("id"))

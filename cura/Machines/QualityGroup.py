@@ -4,7 +4,7 @@
 from typing import Dict, Optional, List, Set
 
 from PyQt5.QtCore import QObject, pyqtSlot
-
+from cura.Machines.ContainerNode import ContainerNode
 
 #
 # A QualityGroup represents a group of containers that must be applied to each ContainerStack when it's used.
@@ -24,8 +24,8 @@ class QualityGroup(QObject):
     def __init__(self, name: str, quality_type: str, parent = None) -> None:
         super().__init__(parent)
         self.name = name
-        self.node_for_global = None  # type: Optional["QualityGroup"]
-        self.nodes_for_extruders = {}  # type: Dict[int, "QualityGroup"]
+        self.node_for_global = None  # type: Optional[ContainerNode]
+        self.nodes_for_extruders = {}  # type: Dict[int, ContainerNode]
         self.quality_type = quality_type
         self.is_available = False
 
@@ -38,10 +38,12 @@ class QualityGroup(QObject):
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
             if node is None:
                 continue
-            result.update(node.getContainer().getAllKeys())
+            container = node.getContainer()
+            if container:
+                result.update(container.getAllKeys())
         return result
 
-    def getAllNodes(self) -> List["QualityGroup"]:
+    def getAllNodes(self) -> List[ContainerNode]:
         result = []
         if self.node_for_global is not None:
             result.append(self.node_for_global)
