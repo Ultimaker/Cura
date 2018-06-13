@@ -9,4 +9,4 @@ def getMetaData():
 
 
 def register(app):
-    return {"extension": Toolbox.Toolbox()}
+    return {"extension": Toolbox.Toolbox(app)}
