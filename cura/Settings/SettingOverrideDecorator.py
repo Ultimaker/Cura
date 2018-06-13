@@ -95,7 +95,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #
     #   \return An extruder's container stack.
     def getActiveExtruder(self):
-        return None if self._extruder_stack is None else self._extruder_stack.getId()
+        return self._extruder_stack.getId()
 
     ##  Gets the signal that emits if the active extruder changed.
     #
@@ -154,13 +154,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #
     #   \param extruder_stack_id The new extruder stack to print with.
     def setActiveExtruder(self, extruder_stack_id):
-        if self._extruder_stack is None or self._extruder_stack.getId() == extruder_stack_id:
+        if self._extruder_stack.getId() == extruder_stack_id:
             return
 
         global_stack = Application.getInstance().getMachineManager().activeMachine
-        if global_stack is None:
-            return
-
         for extruder in global_stack.extruders.values():
             if extruder.getId() == extruder_stack_id:
                 self._extruder_stack = extruder
