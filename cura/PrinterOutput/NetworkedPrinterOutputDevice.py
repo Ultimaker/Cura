@@ -148,6 +148,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                     self._createNetworkManager()
                 elif time() - self._last_manager_create_time > self._recreate_network_manager_time:
                     self._createNetworkManager()
+                assert(self._manager is not None)
         elif self._connection_state == ConnectionState.closed:
             # Go out of timeout.
             if self._connection_state_before_timeout is not None:   # sanity check, but it should never be None here
@@ -191,6 +192,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         if self._manager is None:
             self._createNetworkManager()
+        assert(self._manager is not None)
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.put(request, data.encode())
@@ -199,6 +201,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         if self._manager is None:
             self._createNetworkManager()
+        assert(self._manager is not None)
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.get(request)
@@ -207,6 +210,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def post(self, target: str, data: str, onFinished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
         if self._manager is None:
             self._createNetworkManager()
+        assert(self._manager is not None)
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.post(request, data)
@@ -217,6 +221,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def postFormWithParts(self, target:str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
         if self._manager is None:
             self._createNetworkManager()
+        assert(self._manager is not None)
         request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
         for part in parts:
