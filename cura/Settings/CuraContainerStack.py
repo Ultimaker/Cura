@@ -303,15 +303,15 @@ class CuraContainerStack(ContainerStack):
     #
     #   \return The ID of the definition container to use when searching for instance containers.
     @classmethod
-    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainer) -> str:
+    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
         quality_definition = machine_definition.getMetaDataEntry("quality_definition")
         if not quality_definition:
-            return machine_definition.id
+            return machine_definition.id #type: ignore
 
         definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = quality_definition)
         if not definitions:
-            Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id)
-            return machine_definition.id
+            Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id) #type: ignore
+            return machine_definition.id #type: ignore
 
         return cls._findInstanceContainerDefinitionId(definitions[0])
 
