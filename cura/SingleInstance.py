@@ -69,7 +69,9 @@ class SingleInstance:
 
     def _onClientConnected(self) -> None:
         Logger.log("i", "New connection recevied on our single-instance server")
-        connection = self._single_instance_server.nextPendingConnection()
+        connection = None
+        if self._single_instance_server:
+            connection = self._single_instance_server.nextPendingConnection()
 
         if connection is not None:
             connection.readyRead.connect(lambda c = connection: self.__readCommands(c))
