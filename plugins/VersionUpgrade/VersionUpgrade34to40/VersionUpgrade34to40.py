@@ -7,8 +7,8 @@ import io
 from UM.VersionUpgrade import VersionUpgrade
 
 
-##  Upgrades configurations from the state they were in at version 3.3 to the
-#   state they should be in at version 3.4.
+##  Upgrades configurations from the state they were in at version 3.4 to the
+#   state they should be in at version 4.0.
 class VersionUpgrade34to40(VersionUpgrade):
 
     ##  Gets the version number from a CFG file in Uranium's 3.3 format.
