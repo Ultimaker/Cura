@@ -109,6 +109,10 @@ UM.ManagementPage
         UM.Dialog
         {
             id: actionDialog
+            //NOTE:(RenShen): 给定窗体初大小始化值，避免文字堆叠在一起
+            width:800;
+            height:600;
+            
             property var content
             onContentChanged:
             {
