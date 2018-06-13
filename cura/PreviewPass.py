@@ -53,20 +53,23 @@ class PreviewPass(RenderPass):
     def render(self) -> None:
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
-            self._shader.setUniformValue("u_overhangAngle", 1.0)
-            self._shader.setUniformValue("u_ambientColor", [0.1, 0.1, 0.1, 1.0])
-            self._shader.setUniformValue("u_specularColor", [0.6, 0.6, 0.6, 1.0])
-            self._shader.setUniformValue("u_shininess", 20.0)
+            if self._shader:
+                self._shader.setUniformValue("u_overhangAngle", 1.0)
+                self._shader.setUniformValue("u_ambientColor", [0.1, 0.1, 0.1, 1.0])
+                self._shader.setUniformValue("u_specularColor", [0.6, 0.6, 0.6, 1.0])
+                self._shader.setUniformValue("u_shininess", 20.0)
 
         if not self._non_printing_shader:
-            self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
-            self._non_printing_shader.setUniformValue("u_diffuseColor", [0.5, 0.5, 0.5, 0.5])
-            self._non_printing_shader.setUniformValue("u_opacity", 0.6)
+            if self._non_printing_shader:
+                self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
+                self._non_printing_shader.setUniformValue("u_diffuseColor", [0.5, 0.5, 0.5, 0.5])
+                self._non_printing_shader.setUniformValue("u_opacity", 0.6)
 
         if not self._support_mesh_shader:
             self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
-            self._support_mesh_shader.setUniformValue("u_width", 5.0)
+            if self._support_mesh_shader:
+                self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
+                self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
         self._gl.glClearColor(0.0, 0.0, 0.0, 0.0)
         self._gl.glClear(self._gl.GL_COLOR_BUFFER_BIT | self._gl.GL_DEPTH_BUFFER_BIT)
