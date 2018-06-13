@@ -33,7 +33,7 @@ def prettier_color(color_list):
 #
 #   This is useful to get a preview image of a scene taken from a different location as the active camera.
 class PreviewPass(RenderPass):
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int) -> None:
         super().__init__("preview", width, height, 0)
 
         self._camera = None  # type: Optional[Camera]

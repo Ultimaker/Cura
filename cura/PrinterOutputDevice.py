@@ -224,5 +224,5 @@ class PrinterOutputDevice(QObject, OutputDevice):
     ##  Get the name of device firmware
     #
     #   This name can be used to define device type
-    def getFirmwareName(self) -> str:
+    def getFirmwareName(self) -> Optional[str]:
         return self._firmware_name
