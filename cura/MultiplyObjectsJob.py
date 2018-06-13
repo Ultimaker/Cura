@@ -64,10 +64,11 @@ class MultiplyObjectsJob(Job):
             arranger.resetLastPriority()
             for i in range(self._count):
                 # We do place the nodes one by one, as we want to yield in between.
+                new_node = copy.deepcopy(node)
+                solution_found = False
                 if not node_too_big:
-                    new_node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
-                else:
-                    new_node = copy.deepcopy(node)
+                    solution_found = arranger.findNodePlacement(new_node, offset_shape_arr, hull_shape_arr)
+
                 if node_too_big or not solution_found:
                     found_solution_for_all = False
                     new_location = new_node.getPosition()

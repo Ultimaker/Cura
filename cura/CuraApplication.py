@@ -1675,7 +1675,7 @@ class CuraApplication(QtApplication):
                             return
 
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                        node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
+                        arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
             # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
