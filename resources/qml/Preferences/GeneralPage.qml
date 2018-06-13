@@ -170,7 +170,7 @@ UM.PreferencesPage
                             append({ text: "日本語", code: "ja_JP" })
                             append({ text: "한국어", code: "ko_KR" })
                             append({ text: "Nederlands", code: "nl_NL" })
-                            append({ text: "Polski", code: "pl_PL" })
+                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
                             append({ text: "Português do Brasil", code: "pt_BR" })
                             append({ text: "Português", code: "pt_PT" })
                             append({ text: "Русский", code: "ru_RU" })
@@ -738,21 +738,6 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Use multi build plate functionality (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("cura/use_multi_build_plate"))
                     onCheckedChanged: UM.Preferences.setValue("cura/use_multi_build_plate", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
-
-                CheckBox
-                {
-                    id: arrangeOnLoadCheckbox
-                    text: catalog.i18nc("@option:check", "Do not arrange objects on load")
-                    checked: boolCheck(UM.Preferences.getValue("cura/not_arrange_objects_on_load"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/not_arrange_objects_on_load", checked)
                 }
             }
 

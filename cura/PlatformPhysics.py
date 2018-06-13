@@ -8,6 +8,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
+from UM.Scene.SceneNodeSettings import SceneNodeSettings
 
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 
@@ -80,6 +81,10 @@ class PlatformPhysics:
 
             # only push away objects if this node is a printing mesh
             if not node.callDecoration("isNonPrintingMesh") and Application.getInstance().getPreferences().getValue("physics/automatic_push_free"):
+                # Do not move locked nodes
+                if node.getSetting(SceneNodeSettings.LockPosition):
+                    continue
+
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.

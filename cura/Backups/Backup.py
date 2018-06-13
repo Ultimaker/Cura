@@ -17,12 +17,11 @@ from UM.Resources import Resources
 from cura.CuraApplication import CuraApplication
 
 
+##  The back-up class holds all data about a back-up.
+#
+#   It is also responsible for reading and writing the zip file to the user data
+#   folder.
 class Backup:
-    """
-    The backup class holds all data about a backup.
-    It is also responsible for reading and writing the zip file to the user data folder.
-    """
-
     # These files should be ignored when making a backup.
     IGNORED_FILES = [r"cura\.log", r"plugins\.json", r"cache", r"__pycache__", r"\.qmlc", r"\.pyc"]
 
@@ -33,10 +32,8 @@ class Backup:
         self.zip_file = zip_file  # type: Optional[bytes]
         self.meta_data = meta_data  # type: Optional[dict]
 
+    ##  Create a back-up from the current user config folder.
     def makeFromCurrent(self) -> None:
-        """
-        Create a backup from the current user config folder.
-        """
         cura_release = CuraApplication.getInstance().getVersion()
         version_data_dir = Resources.getDataStoragePath()
 
@@ -77,12 +74,10 @@ class Backup:
             "plugin_count": str(plugin_count)
         }
 
+    ##  Make a full archive from the given root path with the given name.
+    #   \param root_path The root directory to archive recursively.
+    #   \return The archive as bytes.
     def _makeArchive(self, buffer: "io.BytesIO", root_path: str) -> Optional[ZipFile]:
-        """
-        Make a full archive from the given root path with the given name.
-        :param root_path: The root directory to archive recursively.
-        :return: The archive as bytes.
-        """
         ignore_string = re.compile("|".join(self.IGNORED_FILES))
         try:
             archive = ZipFile(buffer, "w", ZIP_DEFLATED)
@@ -101,15 +96,13 @@ class Backup:
                                    "Could not create archive from user data directory: {}".format(error)))
             return None
 
+    ##  Show a UI message.
     def _showMessage(self, message: str) -> None:
-        """Show a UI message"""
         Message(message, title=self.catalog.i18nc("@info:title", "Backup"), lifetime=30).show()
 
+    ##  Restore this back-up.
+    #   \return Whether we had success or not.
     def restore(self) -> bool:
-        """
-        Restore this backups
-        :return: A boolean whether we had success or not.
-        """
         if not self.zip_file or not self.meta_data or not self.meta_data.get("cura_release", None):
             # We can restore without the minimum required information.
             Logger.log("w", "Tried to restore a Cura backup without having proper data or meta data.")
@@ -142,14 +135,12 @@ class Backup:
 
         return extracted
 
+    ##  Extract the whole archive to the given target path.
+    #   \param archive The archive as ZipFile.
+    #   \param target_path The target path.
+    #   \return Whether we had success or not.
     @staticmethod
     def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
-        """
-        Extract the whole archive to the given target path.
-        :param archive: The archive as ZipFile.
-        :param target_path: The target path.
-        :return: A boolean whether we had success or not.
-        """
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
