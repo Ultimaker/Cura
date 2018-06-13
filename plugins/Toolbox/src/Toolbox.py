@@ -262,12 +262,14 @@ class Toolbox(QObject, Extension):
         # list of old plugins
         old_plugin_ids = self._plugin_registry.getInstalledPlugins()
         installed_package_ids = self._package_manager.getAllInstalledPackageIDs()
+        scheduled_to_remove_package_ids = self._package_manager.getToRemovePackageIDs()
 
         self._old_plugin_ids = []
         self._old_plugin_metadata = []
 
         for plugin_id in old_plugin_ids:
-            if plugin_id not in installed_package_ids:
+            # Neither the installed packages nor the packages that are scheduled to remove are old plugins
+            if plugin_id not in installed_package_ids and plugin_id not in scheduled_to_remove_package_ids:
                 Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
 
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)

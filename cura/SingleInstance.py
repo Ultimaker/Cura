@@ -61,8 +61,11 @@ class SingleInstance:
 
     def startServer(self) -> None:
         self._single_instance_server = QLocalServer()
-        self._single_instance_server.newConnection.connect(self._onClientConnected)
-        self._single_instance_server.listen("ultimaker-cura")
+        if self._single_instance_server:
+            self._single_instance_server.newConnection.connect(self._onClientConnected)
+            self._single_instance_server.listen("ultimaker-cura")
+        else:
+            Logger.log("e", "Single instance server was not created.")
 
     def _onClientConnected(self) -> None:
         Logger.log("i", "New connection recevied on our single-instance server")

@@ -4,7 +4,7 @@
 from configparser import ConfigParser
 import zipfile
 import os
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 
 import xml.etree.ElementTree as ET
@@ -13,6 +13,7 @@ from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Signal import postponeSignals, CompressTechnique
 from UM.Settings.ContainerFormatError import ContainerFormatError
@@ -37,7 +38,7 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class ContainerInfo:
-    def __init__(self, file_name: str, serialized: str, parser: ConfigParser):
+    def __init__(self, file_name: str, serialized: str, parser: ConfigParser) -> None:
         self.file_name = file_name
         self.serialized = serialized
         self.parser = parser
@@ -46,14 +47,14 @@ class ContainerInfo:
 
 
 class QualityChangesInfo:
-    def __init__(self):
+    def __init__(self) -> None:
         self.name = None
         self.global_info = None
-        self.extruder_info_dict = {}
+        self.extruder_info_dict = {} # type: Dict[str, ContainerInfo]
 
 
 class MachineInfo:
-    def __init__(self):
+    def __init__(self) -> None:
         self.container_id = None
         self.name = None
         self.definition_id = None
@@ -65,11 +66,11 @@ class MachineInfo:
         self.definition_changes_info = None
         self.user_changes_info = None
 
-        self.extruder_info_dict = {}
+        self.extruder_info_dict = {} # type: Dict[str, ExtruderInfo]
 
 
 class ExtruderInfo:
-    def __init__(self):
+    def __init__(self) -> None:
         self.position = None
         self.enabled = True
         self.variant_info = None
@@ -81,7 +82,7 @@ class ExtruderInfo:
 
 ##    Base implementation for reading 3MF workspace files.
 class ThreeMFWorkspaceReader(WorkspaceReader):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         MimeTypeDatabase.addMimeType(
@@ -111,28 +112,26 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - variant
         self._ignored_instance_container_types = {"quality", "variant"}
 
-        self._resolve_strategies = {}
+        self._resolve_strategies = {} # type: Dict[str, str]
 
-        self._id_mapping = {}
+        self._id_mapping = {} # type: Dict[str, str]
 
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
         self._is_same_machine_type = False
-        self._old_new_materials = {}
-        self._materials_to_select = {}
+        self._old_new_materials = {} # type: Dict[str, str]
         self._machine_info = None
 
     def _clearState(self):
         self._is_same_machine_type = False
         self._id_mapping = {}
         self._old_new_materials = {}
-        self._materials_to_select = {}
         self._machine_info = None
 
     ##  Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
     #   This has nothing to do with speed, but with getting consistent new naming for instances & objects.
-    def getNewId(self, old_id):
+    def getNewId(self, old_id: str):
         if old_id not in self._id_mapping:
             self._id_mapping[old_id] = self._container_registry.uniqueName(old_id)
         return self._id_mapping[old_id]
@@ -470,6 +469,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "File %s is not a valid workspace.", file_name)
             return WorkspaceReader.PreReadResult.failed
 
+        # Check if the machine definition exists. If not, indicate failure because we do not import definition files.
+        def_results = self._container_registry.findDefinitionContainersMetadata(id = machine_definition_id)
+        if not def_results:
+            message = Message(i18n_catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> contains an unknown machine type"
+                                                 " <message>{1}</message>. Cannot import the machine."
+                                                 " Models will be imported instead.", file_name, machine_definition_id),
+                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"))
+            message.show()
+
+            Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
+                       self._machine_info.definition_id, file_name)
+            return WorkspaceReader.PreReadResult.failed
+
         # In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
         if not show_dialog:
             return WorkspaceReader.PreReadResult.accepted
@@ -656,7 +669,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 else:
                     material_container = materials[0]
                     old_material_root_id = material_container.getMetaDataEntry("base_file")
-                    if not self._container_registry.isReadOnly(old_material_root_id):  # Only create new materials if they are not read only.
+                    if old_material_root_id is not None and not self._container_registry.isReadOnly(old_material_root_id):  # Only create new materials if they are not read only.
                         to_deserialize_material = True
 
                         if self._resolve_strategies["material"] == "override":

@@ -16,7 +16,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 #
 #   Note that in order to increase precision, the 24 bit depth value is encoded into all three of the R,G & B channels
 class PickingPass(RenderPass):
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int) -> None:
         super().__init__("picking", width, height)
 
         self._renderer = Application.getInstance().getRenderer()

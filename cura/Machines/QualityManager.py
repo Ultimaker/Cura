@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, cast
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
@@ -90,7 +90,7 @@ class QualityManager(QObject):
 
             if definition_id not in self._machine_variant_material_quality_type_to_quality_dict:
                 self._machine_variant_material_quality_type_to_quality_dict[definition_id] = QualityNode()
-            machine_node = self._machine_variant_material_quality_type_to_quality_dict[definition_id]
+            machine_node = cast(QualityNode, self._machine_variant_material_quality_type_to_quality_dict[definition_id])
 
             if is_global_quality:
                 # For global qualities, save data in the machine node
@@ -102,7 +102,7 @@ class QualityManager(QObject):
                 # too.
                 if variant_name not in machine_node.children_map:
                     machine_node.children_map[variant_name] = QualityNode()
-                variant_node = machine_node.children_map[variant_name]
+                variant_node = cast(QualityNode, machine_node.children_map[variant_name])
 
                 if root_material_id is None:
                     # If only variant_name is specified but material is not, add the quality/quality_changes metadata
@@ -114,7 +114,7 @@ class QualityManager(QObject):
                     # material node.
                     if root_material_id not in variant_node.children_map:
                         variant_node.children_map[root_material_id] = QualityNode()
-                    material_node = variant_node.children_map[root_material_id]
+                    material_node = cast(QualityNode, variant_node.children_map[root_material_id])
 
                     material_node.addQualityMetadata(quality_type, metadata)
 
@@ -123,7 +123,7 @@ class QualityManager(QObject):
                 if root_material_id is not None:
                     if root_material_id not in machine_node.children_map:
                         machine_node.children_map[root_material_id] = QualityNode()
-                    material_node = machine_node.children_map[root_material_id]
+                    material_node = cast(QualityNode, machine_node.children_map[root_material_id])
 
                     material_node.addQualityMetadata(quality_type, metadata)
 
@@ -351,7 +351,7 @@ class QualityManager(QObject):
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup"):
         Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
         for node in quality_changes_group.getAllNodes():
-            self._container_registry.removeContainer(node.metadata["id"])
+            self._container_registry.removeContainer(node.getMetaDataEntry("id"))
 
     #
     # Rename a set of quality changes containers. Returns the new name.
@@ -365,7 +365,9 @@ class QualityManager(QObject):
 
         new_name = self._container_registry.uniqueName(new_name)
         for node in quality_changes_group.getAllNodes():
-            node.getContainer().setName(new_name)
+            container = node.getContainer()
+            if container:
+                container.setName(new_name)
 
         quality_changes_group.name = new_name
 
