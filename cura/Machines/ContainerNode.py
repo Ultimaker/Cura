@@ -1,13 +1,16 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, Any, Dict
+from typing import Optional, Any, Dict, Union, TYPE_CHECKING
 
 from collections import OrderedDict
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer
+
+if TYPE_CHECKING:
+    from cura.Machines.QualityGroup import QualityGroup
 
 
 ##
@@ -26,7 +29,7 @@ class ContainerNode:
     def __init__(self, metadata: Optional[Dict[str, Any]] = None) -> None:
         self.metadata = metadata
         self.container = None
-        self.children_map = OrderedDict() #type: OrderedDict[str, ContainerNode]
+        self.children_map = OrderedDict() #type: OrderedDict[str, Union[QualityGroup, ContainerNode]]
 
     ##  Get an entry value from the metadata
     def getMetaDataEntry(self, entry: str, default: Any = None) -> Any:
