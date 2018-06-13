@@ -12,7 +12,7 @@ from UM.Logger import Logger
 
 class SingleInstance:
 
-    def __init__(self, application, files_to_open: Optional[List[str]]):
+    def __init__(self, application, files_to_open: Optional[List[str]]) -> None:
         self._application = application
         self._files_to_open = files_to_open
 
@@ -61,8 +61,11 @@ class SingleInstance:
 
     def startServer(self) -> None:
         self._single_instance_server = QLocalServer()
-        self._single_instance_server.newConnection.connect(self._onClientConnected)
-        self._single_instance_server.listen("ultimaker-cura")
+        if self._single_instance_server:
+            self._single_instance_server.newConnection.connect(self._onClientConnected)
+            self._single_instance_server.listen("ultimaker-cura")
+        else:
+            Logger.log("e", "Single instance server was not created.")
 
     def _onClientConnected(self):
         Logger.log("i", "New connection recevied on our single-instance server")
