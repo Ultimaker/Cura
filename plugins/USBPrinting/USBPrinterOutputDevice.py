@@ -22,7 +22,7 @@ from threading import Thread, Event
 from time import time, sleep
 from queue import Queue
 from enum import IntEnum
-from typing import Union, Optional, List
+from typing import Union, Optional, List, cast
 
 import re
 import functools  # Used for reduce
@@ -35,7 +35,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     firmwareProgressChanged = pyqtSignal()
     firmwareUpdateStateChanged = pyqtSignal()
 
-    def __init__(self, serial_port: str, baud_rate: Optional[int] = None):
+    def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
@@ -68,7 +68,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._is_printing = False  # A print is being sent.
 
         ## Set when print is started in order to check running time.
-        self._print_start_time = None  # type: Optional[int]
+        self._print_start_time = None  # type: Optional[float]
         self._print_estimated_time = None  # type: Optional[int]
 
         self._accepts_commands = True
@@ -83,7 +83,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
         # Queue for commands that need to be sent.
-        self._command_queue = Queue()
+        self._command_queue = Queue()   # type: Queue
         # Event to indicate that an "ok" was received from the printer after sending a command.
         self._command_received = Event()
         self._command_received.set()
@@ -277,13 +277,12 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._serial is None or self._connection_state != ConnectionState.connected:
             return
 
-        if type(command == str):
-            command = command.encode()
-        if not command.endswith(b"\n"):
-            command += b"\n"
+        new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode() # type: bytes
+        if not new_command.endswith(b"\n"):
+            new_command += b"\n"
         try:
             self._command_received.clear()
-            self._serial.write(command)
+            self._serial.write(new_command)
         except SerialTimeoutException:
             Logger.log("w", "Timeout when sending command to printer via USB.")
             self._command_received.set()
