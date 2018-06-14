@@ -12,6 +12,7 @@ def getMetaData():
             "name": i18n_catalog.i18nc("@label", "Custom Support"),
             "description": i18n_catalog.i18nc("@info:tooltip", "Draw and erase areas where support needs to be generated."),
             "icon": "support_brush.svg",
+            "tool_panel": "CustomSupportPanel.qml",
             "weight": 5
         }
     }
