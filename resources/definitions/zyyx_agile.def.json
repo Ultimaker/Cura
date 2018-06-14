@@ -56,7 +56,6 @@
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "travel_avoid_other_parts": { "default_value": false },
         "raft_airgap": { "default_value": 0.15 },
-        "raft_margin": { "default_value": 6 },
-        "material_diameter": { "default_value": 1.75 }
+        "raft_margin": { "default_value": 6 }
     }
 }
