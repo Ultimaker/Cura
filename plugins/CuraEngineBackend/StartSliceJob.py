@@ -215,7 +215,7 @@ class StartSliceJob(Job):
             extruders_enabled = {position: stack.isEnabled for position, stack in Application.getInstance().getGlobalContainerStack().extruders.items()}
             filtered_object_groups = []
             has_model_with_disabled_extruders = False
-            associated_siabled_extruders = set()
+            associated_disabled_extruders = set()
             for group in object_groups:
                 stack = Application.getInstance().getGlobalContainerStack()
                 skip_group = False
@@ -224,15 +224,14 @@ class StartSliceJob(Job):
                     if not extruders_enabled[extruder_position]:
                         skip_group = True
                         has_model_with_disabled_extruders = True
-                        associated_siabled_extruders.add(extruder_position)
-                        break
+                        associated_disabled_extruders.add(extruder_position)
                 if not skip_group:
                     filtered_object_groups.append(group)
 
             if has_model_with_disabled_extruders:
                 self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-                associated_siabled_extruders = [str(c) for c in sorted([int(p) + 1 for p in associated_siabled_extruders])]
-                self.setMessage(", ".join(associated_siabled_extruders))
+                associated_disabled_extruders = [str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])]
+                self.setMessage(", ".join(associated_disabled_extruders))
                 return
 
             # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
