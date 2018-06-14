@@ -1,0 +1,8 @@
+{
+    "name": "Custom Support",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.0",
+    "description": "Draws and erase areas where support needs to be generated.",
+    "api": 4,
+    "i18n-catalog": "cura"
+}

@@ -1,0 +1,5 @@
+<svg width="30" height="30" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="3,25 5,27 13,19 11,17" /> <!-- Handle -->
+    <path d="M13,19 C25,20 27,10 27,3 C25,12 10,5 11,17" /> <!-- Brush -->
+    <polygon points="11,27 11,22 17,22 17,20 22,20 22,17 27,17 27,27" /> <!-- Support under the brush -->
+</svg>
