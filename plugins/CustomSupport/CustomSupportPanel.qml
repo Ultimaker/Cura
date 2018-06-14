@@ -1,9 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 1.2
+import QtQuick 2.2
 import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -20,8 +19,13 @@ Item {
     width: childrenRect.width
     height: childrenRect.height
 
-    Row
+    Button
     {
+        id: addSupportButton
+        anchors.left: parent.left
+        text: catalog.i18nc("@action:button", "Add support")
+        iconSource: "add_support.svg"
 
+        style: UM.Theme.styles.tool_button
     }
 }
