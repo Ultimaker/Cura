@@ -27,5 +27,16 @@ Item {
         iconSource: "add_support.svg"
 
         style: UM.Theme.styles.tool_button
+        z: 1
+    }
+    Button
+    {
+        id: removeSupportButton
+        anchors.left: addSupportButton.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        text: catalog.i18nc("@action:button", "Remove support")
+        iconSource: "remove_support.svg"
+
+        style: UM.Theme.styles.tool_button
     }
 }
