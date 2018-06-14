@@ -262,9 +262,6 @@ class PauseAtHeight(Script):
                 if current_z < 15:
                     prepend_gcode += self.putValue(G=1, Z=15, F=300) + "\n"
 
-                # Disable the E steppers
-                prepend_gcode += self.putValue(M=84, E=0) + "\n"
-
                 # Set extruder standby temperature
                 prepend_gcode += self.putValue(M=104, S=standby_temperature) + "; standby temperature\n"
 
