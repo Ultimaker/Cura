@@ -1,3 +1,7 @@
+from typing import List, Optional
+
+from UM.FileHandler.FileHandler import FileHandler
+from UM.Scene.SceneNode import SceneNode
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
@@ -39,7 +43,7 @@ i18n_catalog = i18nCatalog("cura")
 #   4. At this point the machine either has the state Authenticated or AuthenticationDenied.
 #   5. As a final step, we verify the authentication, as this forces the QT manager to setup the authenticator.
 class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
-    def __init__(self, device_id, address: str, properties, parent = None):
+    def __init__(self, device_id, address: str, properties, parent = None) -> None:
         super().__init__(device_id = device_id, address = address, properties = properties, parent = parent)
         self._api_prefix = "/api/v1/"
         self._number_of_extruders = 2
@@ -168,7 +172,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # NotImplementedError. We can simply ignore these.
                 pass
 
-    def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         if not self.activePrinter:
             # No active printer. Unable to write
             return
