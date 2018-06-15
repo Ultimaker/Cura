@@ -11,7 +11,7 @@ from UM.Logger import Logger
 from UM.FileHandler.FileHandler import FileHandler #For typing.
 from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.Signal import signalemitter
-from UM.Application import Application
+from UM.Qt.QtApplication import QtApplication
 
 from enum import IntEnum  # For the connection state tracking.
 from typing import Callable, List, Optional
@@ -87,7 +87,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._address = "" #type: str
         self._connection_text = "" #type: str
         self.printersChanged.connect(self._onPrintersChanged)
-        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._updateUniqueConfigurations)
+        QtApplication.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._updateUniqueConfigurations)
 
     @pyqtProperty(str, notify = connectionTextChanged)
     def address(self) -> str:
@@ -160,14 +160,14 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if not self._control_view_qml_path:
             return
         if self._control_item is None:
-            self._control_item = Application.getInstance().createQmlComponent(self._control_view_qml_path, {"OutputDevice": self})
+            self._control_item = QtApplication.getInstance().createQmlComponent(self._control_view_qml_path, {"OutputDevice": self})
 
     def _createMonitorViewFromQML(self) -> None:
         if not self._monitor_view_qml_path:
             return
 
         if self._monitor_item is None:
-            self._monitor_item = Application.getInstance().createQmlComponent(self._monitor_view_qml_path, {"OutputDevice": self})
+            self._monitor_item = QtApplication.getInstance().createQmlComponent(self._monitor_view_qml_path, {"OutputDevice": self})
 
     ##  Attempt to establish connection
     def connect(self) -> None:
