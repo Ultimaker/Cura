@@ -1719,7 +1719,7 @@ class CuraApplication(QtApplication):
     def _onContextMenuRequested(self, x: float, y: float) -> None:
         # Ensure we select the object if we request a context menu over an object without having a selection.
         if not Selection.hasSelection():
-            node = cast(SelectionPass, self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection"))).getIdAtPosition(x, y)
+            node = self.getController().getScene().findObject(cast(SelectionPass, self.getRenderer().getRenderPass("selection")).getIdAtPosition(x, y))
             if node:
                 while(node.getParent() and node.getParent().callDecoration("isGroup")):
                     node = node.getParent()
