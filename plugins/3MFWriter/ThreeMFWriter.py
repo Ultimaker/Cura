@@ -91,7 +91,7 @@ class ThreeMFWriter(MeshWriter):
         # Handle per object settings (if any)
         stack = um_node.callDecoration("getStack")
         if stack is not None:
-            changed_setting_keys = set(stack.getTop().getAllKeys())
+            changed_setting_keys = stack.getTop().getAllKeys()
 
             # Ensure that we save the extruder used for this object in a multi-extrusion setup
             if stack.getProperty("machine_extruder_count", "value") > 1:

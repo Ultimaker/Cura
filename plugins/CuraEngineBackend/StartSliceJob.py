@@ -427,7 +427,7 @@ class StartSliceJob(Job):
 
         # Check all settings for relations, so we can also calculate the correct values for dependent settings.
         top_of_stack = stack.getTop()  # Cache for efficiency.
-        changed_setting_keys = set(top_of_stack.getAllKeys())
+        changed_setting_keys = top_of_stack.getAllKeys()
 
         # Add all relations to changed settings as well.
         for key in top_of_stack.getAllKeys():
