@@ -42,7 +42,7 @@ class PickingPass(RenderPass):
         batch = RenderBatch(self._shader)
 
         # Fill up the batch with objects that can be sliced. `
-        for node in DepthFirstIterator(self._scene.getRoot()):
+        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                 batch.addItem(node.getWorldTransformation(), node.getMeshData())
 

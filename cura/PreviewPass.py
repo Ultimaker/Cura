@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Application import Application
 from UM.Resources import Resources
 
@@ -78,8 +79,8 @@ class PreviewPass(RenderPass):
         batch = RenderBatch(self._shader)
         batch_support_mesh = RenderBatch(self._support_mesh_shader)
 
-        # Fill up the batch with objects that can be sliced. `
-        for node in DepthFirstIterator(self._scene.getRoot()):
+        # Fill up the batch with objects that can be sliced.
+        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                 per_mesh_stack = node.callDecoration("getStack")
                 if node.callDecoration("isNonThumbnailVisibleMesh"):
