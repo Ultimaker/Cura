@@ -22,7 +22,7 @@ class PerObjectContainerStack(CuraContainerStack):
 
         # Return the user defined value if present, otherwise, evaluate the value according to the default routine.
         if self.getContainer(0).hasProperty(key, property_name):
-            if self.getContainer(0)._instances[key].state == InstanceState.User:
+            if self.getContainer(0).getProperty(key, "state") == InstanceState.User:
                 result = super().getProperty(key, property_name, context)
                 context.popContainer()
                 return result
@@ -59,9 +59,9 @@ class PerObjectContainerStack(CuraContainerStack):
         super().setNextStack(stack)
 
         # trigger signal to re-evaluate all default settings
-        for key, instance in self.getContainer(0)._instances.items():
+        for key in self.getContainer(0).getAllKeys():
             # only evaluate default settings
-            if instance.state != InstanceState.Default:
+            if self.getContainer(0).getProperty(key, "state") != InstanceState.Default:
                 continue
 
             self._collectPropertyChanges(key, "value")
