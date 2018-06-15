@@ -870,11 +870,11 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
                 for machine_id in machine_id_list:
-                    definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
-                    if not definition_metadata:
+                    definition_metadatas = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
+                    if not definition_metadatas:
                         continue
 
-                    definition_metadata = definition_metadata[0]
+                    definition_metadata = definition_metadatas[0]
 
                     machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
