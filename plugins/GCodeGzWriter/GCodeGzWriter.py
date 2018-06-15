@@ -3,7 +3,7 @@
 
 import gzip
 from io import StringIO, BufferedIOBase #To write the g-code to a temporary buffer, and for typing.
-from typing import List
+from typing import cast, List
 
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter #The class we're extending/implementing.
@@ -32,7 +32,7 @@ class GCodeGzWriter(MeshWriter):
 
         #Get the g-code from the g-code writer.
         gcode_textio = StringIO() #We have to convert the g-code into bytes.
-        success = PluginRegistry.getInstance().getPluginObject("GCodeWriter").write(gcode_textio, None)
+        success = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter")).write(gcode_textio, None)
         if not success: #Writing the g-code failed. Then I can also not write the gzipped g-code.
             return False
 
