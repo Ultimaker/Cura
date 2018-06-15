@@ -2,4 +2,6 @@
     <rect width="7" height="1.5" x="3" y="18" transform="rotate(-30 3 18)" /> <!-- Handle -->
     <path d="M10,18 C12,12 14,19 20,14 C15,24 12,20 10,19.5" transform="rotate(-30 3 18)" /> <!-- Brush -->
     <polygon points="16,27 16,3 20,3 20,7 24,7 24,11 28,11 28,27" /> <!-- Newly added support -->
+    <rect width="2" height="8" x="6" y="3" />
+    <rect width="8" height="2" x="3" y="6" />
 </svg>
