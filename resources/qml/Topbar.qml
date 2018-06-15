@@ -172,7 +172,7 @@ Rectangle
         }
 
         style: UM.Theme.styles.combobox
-        visible: UM.Controller.activeStage.stageId != "MonitorStage"
+        visible: UM.Controller.activeStage.stageId != "MonitorStage" && UM.Controller.activeToolId != "CustomSupport"
 
         model: UM.ViewModel { }
         textRole: "name"
