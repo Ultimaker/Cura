@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Application import Application
 from UM.FileHandler.FileHandler import FileHandler #For typing.
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode #For typing.
@@ -42,7 +41,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._api_prefix = ""
         self._address = address
         self._properties = properties
-        self._user_agent = "%s/%s " % (Application.getInstance().getApplicationName(), Application.getInstance().getVersion())
+        self._user_agent = "%s/%s " % (CuraApplication.getInstance().getApplicationName(), CuraApplication.getInstance().getVersion())
 
         self._onFinishedCallbacks = {}      # type: Dict[str, Callable[[QNetworkReply], None]]
         self._authentication_state = AuthState.NotAuthenticated
@@ -261,7 +260,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
         if self._properties.get(b"temporary", b"false") != b"true":
-            Application.getInstance().getMachineManager().checkCorrectGroupName(self.getId(), self.name)
+            CuraApplication.getInstance().getMachineManager().checkCorrectGroupName(self.getId(), self.name)
 
     def _registerOnFinishedCallback(self, reply: QNetworkReply, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         if on_finished is not None:
