@@ -1,11 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Application import Application
 from UM.Backend import Backend
 from UM.Job import Job
 from UM.Logger import Logger
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Vector import Vector
 from UM.Message import Message
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -13,7 +11,8 @@ from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
-from cura import LayerDataBuilder
+from cura.CuraApplication import CuraApplication
+from cura.LayerDataBuilder import LayerDataBuilder
 from cura.LayerDataDecorator import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
 from cura.Scene.GCodeListDecorator import GCodeListDecorator
@@ -32,7 +31,7 @@ Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f
 class FlavorParser:
 
     def __init__(self) -> None:
-        Application.getInstance().hideMessageSignal.connect(self._onHideMessage)
+        CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
         self._message = None
         self._layer_number = 0
@@ -46,7 +45,7 @@ class FlavorParser:
         self._current_layer_thickness = 0.2  # default
         self._filament_diameter = 2.85       # default
 
-        Application.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
+        CuraApplication.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
     def _clearValues(self) -> None:
         self._extruder_number = 0
@@ -54,7 +53,7 @@ class FlavorParser:
         self._layer_type = LayerPolygon.Inset0Type
         self._layer_number = 0
         self._previous_z = 0 # type: float
-        self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
+        self._layer_data_builder = LayerDataBuilder()
         self._is_absolute_positioning = True    # It can be absolute (G90) or relative (G91)
         self._is_absolute_extrusion = True  # It can become absolute (M82, default) or relative (M83)
 
@@ -286,7 +285,7 @@ class FlavorParser:
         Logger.log("d", "Preparing to load GCode")
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
@@ -322,7 +321,7 @@ class FlavorParser:
         Logger.log("d", "Parsing Gcode...")
 
         current_position = Position(0, 0, 0, 0, [0])
-        current_path = []
+        current_path = [] #type: List[List[float]]
         min_layer_number = 0
         negative_layers = 0
         previous_layer = 0
@@ -437,9 +436,9 @@ class FlavorParser:
         scene_node.addDecorator(gcode_list_decorator)
 
         # gcode_dict stores gcode_lists for a number of build plates.
-        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        active_build_plate_id = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_dict = {active_build_plate_id: gcode_list}
-        Application.getInstance().getController().getScene().gcode_dict = gcode_dict
+        CuraApplication.getInstance().getController().getScene().gcode_dict = gcode_dict #type: ignore #Because gcode_dict is generated dynamically.
 
         Logger.log("d", "Finished parsing Gcode")
         self._message.hide()
@@ -447,7 +446,7 @@ class FlavorParser:
         if self._layer_number == 0:
             Logger.log("w", "File doesn't contain any valid layers")
 
-        settings = Application.getInstance().getGlobalContainerStack()
+        settings = CuraApplication.getInstance().getGlobalContainerStack()
         if not settings.getProperty("machine_center_is_zero", "value"):
             machine_width = settings.getProperty("machine_width", "value")
             machine_depth = settings.getProperty("machine_depth", "value")
@@ -455,7 +454,7 @@ class FlavorParser:
 
         Logger.log("d", "GCode loading finished")
 
-        if Application.getInstance().getPreferences().getValue("gcodereader/show_caution"):
+        if CuraApplication.getInstance().getPreferences().getValue("gcodereader/show_caution"):
             caution_message = Message(catalog.i18nc(
                 "@info:generic",
                 "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."),
@@ -464,7 +463,7 @@ class FlavorParser:
             caution_message.show()
 
         # The "save/print" button's state is bound to the backend state.
-        backend = Application.getInstance().getBackend()
+        backend = CuraApplication.getInstance().getBackend()
         backend.backendStateChange.emit(Backend.BackendState.Disabled)
 
         return scene_node
