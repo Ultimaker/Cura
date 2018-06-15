@@ -11,7 +11,6 @@ from typing import List
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Extension import Extension
@@ -29,14 +28,13 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
+    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com" #type: str
+    DEFAULT_CLOUD_API_VERSION = 1 #type: int
 
-    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"
-    DEFAULT_CLOUD_API_VERSION = 1
+    def __init__(self, application: CuraApplication) -> None:
+        super().__init__()
 
-    def __init__(self, application: Application, parent=None) -> None:
-        super().__init__(parent)
-
-        self._application = application
+        self._application = application #type: CuraApplication
 
         self._sdk_version = None    # type: Optional[int]
         self._cloud_api_version = None # type: Optional[int]
@@ -44,13 +42,11 @@ class Toolbox(QObject, Extension):
         self._api_url = None    # type: Optional[str]
 
         # Network:
-        self._get_packages_request = None
-        self._get_showcase_request = None
-        self._download_request = None
-        self._download_reply = None
-        self._download_progress = 0 # type: float
-        self._is_downloading = False
-        self._network_manager = None
+        self._download_request = None #type: Optional[QNetworkRequest]
+        self._download_reply = None #type: Optional[QNetworkReply]
+        self._download_progress = 0 #type: float
+        self._is_downloading = False #type: bool
+        self._network_manager = None #type: Optional[QNetworkAccessManager]
         self._request_header = [
             b"User-Agent",
             str.encode(
@@ -95,24 +91,24 @@ class Toolbox(QObject, Extension):
         # View category defines which filter to use, and therefore effectively
         # which category is currently being displayed. For example, possible
         # values include "plugin" or "material", but also "installed".
-        self._view_category = "plugin"
+        self._view_category = "plugin" #type: str
 
         # View page defines which type of page layout to use. For example,
         # possible values include "overview", "detail" or "author".
-        self._view_page = "loading"
+        self._view_page = "loading" #type: str
 
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
         self._active_package = None # type: Optional[Dict[str, Any]]
 
-        self._dialog = None
-        self._restart_required = False
+        self._dialog = None #type: Optional[QObject]
+        self._restart_required = False #type: bool
 
         # variables for the license agreement dialog
-        self._license_dialog_plugin_name = ""
-        self._license_dialog_license_content = ""
-        self._license_dialog_plugin_file_location = ""
-        self._restart_dialog_message = ""
+        self._license_dialog_plugin_name = "" #type: str
+        self._license_dialog_license_content = "" #type: str
+        self._license_dialog_plugin_file_location = "" #type: str
+        self._restart_dialog_message = "" #type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
 
@@ -210,11 +206,10 @@ class Toolbox(QObject, Extension):
         # Create the network manager:
         # This was formerly its own function but really had no reason to be as
         # it was never called more than once ever.
-        if self._network_manager:
+        if self._network_manager is not None:
             self._network_manager.finished.disconnect(self._onRequestFinished)
             self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccessibleChanged)
         self._network_manager = QNetworkAccessManager()
-        assert(self._network_manager is not None)
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccessibleChanged)
 
@@ -259,7 +254,6 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def _updateInstalledModels(self) -> None:
-
         # This is moved here to avoid code duplication and so that after installing plugins they get removed from the
         # list of old plugins
         old_plugin_ids = self._plugin_registry.getInstalledPlugins()
@@ -355,8 +349,8 @@ class Toolbox(QObject, Extension):
         return self._restart_required
 
     @pyqtSlot()
-    def restart(self):
-        cast(CuraApplication, self._application).windowClosed()
+    def restart(self) -> None:
+        self._application.windowClosed()
 
     def getRemotePackage(self, package_id: str) -> Optional[Dict]:
         # TODO: make the lookup in a dict, not a loop. canUpdate is called for every item.
@@ -478,7 +472,6 @@ class Toolbox(QObject, Extension):
             self.resetDownload()
 
     def _onRequestFinished(self, reply: QNetworkReply) -> None:
-
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Got a timeout.")
             self.setViewPage("errored")
