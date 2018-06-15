@@ -92,10 +92,6 @@ class FlavorParser:
         if message == self._message:
             self._cancelled = True
 
-    @staticmethod
-    def _getNullBoundingBox() -> AxisAlignedBox:
-        return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
-
     def _createPolygon(self, layer_thickness: float, path: List[List[Union[float, int]]], extruder_offsets: List[float]) -> bool:
         countvalid = 0
         for point in path:
@@ -294,9 +290,6 @@ class FlavorParser:
         self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
-        # Override getBoundingBox function of the sceneNode, as this node should return a bounding box, but there is no
-        # real data to calculate it from.
-        scene_node.getBoundingBox = self._getNullBoundingBox
 
         gcode_list = []
         self._is_layers_in_file = False
