@@ -3,7 +3,7 @@
 
 from typing import Optional, TYPE_CHECKING
 
-from UM.Application import Application
+from UM.Qt.QtApplication import QtApplication
 from UM.Math.Vector import Vector
 from UM.Resources import Resources
 
@@ -24,10 +24,10 @@ class PickingPass(RenderPass):
     def __init__(self, width: int, height: int) -> None:
         super().__init__("picking", width, height)
 
-        self._renderer = Application.getInstance().getRenderer()
+        self._renderer = QtApplication.getInstance().getRenderer()
 
         self._shader = None #type: Optional[ShaderProgram]
-        self._scene = Application.getInstance().getController().getScene()
+        self._scene = QtApplication.getInstance().getController().getScene()
 
     def render(self) -> None:
         if not self._shader:
