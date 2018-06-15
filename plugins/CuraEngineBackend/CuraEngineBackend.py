@@ -18,7 +18,7 @@ from UM.Resources import Resources
 from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Settings.DefinitionContainerInterface import DefinitionContainerInterface
+from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
 from UM.Tool import Tool #For typing.
 
@@ -365,8 +365,7 @@ class CuraEngineBackend(QObject, Backend):
                     if not definition:
                         Logger.log("e", "When checking settings for errors, unable to find definition for key {key} in per-object stack.".format(key = key))
                         continue
-                    definition = definition[0]
-                    errors[key] = definition.label
+                    errors[key] = definition[0].label
             self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = ", ".join(errors.values())),
                                           title = catalog.i18nc("@info:title", "Unable to slice"))
             self._error_message.show()
