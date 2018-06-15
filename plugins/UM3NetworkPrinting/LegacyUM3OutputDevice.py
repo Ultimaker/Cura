@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Scene.SceneNode import SceneNode
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
@@ -13,12 +14,11 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Application import Application
 from UM.i18n import i18nCatalog
 from UM.Message import Message
 
 from PyQt5.QtNetwork import QNetworkRequest
-from PyQt5.QtCore import QTimer, QCoreApplication
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMessageBox
 
 from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
@@ -129,7 +129,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def connect(self):
         super().connect()
         self._setupMessages()
-        global_container = Application.getInstance().getGlobalContainerStack()
+        global_container = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container:
             self._authentication_id = global_container.getMetaDataEntry("network_authentication_id", None)
             self._authentication_key = global_container.getMetaDataEntry("network_authentication_key", None)
@@ -187,8 +187,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self.writeStarted.emit(self)
 
-        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
-        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        gcode_dict = getattr(CuraApplication.getInstance().getController().getScene(), "gcode_dict", [])
+        active_build_plate_id = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_list = gcode_dict[active_build_plate_id]
 
         if not gcode_list:
@@ -207,7 +207,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             for error in errors:
                 detailed_text += error + "\n"
 
-            Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
+            CuraApplication.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
                                                  text,
                                                  informative_text,
                                                  detailed_text,
@@ -229,7 +229,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             for warning in warnings:
                 detailed_text += warning + "\n"
 
-            Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
+            CuraApplication.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
                                                  text,
                                                  informative_text,
                                                  detailed_text,
@@ -243,7 +243,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._startPrint()
 
         # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().getController().setActiveStage("MonitorStage")
+        CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
 
     def _startPrint(self):
         Logger.log("i", "Sending print job to printer.")
@@ -268,7 +268,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Abort was called.
             return
 
-        file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
+        file_name = "%s.gcode.gz" % CuraApplication.getInstance().getPrintInformation().jobName
         self.postForm("print_job", "form-data; name=\"file\";filename=\"%s\"" % file_name, compressed_gcode,
                       onFinished=self._onPostPrintJobFinished)
 
@@ -280,7 +280,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._progress_message.hide()
             self._compressing_gcode = False
             self._sending_gcode = False
-            Application.getInstance().getController().setActiveStage("PrepareStage")
+            CuraApplication.getInstance().getController().setActiveStage("PrepareStage")
 
     def _onPostPrintJobFinished(self, reply):
         self._progress_message.hide()
@@ -305,7 +305,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             if button == QMessageBox.Yes:
                 self._startPrint()
             else:
-                Application.getInstance().getController().setActiveStage("PrepareStage")
+                CuraApplication.getInstance().getController().setActiveStage("PrepareStage")
                 # For some unknown reason Cura on OSX will hang if we do the call back code
                 # immediately without first returning and leaving QML's event system.
 
@@ -313,7 +313,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkForErrors(self):
         errors = []
-        print_information = Application.getInstance().getPrintInformation()
+        print_information = CuraApplication.getInstance().getPrintInformation()
         if not print_information.materialLengths:
             Logger.log("w", "There is no material length information. Unable to check for errors.")
             return errors
@@ -333,7 +333,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkForWarnings(self):
         warnings = []
-        print_information = Application.getInstance().getPrintInformation()
+        print_information = CuraApplication.getInstance().getPrintInformation()
 
         if not print_information.materialLengths:
             Logger.log("w", "There is no material length information. Unable to check for warnings.")
@@ -456,7 +456,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._authentication_failed_message.show()
 
     def _saveAuthentication(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
             if "network_authentication_key" in global_container_stack.getMetaData():
                 global_container_stack.setMetaDataEntry("network_authentication_key", self._authentication_key)
@@ -469,7 +469,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
 
             # Force save so we are sure the data is not lost.
-            Application.getInstance().saveStack(global_container_stack)
+            CuraApplication.getInstance().saveStack(global_container_stack)
             Logger.log("i", "Authentication succeeded for id %s and key %s", self._authentication_id,
                        self._getSafeAuthKey())
         else:
@@ -500,7 +500,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_id = None
 
         self.post("auth/request",
-                  json.dumps({"application":  "Cura-" + Application.getInstance().getVersion(),
+                  json.dumps({"application":  "Cura-" + CuraApplication.getInstance().getVersion(),
                                                "user": self._getUserName()}).encode(),
                   onFinished=self._onRequestAuthenticationFinished)
 
@@ -546,7 +546,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                        "Got status code {status_code} while trying to get printer data".format(status_code=status_code))
 
     def materialHotendChangedMessage(self, callback):
-        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Sync with your printer"),
+        CuraApplication.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Sync with your printer"),
                                              i18n_catalog.i18nc("@label",
                                                                 "Would you like to use your current printer configuration in Cura?"),
                                              i18n_catalog.i18nc("@label",

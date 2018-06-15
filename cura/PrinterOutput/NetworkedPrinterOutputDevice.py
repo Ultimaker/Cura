@@ -30,7 +30,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent)
-        self._manager = None    # type: QNetworkAccessManager
+        self._manager = None    # type: Optional[QNetworkAccessManager]
         self._last_manager_create_time = None       # type: Optional[float]
         self._recreate_network_manager_time = 30
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
@@ -162,7 +162,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
-    def _createFormPart(self, content_header: str, data: str, content_type: Optional[str] = None) -> QHttpPart:
+    def _createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
         part = QHttpPart()
 
         if not content_header.startswith("form-data;"):
@@ -191,7 +191,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         if self._manager is None:
             self._createNetworkManager()
-        assert(self._manager is not None)
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.put(request, data.encode())
@@ -200,7 +199,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         if self._manager is None:
             self._createNetworkManager()
-        assert(self._manager is not None)
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.get(request)
@@ -209,7 +207,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def post(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
         if self._manager is None:
             self._createNetworkManager()
-        assert(self._manager is not None)
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.post(request, data)
@@ -217,10 +214,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             reply.uploadProgress.connect(on_progress)
         self._registerOnFinishedCallback(reply, on_finished)
 
-    def postFormWithParts(self, target:str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
+    def postFormWithParts(self, target:str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
         if self._manager is None:
             self._createNetworkManager()
-        assert(self._manager is not None)
         request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
         for part in parts:
