@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional, TYPE_CHECKING
+
 from UM.Application import Application
 from UM.Resources import Resources
 
@@ -11,7 +13,8 @@ from UM.View.RenderBatch import RenderBatch
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
-from typing import Optional
+if TYPE_CHECKING:
+    from UM.View.GL.ShaderProgram import ShaderProgram
 
 MYPY = False
 if MYPY:
@@ -41,9 +44,9 @@ class PreviewPass(RenderPass):
 
         self._renderer = Application.getInstance().getRenderer()
 
-        self._shader = None
-        self._non_printing_shader = None
-        self._support_mesh_shader = None
+        self._shader = None #type: Optional[ShaderProgram]
+        self._non_printing_shader = None #type: Optional[ShaderProgram]
+        self._support_mesh_shader = None #type: Optional[ShaderProgram]
         self._scene = Application.getInstance().getController().getScene()
 
     #   Set the camera to be used by this render pass
