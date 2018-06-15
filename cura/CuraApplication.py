@@ -111,13 +111,12 @@ from UM.FlameProfiler import pyqtSlot
 
 numpy.seterr(all = "ignore")
 
-if TYPE_CHECKING:
-    try:
-        from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
-    except ImportError:
-        CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-        CuraBuildType = ""
-        CuraDebugMode = False
+try:
+    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
+except ImportError:
+    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
+    CuraDebugMode = False
 
 
 class CuraApplication(QtApplication):
