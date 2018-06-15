@@ -3,10 +3,10 @@
 
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
-from UM.Application import Application
 from UM.Qt.Duration import DurationFormat
 from UM.PluginRegistry import PluginRegistry
 
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
@@ -107,11 +107,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # cancel any ongoing preheat timer before starting a print
         self._printers[0].getController().stopPreheatTimers()
 
-        Application.getInstance().getController().setActiveStage("MonitorStage")
+        CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
 
         # find the G-code for the active build plate to print
-        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
-        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
+        active_build_plate_id = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        gcode_dict = getattr(CuraApplication.getInstance().getController().getScene(), "gcode_dict")
         gcode_list = gcode_dict[active_build_plate_id]
 
         self._printGCode(gcode_list)
@@ -121,7 +121,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def showFirmwareInterface(self):
         if self._firmware_view is None:
             path = os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")
-            self._firmware_view = Application.getInstance().createQmlComponent(path, {"manager": self})
+            self._firmware_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
 
         self._firmware_view.show()
 
@@ -180,7 +180,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.setFirmwareUpdateState(FirmwareUpdateState.completed)
 
         # Try to re-connect with the machine again, which must be done on the Qt thread, so we use call later.
-        Application.getInstance().callLater(self.connect)
+        CuraApplication.getInstance().callLater(self.connect)
 
     @pyqtProperty(float, notify = firmwareProgressChanged)
     def firmwareProgress(self):
@@ -214,7 +214,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._gcode_position = 0
         self._print_start_time = time()
 
-        self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
+        self._print_estimated_time = int(CuraApplication.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
         for i in range(0, 4):  # Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
@@ -250,7 +250,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             except SerialException:
                 Logger.log("w", "An exception occured while trying to create serial connection")
                 return
-        container_stack = Application.getInstance().getGlobalContainerStack()
+        container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
         self._printers = [PrinterOutputModel(output_controller=GenericOutputController(self), number_of_extruders=num_extruders)]
