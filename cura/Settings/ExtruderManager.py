@@ -4,7 +4,7 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
 from UM.FlameProfiler import pyqtSlot
 
-from UM.Application import Application  # To get the global container stack to find the current machine.
+import cura.CuraApplication #To get the global container stack to find the current machine.
 from UM.Logger import Logger
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
@@ -36,7 +36,7 @@ class ExtruderManager(QObject):
 
         super().__init__(parent)
 
-        self._application = Application.getInstance()
+        self._application = cura.CuraApplication.CuraApplication.getInstance()
 
         self._extruder_trains = {}  # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
         self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
@@ -477,7 +477,7 @@ class ExtruderManager(QObject):
     #           If no extruder has the value, the list will contain the global value.
     @staticmethod
     def getExtruderValues(key):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
 
         result = []
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
@@ -512,7 +512,7 @@ class ExtruderManager(QObject):
     #           If no extruder has the value, the list will contain the global value.
     @staticmethod
     def getDefaultExtruderValues(key):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         context = PropertyEvaluationContext(global_stack)
         context.context["evaluate_from_container_index"] = 1  # skip the user settings container
         context.context["override_operators"] = {
@@ -545,7 +545,7 @@ class ExtruderManager(QObject):
     ##  Return the default extruder position from the machine manager
     @staticmethod
     def getDefaultExtruderPosition() -> str:
-        return Application.getInstance().getMachineManager().defaultExtruderPosition
+        return cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition
 
     ##  Get all extruder values for a certain setting.
     #
@@ -570,7 +570,7 @@ class ExtruderManager(QObject):
     @staticmethod
     def getExtruderValue(extruder_index, key):
         if extruder_index == -1:
-            extruder_index = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
+            extruder_index = int(cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition)
         extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
 
         if extruder:
@@ -579,7 +579,7 @@ class ExtruderManager(QObject):
                 value = value(extruder)
         else:
             # Just a value from global.
-            value = Application.getInstance().getGlobalContainerStack().getProperty(key, "value")
+            value = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().getProperty(key, "value")
 
         return value
 
@@ -608,7 +608,7 @@ class ExtruderManager(QObject):
             if isinstance(value, SettingFunction):
                 value = value(extruder, context = context)
         else:  # Just a value from global.
-            value = Application.getInstance().getGlobalContainerStack().getProperty(key, "value", context = context)
+            value = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().getProperty(key, "value", context = context)
 
         return value
 
@@ -621,7 +621,7 @@ class ExtruderManager(QObject):
     #   \return The effective value
     @staticmethod
     def getResolveOrValue(key):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         resolved_value = global_stack.getProperty(key, "value")
 
         return resolved_value
@@ -635,7 +635,7 @@ class ExtruderManager(QObject):
     #   \return The effective value
     @staticmethod
     def getDefaultResolveOrValue(key):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         context = PropertyEvaluationContext(global_stack)
         context.context["evaluate_from_container_index"] = 1  # skip the user settings container
         context.context["override_operators"] = {
