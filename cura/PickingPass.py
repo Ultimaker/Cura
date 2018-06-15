@@ -1,5 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import Optional, TYPE_CHECKING
+
 from UM.Application import Application
 from UM.Math.Vector import Vector
 from UM.Resources import Resources
@@ -10,6 +13,8 @@ from UM.View.RenderBatch import RenderBatch
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
+if TYPE_CHECKING:
+    from UM.View.GL.ShaderProgram import ShaderProgram
 
 ##  A RenderPass subclass that renders a the distance of selectable objects from the active camera to a texture.
 #   The texture is used to map a 2d location (eg the mouse location) to a world space position
@@ -21,7 +26,7 @@ class PickingPass(RenderPass):
 
         self._renderer = Application.getInstance().getRenderer()
 
-        self._shader = None
+        self._shader = None #type: Optional[ShaderProgram]
         self._scene = Application.getInstance().getController().getScene()
 
     def render(self) -> None:
