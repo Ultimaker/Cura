@@ -74,6 +74,7 @@ vertex41core =
 
     out highp vec3 f_vertex;
     out highp vec3 f_normal;
+    out highp vec2 v_uvs;
 
     void main()
     {
@@ -82,6 +83,7 @@ vertex41core =
 
         f_vertex = world_space_vert.xyz;
         f_normal = (u_normalMatrix * normalize(a_normal)).xyz;
+        v_uvs = a_uvs;
     }
 
 fragment41core =
@@ -95,6 +97,9 @@ fragment41core =
 
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
+    uniform sampler2D u_extraOverhang; //Areas that should also be coloured as overhang.
+
+    varying highp vec2 v_uvs;
 
     in highp vec3 f_vertex;
     in highp vec3 f_normal;
@@ -124,6 +129,8 @@ fragment41core =
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
         finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
+        vec4 is_extra_overhang = texture2D(u_extraOverhang, v_uvs);
+        finalColor = is_extra_overhang * u_overhangColor + (1 - is_extra_overhang) * finalColor;
 
         frag_color = finalColor;
         frag_color.a = 1.0;

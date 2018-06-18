@@ -1,11 +1,16 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+import math
+from PyQt5.QtCore import Qt #For the extra overhang buffer.
+from PyQt5.QtGui import QImage #For the extra overhang buffer.
+from typing import Optional
 
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from UM.Application import Application
+from UM.Qt.QtApplication import QtApplication
 from UM.View.RenderBatch import RenderBatch
 from UM.Settings.Validator import ValidatorState
 from UM.Math.Color import Color
@@ -14,15 +19,13 @@ from UM.View.GL.OpenGL import OpenGL
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtrudersModel import ExtrudersModel
 
-import math
-
 ## Standard view for mesh models.
 
 class SolidView(View):
     def __init__(self):
         super().__init__()
 
-        Application.getInstance().getPreferences().addPreference("view/show_overhang", True)
+        QtApplication.getInstance().getPreferences().addPreference("view/show_overhang", True)
 
         self._enabled_shader = None
         self._disabled_shader = None
@@ -32,16 +35,27 @@ class SolidView(View):
         self._extruders_model = ExtrudersModel()
         self._theme = None
 
+        self.extra_overhang = None #type: Optional[QImage]
+
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
         if not self._theme:
-            self._theme = Application.getInstance().getTheme()
+            self._theme = QtApplication.getInstance().getTheme()
 
         if not self._enabled_shader:
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
             self._enabled_shader.setUniformValue("u_overhangColor", Color(*self._theme.getColor("model_overhang").getRgb()))
+
+            extra_overhang_image = self.extra_overhang
+            if extra_overhang_image is None: #Not set/drawn yet.
+                extra_overhang_image = QImage(QtApplication.getInstance().getMainWindow().width(), QtApplication.getInstance().getMainWindow().height(), QImage.Format_Grayscale8)
+                extra_overhang_image.fill(Qt.black)
+            self._enabled_shader.setUniformValue("u_extraOverhang", 0)
+            extra_overhang_texture = OpenGL.getInstance().createTexture()
+            extra_overhang_texture.setImage(extra_overhang_image)
+            self._enabled_shader.setTexture(0, extra_overhang_texture)
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
@@ -59,12 +73,12 @@ class SolidView(View):
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = QtApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
             support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
-            support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
+            support_angle_stack = QtApplication.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
 
-            if support_angle_stack is not None and Application.getInstance().getPreferences().getValue("view/show_overhang"):
+            if support_angle_stack is not None and QtApplication.getInstance().getPreferences().getValue("view/show_overhang"):
                 angle = support_angle_stack.getProperty("support_angle", "value")
                 # Make sure the overhang angle is valid before passing it to the shader
                 # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)
