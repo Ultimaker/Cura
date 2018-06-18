@@ -32,10 +32,12 @@ class CustomSupport(Tool):
             if active_view is not None:
                 self._previous_view = active_view.getPluginId()
             QtApplication.getInstance().getController().setActiveView("SolidView")
+            QtApplication.getInstance().getController().disableSelection()
         elif event.type == Event.ToolDeactivateEvent:
             if self._previous_view is not None:
                 QtApplication.getInstance().getController().setActiveView(self._previous_view)
                 self._previous_view = None
+            QtApplication.getInstance().getController().enableSelection()
 
         elif event.type == Event.MousePressEvent and MouseEvent.LeftButton in event.buttons:
             #Reset the draw buffer and start painting.
