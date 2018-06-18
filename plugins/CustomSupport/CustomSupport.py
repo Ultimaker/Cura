@@ -47,4 +47,19 @@ class CustomSupport(Tool):
             self._last_x = QtApplication.getInstance().getMainWindow().mouseX
             self._last_y = QtApplication.getInstance().getMainWindow().mouseY
             self._painter.drawEllipse(self._last_x - self.brush_size / 2, self._last_y - self.brush_size / 2, self.brush_size, self.brush_size) #Paint an initial ellipse at the spot you're clicking.
+        elif event.type == Event.MouseReleaseEvent and MouseEvent.LeftButton in event.buttons:
+            #Complete drawing.
+            #TODO: Use the current buffer to place actual support.
+            self._last_x = QtApplication.getInstance().getMainWindow().mouseX
+            self._last_y = QtApplication.getInstance().getMainWindow().mouseY
+            self._painter.setPen(self._endcap_pen)
+            self._painter.drawEllipse(self._last_x - self.brush_size / 2, self._last_y - self.brush_size / 2, self.brush_size, self.brush_size) #Paint another ellipse when you're releasing as endcap.
+            self._painter = None
             self._draw_buffer.save("/tmp/test.png", "PNG") #For debugging.
+        elif event.type == Event.MouseMoveEvent and self._painter is not None: #While dragging.
+            self._painter.setPen(self._line_pen)
+            new_x = QtApplication.getInstance().getMainWindow().mouseX
+            new_y = QtApplication.getInstance().getMainWindow().mouseY
+            self._painter.drawLine(self._last_x, self._last_y, new_x, new_y)
+            self._last_x = new_x
+            self._last_y = new_y
