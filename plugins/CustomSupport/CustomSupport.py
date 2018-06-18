@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt #For shortcut keys.
+from typing import Optional
 
 from UM.Application import Application #To change the active view.
 from UM.Event import Event #To register mouse movements.
@@ -11,7 +12,7 @@ class CustomSupport(Tool):
     def __init__(self):
         super().__init__()
         self._shortcut_key = Qt.Key_S
-        self._previous_view = None
+        self._previous_view = None #type: Optional[str] #This tool forces SolidView. When the tool is disabled, it goes back to the original view.
 
     def event(self, event: Event):
         if event.type == Event.ToolActivateEvent:
