@@ -52,6 +52,7 @@ class SolidView(View):
         if self._extra_overhang is None:
             self.setExtraOverhang(None)
         self._enabled_shader.setTexture(0, self._extra_overhang)
+        self._enabled_shader.setUniformValue("u_windowSize", [QtApplication.getInstance().getMainWindow().width(), QtApplication.getInstance().getMainWindow().height()])
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
