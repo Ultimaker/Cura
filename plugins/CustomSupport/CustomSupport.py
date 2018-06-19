@@ -10,7 +10,7 @@ from UM.Event import Event, MouseEvent #To register mouse movements.
 from UM.Tool import Tool #The interface we're implementing.
 
 class CustomSupport(Tool):
-    brush_size = 10 #Diameter of the brush.
+    brush_size = 20 #Diameter of the brush.
 
     def __init__(self):
         super().__init__()
