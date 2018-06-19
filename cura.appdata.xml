@@ -26,6 +26,6 @@
   <screenshots>
     <screenshot type="default" width="1280" height="720">http://software.ultimaker.com/Cura.png</screenshot>
   </screenshots>
-  <url type="homepage">https://ultimaker.com/en/products/cura-software?utm_source=cura&utm_medium=software&utm_campaign=resources</url>
+  <url type="homepage">https://ultimaker.com/en/products/cura-software?utm_source=cura&amp;utm_medium=software&amp;utm_campaign=resources</url>
   <translation type="gettext">Cura</translation>
 </component>
