@@ -58,6 +58,7 @@ class CustomSupport(Tool):
             self._painter = None
             QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
             self._constructSupport(self._draw_buffer) #Actually place the support.
+            self._resetDrawBuffer()
         elif event.type == Event.MouseMoveEvent and self._painter is not None: #While dragging.
             self._painter.setPen(self._line_pen)
             new_x, new_y = self._cursorCoordinates()
@@ -71,11 +72,10 @@ class CustomSupport(Tool):
     #   added and where it should be removed.
     def _constructSupport(self, buffer: QImage) -> None:
         job = ConstructSupportJob(buffer)
-        job.finished.connect(self._resetDrawBuffer)
         job.start()
 
     ##  Resets the draw buffer so that no pixels are marked as needing support.
-    def _resetDrawBuffer(self, _job: ConstructSupportJob = None):
+    def _resetDrawBuffer(self) -> None:
         #Create a new buffer so that we don't change the data of a job that's still processing.
         self._draw_buffer = QImage(QtApplication.getInstance().getMainWindow().width(), QtApplication.getInstance().getMainWindow().height(), QImage.Format_Grayscale8)
         self._draw_buffer.fill(Qt.black)
