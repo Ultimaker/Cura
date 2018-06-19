@@ -6448,12 +6448,12 @@
                 "wall_overhang_angle":
                 {
                     "label": "Overhanging Wall Angle",
-                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings.",
+                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging.",
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "0",
                     "minimum_value_warning": "2",
-                    "maximum_value": "80",
+                    "maximum_value": "90",
                     "default_value": 40,
                     "settable_per_mesh": true
                 },
