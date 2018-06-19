@@ -157,6 +157,6 @@ class SolidView(View):
     def setExtraOverhang(self, extra_overhang_image: Optional[QImage]) -> None:
         if extra_overhang_image is None:
             extra_overhang_image = QImage(QtApplication.getInstance().getMainWindow().width(), QtApplication.getInstance().getMainWindow().height(), QImage.Format_Grayscale8)
-            extra_overhang_image.fill(Qt.white)
+            extra_overhang_image.fill(Qt.black)
         self._extra_overhang = OpenGL.getInstance().createTexture()
         self._extra_overhang.setImage(extra_overhang_image)
