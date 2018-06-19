@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 from UM.Qt.QtApplication import QtApplication #To change the active view.
 from UM.Event import Event, MouseEvent #To register mouse movements.
 from UM.Tool import Tool #The interface we're implementing.
+from .ConstructSupportJob import ConstructSupportJob #A background task to construct or remove the actual support.
 
 class CustomSupport(Tool):
     brush_size = 20 #Diameter of the brush.
@@ -51,12 +52,12 @@ class CustomSupport(Tool):
             QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
         elif event.type == Event.MouseReleaseEvent and MouseEvent.LeftButton in event.buttons:
             #Complete drawing.
-            #TODO: Use the current buffer to place actual support.
             self._last_x, self._last_y = self._cursorCoordinates()
             self._painter.setPen(self._endcap_pen)
             self._painter.drawEllipse(self._last_x - self.brush_size / 2, self._last_y - self.brush_size / 2, self.brush_size, self.brush_size) #Paint another ellipse when you're releasing as endcap.
             self._painter = None
             QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
+            self._constructSupport(self._draw_buffer) #Actually place the support.
         elif event.type == Event.MouseMoveEvent and self._painter is not None: #While dragging.
             self._painter.setPen(self._line_pen)
             new_x, new_y = self._cursorCoordinates()
@@ -64,6 +65,22 @@ class CustomSupport(Tool):
             self._last_x = new_x
             self._last_y = new_y
             QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
+
+    ##  Construct the actual support intersection structure from an image.
+    #   \param buffer The temporary buffer indicating where support should be
+    #   added and where it should be removed.
+    def _constructSupport(self, buffer: QImage) -> None:
+        job = ConstructSupportJob(buffer)
+        job.finished.connect(self._resetDrawBuffer)
+        job.start()
+
+    ##  Resets the draw buffer so that no pixels are marked as needing support.
+    def _resetDrawBuffer(self, _job: ConstructSupportJob = None):
+        #Create a new buffer so that we don't change the data of a job that's still processing.
+        self._draw_buffer = QImage(QtApplication.getInstance().getMainWindow().width(), QtApplication.getInstance().getMainWindow().height(), QImage.Format_Grayscale8)
+        self._draw_buffer.fill(Qt.black)
+        QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
+        QtApplication.getInstance().getMainWindow().update() #Force a redraw.
 
     ##  Get the current mouse coordinates.
     #   \return A tuple containing first the X coordinate and then the Y
