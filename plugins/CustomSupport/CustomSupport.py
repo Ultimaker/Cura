@@ -5,8 +5,9 @@ from PyQt5.QtCore import Qt #For shortcut keys and colours.
 from PyQt5.QtGui import QBrush, QImage, QPainter, QPen #Drawing on a temporary buffer until we're ready to process the area of custom support.
 from typing import Optional, Tuple
 
-from UM.Qt.QtApplication import QtApplication #To change the active view.
+from cura.PickingPass import PickingPass
 from UM.Event import Event, MouseEvent #To register mouse movements.
+from UM.Qt.QtApplication import QtApplication #To change the active view.
 from UM.Tool import Tool #The interface we're implementing.
 from .ConstructSupportJob import ConstructSupportJob #A background task to construct or remove the actual support.
 
@@ -71,7 +72,11 @@ class CustomSupport(Tool):
     #   \param buffer The temporary buffer indicating where support should be
     #   added and where it should be removed.
     def _constructSupport(self, buffer: QImage) -> None:
-        job = ConstructSupportJob(buffer)
+        depth_pass = PickingPass(buffer.width(), buffer.height()) #Instead of using the picking pass to pick for us, we need to bulk-pick digits so do this in Numpy.
+        depth_pass.bind()
+        depth_image = depth_pass.getOutput()
+        depth_pass.release()
+        job = ConstructSupportJob(buffer, depth_image)
         job.start()
 
     ##  Resets the draw buffer so that no pixels are marked as needing support.
