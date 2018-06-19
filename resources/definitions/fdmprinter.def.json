@@ -6454,7 +6454,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "2",
                     "maximum_value": "90",
-                    "default_value": 40,
+                    "default_value": 90,
                     "settable_per_mesh": true
                 },
                 "wall_overhang_speed_factor":
