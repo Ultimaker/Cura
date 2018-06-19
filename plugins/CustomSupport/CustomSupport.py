@@ -48,6 +48,7 @@ class CustomSupport(Tool):
             self._painter.setPen(self._endcap_pen)
             self._last_x, self._last_y = self._cursorCoordinates()
             self._painter.drawEllipse(self._last_x - self.brush_size / 2, self._last_y - self.brush_size / 2, self.brush_size, self.brush_size) #Paint an initial ellipse at the spot you're clicking.
+            QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
         elif event.type == Event.MouseReleaseEvent and MouseEvent.LeftButton in event.buttons:
             #Complete drawing.
             #TODO: Use the current buffer to place actual support.
@@ -55,13 +56,14 @@ class CustomSupport(Tool):
             self._painter.setPen(self._endcap_pen)
             self._painter.drawEllipse(self._last_x - self.brush_size / 2, self._last_y - self.brush_size / 2, self.brush_size, self.brush_size) #Paint another ellipse when you're releasing as endcap.
             self._painter = None
-            self._draw_buffer.save("/tmp/test.png", "PNG") #For debugging.
+            QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
         elif event.type == Event.MouseMoveEvent and self._painter is not None: #While dragging.
             self._painter.setPen(self._line_pen)
             new_x, new_y = self._cursorCoordinates()
             self._painter.drawLine(self._last_x, self._last_y, new_x, new_y)
             self._last_x = new_x
             self._last_y = new_y
+            QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
 
     ##  Get the current mouse coordinates.
     #   \return A tuple containing first the X coordinate and then the Y

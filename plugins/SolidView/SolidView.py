@@ -12,6 +12,7 @@ from UM.Scene.Selection import Selection
 from UM.Resources import Resources
 from UM.Qt.QtApplication import QtApplication
 from UM.View.RenderBatch import RenderBatch
+from UM.View.GL.Texture import Texture
 from UM.Settings.Validator import ValidatorState
 from UM.Math.Color import Color
 from UM.View.GL.OpenGL import OpenGL
@@ -35,7 +36,7 @@ class SolidView(View):
         self._extruders_model = ExtrudersModel()
         self._theme = None
 
-        self.extra_overhang = None #type: Optional[QImage]
+        self._extra_overhang = None #type: Optional[Texture]
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -47,15 +48,10 @@ class SolidView(View):
         if not self._enabled_shader:
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
             self._enabled_shader.setUniformValue("u_overhangColor", Color(*self._theme.getColor("model_overhang").getRgb()))
-
-            extra_overhang_image = self.extra_overhang
-            if extra_overhang_image is None: #Not set/drawn yet.
-                extra_overhang_image = QImage(QtApplication.getInstance().getMainWindow().width(), QtApplication.getInstance().getMainWindow().height(), QImage.Format_Grayscale8)
-                extra_overhang_image.fill(Qt.black)
-            self._enabled_shader.setUniformValue("u_extraOverhang", 0)
-            extra_overhang_texture = OpenGL.getInstance().createTexture()
-            extra_overhang_texture.setImage(extra_overhang_image)
-            self._enabled_shader.setTexture(0, extra_overhang_texture)
+        self._enabled_shader.setUniformValue("u_extraOverhang", 0)
+        if self._extra_overhang is None:
+            self.setExtraOverhang(None)
+        self._enabled_shader.setTexture(0, self._extra_overhang)
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
@@ -152,3 +148,14 @@ class SolidView(View):
 
     def endRendering(self):
         pass
+
+    ##  Change the overlay image that colours extra overhang.
+    #   \param extra_overhang_image A new image where white indicates that there
+    #   should be extra overhang and black indicates that there should not be
+    #   overhang.
+    def setExtraOverhang(self, extra_overhang_image: Optional[QImage]) -> None:
+        if extra_overhang_image is None:
+            extra_overhang_image = QImage(QtApplication.getInstance().getMainWindow().width(), QtApplication.getInstance().getMainWindow().height(), QImage.Format_Grayscale8)
+            extra_overhang_image.fill(Qt.white)
+        self._extra_overhang = OpenGL.getInstance().createTexture()
+        self._extra_overhang.setImage(extra_overhang_image)
