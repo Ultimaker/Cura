@@ -6463,7 +6463,7 @@
                     "description": "Overhanging walls will be printed at this percentage of their normal print speed.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": 50,
+                    "default_value": 100,
                     "minimum_value": "10",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
