@@ -81,6 +81,8 @@ class CuraSceneNode(SceneNode):
     ##  Return if the provided bbox collides with the bbox of this scene node
     def collidesWithBbox(self, check_bbox):
         bbox = self.getBoundingBox()
+        if bbox is None:
+            return False
 
         # Mark the node as outside the build volume if the bounding box test fails.
         if check_bbox.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
