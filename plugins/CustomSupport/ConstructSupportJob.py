@@ -32,7 +32,7 @@ class ConstructSupportJob(Job):
         depth = qimage2ndarray.recarray_view(self._depth_image)
         depth.a = 0 #Discard alpha channel.
         depth = depth.view(dtype = numpy.int32).astype(numpy.float32) / 1000 #Conflate the R, G and B channels to one 24-bit (cast to 32) float. Divide by 1000 to get mm.
-        support_positions_2d = numpy.array(numpy.where(to_support == 255)) #All the 2D coordinates on the screen where we want support.
+        support_positions_2d = numpy.array(numpy.where(numpy.bitwise_and(to_support == 255, depth < 16777))) #All the 2D coordinates on the screen where we want support.
         support_depths = numpy.take(depth, support_positions_2d[0, :] * depth.shape[1] + support_positions_2d[1, :]) #The depth at those pixels.
         inverted_projection = numpy.linalg.inv(self._camera_projection.getData().copy())
         transformation = self._camera_transformation.getData()
