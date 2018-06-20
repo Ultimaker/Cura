@@ -73,9 +73,8 @@ class CustomSupport(Tool):
     #   added and where it should be removed.
     def _constructSupport(self, buffer: QImage) -> None:
         depth_pass = PickingPass(buffer.width(), buffer.height()) #Instead of using the picking pass to pick for us, we need to bulk-pick digits so do this in Numpy.
-        depth_pass.bind()
+        depth_pass.render()
         depth_image = depth_pass.getOutput()
-        depth_pass.release()
         job = ConstructSupportJob(buffer, depth_image)
         job.start()
 
