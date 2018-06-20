@@ -6,9 +6,15 @@ import numpy.linalg #To project window coordinates onto the scene.
 from PyQt5.QtGui import QImage
 import qimage2ndarray #To convert QImage to Numpy arrays.
 
-from UM.Application import Application
+from cura.CuraApplication import CuraApplication
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator #To put the scene node on the correct build plate.
+from cura.Scene.CuraSceneNode import CuraSceneNode #To create a scene node that causes the support to be drawn/erased.
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator #To create a scene node that can be sliced.
 from UM.Job import Job #The interface we're implementing.
 from UM.Logger import Logger
+from UM.Math.Vector import Vector #To use the mesh builder.
+from UM.Mesh.MeshBuilder import MeshBuilder #To create the support structure in 3D.
+from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation #To create the scene node.
 
 ##  Background task to process an image of where the user would like support.
 #
@@ -20,7 +26,7 @@ class ConstructSupportJob(Job):
         #These parameters need to be obtained outside of the thread so that they are all in sync with the original capture.
         self._buffer = buffer
         self._depth_image = depth_image
-        camera = Application.getInstance().getController().getScene().getActiveCamera()
+        camera = CuraApplication.getInstance().getController().getScene().getActiveCamera()
         self._camera_projection = camera.getProjectionMatrix()
         self._camera_transformation = camera.getWorldTransformation()
         self._camera_position = camera.getPosition()
@@ -58,3 +64,21 @@ class ConstructSupportJob(Job):
 
         #Final position is in the direction of the pixel, moving with <depth> mm away from the camera position.
         support_positions_3d = (direction * support_depths).transpose() + self._camera_position.getData()
+
+        #Create the 3D mesh.
+        builder = MeshBuilder()
+        for index, position in enumerate(support_positions_3d):
+            builder.addDiamond(1, 2, 1, center = Vector(x = position[0], y = position[1], z = position[2]))
+
+        #Create the scene node and add it to the scene.
+        mesh_data = builder.build()
+        scene = CuraApplication.getInstance().getController().getScene()
+        new_node = CuraSceneNode(parent = scene.getRoot(), name = "CustomSupport")
+        new_node.setSelectable(True)
+        new_node.setMeshData(mesh_data)
+        new_node.addDecorator(BuildPlateDecorator(CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate))
+        new_node.addDecorator(SliceableObjectDecorator())
+        operation = AddSceneNodeOperation(new_node, scene.getRoot())
+        operation.push()
+
+        scene.sceneChanged.emit(new_node)
