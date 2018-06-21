@@ -80,7 +80,7 @@ msgstr "ノズルのY軸のオフセット"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "エクストルーダー　G-Codeを開始する"
+msgstr "エクストルーダーがG-Codeを開始する"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
@@ -120,7 +120,7 @@ msgstr "エクストルーダーのY座標のスタート位置"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "エクストルーダーG-Codeを終了する。"
+msgstr "エクストルーダーがG-Codeを終了する"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"

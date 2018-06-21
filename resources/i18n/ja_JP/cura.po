@@ -43,7 +43,7 @@ msgstr "G-codeファイル"
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
 msgid "3D Model Assistant"
-msgstr ""
+msgstr "3Dモデルアシスタント"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:80
 #, python-brace-format
@@ -53,7 +53,7 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr ""
+msgstr "<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n<p>{model_names}</p>\n<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -157,17 +157,17 @@ msgstr "USBにて接続する"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
-msgstr "X3Gファイル"
+msgstr "X3Dファイル"
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
 msgctxt "X3g Writer Plugin Description"
 msgid "Writes X3g to files"
-msgstr ""
+msgstr "X3Gをファイルに書き込む"
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:21
 msgctxt "X3g Writer File Description"
 msgid "X3g File"
-msgstr ""
+msgstr "X3Gファイル"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:17
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:17
@@ -572,12 +572,12 @@ msgstr "データを収集中"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
 msgctxt "@action:button"
 msgid "More info"
-msgstr ""
+msgstr "詳細"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
 msgctxt "@action:tooltip"
 msgid "See more information on what data Cura sends."
-msgstr ""
+msgstr "Curaが送信するデータについて詳しくご覧ください。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:52
 msgctxt "@action:button"
@@ -604,9 +604,7 @@ msgctxt "@info:status"
 msgid ""
 "Could not export using \"{}\" quality!\n"
 "Felt back to \"{}\"."
-msgstr ""
-"\"{}\"品質を使用したエクスポートができませんでした!\n"
-"\"{}\"になりました。"
+msgstr "\"{}\"品質を使用したエクスポートができませんでした!\n\"{}\"になりました。"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -1016,22 +1014,22 @@ msgstr "造形サイズ"
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:99
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
-msgstr ""
+msgstr "ユーザーデータディレクトリからアーカイブを作成できません: {}"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:104
 msgctxt "@info:title"
 msgid "Backup"
-msgstr ""
+msgstr "バックアップ"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:116
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
-msgstr ""
+msgstr "適切なデータまたはメタデータがないのにCuraバックアップをリストアしようとしました。"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:126
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that does not match your current version."
-msgstr ""
+msgstr "現行バージョンと一致しないCuraバックアップをリストアしようとしました。"
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
@@ -1082,12 +1080,7 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr ""
-"<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n"
-"                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n"
-"                    <p>バックアップは、設定フォルダに保存されます。</p>\n"
-"                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n"
-"                "
+msgstr "<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n                    <p>バックアップは、設定フォルダに保存されます。</p>\n                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
@@ -1120,10 +1113,7 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr ""
-"<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
-"            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n"
-"        "
+msgstr "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
@@ -1437,7 +1427,7 @@ msgstr "インストールした"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
 msgctxt "@info"
 msgid "Could not connect to the Cura Package database. Please check your connection."
-msgstr ""
+msgstr "Curaパッケージデータベースに接続できません。接続を確認してください。"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:35
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:26
@@ -1448,17 +1438,17 @@ msgstr "プラグイン"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
-msgstr ""
+msgstr "バージョン:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
 msgctxt "@label"
 msgid "Last updated"
-msgstr ""
+msgstr "最終更新日"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
-msgstr ""
+msgstr "著者:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
@@ -1476,53 +1466,53 @@ msgstr "アップデート"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
 msgctxt "@action:button"
 msgid "Updating"
-msgstr ""
+msgstr "更新中"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
 msgctxt "@action:button"
 msgid "Updated"
-msgstr ""
+msgstr "更新済み"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
 msgctxt "@title"
 msgid "Toolbox"
-msgstr ""
+msgstr "ツールボックス"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
 msgctxt "@action:button"
 msgid "Back"
-msgstr ""
+msgstr "戻る"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
 msgctxt "@info"
 msgid "You will need to restart Cura before changes in packages have effect."
-msgstr ""
+msgstr "パッケージへの変更を有効にするためにCuraを再起動する必要があります。"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:32
 msgctxt "@info:button"
 msgid "Quit Cura"
-msgstr ""
+msgstr "Curaを終了する"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:54
 msgctxt "@title:tab"
 msgid "Installed"
-msgstr ""
+msgstr "インストールした"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
 msgctxt "@label"
 msgid "Will install upon restarting"
-msgstr ""
+msgstr "再起動時にインストール"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Downgrade"
-msgstr ""
+msgstr "ダウングレード"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Uninstall"
-msgstr ""
+msgstr "アンインストール"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
 msgctxt "@title:window"
@@ -1535,10 +1525,7 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr ""
-"このプラグインにはライセンスが含まれています。\n"
-"このプラグインをインストールするにはこのライセンスに同意する必要があります。\n"
-"下の利用規約に同意しますか？"
+msgstr "このプラグインにはライセンスが含まれています。\nこのプラグインをインストールするにはこのライセンスに同意する必要があります。\n下の利用規約に同意しますか？"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
 msgctxt "@action:button"
@@ -1553,22 +1540,22 @@ msgstr "拒否する"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:17
 msgctxt "@label"
 msgid "Featured"
-msgstr ""
+msgstr "特長"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:20
 msgctxt "@label"
 msgid "Compatibility"
-msgstr ""
+msgstr "互換性"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
-msgstr ""
+msgstr "パッケージ取得中"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:87
 msgctxt "@label"
 msgid "Contact"
-msgstr ""
+msgstr "連絡"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
@@ -2014,22 +2001,22 @@ msgstr "処理したスクリプトを変更する"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
-msgstr ""
+msgstr "匿名データの収集に関する詳細"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:66
 msgctxt "@text:window"
 msgid "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
-msgstr ""
+msgstr "Curaは印刷の品質とユーザー体験を向上させるために匿名のデータをUltimakerに送信します。以下は送信される全テータの例です。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:101
 msgctxt "@text:window"
 msgid "I don't want to send these data"
-msgstr ""
+msgstr "そのようなデータは送信しない"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:111
 msgctxt "@text:window"
 msgid "Allow sending these data to Ultimaker and help us improve Cura"
-msgstr ""
+msgstr "Ultimakerへのデータ送信を許可し、Curaの改善を手助けする"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -2608,7 +2595,7 @@ msgstr "直径変更の確認"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:95
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
-msgstr ""
+msgstr "新しいフィラメントの直径は %1 mm に設定されています。これは現在のエクストルーダーに適応していません。続行しますか？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:128
 msgctxt "@label"
@@ -2879,12 +2866,12 @@ msgstr "極端に小さなモデルをスケールアップする"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:507
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
-msgstr ""
+msgstr "モデルはロード後に選択しますか？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:512
 msgctxt "@option:check"
 msgid "Select models when loaded"
-msgstr ""
+msgstr "ロード後にモデルを選択"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
 msgctxt "@info:tooltip"
@@ -2969,7 +2956,7 @@ msgstr " (不特定な) プリントインフォメーションを送信"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:708
 msgctxt "@action:button"
 msgid "More information"
-msgstr ""
+msgstr "詳細"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:726
 msgctxt "@label"
@@ -3358,9 +3345,7 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"いくらかの設定プロファイルにある値とことなる場合無効にします。\n"
-"プロファイルマネージャーをクリックして開いてください。"
+msgstr "いくらかの設定プロファイルにある値とことなる場合無効にします。\nプロファイルマネージャーをクリックして開いてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:199
 msgctxt "@label:textbox"
@@ -3401,12 +3386,12 @@ msgstr "視野のセッティングを構成する"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:621
 msgctxt "@action:inmenu"
 msgid "Collapse All"
-msgstr ""
+msgstr "すべて折りたたむ"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:626
 msgctxt "@action:inmenu"
 msgid "Expand All"
-msgstr ""
+msgstr "すべて展開する"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:249
 msgctxt "@label"
@@ -3414,9 +3399,7 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n"
-"表示されるようにクリックしてください。"
+msgstr "いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n表示されるようにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3444,9 +3427,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"この設定にプロファイルと異なった値があります。\n"
-"プロファイルの値を戻すためにクリックしてください。"
+msgstr "この設定にプロファイルと異なった値があります。\nプロファイルの値を戻すためにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:286
 msgctxt "@label"
@@ -3454,9 +3435,7 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"このセッティングは通常計算されます、今は絶対値に固定されています。\n"
-"計算された値に変更するためにクリックを押してください。"
+msgstr "このセッティングは通常計算されます、今は絶対値に固定されています。\n計算された値に変更するためにクリックを押してください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:129
 msgctxt "@label"
@@ -3644,12 +3623,12 @@ msgstr "エクストルーダー"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
 msgctxt "@label:extruder label"
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
 msgctxt "@label:extruder label"
 msgid "No"
-msgstr ""
+msgstr "いいえ"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/RecentFilesMenu.qml:13
 msgctxt "@title:menu menubar:file"
@@ -3666,9 +3645,7 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr ""
-"プリントセットアップが無効\n"
-"G-codeファイルを修正することができません。"
+msgstr "プリントセットアップが無効\nG-codeファイルを修正することができません。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:341
 msgctxt "@label Hours and minutes"
@@ -3947,7 +3924,7 @@ msgstr "コンフィグレーションのフォルダーを表示する"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:433
 msgctxt "@action:menu"
 msgid "Browse packages..."
-msgstr ""
+msgstr "パッケージを見る"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:440
 msgctxt "@action:inmenu menubar:view"
@@ -4105,7 +4082,7 @@ msgstr "拡張子"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:274
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Toolbox"
-msgstr ""
+msgstr "&ツールボックス"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:281
 msgctxt "@title:menu menubar:toplevel"
@@ -4120,7 +4097,7 @@ msgstr "ヘルプ"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:335
 msgctxt "@label"
 msgid "This package will be installed after restarting."
-msgstr ""
+msgstr "このパッケージは再起動後にインストールされます。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:364
 msgctxt "@action:button"
@@ -4145,7 +4122,7 @@ msgstr "新しいプロジェクトを開始しますか？この作業では保
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:814
 msgctxt "@window:title"
 msgid "Install Package"
-msgstr ""
+msgstr "パッケージをインストール"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:821
 msgctxt "@title:window"
@@ -4322,7 +4299,7 @@ msgstr "フィラメント"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:538
 msgctxt "@label"
 msgid "Use adhesion sheet or glue with this material combination"
-msgstr ""
+msgstr "密着性シートを使用する、またはこの材料の組み合わせで接着する"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:570
 msgctxt "@label"
@@ -4352,7 +4329,7 @@ msgstr "現在のビルドプレートを配置"
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr ""
+msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
@@ -4362,12 +4339,12 @@ msgstr "プリンターの設定アクション"
 #: Toolbox/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new Cura packages."
-msgstr ""
+msgstr "新しいCuraパッケージを検索、管理、インストールします。"
 
 #: Toolbox/plugin.json
 msgctxt "name"
 msgid "Toolbox"
-msgstr ""
+msgstr "ツールボックス"
 
 #: XRayView/plugin.json
 msgctxt "description"
@@ -4462,7 +4439,7 @@ msgstr "USBプリンティング"
 #: UserAgreement/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license."
-msgstr ""
+msgstr "ライセンスに同意するかどうかユーザーに1回だけ確認する"
 
 #: UserAgreement/plugin.json
 msgctxt "name"
@@ -4472,12 +4449,12 @@ msgstr "UserAgreement"
 #: X3GWriter/plugin.json
 msgctxt "description"
 msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr ""
+msgstr "結果スライスをX3Gファイルとして保存して、このフォーマット（Malyan、Makerbot、およびその他のSailfishベースのプリンター）を読むプリンターをサポートできるようにします。"
 
 #: X3GWriter/plugin.json
 msgctxt "name"
 msgid "X3GWriter"
-msgstr ""
+msgstr "X3GWriter"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
@@ -4532,7 +4509,7 @@ msgstr "取り外し可能なドライブアウトプットデバイスプラグ
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr ""
+msgstr "Ultimaker3のプリンターのネットワーク接続を管理する。"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -4657,17 +4634,17 @@ msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレ�
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2から3.3にバージョンアップグレート"
+msgstr "3.2から2.6にバージョンアップグレート"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr ""
+msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
-msgstr ""
+msgstr "3.3から2.6にバージョンアップグレート"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -4812,7 +4789,7 @@ msgstr "3MFリーダー"
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "Ultimakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"

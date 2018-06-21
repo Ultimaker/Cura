@@ -61,9 +61,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"最初に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最初に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -75,9 +73,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"最後に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最後に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1133,7 +1129,7 @@ msgstr "壁印刷順序の最適化"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
-msgstr ""
+msgstr "撤回と移動距離を減らすために、壁のプリント順序を最適化します。ほとんどの部品がこの設定を有効にしている方が良い印刷結果につながりますが、実際には時間がかかることがありますので、最適化の有無に関わらず印刷時間を比較してください。ビルドプレートの接着タイプにブリムを選択すると最初のレイヤーは最適化されません。"
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1286,9 +1282,7 @@ msgstr "ZシームX"
 #: fdmprinter.def.json
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr ""
-"レイヤー内の各印刷を開始するX座\n"
-"標の位置。"
+msgstr "レイヤー内の各印刷を開始するX座\n標の位置。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
@@ -1743,9 +1737,7 @@ msgstr "インフィル優先"
 #: fdmprinter.def.json
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
-msgstr ""
-"壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\n"
-"はじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
+msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\nはじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -1760,22 +1752,22 @@ msgstr "これより小さいインフィルの領域を生成しないでくだ
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
-msgstr ""
+msgstr "インフィルサポート"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
-msgstr ""
+msgstr "面材構造を印刷するには、モデルの上部がサポートされている必要があります。これを有効にすると、印刷時間と材料の使用量が減少しますが、オブジェクトの強度が不均一になります。"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle label"
 msgid "Infill Overhang Angle"
-msgstr ""
+msgstr "インフィルオーバーハング角度"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle description"
 msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
-msgstr ""
+msgstr "インフィルが追加される内部オーバーハングの最小角度。0° のとき、対象物は完全にインフィルが充填され、90° ではインフィルが提供されません。"
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
@@ -2128,12 +2120,12 @@ msgstr "最大の引き戻し回数。この値は引き戻す距離と同じで
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions label"
 msgid "Limit Support Retractions"
-msgstr ""
+msgstr "サポート引き戻し限界"
 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
 msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
-msgstr ""
+msgstr "サポートからサポートに直線移動する場合は、引き戻しを省略します。この設定を有効にすると、印刷時間が短縮されますが、サポート構造内部の糸引きが多くなります。"
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2837,17 +2829,17 @@ msgstr "すべて"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
-msgstr ""
+msgstr "スキン内にない"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
 msgid "Max Comb Distance With No Retract"
-msgstr ""
+msgstr "引き戻しのない最大コム距離"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr ""
+msgstr "ゼロ以外の場合、この距離より移動量が多い場合は、引き戻しを使用します。"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2872,12 +2864,12 @@ msgstr "ノズルは、移動時に既に印刷されたパーツを避けます
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports label"
 msgid "Avoid Supports When Traveling"
-msgstr ""
+msgstr "移動はサポートを回避する"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports description"
 msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
-msgstr ""
+msgstr "ノズルは、移動時に既に印刷されたサポートを避けます。このオプションは、コーミングが有効な場合にのみ使用できます。"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -3243,12 +3235,12 @@ msgstr "クロス"
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
-msgstr ""
+msgstr "サポートウォールライン数"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr ""
+msgstr "サポートインフィルを囲むウォールの数。ウォールを加えることにより、サポートの印刷の信頼性が高まり、オーバーハングを支えやすくなりますが、印刷時間が長くなり、使用する材料の量が増えます。"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
@@ -3851,9 +3843,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"スカートと印刷の最初の層の間の水平距離。\n"
-"これは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
+msgstr "スカートと印刷の最初の層の間の水平距離。\nこれは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4826,12 +4816,12 @@ msgstr "スライス後の線分の最小サイズ。これを増やすと、メ
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
-msgstr ""
+msgstr "最大移動解像度"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution description"
 msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
-msgstr ""
+msgstr "スライス後の移動線分の最小サイズ。これを増やすと、移動の跡が滑らかでなくなります。これにより、プリンタが g コードの処理速度に追いつくことができますが、精度が低下します。"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5000,22 +4990,22 @@ msgstr "四方でクロス3Dパターンが交差するポケットの大きさ�
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image label"
 msgid "Cross Infill Density Image"
-msgstr ""
+msgstr "クロス画像のインフィル密度"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
-msgstr ""
+msgstr "画像ファイルの位置。この画像の輝度値で印刷のインフィル内の対象箇所における最小密度が決まります。"
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image label"
 msgid "Cross Fill Density Image for Support"
-msgstr ""
+msgstr "サポート用クロス画像のインフィル密度"
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
-msgstr ""
+msgstr "画像ファイルの位置。この画像の輝度値でサポートの対象箇所における最小密度が決まります。"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -5459,7 +5449,7 @@ msgstr "適応レイヤー最大差分"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
-msgstr ""
+msgstr "基準レイヤー高さと比較して許容される最大の高さ。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
@@ -5694,7 +5684,7 @@ msgstr "CuraエンジンがCuraフロントエンドから呼び出されない�
 #: fdmprinter.def.json
 msgctxt "center_object label"
 msgid "Center Object"
-msgstr ""
+msgstr "オブジェクト中心配置"
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
@@ -5704,7 +5694,7 @@ msgstr "オブジェクトが保存された座標系を使用する代わりに
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr ""
+msgstr "メッシュ位置X"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5714,7 +5704,7 @@ msgstr "オブジェクトの x 方向に適用されたオフセット。"
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr ""
+msgstr "メッシュ位置Y"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5724,7 +5714,7 @@ msgstr "オブジェクトのY 方向適用されたオフセット。"
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr ""
+msgstr "メッシュ位置Z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
