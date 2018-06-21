@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1087,7 +1083,7 @@ msgstr "Printvolgorde van wanden optimaliseren"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
-msgstr ""
+msgstr "Optimaliseer de volgorde waarin wanden worden geprint om het aantal intrekbewegingen en de afgelegde afstand te verkleinen. Deze instelling is gunstig voor de meeste onderdelen. Bij sommige onderdelen duurt het printen echter langer. Controleer daarom de verwachte printtijd met en zonder optimalisatie. De eerste laag wordt niet geoptimaliseerd als u brim kiest als hechting aan platform."
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1677,22 +1673,22 @@ msgstr "Genereer geen gebieden met vulling die kleiner zijn dan deze waarde (geb
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
-msgstr ""
+msgstr "Supportvulling"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
-msgstr ""
+msgstr "Print alleen vulstructuren waarvan de bovenkant van het model moet worden ondersteund. Hiermee reduceert u de printtijd en het materiaalgebruik. Dit kan echter leiden tot een niet gelijkmatige objectsterkte."
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle label"
 msgid "Infill Overhang Angle"
-msgstr ""
+msgstr "Overhanghoek vulling"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle description"
 msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
-msgstr ""
+msgstr "De minimale interne overhanghoek waarbij vulling wordt toegevoegd. Bij een waarde van 0° worden objecten volledig gevuld. Bij 90° wordt er geen vulling geprint."
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
@@ -2037,12 +2033,12 @@ msgstr "Dit is het gebied waarop het maximaal aantal intrekbewegingen van toepas
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions label"
 msgid "Limit Support Retractions"
-msgstr ""
+msgstr "Supportintrekkingen beperken"
 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
 msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
-msgstr ""
+msgstr "Sla intrekking over tijdens bewegingen in een rechte lijn van support naar support. Deze instelling verkort de printtijd, maar kan leiden tot overmatige draadvorming in de supportstructuur."
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2737,17 +2733,17 @@ msgstr "Alles"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
-msgstr ""
+msgstr "Niet in skin"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
 msgid "Max Comb Distance With No Retract"
-msgstr ""
+msgstr "Max. combing-afstand zonder intrekken"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr ""
+msgstr "Wanneer dit niet nul is, vindt bij een combing-beweging die langer is dan deze afstand, intrekking plaats."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2772,12 +2768,12 @@ msgstr "Tijdens bewegingen mijdt de nozzle delen die al zijn geprint. Deze optie
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports label"
 msgid "Avoid Supports When Traveling"
-msgstr ""
+msgstr "Supportstructuren mijden tijdens bewegingen"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports description"
 msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
-msgstr ""
+msgstr "Tijdens bewegingen mijdt de nozzle supportstructuren die al zijn geprint. Deze optie is alleen beschikbaar wanneer combing ingeschakeld is."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -3137,12 +3133,12 @@ msgstr "Kruis"
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
-msgstr ""
+msgstr "Aantal wandlijnen supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr ""
+msgstr "Het aantal wanden rond de vulling van de supportstructuur. Met een extra wand wordt de supportstructuur betrouwbaarder en kan de overhang beter worden geprint, maar wordt de printtijd verlengd en wordt meer materiaal gebruikt."
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
@@ -3714,9 +3710,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"De horizontale afstand tussen de skirt en de eerste laag van de print.\n"
-"Dit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
+msgstr "De horizontale afstand tussen de skirt en de eerste laag van de print.\nDit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4676,12 +4670,12 @@ msgstr "Het minimale formaat van een lijnsegment na het slicen. Als u deze waard
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
-msgstr ""
+msgstr "Maximale bewegingsresolutie"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution description"
 msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
-msgstr ""
+msgstr "Het minimale formaat van een bewegingslijnsegment na het slicen. Als u deze waarde verhoogt, hebben de bewegingen minder vloeiende hoeken. Hiermee kan de printer de verwerkingssnelheid van de G-code bijhouden, maar kan het model door vermijding minder nauwkeurig worden."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -4846,22 +4840,22 @@ msgstr "De grootte van luchtbellen op kruispunten in het kruis 3D-patroon op pun
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image label"
 msgid "Cross Infill Density Image"
-msgstr ""
+msgstr "Dichtheid kruisvulling afbeelding"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
-msgstr ""
+msgstr "De bestandslocatie van een afbeelding waarvan de helderheidswaarden de minimale dichtheid op de bijbehorende locatie in de vulling van de print bepalen."
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image label"
 msgid "Cross Fill Density Image for Support"
-msgstr ""
+msgstr "Dichtheid kruisvulling afbeelding voor supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
-msgstr ""
+msgstr "De bestandslocatie van een afbeelding waarvan de helderheidswaarden de minimale dichtheid op de bijbehorende locatie in de supportstructuur bepalen."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -5173,9 +5167,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\n"
-"Hierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
+msgstr "De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\nHierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5300,7 +5292,7 @@ msgstr "Maximale variatie adaptieve lagen"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
-msgstr ""
+msgstr "De maximaal toegestane hoogte ten opzichte van de grondlaaghoogte."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
@@ -5535,7 +5527,7 @@ msgstr "Instellingen die alleen worden gebruikt als CuraEngine niet wordt aanger
 #: fdmprinter.def.json
 msgctxt "center_object label"
 msgid "Center Object"
-msgstr ""
+msgstr "Object centreren"
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
@@ -5545,7 +5537,7 @@ msgstr "Hiermee bepaalt u of het object in het midden van het platform moet word
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr ""
+msgstr "Rasterpositie x"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5555,7 +5547,7 @@ msgstr "De offset die in de X-richting wordt toegepast op het object."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr ""
+msgstr "Rasterpositie y"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5565,7 +5557,7 @@ msgstr "De offset die in de Y-richting wordt toegepast op het object."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr ""
+msgstr "Rasterpositie z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
