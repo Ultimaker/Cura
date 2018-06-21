@@ -1448,7 +1448,7 @@ msgstr "最終更新日"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
-msgstr "著者:"
+msgstr "著者"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
@@ -3924,7 +3924,7 @@ msgstr "コンフィグレーションのフォルダーを表示する"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:433
 msgctxt "@action:menu"
 msgid "Browse packages..."
-msgstr "パッケージを見る"
+msgstr "パッケージを見る…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:440
 msgctxt "@action:inmenu menubar:view"
@@ -4634,7 +4634,7 @@ msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレ�
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2から2.6にバージョンアップグレート"
+msgstr "3.2から3.3にバージョンアップグレート"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
@@ -4644,7 +4644,7 @@ msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレ�
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
-msgstr "3.3から2.6にバージョンアップグレート"
+msgstr "3.3から3.4にバージョンアップグレート"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
