@@ -4617,22 +4617,22 @@ msgstr "G 코드 프로필 판독기"
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Cura 3.0에서 Cura 3.1로 구성을 업그레이드합니다."
+msgstr "Cura 3.2에서 Cura 3.3로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
-msgstr "버전 업그레이드 2.7에서 3.3"
+msgstr "버전 업그레이드 3.2에서 3.3"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Cura 3.0에서 Cura 3.1로 구성을 업그레이드합니다."
+msgstr "Cura 3.3에서 Cura 3.4로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
-msgstr "버전 업그레이드 2.7에서 3.4"
+msgstr "버전 업그레이드 3.3에서 3.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
