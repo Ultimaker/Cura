@@ -53,7 +53,10 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Es posible que uno o más modelos 3D no se impriman correctamente debido al tamaño del modelo y la configuración del material:</p>\n<p>{model_names}</p>\n<p>Obtenga más información sobre cómo garantizar la mejor calidad y fiabilidad de impresión posible.</p>\n<p><a href=»https://ultimaker.com/3D-model-assistant»>Ver guía de impresión de calidad</a></p>"
+msgstr "<p>Es posible que uno o más modelos 3D no se impriman correctamente debido al tamaño del modelo y la configuración del material:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Obtenga más información sobre cómo garantizar la mejor calidad y fiabilidad de impresión posible.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver guía de impresión de calidad</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -301,7 +304,7 @@ msgstr "Imprimir a través de la red"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:79
 msgctxt "@properties:tooltip"
 msgid "Print over network"
-msgstr "Imprime a través de la red."
+msgstr "Imprime a través de la red"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:84
 msgctxt "@info:status"
@@ -602,7 +605,8 @@ msgctxt "@info:status"
 msgid ""
 "Could not export using \"{}\" quality!\n"
 "Felt back to \"{}\"."
-msgstr "No ha podido exportarse con la calidad \"{}\"\nRetroceder a \"{}»."
+msgstr "No ha podido exportarse con la calidad \"{}\"\n"
+"Retroceder a \"{}\"."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -1078,7 +1082,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>¡Vaya! Ultimaker Cura ha encontrado un error.</p></b>\n                    <p>Hemos detectado un error irreversible durante el inicio, posiblemente como consecuencia de varios archivos de configuración erróneos. Le recomendamos que realice una copia de seguridad y que restablezca los ajustes.</p>\n                    <p>Las copias de seguridad se encuentran en la carpeta de configuración.</p>\n                    <p>Envíenos el informe de errores para que podamos solucionar el problema.</p>\n                "
+msgstr ""
+"<p><b>¡Vaya! Ultimaker Cura ha encontrado un error.</p></b>\n"
+"                    <p>Hemos detectado un error irreversible durante el inicio, posiblemente como consecuencia de varios archivos de configuración erróneos. Le recomendamos que realice una copia de seguridad y que restablezca los ajustes.</p>\n"
+"                    <p>Las copias de seguridad se encuentran en la carpeta de configuración.</p>\n"
+"                    <p>Envíenos el informe de errores para que podamos solucionar el problema.</p>\n"
+"                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
@@ -1111,7 +1120,10 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>Se ha producido un error grave en Cura. Envíenos este informe de errores para que podamos solucionar el problema.</p></b>\n            <p>Utilice el botón «Enviar informe» para publicar automáticamente el informe de errores en nuestros servidores.</p>\n        "
+msgstr ""
+"<p><b>Se ha producido un error grave en Cura. Envíenos este informe de errores para que podamos solucionar el problema.</p></b>\n"
+"            <p>Utilice el botón \"Enviar informe\" para publicar automáticamente el informe de errores en nuestros servidores.</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
@@ -1446,7 +1458,7 @@ msgstr "Última actualización"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
-msgstr "Autor:"
+msgstr "Autor"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
@@ -2867,7 +2879,7 @@ msgstr "¿Se deberían seleccionar los modelos después de haberse cargado?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:512
 msgctxt "@option:check"
 msgid "Select models when loaded"
-msgstr "Seleccionar modelos cuando estén cargados"
+msgstr "Seleccionar modelos al abrirlos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
 msgctxt "@info:tooltip"

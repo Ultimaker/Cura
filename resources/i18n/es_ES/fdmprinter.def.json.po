@@ -2734,7 +2734,7 @@ msgstr "Todo"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
-msgstr "No está en el forro"
+msgstr "No en el forro"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
