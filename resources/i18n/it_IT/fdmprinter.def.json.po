@@ -5537,27 +5537,27 @@ msgstr "Per centrare l’oggetto al centro del piano di stampa (0,0) anziché ut
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr "Posizione maglia x"
+msgstr "Posizione maglia X"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
 msgid "Offset applied to the object in the x direction."
-msgstr "Offset applicato all’oggetto per la direzione x."
+msgstr "Offset applicato all’oggetto per la direzione X."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr "Posizione maglia y"
+msgstr "Posizione maglia Y"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
 msgid "Offset applied to the object in the y direction."
-msgstr "Offset applicato all’oggetto per la direzione y."
+msgstr "Offset applicato all’oggetto per la direzione Y."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr "Posizione maglia z"
+msgstr "Posizione maglia Z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"

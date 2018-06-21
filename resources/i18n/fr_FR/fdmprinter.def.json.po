@@ -5538,7 +5538,7 @@ msgstr "S'il faut centrer l'objet au milieu du plateau d'impression (0,0) au lie
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr "Position x de la maille"
+msgstr "Position X de la maille"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5548,7 +5548,7 @@ msgstr "Offset appliqué à l'objet dans la direction X."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr "Position y de la maille"
+msgstr "Position Y de la maille"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5558,7 +5558,7 @@ msgstr "Offset appliqué à l'objet dans la direction Y."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr "Position z de la maille"
+msgstr "Position Z de la maille"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"

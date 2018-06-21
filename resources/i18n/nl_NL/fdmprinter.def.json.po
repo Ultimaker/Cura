@@ -5537,7 +5537,7 @@ msgstr "Hiermee bepaalt u of het object in het midden van het platform moet word
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr "Rasterpositie x"
+msgstr "Rasterpositie X"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5547,7 +5547,7 @@ msgstr "De offset die in de X-richting wordt toegepast op het object."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr "Rasterpositie y"
+msgstr "Rasterpositie Y"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5557,7 +5557,7 @@ msgstr "De offset die in de Y-richting wordt toegepast op het object."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr "Rasterpositie z"
+msgstr "Rasterpositie Z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"

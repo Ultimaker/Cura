@@ -5699,7 +5699,7 @@ msgstr "メッシュ位置X"
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
 msgid "Offset applied to the object in the x direction."
-msgstr "オブジェクトの x 方向に適用されたオフセット。"
+msgstr "オブジェクトの X 方向に適用されたオフセット。"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
@@ -5719,7 +5719,7 @@ msgstr "メッシュ位置Z"
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
 msgid "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'."
-msgstr "オブジェクトの z 方向に適用されたオフセット。この 'オブジェクト シンク' と呼ばれていたものを再現できます。"
+msgstr "オブジェクトの Z 方向に適用されたオフセット。この 'オブジェクト シンク' と呼ばれていたものを再現できます。"
 
 #: fdmprinter.def.json
 msgctxt "mesh_rotation_matrix label"

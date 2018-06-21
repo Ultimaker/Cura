@@ -5539,7 +5539,7 @@ msgstr "是否将模型放置在打印平台中心 (0,0)，而不是使用模型
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr "网格位置 x"
+msgstr "网格位置 X"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5549,7 +5549,7 @@ msgstr "应用在模型 x 方向上的偏移量。"
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr "网格位置 y"
+msgstr "网格位置 Y"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5559,7 +5559,7 @@ msgstr "应用在模型 y 方向上的偏移量。"
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr "网格位置 z"
+msgstr "网格位置 Z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
