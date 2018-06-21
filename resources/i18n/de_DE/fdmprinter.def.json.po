@@ -5557,7 +5557,7 @@ msgstr "Verwendeter Versatz für das Objekt in Y-Richtung."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr "-Netzposition Z"
+msgstr "Netzposition Z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
