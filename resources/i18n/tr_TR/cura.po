@@ -4623,22 +4623,22 @@ msgstr "G-code Profil Okuyucu"
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Yapılandırmaları Cura 2.5’ten Cura 2.6’ya yükseltir."
+msgstr "Yapılandırmaları Cura 3.2’ten Cura 3.3’ya yükseltir."
 
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.0'dan 3.1'e Sürüm Yükseltme"
+msgstr "3.2'dan 3.3'e Sürüm Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Yapılandırmaları Cura 2.5’ten Cura 2.6’ya yükseltir."
+msgstr "Yapılandırmaları Cura 3.3’ten Cura 3.4’ya yükseltir."
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
-msgstr "3.0'dan 3.1'e Sürüm Yükseltme"
+msgstr "3.3'dan 3.4'e Sürüm Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"

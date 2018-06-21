@@ -5537,7 +5537,7 @@ msgstr "Nesnenin kaydedildiği koordinat sistemini kullanmak yerine nesnenin yap
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr "Bileşim konumu x"
+msgstr "Bileşim konumu X"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5547,7 +5547,7 @@ msgstr "Nesneye x yönünde uygulanan ofset."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr "Bileşim konumu y"
+msgstr "Bileşim konumu Y"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5557,7 +5557,7 @@ msgstr "Nesneye y yönünde uygulanan ofset."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr "Bileşim konumu z"
+msgstr "Bileşim konumu Z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
