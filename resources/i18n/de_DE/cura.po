@@ -155,7 +155,7 @@ msgstr "Über USB verbunden"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
-msgstr "X3D-Datei"
+msgstr "X3G-Datei"
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
 msgctxt "X3g Writer Plugin Description"
