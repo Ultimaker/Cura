@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-06-06 16:13+0200\n"
-"PO-Revision-Date: 2018-04-16 02:14+0100\n"
+"PO-Revision-Date: 2018-06-12 07:47+0100\n"
 "Last-Translator: Paulo Miranda <av@utopica3d.com>\n"
 "Language-Team: Paulo Miranda <av@utopica3d.com>, Portuguese <info@bothof.nl>\n"
 "Language: pt_PT\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.7\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -43,8 +43,9 @@ msgstr "Ficheiro G-code"
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
 msgid "3D Model Assistant"
-msgstr ""
+msgstr "Assistente de Modelos 3D"
 
+# rever!
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:80
 #, python-brace-format
 msgctxt "@info:status"
@@ -54,6 +55,10 @@ msgid ""
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr ""
+"<p>Um, ou mais, dos modelos 3D podem ter menos qualidade de impressão devido à dimensão do modelo 3D e definição de material:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Descubra como assegurar a melhor qualidade e fiabilidade possível da impressão.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver o guia de qualidade da impressão</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -163,12 +168,12 @@ msgstr "Ficheiro X3G"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
 msgctxt "X3g Writer Plugin Description"
 msgid "Writes X3g to files"
-msgstr ""
+msgstr "Grava X3g num ficheiro"
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:21
 msgctxt "X3g Writer File Description"
 msgid "X3g File"
-msgstr ""
+msgstr "Ficheiro X3g"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:17
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:17
@@ -186,9 +191,6 @@ msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Preparar"
 
-# rever!
-# unidade amovível
-# disco amovível
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
@@ -558,8 +560,6 @@ msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled"
 msgstr "Quando a opção \"Wire Printing\" está ativa, o Cura não permite visualizar as camadas de uma forma precisa"
 
-# rever!
-# ver contexto
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:104
 msgctxt "@info:title"
 msgid "Simulation View"
@@ -569,19 +569,11 @@ msgstr "Visualização por Camadas"
 msgid "Modify G-Code"
 msgstr "Modificar G-code"
 
-# rever!
-# Remover Suportes?
-# Anular
-# Inibir
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
-msgstr "Bloqueador de suporte"
+msgstr "Remover Suportes"
 
-# rever!
-# dentro do qual?
-# no qual?
-# onde?
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:13
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
@@ -600,12 +592,12 @@ msgstr "A Recolher Dados"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
 msgctxt "@action:button"
 msgid "More info"
-msgstr ""
+msgstr "Mais informação"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
 msgctxt "@action:tooltip"
 msgid "See more information on what data Cura sends."
-msgstr ""
+msgstr "Saiba mais sobre que informação o Cura envia."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:52
 msgctxt "@action:button"
@@ -890,9 +882,6 @@ msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "O ficheiro <filename>{0}</filename> já existe. Tem a certeza de que deseja substituí-lo?"
 
-# rever!
-# Não substituído?
-# Sem alterar?
 #: /home/ruben/Projects/Cura/cura/Settings/ExtrudersModel.py:212
 msgctxt "@menuitem"
 msgid "Not overridden"
@@ -1052,25 +1041,26 @@ msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "Volume de construção"
 
+# contexto
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:99
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
-msgstr ""
+msgstr "Não é possível criar um arquivo a partir do directório de dados do utilizador: {}"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:104
 msgctxt "@info:title"
 msgid "Backup"
-msgstr ""
+msgstr "Backup"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:116
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
-msgstr ""
+msgstr "Tentou restaurar um Cura backup sem existirem dados ou metadados correctos."
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:126
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that does not match your current version."
-msgstr ""
+msgstr "Tentou restaurar um Cura backup que não corresponde á sua versão actual."
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
@@ -1476,12 +1466,12 @@ msgstr "Instalar"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
 msgctxt "@action:button"
 msgid "Installed"
-msgstr ""
+msgstr "Instalado"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
 msgctxt "@info"
 msgid "Could not connect to the Cura Package database. Please check your connection."
-msgstr ""
+msgstr "Não foi possível aceder á base de dados de Pacotes do Cura. Por favor verifique a sua ligação."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:35
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:26
@@ -1492,17 +1482,17 @@ msgstr "Plug-ins"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
-msgstr ""
+msgstr "Versão"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
 msgctxt "@label"
 msgid "Last updated"
-msgstr ""
+msgstr "Actualizado em"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
@@ -1520,53 +1510,53 @@ msgstr "Atualizar"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
 msgctxt "@action:button"
 msgid "Updating"
-msgstr ""
+msgstr "A Actualizar"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
 msgctxt "@action:button"
 msgid "Updated"
-msgstr ""
+msgstr "Actualizado"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
 msgctxt "@title"
 msgid "Toolbox"
-msgstr ""
+msgstr "Toolbox"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
 msgctxt "@action:button"
 msgid "Back"
-msgstr ""
+msgstr "Anterior"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
 msgctxt "@info"
 msgid "You will need to restart Cura before changes in packages have effect."
-msgstr ""
+msgstr "É necessário reiniciar o Cura para que as alterações dos pacotes sejam aplicadas."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:32
 msgctxt "@info:button"
 msgid "Quit Cura"
-msgstr ""
+msgstr "Sair do Cura"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:54
 msgctxt "@title:tab"
 msgid "Installed"
-msgstr ""
+msgstr "Instalado"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
 msgctxt "@label"
 msgid "Will install upon restarting"
-msgstr ""
+msgstr "Será instalado após reiniciar"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Downgrade"
-msgstr ""
+msgstr "Repor Versão Anterior"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Uninstall"
-msgstr ""
+msgstr "Desinstalar"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
 msgctxt "@title:window"
@@ -1597,27 +1587,27 @@ msgstr "Rejeitar"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:17
 msgctxt "@label"
 msgid "Featured"
-msgstr ""
+msgstr "Em Destaque"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:20
 msgctxt "@label"
 msgid "Compatibility"
-msgstr ""
+msgstr "Compatibilidade"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
-msgstr ""
+msgstr "A obter pacotes..."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:87
 msgctxt "@label"
 msgid "Contact"
-msgstr ""
+msgstr "Contacto"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
 msgid "Some things could be problematic in this print. Click to see tips for adjustment."
-msgstr "Algumas coisas podem vir a ser problemáticas nesta impressão. Clique para ver algumas sugestões para melhorar a qualidade da impressão."
+msgstr "Alguns factores podem vir a ser problemáticos nesta impressão. Clique para ver algumas sugestões para melhorar a qualidade da impressão."
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
 msgctxt "@label"
@@ -2069,22 +2059,22 @@ msgstr "Alterar scripts de pós-processamento ativos"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
-msgstr ""
+msgstr "Mais informação sobre a recolha anónima de dados"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:66
 msgctxt "@text:window"
 msgid "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
-msgstr ""
+msgstr "O Cura envia informação anónima para a Ultimaker, para nos ajudar a aperfeiçoar a qualidade da impressão e a melhorar a experiência do utilizador. De seguida pode ver um exemplo com toda a informação enviada."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:101
 msgctxt "@text:window"
 msgid "I don't want to send these data"
-msgstr ""
+msgstr "Eu não quero enviar estes dados"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:111
 msgctxt "@text:window"
 msgid "Allow sending these data to Ultimaker and help us improve Cura"
-msgstr ""
+msgstr "Permitir enviar estes dados para a Ultimaker para melhorar o Cura"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -2175,17 +2165,17 @@ msgstr "Imprimir como suporte"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:84
 msgctxt "@label"
 msgid "Don't support overlap with other models"
-msgstr "Não suportar sobreposição com outros modelos"
+msgstr "Retirar suportes na intercepção com outros modelos"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:92
 msgctxt "@label"
 msgid "Modify settings for overlap with other models"
-msgstr "Modificar definições para sobreposição com outros modelos"
+msgstr "Alterar as definições dos objetos que intercepta"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:100
 msgctxt "@label"
 msgid "Modify settings for infill of other models"
-msgstr "Modificar definições para preenchimento de outros modelos"
+msgstr "Modificar definições do enchimento de outros modelos"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:342
 msgctxt "@action:button"
@@ -2361,7 +2351,7 @@ msgstr "Selecione quaisquer atualizações realizadas a esta Ultimaker 2."
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:47
 msgctxt "@label"
 msgid "Olsson Block"
-msgstr "Olson Block"
+msgstr "Olsson Block"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:27
 msgctxt "@title"
@@ -2674,7 +2664,7 @@ msgstr "Confirmar Alteração de Diâmetro"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:95
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
-msgstr ""
+msgstr "O novo diâmetro do filamento está definido como %1 mm, o que não é compatível com o extrusor actual. Pretende prosseguir?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:128
 msgctxt "@label"
@@ -2947,12 +2937,12 @@ msgstr "Redimensionar modelos extremamente pequenos"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:507
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
-msgstr ""
+msgstr "Selecionar os modelos depois de abertos?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:512
 msgctxt "@option:check"
 msgid "Select models when loaded"
-msgstr ""
+msgstr "Selecionar os modelos depois de abertos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
 msgctxt "@info:tooltip"
@@ -3034,12 +3024,12 @@ msgstr "Podem alguns dados anónimos, sobre a impressão ser enviados para a Ult
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
-msgstr "Enviar informações (anónimas) da impressão"
+msgstr "Enviar dados (anónimos) sobre a impressão"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:708
 msgctxt "@action:button"
 msgid "More information"
-msgstr ""
+msgstr "Mais informação"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:726
 msgctxt "@label"
@@ -3477,12 +3467,12 @@ msgstr "Configurar visibilidade das definições..."
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:621
 msgctxt "@action:inmenu"
 msgid "Collapse All"
-msgstr ""
+msgstr "Esconder Tudo"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:626
 msgctxt "@action:inmenu"
 msgid "Expand All"
-msgstr ""
+msgstr "Mostrar Tudo"
 
 # rever!
 # ocultas?
@@ -3742,12 +3732,12 @@ msgstr "Extrusor"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
 msgctxt "@label:extruder label"
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
 msgctxt "@label:extruder label"
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/RecentFilesMenu.qml:13
 msgctxt "@title:menu menubar:file"
@@ -4049,7 +4039,7 @@ msgstr "Mostrar pasta de configuração"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:433
 msgctxt "@action:menu"
 msgid "Browse packages..."
-msgstr ""
+msgstr "Procurar Pacotes..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:440
 msgctxt "@action:inmenu menubar:view"
@@ -4214,7 +4204,7 @@ msgstr "E&xtensões"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:274
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Toolbox"
-msgstr ""
+msgstr "&Toolbox"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:281
 msgctxt "@title:menu menubar:toplevel"
@@ -4229,7 +4219,7 @@ msgstr "&Ajuda"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:335
 msgctxt "@label"
 msgid "This package will be installed after restarting."
-msgstr ""
+msgstr "Este pacote será instalado após reiniciar."
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:364
 msgctxt "@action:button"
@@ -4251,10 +4241,11 @@ msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 msgstr "Tem a certeza de que deseja iniciar um novo projeto? Isto irá apagar tudo na base de construção assim como quaisquer definições que não tenham sido guardadas."
 
+# rever!
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:814
 msgctxt "@window:title"
 msgid "Install Package"
-msgstr ""
+msgstr "Instalar Pacote"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:821
 msgctxt "@title:window"
@@ -4444,17 +4435,17 @@ msgstr "Material"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:538
 msgctxt "@label"
 msgid "Use adhesion sheet or glue with this material combination"
-msgstr ""
+msgstr "Use folhas de adesão ou cola, com estes materiais"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:570
 msgctxt "@label"
 msgid "Check compatibility"
-msgstr "Verificar compatibilidade entre materiais"
+msgstr "Compatibilidade entre Materiais"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:588
 msgctxt "@tooltip"
 msgid "Click to check the material compatibility on Ultimaker.com."
-msgstr "Clique para verificar a compatibilidade dos materiais em Ultimaker.com."
+msgstr "Clique para verificar a compatibilidade entre os materiais em Ultimaker.com."
 
 #: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:211
 msgctxt "@option:check"
@@ -4474,7 +4465,7 @@ msgstr "Dispor só na base ativa"
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr ""
+msgstr "Proporciona uma forma de alterar as definições da máquina (tal como o volume de construção, o tamanho do nozzle, etc.)."
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
@@ -4484,12 +4475,12 @@ msgstr "Função Definições da Máquina"
 #: Toolbox/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new Cura packages."
-msgstr ""
+msgstr "Encontre, organize e instale novos pacotes para o Cura."
 
 #: Toolbox/plugin.json
 msgctxt "name"
 msgid "Toolbox"
-msgstr ""
+msgstr "Toolbox"
 
 #: XRayView/plugin.json
 msgctxt "description"
@@ -4587,7 +4578,7 @@ msgstr "Impressão através de USB"
 #: UserAgreement/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license."
-msgstr ""
+msgstr "Perguntar, uma vez, ao utilizador, se concorda com a nossa licença."
 
 # rever!
 # check the legal term in pt
@@ -4599,15 +4590,16 @@ msgctxt "name"
 msgid "UserAgreement"
 msgstr "Contrato de Utilizador"
 
+# Sailfish-based printers).
 #: X3GWriter/plugin.json
 msgctxt "description"
 msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr ""
+msgstr "Permite guardar o resultado do seccionamento como um ficheiro X3G, para poder ser usado com impressoras 3D que usam este formato (Kalyan, Makerbot e outras impressoras baseadas no Sailfish)."
 
 #: X3GWriter/plugin.json
 msgctxt "name"
 msgid "X3GWriter"
-msgstr ""
+msgstr "X3GWriter"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
@@ -4662,7 +4654,7 @@ msgstr "Plug-in de dispositivo de saída da unidade amovível"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr ""
+msgstr "Gere as ligações de rede com as impressoras Ultimaker 3."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -4793,12 +4785,12 @@ msgstr "Atualização da versão 3.2 para 3.3"
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr ""
+msgstr "Atualiza as configurações do Cura 3.3 para o Cura 3.4."
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
-msgstr ""
+msgstr "Atualização da Versão 3.3 para 3.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -4945,7 +4937,7 @@ msgstr "Gravador 3MF"
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "Disponibiliza funções especificas para as máquinas Ultimaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)."
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"
@@ -4961,335 +4953,3 @@ msgstr "Fornece suporte para importar perfis Cura."
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Leitor de Perfis Cura"
-
-# rever!
-#~ msgctxt "@info:title"
-#~ msgid "Model Checker Warning"
-#~ msgstr "Advertência do Verificador de Modelos"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Some models may not be printed optimally due to object size and chosen material for models: {model_names}.\n"
-#~ "Tips that may be useful to improve the print quality:\n"
-#~ "1) Use rounded corners.\n"
-#~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
-#~ "3) Use a different material."
-#~ msgstr ""
-#~ "Alguns modelos poderão não ser impressos com a melhor qualidade devido ás dimensões do objecto e aos materiais escolhidos para os modelos: {model_names}.\n"
-#~ "Sugestões que poderão ser úteis para melhorar a qualidade da impressão dos modelos:\n"
-#~ "1) Utilize cantos arredondados.\n"
-#~ "2) Desligue os ventiladores (apenas nos casos em que o modelo não têm pequenos detalhes ou pormenores).\n"
-#~ "3) Usar um material diferente."
-
-#~ msgctxt "@info:status"
-#~ msgid "SolidWorks reported errors while opening your file. We recommend to solve these issues inside SolidWorks itself."
-#~ msgstr "O SolidWorks comunicou erros ao abrir o ficheiro. Recomendamos a resolução destes problemas no próprio SolidWorks."
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Found no models inside your drawing. Could you please check its content again and make sure one part or assembly is inside?\n"
-#~ "\n"
-#~ "Thanks!"
-#~ msgstr ""
-#~ "Não foram encontrados quaisquer modelos no seu desenho. Por favor verifique novamente o conteúdo do desenho e confirme que este inclui uma peça ou uma \"assembly\"?\n"
-#~ "\n"
-#~ "Obrigado!"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Found more than one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
-#~ "\n"
-#~ "Sorry!"
-#~ msgstr ""
-#~ "Foram encontradas mais do que uma peça ou uma \"assembly\" no seu desenho. De momento só são suportados ficheiros com uma só peça ou só uma \"assembly\".\n"
-#~ "\n"
-#~ "As nossa desculpas!"
-
-# rever!
-# versão PT do solidworks?
-#~ msgctxt "@item:inlistbox"
-#~ msgid "SolidWorks part file"
-#~ msgstr "Ficheiro peça SolidWorks"
-
-# rever!
-# versão PT do solidworks?
-#~ msgctxt "@item:inlistbox"
-#~ msgid "SolidWorks assembly file"
-#~ msgstr "Ficheiro \"assembly\" SolidWorks"
-
-#~ msgctxt "@item:inlistbox"
-#~ msgid "SolidWorks drawing file"
-#~ msgstr "Ficheiro de desenho SolidWorks"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Dear customer,\n"
-#~ "We could not find a valid installation of SolidWorks on your system. That means that either SolidWorks is not installed or you don't own an valid license. Please make sure that running SolidWorks itself works without issues and/or contact your ICT.\n"
-#~ "\n"
-#~ "With kind regards\n"
-#~ " - Thomas Karl Pietrowski"
-#~ msgstr ""
-#~ "Caro Cliente,\n"
-#~ "Não foi possível encontrar uma instalação válida do SolidWorks no seu sistema. O que significa que o SolidWorks não está instalado ou não dispõe de uma licença válida. Por favor verifique se o próprio SolidWorks funciona sem qualquer problema e/ou contacte o seu ICT.\n"
-#~ "\n"
-#~ "Atenciosamente\n"
-#~ " – Thomas Karl Pietrowski"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Dear customer,\n"
-#~ "You are currently running this plugin on an operating system other than Windows. This plugin will only work on Windows with SolidWorks installed, including an valid license. Please install this plugin on a Windows machine with SolidWorks installed.\n"
-#~ "\n"
-#~ "With kind regards\n"
-#~ " - Thomas Karl Pietrowski"
-#~ msgstr ""
-#~ "Caro cliente,\n"
-#~ "Está atualmente a executar este plug-in num sistema operativo que não o Windows. Este plug-in apenas funciona no Windows com o SolidWorks instalado e com uma licença válida. Instale este plug-in num computador com o Windows e com o SolidWorks instalado.\n"
-#~ "\n"
-#~ "Atenciosamente\n"
-#~ " – Thomas Karl Pietrowski"
-
-#~ msgid "Configure"
-#~ msgstr "Configurar"
-
-#~ msgid "Installation guide for SolidWorks macro"
-#~ msgstr "Guia de instalação do macro SolidWorks"
-
-#~ msgctxt "@action:button"
-#~ msgid "Disable"
-#~ msgstr "Desativar"
-
-#~ msgctxt "@action:tooltip"
-#~ msgid "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."
-#~ msgstr "Não permitir que o Cura envie de forma anónima, estatísticas sobre as opções usadas. Pode voltar a ser ativado novamente nas preferências do Cura."
-
-#~ msgid "Install"
-#~ msgstr "Instalar"
-
-#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It is not set to a directory."
-#~ msgstr "Falha ao copiar os ficheiros do plug-in Siemens NX. Verifique o seu UGII_USER_DIR. Não está atribuído a um diretório."
-
-#~ msgid "Successfully installed Siemens NX Cura plugin."
-#~ msgstr "Plug-in Siemens NX Cura instalado com sucesso."
-
-#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
-#~ msgstr "Falha ao copiar os ficheiros do plug-in Siemens NX. Verifique o seu UGII_USER_DIR."
-
-#~ msgid "Failed to install Siemens NX plugin. Could not set environment variable UGII_USER_DIR for Siemens NX."
-#~ msgstr "Falha ao instalar o plug-in Siemens NX. Não foi possível definir a variável do ambiente UGII_USER_DIR para o Siemens NX."
-
-#~ msgctxt "@info:status"
-#~ msgid "Failed to get plugin ID from <filename>{0}</filename>"
-#~ msgstr "Não foi possível obter o ID do plug-in <filename>{0}</filename>"
-
-#~ msgctxt "@info:tile"
-#~ msgid "Warning"
-#~ msgstr "Atenção"
-
-#~ msgctxt "@window:title"
-#~ msgid "Plugin browser"
-#~ msgstr "Browser de plug-ins"
-
-#~ msgctxt "@label"
-#~ msgid "Ultimaker 3"
-#~ msgstr "Ultimaker 3"
-
-#~ msgctxt "@label"
-#~ msgid "Ultimaker 3 Extended"
-#~ msgstr "Ultimaker 3 Extended"
-
-#~ msgctxt "@title:window"
-#~ msgid "SolidWorks: Export wizard"
-#~ msgstr "SolidWorks: Assistente de Exportação"
-
-#~ msgctxt "@action:label"
-#~ msgid "Quality:"
-#~ msgstr "Qualidade:"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Fine (3D-printing)"
-#~ msgstr "Alta Resolução (impressão 3D)"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Coarse (3D-printing)"
-#~ msgstr "Baixa Resolução (impressão 3D)"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Fine (SolidWorks)"
-#~ msgstr "Alta Resolução (SolidWorks)"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Coarse (SolidWorks)"
-#~ msgstr "Baixa Resolução (SolidWorks)"
-
-#~ msgctxt "@text:window"
-#~ msgid "Show this dialog again"
-#~ msgstr "Mostrar esta caixa de diálogo novamente"
-
-#~ msgctxt "@action:button"
-#~ msgid "Continue"
-#~ msgstr "Continuar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Abort"
-#~ msgstr "Cancelar"
-
-#~ msgctxt "@title:window"
-#~ msgid "How to install Cura SolidWorks macro"
-#~ msgstr "Como instalar a macro Cura SolidWorks"
-
-#~ msgctxt "@description:label"
-#~ msgid "Steps:"
-#~ msgstr "Passos:"
-
-#~ msgctxt "@action:button"
-#~ msgid ""
-#~ "Open the directory\n"
-#~ "with macro and icon"
-#~ msgstr ""
-#~ "Abrir o diretório\n"
-#~ "com macro e ícone"
-
-#~ msgctxt "@description:label"
-#~ msgid "Instructions:"
-#~ msgstr "Instruções:"
-
-#~ msgctxt "@action:playpause"
-#~ msgid "Play"
-#~ msgstr "Reproduzir"
-
-#~ msgctxt "@action:playpause"
-#~ msgid "Pause"
-#~ msgstr "Colocar em pausa"
-
-#~ msgctxt "@action:button"
-#~ msgid "Previous Step"
-#~ msgstr "Passo Anterior"
-
-#~ msgctxt "@action:button"
-#~ msgid "Done"
-#~ msgstr "Concluído"
-
-#~ msgctxt "@action:button"
-#~ msgid "Next Step"
-#~ msgstr "Passo Seguinte"
-
-#~ msgctxt "@title:window"
-#~ msgid "SolidWorks plugin: Configuration"
-#~ msgstr "Plug-in SolidWorks: Configuração"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Conversion settings"
-#~ msgstr "Definições de conversão"
-
-#~ msgctxt "@label"
-#~ msgid "First choice:"
-#~ msgstr "Primeira escolha:"
-
-#~ msgctxt "@text:menu"
-#~ msgid "Latest installed version (Recommended)"
-#~ msgstr "Última versão instalada (Recomendada)"
-
-#~ msgctxt "@text:menu"
-#~ msgid "Default version"
-#~ msgstr "Versão predefinida"
-
-#~ msgctxt "@label"
-#~ msgid "Show wizard before opening SolidWorks files"
-#~ msgstr "Mostrar o assistente antes de abrir ficheiros SolidWorks"
-
-#~ msgctxt "@label"
-#~ msgid "Automatically rotate opened file into normed orientation"
-#~ msgstr "Rodar automaticamente o ficheiro aberto para uma orientação normalizada"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Installation(s)"
-#~ msgstr "Instalação(ões)"
-
-#~ msgctxt "@label"
-#~ msgid "COM service found"
-#~ msgstr "Serviço COM encontrado"
-
-#~ msgctxt "@label"
-#~ msgid "Executable found"
-#~ msgstr "Executável encontrado"
-
-#~ msgctxt "@label"
-#~ msgid "COM starting"
-#~ msgstr "A iniciar COM"
-
-#~ msgctxt "@label"
-#~ msgid "Revision number"
-#~ msgstr "Número da revisão"
-
-#~ msgctxt "@label"
-#~ msgid "Functions available"
-#~ msgstr "Funções disponíveis"
-
-#~ msgctxt "@label (%1 is object name)"
-#~ msgid "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?"
-#~ msgstr "O novo diâmetro do material está definido como %1 mm, o que não é compatível com a máquina atual. Pretende prosseguir?"
-
-#~ msgctxt "@action:menu"
-#~ msgid "Browse plugins..."
-#~ msgstr "Procurar plug-ins..."
-
-#~ msgctxt "@title:menu"
-#~ msgid "&Build plate"
-#~ msgstr "&Base de construção"
-
-#~ msgctxt "@title:menu menubar:toplevel"
-#~ msgid "P&lugins"
-#~ msgstr "P&lug-ins"
-
-#~ msgctxt "@window:title"
-#~ msgid "Install Plugin"
-#~ msgstr "Instalar plug-in"
-
-#~ msgctxt "description"
-#~ msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
-#~ msgstr "Proporciona uma forma de alterar as definições da máquina (tal como o volume de construção, o tamanho do nozzle, etc)"
-
-#~ msgctxt "description"
-#~ msgid "Manages network connections to Ultimaker 3 printers"
-#~ msgstr "Gere as ligações de rede com as impressoras Ultimaker 3"
-
-#~ msgctxt "description"
-#~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
-#~ msgstr "Oferece a possibilidade de abrir determinados ficheiros utilizando o SolidWorks. A conversão é efetuada através deste plug-in e de otimizações adicionais."
-
-#~ msgctxt "name"
-#~ msgid "SolidWorks Integration"
-#~ msgstr "SolidWorks Integration"
-
-#~ msgctxt "description"
-#~ msgid "Automatically saves Preferences, Machines and Profiles after changes."
-#~ msgstr "Guarda Automaticamente as Preferências, Máquinas e Perfis após fazer alterações."
-
-#~ msgctxt "name"
-#~ msgid "Auto Save"
-#~ msgstr "Guardar Automaticamente"
-
-#~ msgctxt "description"
-#~ msgid "Helps you to install an 'export to Cura' button in Siemens NX."
-#~ msgstr "Ajuda a instalar um botão \"Exportar para o Cura\" no Siemens NX."
-
-#~ msgctxt "name"
-#~ msgid "Siemens NX Integration"
-#~ msgstr "Siemens NX Integration"
-
-#~ msgctxt "description"
-#~ msgid "Find, manage and install new plugins."
-#~ msgstr "Procura, gere e instala novos plug-ins."
-
-#~ msgctxt "name"
-#~ msgid "Plugin Browser"
-#~ msgstr "Browser de plug-ins"
-
-#~ msgctxt "description"
-#~ msgid "Ask the user once if he/she agrees with our license"
-#~ msgstr "Perguntar, uma vez, ao utilizador, se concorda com a licença"
-
-#~ msgctxt "description"
-#~ msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
-#~ msgstr "Disponibiliza funções especificas para as máquinas Ultimaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)"
