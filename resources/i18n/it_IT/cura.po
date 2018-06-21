@@ -1434,7 +1434,7 @@ msgstr "Plugin"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
-msgstr "Versione:"
+msgstr "Versione"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
 msgctxt "@label"
@@ -1444,7 +1444,7 @@ msgstr "Ultimo aggiornamento"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
-msgstr "Autore:"
+msgstr "Autore"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
@@ -3573,7 +3573,7 @@ msgstr "&Piano di stampa"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
-msgstr "Impostazioni visibili:"
+msgstr "Impostazioni visibili"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:43
 msgctxt "@action:inmenu"
@@ -4283,7 +4283,7 @@ msgstr "Log motore"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:70
 msgctxt "@label"
 msgid "Printer type"
-msgstr "Tipo di stampante:"
+msgstr "Tipo di stampante"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:372
 msgctxt "@label"
