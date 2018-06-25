@@ -568,9 +568,10 @@ Item
                     MenuItem
                     {
                         text: model.name
+                        iconName: model.iconName
                         onTriggered:
                         {
-                            customMenuItems.model.callMenuItemMethod(name, model.actions)
+                            customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
                         }
                     }
                    onObjectAdded: contextMenu.insertItem(index, object)
