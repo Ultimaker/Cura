@@ -23,4 +23,4 @@ def getMetaData():
 def register(app):
     app.addNonSliceableExtension(".gcode")
     app.addNonSliceableExtension(".g")
-    return { "mesh_reader": GCodeReader.GCodeReader() }
+    return { "mesh_reader": GCodeReader.GCodeReader(app) }

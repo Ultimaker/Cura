@@ -156,7 +156,7 @@ class Toolbox(QObject, Extension):
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
-        self._package_manager = Application.getInstance().getCuraPackageManager()
+        self._package_manager = Application.getInstance().getPackageManager()
         self._sdk_version = self._getSDKVersion()
         self._cloud_api_version = self._getCloudAPIVersion()
         self._cloud_api_root = self._getCloudAPIRoot()
@@ -262,12 +262,14 @@ class Toolbox(QObject, Extension):
         # list of old plugins
         old_plugin_ids = self._plugin_registry.getInstalledPlugins()
         installed_package_ids = self._package_manager.getAllInstalledPackageIDs()
+        scheduled_to_remove_package_ids = self._package_manager.getToRemovePackageIDs()
 
         self._old_plugin_ids = []
         self._old_plugin_metadata = []
 
         for plugin_id in old_plugin_ids:
-            if plugin_id not in installed_package_ids:
+            # Neither the installed packages nor the packages that are scheduled to remove are old plugins
+            if plugin_id not in installed_package_ids and plugin_id not in scheduled_to_remove_package_ids:
                 Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
 
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)
@@ -456,7 +458,10 @@ class Toolbox(QObject, Extension):
 
     def resetDownload(self) -> None:
         if self._download_reply:
-            self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            try:
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+            except TypeError: #Raised when the method is not connected to the signal yet.
+                pass #Don't need to disconnect.
             self._download_reply.abort()
         self._download_reply = None
         self._download_request = None

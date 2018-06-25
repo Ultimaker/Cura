@@ -333,7 +333,7 @@ UM.MainWindow
                             if (filename.endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
-                                CuraApplication.getCuraPackageManager().installPackageViaDragAndDrop(filename);
+                                CuraApplication.getPackageManager().installPackageViaDragAndDrop(filename);
                                 packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
                                 packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();
@@ -878,6 +878,9 @@ UM.MainWindow
                 path = path.replace(/\\/g,"/");
             }
             Qt.openUrlExternally(path);
+            if(Qt.platform.os == "linux") {
+                Qt.openUrlExternally(UM.Resources.getPath(UM.Resources.Resources, ""));
+            }
         }
     }
 

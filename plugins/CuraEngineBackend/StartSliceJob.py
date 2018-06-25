@@ -32,6 +32,7 @@ class StartJobResult(IntEnum):
     MaterialIncompatible = 5
     BuildPlateError = 6
     ObjectSettingError = 7 #When an error occurs in per-object settings.
+    ObjectsWithDisabledExtruder = 8
 
 
 ##  Formatter class that handles token expansion in start/end gcod
@@ -213,15 +214,25 @@ class StartSliceJob(Job):
 
             extruders_enabled = {position: stack.isEnabled for position, stack in Application.getInstance().getGlobalContainerStack().extruders.items()}
             filtered_object_groups = []
+            has_model_with_disabled_extruders = False
+            associated_disabled_extruders = set()
             for group in object_groups:
                 stack = Application.getInstance().getGlobalContainerStack()
                 skip_group = False
                 for node in group:
-                    if not extruders_enabled[node.callDecoration("getActiveExtruderPosition")]:
+                    extruder_position = node.callDecoration("getActiveExtruderPosition")
+                    if not extruders_enabled[extruder_position]:
                         skip_group = True
-                        break
+                        has_model_with_disabled_extruders = True
+                        associated_disabled_extruders.add(extruder_position)
                 if not skip_group:
                     filtered_object_groups.append(group)
+
+            if has_model_with_disabled_extruders:
+                self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
+                associated_disabled_extruders = [str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])]
+                self.setMessage(", ".join(associated_disabled_extruders))
+                return
 
             # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
             # able to find a possible sequence or because there are no objects on the build plate (or they are outside

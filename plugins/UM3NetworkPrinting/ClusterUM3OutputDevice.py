@@ -148,6 +148,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def selectPrinter(self, target_printer: str = "") -> None:
         self._sending_job.send(target_printer)
 
+    @pyqtSlot()
+    def cancelPrintSelection(self) -> None:
+        self._sending_gcode = False
+
     ##  Greenlet to send a job to the printer over the network.
     #
     #   This greenlet gets called asynchronously in requestWrite. It is a
@@ -388,7 +392,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._updatePrintJob(print_job, print_job_data)
 
             if print_job.state != "queued":  # Print job should be assigned to a printer.
-                if print_job.state in ["failed", "finished", "aborted"]:
+                if print_job.state in ["failed", "finished", "aborted", "none"]:
                     # Print job was already completed, so don't attach it to a printer.
                     printer = None
                 else:

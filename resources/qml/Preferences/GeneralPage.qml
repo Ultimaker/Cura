@@ -741,21 +741,6 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
-
-                CheckBox
-                {
-                    id: arrangeOnLoadCheckbox
-                    text: catalog.i18nc("@option:check", "Do not arrange objects on load")
-                    checked: boolCheck(UM.Preferences.getValue("cura/not_arrange_objects_on_load"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/not_arrange_objects_on_load", checked)
-                }
-            }
-
             Connections
             {
                 target: UM.Preferences

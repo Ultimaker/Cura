@@ -13,6 +13,7 @@ from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Signal import postponeSignals, CompressTechnique
 from UM.Settings.ContainerFormatError import ContainerFormatError
@@ -464,10 +465,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 num_visible_settings = len(visible_settings_string.split(";"))
             active_mode = temp_preferences.getValue("cura/active_mode")
             if not active_mode:
-                active_mode = Preferences.getInstance().getValue("cura/active_mode")
+                active_mode = Application.getInstance().getPreferences().getValue("cura/active_mode")
         except KeyError:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
+            return WorkspaceReader.PreReadResult.failed
+
+        # Check if the machine definition exists. If not, indicate failure because we do not import definition files.
+        def_results = self._container_registry.findDefinitionContainersMetadata(id = machine_definition_id)
+        if not def_results:
+            message = Message(i18n_catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> contains an unknown machine type"
+                                                 " <message>{1}</message>. Cannot import the machine."
+                                                 " Models will be imported instead.", file_name, machine_definition_id),
+                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"))
+            message.show()
+
+            Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
+                       self._machine_info.definition_id, file_name)
             return WorkspaceReader.PreReadResult.failed
 
         # In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
@@ -583,7 +598,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
-        global_preferences = Preferences.getInstance()
+        global_preferences = application.getInstance().getPreferences()
 
         visible_settings = temp_preferences.getValue("general/visible_settings")
         if visible_settings is None:

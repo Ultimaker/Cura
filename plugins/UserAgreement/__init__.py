@@ -7,4 +7,4 @@ def getMetaData():
     return {}
 
 def register(app):
-    return {"extension": UserAgreement.UserAgreement()}
+    return {"extension": UserAgreement.UserAgreement(app)}
