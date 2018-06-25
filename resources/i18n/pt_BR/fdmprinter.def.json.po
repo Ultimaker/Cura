@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-04-21 14:20-0300\n"
+"PO-Revision-Date: 2018-04-23 05:20-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language: pt_BR\n"
@@ -1088,7 +1088,7 @@ msgstr "Otimizar Ordem de Impressão de Paredes"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
-msgstr ""
+msgstr "Otimiza a ordem em que as paredes são impressas, tais que o número de retrações e a distância percorrida sejam reduzidos. A maioria das peças se beneficiará deste ajuste habilitado mas outras poderão demorar mais, portanto compare as estimativas de tempo de impressão com e sem otimização. A primeira camada não é otimizada quando o brim é selecionado como tipo de aderência da mesa de impressão."
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1678,22 +1678,22 @@ msgstr "Não gerar preenchimento para áreas menores que esta (usar contorno)."
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
-msgstr ""
+msgstr "Suporte do Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
-msgstr ""
+msgstr "Imprime estruturas de preenchimento somente onde os tetos do modelo devam ser suportados. Habilitar este ajuste reduz tempo de impressão e uso de material, mas leva a resistências não-uniformes no objeto."
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle label"
 msgid "Infill Overhang Angle"
-msgstr ""
+msgstr "Ângulo de Seções Pendentes do Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle description"
 msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
-msgstr ""
+msgstr "O ângulo mínimo de seções pendentes internas para as quais o preenchimento é adicionado. Em um valor de 0°, objetos são completamente preenchidos no padrão escolhido, e 90° torna o volume oco, sem preenchimento."
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
@@ -2038,12 +2038,12 @@ msgstr "A janela em que a contagem de retrações máxima é válida. Este valor
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions label"
 msgid "Limit Support Retractions"
-msgstr ""
+msgstr "Limitar Retrações de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
 msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
-msgstr ""
+msgstr "Omitir retrações quando mudar de suporte a suporte em linha reta. Habilitar este ajuste economiza tempo de impressão, mas pode levar a fiapos entremeados à estrutura de suporte."
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2723,7 +2723,7 @@ msgstr "Modo de Combing"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
-msgstr "O Combing, ou penteamento, mantém o bico dentro de áreas já impressas quando se movimenta. Isso resulta em percursos ligeiramente mais longos mas reduz a necessidade de retrações. Se o penteamento estiver desligado, o material sofrerá retração e o bico se moverá em linha reta para o próximo ponto. É também possível evitar o penteamento em área de contornos superiores e inferiores habilitando o penteamento no preenchimento somente."
+msgstr "O Combing, ou penteamento, mantém o bico dentro de áreas já impressas se movimenta. Isso resulta em percursos ligeiramente mais longos mas reduz a necessidade de retrações. Se o penteamento estiver desligado, o material sofrerá retração e o bico se moverá em linha reta para o próximo ponto. É também possível evitar o penteamento em área de contornos superiores e inferiores habilitando o penteamento no preenchimento somente."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2738,17 +2738,17 @@ msgstr "Tudo"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
-msgstr ""
+msgstr "Não no Contorno"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
 msgid "Max Comb Distance With No Retract"
-msgstr ""
+msgstr "Máxima Distância de Combing Sem Retração"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr ""
+msgstr "Quando não-zero, os movimentos de percurso de combing que são maiores que esta distância usarão retração."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2773,12 +2773,12 @@ msgstr "O bico evita partes já impressas quando está em uma percurso. Esta op�
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports label"
 msgid "Avoid Supports When Traveling"
-msgstr ""
+msgstr "Evitar Suportes No Percurso"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports description"
 msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
-msgstr ""
+msgstr "O bico evita suportes já impressos durante o percurso. Esta opção só está disponível quando combing estiver habilitado."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -2798,7 +2798,7 @@ msgstr "Iniciar Camadas com a Mesma Parte"
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position description"
 msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
-msgstr "Em cada camada iniciar imprimindo o objeto próximo ao mesmo ponto, de modo que não comecemos uma nova camada quando imprimir a peça com que a camada anterior terminou. Isso permite seçẽs pendentes e partes pequenas melhores, mas aumenta o tempo de impressão."
+msgstr "Em cada camada iniciar imprimindo o objeto próximo ao mesmo ponto, de modo que não comecemos uma nova camada quando imprimir a peça com que a camada anterior terminou. Isso permite seções pendentes e partes pequenas melhores, mas aumenta o tempo de impressão."
 
 #: fdmprinter.def.json
 msgctxt "layer_start_x label"
@@ -3138,12 +3138,12 @@ msgstr "Cruzado"
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
-msgstr ""
+msgstr "Contagem de Linhas de Parede de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr ""
+msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
@@ -4677,12 +4677,12 @@ msgstr "O tamanho mínimo de um segmento de linha após o fatiamento. Se você a
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
-msgstr ""
+msgstr "Máxima Resolução de Percurso"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution description"
 msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
-msgstr ""
+msgstr "O tamanho mínimo de um segmento de linha de percurso após o fatiamento. Se o valor aumenta, os movimentos de percurso terão cantos menos suaves. Isto pode permitir que a impressora mantenha a velocidade necessária para processar o G-Code, mas pode fazer com que evitar topar no modelo fique menos preciso."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -4847,22 +4847,22 @@ msgstr "O tamanho dos bolso em cruzamentos quádruplos no padrão cruzado 3D em 
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image label"
 msgid "Cross Infill Density Image"
-msgstr ""
+msgstr "Imagem de Densidade do Preenchimento Cruzado"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
-msgstr ""
+msgstr "A localização do arquivo de imagem onde os valores de brilho determinam a densidade mínima no local correspondente do preenchimento da impressão."
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image label"
 msgid "Cross Fill Density Image for Support"
-msgstr ""
+msgstr "Imagem de Densidade de Preenchimento Cruzado para Suporte"
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
-msgstr ""
+msgstr "A localização do arquivo de imagem onde os valores de brilho determinam a densidade mínima no local correspondente do suporte."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -5301,12 +5301,12 @@ msgstr "Variação máxima das camadas adaptativas"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
-msgstr ""
+msgstr "A variação de altura máxima permitida para a camada de base."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive layers variation step size"
-msgstr "Tamanho de passo da variaçã das camadas adaptativas"
+msgstr "Tamanho de passo da variação das camadas adaptativas"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -5536,7 +5536,7 @@ msgstr "Ajustes que sào usados somentes se o CuraEngine não for chamado da int
 #: fdmprinter.def.json
 msgctxt "center_object label"
 msgid "Center Object"
-msgstr ""
+msgstr "Centralizar Objeto"
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
@@ -5546,7 +5546,7 @@ msgstr "Se o objeto deve ser centralizado no meio da plataforma de impressão, a
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr ""
+msgstr "Posição X da Malha"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5556,7 +5556,7 @@ msgstr "Deslocamento aplicado ao objeto na direção X."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr ""
+msgstr "Posição Y da Malha"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5566,7 +5566,7 @@ msgstr "Deslocamento aplicado ao objeto na direção Y."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr ""
+msgstr "Posição Z da Malha"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
