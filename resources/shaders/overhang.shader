@@ -30,6 +30,8 @@ fragment =
 
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
+    uniform sampler2D u_extraOverhang; //Areas that should also be coloured as overhang.
+    uniform highp vec2 u_windowSize;
 
     varying highp vec3 f_vertex;
     varying highp vec3 f_normal;
@@ -57,6 +59,9 @@ fragment =
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
         finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
+        highp vec2 extra_overhang_uv = vec2(gl_FragCoord.x / u_windowSize.x, 1.0 - gl_FragCoord.y / u_windowSize.y);
+        vec4 is_extra_overhang = texture2D(u_extraOverhang, extra_overhang_uv);
+        finalColor = is_extra_overhang * u_overhangColor + (1 - is_extra_overhang) * finalColor;
 
         gl_FragColor = finalColor;
         gl_FragColor.a = 1.0;
