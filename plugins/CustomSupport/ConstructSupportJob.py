@@ -78,7 +78,9 @@ class ConstructSupportJob(Job):
         #Create the 3D mesh.
         builder = MeshBuilder()
         for index, position in enumerate(support_positions_3d):
-            builder.addDiamond(1, 2, 1, center = Vector(x = position[0], y = position[1], z = position[2]))
+            distance = support_depths[index]
+            #Create diamonds with a diameter of 1/1000 the distance. Since we use a view depth of 1000mm, this should coincide with exactly 1 pixel (but 2 pixels high; you need some overlap you know...).
+            builder.addDiamond(width = 0.001 * distance, height = 0.002 * distance, depth = 0.001 * distance, center = Vector(x = position[0], y = position[1], z = position[2]))
 
         #Create the scene node.
         scene = CuraApplication.getInstance().getController().getScene()
