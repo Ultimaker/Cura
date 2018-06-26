@@ -15,6 +15,7 @@ from UM.Logger import Logger
 from UM.Math.Vector import Vector #To use the mesh builder.
 from UM.Mesh.MeshBuilder import MeshBuilder #To create the support structure in 3D.
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation #To create the scene node.
+from UM.Settings.SettingInstance import SettingInstance #To set the correct support overhang angle for the support mesh.
 
 ##  Background task to process an image of where the user would like support.
 #
@@ -77,13 +78,23 @@ class ConstructSupportJob(Job):
         for index, position in enumerate(support_positions_3d):
             builder.addDiamond(1, 2, 1, center = Vector(x = position[0], y = position[1], z = position[2]))
 
-        #Create the scene node and add it to the scene.
+        #Create the scene node.
         scene = CuraApplication.getInstance().getController().getScene()
         new_node = CuraSceneNode(parent = scene.getRoot(), name = "CustomSupport")
         new_node.setSelectable(True)
         new_node.setMeshData(builder.build())
         new_node.addDecorator(BuildPlateDecorator(CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate))
         new_node.addDecorator(SliceableObjectDecorator())
+
+        #Add the appropriate per-object settings.
+        stack = new_node.callDecoration("getStack") #Created by SettingOverrideDecorator that is automatically added to CuraSceneNode.
+        settings = stack.getTop()
+        setting_instance = SettingInstance(stack.getSettingDefinition("support_mesh_drop_down"), settings)
+        setting_instance.setProperty("value", "True")
+        setting_instance.resetState()
+        settings.addInstance(setting_instance)
+
+        #Add the scene node to the scene (and allow for undo).
         operation = AddSceneNodeOperation(new_node, scene.getRoot())
         operation.push()
 
