@@ -377,6 +377,20 @@ Item
 
                 model: qualitiesModel
 
+                Component.onCompleted:
+                {
+                    var selectedItemName = Cura.MachineManager.activeQualityOrQualityChangesName;
+
+                    // Select the required quality name if given
+                    for (var idx = 0; idx < qualitiesModel.rowCount(); idx++) {
+                        var item = qualitiesModel.getItem(idx);
+                        if (item.name == selectedItemName) {
+                            currentIndex = idx;
+                            break;
+                        }
+                    }
+                }
+
                 section.property: "is_read_only"
                 section.delegate: Rectangle
                 {
