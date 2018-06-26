@@ -46,7 +46,7 @@ class ConstructSupportJob(Job):
         support_positions_2d = support_positions_2d.transpose() #We want rows with pixels, not columns with pixels.
         support_positions_2d[:, [0, 1]] = support_positions_2d[:, [1, 0]] #Swap columns to get OpenGL's coordinate system.
         support_positions_2d = support_positions_2d * 2.0 / self._camera_viewport - 1.0 #Scale to view coordinates (range -1 to 1).
-        inverted_projection = numpy.linalg.inv(self._camera_projection.getData().copy())
+        inverted_projection = numpy.linalg.inv(self._camera_projection.getData())
         transformation = self._camera_transformation.getData()
         transformation[:, 1] = -transformation[:, 1] #Invert Z to get OpenGL's coordinate system.
 
