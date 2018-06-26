@@ -66,9 +66,8 @@ class SolidView(View):
             self._non_printing_shader.setUniformValue("u_opacity", 0.6)
 
         if not self._support_mesh_shader:
-            self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
-            self._support_mesh_shader.setUniformValue("u_width", 5.0)
+            self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
+            self._support_mesh_shader.setUniformValue("u_color", Color(1.0, 0.0, 0.0, 1.0))
 
         global_container_stack = QtApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -133,14 +132,6 @@ class SolidView(View):
                     elif getattr(node, "_outside_buildarea", False):
                         renderer.queueNode(node, shader = self._disabled_shader)
                     elif per_mesh_stack and per_mesh_stack.getProperty("support_mesh", "value"):
-                        # Render support meshes with a vertical stripe that is darker
-                        shade_factor = 0.6
-                        uniforms["diffuse_color_2"] = [
-                            uniforms["diffuse_color"][0] * shade_factor,
-                            uniforms["diffuse_color"][1] * shade_factor,
-                            uniforms["diffuse_color"][2] * shade_factor,
-                            1.0
-                        ]
                         renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
                     else:
                         renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
