@@ -300,7 +300,6 @@ class StartSliceJob(Job):
                 self._buildExtruderMessage(extruder_stack)
 
             raft_enabled = stack.getProperty("blackbelt_raft", "value")
-            belt_layer_mesh_data = {}
             bottom_cutting_meshes = []
             raft_meshes = []
             if gantry_angle: # not 0 or None
@@ -350,40 +349,6 @@ class StartSliceJob(Job):
                                 added_meshes.append(new_node)
                                 bottom_cutting_meshes.append(new_node.getName())
 
-                            belt_wall_enabled = extruder_stack.getProperty("blackbelt_belt_wall_enabled", "value")
-                            belt_wall_speed = extruder_stack.getProperty("blackbelt_belt_wall_speed", "value")
-                            belt_wall_flow = extruder_stack.getProperty("blackbelt_belt_wall_flow", "value")
-                            wall_line_width = extruder_stack.getProperty("wall_line_width_0", "value")
-
-                            if per_object_stack:
-                                belt_wall_enabled = per_object_stack.getProperty("blackbelt_belt_wall_enabled", "value")
-                                belt_wall_speed = per_object_stack.getProperty("blackbelt_belt_wall_speed", "value")
-                                belt_wall_flow = per_object_stack.getProperty("blackbelt_belt_wall_flow", "value")
-                                wall_line_width = per_object_stack.getProperty("wall_line_width_0", "value")
-
-                            if belt_wall_enabled and not raft_enabled:
-                                # add a thin cutting mesh to influence the walls touching the belt
-                                if aabb.bottom <= 0:
-                                    height = wall_line_width * math.sin(gantry_angle)
-                                    center = Vector(aabb.center.x, height/2, aabb.center.z)
-
-                                    mb = MeshBuilder()
-
-                                    mb.addCube(
-                                        width = aabb.width,
-                                        height = height,
-                                        depth = aabb.depth,
-                                        center = center
-                                    )
-
-                                    new_node = self._addMesh(mb, "beltLayerModifierMesh")
-                                    added_meshes.append(new_node)
-                                    belt_layer_mesh_data[new_node.getName()] = {
-                                        "blackbelt_belt_wall_speed": belt_wall_speed,
-                                        "blackbelt_belt_wall_flow" : belt_wall_flow * math.sin(gantry_angle)
-                                    }
-                                    added_meshes.append(new_node)
-
                     if added_meshes:
                         group += added_meshes
 
@@ -425,10 +390,11 @@ class StartSliceJob(Job):
                     if transform_matrix:
                         verts = transformVertices(verts, transform_matrix)
 
-                        is_non_printing_mesh = object.getName() in belt_layer_mesh_data
-                        per_object_stack = object.callDecoration("getStack")
-                        if per_object_stack:
-                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+                        is_non_printing_mesh = object.getName() in bottom_cutting_meshes or object.getName() in raft_meshes
+                        if not is_non_printing_mesh:
+                            per_object_stack = object.callDecoration("getStack")
+                            if per_object_stack:
+                                is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                         if not is_non_printing_mesh:
                             _front_offset = verts[:, 1].min()
@@ -465,17 +431,6 @@ class StartSliceJob(Job):
                             "top_layers": 0,
                             "bottom_layers": 0,
                             "infill_line_distance": 0
-                        })
-
-                    elif object.getName() in belt_layer_mesh_data:
-                        data = belt_layer_mesh_data[object.getName()]
-                        self._addSettingsMessage(obj, {
-                            "cutting_mesh": True,
-                            "wall_line_count": 1,
-                            "magic_mesh_surface_mode": "normal",
-                            "speed_wall_0": data["blackbelt_belt_wall_speed"],
-                            "speed_wall_x": data["blackbelt_belt_wall_speed"],
-                            "material_flow": data["blackbelt_belt_wall_flow"]
                         })
 
                     else:
