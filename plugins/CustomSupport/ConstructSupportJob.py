@@ -89,10 +89,14 @@ class ConstructSupportJob(Job):
         #Add the appropriate per-object settings.
         stack = new_node.callDecoration("getStack") #Created by SettingOverrideDecorator that is automatically added to CuraSceneNode.
         settings = stack.getTop()
-        setting_instance = SettingInstance(stack.getSettingDefinition("support_mesh_drop_down"), settings)
-        setting_instance.setProperty("value", "True")
-        setting_instance.resetState()
-        settings.addInstance(setting_instance)
+        support_mesh_instance = SettingInstance(stack.getSettingDefinition("support_mesh"), settings)
+        support_mesh_instance.setProperty("value", True)
+        support_mesh_instance.resetState()
+        settings.addInstance(support_mesh_instance)
+        drop_down_instance = SettingInstance(stack.getSettingDefinition("support_mesh_drop_down"), settings)
+        drop_down_instance.setProperty("value", True)
+        drop_down_instance.resetState()
+        settings.addInstance(drop_down_instance)
 
         #Add the scene node to the scene (and allow for undo).
         operation = AddSceneNodeOperation(new_node, scene.getRoot())
