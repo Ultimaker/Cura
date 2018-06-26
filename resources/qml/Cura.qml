@@ -20,6 +20,8 @@ UM.MainWindow
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
 
+    backgroundColor: UM.Theme.getColor("viewport_background")
+
     // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
     // It should be phased out in newer plugin versions.
     Connections
