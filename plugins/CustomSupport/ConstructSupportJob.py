@@ -70,17 +70,20 @@ class ConstructSupportJob(Job):
         direction /= numpy.linalg.norm(direction, axis = 0)
 
         #Final position is in the direction of the pixel, moving with <depth> mm away from the camera position.
-        support_positions_3d = support_depths * direction
+        support_positions_3d = (support_depths - 1) * direction #We want the support to appear just before the surface, not behind the surface, so - 1.
         support_positions_3d = support_positions_3d.transpose()
         camera_position_data = self._camera_position.getData()
         support_positions_3d = support_positions_3d + camera_position_data
 
         #Create the 3D mesh.
         builder = MeshBuilder()
+        layer_height = CuraApplication.getInstance().getGlobalContainerStack().getProperty("layer_height", "value")
+        support_z_distance = CuraApplication.getInstance().getGlobalContainerStack().getProperty("support_z_distance", "value")
         for index, position in enumerate(support_positions_3d):
             distance = support_depths[index]
-            #Create diamonds with a diameter of 1/1000 the distance. Since we use a view depth of 1000mm, this should coincide with exactly 1 pixel (but 2 pixels high; you need some overlap you know...).
-            builder.addDiamond(width = 0.001 * distance, height = 0.002 * distance, depth = 0.001 * distance, center = Vector(x = position[0], y = position[1], z = position[2]))
+            #Create diamonds that are a couple of pixels large so that they overlap properly.
+            builder.addDiamond(width = 0.005 * distance, height = 0.010 * distance, depth = 0.005 * distance,
+                               center = Vector(x = position[0], y = position[1], z = position[2] - support_z_distance - layer_height))
 
         #Create the scene node.
         scene = CuraApplication.getInstance().getController().getScene()
