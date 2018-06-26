@@ -217,7 +217,8 @@ class BlackBeltPlugin(Extension):
         if "blackbelt_settings" in visible_settings and not forced:
             return
 
-        self._application.getSettingVisibilityPresetsModel().setActivePreset("blackbelt")
+        if self._application.getSettingVisibilityPresetsModel():
+            self._application.getSettingVisibilityPresetsModel().setActivePreset("blackbelt")
 
         visible_settings_changed = False
         default_visible_settings = [
@@ -254,8 +255,14 @@ class BlackBeltPlugin(Extension):
 
         enable_secondary_fans = global_stack.extruders["0"].getProperty("blackbelt_secondary_fans_enabled", "value")
         repetitions = global_stack.getProperty("blackbelt_repetitions", "value") or 1
-        if not (enable_secondary_fans or repetitions > 1):
+        enable_belt_wall = global_stack.getProperty("blackbelt_belt_wall_enabled", "value")
+
+        if not (enable_secondary_fans or enable_belt_wall or repetitions > 1):
             return
+
+        belt_wall_flow = global_stack.getProperty("blackbelt_belt_wall_flow", "value") / 100
+        belt_wall_speed = global_stack.getProperty("blackbelt_belt_wall_speed", "value") * 60
+        minimum_y = global_stack.extruders["0"].getProperty("wall_line_width_0", "value") / 2
 
         repetitions_distance = global_stack.getProperty("blackbelt_repetitions_distance", "value")
         repetitions_gcode = global_stack.getProperty("blackbelt_repetitions_gcode", "value")
@@ -279,6 +286,55 @@ class BlackBeltPlugin(Extension):
 
                         for layer_number, layer in enumerate(gcode_list):
                             gcode_list[layer_number] = re.sub(search_regex, replace_pattern, layer) #Replace all.
+
+                    # adjust walls that touch the belt
+                    if enable_belt_wall:
+                        #wall_line_width_0
+                        last_y = None
+                        last_e = None
+                        extruding_move_regex = re.compile(r"(G[0|1] .*) Y(\d*\.?\d*) E(-?\d*\.?\d*)(.*)")
+                        extruding_regex = re.compile(r"G[0|1].* E(-?\d*\.?\d*)")
+                        speed_regex = re.compile(r" F\d*\.?\d*")
+                        extrude_regex = re.compile(r" E-?\d*\.?\d*")
+
+                        for layer_number, layer in enumerate(gcode_list):
+                            if layer_number < 2 or layer_number > len(gcode_list) - 1:
+                                # gcode_list[0]: curaengine header
+                                # gcode_list[1]: start gcode
+                                # gcode_list[2] - gcode_list[n-1]: layers
+                                # gcode_list[n]: end gcode
+                                continue
+
+                            lines = layer.splitlines()
+                            for line_number, line in enumerate(lines):
+                                match = re.search(extruding_move_regex, line)
+                                if match:
+                                    y = float(match.group(2))
+                                    e = float(match.group(3))
+                                    if y <= minimum_y and (last_y is not None and last_y <= minimum_y):
+                                        if belt_wall_flow != 1.0:
+                                            new_e = last_e + (e - last_e) * belt_wall_flow
+                                            line = re.sub(extrude_regex, " E%f" % new_e, line)
+
+                                        # Remove pre-existing move speed and add our own
+                                        line = re.sub(speed_regex, r"", line)
+                                        line += " F%d ; Adjusted belt wall" % belt_wall_speed
+
+                                        # Reset E value as if nothing happened
+                                        if belt_wall_flow != 1.0:
+                                            line += "\nG92 E%f ; Reset E to pre-compensated value" % e
+                                        lines[line_number] = line
+                                    last_e = e
+                                    last_y = y
+                                elif belt_wall_flow != 1.0:
+                                    # Keep track of previous E value
+                                    match = re.search(extruding_regex, line)
+                                    if match:
+                                        print(line, match.group(0), match.group(1))
+                                        last_e = float(match.group(1))
+
+                            edited_layer = "\n".join(lines)
+                            gcode_list[layer_number] = edited_layer
 
                     # make repetitions
                     if repetitions > 1 and len(gcode_list) > 2:
