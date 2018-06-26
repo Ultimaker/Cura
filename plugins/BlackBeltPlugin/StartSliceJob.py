@@ -269,10 +269,6 @@ class StartSliceJob(Job):
                 # Adhsion type is used in the frontend to show the raft in the viewport
                 stack.setProperty("adhesion_type", "value", "none")
 
-                # HOTFIX: make sure the bed temperature is taken from the extruder stack
-                extruder_stack = ExtruderManager.getInstance().getMachineExtruders(stack_id)[0]
-                stack.setProperty("material_bed_temperature", "value", extruder_stack.getProperty("material_bed_temperature", "value"))
-
                 for key in ["layer_height", "layer_height_0"]:
                     current_value = stack.getProperty(key, "value")
                     stack.setProperty(key, "value", current_value / math.sin(gantry_angle))
@@ -284,7 +280,7 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            for position, extruder_stack in Application.getInstance().getGlobalContainerStack().extruders.items():
                 if gantry_angle: # not 0 or None
                     # Act on a copy of the stack, so these changes don't cause a reslice
                     _extruder_stack = CuraContainerStack(extruder_stack.getId() + "_temp")
