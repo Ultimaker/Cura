@@ -43,6 +43,7 @@ class ContainerManager(QObject):
         self._container_registry = ContainerRegistry.getInstance()
         self._machine_manager = self._application.getMachineManager()
         self._material_manager = self._application.getMaterialManager()
+        self._quality_manager = self._application.getQualityManager()
         self._container_name_filters = {}
 
     @pyqtSlot(str, str, result=str)
@@ -307,15 +308,25 @@ class ContainerManager(QObject):
     #   \return \type{bool} True if successful, False if not.
     @pyqtSlot(result = bool)
     def updateQualityChanges(self):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._machine_manager.activeMachine
         if not global_stack:
             return False
 
         self._machine_manager.blurSettings.emit()
 
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        current_quality_changes_name = global_stack.qualityChanges.getName()
+        current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
+        extruder_stacks = list(global_stack.extruders.values())
+        for stack in [global_stack] + extruder_stacks:
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
             quality_changes = stack.qualityChanges
+
+            if quality_changes.getId() == "empty_quality_changes":
+                quality_changes = self._quality_manager._createQualityChanges(current_quality_type, current_quality_changes_name,
+                                                                              global_stack, stack)
+                self._container_registry.addContainer(quality_changes)
+                stack.qualityChanges = quality_changes
+
             if not quality_changes or self._container_registry.isReadOnly(quality_changes.getId()):
                 Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
                 continue

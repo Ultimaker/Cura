@@ -79,7 +79,7 @@ msgstr "Coordenada Y del desplazamiento de la tobera."
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "Gcode inicial del extrusor"
+msgstr "GCode inicial del extrusor"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
@@ -119,7 +119,7 @@ msgstr "Coordenada Y de la posición de inicio cuando se enciende el extrusor."
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "Gcode final del extrusor"
+msgstr "GCode final del extrusor"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
