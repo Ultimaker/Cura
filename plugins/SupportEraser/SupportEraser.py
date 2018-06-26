@@ -1,9 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os
-import os.path
-
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication
 
@@ -14,7 +11,6 @@ from UM.Event import Event, MouseEvent
 
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Scene.Selection import Selection
-from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from cura.PickingPass import PickingPass
@@ -26,8 +22,6 @@ from cura.Operations.SetParentOperation import SetParentOperation
 
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from UM.Scene.GroupDecorator import GroupDecorator
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 from UM.Settings.SettingInstance import SettingInstance
 
@@ -70,11 +64,11 @@ class SupportEraser(Tool):
                 return
 
             if self._selection_pass is None:
-                # The selection renderpass is used to identify objects in the current view
+                # The selection render pass is used to identify objects in the current view
                 self._selection_pass = Application.getInstance().getRenderer().getRenderPass("selection")
             picked_node = self._controller.getScene().findObject(self._selection_pass.getIdAtPosition(event.x, event.y))
             if not picked_node:
-                # There is no slicable object at the picked location
+                # There is no sliceable object at the picked location
                 return
 
             node_stack = picked_node.callDecoration("getStack")
