@@ -48,6 +48,7 @@ class ConstructSupportJob(Job):
         support_positions_2d = support_positions_2d * 2.0 / self._window_size - 1.0 #Scale to view coordinates (range -1 to 1).
         inverted_projection = numpy.linalg.inv(self._camera_projection.getData().copy())
         transformation = self._camera_transformation.getData()
+        transformation[:, 1] = -transformation[:, 1] #Invert Z to get OpenGL's coordinate system.
 
         #For each pixel, get the near and far plane.
         near = numpy.ndarray((support_positions_2d.shape[0], 4))
@@ -71,7 +72,8 @@ class ConstructSupportJob(Job):
         #Final position is in the direction of the pixel, moving with <depth> mm away from the camera position.
         support_positions_3d = support_depths * direction
         support_positions_3d = support_positions_3d.transpose()
-        support_positions_3d = support_positions_3d + self._camera_position.getData()
+        camera_position_data = self._camera_position.getData()
+        support_positions_3d = support_positions_3d + camera_position_data
 
         #Create the 3D mesh.
         builder = MeshBuilder()
