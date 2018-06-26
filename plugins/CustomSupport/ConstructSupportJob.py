@@ -31,7 +31,7 @@ class ConstructSupportJob(Job):
         self._camera_projection = camera.getProjectionMatrix()
         self._camera_transformation = camera.getWorldTransformation()
         self._camera_position = camera.getPosition()
-        self._camera_viewport = numpy.array([camera.getViewportHeight(), camera.getViewportWidth()])
+        self._camera_viewport = numpy.array([camera.getViewportWidth(), camera.getViewportHeight()])
         self._window_size = numpy.array(camera.getWindowSize())
 
     def run(self):
@@ -45,7 +45,7 @@ class ConstructSupportJob(Job):
         support_depths = numpy.take(depth, support_positions_2d[0, :] * depth.shape[1] + support_positions_2d[1, :]) #The depth at those pixels.
         support_positions_2d = support_positions_2d.transpose() #We want rows with pixels, not columns with pixels.
         support_positions_2d[:, [0, 1]] = support_positions_2d[:, [1, 0]] #Swap columns to get OpenGL's coordinate system.
-        support_positions_2d = support_positions_2d * 2.0 / self._window_size - 1.0 #Scale to view coordinates (range -1 to 1).
+        support_positions_2d = support_positions_2d * 2.0 / self._camera_viewport - 1.0 #Scale to view coordinates (range -1 to 1).
         inverted_projection = numpy.linalg.inv(self._camera_projection.getData().copy())
         transformation = self._camera_transformation.getData()
         transformation[:, 1] = -transformation[:, 1] #Invert Z to get OpenGL's coordinate system.
