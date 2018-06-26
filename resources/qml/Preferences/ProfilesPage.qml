@@ -409,22 +409,20 @@ Item
                 {
                     width: profileScrollView.width
                     height: childrenRect.height
-                    color: ListView.isCurrentItem ? palette.highlight : (model.index % 2) ? palette.base : palette.alternateBase
 
-                    Row
+                    property bool isCurrentItem: ListView.isCurrentItem
+                    color: isCurrentItem ? palette.highlight : (model.index % 2) ? palette.base : palette.alternateBase
+
+                    Label
                     {
-                        spacing: (UM.Theme.getSize("default_margin").width / 2) | 0
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.right: parent.right
-                        Label
-                        {
-                            width: Math.floor((parent.width * 0.8))
-                            text: model.name
-                            elide: Text.ElideRight
-                            font.italic: model.name == Cura.MachineManager.activeQualityOrQualityChangesName
-                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
-                        }
+                        width: Math.floor((parent.width * 0.8))
+                        text: model.name
+                        elide: Text.ElideRight
+                        font.italic: model.name == Cura.MachineManager.activeQualityOrQualityChangesName
+                        color: parent.isCurrentItem ? palette.highlightedText : palette.text
                     }
 
                     MouseArea
