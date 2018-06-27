@@ -87,8 +87,6 @@ class CustomSupport(Tool):
         depth_image = depth_pass.getOutput()
         camera = CuraApplication.getInstance().getController().getScene().getActiveCamera()
 
-        Logger.log("d", "Constructing/removing support.")
-
         to_support = qimage2ndarray.raw_view(buffer)
         depth = qimage2ndarray.recarray_view(depth_image)
         depth.a = 0 #Discard alpha channel.
@@ -134,6 +132,7 @@ class CustomSupport(Tool):
         #Create the vertices for the 3D mesh.
         #This mesh consists of a diamond-shape for each position that we traced.
         n = support_positions_3d.shape[0]
+        Logger.log("i", "Adding support in {num_pixels} locations.".format(num_pixels = n))
         vertices = support_positions_3d.copy().astype(numpy.float32)
         vertices[:, 2] = vertices[:, 2] - support_z_distance - layer_height #Shift coordinates down so that they rise below the support Z distance and actually produce support.
         vertices = numpy.resize(vertices, (n * 6, support_positions_3d.shape[1])) #Resize will repeat all coordinates 6 times.
