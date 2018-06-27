@@ -18,7 +18,9 @@ from UM.Event import Event, MouseEvent #To register mouse movements.
 from UM.Logger import Logger
 from UM.Mesh.MeshBuilder import MeshBuilder #To create the support structure in 3D.
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation #To create the scene node.
+from UM.Operations.GroupedOperation import GroupedOperation #To create the scene node.
 from UM.Qt.QtApplication import QtApplication #To change the active view.
+from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator #To find the parent node to link custom support to.
 from UM.Settings.SettingInstance import SettingInstance #To set the correct support overhang angle for the support mesh.
 from UM.Tool import Tool #The interface we're implementing.
 
@@ -207,6 +209,20 @@ class CustomSupport(Tool):
         new_node.setMeshData(builder.build())
         new_node.addDecorator(BuildPlateDecorator(CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate))
         new_node.addDecorator(SliceableObjectDecorator())
+        operation = GroupedOperation()
+
+        #Figure out which mesh this piece of support belongs to.
+        #TODO: You can draw support in one stroke over multiple meshes. The support would belong to an arbitrary one of these.
+        selection_pass = CuraApplication.getInstance().getRenderer().getRenderPass("selection")
+        parent_id = selection_pass.getIdAtPosition(support_positions_2d[0][0], support_positions_2d[0][1]) #Find the selection under the first support pixel.
+        parent_node = scene.getRoot()
+        if not parent_id:
+            Logger.log("d", "Can't link custom support to any scene node.")
+        else:
+            for node in BreadthFirstIterator(scene.getRoot()):
+                if id(node) == parent_id:
+                    parent_node = node
+                    break
 
         #Add the appropriate per-object settings.
         stack = new_node.callDecoration("getStack") #Created by SettingOverrideDecorator that is automatically added to CuraSceneNode.
@@ -221,7 +237,8 @@ class CustomSupport(Tool):
         settings.addInstance(drop_down_instance)
 
         #Add the scene node to the scene (and allow for undo).
-        operation = AddSceneNodeOperation(new_node, scene.getRoot())
+        operation.addOperation(AddSceneNodeOperation(new_node, scene.getRoot())) #Set the parent to root initially, then change the parent, so that we don't have to alter the transformation.
+        operation.addOperation(SetParentOperation(new_node, parent_node))
         operation.push()
 
         scene.sceneChanged.emit(new_node)
