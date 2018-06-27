@@ -67,6 +67,7 @@ class BlackBeltPlugin(Extension):
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
         if self._application.getVersion() != "master" and Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) < Version("3.4.0"):
             self._force_visibility_update = True
+            Preferences.getInstance().setValue("general/theme", "blackbelt")
 
         # Disable USB printing output device
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
