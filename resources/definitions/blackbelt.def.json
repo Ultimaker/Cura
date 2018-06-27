@@ -201,10 +201,23 @@
                 "blackbelt_secondary_fans_enabled":
                 {
                     "label": "Enable Secondary Print Fans",
-                    "description": "Enables the secondary print cooling fans while printing. The secondary fans are set to the same speed as the primary cooling fan.",
+                    "description": "Enables the secondary print cooling fans while printing.",
                     "type": "bool",
                     "enabled": "cool_fan_enabled",
                     "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "blackbelt_secondary_fans_speed":
+                {
+                    "label": "Secondary Print Fan Speed",
+                    "description": "The speed at which the secondary print cooling fans spin. The secondary fans speed is relative to the primary cooling fan speed.",
+                    "type": "float",
+                    "enabled": "blackbelt_secondary_fans_enabled",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 100,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }

@@ -253,6 +253,13 @@ class BlackBeltPlugin(Extension):
     def _filterGcode(self, output_device):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
+        scene = Application.getInstance().getController().getScene()
+        gcode_dict = getattr(scene, "gcode_dict", {})
+        if not gcode_dict: # this also checks for an empty dict
+            Logger.log("w", "Scene has no gcode to process")
+            return
+        dict_changed = False
+
         enable_secondary_fans = global_stack.extruders["0"].getProperty("blackbelt_secondary_fans_enabled", "value")
         repetitions = global_stack.getProperty("blackbelt_repetitions", "value") or 1
         enable_belt_wall = global_stack.getProperty("blackbelt_belt_wall_enabled", "value")
@@ -260,32 +267,28 @@ class BlackBeltPlugin(Extension):
         if not (enable_secondary_fans or enable_belt_wall or repetitions > 1):
             return
 
-        belt_wall_flow = global_stack.getProperty("blackbelt_belt_wall_flow", "value") / 100
-        belt_wall_speed = global_stack.getProperty("blackbelt_belt_wall_speed", "value") * 60
-        minimum_y = global_stack.extruders["0"].getProperty("wall_line_width_0", "value") / 2
+        if enable_secondary_fans:
+            secondary_fans_speed = global_stack.extruders["0"].getProperty("blackbelt_secondary_fans_speed", "value") / 100
 
-        repetitions_distance = global_stack.getProperty("blackbelt_repetitions_distance", "value")
-        repetitions_gcode = global_stack.getProperty("blackbelt_repetitions_gcode", "value")
+        if enable_belt_wall:
+            belt_wall_flow = global_stack.getProperty("blackbelt_belt_wall_flow", "value") / 100
+            belt_wall_speed = global_stack.getProperty("blackbelt_belt_wall_speed", "value") * 60
+            minimum_y = global_stack.extruders["0"].getProperty("wall_line_width_0", "value") / 2
 
-        scene = Application.getInstance().getController().getScene()
-        gcode_dict = getattr(scene, "gcode_dict", {})
-        if not gcode_dict: # this also checks for an empty dict
-            Logger.log("w", "Scene has no gcode to process")
-            return
-
-        dict_changed = False
+        if repetitions > 1:
+            repetitions_distance = global_stack.getProperty("blackbelt_repetitions_distance", "value")
+            repetitions_gcode = global_stack.getProperty("blackbelt_repetitions_gcode", "value")
 
         for plate_id in gcode_dict:
             gcode_list = gcode_dict[plate_id]
             if gcode_list:
                 if ";BLACKBELTPROCESSED" not in gcode_list[0]:
-                    # secondary fans should do the same as print cooling fans
+                    # secondary fans should similar things as print cooling fans
                     if enable_secondary_fans:
                         search_regex = re.compile(r"M106 S(\d*\.?\d*)")
-                        replace_pattern = r"M106 P1 S\1\nM106 S\1"
 
                         for layer_number, layer in enumerate(gcode_list):
-                            gcode_list[layer_number] = re.sub(search_regex, replace_pattern, layer) #Replace all.
+                            gcode_list[layer_number] = re.sub(search_regex, lambda m: "M106 P1 S%d\nM106 S%s" % (int(min(255, float(m.group(1)) * secondary_fans_speed)), m.group(1)), layer) #Replace all.
 
                     # adjust walls that touch the belt
                     if enable_belt_wall:
