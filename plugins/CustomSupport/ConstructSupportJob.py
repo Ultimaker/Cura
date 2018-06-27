@@ -75,15 +75,67 @@ class ConstructSupportJob(Job):
         camera_position_data = self._camera_position.getData()
         support_positions_3d = support_positions_3d + camera_position_data
 
-        #Create the 3D mesh.
-        builder = MeshBuilder()
         layer_height = CuraApplication.getInstance().getGlobalContainerStack().getProperty("layer_height", "value")
         support_z_distance = CuraApplication.getInstance().getGlobalContainerStack().getProperty("support_z_distance", "value")
-        for index, position in enumerate(support_positions_3d):
-            distance = support_depths[index]
-            #Create diamonds that are a couple of pixels large so that they overlap properly.
-            builder.addDiamond(width = 0.005 * distance, height = 0.010 * distance, depth = 0.005 * distance,
-                               center = Vector(x = position[0], y = position[1], z = position[2] - support_z_distance - layer_height))
+
+        #Create the vertices for the 3D mesh.
+        #This mesh consists of a diamond-shape for each position that we traced.
+        n = support_positions_3d.shape[0]
+        vertices = support_positions_3d.copy().astype(numpy.float32)
+        vertices[:, 2] = vertices[:, 2] - support_z_distance - layer_height #Shift coordinates down so that they rise below the support Z distance and actually produce support.
+        vertices = numpy.resize(vertices, (n * 6, support_positions_3d.shape[1])) #Resize will repeat all coordinates 6 times.
+        #For each position, create a diamond shape around the position with 6 vertices.
+        vertices[n * 0: n * 1, 0] -= support_depths * 0.0025 #First corner (-x, +y).
+        vertices[n * 0: n * 1, 2] += support_depths * 0.0025
+        vertices[n * 1: n * 2, 0] += support_depths * 0.0025 #Second corner (+x, +y).
+        vertices[n * 1: n * 2, 2] += support_depths * 0.0025
+        vertices[n * 2: n * 3, 0] -= support_depths * 0.0025 #Third corner (-x, -y).
+        vertices[n * 2: n * 3, 2] -= support_depths * 0.0025
+        vertices[n * 3: n * 4, 0] += support_depths * 0.0025 #Fourth corner (+x, -y)
+        vertices[n * 3: n * 4, 2] -= support_depths * 0.0025
+        vertices[n * 4: n * 5, 1] += support_depths * 0.0025 #Top side.
+        vertices[n * 5: n * 6, 1] -= support_depths * 0.0025 #Bottom side.
+
+        #Create the faces of the diamond.
+        indices = numpy.arange(n, dtype = numpy.int32)
+        indices = numpy.kron(indices, numpy.ones((3, 1))).astype(numpy.int32).transpose()
+        indices = numpy.resize(indices, (n * 8, 3)) #Creates 8 triangles using 3 times the same vertex, for each position: [[0, 0, 0], [1, 1, 1], ... , [0, 0, 0], [1, 1, 1], ... ]
+
+        #indices[n * 0: n * 1, 0] += n * 0 #First corner.
+        indices[n * 0: n * 1, 1] += n * 1 #Second corner.
+        indices[n * 0: n * 1, 2] += n * 4 #Top side.
+
+        indices[n * 1: n * 2, 0] += n * 1 #Second corner.
+        indices[n * 1: n * 2, 1] += n * 3 #Fourth corner.
+        indices[n * 1: n * 2, 2] += n * 4 #Top side.
+
+        indices[n * 2: n * 3, 0] += n * 3 #Fourth corner.
+        indices[n * 2: n * 3, 1] += n * 2 #Third corner.
+        indices[n * 2: n * 3, 2] += n * 4 #Top side.
+
+        indices[n * 3: n * 4, 0] += n * 2 #Third corner.
+        #indices[n * 3: n * 4, 1] += n * 0 #First corner.
+        indices[n * 3: n * 4, 2] += n * 4 #Top side.
+
+        indices[n * 4: n * 5, 0] += n * 1 #Second corner.
+        #indices[n * 4: n * 5, 1] += n * 0 #First corner.
+        indices[n * 4: n * 5, 2] += n * 5 #Bottom side.
+
+        indices[n * 5: n * 6, 0] += n * 3 #Fourth corner.
+        indices[n * 5: n * 6, 1] += n * 1 #Second corner.
+        indices[n * 5: n * 6, 2] += n * 5 #Bottom side.
+
+        indices[n * 6: n * 7, 0] += n * 2 #Third corner.
+        indices[n * 6: n * 7, 1] += n * 3 #Fourth corner.
+        indices[n * 6: n * 7, 2] += n * 5 #Bottom side.
+
+        #indices[n * 7: n * 8, 0] += n * 0 #First corner.
+        indices[n * 7: n * 8, 1] += n * 2 #Third corner.
+        indices[n * 7: n * 8, 2] += n * 5 #Bottom side.
+
+        builder = MeshBuilder()
+        builder.addVertices(vertices)
+        builder.addIndices(indices)
 
         #Create the scene node.
         scene = CuraApplication.getInstance().getController().getScene()
