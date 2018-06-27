@@ -32,7 +32,7 @@ class CustomSupport(Tool):
     #If you make this too small you can't create support since it'll be less
     #than a layer high or less than a line wide. If you make this too large the
     #drawing will be inaccurate.
-    globule_size = 1
+    globule_size = 1.5
 
     def __init__(self):
         super().__init__()
