@@ -139,15 +139,11 @@ class CustomSupport(Tool):
         camera_position_data = camera.getPosition().getData()
         support_positions_3d = support_positions_3d + camera_position_data
 
-        layer_height = CuraApplication.getInstance().getGlobalContainerStack().getProperty("layer_height", "value")
-        support_z_distance = CuraApplication.getInstance().getGlobalContainerStack().getProperty("support_z_distance", "value")
-
         #Create the vertices for the 3D mesh.
         #This mesh consists of a diamond-shape for each position that we traced.
         n = support_positions_3d.shape[0]
         Logger.log("i", "Adding support in {num_pixels} locations.".format(num_pixels = n))
         vertices = support_positions_3d.copy().astype(numpy.float32)
-        vertices[:, 2] = vertices[:, 2] - support_z_distance - layer_height #Shift coordinates down so that they rise below the support Z distance and actually produce support.
         vertices = numpy.resize(vertices, (n * 6, support_positions_3d.shape[1])) #Resize will repeat all coordinates 6 times.
         #For each position, create a diamond shape around the position with 6 vertices.
         vertices[n * 0: n * 1, 0] -= support_depths * 0.001 * self.globule_size #First corner (-x, +y).
