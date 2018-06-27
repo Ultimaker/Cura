@@ -299,15 +299,14 @@ class CuraPackageManager(QObject):
         filename = installation_package_data["filename"]
 
         package_id = package_info["package_id"]
-
-        if not os.path.exists(filename):
-            Logger.log("w", "Package [%s] file '%s' is missing, cannot install this package", package_id, filename)
-            return
-
         Logger.log("i", "Installing package [%s] from file [%s]", package_id, filename)
 
         # remove it first and then install
         self._purgePackage(package_id)
+
+        if not os.path.exists(filename):
+            Logger.log("w", "Package [%s] file '%s' is missing, cannot install this package", package_id, filename)
+            return
 
         # Install the package
         with zipfile.ZipFile(filename, "r") as archive:
@@ -341,6 +340,10 @@ class CuraPackageManager(QObject):
 
     # Gets package information from the given file.
     def getPackageInfo(self, filename: str) -> Dict[str, Any]:
+        if not os.path.exists(filename):
+            Logger.log("w", "Package file '%s' is missing, cannot get info from this package", filename)
+            return {}
+
         with zipfile.ZipFile(filename) as archive:
             try:
                 # All information is in package.json
@@ -354,6 +357,10 @@ class CuraPackageManager(QObject):
     # Gets the license file content if present in the given package file.
     # Returns None if there is no license file found.
     def getPackageLicense(self, filename: str) -> Optional[str]:
+        if not os.path.exists(filename):
+            Logger.log("w", "Package file '%s' is missing, cannot get license from this package", filename)
+            return None
+
         license_string = None
         with zipfile.ZipFile(filename) as archive:
             # Go through all the files and use the first successful read as the result
