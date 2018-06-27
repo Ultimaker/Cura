@@ -16,10 +16,17 @@ class PrintInformationPatches():
             self._print_information._abbr_machine = ""
             return
 
-        ### START PATCH: construct prefix from variant
+        ### START PATCH: construct prefix from variant & material
         definition_container = global_container_stack.getBottom()
         if definition_container.getId() == "blackbelt":
-            self._print_information._abbr_machine = "%s_%s" % (global_container_stack.getProperty("blackbelt_gantry_angle", "value"), global_container_stack.getProperty("machine_nozzle_size", "value"))
+            extruder_stack = Application.getInstance().getMachineManager()._active_container_stack
+            if not extruder_stack:
+                return
+
+            gantry_angle = global_container_stack.getProperty("blackbelt_gantry_angle", "value")
+            nozzle_size = global_container_stack.getProperty("machine_nozzle_size", "value")
+            material_type = extruder_stack.material.getMetaDataEntry("material")
+            self._print_information._abbr_machine = "%s_%s_%s" % (gantry_angle, nozzle_size, material_type)
             return
         ### END PATCH
 
