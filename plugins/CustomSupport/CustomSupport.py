@@ -9,6 +9,7 @@ import qimage2ndarray #To convert QImage to Numpy arrays.
 from typing import Optional, Tuple
 
 from cura.CuraApplication import CuraApplication #To get the camera and settings.
+from cura.Operations.SetParentOperation import SetParentOperation #To make the support move along with whatever it is drawn on.
 from cura.PickingPass import PickingPass
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator #To put the scene node on the correct build plate.
 from cura.Scene.CuraSceneNode import CuraSceneNode #To create a scene node that causes the support to be drawn/erased.
@@ -101,6 +102,9 @@ class CustomSupport(Tool):
         support_positions_2d = numpy.array(numpy.where(numpy.bitwise_and(to_support == 255, depth < 16777))) #All the 2D coordinates on the screen where we want support. The 16777 is for points that don't land on a model.
         support_depths = numpy.take(depth, support_positions_2d[0, :] * depth.shape[1] + support_positions_2d[1, :]) #The depth at those pixels.
         support_positions_2d = support_positions_2d.transpose() #We want rows with pixels, not columns with pixels.
+        if len(support_positions_2d) == 0:
+            Logger.log("i", "Support was not drawn on the surface of any objects. Not creating support.")
+            return
         support_positions_2d[:, [0, 1]] = support_positions_2d[:, [1, 0]] #Swap columns to get OpenGL's coordinate system.
         camera_viewport = numpy.array([camera.getViewportWidth(), camera.getViewportHeight()])
         support_positions_2d = support_positions_2d * 2.0 / camera_viewport - 1.0 #Scale to view coordinates (range -1 to 1).
