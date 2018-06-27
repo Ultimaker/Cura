@@ -192,7 +192,7 @@ class CustomSupport(Tool):
         #Create the scene node.
         scene = CuraApplication.getInstance().getController().getScene()
         new_node = CuraSceneNode(parent = scene.getRoot(), name = "CustomSupport")
-        new_node.setSelectable(True)
+        new_node.setSelectable(False)
         new_node.setMeshData(builder.build())
         new_node.addDecorator(BuildPlateDecorator(CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate))
         new_node.addDecorator(SliceableObjectDecorator())
