@@ -22,7 +22,14 @@ from UM.Settings.SettingInstance import SettingInstance #To set the correct supp
 from UM.Tool import Tool #The interface we're implementing.
 
 class CustomSupport(Tool):
-    brush_size = 20 #Diameter of the brush.
+    #Diameter of the brush.
+    brush_size = 20
+
+    #Size of each piece of the support mesh in pixels.
+    #If you make this too small you can't create support since it'll be less
+    #than a layer high or less than a line wide. If you make this too large the
+    #drawing will be inaccurate.
+    globule_size = 1
 
     def __init__(self):
         super().__init__()
@@ -137,16 +144,16 @@ class CustomSupport(Tool):
         vertices[:, 2] = vertices[:, 2] - support_z_distance - layer_height #Shift coordinates down so that they rise below the support Z distance and actually produce support.
         vertices = numpy.resize(vertices, (n * 6, support_positions_3d.shape[1])) #Resize will repeat all coordinates 6 times.
         #For each position, create a diamond shape around the position with 6 vertices.
-        vertices[n * 0: n * 1, 0] -= support_depths * 0.0025 #First corner (-x, +y).
-        vertices[n * 0: n * 1, 2] += support_depths * 0.0025
-        vertices[n * 1: n * 2, 0] += support_depths * 0.0025 #Second corner (+x, +y).
-        vertices[n * 1: n * 2, 2] += support_depths * 0.0025
-        vertices[n * 2: n * 3, 0] -= support_depths * 0.0025 #Third corner (-x, -y).
-        vertices[n * 2: n * 3, 2] -= support_depths * 0.0025
-        vertices[n * 3: n * 4, 0] += support_depths * 0.0025 #Fourth corner (+x, -y)
-        vertices[n * 3: n * 4, 2] -= support_depths * 0.0025
-        vertices[n * 4: n * 5, 1] += support_depths * 0.0025 #Top side.
-        vertices[n * 5: n * 6, 1] -= support_depths * 0.0025 #Bottom side.
+        vertices[n * 0: n * 1, 0] -= support_depths * 0.001 * self.globule_size #First corner (-x, +y).
+        vertices[n * 0: n * 1, 2] += support_depths * 0.001 * self.globule_size
+        vertices[n * 1: n * 2, 0] += support_depths * 0.001 * self.globule_size #Second corner (+x, +y).
+        vertices[n * 1: n * 2, 2] += support_depths * 0.001 * self.globule_size
+        vertices[n * 2: n * 3, 0] -= support_depths * 0.001 * self.globule_size #Third corner (-x, -y).
+        vertices[n * 2: n * 3, 2] -= support_depths * 0.001 * self.globule_size
+        vertices[n * 3: n * 4, 0] += support_depths * 0.001 * self.globule_size #Fourth corner (+x, -y)
+        vertices[n * 3: n * 4, 2] -= support_depths * 0.001 * self.globule_size
+        vertices[n * 4: n * 5, 1] += support_depths * 0.001 * self.globule_size #Top side.
+        vertices[n * 5: n * 6, 1] -= support_depths * 0.001 * self.globule_size #Bottom side.
 
         #Create the faces of the diamond.
         indices = numpy.arange(n, dtype = numpy.int32)
