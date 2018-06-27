@@ -1,10 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import math #To create the circular cursor.
 import numpy #To process coordinates in bulk.
 import numpy.linalg #To project window coordinates onto the scene.
 from PyQt5.QtCore import Qt #For shortcut keys and colours.
-from PyQt5.QtGui import QBrush, QImage, QPainter, QPen #Drawing on a temporary buffer until we're ready to process the area of custom support.
+from PyQt5.QtGui import QBrush, QColor, QCursor, QImage, QPainter, QPen, QPixmap #Drawing on a temporary buffer until we're ready to process the area of custom support, and changing the cursor.
 import qimage2ndarray #To convert QImage to Numpy arrays.
 from typing import Optional, Tuple
 
@@ -48,6 +49,16 @@ class CustomSupport(Tool):
         self._line_pen.setWidth(self.brush_size)
         self._line_pen.setCapStyle(Qt.RoundCap)
 
+        #Create the cursor.
+        cursor_image = QImage(self.brush_size, self.brush_size, QImage.Format_ARGB32)
+        cursor_image.fill(QColor(0, 0, 0, 0))
+        for angle in (i / 2 / math.pi for i in range(4 * self.brush_size)):
+            x = int(math.cos(angle) * self.brush_size / 2 + self.brush_size / 2)
+            y = int(math.sin(angle) * self.brush_size / 2 + self.brush_size / 2)
+            cursor_image.setPixelColor(x, y, QColor(128, 128, 128, 255))
+        cursor_bitmap = QPixmap.fromImage(cursor_image)
+        self._cursor = QCursor(cursor_bitmap)
+
     def event(self, event: Event):
         if event.type == Event.ToolActivateEvent:
             active_view = QtApplication.getInstance().getController().getActiveView()
@@ -55,11 +66,13 @@ class CustomSupport(Tool):
                 self._previous_view = active_view.getPluginId()
             QtApplication.getInstance().getController().setActiveView("SolidView")
             QtApplication.getInstance().getController().disableSelection()
+            QtApplication.getInstance().setOverrideCursor(self._cursor)
         elif event.type == Event.ToolDeactivateEvent:
             if self._previous_view is not None:
                 QtApplication.getInstance().getController().setActiveView(self._previous_view)
                 self._previous_view = None
             QtApplication.getInstance().getController().enableSelection()
+            QtApplication.getInstance().restoreOverrideCursor()
 
         elif event.type == Event.MousePressEvent and MouseEvent.LeftButton in event.buttons:
             #Reset the draw buffer and start painting.
