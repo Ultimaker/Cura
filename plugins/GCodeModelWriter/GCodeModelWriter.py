@@ -86,6 +86,23 @@ class GCodeModelWriter(MeshWriter):
         if mode != MeshWriter.OutputMode.BinaryMode:
             Logger.log("e", "GCodeWriter does not support text mode.")
             return False
+        #self.write_stl(stream)
+        #self.write_scad(stream, shape = "cube")  # shape is cube or cylinder
+        #self.write_f360(stream)
+        self.write_csv(stream)
+        return True
+
+    def write_stl(self, stream):
+        tube_type = "rectangular"
+        #tube_type = "diamond"
+
+        num_vertices = {
+            "diamond": 16,
+            "rectangular": 12}
+        tube_function = {
+            "diamond": self._generateTubeVerticesDiamond,
+            "rectangular": self._generateTubeVerticesRectangular,
+        }
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
@@ -95,18 +112,23 @@ class GCodeModelWriter(MeshWriter):
         gcode_list = gcode_dict.get(active_build_plate, None)
         if gcode_list is not None:
             paths = self.convertGCode(gcode_list)
-            # every path leads to 16 faces, each consisting of 3 coordinates and every coordinate has x, y, z
-            paths_vertices = numpy.zeros([3 * 16 * len(paths), 3])
+            # every path becomes 12 or 16 faces, each consisting of 3 coordinates and every coordinate has x, y, z
+            paths_vertices = numpy.zeros([3 * num_vertices[tube_type] * len(paths), 3])
             current_base_index = 0
+            len_paths = len(paths)
+            print("len(paths): " + str(len_paths))
+            count = 0
             for position_from, position_to, layer_thickness in paths:
                 line_width = self._calculateLineWidth(position_to, position_from, layer_thickness)
-                vertices = self._generateTubeVertices(position_from, position_to, line_width + 0.02, layer_thickness + 0.02)
-                paths_vertices[current_base_index:current_base_index + 3 * 16, :] = vertices[:, :]
-                current_base_index += 3 * 16
+                vertices = tube_function[tube_type](position_from, position_to, line_width + 0.02, layer_thickness + 0.02, offset = 0.02)
+                #vertices = tube_function[tube_type](position_from, position_to, line_width, layer_thickness)
+                paths_vertices[current_base_index:current_base_index + 3 * num_vertices[tube_type], :] = vertices[:, :]
+                current_base_index += 3 * num_vertices[tube_type]
+                print("processing" + str(count) + " / " + str(len_paths) + "...")
+                count += 1
             mesh_data = MeshData(vertices = paths_vertices)
+            print("Saving...")
             self._writeBinary(stream, mesh_data)
-
-        return False
 
     def _writeBinary(self, stream, mesh_data: MeshData):
         Logger.log("d", "Writing stl...")
@@ -144,9 +166,212 @@ class GCodeModelWriter(MeshWriter):
                 stream.write(struct.pack("<fff", v3[0], -v3[2], v3[1]))
                 stream.write(struct.pack("<H", 0))
 
+    def write_scad(self, stream, shape = "cube"):
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        scene = Application.getInstance().getController().getScene()
+        if not hasattr(scene, "gcode_dict"):
+            return False
+        gcode_dict = getattr(scene, "gcode_dict")
+        gcode_list = gcode_dict.get(active_build_plate, None)
+        if shape == "cylinder":
+            stream.write("$fn = 24;\n".encode())
+        if gcode_list is not None:
+            paths = self.convertGCode(gcode_list)
+            for position_from, position_to, layer_thickness in paths:
+                line_width = self._calculateLineWidth(position_to, position_from, layer_thickness)
+                stream.write(self._generateScad(position_from, position_to, line_width + 0.02, layer_thickness + 0.02, offset = 0.02, shape=shape).encode())
+
+    def _generateScad(self, position_from, position_to, width, thickness, offset = 0, shape = "cube"):
+        path_from_zero = Vector(position_to.x - position_from.x, position_to.y - position_from.y, position_to.z - position_from.z)
+        length = path_from_zero.length()
+        angle_radians = math.atan2(path_from_zero.x, path_from_zero.y)
+        angle_degrees = math.degrees(angle_radians)
+        print("length: " + str(length) + "  angle: " + str(angle_degrees))
+        if shape == "cube":
+            return self._generateScadCube(position_from, length, width, thickness, angle_degrees, offset)
+        elif shape == "cylinder":
+            return self._generateScadCylinder(position_from, length, width, thickness, angle_degrees, offset)
+
+    def _generateScadCube(self, position_from, length, width, thickness, angle, offset = 0):
+        return "translate([{x}, {y}, {z}]) rotate([0, 0, {angle}]) translate([-{half_line_width}, -{half_line_width}, 0]) cube([{line_width}, {length}, {layer_thickness}]);\n".format(
+            length = length + width - offset, line_width = width, layer_thickness = thickness,
+            half_line_width = 0.5 * width, angle = -angle,
+            x = position_from.x + offset, y = position_from.y, z = position_from.z)
+
+    def _generateScadCylinder(self, position_from, length, width, thickness, angle, offset = 0):
+        return """
+        translate([{x}, {y}, {z}]) rotate([0, 0, {angle}]) rotate([-90, 0, 0]) union() {{
+            cylinder(r = {half_line_width}, h = {length});
+            sphere(r = {half_line_width});
+            translate([0, 0, {length}])
+            sphere(r = {half_line_width});
+        }}
+        """.format(
+            length = length - offset, line_width = width, layer_thickness = thickness,
+            half_line_width = 0.5 * width, angle = -angle,
+            x = position_from.x + offset, y = position_from.y, z = position_from.z)
+        # return """
+        # translate([{x}, {y}, {z}])
+        # rotate([0, 0, {angle}])
+        # translate([0, -{half_line_width}, 0])
+        # rotate([-90, 0, 0])
+        # cylinder(r = {half_line_width}, h = {length});
+        # """.format(
+        #     length = length + width - offset, line_width = width, layer_thickness = thickness,
+        #     half_line_width = 0.5 * width, angle = -angle,
+        #     x = position_from.x + offset, y = position_from.y, z = position_from.z)
+
+    def write_f360(self, stream):
+        script_template_before = """
+import adsk.core, adsk.fusion, traceback
+
+def run(context):
+    ui = None
+    try: 
+        app = adsk.core.Application.get()
+        ui = app.userInterface
+
+        doc = app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
+        design = app.activeProduct
+
+        # Get the root component of the active design.
+        rootComp = design.rootComponent
+
+        # Create a new sketch on the xy plane.
+        sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+"""
+        script_template_after = """        
+    except:
+        if ui:
+            ui.messageBox('Failed:\\n{}'.format(traceback.format_exc()))"""
+
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        scene = Application.getInstance().getController().getScene()
+        if not hasattr(scene, "gcode_dict"):
+            return False
+        gcode_dict = getattr(scene, "gcode_dict")
+        gcode_list = gcode_dict.get(active_build_plate, None)
+        if gcode_list is not None:
+            paths = self.convertGCode(gcode_list)
+            stream.write(script_template_before.encode())
+            for position_from, position_to, layer_thickness in paths:
+                stream.write(self._generateF360Line(position_from, position_to).encode())
+            stream.write(script_template_after.encode())
+
+    def _generateF360Line(self, position_from, position_to):
+        add_line_template = """
+        pt1 = adsk.core.Point3D.create({x0}, {y0}, {z0})
+        pt2 = adsk.core.Point3D.create({x1}, {y1}, {z1})
+        sketch.sketchCurves.sketchLines.addByTwoPoints(pt1, pt2)
+        """
+        return add_line_template.format(
+            x0 = position_from.x, y0 = position_from.y, z0 = position_from.z,
+            x1 = position_to.x, y1 = position_to.y, z1 = position_to.z)
+
+    def write_csv(self, stream):
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        scene = Application.getInstance().getController().getScene()
+        if not hasattr(scene, "gcode_dict"):
+            return False
+        gcode_dict = getattr(scene, "gcode_dict")
+        gcode_list = gcode_dict.get(active_build_plate, None)
+        if gcode_list is not None:
+            paths = self.convertGCode(gcode_list)
+            for position_from, position_to, layer_thickness in paths:
+                line_width = self._calculateLineWidth(position_to, position_from, layer_thickness)
+                stream.write(self._generate_csv_line(position_from, position_to, width = line_width, height = layer_thickness).encode())
+
+    def _generate_csv_line(self, position_from, position_to, width, height):
+        return "{x0}, {y0}, {z0}, {x1}, {y1}, {z1}\n".format(
+            x0 = position_from.x, y0 = position_from.y, z0 = position_from.z,
+            x1 = position_to.x, y1 = position_to.y, z1 = position_to.z, width = width, height = height)
+
     ##  Return vertices corresponding to a tube-like shape that goes from 'from' to 'to'
+    #   This version has rectangular cross sections
+    def _generateTubeVerticesRectangular(self, point_from, point_to, line_width, line_height, offset = 0):
+        result = numpy.zeros([3 * 12, 3])
+        real_result = numpy.zeros([3 * 12, 3])  # y and z are swapped
+        half_width = 0.5 * line_width
+        half_height = 0.5 * line_height
+        v_from = Vector(point_from.x, point_from.y, point_from.z)
+        v_to = Vector(point_to.x, point_to.y, point_to.z)
+        direction = (v_to - v_from).normalized()
+        v_from -= Vector(half_width * direction.x, half_width * direction.y, 0)
+        v_to += Vector(half_width * direction.x, half_width * direction.y, 0)
+        if offset != 0:
+            v_from = v_from + Vector(offset * direction.x, offset * direction.y, 0)
+
+        # the "long" part, or "sides"
+        idx = 0
+        result[idx + 0, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z + half_height]
+        result[idx + 1, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z + half_height]
+        result[idx + 2, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z - half_height]
+        idx += 3
+        result[idx + 0, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z + half_height]
+        result[idx + 1, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z - half_height]
+        result[idx + 2, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z - half_height]
+
+        idx += 3
+        result[idx + 0, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z - half_height]
+        result[idx + 1, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z - half_height]
+        result[idx + 2, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z - half_height]
+        idx += 3
+        result[idx + 0, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z - half_height]
+        result[idx + 1, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z - half_height]
+        result[idx + 2, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z - half_height]
+
+        idx += 3
+        result[idx + 0, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z - half_height]
+        result[idx + 1, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z - half_height]
+        result[idx + 2, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z + half_height]
+        idx += 3
+        result[idx + 0, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z - half_height]
+        result[idx + 1, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z + half_height]
+        result[idx + 2, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z + half_height]
+
+        idx += 3
+        result[idx + 0, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z + half_height]
+        result[idx + 1, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z + half_height]
+        result[idx + 2, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z + half_height]
+        idx += 3
+        result[idx + 0, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z + half_height]
+        result[idx + 1, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z + half_height]
+        result[idx + 2, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z + half_height]
+
+        # "to"
+        idx += 3
+        result[idx + 0, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z + half_height]
+        result[idx + 1, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z - half_height]
+        result[idx + 2, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z - half_height]
+
+        idx += 3
+        result[idx + 0, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z - half_height]
+        result[idx + 1, :] = [v_to.x - half_width * direction.y, v_to.y + half_width * direction.x, v_to.z + half_height]
+        result[idx + 2, :] = [v_to.x + half_width * direction.y, v_to.y - half_width * direction.x, v_to.z + half_height]
+
+        # "from"
+        idx += 3
+        result[idx + 0, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z - half_height]
+        result[idx + 1, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z - half_height]
+        result[idx + 2, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z + half_height]
+
+        idx += 3
+        result[idx + 0, :] = [v_from.x + half_width * direction.y, v_from.y - half_width * direction.x, v_from.z + half_height]
+        result[idx + 1, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z + half_height]
+        result[idx + 2, :] = [v_from.x - half_width * direction.y, v_from.y + half_width * direction.x, v_from.z - half_height]
+
+        # x, z, y in printing coordinates, so swapping + 1 and + 2
+        real_result[:, 0] = result[:, 0]
+        real_result[:, 1] = result[:, 2]
+        real_result[:, 2] = -result[:, 1]
+
+        return real_result
+
+    ##  Return vertices corresponding to a tube-like shape that goes from 'from' to 'to'
+    #   This version does it in the same way as the layer view does: the cross section is diamond shaped
     #   Assumes that z in from and to are the same
-    def _generateTubeVertices(self, point_from, point_to, line_width, line_height):
+    #   offset is also used to move some points around so the chance that they collide is smaller (i.e. in a square box)
+    def _generateTubeVerticesDiamond(self, point_from, point_to, line_width, line_height, offset = 0):
         result = numpy.zeros([3 * 16, 3])
         real_result = numpy.zeros([3 * 16, 3])  # y and z are swapped
         half_width = 0.5 * line_width
@@ -154,6 +379,8 @@ class GCodeModelWriter(MeshWriter):
         v_from = Vector(point_from.x, point_from.y, point_from.z)
         v_to = Vector(point_to.x, point_to.y, point_to.z)
         direction = (v_to - v_from).normalized()
+        if offset != 0:
+            v_from = v_from + Vector(offset * direction.x, offset * direction.y, 0)
 
         # the "long" part, or "sides"
         idx = 0
