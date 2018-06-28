@@ -1,6 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
 import os.path
 import zipfile
 
@@ -168,6 +169,8 @@ class ThreeMFReader(MeshReader):
             archive = zipfile.ZipFile(file_name, "r")
             self._base_name = os.path.basename(file_name)
             parser = Savitar.ThreeMFParser()
+            with open("/tmp/test.xml", "wb") as f:
+                f.write(archive.open("3D/3dmodel.model").read())
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
             for node in scene_3mf.getSceneNodes():
@@ -198,9 +201,9 @@ class ThreeMFReader(MeshReader):
                 # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
                 # build volume.
                 if global_container_stack:
-                    translation_vector = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2,
-                                                y=-global_container_stack.getProperty("machine_depth", "value") / 2,
-                                                z=0)
+                    translation_vector = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2,
+                                                y = -global_container_stack.getProperty("machine_depth", "value") / 2,
+                                                z = 0)
                     translation_matrix = Matrix()
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)
@@ -236,23 +239,20 @@ class ThreeMFReader(MeshReader):
     #   * inch
     #   * foot
     #   * meter
-    def _getScaleFromUnit(self, unit):
+    def _getScaleFromUnit(self, unit: Optional[str]) -> Vector:
+        conversion_to_mm = {
+            "micron": 0.001,
+            "millimeter": 1,
+            "centimeter": 10,
+            "meter": 1000,
+            "inch": 25.4,
+            "foot": 304.8
+        }
         if unit is None:
             unit = "millimeter"
-        if unit == "micron":
-            scale = 0.001
-        elif unit == "millimeter":
-            scale = 1
-        elif unit == "centimeter":
-            scale = 10
-        elif unit == "inch":
-            scale = 25.4
-        elif unit == "foot":
-            scale = 304.8
-        elif unit == "meter":
-            scale = 1000
-        else:
-            Logger.log("w", "Unrecognised unit %s used. Assuming mm instead", unit)
-            scale = 1
+        elif unit not in conversion_to_mm:
+            Logger.log("w", "Unrecognised unit {unit} used. Assuming mm instead.".format(unit = unit))
+            unit = "millimeter"
 
+        scale = conversion_to_mm[unit]
         return Vector(scale, scale, scale)
