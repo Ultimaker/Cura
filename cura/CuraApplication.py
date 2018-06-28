@@ -669,6 +669,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     def run(self):
+        super().run()
         container_registry = self._container_registry
 
         Logger.log("i", "Initializing variant manager")
