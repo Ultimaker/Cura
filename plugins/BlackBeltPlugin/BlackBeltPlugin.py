@@ -6,6 +6,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.SettingFunction import SettingFunction
 from UM.Logger import Logger
 from UM.Version import Version
 
@@ -256,6 +257,10 @@ class BlackBeltPlugin(Extension):
     def _filterGcode(self, output_device):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
+        definition_container = self._global_container_stack.getBottom()
+        if definition_container.getId() != "blackbelt":
+            return
+
         scene = Application.getInstance().getController().getScene()
         gcode_dict = getattr(scene, "gcode_dict", {})
         if not gcode_dict: # this also checks for an empty dict
@@ -278,9 +283,6 @@ class BlackBeltPlugin(Extension):
             repetitions_distance = global_stack.getProperty("blackbelt_repetitions_distance", "value")
             repetitions_gcode = global_stack.getProperty("blackbelt_repetitions_gcode", "value")
 
-        if not (enable_secondary_fans or enable_belt_wall or repetitions > 1):
-            return
-
         for plate_id in gcode_dict:
             gcode_list = gcode_dict[plate_id]
             if not gcode_list:
@@ -289,6 +291,30 @@ class BlackBeltPlugin(Extension):
             if ";BLACKBELTPROCESSED" in gcode_list[0]:
                 Logger.log("e", "Already post processed")
                 continue
+
+            # put a print settings summary at the top
+            # note: this simplified view is only valid for single extrusion printers
+            setting_values = {}
+            setting_summary = "; Setting summary:\n"
+            for stack in [global_stack.extruders["0"], global_stack]:
+                for index, container in enumerate(stack.getContainers()):
+                    if index == 6:
+                        continue
+                    for key in container.getAllKeys():
+                        if key not in setting_values:
+                            value = container.getProperty(key, "value")
+                            if isinstance(value, SettingFunction):
+                                value = value(stack)
+                            if container.getProperty(key, "type") == "str":
+                                value = value.replace("\n", "\\n")
+                            setting_values[key] = value
+
+            for definition in global_stack.getBottom().findDefinitions():
+                if definition.type == "category":
+                    setting_summary += ";  CATEGORY: %s\n" % definition.label
+                elif definition.key in setting_values:
+                    setting_summary += ";   %s: %s\n" % (definition.label, setting_values[definition.key])
+            gcode_list[0] += setting_summary
 
             # secondary fans should similar things as print cooling fans
             if enable_secondary_fans:
