@@ -87,9 +87,10 @@ class CustomSupport(Tool):
         elif event.type == Event.MouseReleaseEvent and MouseEvent.LeftButton in event.buttons:
             #Complete drawing.
             self._last_x, self._last_y = self._cursorCoordinates()
-            self._painter.setPen(self._endcap_pen)
-            self._painter.drawEllipse(self._last_x - self.brush_size / 2, self._last_y - self.brush_size / 2, self.brush_size, self.brush_size) #Paint another ellipse when you're releasing as endcap.
-            self._painter = None
+            if self._painter:
+                self._painter.setPen(self._endcap_pen)
+                self._painter.drawEllipse(self._last_x - self.brush_size / 2, self._last_y - self.brush_size / 2, self.brush_size, self.brush_size) #Paint another ellipse when you're releasing as endcap.
+                self._painter = None
             QtApplication.getInstance().getController().getView("SolidView").setExtraOverhang(self._draw_buffer)
             self._constructSupport(self._draw_buffer) #Actually place the support.
             self._resetDrawBuffer()
