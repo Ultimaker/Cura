@@ -39,12 +39,12 @@ class SimpleModeSettingsManager(QObject):
         global_stack = self._machine_manager.activeMachine
 
         # check user settings in the global stack
-        user_setting_keys.update(set(global_stack.userChanges.getAllKeys()))
+        user_setting_keys.update(global_stack.userChanges.getAllKeys())
 
         # check user settings in the extruder stacks
         if global_stack.extruders:
             for extruder_stack in global_stack.extruders.values():
-                user_setting_keys.update(set(extruder_stack.userChanges.getAllKeys()))
+                user_setting_keys.update(extruder_stack.userChanges.getAllKeys())
 
         # remove settings that are visible in recommended (we don't show the reset button for those)
         for skip_key in self.__ignored_custom_setting_keys:
@@ -70,12 +70,12 @@ class SimpleModeSettingsManager(QObject):
         global_stack = self._machine_manager.activeMachine
 
         # check quality changes settings in the global stack
-        quality_changes_keys.update(set(global_stack.qualityChanges.getAllKeys()))
+        quality_changes_keys.update(global_stack.qualityChanges.getAllKeys())
 
         # check quality changes settings in the extruder stacks
         if global_stack.extruders:
             for extruder_stack in global_stack.extruders.values():
-                quality_changes_keys.update(set(extruder_stack.qualityChanges.getAllKeys()))
+                quality_changes_keys.update(extruder_stack.qualityChanges.getAllKeys())
 
         # check if the qualityChanges container is not empty (meaning it is a user created profile)
         has_quality_changes = len(quality_changes_keys) > 0

@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional
+from typing import Optional, Tuple
 
 from UM.Logger import Logger
 from cura.Backups.Backup import Backup
@@ -18,7 +18,7 @@ class BackupsManager:
     ##  Get a back-up of the current configuration.
     #   \return A tuple containing a ZipFile (the actual back-up) and a dict
     #   containing some metadata (like version).
-    def createBackup(self) -> (Optional[bytes], Optional[dict]):
+    def createBackup(self) -> Tuple[Optional[bytes], Optional[dict]]:
         self._disableAutoSave()
         backup = Backup()
         backup.makeFromCurrent()

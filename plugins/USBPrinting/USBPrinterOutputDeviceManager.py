@@ -179,7 +179,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
 
         return list(base_list)
 
-    __instance = None
+    __instance = None # type: USBPrinterOutputDeviceManager
 
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "USBPrinterOutputDeviceManager":

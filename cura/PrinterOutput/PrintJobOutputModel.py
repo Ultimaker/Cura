@@ -2,9 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
-from typing import Optional
-MYPY = False
-if MYPY:
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
@@ -18,7 +18,7 @@ class PrintJobOutputModel(QObject):
     assignedPrinterChanged = pyqtSignal()
     ownerChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
         self._output_controller = output_controller
         self._state = ""

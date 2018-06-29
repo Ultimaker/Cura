@@ -1,5 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Tuple, Optional
+
 from cura.Backups.BackupsManager import BackupsManager
 
 
@@ -17,7 +19,7 @@ class Backups:
     ##  Create a new back-up using the BackupsManager.
     #   \return Tuple containing a ZIP file with the back-up data and a dict
     #   with metadata about the back-up.
-    def createBackup(self) -> (bytes, dict):
+    def createBackup(self) -> Tuple[Optional[bytes], Optional[dict]]:
         return self.manager.createBackup()
 
     ##  Restore a back-up using the BackupsManager.
