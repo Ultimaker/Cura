@@ -38,8 +38,8 @@ except ImportError:
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
-    def __init__(self, application):
-        super().__init__(application)
+    def __init__(self) -> None:
+        super().__init__()
 
         MimeTypeDatabase.addMimeType(
             MimeType(

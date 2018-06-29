@@ -17,8 +17,8 @@ from cura.Scene.CuraSceneNode import CuraSceneNode as SceneNode
 
 
 class ImageReader(MeshReader):
-    def __init__(self, application):
-        super(ImageReader, self).__init__(application)
+    def __init__(self) -> None:
+        super().__init__()
         self._supported_extensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"]
         self._ui = ImageReaderUI(self)
 
