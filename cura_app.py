@@ -134,11 +134,4 @@ import Arcus #@UnusedImport
 from cura.CuraApplication import CuraApplication
 
 app = CuraApplication()
-app.addCommandLineOptions()
-app.parseCliOptions()
-app.initialize()
-
-app.startSplashWindowPhase()
-app.startPostSplashWindowPhase()
-
 app.run()

@@ -105,14 +105,6 @@ class PauseAtHeight(Script):
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0
-                },
-                "resume_temperature":
-                {
-                    "label": "Resume Temperature",
-                    "description": "Change the temperature after the pause",
-                    "unit": "°C",
-                    "type": "int",
-                    "default_value": 0
                 }
             }
         }"""
@@ -144,7 +136,6 @@ class PauseAtHeight(Script):
         layers_started = False
         redo_layers = self.getSettingValueByKey("redo_layers")
         standby_temperature = self.getSettingValueByKey("standby_temperature")
-        resume_temperature = self.getSettingValueByKey("resume_temperature")
 
         # T = ExtruderManager.getInstance().getActiveExtruderStack().getProperty("material_print_temperature", "value")
 
@@ -152,6 +143,8 @@ class PauseAtHeight(Script):
         layer_0_z = 0.
         current_z = 0
         got_first_g_cmd_on_layer_0 = False
+        current_t = 0 #Tracks the current extruder for tracking the target temperature.
+        target_temperature = {} #Tracks the current target temperature for each extruder.
 
         nbr_negative_layers = 0
 
@@ -168,6 +161,16 @@ class PauseAtHeight(Script):
                     nbr_negative_layers += 1
                 if not layers_started:
                     continue
+
+                #Track the latest printing temperature in order to resume at the correct temperature.
+                if line.startswith("T"):
+                    current_t = self.getValue(line, "T")
+                m = self.getValue(line, "M")
+                if m is not None and (m == 104 or m == 109) and self.getValue(line, "S") is not None:
+                    extruder = current_t
+                    if self.getValue(line, "T") is not None:
+                        extruder = self.getValue(line, "T")
+                    target_temperature[extruder] = self.getValue(line, "S")
 
                 # If a Z instruction is in the line, read the current Z
                 if self.getValue(line, "Z") is not None:
@@ -262,9 +265,6 @@ class PauseAtHeight(Script):
                 if current_z < 15:
                     prepend_gcode += self.putValue(G=1, Z=15, F=300) + "\n"
 
-                # Disable the E steppers
-                prepend_gcode += self.putValue(M=84, E=0) + "\n"
-
                 # Set extruder standby temperature
                 prepend_gcode += self.putValue(M=104, S=standby_temperature) + "; standby temperature\n"
 
@@ -272,7 +272,7 @@ class PauseAtHeight(Script):
                 prepend_gcode += self.putValue(M=0) + ";Do the actual pause\n"
 
                 # Set extruder resume temperature
-                prepend_gcode += self.putValue(M=109, S=resume_temperature) + "; resume temperature\n"
+                prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, default = 0))) + "; resume temperature\n"
 
                 # Push the filament back,
                 if retraction_amount != 0:

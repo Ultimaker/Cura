@@ -123,7 +123,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 4
+    SettingVersion = 5
 
     Created = False
 
@@ -669,6 +669,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     def run(self):
+        super().run()
         container_registry = self._container_registry
 
         Logger.log("i", "Initializing variant manager")

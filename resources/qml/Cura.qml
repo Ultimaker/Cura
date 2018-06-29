@@ -878,6 +878,9 @@ UM.MainWindow
                 path = path.replace(/\\/g,"/");
             }
             Qt.openUrlExternally(path);
+            if(Qt.platform.os == "linux") {
+                Qt.openUrlExternally(UM.Resources.getPath(UM.Resources.Resources, ""));
+            }
         }
     }
 

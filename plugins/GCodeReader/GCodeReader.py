@@ -19,16 +19,16 @@ MimeTypeDatabase.addMimeType(
     )
 )
 
+
 # Class for loading and parsing G-code files
 class GCodeReader(MeshReader):
-
     _flavor_default = "Marlin"
     _flavor_keyword = ";FLAVOR:"
     _flavor_readers_dict = {"RepRap" : RepRapFlavorParser.RepRapFlavorParser(),
                             "Marlin" : MarlinFlavorParser.MarlinFlavorParser()}
 
-    def __init__(self, application):
-        super(GCodeReader, self).__init__(application)
+    def __init__(self) -> None:
+        super().__init__()
         self._supported_extensions = [".gcode", ".g"]
         self._flavor_reader = None
 

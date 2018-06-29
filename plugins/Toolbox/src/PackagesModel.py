@@ -32,6 +32,7 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 15, "is_installed") # Scheduled pkgs are included in the model but should not be marked as actually installed
         self.addRoleName(Qt.UserRole + 16, "has_configs")
         self.addRoleName(Qt.UserRole + 17, "supported_configs")
+        self.addRoleName(Qt.UserRole + 18, "download_count")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -76,7 +77,9 @@ class PackagesModel(ListModel):
                 "is_enabled":        package["is_enabled"] if "is_enabled" in package else False,
                 "is_installed":      package["is_installed"] if "is_installed" in package else False,
                 "has_configs":       has_configs,
-                "supported_configs": configs_model
+                "supported_configs": configs_model,
+                "download_count":    package["download_count"] if "download_count" in package else 0
+
             })
 
         # Filter on all the key-word arguments.

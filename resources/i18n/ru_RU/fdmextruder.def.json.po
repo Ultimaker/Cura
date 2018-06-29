@@ -81,7 +81,7 @@ msgstr "Смещение сопла по оси Y."
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "G-код старта экструдера"
+msgstr "Стартовый G-код экструдера"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
@@ -121,7 +121,7 @@ msgstr "Y координата стартовой позиции при вклю
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "G-код завершения экструдера"
+msgstr "Завершающий G-код экструдера"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"

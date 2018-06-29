@@ -11,9 +11,8 @@ from UM.PluginRegistry import PluginRegistry
 #
 #   If you're zipping g-code, you might as well use gzip!
 class GCodeGzReader(MeshReader):
-
-    def __init__(self, application):
-        super().__init__(application)
+    def __init__(self) -> None:
+        super().__init__()
         self._supported_extensions = [".gcode.gz"]
 
     def _read(self, file_name):
