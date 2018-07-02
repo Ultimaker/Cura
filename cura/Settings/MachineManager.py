@@ -1288,7 +1288,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def switchPrinterType(self, machine_name: str) -> None:
         # Don't switch if the user tries to change to the same type of printer
-        if self._global_container_stack is None or self.self.activeMachineDefinitionName == machine_name:
+        if self._global_container_stack is None or self.activeMachineDefinitionName == machine_name:
             return
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()

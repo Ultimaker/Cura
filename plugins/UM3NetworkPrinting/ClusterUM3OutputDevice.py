@@ -23,6 +23,7 @@ from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
+from .SendMaterialJob import SendMaterialJob
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
@@ -30,7 +31,7 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
 from time import time
 from datetime import datetime
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Set
 
 import io #To create the correct buffers for sending data to the printer.
 import json
@@ -93,6 +94,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
+
+        self.sendMaterialProfiles()
 
         #Formats supported by this application (file types that we can actually write).
         if file_handler:
@@ -370,6 +373,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # Keep a list of all completed jobs so we know if something changed next time.
         self._finished_jobs = finished_jobs
 
+    ##  Called when the connection to the cluster changes.
+    def connect(self) -> None:
+        super().connect()
+        self.sendMaterialProfiles()
+
     def _update(self) -> None:
         super()._update()
         self.get("printers/", on_finished = self._onGetPrintersDataFinished)
@@ -538,6 +546,13 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._active_printer = None
             self.activePrinterChanged.emit()
 
+    ##  Sync the material profiles in Cura with the printer.
+    #
+    #   This gets called when connecting to a printer as well as when sending a
+    #   print.
+    def sendMaterialProfiles(self) -> None:
+        job = SendMaterialJob(device = self)
+        job.run()
 
 def loadJsonFromReply(reply: QNetworkReply) -> Optional[List[Dict[str, Any]]]:
     try:

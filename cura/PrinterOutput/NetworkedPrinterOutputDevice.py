@@ -214,7 +214,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             reply.uploadProgress.connect(on_progress)
         self._registerOnFinishedCallback(reply, on_finished)
 
-    def postFormWithParts(self, target:str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
+    def postFormWithParts(self, target: str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
+
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target, content_type=None)
