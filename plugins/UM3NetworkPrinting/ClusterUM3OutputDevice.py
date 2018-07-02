@@ -220,10 +220,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # If a specific printer was selected, it should be printed with that machine.
         if target_printer:
             target_printer = self._printer_uuid_to_unique_name_mapping[target_printer]
-            parts.append(self.createFormPart("name=require_printer_name", bytes(target_printer, "utf-8"), "text/plain"))
+            parts.append(self._createFormPart("name=require_printer_name", bytes(target_printer, "utf-8"), "text/plain"))
 
         # Add user name to the print_job
-        parts.append(self.createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
+        parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
 
         file_name = CuraApplication.getInstance().getPrintInformation().jobName + "." + preferred_format["extension"]
 
@@ -232,7 +232,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             output = cast(str, output).encode("utf-8")
         output = cast(bytes, output)
 
-        parts.append(self.createFormPart("name=\"file\"; filename=\"%s\"" % file_name, output))
+        parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, output))
 
         self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, on_finished = self._onPostPrintJobFinished, on_progress = self._onUploadPrintJobProgress)
 
