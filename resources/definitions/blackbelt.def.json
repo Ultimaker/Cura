@@ -21,7 +21,7 @@
         "preferred_quality_type": "normal",
         "has_machine_materials": true,
         "preferred_material": "blackbelt_ngen",
-        "limit_materials": ["generic_pla_175", "blackbelt_ngen", "blackbelt_ht"],
+        "limit_materials": true,
         "has_variants": true,
         "preferred_variant_name": "0.4 mm, 45°",
         "variants_id_pattern": "{definition_id}_{term}_{term}",

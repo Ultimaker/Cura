@@ -42,7 +42,7 @@ class MaterialManagerPatches():
         machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
 
         ### START PATCH
-        machine_limit_materials = machine_definition.getMetaDataEntry("limit_materials", [])
+        machine_limit_materials = machine_definition.getMetaDataEntry("limit_materials", False)
         ### END PATCH
 
         material_id_metadata_dict = dict()
@@ -52,7 +52,9 @@ class MaterialManagerPatches():
                 # Do not exclude other materials that are of the same type.
                 for material_id, node in node.material_map.items():
                     ### START PATCH
-                    if machine_limit_materials and material_id not in machine_limit_materials:
+                    if machine_limit_materials and node.getContainer().getId() == material_id:
+                        # For the materials we want Cura creates a variant-specific InstanceContainer
+                        # If the InstanceContainer is not variant-specific then we are not interested
                         continue
                     ### END PATCH
 
