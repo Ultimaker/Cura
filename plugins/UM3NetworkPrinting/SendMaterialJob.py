@@ -28,7 +28,7 @@ class SendMaterialJob(Job):
         self.device = device #type: ClusterUM3OutputDevice
 
     def run(self) -> None:
-        self.device.get("materials/", onFinished = self.sendMissingMaterials)
+        self.device.get("materials/", on_finished = self.sendMissingMaterials)
 
     def sendMissingMaterials(self, reply: QNetworkReply) -> None:
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200: #Got an error from the HTTP request.
