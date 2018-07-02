@@ -1627,7 +1627,6 @@
                         "tetrahedral": "Octet",
                         "quarter_cubic": "Quarter Cubic",
                         "concentric": "Concentric",
-                        "concentric_3d": "Concentric 3D",
                         "zigzag": "Zig Zag",
                         "cross": "Cross",
                         "cross_3d": "Cross 3D"
@@ -1655,7 +1654,7 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern != 'concentric' and infill_pattern != 'concentric_3d' and infill_pattern != 'cubicsubdiv' and infill_sparse_density > 0",
+                    "enabled": "infill_pattern != 'concentric' and infill_pattern != 'cubicsubdiv' and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1791,7 +1790,7 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1 if (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or support_pattern == 'concentric' or support_pattern == 'concentric_3d') else 5",
+                    "maximum_value_warning": "1 if (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or support_pattern == 'concentric') else 5",
                     "maximum_value": "0 if spaghetti_infill_enabled else (999999 if infill_line_distance == 0 else (20 - math.log(infill_line_distance) / math.log(2)))",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv' and not spaghetti_infill_enabled",
                     "limit_to_extruder": "infill_extruder_nr",
@@ -3736,7 +3735,6 @@
                         "grid": "Grid",
                         "triangles": "Triangles",
                         "concentric": "Concentric",
-                        "concentric_3d": "Concentric 3D",
                         "zigzag": "Zig Zag",
                         "cross": "Cross"
                     },
@@ -3976,7 +3974,7 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'zigzag' or support_pattern == 'concentric' or support_pattern == 'concentric_3d') else 5",
+                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'zigzag' or support_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
                     "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
@@ -4183,7 +4181,6 @@
                         "grid": "Grid",
                         "triangles": "Triangles",
                         "concentric": "Concentric",
-                        "concentric_3d": "Concentric 3D",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "concentric",
@@ -4204,7 +4201,6 @@
                                 "grid": "Grid",
                                 "triangles": "Triangles",
                                 "concentric": "Concentric",
-                                "concentric_3d": "Concentric 3D",
                                 "zigzag": "Zig Zag"
                             },
                             "default_value": "concentric",
@@ -4225,7 +4221,6 @@
                                 "grid": "Grid",
                                 "triangles": "Triangles",
                                 "concentric": "Concentric",
-                                "concentric_3d": "Concentric 3D",
                                 "zigzag": "Zig Zag"
                             },
                             "default_value": "concentric",
@@ -5424,7 +5419,7 @@
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0.001",
-                    "default_value": 4,
+                    "default_value": 1,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_tree_enable",
                     "settable_per_mesh": true

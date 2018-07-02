@@ -20,7 +20,7 @@ from typing import List
 
 
 class ArrangeObjectsJob(Job):
-    def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset = 8):
+    def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset = 8) -> None:
         super().__init__()
         self._nodes = nodes
         self._fixed_nodes = fixed_nodes

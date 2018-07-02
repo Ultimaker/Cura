@@ -12,7 +12,7 @@ Column
     height: childrenRect.height
     width: parent.width
     spacing: UM.Theme.getSize("default_margin").height
-    /* Hidden for 3.4
+
     Label
     {
         id: heading
@@ -21,7 +21,6 @@ Column
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
     }
-    */
     GridLayout
     {
         id: grid

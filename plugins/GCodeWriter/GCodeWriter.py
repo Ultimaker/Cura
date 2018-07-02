@@ -140,7 +140,7 @@ class GCodeWriter(MeshWriter):
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
-        all_setting_keys = set(flat_global_container.getAllKeys())
+        all_setting_keys = flat_global_container.getAllKeys()
         for extruder in sorted(stack.extruders.values(), key = lambda k: int(k.getMetaDataEntry("position"))):
             extruder_quality = extruder.qualityChanges
             if extruder_quality.getId() == "empty_quality_changes":
@@ -167,7 +167,7 @@ class GCodeWriter(MeshWriter):
             extruder_serialized = flat_extruder_quality.serialize()
             data.setdefault("extruder_quality", []).append(extruder_serialized)
 
-            all_setting_keys.update(set(flat_extruder_quality.getAllKeys()))
+            all_setting_keys.update(flat_extruder_quality.getAllKeys())
 
         # Check if there is any profiles
         if not all_setting_keys:

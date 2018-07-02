@@ -44,20 +44,18 @@ class Profile:
 
         # Parse the general section.
         self._name = parser.get("general", "name")
-        self._type = parser.get("general", "type", fallback = None)
+        self._type = parser.get("general", "type")
+        self._weight = None
         if "weight" in parser["general"]:
             self._weight = int(parser.get("general", "weight"))
-        else:
-            self._weight = None
-        self._machine_type_id = parser.get("general", "machine_type", fallback = None)
-        self._machine_variant_name = parser.get("general", "machine_variant", fallback = None)
-        self._machine_instance_name = parser.get("general", "machine_instance", fallback = None)
+        self._machine_type_id = parser.get("general", "machine_type")
+        self._machine_variant_name = parser.get("general", "machine_variant")
+        self._machine_instance_name = parser.get("general", "machine_instance")
+        self._material_name = None
         if "material" in parser["general"]: #Note: Material name is unused in this upgrade.
             self._material_name = parser.get("general", "material")
         elif self._type == "material":
-            self._material_name = parser.get("general", "name", fallback = None)
-        else:
-            self._material_name = None
+            self._material_name = parser.get("general", "name")
 
         # Parse the settings.
         self._settings = {} # type: Dict[str,str]

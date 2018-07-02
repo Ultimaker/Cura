@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
-import json
 import os
 import sys
 import time
@@ -14,7 +13,8 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-from UM.Qt.QtApplication import QtApplication
+from typing import cast, TYPE_CHECKING
+
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -28,6 +28,8 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
+from UM.Qt.QtApplication import QtApplication #The class we're inheriting from.
+from UM.View.SelectionPass import SelectionPass #For typing.
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.ContainerStack import ContainerStack
@@ -109,21 +111,19 @@ from UM.FlameProfiler import pyqtSlot
 
 numpy.seterr(all = "ignore")
 
-MYPY = False
-if not MYPY:
-    try:
-        from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
-    except ImportError:
-        CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-        CuraBuildType = ""
-        CuraDebugMode = False
+try:
+    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
+except ImportError:
+    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
+    CuraDebugMode = False
 
 
 class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 4
+    SettingVersion = 5
 
     Created = False
 
@@ -513,7 +513,6 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/asked_dialog_on_project_save", False)
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
-        preferences.addPreference("cura/not_arrange_objects_on_load", False)
         preferences.addPreference("cura/use_multi_build_plate", False)
 
         preferences.addPreference("cura/currency", "€")
@@ -670,6 +669,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     def run(self):
+        super().run()
         container_registry = self._container_registry
 
         Logger.log("i", "Initializing variant manager")
@@ -1603,9 +1603,7 @@ class CuraApplication(QtApplication):
         self._currently_loading_files.remove(filename)
 
         self.fileLoaded.emit(filename)
-        arrange_objects_on_load = (
-            not self.getPreferences().getValue("cura/use_multi_build_plate") or
-            not self.getPreferences().getValue("cura/not_arrange_objects_on_load"))
+        arrange_objects_on_load = not self.getPreferences().getValue("cura/use_multi_build_plate")
         target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         root = self.getController().getScene().getRoot()
@@ -1678,7 +1676,7 @@ class CuraApplication(QtApplication):
                             return
 
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                        node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
+                        arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
             # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
@@ -1722,7 +1720,7 @@ class CuraApplication(QtApplication):
     def _onContextMenuRequested(self, x: float, y: float) -> None:
         # Ensure we select the object if we request a context menu over an object without having a selection.
         if not Selection.hasSelection():
-            node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
+            node = self.getController().getScene().findObject(cast(SelectionPass, self.getRenderer().getRenderPass("selection")).getIdAtPosition(x, y))
             if node:
                 while(node.getParent() and node.getParent().callDecoration("isGroup")):
                     node = node.getParent()

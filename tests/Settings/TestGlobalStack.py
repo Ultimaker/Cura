@@ -482,26 +482,3 @@ def test_setPropertyUser(key, property, value, global_stack):
     global_stack.setProperty(key, property, value) #The actual test.
 
     global_stack.userChanges.setProperty.assert_called_once_with(key, property, value) #Make sure that the user container gets a setProperty call.
-
-##  Tests setting properties on specific containers on the global stack.
-@pytest.mark.parametrize("target_container,    stack_variable", [
-                        ("user",               "userChanges"),
-                        ("quality_changes",    "qualityChanges"),
-                        ("quality",            "quality"),
-                        ("material",           "material"),
-                        ("variant",            "variant"),
-                        ("definition_changes", "definitionChanges")
-])
-def test_setPropertyOtherContainers(target_container, stack_variable, global_stack):
-    #Other parameters that don't need to be varied.
-    key = "layer_height"
-    property = "value"
-    value = 0.1337
-    #A mock container in the right spot.
-    container = unittest.mock.MagicMock()
-    container.getMetaDataEntry = unittest.mock.MagicMock(return_value = target_container)
-    setattr(global_stack, stack_variable, container) #For instance, set global_stack.qualityChanges = container.
-
-    global_stack.setProperty(key, property, value, target_container = target_container) #The actual test.
-
-    getattr(global_stack, stack_variable).setProperty.assert_called_once_with(key, property, value) #Make sure that the proper container gets a setProperty call.

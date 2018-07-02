@@ -79,7 +79,7 @@ msgstr "Nozül ofsetinin y koordinatı."
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "Ekstruder G-Code'u başlatma"
+msgstr "Ekstruder G-Code'u Başlatma"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"

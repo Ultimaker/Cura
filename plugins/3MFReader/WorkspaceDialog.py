@@ -187,7 +187,10 @@ class WorkspaceDialog(QObject):
 
     @pyqtProperty(int, constant = True)
     def totalNumberOfSettings(self):
-        return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
+        general_definition_containers = ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")
+        if not general_definition_containers:
+            return 0
+        return len(general_definition_containers[0].getAllKeys())
 
     @pyqtProperty(int, notify = numVisibleSettingsChanged)
     def numVisibleSettings(self):

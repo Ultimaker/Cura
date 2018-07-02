@@ -1,15 +1,12 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
-
-from typing import Any, Optional
-
+from typing import Any, cast, List, Optional, Union
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
-from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
 from UM.Decorators import override
+from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -39,19 +36,19 @@ from . import Exceptions
 #   This also means that operations on the stack that modifies the container ordering is prohibited and
 #   will raise an exception.
 class CuraContainerStack(ContainerStack):
-    def __init__(self, container_id: str):
+    def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
-        self._container_registry = ContainerRegistry.getInstance()
+        self._container_registry = ContainerRegistry.getInstance() #type: ContainerRegistry
 
-        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer()
+        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer() #type: InstanceContainer
 
-        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
-        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
-        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
-        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0]
+        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0] #type: InstanceContainer
+        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0] #type: InstanceContainer
+        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0] #type: InstanceContainer
+        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0] #type: InstanceContainer
 
-        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))]
+        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[Union[InstanceContainer, DefinitionContainer]]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
         self._containers[_ContainerIndexes.Quality] = self._empty_quality
         self._containers[_ContainerIndexes.Material] = self._empty_material
@@ -76,7 +73,7 @@ class CuraContainerStack(ContainerStack):
     #   \return The user changes container. Should always be a valid container, but can be equal to the empty InstanceContainer.
     @pyqtProperty(InstanceContainer, fset = setUserChanges, notify = pyqtContainersChanged)
     def userChanges(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.UserChanges]
+        return cast(InstanceContainer, self._containers[_ContainerIndexes.UserChanges])
 
     ##  Set the quality changes container.
     #
@@ -89,12 +86,12 @@ class CuraContainerStack(ContainerStack):
     #   \return The quality changes container. Should always be a valid container, but can be equal to the empty InstanceContainer.
     @pyqtProperty(InstanceContainer, fset = setQualityChanges, notify = pyqtContainersChanged)
     def qualityChanges(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.QualityChanges]
+        return cast(InstanceContainer, self._containers[_ContainerIndexes.QualityChanges])
 
     ##  Set the quality container.
     #
     #   \param new_quality The new quality container. It is expected to have a "type" metadata entry with the value "quality".
-    def setQuality(self, new_quality: InstanceContainer, postpone_emit = False) -> None:
+    def setQuality(self, new_quality: InstanceContainer, postpone_emit: bool = False) -> None:
         self.replaceContainer(_ContainerIndexes.Quality, new_quality, postpone_emit = postpone_emit)
 
     ##  Get the quality container.
@@ -102,12 +99,12 @@ class CuraContainerStack(ContainerStack):
     #   \return The quality container. Should always be a valid container, but can be equal to the empty InstanceContainer.
     @pyqtProperty(InstanceContainer, fset = setQuality, notify = pyqtContainersChanged)
     def quality(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.Quality]
+        return cast(InstanceContainer, self._containers[_ContainerIndexes.Quality])
 
     ##  Set the material container.
     #
     #   \param new_material The new material container. It is expected to have a "type" metadata entry with the value "material".
-    def setMaterial(self, new_material: InstanceContainer, postpone_emit = False) -> None:
+    def setMaterial(self, new_material: InstanceContainer, postpone_emit: bool = False) -> None:
         self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
 
     ##  Get the material container.
@@ -115,7 +112,7 @@ class CuraContainerStack(ContainerStack):
     #   \return The material container. Should always be a valid container, but can be equal to the empty InstanceContainer.
     @pyqtProperty(InstanceContainer, fset = setMaterial, notify = pyqtContainersChanged)
     def material(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.Material]
+        return cast(InstanceContainer, self._containers[_ContainerIndexes.Material])
 
     ##  Set the variant container.
     #
@@ -128,7 +125,7 @@ class CuraContainerStack(ContainerStack):
     #   \return The variant container. Should always be a valid container, but can be equal to the empty InstanceContainer.
     @pyqtProperty(InstanceContainer, fset = setVariant, notify = pyqtContainersChanged)
     def variant(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.Variant]
+        return cast(InstanceContainer, self._containers[_ContainerIndexes.Variant])
 
     ##  Set the definition changes container.
     #
@@ -141,7 +138,7 @@ class CuraContainerStack(ContainerStack):
     #   \return The definition changes container. Should always be a valid container, but can be equal to the empty InstanceContainer.
     @pyqtProperty(InstanceContainer, fset = setDefinitionChanges, notify = pyqtContainersChanged)
     def definitionChanges(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.DefinitionChanges]
+        return cast(InstanceContainer, self._containers[_ContainerIndexes.DefinitionChanges])
 
     ##  Set the definition container.
     #
@@ -154,7 +151,7 @@ class CuraContainerStack(ContainerStack):
     #   \return The definition container. Should always be a valid container, but can be equal to the empty InstanceContainer.
     @pyqtProperty(QObject, fset = setDefinition, notify = pyqtContainersChanged)
     def definition(self) -> DefinitionContainer:
-        return self._containers[_ContainerIndexes.Definition]
+        return cast(DefinitionContainer, self._containers[_ContainerIndexes.Definition])
 
     @override(ContainerStack)
     def getBottom(self) -> "DefinitionContainer":
@@ -189,13 +186,9 @@ class CuraContainerStack(ContainerStack):
     #   \param key The key of the setting to set.
     #   \param property_name The name of the property to set.
     #   \param new_value The new value to set the property to.
-    #   \param target_container The type of the container to set the property of. Defaults to "user".
-    def setProperty(self, key: str, property_name: str, new_value: Any, target_container: str = "user") -> None:
-        container_index = _ContainerIndexes.TypeIndexMap.get(target_container, -1)
-        if container_index != -1:
-            self._containers[container_index].setProperty(key, property_name, new_value)
-        else:
-            raise IndexError("Invalid target container {type}".format(type = target_container))
+    def setProperty(self, key: str, property_name: str, property_value: Any, container: "ContainerInterface" = None, set_from_cache: bool = False) -> None:
+        container_index = _ContainerIndexes.UserChanges
+        self._containers[container_index].setProperty(key, property_name, property_value, container, set_from_cache)
 
     ##  Overridden from ContainerStack
     #
@@ -310,15 +303,15 @@ class CuraContainerStack(ContainerStack):
     #
     #   \return The ID of the definition container to use when searching for instance containers.
     @classmethod
-    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainer) -> str:
+    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
         quality_definition = machine_definition.getMetaDataEntry("quality_definition")
         if not quality_definition:
-            return machine_definition.id
+            return machine_definition.id #type: ignore
 
         definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = quality_definition)
         if not definitions:
-            Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id)
-            return machine_definition.id
+            Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id) #type: ignore
+            return machine_definition.id #type: ignore
 
         return cls._findInstanceContainerDefinitionId(definitions[0])
 

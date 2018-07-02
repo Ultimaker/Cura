@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, Dict, cast
 
 from .ContainerNode import ContainerNode
 from .QualityChangesGroup import QualityChangesGroup
@@ -12,9 +12,9 @@ from .QualityChangesGroup import QualityChangesGroup
 #
 class QualityNode(ContainerNode):
 
-    def __init__(self, metadata: Optional[dict] = None):
+    def __init__(self, metadata: Optional[dict] = None) -> None:
         super().__init__(metadata = metadata)
-        self.quality_type_map = {}  # quality_type -> QualityNode for InstanceContainer
+        self.quality_type_map = {}  # type: Dict[str, QualityNode] # quality_type -> QualityNode for InstanceContainer
 
     def addQualityMetadata(self, quality_type: str, metadata: dict):
         if quality_type not in self.quality_type_map:
@@ -32,4 +32,4 @@ class QualityNode(ContainerNode):
         if name not in quality_type_node.children_map:
             quality_type_node.children_map[name] = QualityChangesGroup(name, quality_type)
         quality_changes_group = quality_type_node.children_map[name]
-        quality_changes_group.addNode(QualityNode(metadata))
+        cast(QualityChangesGroup, quality_changes_group).addNode(QualityNode(metadata))

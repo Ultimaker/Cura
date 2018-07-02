@@ -27,7 +27,7 @@ class PrinterOutputModel(QObject):
     cameraChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = ""):
+    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
         super().__init__(parent)
         self._bed_temperature = -1  # Use -1 for no heated bed.
         self._target_bed_temperature = 0
