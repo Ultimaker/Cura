@@ -1,12 +1,13 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Any, Dict
 
-
-class XmlMaterialValidator():
-
+##  Makes sure that the required metadata is present for a material.
+class XmlMaterialValidator:
+    ##  Makes sure that the required metadata is present for a material.
     @classmethod
-    def validateMaterialMetaData(cls, validation_metadata):
+    def validateMaterialMetaData(cls, validation_metadata: Dict[str, Any]):
 
         if validation_metadata.get("GUID") is None:
             return "Missing GUID"
