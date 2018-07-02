@@ -15,6 +15,7 @@ ScrollView
     width: parent.width
     height: parent.height
     style: UM.Theme.styles.scrollview
+    flickableItem.flickableDirection: Flickable.VerticalFlick
     Column
     {
         spacing: UM.Theme.getSize("default_margin").height
