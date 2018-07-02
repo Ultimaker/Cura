@@ -18,10 +18,10 @@ from cura.Machines.MaterialNode import MaterialNode #For type checking.
 class MaterialGroup:
     __slots__ = ("name", "is_read_only", "root_material_node", "derived_material_node_list")
 
-    def __init__(self, name: str, root_material_node: MaterialNode):
+    def __init__(self, name: str, root_material_node: MaterialNode) -> None:
         self.name = name
         self.is_read_only = False
-        self.root_material_node = root_material_node
+        self.root_material_node = root_material_node # type: MaterialNode
         self.derived_material_node_list = [] #type: List[MaterialNode]
 
     def __str__(self) -> str:

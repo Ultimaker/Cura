@@ -4,6 +4,7 @@
 from collections import defaultdict, OrderedDict
 import copy
 import uuid
+from typing import Dict
 from typing import Optional, TYPE_CHECKING
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
@@ -263,7 +264,7 @@ class MaterialManager(QObject):
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
     def getAvailableMaterials(self, machine_definition: "DefinitionContainer", extruder_variant_name: Optional[str],
-                              diameter: float) -> dict:
+                              diameter: float) -> Dict[str, MaterialNode]:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:
@@ -288,7 +289,7 @@ class MaterialManager(QObject):
         #  3. generic material (for fdmprinter)
         machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
 
-        material_id_metadata_dict = dict()
+        material_id_metadata_dict = dict() # type: Dict[str, MaterialNode]
         for node in nodes_to_check:
             if node is not None:
                 # Only exclude the materials that are explicitly specified in the "exclude_materials" field.
@@ -434,7 +435,7 @@ class MaterialManager(QObject):
 
         nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
         for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.metadata["id"])
+            self._container_registry.removeContainer(node.getMetaDataEntry("id", ""))
 
     #
     # Methods for GUI
@@ -445,22 +446,27 @@ class MaterialManager(QObject):
     #
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str):
-        root_material_id = material_node.metadata["base_file"]
+        root_material_id = material_node.getMetaDataEntry("base_file")
+        if root_material_id is None:
+            return
         if self._container_registry.isReadOnly(root_material_id):
             Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
             return
 
         material_group = self.getMaterialGroup(root_material_id)
         if material_group:
-            material_group.root_material_node.getContainer().setName(name)
+            container = material_group.root_material_node.getContainer()
+            if container:
+                container.setName(name)
 
     #
     # Removes the given material.
     #
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode"):
-        root_material_id = material_node.metadata["base_file"]
-        self.removeMaterialByRootId(root_material_id)
+        root_material_id = material_node.getMetaDataEntry("base_file")
+        if root_material_id is not None:
+            self.removeMaterialByRootId(root_material_id)
 
     #
     # Creates a duplicate of a material, which has the same GUID and base_file metadata.
@@ -538,6 +544,10 @@ class MaterialManager(QObject):
         root_material_id = "generic_pla"
         root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
         material_group = self.getMaterialGroup(root_material_id)
+
+        if not material_group:  # This should never happen
+            Logger.log("w", "Cannot get the material group of %s.", root_material_id)
+            return ""
 
         # Create a new ID & container to hold the data.
         new_id = self._container_registry.uniqueName("custom_material")

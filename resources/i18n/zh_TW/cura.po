@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-06-06 16:13+0200\n"
-"PO-Revision-Date: 2018-04-05 17:31+0800\n"
+"PO-Revision-Date: 2018-06-17 10:40+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.8\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -43,7 +43,7 @@ msgstr "G-code 檔案"
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
 msgid "3D Model Assistant"
-msgstr ""
+msgstr "3D 模型助手"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:80
 #, python-brace-format
@@ -54,6 +54,10 @@ msgid ""
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr ""
+"<p>由於模型尺寸和耗材設定的原因，一個或多個模型無法在最佳情狀下列印</p>\n"
+"<p>{model_names}</p>\n"
+"<p>了解如何確保最佳的列印品質和可靠性。</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">閱讀列印品質指南</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -160,12 +164,12 @@ msgstr "X3G 檔案"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
 msgctxt "X3g Writer Plugin Description"
 msgid "Writes X3g to files"
-msgstr ""
+msgstr "將 X3g 寫入檔案"
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:21
 msgctxt "X3g Writer File Description"
 msgid "X3g File"
-msgstr ""
+msgstr "X3g 檔案"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:17
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:17
@@ -571,12 +575,12 @@ msgstr "收集資料中"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
 msgctxt "@action:button"
 msgid "More info"
-msgstr ""
+msgstr "更多資訊"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
 msgctxt "@action:tooltip"
 msgid "See more information on what data Cura sends."
-msgstr ""
+msgstr "檢視更多關於 Cura 傳送資料的資訊。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:52
 msgctxt "@action:button"
@@ -1015,22 +1019,22 @@ msgstr "列印範圍"
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:99
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
-msgstr ""
+msgstr "無法從使用者資料目錄建立備份檔：{}"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:104
 msgctxt "@info:title"
 msgid "Backup"
-msgstr ""
+msgstr "備份"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:116
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
-msgstr ""
+msgstr "嘗試復原沒有正確資料或 meta data 的 Cura 備份。"
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:126
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that does not match your current version."
-msgstr ""
+msgstr "嘗試復原版本不符的 Cura 備份。"
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
@@ -1436,7 +1440,7 @@ msgstr "已安裝"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
 msgctxt "@info"
 msgid "Could not connect to the Cura Package database. Please check your connection."
-msgstr ""
+msgstr "無法連上 Cura 軟體包資料庫。請檢查你的網路連線。"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:35
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:26
@@ -1447,17 +1451,17 @@ msgstr "外掛"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
-msgstr ""
+msgstr "版本"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
 msgctxt "@label"
 msgid "Last updated"
-msgstr ""
+msgstr "最後更新時間"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
-msgstr ""
+msgstr "作者"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
@@ -1475,53 +1479,53 @@ msgstr "更新"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
 msgctxt "@action:button"
 msgid "Updating"
-msgstr ""
+msgstr "更新中"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
 msgctxt "@action:button"
 msgid "Updated"
-msgstr ""
+msgstr "更新完成"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
 msgctxt "@title"
 msgid "Toolbox"
-msgstr ""
+msgstr "工具箱"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
 msgctxt "@action:button"
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
 msgctxt "@info"
 msgid "You will need to restart Cura before changes in packages have effect."
-msgstr ""
+msgstr "需重新啟動 Cura，軟體包的更動才能生效。"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:32
 msgctxt "@info:button"
 msgid "Quit Cura"
-msgstr ""
+msgstr "結束 Cura"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:54
 msgctxt "@title:tab"
 msgid "Installed"
-msgstr ""
+msgstr "已安裝"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
 msgctxt "@label"
 msgid "Will install upon restarting"
-msgstr ""
+msgstr "將在重新啟動時安裝"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Downgrade"
-msgstr ""
+msgstr "降級版本"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Uninstall"
-msgstr ""
+msgstr "移除"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
 msgctxt "@title:window"
@@ -1552,22 +1556,22 @@ msgstr "拒絕"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:17
 msgctxt "@label"
 msgid "Featured"
-msgstr ""
+msgstr "精選"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:20
 msgctxt "@label"
 msgid "Compatibility"
-msgstr ""
+msgstr "相容性"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
-msgstr ""
+msgstr "取得軟體包..."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:87
 msgctxt "@label"
 msgid "Contact"
-msgstr ""
+msgstr "聯繫"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
@@ -2016,22 +2020,22 @@ msgstr "更改目前啟用的後處理腳本"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
-msgstr ""
+msgstr "更多關於匿名資料收集的資訊"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:66
 msgctxt "@text:window"
 msgid "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
-msgstr ""
+msgstr "Cura 傳送匿名資料給 Ultimaker 以提高列印品質和使用者體驗。以下是傳送資料的例子。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:101
 msgctxt "@text:window"
 msgid "I don't want to send these data"
-msgstr ""
+msgstr "我不想傳送這些資料"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:111
 msgctxt "@text:window"
 msgid "Allow sending these data to Ultimaker and help us improve Cura"
-msgstr ""
+msgstr "允許將這些資料傳送給 Ultimaker 並協助我們改進 Cura"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -2388,17 +2392,17 @@ msgstr "開始印表機檢查"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:80
 msgctxt "@label"
 msgid "Connection: "
-msgstr "連接："
+msgstr "連線："
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
 msgctxt "@info:status"
 msgid "Connected"
-msgstr "已連接"
+msgstr "已連線"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
 msgctxt "@info:status"
 msgid "Not connected"
-msgstr "未連接"
+msgstr "未連線"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:99
 msgctxt "@label"
@@ -2482,7 +2486,7 @@ msgstr "維護中。請檢查印表機"
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:144
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
-msgstr "與印表機的連接中斷"
+msgstr "與印表機的連線中斷"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:146
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:187
@@ -2608,7 +2612,7 @@ msgstr "直徑更改確認"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:95
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
-msgstr ""
+msgstr "新的耗材直徑設定為 %1 mm，這與目前的擠出機不相容。你要繼續嗎？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:128
 msgctxt "@label"
@@ -2879,12 +2883,12 @@ msgstr "放大過小模型"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:507
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
-msgstr ""
+msgstr "模型載入後要設為被選擇的狀態嗎？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:512
 msgctxt "@option:check"
 msgid "Select models when loaded"
-msgstr ""
+msgstr "模型載入後選擇模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
 msgctxt "@info:tooltip"
@@ -2969,7 +2973,7 @@ msgstr "（匿名）發送列印資訊"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:708
 msgctxt "@action:button"
 msgid "More information"
-msgstr ""
+msgstr "更多資訊"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:726
 msgctxt "@label"
@@ -3023,13 +3027,13 @@ msgstr "印表機類型："
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:156
 msgctxt "@label"
 msgid "Connection:"
-msgstr "連接："
+msgstr "連線："
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:162
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/OutputDeviceHeader.qml:47
 msgctxt "@info:status"
 msgid "The printer is not connected."
-msgstr "尚未連接到印表機。"
+msgstr "尚未連線到印表機。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:168
 msgctxt "@label"
@@ -3404,12 +3408,12 @@ msgstr "參數顯示設定..."
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:621
 msgctxt "@action:inmenu"
 msgid "Collapse All"
-msgstr ""
+msgstr "全部折疊"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:626
 msgctxt "@action:inmenu"
 msgid "Expand All"
-msgstr ""
+msgstr "全部展開"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:249
 msgctxt "@label"
@@ -3648,12 +3652,12 @@ msgstr "擠出機"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
 msgctxt "@label:extruder label"
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
 msgctxt "@label:extruder label"
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/RecentFilesMenu.qml:13
 msgctxt "@title:menu menubar:file"
@@ -3948,7 +3952,7 @@ msgstr "顯示設定資料夾"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:433
 msgctxt "@action:menu"
 msgid "Browse packages..."
-msgstr ""
+msgstr "瀏覽軟體包..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:440
 msgctxt "@action:inmenu menubar:view"
@@ -4106,7 +4110,7 @@ msgstr "擴充功能（&X）"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:274
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Toolbox"
-msgstr ""
+msgstr "工具箱（&T）"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:281
 msgctxt "@title:menu menubar:toplevel"
@@ -4121,7 +4125,7 @@ msgstr "幫助（&H）"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:335
 msgctxt "@label"
 msgid "This package will be installed after restarting."
-msgstr ""
+msgstr "此軟體包將在重新啟動後安裝。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:364
 msgctxt "@action:button"
@@ -4146,7 +4150,7 @@ msgstr "你確定要開始一個新專案嗎？這將清除列印平台及任何
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:814
 msgctxt "@window:title"
 msgid "Install Package"
-msgstr ""
+msgstr "安裝軟體包"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:821
 msgctxt "@title:window"
@@ -4353,7 +4357,7 @@ msgstr "擺放到目前的列印平台"
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr ""
+msgstr "提供更改機器設定的方法（如列印範圍，噴頭大小等）。"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
@@ -4363,12 +4367,12 @@ msgstr "印表機設定操作"
 #: Toolbox/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new Cura packages."
-msgstr ""
+msgstr "查詢，管理和安裝新的 Cura 軟體包。"
 
 #: Toolbox/plugin.json
 msgctxt "name"
 msgid "Toolbox"
-msgstr ""
+msgstr "工具箱"
 
 #: XRayView/plugin.json
 msgctxt "description"
@@ -4463,7 +4467,7 @@ msgstr "USB 連線列印"
 #: UserAgreement/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license."
-msgstr ""
+msgstr "詢問使用者是否同意我們的授權協議。"
 
 #: UserAgreement/plugin.json
 msgctxt "name"
@@ -4473,12 +4477,12 @@ msgstr "使用者授權"
 #: X3GWriter/plugin.json
 msgctxt "description"
 msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr ""
+msgstr "允許將切片結果儲存為 X3G 檔案，以支援讀取此格式的印表機（Malyan，Makerbot 和其他以 Sailfish 為原型的印表機）。"
 
 #: X3GWriter/plugin.json
 msgctxt "name"
 msgid "X3GWriter"
-msgstr ""
+msgstr "X3G 寫入器"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
@@ -4533,12 +4537,12 @@ msgstr "行動裝置輸出設備外掛"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr ""
+msgstr "管理與 Ultimaker 3 印表機的網絡連線。"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UM3 Network Connection"
-msgstr "UM3 網路連接"
+msgstr "UM3 網路連線"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -4663,12 +4667,12 @@ msgstr "升級版本 3.2 到 3.3"
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr ""
+msgstr "將設定從 Cura 3.3 版本升級至 3.4 版本。"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
-msgstr ""
+msgstr "升級版本 3.3 到 3.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -4813,7 +4817,7 @@ msgstr "3MF 寫入器"
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "提供 Ultimaker 機器的操作（例如平台調平精靈，選擇升級等）。"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"

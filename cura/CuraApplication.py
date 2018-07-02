@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
-import json
 import os
 import sys
 import time
@@ -14,7 +13,8 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-from UM.Qt.QtApplication import QtApplication
+from typing import cast, TYPE_CHECKING
+
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -28,6 +28,8 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
+from UM.Qt.QtApplication import QtApplication #The class we're inheriting from.
+from UM.View.SelectionPass import SelectionPass #For typing.
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.ContainerStack import ContainerStack
@@ -109,21 +111,19 @@ from UM.FlameProfiler import pyqtSlot
 
 numpy.seterr(all = "ignore")
 
-MYPY = False
-if not MYPY:
-    try:
-        from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
-    except ImportError:
-        CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-        CuraBuildType = ""
-        CuraDebugMode = False
+try:
+    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
+except ImportError:
+    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
+    CuraDebugMode = False
 
 
 class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 4
+    SettingVersion = 5
 
     Created = False
 
@@ -669,6 +669,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     def run(self):
+        super().run()
         container_registry = self._container_registry
 
         Logger.log("i", "Initializing variant manager")
@@ -1719,7 +1720,7 @@ class CuraApplication(QtApplication):
     def _onContextMenuRequested(self, x: float, y: float) -> None:
         # Ensure we select the object if we request a context menu over an object without having a selection.
         if not Selection.hasSelection():
-            node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
+            node = self.getController().getScene().findObject(cast(SelectionPass, self.getRenderer().getRenderPass("selection")).getIdAtPosition(x, y))
             if node:
                 while(node.getParent() and node.getParent().callDecoration("isGroup")):
                     node = node.getParent()

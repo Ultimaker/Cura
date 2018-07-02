@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"시작과 동시에형실행될 G 코드 명령어 \n"
-"."
+msgstr "시작과 동시에형실행될 G 코드 명령어 \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"맨 마지막에 실행될 G 코드 명령 \n"
-"."
+msgstr "맨 마지막에 실행될 G 코드 명령 \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1089,7 +1085,7 @@ msgstr "벽면 프린팅 순서 명령 최적화"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
-msgstr ""
+msgstr "수축 및 이동 거리를 줄이도록 벽이 인쇄되는 순서를 최적화하십시오. 대부분의 부품은 이 기능을 사용하면 도움이 되지만, 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부와 관계없이 인쇄 시간을 비교하십시오. 빌드 플레이트 접착 유형을 Brim으로 선택하는 경우 첫 번째 층이 최적화되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1679,22 +1675,22 @@ msgstr "이보다 작은 내부채움 영역을 생성하지 마십시오 (대�
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
-msgstr ""
+msgstr "충진물 지지대"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
-msgstr ""
+msgstr "모델 상단이 지지가 되어야 하는 경우에만 충진물 구조를 인쇄합니다. 이 기능을 사용하면 인쇄 시간 및 재료 사용이 감소하지만, 개체 강도가 균일하지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle label"
 msgid "Infill Overhang Angle"
-msgstr ""
+msgstr "충진물 오버행 각도"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_angle description"
 msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
-msgstr ""
+msgstr "충진물이 추가되는 내부 오버행의 최소 각도. 0°에서는 개체가 충진물로 완전히 채워지지만, 90°에서는 충진물이 공급되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
@@ -2039,12 +2035,12 @@ msgstr "최대 리트렉션 횟수가 시행되는 영역 입니다. 이 값은 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions label"
 msgid "Limit Support Retractions"
-msgstr ""
+msgstr "지지대 후퇴 제한"
 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
 msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
-msgstr ""
+msgstr "직선으로 지지대 사이를 이동하는 경우 후퇴는 불가능합니다. 이 설정을 사용하면 인쇄 시간은 절약할 수 있지만, 지지 구조물 내에 스트링이 과도하게 증가할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2739,17 +2735,17 @@ msgstr "모두"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
-msgstr ""
+msgstr "스킨에 없음"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
 msgid "Max Comb Distance With No Retract"
-msgstr ""
+msgstr "수축이 없을 때 최대 빗질 거리"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr ""
+msgstr "0이 아닌 경우 이 거리보다 긴 빗질 이동은 후퇴를 사용합니다."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2774,12 +2770,12 @@ msgstr "노즐은 이동 할 때 이미 프린팅 된 부분을 피합니다. �
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports label"
 msgid "Avoid Supports When Traveling"
-msgstr ""
+msgstr "이동하는 경우 지지대 피함"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_supports description"
 msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
-msgstr ""
+msgstr "노즐은 이동하는 경우 이미 인쇄된 지지대를 피합니다. 빗질을 사용하는 경우에만 사용할 수 있는 옵션입니다."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -3139,12 +3135,12 @@ msgstr "십자"
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
-msgstr ""
+msgstr "지지대 벽 라인 카운트"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr ""
+msgstr "지지대 충진물을 둘러싸는 벽의 개수. 벽을 추가하면 지지물 인쇄 안정성을 높일 수 있고 오버행 지지를 개선할 수 있지만, 인쇄 시간과 사용되는 재료가 늘어납니다."
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
@@ -3716,9 +3712,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
-"이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
+msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4678,12 +4672,12 @@ msgstr "슬라이딩 후의 선분의 최소 크기입니다. 이 값을 높이�
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
-msgstr ""
+msgstr "최대 이동 해상도"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_travel_resolution description"
 msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
-msgstr ""
+msgstr "슬라이딩 후의 이동 선분의 최소 크기입니다. 이 값을 높이면 코너에서 매끄럽게 이동하는 정도가 감소합니다. 프린터가 G 코드를 처리하는 데 필요한 속도를 유지할 수 있지만, 모델을 피하기 때문에 정확도가 감소합니다."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -4848,22 +4842,22 @@ msgstr "패턴이 접촉되는 높이에서 크로스 3D 패턴의 4 방향 교�
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image label"
 msgid "Cross Infill Density Image"
-msgstr ""
+msgstr "교차 충진 밀도 이미지"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
-msgstr ""
+msgstr "인쇄 충진물의 해당 위치에서 밝기 값으로 최소 밀도를 결정하는 이미지의 파일 위치."
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image label"
 msgid "Cross Fill Density Image for Support"
-msgstr ""
+msgstr "지지대에 대한 교차 충진 밀도 이미지"
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
-msgstr ""
+msgstr "지지대의 해당 위치에서 밝기 값으로 최소 밀도를 결정하는 이미지의 파일 위치."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -5300,7 +5294,7 @@ msgstr "어댑티브 레이어 최대 변화"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
-msgstr ""
+msgstr "기본 레이어 높이와 다른 최대 허용 높이."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
@@ -5535,7 +5529,7 @@ msgstr "큐라(Cura) 프론트 엔드에서 큐라엔진(CuraEngine)이 호출�
 #: fdmprinter.def.json
 msgctxt "center_object label"
 msgid "Center Object"
-msgstr ""
+msgstr "가운데 객체"
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
@@ -5545,7 +5539,7 @@ msgstr "객체가 저장된 좌표계를 사용하는 대신 빌드 플랫폼 �
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh Position X"
-msgstr ""
+msgstr "메쉬 위치 X"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5555,7 +5549,7 @@ msgstr "x 방향으로 객체에 적용된 오프셋입니다."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh Position Y"
-msgstr ""
+msgstr "메쉬 위치 Y"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5565,7 +5559,7 @@ msgstr "y 방향으로 객체에 적용된 오프셋입니다."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
-msgstr ""
+msgstr "메쉬 위치 Z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
