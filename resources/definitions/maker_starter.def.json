@@ -9,7 +9,11 @@
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
         "icon": "icon_ultimaker2.png",
         "platform": "makerstarter_platform.stl",
-        "preferred_quality_type": "draft"
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "maker_starter_extruder_0"
+        }
     },
 
     "overrides": {

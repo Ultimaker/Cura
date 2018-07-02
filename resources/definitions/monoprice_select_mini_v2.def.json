@@ -11,7 +11,11 @@
         "has_machine_quality": true,
         "has_materials": true,
         "preferred_quality_type": "normal",
-        "visible": true
+        "visible": true,
+        "machine_extruder_trains":
+        {
+            "0": "monoprice_select_mini_v2_extruder_0"
+        }
    },
 
     "overrides": {

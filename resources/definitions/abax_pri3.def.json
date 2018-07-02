@@ -6,7 +6,11 @@
         "visible": true,
         "author": "ABAX 3d Technologies",
         "manufacturer": "ABAX 3d Technologies",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "abax_pri3_extruder_0"
+        }
     },
     "overrides": {
         "machine_start_gcode": {
@@ -53,9 +57,6 @@
         },
         "material_bed_temperature": {
             "default_value": 0
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 40

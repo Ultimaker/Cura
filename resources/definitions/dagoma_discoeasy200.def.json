@@ -8,7 +8,11 @@
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
         "platform": "discoeasy200.stl",
-        "platform_offset": [ 105, -59, 280]
+        "platform_offset": [ 105, -59, 280],
+        "machine_extruder_trains":
+        {
+            "0": "dagoma_discoeasy200_extruder_0"
+        }
     },
     "overrides": {
         "machine_width": {
@@ -42,9 +46,6 @@
         },
         "machine_end_gcode": {
             "default_value": "\nM104 S0\nM106 S255\nM140 S0\nG91\nG1 E-1 F300\nG1 Z+3 F3000\nG90\nG28 X Y\nM107\nM84\n"
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 60

@@ -54,9 +54,6 @@
         "machine_min_cool_heat_time_window": {
             "default_value": 3600
         },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "retraction_amount": {
             "default_value": 1.0
         },

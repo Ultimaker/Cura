@@ -72,12 +72,6 @@ class CuraStackBuilder:
         )
         new_global_stack.setName(generated_name)
 
-        # get material container for extruders
-        material_container = application.empty_material_container
-        material_node = material_manager.getDefaultMaterial(new_global_stack, extruder_variant_name)
-        if material_node and material_node.getContainer():
-            material_container = material_node.getContainer()
-
         # Create ExtruderStacks
         extruder_dict = machine_definition.getMetaDataEntry("machine_extruder_trains")
 
@@ -89,6 +83,12 @@ class CuraStackBuilder:
             if position_in_extruder_def != position:
                 ConfigurationErrorMessage.getInstance().addFaultyContainers(extruder_definition_id)
                 return None #Don't return any container stack then, not the rest of the extruders either.
+
+            # get material container for extruders
+            material_container = application.empty_material_container
+            material_node = material_manager.getDefaultMaterial(new_global_stack, position, extruder_variant_name, extruder_definition = extruder_definition)
+            if material_node and material_node.getContainer():
+                material_container = material_node.getContainer()
 
             new_extruder_id = registry.uniqueName(extruder_definition_id)
             new_extruder = cls.createExtruderStack(

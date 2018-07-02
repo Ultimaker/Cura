@@ -129,6 +129,7 @@ class MachineSettingsAction(MachineAction):
             return
 
         machine_manager = self._application.getMachineManager()
+        material_manager = self._application.getMaterialManager()
         extruder_positions = list(self._global_container_stack.extruders.keys())
         has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
@@ -138,11 +139,6 @@ class MachineSettingsAction(MachineAction):
                 self._global_container_stack.setMetaDataEntry("has_materials", True)
             else:
                 self._global_container_stack.addMetaDataEntry("has_materials", True)
-
-            # Set the material container for each extruder to a sane default
-            material_manager = self._application.getMaterialManager()
-            material_node = material_manager.getDefaultMaterial(self._global_container_stack, None)
-
         else:
             # The metadata entry is stored in an ini, and ini files are parsed as strings only.
             # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
@@ -151,6 +147,8 @@ class MachineSettingsAction(MachineAction):
 
         # set materials
         for position in extruder_positions:
+            if has_materials:
+                material_node = material_manager.getDefaultMaterial(self._global_container_stack, position, None)
             machine_manager.setMaterial(position, material_node)
 
         self._application.globalContainerStackChanged.emit()

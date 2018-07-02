@@ -7,11 +7,14 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "zone3d_printer_extruder_0"
+        }
     },
 
     "overrides": {
-        "material_diameter": { "default_value": 1.75 },
         "prime_tower_size": { "default_value": 10.350983390135314 },
         "material_print_temperature": { "default_value": 260 },
         "layer_height": { "default_value": 0.14 },

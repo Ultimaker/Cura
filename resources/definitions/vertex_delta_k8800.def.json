@@ -8,12 +8,13 @@
     "visible": true,
     "author": "Velleman",
     "has_machine_quality": true,
-    "has_materials": true
+    "has_materials": true,
+    "machine_extruder_trains":
+    {
+      "0": "vertex_delta_k8800_extruder_0"
+    }
   },
   "overrides": {
-    "material_diameter": {
-      "default_value": 1.75
-    },
     "machine_width": {
       "default_value": 200
     },

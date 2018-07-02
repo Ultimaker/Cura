@@ -8,7 +8,11 @@
         "manufacturer": "Raise3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
-        "has_materials": true
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "raise3D_N2_single_extruder_0"
+        }
     },
 
     "overrides": {
@@ -48,9 +52,6 @@
         },
         "machine_min_cool_heat_time_window": {
             "default_value": 3600
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "retraction_amount": {
             "default_value": 1.0

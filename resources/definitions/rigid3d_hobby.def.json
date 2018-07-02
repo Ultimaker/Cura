@@ -7,7 +7,11 @@
         "author": "Ultimaker",
         "manufacturer": "Rigid3D",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "rigid3d_hobby_extruder_0"
+        }
     },
 
     "overrides": {
@@ -17,7 +21,6 @@
         "skirt_gap": { "default_value": 5.0 },
         "cool_min_layer_time": { "default_value": 15 },
         "support_pattern": { "default_value": "grid" },
-        "material_diameter": { "default_value": 1.75 },
         "layer_height_0": { "default_value": 0.25 },
         "speed_wall_x": { "default_value": 30 },
         "skirt_line_count": { "default_value": 2 },

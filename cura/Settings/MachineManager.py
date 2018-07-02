@@ -1279,7 +1279,7 @@ class MachineManager(QObject):
                 continue
 
             # The current material is not available, find the preferred one
-            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, current_variant_name)
+            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, position, current_variant_name)
             if material_node is not None:
                 self._setMaterial(position_item, material_node)
 
@@ -1321,7 +1321,7 @@ class MachineManager(QObject):
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
                 variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
-                material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack, extruder_configuration.hotendID,extruder_configuration.material.guid)
+                material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack, position, extruder_configuration.hotendID, extruder_configuration.material.guid)
                 if variant_container_node:
                     self._setVariantNode(position, variant_container_node)
                 else:

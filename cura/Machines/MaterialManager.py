@@ -366,11 +366,12 @@ class MaterialManager(QObject):
     #  1. the given machine doesn't have materials;
     #  2. cannot find any material InstanceContainers with the given settings.
     #
-    def getMaterialNodeByType(self, global_stack: "GlobalStack", extruder_variant_name: str, material_guid: str) -> Optional["MaterialNode"]:
+    def getMaterialNodeByType(self, global_stack: "GlobalStack", position: str, extruder_variant_name: str, material_guid: str) -> Optional["MaterialNode"]:
         node = None
         machine_definition = global_stack.definition
+        extruder_definition = global_stack.extruders[position].definition
         if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
-            material_diameter = machine_definition.getProperty("material_diameter", "value")
+            material_diameter = extruder_definition.getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)
 
@@ -413,11 +414,15 @@ class MaterialManager(QObject):
         else:
             return None
 
-    def getDefaultMaterial(self, global_stack: "GlobalStack", extruder_variant_name: Optional[str]) -> Optional["MaterialNode"]:
+    ##  Get default material for given global stack, extruder position and extruder variant name
+    #   you can provide the extruder_definition and then the position is ignored (useful when building up global stack in CuraStackBuilder)
+    def getDefaultMaterial(self, global_stack: "GlobalStack", position: str, extruder_variant_name: Optional[str], extruder_definition: Optional["ExtruderStack"] = None) -> Optional["MaterialNode"]:
         node = None
         machine_definition = global_stack.definition
+        if extruder_definition is None:
+            extruder_definition = global_stack.extruders[position].definition
         if parseBool(global_stack.getMetaDataEntry("has_materials", False)):
-            material_diameter = machine_definition.getProperty("material_diameter", "value")
+            material_diameter = extruder_definition.getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)
             approximate_material_diameter = str(round(material_diameter))
