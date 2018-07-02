@@ -94,10 +94,15 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Removes all packages that have been scheduled to be removed.
     def _removeAllScheduledPackages(self) -> None:
+        remove_failures = []
         for package_id in self._to_remove_package_set:
-            self._purgePackage(package_id)
-            del self._installed_package_dict[package_id]
-        self._to_remove_package_set.clear()
+            try:
+                self._purgePackage(package_id)
+                del self._installed_package_dict[package_id]
+            except:
+                remove_failures.append(package_id)
+                Logger.log("e", "There was an error uninstalling the package {package}".format(package = package_id))
+        self._to_remove_package_set = remove_failures
         self._saveManagementData()
 
     # (for initialize) Installs all packages that have been scheduled to be installed.
@@ -279,7 +284,9 @@ class CuraPackageManager(QObject):
     def isUserInstalledPackage(self, package_id: str):
         return package_id in self._installed_package_dict
 
-    # Removes everything associated with the given package ID.
+    ##  Removes everything associated with the given package ID.
+    #   \return It may produce an exception if the user has no permissions to delete this files (on Windows).
+    #   This exception must be catched.
     def _purgePackage(self, package_id: str) -> None:
         # Iterate through all directories in the data storage directory and look for sub-directories that belong to
         # the package we need to remove, that is the sub-dirs with the package_id as names, and remove all those dirs.
@@ -302,7 +309,11 @@ class CuraPackageManager(QObject):
         Logger.log("i", "Installing package [%s] from file [%s]", package_id, filename)
 
         # remove it first and then install
-        self._purgePackage(package_id)
+        try:
+            self._purgePackage(package_id)
+        except:
+            Logger.log("e", "There was an error deleting the package {package} during updating.".format(package = package_id))
+            return
 
         if not os.path.exists(filename):
             Logger.log("w", "Package [%s] file '%s' is missing, cannot install this package", package_id, filename)
