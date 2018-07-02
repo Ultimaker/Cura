@@ -3825,6 +3825,21 @@
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
+                        },
+                        "support_initial_layer_line_distance":
+                        {
+                            "label": "Initial Layer Support Line Distance",
+                            "description": "Distance between the printed initial layer support structure lines. This setting is calculated by the support density.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "support_line_width",
+                            "default_value": 2.66,
+                            "enabled": "support_enable or support_tree_enable",
+                            "value": "support_line_distance",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },
