@@ -272,7 +272,7 @@ class PauseAtHeight(Script):
                 prepend_gcode += self.putValue(M=0) + ";Do the actual pause\n"
 
                 # Set extruder resume temperature
-                prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, default = 0))) + "; resume temperature\n"
+                prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
 
                 # Push the filament back,
                 if retraction_amount != 0:
