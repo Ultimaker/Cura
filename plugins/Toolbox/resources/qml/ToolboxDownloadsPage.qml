@@ -12,6 +12,7 @@ ScrollView
     width: parent.width
     height: parent.height
     style: UM.Theme.styles.scrollview
+    flickableItem.flickableDirection: Flickable.VerticalFlick
     Column
     {
         width: parent.width - 2 * padding
