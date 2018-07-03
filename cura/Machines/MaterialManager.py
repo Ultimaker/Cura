@@ -423,7 +423,7 @@ class MaterialManager(QObject):
             extruder_definition = global_stack.extruders[position].definition
         if parseBool(global_stack.getMetaDataEntry("has_materials", False)):
             # At this point the extruder_definition is not None
-            material_diameter = cast(DefinitionContainer, extruder_definition).getProperty("material_diameter", "value")
+            material_diameter = extruder_definition.getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)
             approximate_material_diameter = str(round(material_diameter))
