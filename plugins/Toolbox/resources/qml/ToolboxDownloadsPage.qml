@@ -15,21 +15,14 @@ ScrollView
     flickableItem.flickableDirection: Flickable.VerticalFlick
     Column
     {
-        width: parent.width - 2 * padding
+        width: base.width
         spacing: UM.Theme.getSize("default_margin").height
-        padding: UM.Theme.getSize("wide_margin").height
-        height: childrenRect.height + 2 * padding
+        height: childrenRect.height
 
         ToolboxDownloadsShowcase
         {
             id: showcase
             width: parent.width
-        }
-        Rectangle
-        {
-            color: UM.Theme.getColor("lining")
-            width: parent.width
-            height: UM.Theme.getSize("default_lining").height
         }
 
         ToolboxDownloadsGrid
