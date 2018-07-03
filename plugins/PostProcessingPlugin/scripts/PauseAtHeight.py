@@ -159,18 +159,19 @@ class PauseAtHeight(Script):
                 # Count nbr of negative layers (raft)
                 elif ";LAYER:-" in line:
                     nbr_negative_layers += 1
-                if not layers_started:
-                    continue
 
                 #Track the latest printing temperature in order to resume at the correct temperature.
                 if line.startswith("T"):
-                    current_t = self.getValue(line, "T")
+                    current_t = int(self.getValue(line, "T"))
                 m = self.getValue(line, "M")
-                if m is not None and (m == 104 or m == 109) and self.getValue(line, "S") is not None:
+                if m is not None and (int(m) == 104 or int(m) == 109) and self.getValue(line, "S") is not None:
                     extruder = current_t
                     if self.getValue(line, "T") is not None:
-                        extruder = self.getValue(line, "T")
+                        extruder = int(self.getValue(line, "T"))
                     target_temperature[extruder] = self.getValue(line, "S")
+
+                if not layers_started:
+                    continue
 
                 # If a Z instruction is in the line, read the current Z
                 if self.getValue(line, "Z") is not None:

@@ -570,7 +570,7 @@ UM.PreferencesPage
 
                             Component.onCompleted:
                             {
-                                append({ text: catalog.i18nc("@option:openProject", "Always ask"), code: "always_ask" })
+                                append({ text: catalog.i18nc("@option:openProject", "Always ask me this"), code: "always_ask" })
                                 append({ text: catalog.i18nc("@option:openProject", "Always open as a project"), code: "open_as_project" })
                                 append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
                             }
@@ -617,7 +617,12 @@ UM.PreferencesPage
                     Label
                     {
                         font.bold: true
-                        text: catalog.i18nc("@label", "Override Profile")
+                        text: catalog.i18nc("@label", "Profiles")
+                    }
+
+                    Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
                     ComboBox
@@ -632,8 +637,8 @@ UM.PreferencesPage
                             Component.onCompleted:
                             {
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
-                                append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
-                                append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Always discard changed settings"), code: "always_discard" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Always transfer changed settings to new profile"), code: "always_keep" })
                             }
                         }
 
