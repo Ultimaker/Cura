@@ -137,6 +137,8 @@ class PauseAtHeight(Script):
         redo_layers = self.getSettingValueByKey("redo_layers")
         standby_temperature = self.getSettingValueByKey("standby_temperature")
 
+        is_griffin = False
+
         # T = ExtruderManager.getInstance().getActiveExtruderStack().getProperty("material_print_temperature", "value")
 
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
@@ -153,6 +155,8 @@ class PauseAtHeight(Script):
 
             # Scroll each line of instruction for each layer in the G-code
             for line in lines:
+                if ";FLAVOR:Griffin" in line:
+                    is_griffin = True
                 # Fist positive layer reached
                 if ";LAYER:0" in line:
                     layers_started = True
@@ -266,14 +270,16 @@ class PauseAtHeight(Script):
                 if current_z < 15:
                     prepend_gcode += self.putValue(G=1, Z=15, F=300) + "\n"
 
-                # Set extruder standby temperature
-                prepend_gcode += self.putValue(M=104, S=standby_temperature) + "; standby temperature\n"
+                if not is_griffin:
+                    # Set extruder standby temperature
+                    prepend_gcode += self.putValue(M=104, S=standby_temperature) + "; standby temperature\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += self.putValue(M=0) + ";Do the actual pause\n"
 
-                # Set extruder resume temperature
-                prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
+                if not is_griffin:
+                    # Set extruder resume temperature
+                    prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
 
                 # Push the filament back,
                 if retraction_amount != 0:
