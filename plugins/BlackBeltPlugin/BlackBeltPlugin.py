@@ -337,6 +337,8 @@ class BlackBeltPlugin(Extension):
                                 value = value(stack)
                             if container.getProperty(key, "type") == "str":
                                 value = value.replace("\n", "\\n")
+                                if len(value) > 80:
+                                    value = "[not shown for brevity]"
                             setting_values[key] = value
 
             for definition in global_stack.getBottom().findDefinitions():
