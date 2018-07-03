@@ -1518,7 +1518,9 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
-        self.getMainWindow().setMinimumSize(size)
+        main_window = self.getMainWindow()
+        if main_window:
+            main_window.setMinimumSize(size)
 
     def getBuildVolume(self):
         return self._volume

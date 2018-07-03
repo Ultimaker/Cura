@@ -95,7 +95,9 @@ class SingleInstance:
                 elif command == "focus":
                     # Operating systems these days prevent windows from moving around by themselves.
                     # 'alert' or flashing the icon in the taskbar is the best thing we do now.
-                    self._application.callLater(lambda: self._application.getMainWindow().alert(0))
+                    main_window = self._application.getMainWindow()
+                    if main_window is not None:
+                        self._application.callLater(lambda: main_window.alert(0)) # type: ignore # I don't know why MyPy complains here
 
                 # Command: Close the socket connection. We're done.
                 elif command == "close-connection":
