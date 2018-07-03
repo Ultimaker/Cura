@@ -16,8 +16,8 @@ def getMetaData():
             ("quality_changes", 4000004):    ("quality_changes", 4000005,    upgrade.upgradeInstanceContainer),
             ("user", 4000004):               ("user", 4000005,               upgrade.upgradeInstanceContainer),
 
-            ("machine_stack", 4000005):      ("machine_stack", 4000005,      upgrade.upgradeStack),
-            ("extruder_train", 4000005):     ("extruder_train", 4000005,     upgrade.upgradeStack),
+            ("machine_stack", 4000004):      ("machine_stack", 4000005,      upgrade.upgradeStack),
+            ("extruder_train", 4000004):     ("extruder_train", 4000005,     upgrade.upgradeStack),
         },
         "sources": {
             "preferences": {
