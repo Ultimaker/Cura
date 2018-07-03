@@ -24,7 +24,7 @@ class PrintInformationPatches():
                 return
 
             gantry_angle = global_container_stack.getProperty("blackbelt_gantry_angle", "value")
-            nozzle_size = global_container_stack.getProperty("machine_nozzle_size", "value")
+            nozzle_size = str(global_container_stack.getProperty("machine_nozzle_size", "value")).replace(".", "")
             material_type = extruder_stack.material.getMetaDataEntry("material")
             self._print_information._abbr_machine = "%s_%s_%s" % (gantry_angle, nozzle_size, material_type)
             return
