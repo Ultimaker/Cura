@@ -138,6 +138,7 @@ class PauseAtHeight(Script):
         standby_temperature = self.getSettingValueByKey("standby_temperature")
 
         is_griffin = False
+        is_ultigcode = False
 
         # T = ExtruderManager.getInstance().getActiveExtruderStack().getProperty("material_print_temperature", "value")
 
@@ -157,6 +158,8 @@ class PauseAtHeight(Script):
             for line in lines:
                 if ";FLAVOR:Griffin" in line:
                     is_griffin = True
+                if ";FLAVOR:UltiGCode" in line:
+                    is_ultigcode = True
                 # Fist positive layer reached
                 if ";LAYER:0" in line:
                     layers_started = True
@@ -256,54 +259,63 @@ class PauseAtHeight(Script):
                 else:
                     prepend_gcode += ";current layer: {layer}\n".format(layer=current_layer)
 
-                # Retraction
-                prepend_gcode += self.putValue(M=83) + "\n"
-                if retraction_amount != 0:
-                    prepend_gcode += self.putValue(G=1, E=-retraction_amount, F=retraction_speed * 60) + "\n"
+                if not is_griffin:  # Griffin does all these movements and retraction in the M0, no need to do it double
+                    prepend_gcode += self.putValue(M=83) + "\n"
 
-                # Move the head away
-                prepend_gcode += self.putValue(G=1, Z=current_z + 1, F=300) + "\n"
+                    # Retraction
+                    if retraction_amount != 0:
+                        if is_ultigcode:
+                            prepend_gcode += self.putValue(G=10) + "; retract for ultigcode\n"
+                        else:
+                            prepend_gcode += self.putValue(G=1, E=-retraction_amount, F=retraction_speed * 60) + "\n"
 
-                # This line should be ok
-                prepend_gcode += self.putValue(G=1, X=park_x, Y=park_y, F=9000) + "\n"
+                    # Move the head away
+                    prepend_gcode += self.putValue(G=1, Z=current_z + 1, F=300) + "\n"
 
-                if current_z < 15:
-                    prepend_gcode += self.putValue(G=1, Z=15, F=300) + "\n"
+                    # This line should be ok
+                    prepend_gcode += self.putValue(G=1, X=park_x, Y=park_y, F=9000) + "\n"
 
-                if not is_griffin:
-                    # Set extruder standby temperature
-                    prepend_gcode += self.putValue(M=104, S=standby_temperature) + "; standby temperature\n"
+                    if current_z < 15:
+                        prepend_gcode += self.putValue(G=1, Z=15, F=300) + "\n"
+
+                    if not is_ultigcode:  # We don't know about what temperatures are used in ultigcode, so do not touch
+                        # Set extruder standby temperature
+                        prepend_gcode += self.putValue(M=104, S=standby_temperature) + "; standby temperature\n"
 
                 # Wait till the user continues printing
-                prepend_gcode += self.putValue(M=0) + ";Do the actual pause\n"
+                prepend_gcode += self.putValue(M=0) + "; do the actual pause\n"
 
                 if not is_griffin:
-                    # Set extruder resume temperature
-                    prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
+                    if not is_ultigcode:  # will be 0 for ultigcode
+                        # Set extruder resume temperature
+                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
 
-                # Push the filament back,
-                if retraction_amount != 0:
-                    prepend_gcode += self.putValue(G=1, E=retraction_amount, F=retraction_speed * 60) + "\n"
+                    # Push the filament back,
+                    if retraction_amount != 0:
+                        if is_ultigcode:
+                            prepend_gcode += self.putValue(G=11) + "; unretract for ultigcode\n"
+                        else:
+                            prepend_gcode += self.putValue(G=1, E=retraction_amount, F=retraction_speed * 60) + "\n"
 
-                # Optionally extrude material
-                if extrude_amount != 0:
-                    prepend_gcode += self.putValue(G=1, E=extrude_amount, F=extrude_speed * 60) + "\n"
+                    # Optionally extrude material
+                    if extrude_amount != 0:
+                        prepend_gcode += self.putValue(G=1, E=extrude_amount, F=extrude_speed * 60) + "\n"
 
-                # and retract again, the properly primes the nozzle
-                # when changing filament.
-                if retraction_amount != 0:
-                    prepend_gcode += self.putValue(G=1, E=-retraction_amount, F=retraction_speed * 60) + "\n"
+                    # and retract again, the properly primes the nozzle
+                    # when changing filament.
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G=1, E=-retraction_amount, F=retraction_speed * 60) + "\n"
 
-                # Move the head back
-                prepend_gcode += self.putValue(G=1, Z=current_z + 1, F=300) + "\n"
-                prepend_gcode += self.putValue(G=1, X=x, Y=y, F=9000) + "\n"
-                if retraction_amount != 0:
-                    prepend_gcode += self.putValue(G=1, E=retraction_amount, F=retraction_speed * 60) + "\n"
-                prepend_gcode += self.putValue(G=1, F=9000) + "\n"
-                prepend_gcode += self.putValue(M=82) + "\n"
+                    # Move the head back
+                    prepend_gcode += self.putValue(G=1, Z=current_z + 1, F=300) + "\n"
+                    prepend_gcode += self.putValue(G=1, X=x, Y=y, F=9000) + "\n"
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G=1, E=retraction_amount, F=retraction_speed * 60) + "\n"
+                    prepend_gcode += self.putValue(G=1, F=9000) + "\n"
+                    prepend_gcode += self.putValue(M=82) + "\n"
 
-                # reset extrude value to pre pause value
-                prepend_gcode += self.putValue(G=92, E=current_e) + "\n"
+                    # reset extrude value to pre pause value
+                    prepend_gcode += self.putValue(G=92, E=current_e) + "\n"
 
                 layer = prepend_gcode + layer
 
