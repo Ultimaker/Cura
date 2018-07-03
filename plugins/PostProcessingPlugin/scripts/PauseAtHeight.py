@@ -304,14 +304,22 @@ class PauseAtHeight(Script):
                     # and retract again, the properly primes the nozzle
                     # when changing filament.
                     if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G=1, E=-retraction_amount, F=retraction_speed * 60) + "\n"
+                        if is_ultigcode:
+                            prepend_gcode += self.putValue(G=10) + "; retract for ultigcode\n"
+                        else:
+                            prepend_gcode += self.putValue(G=1, E=-retraction_amount, F=retraction_speed * 60) + "\n"
 
                     # Move the head back
                     prepend_gcode += self.putValue(G=1, Z=current_z + 1, F=300) + "\n"
                     prepend_gcode += self.putValue(G=1, X=x, Y=y, F=9000) + "\n"
                     if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G=1, E=retraction_amount, F=retraction_speed * 60) + "\n"
+                        if is_ultigcode:
+                            prepend_gcode += self.putValue(G=11) + "; unretract for ultigcode\n"
+                        else:
+                            prepend_gcode += self.putValue(G=1, E=retraction_amount, F=retraction_speed * 60) + "\n"
                     prepend_gcode += self.putValue(G=1, F=9000) + "\n"
+
+
                     prepend_gcode += self.putValue(M=82) + "\n"
 
                     # reset extrude value to pre pause value
