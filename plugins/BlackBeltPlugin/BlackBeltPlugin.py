@@ -25,6 +25,7 @@ from PyQt5.QtQml import qmlRegisterSingletonType
 import math
 import os.path
 import re
+import json
 
 class BlackBeltPlugin(Extension):
     def __init__(self):
@@ -65,13 +66,39 @@ class BlackBeltPlugin(Extension):
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
 
         # Handle default setting visibility
-        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
-        if self._application.getVersion() != "master" and Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) < Version("3.4.0"):
+        preferences = Preferences.getInstance()
+        preferences.preferenceChanged.connect(self._onPreferencesChanged)
+        if self._configurationNeedsUpdates():
+            Logger.log("d", "BlackBelt-specific updates to configuration are needed")
             self._force_visibility_update = True
-            Preferences.getInstance().setValue("general/theme", "blackbelt")
+            preferences.addPreference("general/theme", self._application.default_theme)
+            preferences.setValue("general/theme", "blackbelt")
+            preferences.setValue("cura/active_setting_visibility_preset", "blackbelt")
 
         # Disable USB printing output device
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
+    def _configurationNeedsUpdates(self):
+        preferences = Preferences.getInstance()
+        preferences.addPreference("blackbelt/setting_version", "0.0.0")
+
+        # Get version information from plugin.json
+        plugin_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugin.json")
+        try:
+            with open(plugin_file_path) as plugin_file:
+                plugin_info = json.load(plugin_file)
+                plugin_version = plugin_info["version"]
+        except:
+            Logger.log("w", "Could not determine BlackBelt plugin version")
+            return False
+
+        if Version(preferences.getValue("blackbelt/setting_version")) < Version(plugin_version):
+            Logger.log("d", "Setting BlackBelt version nr to %s" % plugin_version)
+            preferences.setValue("blackbelt/setting_version", plugin_version)
+            return True
+
+        return False
+
 
     def _onEngineCreated(self):
         self._application.getMachineManager().activeVariantChanged.connect(self._onActiveVariantChanged)
