@@ -35,7 +35,7 @@ class VersionUpgrade34to40(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["general"]["version"] = "4"
+        parser["general"]["version"] = "6"
         if "metadata" not in parser:
             parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "5"
