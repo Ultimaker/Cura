@@ -421,7 +421,7 @@ class MaterialManager(QObject):
         machine_definition = global_stack.definition
         if extruder_definition is None:
             extruder_definition = global_stack.extruders[position].definition
-        if parseBool(global_stack.getMetaDataEntry("has_materials", False)):
+        if extruder_definition and parseBool(global_stack.getMetaDataEntry("has_materials", False)):
             # At this point the extruder_definition is not None
             material_diameter = extruder_definition.getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
