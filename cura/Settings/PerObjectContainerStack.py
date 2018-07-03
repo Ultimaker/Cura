@@ -19,6 +19,8 @@ class PerObjectContainerStack(CuraContainerStack):
         context.pushContainer(self)
 
         global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return None
 
         # Return the user defined value if present, otherwise, evaluate the value according to the default routine.
         if self.getContainer(0).hasProperty(key, property_name):

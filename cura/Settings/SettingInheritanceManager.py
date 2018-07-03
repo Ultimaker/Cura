@@ -171,7 +171,8 @@ class SettingInheritanceManager(QObject):
             return False
 
         ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        if isinstance(stack.getTop().getProperty(key, "value"), SettingFunction):
+        user_container = stack.getTop()
+        if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
 
         ##  Mash all containers for all the stacks together.

@@ -4,8 +4,7 @@
 from configparser import ConfigParser
 import zipfile
 import os
-from typing import Dict, List, Tuple
-
+from typing import Dict, List, Tuple, cast
 
 import xml.etree.ElementTree as ET
 
@@ -98,13 +97,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._3mf_mesh_reader = None
         self._container_registry = ContainerRegistry.getInstance()
 
-        # suffixes registered with the MineTypes don't start with a dot '.'
-        self._definition_container_suffix = "." + ContainerRegistry.getMimeTypeForContainer(DefinitionContainer).preferredSuffix
+        # suffixes registered with the MimeTypes don't start with a dot '.'
+        self._definition_container_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(DefinitionContainer)).preferredSuffix
         self._material_container_suffix = None # We have to wait until all other plugins are loaded before we can set it
-        self._instance_container_suffix = "." + ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix
-        self._container_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(ContainerStack).preferredSuffix
-        self._extruder_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(ExtruderStack).preferredSuffix
-        self._global_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(GlobalStack).preferredSuffix
+        self._instance_container_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(InstanceContainer)).preferredSuffix
+        self._container_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(ContainerStack)).preferredSuffix
+        self._extruder_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(ExtruderStack)).preferredSuffix
+        self._global_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(GlobalStack)).preferredSuffix
 
         # Certain instance container types are ignored because we make the assumption that only we make those types
         # of containers. They are:

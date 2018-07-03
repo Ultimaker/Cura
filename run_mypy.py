@@ -34,13 +34,13 @@ def main():
         os.putenv("MYPYPATH", ":".join(mypyPathParts))
 
     # Mypy really needs to be run via its Python script otherwise it can't find its data files.
-    mypyExe = where("mypy.bat" if sys.platform == "win32" else "mypy")
-    mypyModule = os.path.join(os.path.dirname(mypyExe), "mypy")
+    mypyExe = where("mypy.exe" if sys.platform == "win32" else "mypy")
+    mypyModule = os.path.join(os.path.dirname(mypyExe), "mypy.exe")
 
     plugins = findModules("plugins")
     plugins.sort()
 
-    mods = ["cura"] + plugins + findModules("plugins/VersionUpgrade")
+    mods = plugins + findModules("plugins/VersionUpgrade")
 
     for mod in mods:
         print("------------- Checking module {mod}".format(**locals()))

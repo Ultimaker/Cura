@@ -104,6 +104,6 @@ class QualityProfilesDropDownMenuModel(ListModel):
         else:
             # Look for layer_height in the GlobalStack from material -> definition
             container = global_stack.definition
-            if container.hasProperty("layer_height", "value"):
+            if container and container.hasProperty("layer_height", "value"):
                 layer_height = container.getProperty("layer_height", "value")
         return float(layer_height)

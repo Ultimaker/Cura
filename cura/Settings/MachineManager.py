@@ -3,7 +3,7 @@
 
 import collections
 import time
-from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional
+from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -1137,7 +1137,7 @@ class MachineManager(QObject):
         quality_changes_container = self._empty_quality_changes_container
         quality_container = self._empty_quality_container
         if quality_changes_group.node_for_global and quality_changes_group.node_for_global.getContainer():
-            quality_changes_container = quality_changes_group.node_for_global.getContainer()
+            quality_changes_container = cast(InstanceContainer, quality_changes_group.node_for_global.getContainer())
         if quality_group is not None and quality_group.node_for_global and quality_group.node_for_global.getContainer():
             quality_container = quality_group.node_for_global.getContainer()
 
@@ -1153,7 +1153,7 @@ class MachineManager(QObject):
             quality_changes_container = self._empty_quality_changes_container
             quality_container = self._empty_quality_container
             if quality_changes_node and quality_changes_node.getContainer():
-                quality_changes_container = quality_changes_node.getContainer()
+                quality_changes_container = cast(InstanceContainer, quality_changes_node.getContainer())
             if quality_node and quality_node.getContainer():
                 quality_container = quality_node.getContainer()
 
@@ -1279,7 +1279,7 @@ class MachineManager(QObject):
                 continue
 
             # The current material is not available, find the preferred one
-            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, position, current_variant_name)
+            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, position_item, current_variant_name)
             if material_node is not None:
                 self._setMaterial(position_item, material_node)
 

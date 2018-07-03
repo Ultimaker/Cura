@@ -4,6 +4,7 @@
 import os
 import urllib.parse
 import uuid
+from typing import Any
 from typing import Dict, Union
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
@@ -43,7 +44,7 @@ class ContainerManager(QObject):
         self._machine_manager = self._application.getMachineManager()
         self._material_manager = self._application.getMaterialManager()
         self._quality_manager = self._application.getQualityManager()
-        self._container_name_filters = {}
+        self._container_name_filters = {}   # type: Dict[str, Dict[str, Any]]
 
     @pyqtSlot(str, str, result=str)
     def getContainerMetaDataEntry(self, container_id, entry_name):

@@ -84,6 +84,7 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
+from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -1722,11 +1723,13 @@ class CuraApplication(QtApplication):
         if not Selection.hasSelection():
             node = self.getController().getScene().findObject(cast(SelectionPass, self.getRenderer().getRenderPass("selection")).getIdAtPosition(x, y))
             if node:
-                while(node.getParent() and node.getParent().callDecoration("isGroup")):
-                    node = node.getParent()
+                parent = node.getParent()
+                while(parent and parent.callDecoration("isGroup")):
+                    node = parent
+                    parent = node.getParent()
 
                 Selection.add(node)
 
     @pyqtSlot()
     def showMoreInformationDialogForAnonymousDataCollection(self):
-        self._plugin_registry.getPluginObject("SliceInfoPlugin").showMoreInfoDialog()
+        cast(SliceInfo, self._plugin_registry.getPluginObject("SliceInfoPlugin")).showMoreInfoDialog()

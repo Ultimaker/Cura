@@ -4,7 +4,7 @@
 from collections import defaultdict, OrderedDict
 import copy
 import uuid
-from typing import Dict
+from typing import Dict, cast
 from typing import Optional, TYPE_CHECKING
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
@@ -416,13 +416,14 @@ class MaterialManager(QObject):
 
     ##  Get default material for given global stack, extruder position and extruder variant name
     #   you can provide the extruder_definition and then the position is ignored (useful when building up global stack in CuraStackBuilder)
-    def getDefaultMaterial(self, global_stack: "GlobalStack", position: str, extruder_variant_name: Optional[str], extruder_definition: Optional["ExtruderStack"] = None) -> Optional["MaterialNode"]:
+    def getDefaultMaterial(self, global_stack: "GlobalStack", position: str, extruder_variant_name: Optional[str], extruder_definition: Optional["DefinitionContainer"] = None) -> Optional["MaterialNode"]:
         node = None
         machine_definition = global_stack.definition
         if extruder_definition is None:
             extruder_definition = global_stack.extruders[position].definition
         if parseBool(global_stack.getMetaDataEntry("has_materials", False)):
-            material_diameter = extruder_definition.getProperty("material_diameter", "value")
+            # At this point the extruder_definition is not None
+            material_diameter = cast(DefinitionContainer, extruder_definition).getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)
             approximate_material_diameter = str(round(material_diameter))

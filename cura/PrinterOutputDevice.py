@@ -61,7 +61,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     uniqueConfigurationsChanged = pyqtSignal()
 
     def __init__(self, device_id: str, parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, parent = parent)
+        super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
         self._unique_configurations = []   # type: List[ConfigurationModel]

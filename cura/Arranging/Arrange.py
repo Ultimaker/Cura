@@ -97,8 +97,9 @@ class Arrange:
 
         # Ensure that the object is above the build platform
         node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-        if node.getBoundingBox():
-            center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+        bbox = node.getBoundingBox()
+        if bbox:
+            center_y = node.getWorldPosition().y - bbox.bottom
         else:
             center_y = 0
 
