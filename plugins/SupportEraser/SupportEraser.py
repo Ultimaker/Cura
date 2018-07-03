@@ -4,6 +4,7 @@
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication
 
+from UM.Application import Application
 from UM.Math.Vector import Vector
 from UM.Tool import Tool
 from UM.Event import Event, MouseEvent

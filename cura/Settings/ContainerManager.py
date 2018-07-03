@@ -208,7 +208,6 @@ class ContainerManager(QObject):
         if not file_url:
             return {"status": "error", "message": "Invalid path"}
 
-        mime_type = None
         if file_type not in self._container_name_filters:
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(file_url)

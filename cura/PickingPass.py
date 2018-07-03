@@ -69,6 +69,7 @@ class PickingPass(RenderPass):
     ## Get the world coordinates of a picked point
     def getPickedPosition(self, x: int, y: int) -> Vector:
         distance = self.getPickedDepth(x, y)
-        ray = self._scene.getActiveCamera().getRay(x, y)
-
-        return ray.getPointAlongRay(distance)
+        camera = self._scene.getActiveCamera()
+        if camera:
+            return camera.getRay(x, y).getPointAlongRay(distance)
+        return Vector()
