@@ -94,13 +94,13 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Removes all packages that have been scheduled to be removed.
     def _removeAllScheduledPackages(self) -> None:
-        remove_failures = []
+        remove_failures = set()
         for package_id in self._to_remove_package_set:
             try:
                 self._purgePackage(package_id)
                 del self._installed_package_dict[package_id]
             except:
-                remove_failures.append(package_id)
+                remove_failures.add(package_id)
                 Logger.log("e", "There was an error uninstalling the package {package}".format(package = package_id))
         self._to_remove_package_set = remove_failures
         self._saveManagementData()
