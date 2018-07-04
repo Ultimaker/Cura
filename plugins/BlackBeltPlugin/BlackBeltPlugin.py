@@ -360,12 +360,16 @@ class BlackBeltPlugin(Extension):
             # adjust walls that touch the belt
             if enable_belt_wall:
                 #wall_line_width_0
+                y = None
                 last_y = None
+                e = None
                 last_e = None
+                f = None
                 extruding_move_regex = re.compile(r"(G[0|1] .*) Y(\d*\.?\d*) E(-?\d*\.?\d*)(.*)")
-                extruding_regex = re.compile(r"G[0|1].* E(-?\d*\.?\d*)")
+                extruding_regex = re.compile(r"G[0|1].* ?E?(-?\d*\.?\d*)")
                 speed_regex = re.compile(r" F\d*\.?\d*")
                 extrude_regex = re.compile(r" E-?\d*\.?\d*")
+                move_parameters_regex = re.compile(r"([YEF]-?\d*\.?\d+)")
 
                 for layer_number, layer in enumerate(gcode_list):
                     if layer_number < 2 or layer_number > len(gcode_list) - 1:
@@ -377,33 +381,46 @@ class BlackBeltPlugin(Extension):
 
                     lines = layer.splitlines()
                     for line_number, line in enumerate(lines):
-                        match = re.search(extruding_move_regex, line)
-                        if match:
-                            y = float(match.group(2))
-                            e = float(match.group(3))
-                            if y <= minimum_y and (last_y is not None and last_y <= minimum_y):
-                                if belt_wall_flow != 1.0:
-                                    new_e = last_e + (e - last_e) * belt_wall_flow
-                                    line = re.sub(extrude_regex, " E%f" % new_e, line)
+                        line_has_e = False
+                        line_has_axis = False
 
-                                # Remove pre-existing move speed and add our own
-                                line = re.sub(speed_regex, r"", line)
-                                line += " F%d ; Adjusted belt wall" % belt_wall_speed
+                        if line[:2] not in ["G0", "G1"]:
+                            continue
+                        result = re.findall(move_parameters_regex, line)
+                        if not result:
+                            continue
+                        for match in result:
+                            parameter = match[:1]
+                            value = float(match[1:])
+                            if parameter == "Y":
+                                y = value
+                                line_has_axis = True
+                            elif parameter == "E":
+                                e = value
+                                line_has_e = True
+                            elif parameter == "F":
+                                f = value
+                            elif parameter in "XZ":
+                                line_has_axis = True
 
-                                # Reset E value as if nothing happened
-                                if belt_wall_flow != 1.0:
-                                    line += "\nG92 E%f ; Reset E to pre-compensated value" % e
-                                lines[line_number] = line
-                            last_e = e
-                            last_y = y
-                        elif belt_wall_flow != 1.0:
-                            # Keep track of previous E value
-                            match = re.search(extruding_regex, line)
-                            if match:
-                                print(line, match.group(0), match.group(1))
-                                last_e = float(match.group(1))
+                        if line_has_axis and line_has_e and f is not None and y is not None and y <= minimum_y and last_y is not None and last_y <= minimum_y:
+                            # Remove pre-existing move speed and add our own
+                            line = re.sub(speed_regex, r"", line)
 
-                    edited_layer = "\n".join(lines)
+                            if belt_wall_flow != 1.0 and last_y is not None:
+                                new_e = last_e + (e - last_e) * belt_wall_flow
+                                line = re.sub(extrude_regex, " E%f" % new_e, line)
+                                line += " ; Adjusted E for belt wall\nG92 E%f ; Reset E to pre-compensated value" % e
+
+                            g_type = int(line[1:2])
+                            line = "G%d F%d ; Belt wall speed\n%s\nG%d F%d ; Restored speed" % (g_type, belt_wall_speed, line, g_type, f)
+
+                            lines[line_number] = line
+
+                        last_y = y
+                        last_e = e
+
+                    edited_layer = "\n".join(lines) + "\n"
                     gcode_list[layer_number] = edited_layer
 
             # make repetitions
