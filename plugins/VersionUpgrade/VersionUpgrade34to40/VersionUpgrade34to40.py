@@ -6,7 +6,7 @@ import io
 
 from UM.VersionUpgrade import VersionUpgrade
 
-deleted_settings = {"prime_tower_wall_thickness"}
+deleted_settings = {"prime_tower_wall_thickness", "dual_pre_wipe", "prime_tower_purge_volume"}
 
 ##  Upgrades configurations from the state they were in at version 3.4 to the
 #   state they should be in at version 4.0.

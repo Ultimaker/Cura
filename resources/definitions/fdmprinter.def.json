@@ -5053,29 +5053,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "dual_pre_wipe":
-                {
-                    "label": "Wipe Nozzle After Switch",
-                    "description": "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print.",
-                    "type": "bool",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": true,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "prime_tower_purge_volume":
-                {
-                    "label": "Prime Tower Purge Volume",
-                    "description": "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle.",
-                    "type": "float",
-                    "enabled": "resolveOrValue('prime_tower_enable') and dual_pre_wipe",
-                    "unit": "mm³",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "2.5",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "ooze_shield_enabled":
                 {
                     "label": "Enable Ooze Shield",
