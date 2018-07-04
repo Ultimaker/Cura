@@ -166,7 +166,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "150",
                     "default_value": 30,
-                    "value": "speed_wall_0 * 0.6",
+                    "resolve": "min(extruderValues('blackbelt_belt_wall_speed'))",
                     "enabled": "blackbelt_belt_wall_enabled and not blackbelt_raft",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -181,7 +181,7 @@
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
                     "default_value": 100,
-                    "value": "material_flow",
+                    "resolve": "min(extruderValues('blackbelt_belt_wall_flow'))",
                     "enabled": "blackbelt_belt_wall_enabled and not blackbelt_raft",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
