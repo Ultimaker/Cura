@@ -10,6 +10,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Logger import Logger
 from UM.Version import Version
 
+from cura.Settings.CuraContainerStack import _ContainerIndexes as ContainerIndexes
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("BlackBeltPlugin")
 
@@ -73,6 +74,7 @@ class BlackBeltPlugin(Extension):
             self._force_visibility_update = True
             preferences.addPreference("general/theme", self._application.default_theme)
             preferences.setValue("general/theme", "blackbelt")
+            preferences.addPreference("cura/active_setting_visibility_preset", "basic")
             preferences.setValue("cura/active_setting_visibility_preset", "blackbelt")
 
         # Disable USB printing output device
@@ -328,7 +330,7 @@ class BlackBeltPlugin(Extension):
             setting_summary = "; Setting summary:\n"
             for stack in [global_stack.extruders["0"], global_stack]:
                 for index, container in enumerate(stack.getContainers()):
-                    if index == 6:
+                    if index == ContainerIndexes.Definition:
                         continue
                     for key in container.getAllKeys():
                         if key not in setting_values:
