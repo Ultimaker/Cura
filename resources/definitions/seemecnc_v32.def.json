@@ -26,7 +26,6 @@
         "machine_height": { "default_value": 395 },
         "machine_max_feedrate_z": { "default_value": 300 },
         "machine_name": { "default_value": "Rostock Max V3.2" },
-        "machine_nozzle_size": { "default_value": 0.5 },
         "machine_shape": { "default_value": "elliptic" },
         "machine_width": { "default_value": 265 },
         "relative_extrusion": { "default_value": false },

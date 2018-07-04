@@ -24,7 +24,6 @@
         "machine_depth": { "default_value": 210 },
         "machine_center_is_zero": { "default_value": false },
         "material_bed_temperature": { "default_value": 55 },
-        "machine_nozzle_size": { "default_value": 0.4 },
         "layer_height": { "default_value": 0.1 },
         "layer_height_0": { "default_value": 0.15 },
         "retraction_amount": { "default_value": 0.8 },

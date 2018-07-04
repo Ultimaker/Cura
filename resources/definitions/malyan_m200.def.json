@@ -60,10 +60,6 @@
         "machine_height": { "default_value": 120 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
-        "machine_nozzle_size": {
-            "default_value": 0.4,
-            "minimum_value": 0.15
-        },
         "machine_max_feedrate_x": { "default_value": 150 },
         "machine_max_feedrate_y": { "default_value": 150 },
         "machine_max_feedrate_z": { "default_value": 1.5 },
