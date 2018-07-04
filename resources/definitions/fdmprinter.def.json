@@ -1287,8 +1287,8 @@
                     "default_value": 0,
                     "type": "float",
                     "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "wall_min_flow_retract":
                 {
@@ -1297,8 +1297,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "fill_perimeter_gaps":
                 {
@@ -6464,8 +6464,8 @@
                     "minimum_value": "0",
                     "default_value": 5,
                     "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "bridge_skin_support_threshold":
                 {
@@ -6501,7 +6501,7 @@
                     "minimum_value": "0",
                     "maximum_value": "500",
                     "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "bridge_wall_speed":
                 {
