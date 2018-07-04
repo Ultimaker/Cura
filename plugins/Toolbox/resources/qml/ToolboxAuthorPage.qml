@@ -9,17 +9,8 @@ import UM 1.1 as UM
 Item
 {
     id: page
-    property var details: base.selection || dummy_details
+    property var details: base.selection || {}
     anchors.fill: parent
-
-    property var dummy_details: new Object({
-        name: "",
-        description: "",
-        email: "",
-        website: "",
-        icon_url: ""
-    })
-
     ToolboxBackColumn
     {
         id: sidebar

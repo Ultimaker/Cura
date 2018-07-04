@@ -9,21 +9,9 @@ import UM 1.1 as UM
 Item
 {
     id: page
-    property var details: base.selection || dummy_details
+    property var details: base.selection
     anchors.fill: parent
     width: parent.width
-
-    property var dummy_details: new Object({
-        name: '',
-        version: '',
-        last_updated: '',
-        author_email: '',
-        author_name: '',
-        website: '',
-        icon_url: '',
-        download_count: ''
-    })
-
     ToolboxBackColumn
     {
         id: sidebar
@@ -86,6 +74,7 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
+            height: childrenRect.height
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
@@ -122,6 +111,7 @@ Item
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
+            height: childrenRect.height
             Label
             {
                 text: details.version || catalog.i18nc("@label", "Unknown")

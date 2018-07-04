@@ -25,6 +25,7 @@ Item
             right: restartButton.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }
+        color: UM.Theme.getColor("text")
     }
     Button
     {

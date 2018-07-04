@@ -25,7 +25,7 @@ Column
     {
         id: grid
         property var model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
-        width: parent.width
+        width: parent.width - 2 * parent.padding
         columns: 2
         columnSpacing: UM.Theme.getSize("default_margin").height
         rowSpacing: UM.Theme.getSize("default_margin").width
