@@ -343,11 +343,11 @@ class CuraPackageManager(QObject):
                 continue
             self.__installPackageFiles(package_id, src_dir_path, dst_dir_path)
 
-            # Remove the file
-            try:
-                os.remove(filename)
-            except Exception:
-                Logger.log("w", "Tried to delete file [%s], but it failed", filename)
+        # Remove the file
+        try:
+            os.remove(filename)
+        except Exception:
+            Logger.log("w", "Tried to delete file [%s], but it failed", filename)
 
         # Move the info to the installed list of packages only when it succeeds
         self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
