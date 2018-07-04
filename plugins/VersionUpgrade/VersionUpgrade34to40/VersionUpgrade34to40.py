@@ -6,6 +6,7 @@ import io
 
 from UM.VersionUpgrade import VersionUpgrade
 
+deleted_settings = {"prime_tower_wall_thickness"}
 
 ##  Upgrades configurations from the state they were in at version 3.4 to the
 #   state they should be in at version 4.0.
@@ -68,6 +69,9 @@ class VersionUpgrade34to40(VersionUpgrade):
         parser["metadata"]["setting_version"] = "5"
 
         self._resetConcentric3DInfillPattern(parser)
+        if "values" in parser:
+            for deleted_setting in deleted_settings:
+                del parser["values"][deleted_setting]
 
         result = io.StringIO()
         parser.write(result)
