@@ -294,7 +294,7 @@ class BuildVolume(SceneNode):
         if not self._width or not self._height or not self._depth:
             return
 
-        if not self._application._qml_engine:
+        if not self._engine_ready:
             return
 
         if not self._volume_outline_color:
