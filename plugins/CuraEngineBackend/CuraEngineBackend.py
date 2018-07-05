@@ -3,8 +3,6 @@
 
 from collections import defaultdict
 import os
-from typing import Union
-
 from PyQt5.QtCore import QObject, QTimer, pyqtSlot
 import sys
 from time import time
@@ -62,16 +60,17 @@ class CuraEngineBackend(QObject, Backend):
         if hasattr(sys, "frozen"):
             default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), executable_name)
         if Platform.isLinux() and not default_engine_location:
-            env_path = os.getenv("PATH")
-            if not env_path:
+            if not os.getenv("PATH"):
                 raise OSError("There is something wrong with your Linux installation.")
-            for pathdir in env_path.split(os.pathsep):
+            for pathdir in os.getenv("PATH").split(os.pathsep):
                 execpath = os.path.join(pathdir, executable_name)
                 if os.path.exists(execpath):
                     default_engine_location = execpath
                     break
 
         self._application = CuraApplication.getInstance() #type: CuraApplication
+        self._multi_build_plate_model = None #type: MultiBuildPlateModel
+        self._machine_error_checker = None #type: MachineErrorChecker
 
         if not default_engine_location:
             raise EnvironmentError("Could not find CuraEngine")
@@ -121,11 +120,11 @@ class CuraEngineBackend(QObject, Backend):
         self._engine_is_fresh = True #type: bool # Is the newly started engine used before or not?
 
         self._backend_log_max_lines = 20000 #type: int # Maximum number of lines to buffer
-        self._error_message = None #type: Optional[Message] # Pop-up message that shows errors.
+        self._error_message = None #type: Message # Pop-up message that shows errors.
         self._last_num_objects = defaultdict(int) #type: Dict[int, int] # Count number of objects to see if there is something changed
         self._postponed_scene_change_sources = [] #type: List[SceneNode] # scene change is postponed (by a tool)
 
-        self._slice_start_time = time() #type: float
+        self._slice_start_time = None #type: Optional[float]
         self._is_disabled = False #type: bool
 
         self._application.getPreferences().addPreference("general/auto_slice", False)
@@ -143,7 +142,8 @@ class CuraEngineBackend(QObject, Backend):
         self._application.initializationFinished.connect(self.initialize)
 
     def initialize(self) -> None:
-        self._multi_build_plate_model = self._application.getMultiBuildPlateModel() #type: MultiBuildPlateModel
+        self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
+
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
         self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveViewChanged)
 
@@ -160,7 +160,7 @@ class CuraEngineBackend(QObject, Backend):
         self._application.getController().toolOperationStarted.connect(self._onToolOperationStarted)
         self._application.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
-        self._machine_error_checker = self._application.getMachineErrorChecker() #type: MachineErrorChecker
+        self._machine_error_checker = self._application.getMachineErrorChecker()
         self._machine_error_checker.errorCheckFinished.connect(self._onStackErrorCheckFinished)
 
     ##  Terminate the engine process.
@@ -310,11 +310,6 @@ class CuraEngineBackend(QObject, Backend):
         if self._start_slice_job is job:
             self._start_slice_job = None
 
-        if not self._global_container_stack:
-            self.backendStateChange.emit(BackendState.Error)
-            self.backendError.emit(job)
-            return
-
         if job.isCancelled() or job.getError() or job.getResult() == StartJobResult.Error:
             self.backendStateChange.emit(BackendState.Error)
             self.backendError.emit(job)
@@ -452,8 +447,7 @@ class CuraEngineBackend(QObject, Backend):
             # Only count sliceable objects
             if node.callDecoration("isSliceable"):
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
-                if build_plate_number is not None:
-                    num_objects[build_plate_number] += 1
+                num_objects[build_plate_number] += 1
         return num_objects
 
     ##  Listener for when the scene has changed.
@@ -470,7 +464,7 @@ class CuraEngineBackend(QObject, Backend):
         if source.callDecoration("isBlockSlicing") and source.callDecoration("getLayerData"):
             self._stored_optimized_layer_data = {}
 
-        build_plate_changed = set() # type: Set[int]
+        build_plate_changed = set()
         source_build_plate_number = source.callDecoration("getBuildPlateNumber")
         if source == self._scene.getRoot():
             # we got the root node
@@ -482,15 +476,14 @@ class CuraEngineBackend(QObject, Backend):
         else:
             # we got a single scenenode
             if not source.callDecoration("isGroup"):
-                mesh_data = source.getMeshData()
-                if mesh_data is None:
+                if source.getMeshData() is None:
                     return
-                elif mesh_data.getVertices() is None:
+                if source.getMeshData().getVertices() is None:
                     return
 
-            if source_build_plate_number is not None:
-                build_plate_changed.add(source_build_plate_number)
+            build_plate_changed.add(source_build_plate_number)
 
+        build_plate_changed.discard(None)
         build_plate_changed.discard(-1)  # object not on build plate
         if not build_plate_changed:
             return
@@ -584,10 +577,9 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param message The protobuf message containing sliced layer data.
     def _onOptimizedLayerMessage(self, message: Arcus.PythonMessage) -> None:
-        if self._start_slice_job_build_plate is not None:
-            if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
-                self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
-            self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
+        if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
+            self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
+        self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
     ##  Called when a progress message is received from the engine.
     #
@@ -666,10 +658,7 @@ class CuraEngineBackend(QObject, Backend):
     ##  Creates a new socket connection.
     def _createSocket(self, protocol_file: str = None) -> None:
         if not protocol_file:
-            plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-            if not plugin_path:
-                return
-            protocol_file = os.path.abspath(os.path.join(plugin_path, "Cura.proto"))
+            protocol_file = os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto"))
         super()._createSocket(protocol_file)
         self._engine_is_fresh = True
 
