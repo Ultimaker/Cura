@@ -114,13 +114,14 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if not stack:
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        if not global_stack:
             self.setResult(StartJobResult.Error)
             return
 
         # Don't slice if there is a setting with an error value.
-        if CuraApplication.getInstance().getMachineManager().stacksHaveErrors:
+        if machine_manager.stacksHaveErrors:
             self.setResult(StartJobResult.SettingError)
             return
 
@@ -129,12 +130,12 @@ class StartSliceJob(Job):
             return
 
         # Don't slice if the buildplate or the nozzle type is incompatible with the materials
-        if not CuraApplication.getInstance().getMachineManager().variantBuildplateCompatible and \
-                not CuraApplication.getInstance().getMachineManager().variantBuildplateUsable:
+        if not machine_manager.variantBuildplateCompatible and \
+                not machine_manager.variantBuildplateUsable:
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for position, extruder_stack in stack.extruders.items():
+        for position, extruder_stack in global_stack.extruders.items():
             material = extruder_stack.findContainer({"type": "material"})
             if not extruder_stack.isEnabled:
                 continue
@@ -162,7 +163,7 @@ class StartSliceJob(Job):
 
             # Get the objects in their groups to print.
             object_groups = []
-            if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            if global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 for node in OneAtATimeIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                     temp_list = []
 
@@ -216,12 +217,11 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
 
-            extruders_enabled = {position: stack.isEnabled for position, stack in CuraApplication.getInstance().getGlobalContainerStack().extruders.items()}
+            extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
             filtered_object_groups = []
             has_model_with_disabled_extruders = False
-            associated_disabled_extruders = set()
+            associated_disabled_extruders = set()   # type: Set[str]
             for group in object_groups:
-                stack = CuraApplication.getInstance().getGlobalContainerStack()
                 skip_group = False
                 for node in group:
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
@@ -234,7 +234,7 @@ class StartSliceJob(Job):
 
             if has_model_with_disabled_extruders:
                 self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-                associated_disabled_extruders = [str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])]
+                associated_disabled_extruders = set([str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])])
                 self.setMessage(", ".join(associated_disabled_extruders))
                 return
 
@@ -245,11 +245,11 @@ class StartSliceJob(Job):
                 self.setResult(StartJobResult.NothingToSlice)
                 return
 
-            self._buildGlobalSettingsMessage(stack)
-            self._buildGlobalInheritsStackMessage(stack)
+            self._buildGlobalSettingsMessage(global_stack)
+            self._buildGlobalInheritsStackMessage(global_stack)
 
             # Build messages for extruder stacks
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
 
             for group in filtered_object_groups:
@@ -326,6 +326,8 @@ class StartSliceJob(Job):
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         if not self._all_extruders_settings:
             global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+            if not global_stack:
+                return str(value)
 
             # NB: keys must be strings for the string formatter
             self._all_extruders_settings = {
