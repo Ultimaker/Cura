@@ -21,6 +21,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
 from UM.Tool import Tool #For typing.
+from UM.Mesh.MeshData import MeshData #For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -62,7 +63,7 @@ class CuraEngineBackend(QObject, Backend):
         if Platform.isLinux() and not default_engine_location:
             if not os.getenv("PATH"):
                 raise OSError("There is something wrong with your Linux installation.")
-            for pathdir in os.getenv("PATH").split(os.pathsep):
+            for pathdir in cast(str, os.getenv("PATH")).split(os.pathsep):
                 execpath = os.path.join(pathdir, executable_name)
                 if os.path.exists(execpath):
                     default_engine_location = execpath
@@ -485,9 +486,8 @@ class CuraEngineBackend(QObject, Backend):
         else:
             # we got a single scenenode
             if not source.callDecoration("isGroup"):
-                if source.getMeshData() is None:
-                    return
-                if source.getMeshData().getVertices() is None:
+                meshData = source.getMeshData();
+                if meshData and meshData.getVertices() is None:
                     return
 
             build_plate_changed.add(source_build_plate_number)
@@ -670,7 +670,7 @@ class CuraEngineBackend(QObject, Backend):
     ##  Creates a new socket connection.
     def _createSocket(self, protocol_file: str = None) -> None:
         if not protocol_file:
-            protocol_file = os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto"))
+            protocol_file = os.path.abspath(os.path.join(str(PluginRegistry.getInstance().getPluginPath(self.getPluginId())), "Cura.proto"))
         super()._createSocket(protocol_file)
         self._engine_is_fresh = True
 
