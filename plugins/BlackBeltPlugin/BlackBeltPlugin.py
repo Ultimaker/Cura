@@ -386,9 +386,11 @@ class BlackBeltPlugin(Extension):
 
                         if line[:2] not in ["G0", "G1"]:
                             continue
+
                         result = re.findall(move_parameters_regex, line)
                         if not result:
                             continue
+
                         for match in result:
                             parameter = match[:1]
                             value = float(match[1:])
@@ -404,16 +406,18 @@ class BlackBeltPlugin(Extension):
                                 line_has_axis = True
 
                         if line_has_axis and line_has_e and f is not None and y is not None and y <= minimum_y and last_y is not None and last_y <= minimum_y:
-                            # Remove pre-existing move speed and add our own
-                            line = re.sub(speed_regex, r"", line)
+                            if f > belt_wall_speed:
+                                # Remove pre-existing move speed and add our own
+                                line = re.sub(speed_regex, r"", line)
 
                             if belt_wall_flow != 1.0 and last_y is not None:
                                 new_e = last_e + (e - last_e) * belt_wall_flow
                                 line = re.sub(extrude_regex, " E%f" % new_e, line)
                                 line += " ; Adjusted E for belt wall\nG92 E%f ; Reset E to pre-compensated value" % e
 
-                            g_type = int(line[1:2])
-                            line = "G%d F%d ; Belt wall speed\n%s\nG%d F%d ; Restored speed" % (g_type, belt_wall_speed, line, g_type, f)
+                            if f > belt_wall_speed:
+                                g_type = int(line[1:2])
+                                line = "G%d F%d ; Belt wall speed\n%s\nG%d F%d ; Restored speed" % (g_type, belt_wall_speed, line, g_type, f)
 
                             lines[line_number] = line
 
