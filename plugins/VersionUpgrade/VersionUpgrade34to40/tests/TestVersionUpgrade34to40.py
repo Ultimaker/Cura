@@ -22,6 +22,7 @@ test_upgrade_version_nr_data = [
 ]
 
 ##  Tests whether the version numbers are updated.
+@pytest.mark.parametrize("test_name, file_data", test_upgrade_version_nr_data)
 def test_upgradeVersionNr(test_name, file_data, upgrader):
     #Perform the upgrade.
     _, upgraded_instances = upgrader.upgradePreferences(file_data, "<string>")
