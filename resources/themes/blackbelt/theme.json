@@ -9,6 +9,8 @@
         "button_tooltip": [189, 189, 189, 255],
         "tooltip": [189, 189, 189, 255],
 
+        "text_inactive": [0, 0, 0, 128],
+
         "viewport_background": [220, 220, 220, 255],
         "sidebar": [189, 189, 189, 255],
 
