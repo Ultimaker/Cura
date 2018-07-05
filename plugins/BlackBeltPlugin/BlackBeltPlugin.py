@@ -224,9 +224,12 @@ class BlackBeltPlugin(Extension):
         if definition_container.getId() != "blackbelt":
             return
 
-        if not self._global_container_stack.quality.getMetaDataEntry("global_quality", False):
+        if extruder_stack.quality.getMetaDataEntry("global_quality", False) or not self._global_container_stack.quality.getMetaDataEntry("global_quality", False):
             blackbelt_global_quality = ContainerRegistry.getInstance().findContainers(id = "blackbelt_global_normal")[0]
             self._global_container_stack.setQuality(blackbelt_global_quality)
+
+            blackbelt_quality = ContainerRegistry.getInstance().findContainers(id = "blackbelt_normal")[0]
+            extruder_stack.setQuality(blackbelt_quality)
 
     def _onSettingValueChanged(self, key, property_name):
         if property_name != "value" or not self._global_container_stack.hasProperty("blackbelt_gantry_angle", "value"):
