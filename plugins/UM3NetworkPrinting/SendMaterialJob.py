@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 #
 #   This way it won't freeze up the interface while sending those materials.
 class SendMaterialJob(Job):
-    def __init__(self, device: "ClusterUM3OutputDevice"):
+    def __init__(self, device: "ClusterUM3OutputDevice") -> None:
         super().__init__()
         self.device = device #type: ClusterUM3OutputDevice
 

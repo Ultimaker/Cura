@@ -3,7 +3,7 @@
 
 import os.path
 import time
-from typing import Optional
+from typing import cast, Optional
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
 
@@ -170,7 +170,11 @@ class DiscoverUM3Action(MachineAction):
         Logger.log("d", "Creating additional ui components for UM3.")
 
         # Create networking dialog
-        path = os.path.join(PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"), "UM3InfoComponents.qml")
+        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")), "UM3InfoComponents.qml")
+        if not path:
+            Logger.log("w", "Could not get QML path for UM3 network printing UI.")
+            return
+
         self.__additional_components_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         if not self.__additional_components_view:
             Logger.log("w", "Could not create ui components for UM3.")
