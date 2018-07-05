@@ -234,8 +234,8 @@ class StartSliceJob(Job):
 
             if has_model_with_disabled_extruders:
                 self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-                associated_disabled_extruders = [str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])]
-                self.setMessage(", ".join(associated_disabled_extruders))
+                associated_disabled_extruders_message = [str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])]
+                self.setMessage(", ".join(associated_disabled_extruders_message))
                 return
 
             # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
