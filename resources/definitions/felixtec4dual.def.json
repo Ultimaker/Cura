@@ -44,7 +44,6 @@
         "retraction_amount": { "default_value": 1 },
         "retraction_speed": { "default_value": 50},
         "material_flow": { "default_value": 87 },
-        "machine_nozzle_size": { "default_value": 0.35 },
         "adhesion_type": { "default_value": "skirt" },
         "skirt_brim_minimal_length": { "default_value": 130},
 

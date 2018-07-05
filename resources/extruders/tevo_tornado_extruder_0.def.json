@@ -1,9 +1,10 @@
 {
+    "id": "tevo_tornado_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "raise3D_N2_plus_single",
+        "machine": "tevo_tornado",
         "position": "0"
     },
 

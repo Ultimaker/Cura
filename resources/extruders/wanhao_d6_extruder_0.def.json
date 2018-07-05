@@ -1,9 +1,10 @@
 {
+    "id": "wanhao_d6_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "raise3D_N2_plus_single",
+        "machine": "wanhao_d6",
         "position": "0"
     },
 
