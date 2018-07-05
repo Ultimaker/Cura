@@ -5,7 +5,7 @@ import numpy
 from string import Formatter
 from enum import IntEnum
 import time
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, cast, Dict, List, Optional, Set
 import re
 import Arcus #For typing.
 
@@ -114,7 +114,7 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        stack = CuraApplication.getInstance().getGlobalContainerStack()
+        stack = cast(ContainerStack, CuraApplication.getInstance().getGlobalContainerStack())
         if not stack:
             self.setResult(StartJobResult.Error)
             return
@@ -216,12 +216,11 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
 
-            extruders_enabled = {position: stack.isEnabled for position, stack in CuraApplication.getInstance().getGlobalContainerStack().extruders.items()}
+            extruders_enabled = {position: stack.isEnabled for position, extruder in stack.extruders.items()}
             filtered_object_groups = []
             has_model_with_disabled_extruders = False
             associated_disabled_extruders = set()
             for group in object_groups:
-                stack = CuraApplication.getInstance().getGlobalContainerStack()
                 skip_group = False
                 for node in group:
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
@@ -325,11 +324,11 @@ class StartSliceJob(Job):
     #   \param default_extruder_nr Stack nr to use when no stack nr is specified, defaults to the global stack
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         if not self._all_extruders_settings:
-            global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+            global_stack = cast(ContainerStack, CuraApplication.getInstance().getGlobalContainerStack())
 
             # NB: keys must be strings for the string formatter
             self._all_extruders_settings = {
-                "-1": self._buildReplacementTokens(global_stack)
+                "-1": self._buildReplacementTokens(cast(ContainerStack, global_stack))
             }
 
             for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
