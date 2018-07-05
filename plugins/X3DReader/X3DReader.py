@@ -42,7 +42,8 @@ class X3DReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
         self._supported_extensions = [".x3d"]
-        self._namespaces = {}
+        # TODO: Remove after testing because it appears to be unused
+        # self._namespaces = {}
 
     # Main entry point
     # Reads the file, returns a SceneNode (possibly with nested ones), or None
