@@ -166,6 +166,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "150",
                     "default_value": 30,
+                    "value": "speed_wall_0 * 0.6",
                     "resolve": "min(extruderValues('blackbelt_belt_wall_speed'))",
                     "enabled": "blackbelt_belt_wall_enabled and not blackbelt_raft",
                     "settable_per_mesh": false,
@@ -174,7 +175,7 @@
                 "blackbelt_belt_wall_flow":
                 {
                     "label": "Belt Wall Flow",
-                    "description": "The extrusion multiplier for the walls touching the belt.",
+                    "description": "The extrusion multiplier for the walls touching the belt. This multiplier acts on top of the Material Flow multiplier.",
                     "type": "float",
                     "unit": "%",
                     "minimum_value": "5",
