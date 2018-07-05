@@ -1392,8 +1392,13 @@ class MachineManager(QObject):
         material_node = self._material_manager.getMaterialNode(machine_definition_id, variant_name, material_diameter, root_material_id)
         self.setMaterial(position, material_node)
 
+    ##  global_stack: if you want to provide your own global_stack instead of the current active one
+    #   if you update an active machine, special measures have to be taken.
     @pyqtSlot(str, "QVariant")
-    def setMaterial(self, position: str, container_node) -> None:
+    def setMaterial(self, position: str, container_node, global_stack: Optional["GlobalStack"] = None) -> None:
+        if global_stack is not None and global_stack != self._global_container_stack:
+            global_stack.extruders[position].material = container_node.getContainer()
+            return
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
@@ -1434,8 +1439,14 @@ class MachineManager(QObject):
         quality_group = quality_group_dict[quality_type]
         self.setQualityGroup(quality_group)
 
+    ##  Optionally provide global_stack if you want to use your own
+    #   The active global_stack is treated differently.
     @pyqtSlot(QObject)
-    def setQualityGroup(self, quality_group: QualityGroup, no_dialog: bool = False) -> None:
+    def setQualityGroup(self, quality_group: QualityGroup, no_dialog: bool = False, global_stack: Optional["GlobalStack"] = None) -> None:
+        if global_stack is not None and global_stack != self._global_container_stack:
+            global_stack.quality = quality_group.node_for_global.getContainer()
+            return
+
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(quality_group)

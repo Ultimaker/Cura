@@ -294,6 +294,29 @@ class Toolbox(QObject, Extension):
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
+    ##  Check package usage and uninstall
+    #   If the package is in use, you'll get a confirmation dialog to set everything to default
+    @pyqtSlot(str)
+    def checkPackageUsageAndUninstall(self, plugin_id: str) -> None:
+        print("checkPackageUsageAndUninstall...")
+        package_used_materials, package_used_qualities = self._package_manager.packageUsed(plugin_id)
+        if package_used_materials or package_used_qualities:
+            # Ask change to default material / profile
+            # Cancel: just return
+            # Confirm: change to default material / profile
+            material_manager = CuraApplication.getInstance().getMaterialManager()
+            quality_manager = CuraApplication.getInstance().getQualityManager()
+            machine_manager = CuraApplication.getInstance().getMachineManager()
+            for global_stack, extruder_nr in package_used_materials:
+                default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
+                machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
+            for global_stack, extruder_nr in package_used_qualities:
+                default_quality_group = quality_manager.getDefaultQualityType(global_stack)
+                machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
+        # Change to default material / profile
+        self.uninstall(plugin_id)
+        return
+
     @pyqtSlot(str)
     def uninstall(self, plugin_id: str) -> None:
         self._package_manager.removePackage(plugin_id, force_add = True)
