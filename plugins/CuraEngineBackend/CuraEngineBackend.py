@@ -120,7 +120,7 @@ class CuraEngineBackend(QObject, Backend):
         self._engine_is_fresh = True #type: bool # Is the newly started engine used before or not?
 
         self._backend_log_max_lines = 20000 #type: int # Maximum number of lines to buffer
-        self._error_message = None #type: Message # Pop-up message that shows errors.
+        self._error_message = None #type: Optional[Message] # Pop-up message that shows errors.
         self._last_num_objects = defaultdict(int) #type: Dict[int, int] # Count number of objects to see if there is something changed
         self._postponed_scene_change_sources = [] #type: List[SceneNode] # scene change is postponed (by a tool)
 
@@ -145,7 +145,9 @@ class CuraEngineBackend(QObject, Backend):
         self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
 
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
-        self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveViewChanged)
+
+        if self._multi_build_plate_model:
+            self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveViewChanged)
 
         self._application.globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
@@ -412,7 +414,8 @@ class CuraEngineBackend(QObject, Backend):
         # Notify the user that it's now up to the backend to do it's job
         self.backendStateChange.emit(BackendState.Processing)
 
-        Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
+        if self._slice_start_time:
+            Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
     ##  Determine enable or disable auto slicing. Return True for enable timer and False otherwise.
     #   It disables when
@@ -622,7 +625,8 @@ class CuraEngineBackend(QObject, Backend):
             gcode_list[index] = replaced
 
         self._slicing = False
-        Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
+        if self._slice_start_time:
+            Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
         Logger.log("d", "Number of models per buildplate: %s", dict(self._numObjectsPerBuildPlate()))
 
         # See if we need to process the sliced layers job.
@@ -834,6 +838,9 @@ class CuraEngineBackend(QObject, Backend):
             self._change_timer.start()
 
     def _extruderChanged(self) -> None:
+        if not self._multi_build_plate_model:
+            Logger.log("w", "CuraEngineBackend does not have multi_build_plate_model assigned!")
+            return
         for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
             if build_plate_number not in self._build_plates_to_be_sliced:
                 self._build_plates_to_be_sliced.append(build_plate_number)
