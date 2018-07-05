@@ -366,6 +366,9 @@ class CuraEngineBackend(QObject, Backend):
                 if not stack:
                     continue
                 for key in stack.getErrorKeys():
+                    if not self._global_container_stack:
+                        Logger.log("e", "CuraEngineBackend does not have global_container_stack assigned.")
+                        continue
                     definition = cast(DefinitionContainerInterface, self._global_container_stack.getBottom()).findDefinitions(key = key)
                     if not definition:
                         Logger.log("e", "When checking settings for errors, unable to find definition for key {key} in per-object stack.".format(key = key))
@@ -489,7 +492,8 @@ class CuraEngineBackend(QObject, Backend):
 
             build_plate_changed.add(source_build_plate_number)
 
-        build_plate_changed.discard(None)
+        # TODO: Commented out for code tests, discard() only takes 'int', and no explanation exists for this line
+        # build_plate_changed.discard(None)
         build_plate_changed.discard(-1)  # object not on build plate
         if not build_plate_changed:
             return
@@ -583,9 +587,10 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param message The protobuf message containing sliced layer data.
     def _onOptimizedLayerMessage(self, message: Arcus.PythonMessage) -> None:
-        if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
-            self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
-        self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
+        if self._start_slice_job_build_plate:
+            if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
+                self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
+            self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
     ##  Called when a progress message is received from the engine.
     #
