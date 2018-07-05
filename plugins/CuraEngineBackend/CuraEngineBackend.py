@@ -69,8 +69,8 @@ class CuraEngineBackend(QObject, Backend):
                     break
 
         self._application = CuraApplication.getInstance() #type: CuraApplication
-        self._multi_build_plate_model = None #type: MultiBuildPlateModel
-        self._machine_error_checker = None #type: MachineErrorChecker
+        self._multi_build_plate_model = None #type: Optional[MultiBuildPlateModel]
+        self._machine_error_checker = None #type: Optional[MachineErrorChecker]
 
         if not default_engine_location:
             raise EnvironmentError("Could not find CuraEngine")
@@ -328,6 +328,9 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartJobResult.SettingError:
             if self._application.platformActivity:
+                if not self._global_container_stack:
+                    Logger.log("w", "Global container stack not assigned to CuraEngineBackend!")
+                    return
                 extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
                 error_keys = [] #type: List[str]
                 for extruder in extruders:
