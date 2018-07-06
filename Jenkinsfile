@@ -1,10 +1,6 @@
 parallel_nodes(['linux && cura', 'windows && cura']) {
     timeout(time: 2, unit: "HOURS") {
 
-        environment {
-            CTEST_OUTPUT_ON_FAILURE = '1'
-        }
-
         // Prepare building
         stage('Prepare') {
             // Ensure we start with a clean build directory.
@@ -33,8 +29,7 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
                 // Try and run the unit tests. If this stage fails, we consider the build to be "unstable".
                 stage('Unit Test') {
                     try {
-                        //make('test')
-                        sh "CTEST_OUTPUT_ON_FAILURE=1 make test"
+                        make('test')
                     } catch(e) {
                         currentBuild.result = "UNSTABLE"
                     }
