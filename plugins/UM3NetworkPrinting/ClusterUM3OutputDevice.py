@@ -128,6 +128,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         else:
             writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(cast(str, preferred_format["mime_type"]))
 
+        if not writer:
+            Logger.log("e", "Unexpected error when trying to get the FileWriter")
+            return
+
         #This function pauses with the yield, waiting on instructions on which printer it needs to print with.
         if not writer:
             Logger.log("e", "Missing file or mesh writer!")

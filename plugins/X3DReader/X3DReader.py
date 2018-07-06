@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from math import pi, sin, cos, sqrt
+from typing import Dict
 
 import numpy
 
@@ -42,8 +43,7 @@ class X3DReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
         self._supported_extensions = [".x3d"]
-        # TODO: Remove after testing because it appears to be unused
-        # self._namespaces = {}
+        self._namespaces = {}   # type: Dict[str, str]
 
     # Main entry point
     # Reads the file, returns a SceneNode (possibly with nested ones), or None

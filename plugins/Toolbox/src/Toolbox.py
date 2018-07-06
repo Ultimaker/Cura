@@ -224,6 +224,11 @@ class Toolbox(QObject, Extension):
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
+
+        if not self._dialog:
+            Logger.log("e", "Unexpected error trying to create the 'Toolbox' dialog.")
+            return
+
         self._dialog.show()
 
         # Apply enabled/disabled state to installed plugins
@@ -231,9 +236,11 @@ class Toolbox(QObject, Extension):
 
     def _createDialog(self, qml_name: str) -> QObject:
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
-        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath(self.getPluginId())), "resources", "qml", qml_name)
-        if not path:
-            raise Exception("Failed to create toolbox QML path")
+        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        if not plugin_path:
+            return None
+        path = os.path.join(plugin_path, "resources", "qml", qml_name)
+        
         dialog = self._application.createQmlComponent(path, {"toolbox": self})
         if not dialog:
             raise Exception("Failed to create toolbox dialog")
