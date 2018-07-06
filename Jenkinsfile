@@ -33,7 +33,8 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
                 // Try and run the unit tests. If this stage fails, we consider the build to be "unstable".
                 stage('Unit Test') {
                     try {
-                        make('test')
+                        //make('test')
+                        sh "CTEST_OUTPUT_ON_FAILURE=1 make test"
                     } catch(e) {
                         currentBuild.result = "UNSTABLE"
                     }
