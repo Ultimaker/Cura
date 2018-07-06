@@ -1,5 +1,10 @@
 parallel_nodes(['linux && cura', 'windows && cura']) {
     timeout(time: 2, unit: "HOURS") {
+
+        environment {
+            CTEST_OUTPUT_ON_FAILURE = '1'
+        }
+
         // Prepare building
         stage('Prepare') {
             // Ensure we start with a clean build directory.
