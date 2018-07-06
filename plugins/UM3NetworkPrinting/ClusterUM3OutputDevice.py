@@ -178,7 +178,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     #   \param preferred_format A dictionary containing some information about
     #   what format to write to. This is necessary to create the correct buffer
     #   types and file extension and such.
-    def _sendPrintJob(self, writer: MeshWriter, preferred_format: Dict, nodes: List[SceneNode]):
+    def _sendPrintJob(self, writer: FileWriter, preferred_format: Dict, nodes: List[SceneNode]):
         Logger.log("i", "Sending print job to printer.")
         if self._sending_gcode:
             self._error_message = Message(
