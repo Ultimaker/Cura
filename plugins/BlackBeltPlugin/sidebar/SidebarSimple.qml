@@ -841,6 +841,7 @@ Item
                         id: gradualInfillLabel
                         anchors.left: enableGradualInfillCheckBox.right
                         anchors.leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
+                        anchors.verticalCenter: enableGradualInfillCheckBox.verticalCenter
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
@@ -1056,7 +1057,7 @@ Item
                 id: adhesionCheckBox
                 property alias _hovered: adhesionMouseArea.containsMouse
 
-                anchors.top: enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom
+                anchors.top: enableSupportCheckBox.visible ? enableSupportCheckBox.bottom : infillCellRight.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
