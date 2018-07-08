@@ -21,6 +21,8 @@ Item
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
 
+    property bool isBlackBeltPrinter: Cura.MachineManager.activeDefinitionId == "blackbelt"
+
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name: "cura" }
@@ -71,6 +73,21 @@ Item
                     onItemsChanged: qualityModel.update()
                 }
 
+                Connections
+                {
+                    target: Cura.MachineManager
+                    onActiveVariantChanged:
+                    {
+                        var active_mode = UM.Preferences.getValue("cura/active_mode")
+
+                        if (active_mode == 0 || active_mode == "simple") {
+                            // if in simple mode, reset layer_height
+                            currentLayerHeight.removeFromContainer(0);
+                        }
+                        qualityModel.update();
+                    }
+                }
+
                 Connections {
                     target: base
                     onVisibleChanged:
@@ -103,6 +120,41 @@ Item
                         var availableMin = -1
                         var availableMax = -1
 
+                        if (isBlackBeltPrinter)
+                        {
+                            qualityItem = {
+                                "name": "",
+                                "quality_type": "",
+                                "layer_height": variantLayerHeight.properties.value,
+                                "layer_height_unit": "mm",
+                                "available": true,
+                                "quality_group": ""
+                            }
+                            var availableMin = 0;
+                            var availableMax = qualityModel.totalTicks;
+                            for (var i = 0; i <= qualityModel.totalTicks; i++) {
+                                var layer_height = Number(variantLayerHeight.properties.value) + 0.05 * (i - (availableMax/2))
+                                if (layer_height == variantLayerHeight.properties.value)
+                                {
+                                    qualityModel.qualitySliderActiveIndex = i;
+                                }
+                                qualityItem["layer_height"] = layer_height;
+                                qualityModel.append(qualityItem);
+                            }
+                            qualityModel.existingQualityProfile = 1
+
+                            qualityModel.availableTotalTicks = qualityModel.totalTicks + 1
+
+                            // Calculate slider values
+                            calculateSliderStepWidth(qualityModel.totalTicks)
+                            calculateSliderMargins(availableMin, availableMax, qualityModel.totalTicks)
+
+                            qualityModel.qualitySliderAvailableMin = availableMin
+                            qualityModel.qualitySliderAvailableMax = availableMax
+
+                            return;
+                        }
+
                         for (var i = 0; i < Cura.QualityProfilesDropDownMenuModel.rowCount(); i++) {
                             var qualityItem = Cura.QualityProfilesDropDownMenuModel.getItem(i)
 
@@ -118,7 +170,7 @@ Item
                                     qualityModel.qualitySliderActiveIndex = i
                                 }
 
-                                 qualityModel.existingQualityProfile = 1
+                                qualityModel.existingQualityProfile = 1
                             }
 
                             // Set min available
@@ -165,6 +217,10 @@ Item
                         qualityModel.existingQualityProfile = 0
 
                         // check, the ticks count cannot be less than zero
+                        if (isBlackBeltPrinter) {
+                            qualityModel.totalTicks = 4; // includes 0
+                            return
+                        }
                         qualityModel.totalTicks = Math.max(0, Cura.QualityProfilesDropDownMenuModel.rowCount() - 1)
                     }
                 }
@@ -180,7 +236,7 @@ Item
                 // Show titles for the each quality slider ticks
                 Item
                 {
-                    y: -5;
+                    y: -5 * screenScaleFactor;
                     anchors.left: speedSlider.left
                     Repeater
                     {
@@ -191,10 +247,21 @@ Item
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
                             anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
-                            color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color:
+                            {
+                                if(isBlackBeltPrinter)
+                                {
+                                    return UM.Theme.getColor("quality_slider_available")
+                                }
+                                return (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            }
                             text:
                             {
                                 var result = ""
+                                if(isBlackBeltPrinter)
+                                {
+                                    return model.layer_height ? model.layer_height.toFixed(2) : ""
+                                }
                                 if(Cura.MachineManager.activeMachine != null)
                                 {
                                     result = Cura.QualityProfilesDropDownMenuModel.getItem(index).layer_height
@@ -340,7 +407,14 @@ Item
                         Rectangle
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            color: Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color:
+                            {
+                                if(isBlackBeltPrinter)
+                                {
+                                    return UM.Theme.getColor("quality_slider_available")
+                                }
+                                return Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            }
                             width: 1 * screenScaleFactor
                             height: 6 * screenScaleFactor
                             y: 0
@@ -386,7 +460,14 @@ Item
                                     implicitWidth: 10 * screenScaleFactor
                                     implicitHeight: implicitWidth
                                     radius: Math.round(implicitWidth / 2)
-                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
+                                    visible:
+                                    {
+                                        if (isBlackBeltPrinter)
+                                        {
+                                            return true
+                                        }
+                                        return !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
+                                    }
                                 }
                             }
                         }
@@ -425,8 +506,8 @@ Item
                 Label
                 {
                     id: speedLabel
-                    anchors.top: speedSlider.bottom
 
+                    anchors.top: speedSlider.bottom
                     anchors.left: parent.left
 
                     text: catalog.i18nc("@label", "Print Speed")
@@ -462,7 +543,7 @@ Item
                 {
                     id: customisedSettings
 
-                    visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
+                    visible: (Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated) && !isBlackBeltPrinter
                     height: Math.round(speedSlider.height * 0.8)
                     width: Math.round(speedSlider.height * 0.8)
 
@@ -1134,6 +1215,22 @@ Item
                 storeIndex: 0
             }
 
+            UM.SettingPropertyProvider
+            {
+                id: currentLayerHeight
+                containerStackId: Cura.MachineManager.activeMachineId
+                key: "layer_height"
+                watchedProperties: [ "value" ]
+                storeIndex: 0
+            }
+
+            UM.ContainerPropertyProvider
+            {
+                id: variantLayerHeight
+                containerId: Cura.MachineManager.activeVariantId
+                watchedProperties: [ "value" ]
+                key: "layer_height"
+            }
 
             ListModel
             {
