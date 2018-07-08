@@ -60,6 +60,10 @@ Item
                     running: false
                     repeat: false
                     onTriggered: {
+                        if (isBlackBeltPrinter) {
+                            currentLayerHeight.setPropertyValue("value", qualityModel.get(qualitySlider.value).layer_height)
+                            return
+                        }
                         var item = Cura.QualityProfilesDropDownMenuModel.getItem(qualitySlider.value);
                         Cura.MachineManager.activeQualityGroup = item.quality_group;
                     }
@@ -134,14 +138,14 @@ Item
                             var availableMax = qualityModel.totalTicks;
                             for (var i = 0; i <= qualityModel.totalTicks; i++) {
                                 var layer_height = Number(variantLayerHeight.properties.value) + 0.05 * (i - (availableMax/2))
-                                if (layer_height == variantLayerHeight.properties.value)
+                                if (Math.abs(layer_height - currentLayerHeight.properties.value) < 0.025)
                                 {
                                     qualityModel.qualitySliderActiveIndex = i;
+                                    qualityModel.existingQualityProfile = 1
                                 }
                                 qualityItem["layer_height"] = layer_height;
                                 qualityModel.append(qualityItem);
                             }
-                            qualityModel.existingQualityProfile = 1
 
                             qualityModel.availableTotalTicks = qualityModel.totalTicks + 1
 
@@ -427,7 +431,14 @@ Item
                         id: qualitySlider
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
-                        enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
+                        enabled:
+                        {
+                            if (isBlackBeltPrinter)
+                            {
+                                return true;
+                            }
+                            return qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
+                        }
                         visible: qualityModel.availableTotalTicks > 0
                         updateValueWhileDragging : false
 
