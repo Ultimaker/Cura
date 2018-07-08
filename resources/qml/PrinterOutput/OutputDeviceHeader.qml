@@ -24,7 +24,7 @@ Item
         {
             id: outputDeviceNameLabel
             font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
+            color: UM.Theme.getColor("setting_category_text")
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
@@ -36,7 +36,7 @@ Item
             id: outputDeviceAddressLabel
             text: (outputDevice != null && outputDevice.address != null) ? outputDevice.address : ""
             font: UM.Theme.getFont("small")
-            color: UM.Theme.getColor("text_inactive")
+            color: UM.Theme.getColor("setting_category_disabled_text")
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").width
