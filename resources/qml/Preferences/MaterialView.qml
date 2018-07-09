@@ -529,6 +529,12 @@ TabView
         {
             return materialPreferenceValues[material_guid][entry_name];
         }
+
+        var material_weight = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties", "weight");
+        if(material_weight != undefined && material_weight != "")
+        {
+            return material_weight
+        }
         return 0;
     }
 

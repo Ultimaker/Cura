@@ -5,7 +5,7 @@ import os
 import urllib.parse
 import uuid
 from typing import Any
-from typing import Dict, Union
+from typing import Dict, Union, Optional
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
 from PyQt5.QtWidgets import QMessageBox
@@ -46,12 +46,17 @@ class ContainerManager(QObject):
         self._quality_manager = self._application.getQualityManager()
         self._container_name_filters = {}   # type: Dict[str, Dict[str, Any]]
 
-    @pyqtSlot(str, str, result=str)
-    def getContainerMetaDataEntry(self, container_id, entry_name):
+    @pyqtSlot(str, str, str, result=str)
+    def getContainerMetaDataEntry(self, container_id, entry_name, sub_entry: Optional = None):
         metadatas = self._container_registry.findContainersMetadata(id = container_id)
         if not metadatas:
             Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
             return ""
+
+        if sub_entry != "":
+            sub_data = metadatas[0].get(entry_name, "")
+            if sub_data:
+                return str(sub_data.get(sub_entry, ""))
 
         return str(metadatas[0].get(entry_name, ""))
 
