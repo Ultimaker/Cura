@@ -2,6 +2,16 @@
 
 [3.4.0]
 
+*BlackBelt changes
+- Improved adjustments to walls touching the belt
+- Experimental raft to help keep prints attached to the belt while printing
+- Add gantry angle, nozzle size and material to gcode filename
+- Overview of settings added to the top of the gcode file
+- BlackBelt PET-G material
+- BlackBelt Cura theme
+- Rear fan is more adjustable
+- Profile tweaks
+
 *Toolbox
 The plugin browser has been remodeled into the Toolbox. Navigation now involves graphical elements such as tiles, which can be clicked for further details.
 
