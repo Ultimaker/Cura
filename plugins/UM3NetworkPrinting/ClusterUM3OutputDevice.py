@@ -103,8 +103,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         else:
             file_formats = CuraApplication.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
 
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
+
         #Create a list from the supported file formats string.
-        machine_file_formats = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("file_formats").split(";")
+        machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
         #Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
         if "application/x-ufp" not in machine_file_formats and self.printerType == "ultimaker3" and Version(self.firmwareVersion) >= Version("4.4"):
@@ -124,6 +128,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             writer = file_handler.getWriterByMimeType(cast(str, preferred_format["mime_type"]))
         else:
             writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(cast(str, preferred_format["mime_type"]))
+
+        if not writer:
+            Logger.log("e", "Unexpected error when trying to get the FileWriter")
+            return
 
         #This function pauses with the yield, waiting on instructions on which printer it needs to print with.
         self._sending_job = self._sendPrintJob(writer, preferred_format, nodes)
@@ -205,6 +213,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         yield #To prevent having to catch the StopIteration exception.
 
     def _sendPrintJobWaitOnWriteJobFinished(self, job: WriteFileJob) -> None:
+        # This is the callback when the job finishes, where the message is created
+        assert(self._write_job_progress_message is not None)
         self._write_job_progress_message.hide()
 
         self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0, dismissable = False, progress = -1,
@@ -249,7 +259,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self.activePrinterChanged.emit()
 
     def _onPostPrintJobFinished(self, reply: QNetworkReply) -> None:
-        self._progress_message.hide()
+        if self._progress_message is not None:
+            self._progress_message.hide()
         self._compressing_gcode = False
         self._sending_gcode = False
 

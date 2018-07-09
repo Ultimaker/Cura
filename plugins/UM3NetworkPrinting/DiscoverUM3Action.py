@@ -170,7 +170,10 @@ class DiscoverUM3Action(MachineAction):
         Logger.log("d", "Creating additional ui components for UM3.")
 
         # Create networking dialog
-        path = os.path.join(PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"), "UM3InfoComponents.qml")
+        plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+        if not plugin_path:
+            return
+        path = os.path.join(plugin_path, "UM3InfoComponents.qml")
         self.__additional_components_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         if not self.__additional_components_view:
             Logger.log("w", "Could not create ui components for UM3.")

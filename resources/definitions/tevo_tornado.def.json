@@ -8,7 +8,10 @@
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
-        "has_materials": true
+        "has_materials": true,
+        "machine_extruder_trains": {
+            "0": "tevo_tornado_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": { 
@@ -33,12 +36,6 @@
                 [30, -32],
                 [30, 34]
             ]
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "top_bottom_thickness": {
             "default_value": 1.2

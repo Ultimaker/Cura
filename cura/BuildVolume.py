@@ -47,10 +47,10 @@ class BuildVolume(SceneNode):
         self._disallowed_area_color = None
         self._error_area_color = None
 
-        self._width = 0
-        self._height = 0
-        self._depth = 0
-        self._shape = ""
+        self._width = 0 #type: float
+        self._height = 0 #type: float
+        self._depth = 0 #type: float
+        self._shape = "" #type: str
 
         self._shader = None
 
@@ -154,19 +154,19 @@ class BuildVolume(SceneNode):
         if active_extruder_changed is not None:
             active_extruder_changed.connect(self._updateDisallowedAreasAndRebuild)
 
-    def setWidth(self, width):
+    def setWidth(self, width: float) -> None:
         if width is not None:
             self._width = width
 
-    def setHeight(self, height):
+    def setHeight(self, height: float) -> None:
         if height is not None:
             self._height = height
 
-    def setDepth(self, depth):
+    def setDepth(self, depth: float) -> None:
         if depth is not None:
             self._depth = depth
 
-    def setShape(self, shape: str):
+    def setShape(self, shape: str) -> None:
         if shape:
             self._shape = shape
 
@@ -294,7 +294,7 @@ class BuildVolume(SceneNode):
         if not self._width or not self._height or not self._depth:
             return
 
-        if not self._application._qml_engine:
+        if not self._engine_ready:
             return
 
         if not self._volume_outline_color:

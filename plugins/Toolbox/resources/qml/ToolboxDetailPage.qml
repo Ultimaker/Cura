@@ -74,6 +74,7 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
+            height: childrenRect.height
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
@@ -110,6 +111,7 @@ Item
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
+            height: childrenRect.height
             Label
             {
                 text: details.version || catalog.i18nc("@label", "Unknown")

@@ -84,7 +84,6 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
-from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -108,6 +107,10 @@ from cura.Settings.ContainerManager import ContainerManager
 from cura.ObjectsModel import ObjectsModel
 
 from UM.FlameProfiler import pyqtSlot
+
+
+if TYPE_CHECKING:
+    from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 
 numpy.seterr(all = "ignore")
@@ -407,43 +410,6 @@ class CuraApplication(QtApplication):
             }
         )
 
-        """
-        self._currently_loading_files = []
-        self._non_sliceable_extensions = []
-
-        self._machine_action_manager = MachineActionManager.MachineActionManager()
-        self._machine_manager = None    # This is initialized on demand.
-        self._extruder_manager = None
-        self._material_manager = None
-        self._quality_manager = None
-        self._object_manager = None
-        self._build_plate_model = None
-        self._multi_build_plate_model = None
-        self._setting_visibility_presets_model = None
-        self._setting_inheritance_manager = None
-        self._simple_mode_settings_manager = None
-        self._cura_scene_controller = None
-        self._machine_error_checker = None
-        self._auto_save = None
-        self._save_data_enabled = True
-
-        self._additional_components = {} # Components to add to certain areas in the interface
-
-        super().__init__(name = "cura",
-                         version = CuraVersion,
-                         buildtype = CuraBuildType,
-                         is_debug_mode = CuraDebugMode,
-                         tray_icon_name = "cura-icon-32.png",
-                         **kwargs)
-
-        # FOR TESTING ONLY
-        if kwargs["parsed_command_line"].get("trigger_early_crash", False):
-            assert not "This crash is triggered by the trigger_early_crash command line argument."
-
-        self._variant_manager = None
-
-        self.default_theme = "cura-light"
-        """
     # Runs preparations that needs to be done before the starting process.
     def startSplashWindowPhase(self):
         super().startSplashWindowPhase()
@@ -1518,7 +1484,9 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
-        self.getMainWindow().setMinimumSize(size)
+        main_window = self.getMainWindow()
+        if main_window:
+            main_window.setMinimumSize(size)
 
     def getBuildVolume(self):
         return self._volume

@@ -286,6 +286,9 @@ class FlavorParser:
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return None
+
         self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
