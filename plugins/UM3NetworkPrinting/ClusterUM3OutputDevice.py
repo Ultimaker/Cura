@@ -108,7 +108,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         #Create a list from the supported file formats string.
         if not global_stack:
             Logger.log("e", "Missing global stack!")
-            return;
+            return
 
         machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
