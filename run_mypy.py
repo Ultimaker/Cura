@@ -39,8 +39,9 @@ def main():
         os.putenv("MYPYPATH", ":".join(mypy_path_parts))
 
     # Mypy really needs to be run via its Python script otherwise it can't find its data files.
-    mypy_exe = where("mypy.exe" if sys.platform == "win32" else "mypy")
-    mypy_module = os.path.join(os.path.dirname(mypy_exe), "mypy")
+    mypy_exe_name = "mypy.exe" if sys.platform == "win32" else "mypy"
+    mypy_exe_dir = where(mypy_exe_name)
+    mypy_module = os.path.join(os.path.dirname(mypy_exe_dir), mypy_exe_name)
 
     plugins = findModules("plugins")
     plugins.sort()
@@ -49,7 +50,10 @@ def main():
 
     for mod in mods:
         print("------------- Checking module {mod}".format(**locals()))
-        result = subprocess.run([sys.executable, mypy_module, "-p", mod, "--ignore-missing-imports"])
+        if sys.platform == "win32":
+            result = subprocess.run([mypy_module, "-p", mod, "--ignore-missing-imports"])
+        else:
+            result = subprocess.run([sys.executable, mypy_module, "-p", mod, "--ignore-missing-imports"])
         if result.returncode != 0:
             print("\nModule {mod} failed checking. :(".format(**locals()))
             return 1
