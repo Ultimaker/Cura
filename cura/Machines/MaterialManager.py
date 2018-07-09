@@ -378,9 +378,8 @@ class MaterialManager(QObject):
             # Look at the guid to material dictionary
             root_material_id = None
             for material_group in self._guid_material_groups_map[material_guid]:
-                if material_group.is_read_only:
-                    root_material_id = material_group.root_material_node.metadata["id"]
-                    break
+                root_material_id = material_group.root_material_node.metadata["id"]
+                break
 
             if not root_material_id:
                 Logger.log("i", "Cannot find materials with guid [%s] ", material_guid)
