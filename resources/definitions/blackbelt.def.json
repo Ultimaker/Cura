@@ -142,6 +142,11 @@
         },
 
 
+        "material_bed_temperature": {
+            "value": "max(extruderValues('default_material_bed_temperature'))"
+        },
+
+
         "layer_height_0": {
             "value": "layer_height"
         },
