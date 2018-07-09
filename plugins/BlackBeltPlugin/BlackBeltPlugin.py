@@ -330,7 +330,7 @@ class BlackBeltPlugin(Extension):
             # put a print settings summary at the top
             # note: this simplified view is only valid for single extrusion printers
             setting_values = {}
-            setting_summary = "; Setting summary:\n"
+            setting_summary = ";Setting summary:\n"
             for stack in [global_stack.extruders["0"], global_stack]:
                 for index, container in enumerate(stack.getContainers()):
                     if index == ContainerIndexes.Definition:
@@ -340,9 +340,10 @@ class BlackBeltPlugin(Extension):
                             value = container.getProperty(key, "value")
                             if isinstance(value, SettingFunction):
                                 value = value(stack)
-                            if container.getProperty(key, "type") == "str":
+                            definition = container.getInstance(key).definition
+                            if definition.type == "str":
                                 value = value.replace("\n", "\\n")
-                                if len(value) > 80:
+                                if len(value) > 40:
                                     value = "[not shown for brevity]"
                             setting_values[key] = value
 
@@ -350,7 +351,7 @@ class BlackBeltPlugin(Extension):
                 if definition.type == "category":
                     setting_summary += ";  CATEGORY: %s\n" % definition.label
                 elif definition.key in setting_values:
-                    setting_summary += ";   %s: %s\n" % (definition.label, setting_values[definition.key])
+                    setting_summary += ";    %s: %s\n" % (definition.label, setting_values[definition.key])
             gcode_list[0] += setting_summary
 
             # secondary fans should similar things as print cooling fans
