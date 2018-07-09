@@ -105,9 +105,12 @@ class Script:
         if m is None:
             return default
         try:
-            return float(m.group(0))
-        except:
-            return default
+            return int(m.group(0))
+        except ValueError: #Not an integer.
+            try:
+                return float(m.group(0))
+            except ValueError: #Not a number at all.
+                return default
 
     ##  Convenience function to produce a line of g-code.
     #
