@@ -22,6 +22,7 @@ Menu
             text: model.name
             checkable: true
             checked: model.root_material_id == Cura.MachineManager.currentRootMaterialId[extruderIndex]
+            enabled: model.compatible
             exclusiveGroup: group
             onTriggered:
             {

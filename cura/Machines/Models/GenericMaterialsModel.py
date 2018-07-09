@@ -19,7 +19,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
         self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
         self._update()
 
-    def _update(self):
+    def _update(self) -> None:
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         global_stack = self._machine_manager.activeMachine
@@ -51,7 +51,8 @@ class GenericMaterialsModel(BaseMaterialsModel):
                     "brand": metadata["brand"],
                     "material": metadata["material"],
                     "color_name": metadata["color_name"],
-                    "container_node": container_node
+                    "container_node": container_node,
+                    "compatible": metadata.get("compatible", "unknown")
                     }
             item_list.append(item)
 
