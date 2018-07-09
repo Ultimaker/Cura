@@ -44,6 +44,8 @@ class GenericMaterialsModel(BaseMaterialsModel):
             # Only add results for generic materials
             if metadata["brand"].lower() != "generic":
                 continue
+            if not metadata.get("compatible", True):
+                continue
 
             item = {"root_material_id": root_material_id,
                     "id": metadata["id"],
@@ -52,7 +54,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
                     "material": metadata["material"],
                     "color_name": metadata["color_name"],
                     "container_node": container_node,
-                    "compatible": metadata.get("compatible", "unknown")
+                    "compatible": metadata.get("compatible", True)
                     }
             item_list.append(item)
 
