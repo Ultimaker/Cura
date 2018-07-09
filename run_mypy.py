@@ -8,12 +8,24 @@ import subprocess
 def where(exe_name: str, search_path: str = os.getenv("PATH")) -> str:
     if search_path is None:
         search_path = ""
-    paths = search_path.split(";" if sys.platform == "win32" else ":")
-    for path in paths:
+    paths = search_path.split(os.pathsep)
+    result = ""
+    print("  ->  sys.executable location: %s" % sys.executable)
+    sys_exec_dir = os.path.dirname(sys.executable)
+    root_dir = os.path.dirname(sys_exec_dir)
+    paths += [sys_exec_dir,
+              os.path.join(root_dir, "bin"),
+              os.path.join(root_dir, "scripts"),
+              ]
+    paths = set(paths)
+
+    for path in sorted(paths):
+        print(" -> Searching %s" % path)
         candidate_path = os.path.join(path, exe_name)
         if os.path.exists(candidate_path):
-            return candidate_path
-    return ""
+            result = candidate_path
+            break
+    return result
 
 
 def findModules(path):
@@ -42,6 +54,8 @@ def main():
     mypy_exe_name = "mypy.exe" if sys.platform == "win32" else "mypy"
     mypy_exe_dir = where(mypy_exe_name)
     mypy_module = os.path.join(os.path.dirname(mypy_exe_dir), mypy_exe_name)
+    print("Found mypy exe path: %s" % mypy_exe_dir)
+    print("Found mypy module path: %s" % mypy_module)
 
     plugins = findModules("plugins")
     plugins.sort()
