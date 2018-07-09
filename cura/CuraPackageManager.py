@@ -25,7 +25,7 @@ class CuraPackageManager(PackageManager):
     #   It loops through all the package contents and see if some of the ids are used.
     #   The list consists of 3-tuples: (global_stack, extruder_nr, container_id)
     def packageUsed(self, package_id: str):
-        ids = self.packageContainerIds(package_id)
+        ids = self.getPackageContainerIds(package_id)
         container_stacks = ContainerRegistry.getInstance().findContainerStacks()
         global_stacks = [container_stack for container_stack in container_stacks if isinstance(container_stack, GlobalStack)]
         machine_with_materials = []
