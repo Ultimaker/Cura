@@ -5,6 +5,8 @@ import subprocess
 
 # A quick Python implementation of unix 'where' command.
 def where(exeName, searchPath=os.getenv("PATH")):
+    if searchPath is None:
+        searchPath = ""
     paths = searchPath.split(";" if sys.platform == "win32" else ":")
     for path in paths:
         candidatePath = os.path.join(path, exeName)
