@@ -19,12 +19,12 @@ UM.Dialog
 
     title: catalog.i18nc("@title:window", "Confirm uninstall ") + toolbox.pluginToUninstall
     width: 450 * screenScaleFactor
-    height: 250 * screenScaleFactor
+    height: (30 + dialogText.height) * screenScaleFactor
 
-    maximumHeight: height
-    maximumWidth: width
-    minimumHeight: maximumHeight
-    minimumWidth: maximumWidth
+    maximumWidth: 450 * screenScaleFactor
+    maximumHeight: 450 * screenScaleFactor
+    minimumWidth: 450 * screenScaleFactor
+    minimumHeight: 150 * screenScaleFactor
 
     modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal
 
@@ -33,10 +33,11 @@ UM.Dialog
         UM.I18nCatalog { id: catalog; name: "cura" }
 
         anchors.fill: parent
-        anchors.leftMargin: 20 * screenScaleFactor
-        anchors.rightMargin: 20 * screenScaleFactor
-        anchors.bottomMargin: 10 * screenScaleFactor
-        spacing: 10 * screenScaleFactor
+        anchors.leftMargin: Math.round(20 * screenScaleFactor)
+        anchors.rightMargin: Math.round(20 * screenScaleFactor)
+        anchors.topMargin: Math.round(10 * screenScaleFactor)
+        anchors.bottomMargin: Math.round(10 * screenScaleFactor)
+        spacing: Math.round(15 * screenScaleFactor)
 
         Label
         {
