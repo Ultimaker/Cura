@@ -408,7 +408,7 @@ Column
                 {
                     return false;
                 }
-                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible") == "True"
+                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible", "") == "True"
             }
         }
     }

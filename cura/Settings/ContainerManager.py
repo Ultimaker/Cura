@@ -47,18 +47,18 @@ class ContainerManager(QObject):
         self._container_name_filters = {}   # type: Dict[str, Dict[str, Any]]
 
     @pyqtSlot(str, str, str, result=str)
-    def getContainerMetaDataEntry(self, container_id, entry_name, sub_entry: Optional = None):
+    def getContainerMetaDataEntry(self, container_id, entry_name, sub_entry: Optional[str] = None):
         metadatas = self._container_registry.findContainersMetadata(id = container_id)
         if not metadatas:
             Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
             return ""
 
-        if sub_entry != "":
-            sub_data = metadatas[0].get(entry_name, "")
-            if sub_data:
-                return str(sub_data.get(sub_entry, ""))
+        sub_data = metadatas[0].get(entry_name, "")
+        result = str(sub_data)
+        if sub_entry:
+            result = str(sub_data.get(sub_entry, ""))
 
-        return str(metadatas[0].get(entry_name, ""))
+        return result
 
     ##  Set a metadata entry of the specified container.
     #
