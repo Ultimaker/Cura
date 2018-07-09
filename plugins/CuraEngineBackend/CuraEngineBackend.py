@@ -492,9 +492,6 @@ class CuraEngineBackend(QObject, Backend):
 
             build_plate_changed.add(source_build_plate_number)
 
-        # TODO: Commented out for code tests, discard() only takes 'int', and no explanation exists for this line
-        # build_plate_changed.discard(None)
-        build_plate_changed.discard(-1)  # object not on build plate
         if not build_plate_changed:
             return
 
