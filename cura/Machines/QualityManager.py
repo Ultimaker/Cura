@@ -340,7 +340,7 @@ class QualityManager(QObject):
 
         return quality_group_dict
 
-    def getDefaultQualityType(self, machine: "GlobalStack") -> QualityGroup:
+    def getDefaultQualityType(self, machine: "GlobalStack") -> Optional[QualityGroup]:
         preferred_quality_type = machine.definition.getMetaDataEntry("preferred_quality_type")
         quality_group_dict = self.getQualityGroups(machine)
         quality_group = quality_group_dict.get(preferred_quality_type)

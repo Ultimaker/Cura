@@ -1444,6 +1444,12 @@ class MachineManager(QObject):
     @pyqtSlot(QObject)
     def setQualityGroup(self, quality_group: QualityGroup, no_dialog: bool = False, global_stack: Optional["GlobalStack"] = None) -> None:
         if global_stack is not None and global_stack != self._global_container_stack:
+            if quality_group is None:
+                Logger.log("e", "Could not set quality group because quality group is None")
+                return
+            if quality_group.node_for_global is None:
+                Logger.log("e", "Could not set quality group [%s] because it has no node_for_global", str(quality_group))
+                return
             global_stack.quality = quality_group.node_for_global.getContainer()
             for extruder_nr, extruder_stack in global_stack.extruders.items():
                 extruder_stack.quality = quality_group.nodes_for_extruders[extruder_nr].getContainer()
