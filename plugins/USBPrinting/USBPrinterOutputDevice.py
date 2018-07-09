@@ -423,7 +423,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
-            print_job = PrintJobOutputModel(output_controller = GenericOutputController(self), name= Application.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = GenericOutputController(self), name= CuraApplication.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 

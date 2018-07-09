@@ -169,8 +169,6 @@ class ThreeMFReader(MeshReader):
             archive = zipfile.ZipFile(file_name, "r")
             self._base_name = os.path.basename(file_name)
             parser = Savitar.ThreeMFParser()
-            with open("/tmp/test.xml", "wb") as f:
-                f.write(archive.open("3D/3dmodel.model").read())
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
             for node in scene_3mf.getSceneNodes():
