@@ -6,8 +6,8 @@
 
     "colors": {
         "tooltip_text": [31, 36, 39, 255],
-        "button_tooltip": [189, 189, 189, 255],
-        "tooltip": [189, 189, 189, 255],
+        "button_tooltip": [234, 234, 234, 220],
+        "tooltip": [234, 234, 234, 220],
 
         "text_inactive": [0, 0, 0, 128],
 
