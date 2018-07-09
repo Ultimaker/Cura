@@ -227,7 +227,7 @@ class StartSliceJob(Job):
 
             if has_model_with_disabled_extruders:
                 self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-                associated_disabled_extruders = [str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])]
+                associated_disabled_extruders = {str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])}
                 self.setMessage(", ".join(associated_disabled_extruders))
                 return
 
