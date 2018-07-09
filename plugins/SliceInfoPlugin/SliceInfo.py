@@ -16,7 +16,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import DurationFormat
-from typing import cast
+from typing import cast, Optional
 from .SliceInfoJob import SliceInfoJob
 
 
@@ -79,9 +79,13 @@ class SliceInfo(QObject, Extension):
         return dialog
 
     @pyqtSlot(result = str)
-    def getExampleData(self) -> str:
+    def getExampleData(self) -> Optional[str]:
         if self._example_data_content is None:
-            file_path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath(self.getPluginId())), "example_data.json")
+            plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+            if not plugin_path:
+                Logger.log("e", "Could not get plugin path!", self.getPluginId())
+                return None
+            file_path = os.path.join(plugin_path, "example_data.json")
             if file_path:
                 with open(file_path, "r", encoding = "utf-8") as f:
                     self._example_data_content = f.read()

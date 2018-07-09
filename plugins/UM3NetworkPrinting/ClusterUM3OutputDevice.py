@@ -106,8 +106,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         #Create a list from the supported file formats string.
-        if global_stack:
-            machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
+        if not global_stack:
+            Logger.log("e", "Missing global stack!")
+            return;
+
+        machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
         #Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
         if "application/x-ufp" not in machine_file_formats and self.printerType == "ultimaker3" and Version(self.firmwareVersion) >= Version("4.4"):

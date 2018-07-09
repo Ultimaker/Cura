@@ -234,7 +234,7 @@ class Toolbox(QObject, Extension):
         # Apply enabled/disabled state to installed plugins
         self.enabledChanged.emit()
 
-    def _createDialog(self, qml_name: str) -> QObject:
+    def _createDialog(self, qml_name: str) -> Optional[QObject]:
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if not plugin_path:

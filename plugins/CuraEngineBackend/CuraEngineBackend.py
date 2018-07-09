@@ -486,8 +486,8 @@ class CuraEngineBackend(QObject, Backend):
         else:
             # we got a single scenenode
             if not source.callDecoration("isGroup"):
-                meshData = source.getMeshData();
-                if meshData and meshData.getVertices() is None:
+                mesh_data = source.getMeshData()
+                if mesh_data and mesh_data.getVertices() is None:
                     return
 
             build_plate_changed.add(source_build_plate_number)
@@ -670,7 +670,11 @@ class CuraEngineBackend(QObject, Backend):
     ##  Creates a new socket connection.
     def _createSocket(self, protocol_file: str = None) -> None:
         if not protocol_file:
-            protocol_file = os.path.abspath(os.path.join(str(PluginRegistry.getInstance().getPluginPath(self.getPluginId())), "Cura.proto"))
+            plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+            if not plugin_path:
+                Logger.log("e", "Could not get plugin path!", self.getPluginId())
+                return
+            protocol_file = os.path.abspath(os.path.join(plugin_path, "Cura.proto"))
         super()._createSocket(protocol_file)
         self._engine_is_fresh = True
 
