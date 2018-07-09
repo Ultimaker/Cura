@@ -175,6 +175,92 @@
         },
         "z_seam_type": {
             "value": "'shortest'"
+        },
+
+
+
+
+        "wall_thickness": {
+            "value": "(4 if machine_nozzle_size <= 0.4 else 2 if machine_nozzle_size >= 0.8 else 3) * wall_line_width_x"
+        },
+        "top_bottom_thickness": {
+            "value": "5 * resolveOrValue('layer_height')"
+        },
+        "top_thickness": {
+            "value": "top_bottom_thickness"
+        },
+        "bottom_thickness": {
+            "value": "0.6 * top_bottom_thickness"
+        },
+        "infill_sparse_density": {
+            "value": "0"
+        },
+        "retraction_amount": {
+            "value": "4"
+        },
+        "retraction_speed": {
+            "value": "65"
+        },
+        "speed_print": {
+            "value": "40"
+        },
+        "speed_infill": {
+            "value": "speed_print * 0.75"
+        },
+        "speed_wall": {
+            "value": "speed_print"
+        },
+        "speed_wall_x": {
+            "value": "speed_print"
+        },
+        "speed_wall_0": {
+            "value": "5 * speed_wall/8"
+        },
+        "speed_topbottom": {
+            "value": "speed_print"
+        },
+        "speed_travel": {
+            "value": "15 * speed_print / 4"
+        },
+        "speed_print_layer_0": {
+            "value": "speed_print / 4"
+        },
+        "speed_travel_layer_0": {
+            "value": "speed_print * 1.25"
+        },
+        "max_feedrate_z_override": {
+            "value": "30"
+        },
+        "cool_fan_speed": {
+            "value": "60.0 if cool_fan_enabled else 0.0"
+        },
+        "cool_fan_full_at_height": {
+            "value": "layer_height_0 + 5 * layer_height"
+        },
+        "cool_min_layer_time": {
+            "value": "10"
+        },
+        "material_initial_print_temperature": {
+            "value": "material_print_temperature"
+        },
+        "material_final_print_temperature": {
+            "value": "material_print_temperature - 10"
+        },
+        "coasting_speed": {
+            "value": "100"
+        },
+
+
+
+
+        "blackbelt_belt_wall_enabled": {
+            "value": "True"
+        },
+        "retraction_combing": {
+            "value": "'off'"
+        },
+        "speed_slowdown_layers": {
+            "value": "4 if machine_nozzle_size <= 0.4 else 3"
         }
     }
 }
