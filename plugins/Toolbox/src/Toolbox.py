@@ -102,6 +102,9 @@ class Toolbox(QObject, Extension):
         self._active_package = None # type: Optional[Dict[str, Any]]
 
         self._dialog = None #type: Optional[QObject]
+        self._confirm_reset_dialog = None #type: Optional[QObject]
+        self._resetUninstallVariables()
+
         self._restart_required = False #type: bool
 
         # variables for the license agreement dialog
@@ -130,6 +133,13 @@ class Toolbox(QObject, Extension):
     filterChanged = pyqtSignal()
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
+    uninstallVariablesChanged = pyqtSignal()
+
+    def _resetUninstallVariables(self):
+        self._package_id_to_uninstall = None
+        self._package_name_to_uninstall = ""
+        self._package_used_materials = []
+        self._package_used_qualities = []
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
@@ -235,7 +245,6 @@ class Toolbox(QObject, Extension):
         dialog = self._application.createQmlComponent(path, {"toolbox": self})
         return dialog
 
-
     def _convertPluginMetadata(self, plugin: Dict[str, Any]) -> Dict[str, Any]:
         formatted = {
             "package_id": plugin["id"],
@@ -298,24 +307,57 @@ class Toolbox(QObject, Extension):
     #   If the package is in use, you'll get a confirmation dialog to set everything to default
     @pyqtSlot(str)
     def checkPackageUsageAndUninstall(self, plugin_id: str) -> None:
-        print("checkPackageUsageAndUninstall...")
         package_used_materials, package_used_qualities = self._package_manager.packageUsed(plugin_id)
         if package_used_materials or package_used_qualities:
+            # Set up "uninstall variables" for resetMaterialsQualitiesAndUninstall
+            self._package_id_to_uninstall = plugin_id
+            package_info = self._package_manager.getInstalledPackageInfo(plugin_id)
+            self._package_name_to_uninstall = package_info.get("display_name", package_info.get("package_id"))
+            self._package_used_materials = package_used_materials
+            self._package_used_qualities = package_used_qualities
             # Ask change to default material / profile
-            # Cancel: just return
-            # Confirm: change to default material / profile
-            material_manager = CuraApplication.getInstance().getMaterialManager()
-            quality_manager = CuraApplication.getInstance().getQualityManager()
-            machine_manager = CuraApplication.getInstance().getMachineManager()
-            for global_stack, extruder_nr in package_used_materials:
-                default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
-                machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
-            for global_stack, extruder_nr in package_used_qualities:
-                default_quality_group = quality_manager.getDefaultQualityType(global_stack)
-                machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
-        # Change to default material / profile
-        self.uninstall(plugin_id)
-        return
+            if self._confirm_reset_dialog is None:
+                self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
+            self.uninstallVariablesChanged.emit()
+            self._confirm_reset_dialog.show()
+        else:
+            # Plain uninstall
+            self.uninstall(plugin_id)
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def pluginToUninstall(self):
+        return self._package_name_to_uninstall
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def uninstallUsedMaterials(self):
+        return "\n".join(["%s (%s)" % (str(global_stack.getName()), material) for global_stack, extruder_nr, material in self._package_used_materials])
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def uninstallUsedQualities(self):
+        return "\n".join(["%s (%s)" % (str(global_stack.getName()), quality) for global_stack, extruder_nr, quality in self._package_used_qualities])
+
+    @pyqtSlot()
+    def closeConfirmResetDialog(self):
+        if self._confirm_reset_dialog is not None:
+            self._confirm_reset_dialog.close()
+
+    ##  Uses "uninstall variables" to reset qualities and materials, then uninstall
+    #   It's used as an action on Confirm reset on Uninstall
+    @pyqtSlot()
+    def resetMaterialsQualitiesAndUninstall(self):
+        application = CuraApplication.getInstance()
+        material_manager = application.getMaterialManager()
+        quality_manager = application.getQualityManager()
+        machine_manager = application.getMachineManager()
+        for global_stack, extruder_nr, _ in self._package_used_materials:
+            default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
+            machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
+        for global_stack, extruder_nr, _ in self._package_used_qualities:
+            default_quality_group = quality_manager.getDefaultQualityType(global_stack)
+            machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
+        self.uninstall(self._package_id_to_uninstall)
+        self._resetUninstallVariables()
+        self.closeConfirmResetDialog()
 
     @pyqtSlot(str)
     def uninstall(self, plugin_id: str) -> None:

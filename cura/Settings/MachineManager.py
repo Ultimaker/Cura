@@ -1445,6 +1445,8 @@ class MachineManager(QObject):
     def setQualityGroup(self, quality_group: QualityGroup, no_dialog: bool = False, global_stack: Optional["GlobalStack"] = None) -> None:
         if global_stack is not None and global_stack != self._global_container_stack:
             global_stack.quality = quality_group.node_for_global.getContainer()
+            for extruder_nr, extruder_stack in global_stack.extruders.items():
+                extruder_stack.quality = quality_group.nodes_for_extruders[extruder_nr].getContainer()
             return
 
         self.blurSettings.emit()
