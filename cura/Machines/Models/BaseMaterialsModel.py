@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtProperty
 
-from cura.CuraApplication import CuraApplication
+import cura.CuraApplication
 from UM.Qt.ListModel import ListModel
 
 
@@ -26,7 +26,7 @@ class BaseMaterialsModel(ListModel):
 
     def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
-        self._application = CuraApplication.getInstance()
+        self._application = cura.CuraApplication.CuraApplication.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
         self.addRoleName(self.RootMaterialIdRole, "root_material_id")
