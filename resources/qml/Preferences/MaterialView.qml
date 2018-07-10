@@ -103,7 +103,6 @@ TabView
 
                     onYes:
                     {
-                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", new_diameter_value);
                         base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
                     }
@@ -230,7 +229,7 @@ TabView
                     {
                         // This does not use a SettingPropertyProvider, because we need to make the change to all containers
                         // which derive from the same base_file
-                        var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
+                        var old_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/diameter");
                         var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
                         var new_approximate_diameter = getApproximateDiameter(value);
                         if (new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
@@ -242,7 +241,6 @@ TabView
                             confirmDiameterChangeDialog.open()
                         }
                         else {
-                            Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                             base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
                             base.setMetaDataEntry("properties/diameter", properties.diameter, value);
                         }
@@ -530,7 +528,7 @@ TabView
             return materialPreferenceValues[material_guid][entry_name];
         }
 
-        var material_weight = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties", "weight");
+        var material_weight = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/weight");
         return material_weight || 0;
     }
 
