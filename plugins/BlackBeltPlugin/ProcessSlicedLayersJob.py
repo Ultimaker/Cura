@@ -286,7 +286,11 @@ class ProcessSlicedLayersJob(Job):
         if transform and transform != Matrix():
             transform_matrix = new_node.getLocalTransformation().preMultiply(transform.getInverse())
             new_node.setTransformation(transform_matrix)
-            new_node.translate(Vector(0, 0, self._scene.getRoot().callDecoration("getSceneFrontOffset")), SceneNode.TransformSpace.World)
+            front_offset = self._scene.getRoot().callDecoration("getSceneFrontOffset")
+            if global_container_stack.getProperty("blackbelt_raft", "value"):
+                    front_offset = front_offset - global_container_stack.getProperty("blackbelt_raft_margin", "value") \
+                                                - global_container_stack.getProperty("blackbelt_raft_thickness", "value")
+            new_node.translate(Vector(0, 0, front_offset), SceneNode.TransformSpace.World)
 
         if self._progress_message:
             self._progress_message.setProgress(100)
