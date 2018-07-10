@@ -314,11 +314,11 @@ class StartSliceJob(Job):
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                         # ConvexHullNodes get none of the usual decorators. If it made it here, it is meant to be printed
-                        if type(node) is ConvexHullNode:
+                        if type(object) is ConvexHullNode:
                             raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
 
                             mb = MeshBuilder()
-                            mb.addConvexPolygonExtrusion(node.getHull().getPoints()[::-1], 0, raft_thickness)
+                            mb.addConvexPolygonExtrusion(object.getHull().getPoints()[::-1], 0, raft_thickness)
 
                             new_node = self._addMesh(mb, "raftMesh")
                             added_meshes.append(new_node)
