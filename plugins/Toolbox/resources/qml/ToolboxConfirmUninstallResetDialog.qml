@@ -19,7 +19,7 @@ UM.Dialog
 
     title: catalog.i18nc("@title:window", "Confirm uninstall ") + toolbox.pluginToUninstall
     width: 450 * screenScaleFactor
-    height: (100 + dialogText.height) * screenScaleFactor
+    height: 50 * screenScaleFactor + dialogText.height + buttonBar.height
 
     maximumWidth: 450 * screenScaleFactor
     maximumHeight: 450 * screenScaleFactor
