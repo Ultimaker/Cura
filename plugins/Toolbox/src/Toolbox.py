@@ -314,12 +314,12 @@ class Toolbox(QObject, Extension):
     ##  Check package usage and uninstall
     #   If the package is in use, you'll get a confirmation dialog to set everything to default
     @pyqtSlot(str)
-    def checkPackageUsageAndUninstall(self, plugin_id: str) -> None:
-        package_used_materials, package_used_qualities = self._package_manager.packageUsed(plugin_id)
+    def checkPackageUsageAndUninstall(self, package_id: str) -> None:
+        package_used_materials, package_used_qualities = self._package_manager.getMachinesUsingPackage(package_id)
         if package_used_materials or package_used_qualities:
             # Set up "uninstall variables" for resetMaterialsQualitiesAndUninstall
-            self._package_id_to_uninstall = plugin_id
-            package_info = self._package_manager.getInstalledPackageInfo(plugin_id)
+            self._package_id_to_uninstall = package_id
+            package_info = self._package_manager.getInstalledPackageInfo(package_id)
             self._package_name_to_uninstall = package_info.get("display_name", package_info.get("package_id"))
             self._package_used_materials = package_used_materials
             self._package_used_qualities = package_used_qualities
@@ -330,7 +330,7 @@ class Toolbox(QObject, Extension):
             self._confirm_reset_dialog.show()
         else:
             # Plain uninstall
-            self.uninstall(plugin_id)
+            self.uninstall(package_id)
 
     @pyqtProperty(str, notify = uninstallVariablesChanged)
     def pluginToUninstall(self):
@@ -368,8 +368,8 @@ class Toolbox(QObject, Extension):
         self.closeConfirmResetDialog()
 
     @pyqtSlot(str)
-    def uninstall(self, plugin_id: str) -> None:
-        self._package_manager.removePackage(plugin_id, force_add = True)
+    def uninstall(self, package_id: str) -> None:
+        self._package_manager.removePackage(package_id, force_add = True)
         self.installChanged.emit()
         self._updateInstalledModels()
         self.metadataChanged.emit()

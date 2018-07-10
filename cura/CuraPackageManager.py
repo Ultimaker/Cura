@@ -4,7 +4,6 @@
 from cura.CuraApplication import CuraApplication #To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
 
-from UM.Logger import Logger
 from UM.PackageManager import PackageManager #The class we're extending.
 from UM.Resources import Resources #To find storage paths for some resource types.
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -24,7 +23,7 @@ class CuraPackageManager(PackageManager):
     #   empty if it is never used.
     #   It loops through all the package contents and see if some of the ids are used.
     #   The list consists of 3-tuples: (global_stack, extruder_nr, container_id)
-    def packageUsed(self, package_id: str):
+    def getMachinesUsingPackage(self, package_id: str):
         ids = self.getPackageContainerIds(package_id)
         container_stacks = ContainerRegistry.getInstance().findContainerStacks()
         global_stacks = [container_stack for container_stack in container_stacks if isinstance(container_stack, GlobalStack)]
