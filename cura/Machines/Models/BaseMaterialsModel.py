@@ -1,9 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtProperty
 
-from UM.Application import Application
+from cura.CuraApplication import CuraApplication
 from UM.Qt.ListModel import ListModel
 
 
@@ -24,9 +24,9 @@ class BaseMaterialsModel(ListModel):
 
     extruderPositionChanged = pyqtSignal()
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
-        self._application = Application.getInstance()
+        self._application = CuraApplication.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
         self.addRoleName(self.RootMaterialIdRole, "root_material_id")
