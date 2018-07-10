@@ -166,6 +166,9 @@
         "infill_line_width": {
             "value": "line_width + 0.2"
         },
+        "infill_pattern": {
+            "value": "'zigzag'"
+        },
         "skin_preshrink": {
             "value": "2"
         },
@@ -208,6 +211,9 @@
         },
         "speed_print": {
             "value": "40"
+        },
+        "speed_support": {
+            "value": "speed_print * 0.5"
         },
         "speed_infill": {
             "value": "speed_print * 0.75"
