@@ -11,7 +11,7 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 # Ignore windows error popups. Fixes the whole "Can't open drive X" when user has an SD card reader.
-ctypes.windll.kernel32.SetErrorMode(1)
+ctypes.windll.kernel32.SetErrorMode(1) #type: ignore
 
 # WinAPI Constants that we need
 # Hardcoded here due to stupid WinDLL stuff that does not give us access to these values.
@@ -29,7 +29,7 @@ OPEN_EXISTING = 3 # [CodeStyle: Windows Enum value]
 
 # Setup the DeviceIoControl function arguments and return type.
 # See ctypes documentation for details on how to call C functions from python, and why this is important.
-ctypes.windll.kernel32.DeviceIoControl.argtypes = [
+ctypes.windll.kernel32.DeviceIoControl.argtypes = [ #type: ignore
     wintypes.HANDLE,                    # _In_          HANDLE hDevice
     wintypes.DWORD,                     # _In_          DWORD dwIoControlCode
     wintypes.LPVOID,                    # _In_opt_      LPVOID lpInBuffer
@@ -39,7 +39,7 @@ ctypes.windll.kernel32.DeviceIoControl.argtypes = [
     ctypes.POINTER(wintypes.DWORD),     # _Out_opt_     LPDWORD lpBytesReturned
     wintypes.LPVOID                     # _Inout_opt_   LPOVERLAPPED lpOverlapped
 ]
-ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL
+ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL #type: ignore
 
 
 ## Removable drive support for windows
