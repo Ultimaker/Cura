@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Dict, List
+
 from UM.Logger import Logger
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
@@ -38,7 +40,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
             self.setItems([])
             return
 
-        item_list = []
+        item_list = [] #type: List[Dict[str, str]]
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
             # Only add results for generic materials
