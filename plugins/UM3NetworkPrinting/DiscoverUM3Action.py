@@ -3,7 +3,7 @@
 
 import os.path
 import time
-from typing import Optional
+from typing import cast, Optional
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
 

@@ -266,8 +266,10 @@ class PauseAtHeight(Script):
                     # Retraction
                     prepend_gcode += self.putValue(M = 83) + "\n"
                     if retraction_amount != 0:
-                        if firmware_retract:
-                            prepend_gcode += self.putValue(G = 10)
+                        if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
+                            retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
+                            for i in range(retraction_count):
+                                prepend_gcode += self.putValue(G = 10) + "\n"
                         else:
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
@@ -309,8 +311,10 @@ class PauseAtHeight(Script):
                     prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
                     prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
                     if retraction_amount != 0:
-                        if firmware_retract:
-                            prepend_gcode += self.putValue(G = 11)
+                        if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
+                            retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
+                            for i in range(retraction_count):
+                                prepend_gcode += self.putValue(G = 11) + "\n"
                         else:
                             prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
                     prepend_gcode += self.putValue(G = 1, F = 9000) + "\n"

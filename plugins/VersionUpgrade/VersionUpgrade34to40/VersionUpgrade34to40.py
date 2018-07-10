@@ -71,6 +71,8 @@ class VersionUpgrade34to40(VersionUpgrade):
         self._resetConcentric3DInfillPattern(parser)
         if "values" in parser:
             for deleted_setting in deleted_settings:
+                if deleted_setting not in parser["values"]:
+                    continue
                 del parser["values"][deleted_setting]
 
         result = io.StringIO()

@@ -6,7 +6,7 @@ import json
 import os
 import tempfile
 import platform
-from typing import List
+from typing import cast, List
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -250,7 +250,10 @@ class Toolbox(QObject, Extension):
         if not plugin_path:
             return None
         path = os.path.join(plugin_path, "resources", "qml", qml_name)
+        
         dialog = self._application.createQmlComponent(path, {"toolbox": self})
+        if not dialog:
+            raise Exception("Failed to create toolbox dialog")
         return dialog
 
     def _convertPluginMetadata(self, plugin: Dict[str, Any]) -> Dict[str, Any]:

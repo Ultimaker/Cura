@@ -5,7 +5,7 @@ import numpy
 from string import Formatter
 from enum import IntEnum
 import time
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, cast, Dict, List, Optional, Set
 import re
 import Arcus #For typing.
 
@@ -209,12 +209,15 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
 
-            extruders_enabled = {position: stack.isEnabled for position, stack in CuraApplication.getInstance().getGlobalContainerStack().extruders.items()}
+            global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+            if not global_stack:
+                return
+            extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
             filtered_object_groups = []
             has_model_with_disabled_extruders = False
             associated_disabled_extruders = set()
             for group in object_groups:
-                stack = CuraApplication.getInstance().getGlobalContainerStack()
+                stack = global_stack
                 skip_group = False
                 for node in group:
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
@@ -227,7 +230,7 @@ class StartSliceJob(Job):
 
             if has_model_with_disabled_extruders:
                 self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-                associated_disabled_extruders = [str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])]
+                associated_disabled_extruders = {str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])}
                 self.setMessage(", ".join(associated_disabled_extruders))
                 return
 
@@ -318,7 +321,7 @@ class StartSliceJob(Job):
     #   \param default_extruder_nr Stack nr to use when no stack nr is specified, defaults to the global stack
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         if not self._all_extruders_settings:
-            global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+            global_stack = cast(ContainerStack, CuraApplication.getInstance().getGlobalContainerStack())
 
             # NB: keys must be strings for the string formatter
             self._all_extruders_settings = {
