@@ -13,7 +13,6 @@
         "has_materials": true,
         "has_machine_quality": true,
         "quality_definition": "ultimaker_original",
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white"],
         "machine_extruder_trains":
         {
             "0": "ultimaker_original_dual_1st",

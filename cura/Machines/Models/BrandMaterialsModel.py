@@ -108,6 +108,8 @@ class BrandMaterialsModel(ListModel):
             # Only add results for generic materials
             if brand.lower() == "generic":
                 continue
+            if not metadata.get("compatible", True):
+                continue
 
             if brand not in brand_group_dict:
                 brand_group_dict[brand] = {}
