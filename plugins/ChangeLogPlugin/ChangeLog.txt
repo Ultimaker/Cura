@@ -1,12 +1,4 @@
 [3.4.1]
-*Bug fixes
-- Fixed an issue that would occasionally cause an unnecessary extra skin wall to be printed, which increased print time.
-- Fixed an issue in which supports were not generated on the initial layer, because the engine expected a brim to be in place.
-- Conical and tree supports are now limited within the build plate volume.
-- Fixed various startup crashes, including: copying of the version folder, errors while deleting packages, storing the old files, and losing data on install.
-
-[3.4.0]
-
 *BlackBelt changes
 - Improved adjustments to walls touching the belt
 - Experimental raft to help keep prints attached to the belt while printing
@@ -16,6 +8,14 @@
 - BlackBelt Cura theme
 - Rear fan is more adjustable
 - Profile tweaks
+
+*Bug fixes
+- Fixed an issue that would occasionally cause an unnecessary extra skin wall to be printed, which increased print time.
+- Fixed an issue in which supports were not generated on the initial layer, because the engine expected a brim to be in place.
+- Conical and tree supports are now limited within the build plate volume.
+- Fixed various startup crashes, including: copying of the version folder, errors while deleting packages, storing the old files, and losing data on install.
+
+[3.4.0]
 
 *Toolbox
 The plugin browser has been remodeled into the Toolbox. Navigation now involves graphical elements such as tiles, which can be clicked for further details.
