@@ -1,5 +1,5 @@
-// Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2018 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.1
@@ -402,7 +402,7 @@ Column
             property var valueError: !isMaterialSupported()
             property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
-            function isMaterialSupported ()
+            function isMaterialSupported()
             {
                 if (!hasActiveExtruder)
                 {

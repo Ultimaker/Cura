@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Dict, List
+
 from UM.Logger import Logger
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
@@ -19,7 +21,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
         self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
         self._update()
 
-    def _update(self):
+    def _update(self) -> None:
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         global_stack = self._machine_manager.activeMachine
@@ -38,11 +40,13 @@ class GenericMaterialsModel(BaseMaterialsModel):
             self.setItems([])
             return
 
-        item_list = []
+        item_list = [] #type: List[Dict[str, str]]
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
             # Only add results for generic materials
             if metadata["brand"].lower() != "generic":
+                continue
+            if not metadata.get("compatible", True):
                 continue
 
             item = {"root_material_id": root_material_id,
@@ -51,7 +55,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
                     "brand": metadata["brand"],
                     "material": metadata["material"],
                     "color_name": metadata["color_name"],
-                    "container_node": container_node
+                    "container_node": container_node,
                     }
             item_list.append(item)
 

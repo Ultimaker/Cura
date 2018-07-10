@@ -6,8 +6,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "category": "Ultimaker",
-        "visible": false,
-        "exclude_materials": [ "generic_hips", "generic_petg" ]
+        "visible": false
     },
     "overrides": {
         "machine_max_feedrate_e": {
