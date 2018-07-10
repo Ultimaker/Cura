@@ -14,6 +14,7 @@ Item
         frameVisible: false
         anchors.fill: detailList
         style: UM.Theme.styles.scrollview
+        flickableItem.flickableDirection: Flickable.VerticalFlick
         Column
         {
             anchors

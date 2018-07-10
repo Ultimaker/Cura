@@ -1,4 +1,9 @@
-
+[3.4.1]
+*Bug fixes
+- Fixed an issue that would occasionally cause an unnecessary extra skin wall to be printed, which increased print time.
+- Fixed an issue in which supports were not generated on the initial layer, because the engine expected a brim to be in place.
+- Conical and tree supports are now limited within the build plate volume.
+- Fixed various startup crashes, including: copying of the version folder, errors while deleting packages, storing the old files, and losing data on install.
 
 [3.4.0]
 

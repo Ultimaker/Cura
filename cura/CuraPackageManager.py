@@ -94,10 +94,15 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Removes all packages that have been scheduled to be removed.
     def _removeAllScheduledPackages(self) -> None:
+        remove_failures = set()
         for package_id in self._to_remove_package_set:
-            self._purgePackage(package_id)
-            del self._installed_package_dict[package_id]
-        self._to_remove_package_set.clear()
+            try:
+                self._purgePackage(package_id)
+                del self._installed_package_dict[package_id]
+            except:
+                remove_failures.add(package_id)
+                Logger.log("e", "There was an error uninstalling the package {package}".format(package = package_id))
+        self._to_remove_package_set = remove_failures
         self._saveManagementData()
 
     # (for initialize) Installs all packages that have been scheduled to be installed.
@@ -279,7 +284,9 @@ class CuraPackageManager(QObject):
     def isUserInstalledPackage(self, package_id: str):
         return package_id in self._installed_package_dict
 
-    # Removes everything associated with the given package ID.
+    ##  Removes everything associated with the given package ID.
+    #   \return It may produce an exception if the user has no permissions to delete this files (on Windows).
+    #   This exception must be catched.
     def _purgePackage(self, package_id: str) -> None:
         # Iterate through all directories in the data storage directory and look for sub-directories that belong to
         # the package we need to remove, that is the sub-dirs with the package_id as names, and remove all those dirs.
@@ -301,36 +308,47 @@ class CuraPackageManager(QObject):
         package_id = package_info["package_id"]
         Logger.log("i", "Installing package [%s] from file [%s]", package_id, filename)
 
-        # remove it first and then install
-        self._purgePackage(package_id)
-
+        # Load the cached package file and extract all contents to a temporary directory
         if not os.path.exists(filename):
             Logger.log("w", "Package [%s] file '%s' is missing, cannot install this package", package_id, filename)
             return
+        try:
+            with zipfile.ZipFile(filename, "r") as archive:
+                temp_dir = tempfile.TemporaryDirectory()
+                archive.extractall(temp_dir.name)
+        except Exception:
+            Logger.logException("e", "Failed to install package from file [%s]", filename)
+            return
 
-        # Install the package
-        with zipfile.ZipFile(filename, "r") as archive:
+        from cura.CuraApplication import CuraApplication
+        installation_dirs_dict = {
+            "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
+            "qualities": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
+            "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
+        }
 
-            temp_dir = tempfile.TemporaryDirectory()
-            archive.extractall(temp_dir.name)
+        # Remove it first and then install
+        try:
+            self._purgePackage(package_id)
+        except:
+            Logger.log("e", "There was an error deleting the package {package} during updating.".format(package = package_id))
+            return
 
-            from cura.CuraApplication import CuraApplication
-            installation_dirs_dict = {
-                "materials": Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer),
-                "qualities": Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer),
-                "plugins": os.path.abspath(Resources.getStoragePath(Resources.Plugins)),
-            }
+        # Copy the folders there
+        for sub_dir_name, installation_root_dir in installation_dirs_dict.items():
+            src_dir_path = os.path.join(temp_dir.name, "files", sub_dir_name)
+            dst_dir_path = os.path.join(installation_root_dir, package_id)
 
-            for sub_dir_name, installation_root_dir in installation_dirs_dict.items():
-                src_dir_path = os.path.join(temp_dir.name, "files", sub_dir_name)
-                dst_dir_path = os.path.join(installation_root_dir, package_id)
-
-                if not os.path.exists(src_dir_path):
-                    continue
-                self.__installPackageFiles(package_id, src_dir_path, dst_dir_path)
+            if not os.path.exists(src_dir_path):
+                continue
+            self.__installPackageFiles(package_id, src_dir_path, dst_dir_path)
 
         # Remove the file
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except Exception:
+            Logger.log("w", "Tried to delete file [%s], but it failed", filename)
+
         # Move the info to the installed list of packages only when it succeeds
         self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
 
