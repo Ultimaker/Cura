@@ -515,7 +515,21 @@ TabView
             // value has not changed
             return;
         }
-        materialPreferenceValues[material_guid][entry_name] = new_value;
+        if (entry_name in materialPreferenceValues[material_guid] && new_value.toString() == 0)
+        {
+            // no need to store a 0, that's the default, so remove it
+            materialPreferenceValues[material_guid].delete(entry_name);
+            if (!(materialPreferenceValues[material_guid]))
+            {
+                // remove empty map
+                materialPreferenceValues.delete(material_guid);
+            }
+        }
+        if (new_value.toString() != 0)
+        {
+            // store new value
+            materialPreferenceValues[material_guid][entry_name] = new_value;
+        }
 
         // store preference
         UM.Preferences.setValue("cura/material_settings", JSON.stringify(materialPreferenceValues));
@@ -527,9 +541,12 @@ TabView
         {
             return materialPreferenceValues[material_guid][entry_name];
         }
-
-        var material_weight = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/weight");
-        return material_weight || 0;
+        if (entry_name === "spool_weight") {
+            // get the default value from the metadata
+            var material_weight = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/weight");
+            return material_weight || 0;
+        }
+        return 0;
     }
 
     // update the display name of the material
