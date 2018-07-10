@@ -369,8 +369,7 @@ class BlackBeltPlugin(Extension):
                 e = None
                 last_e = None
                 f = None
-                extruding_move_regex = re.compile(r"(G[0|1] .*) Y(\d*\.?\d*) E(-?\d*\.?\d*)(.*)")
-                extruding_regex = re.compile(r"G[0|1].* ?E?(-?\d*\.?\d*)")
+
                 speed_regex = re.compile(r" F\d*\.?\d*")
                 extrude_regex = re.compile(r" E-?\d*\.?\d*")
                 move_parameters_regex = re.compile(r"([YEF]-?\d*\.?\d+)")
