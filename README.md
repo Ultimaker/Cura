@@ -1,7 +1,5 @@
 BLACKBELT Cura
 ====
-This is the new, shiny frontend for Cura. Check [daid/LegacyCura](https://github.com/daid/LegacyCura) for the legacy Cura that everyone knows and loves/hates. We re-worked the whole GUI code at Ultimaker, because the old code started to become unmaintainable.
-
 This is a version of [Ultimaker Cura](https://github.com/ultimaker/cura) customised to support the [BLACKBELT 3D Printer](https://blackbelt-3d.com/) with a slanted gantry.
 
 
