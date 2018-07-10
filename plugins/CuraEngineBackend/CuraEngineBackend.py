@@ -249,7 +249,7 @@ class CuraEngineBackend(QObject, Backend):
         if self._application.getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
             self._application.getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
 
-        if self._process is None:
+        if self._process is None: # type: ignore
             self._createSocket()
         self.stopSlicing()
         self._engine_is_fresh = False  # Yes we're going to use the engine
@@ -287,12 +287,12 @@ class CuraEngineBackend(QObject, Backend):
         if self._application.getUseExternalBackend():
             return
 
-        if self._process is not None:
+        if self._process is not None: # type: ignore
             Logger.log("d", "Killing engine process")
             try:
-                self._process.terminate()
-                Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait())
-                self._process = None
+                self._process.terminate() # type: ignore
+                Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait()) # type: ignore
+                self._process = None # type: ignore
 
             except Exception as e:  # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
@@ -786,9 +786,9 @@ class CuraEngineBackend(QObject, Backend):
     #   We should reset our state and start listening for new connections.
     def _onBackendQuit(self) -> None:
         if not self._restart:
-            if self._process:
-                Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
-                self._process = None
+            if self._process: # type: ignore
+                Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait()) # type: ignore
+                self._process = None # type: ignore
 
     ##  Called when the global container stack changes
     def _onGlobalStackChanged(self) -> None:
