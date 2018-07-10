@@ -145,6 +145,43 @@ class ProcessSlicedLayersJob(Job):
                 line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype="f4")  # Convert bytearray to numpy array
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
+                global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+                # Adjust layer data to show Belt Wall, if it is enabled
+                belt_wall_enabled = global_container_stack.getProperty("blackbelt_belt_wall_enabled", "value")
+                if belt_wall_enabled:
+                    half_outer_wall_thickness = global_container_stack.getProperty("wall_line_width_0", "value") / 2
+                    belt_wall_feedrate = global_container_stack.getProperty("blackbelt_belt_wall_speed", "value")
+
+                    belt_wall_indices = []
+                    for index,point in enumerate(points):
+                        if point[1] <= half_outer_wall_thickness:
+                            if last_point_hit_wall and line_feedrates[index - 1] > belt_wall_feedrate:
+                                belt_wall_indices.append(index - 1)
+                            last_point_hit_wall = True
+                        else:
+                            last_point_hit_wall = False
+
+                    edited_points = numpy.copy(points)
+                    dimensionality = points.shape[1]
+                    for index in reversed(belt_wall_indices):
+                        edited_points = numpy.insert(edited_points, dimensionality * index, points[index + 1])
+                        line_types = numpy.insert(line_types, index, line_types[index])
+                        line_widths = numpy.insert(line_widths, index, line_widths[index])
+                        line_thicknesses = numpy.insert(line_thicknesses, index, line_thicknesses[index])
+                        line_feedrates = numpy.insert(line_feedrates, index, belt_wall_feedrate)
+
+                    # Fix shape of adjusted data
+                    if polygon.point_type == 0:
+                        points = edited_points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                    else:
+                        points = edited_points.reshape((-1,3))
+
+                    line_types = line_types.reshape((-1,1))
+                    line_widths = line_widths.reshape((-1,1))
+                    line_thicknesses = line_thicknesses.reshape((-1,1))
+                    line_feedrates = line_feedrates.reshape((-1,1))
+
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
