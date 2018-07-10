@@ -12,7 +12,6 @@
         "platform": "ultimaker_platform.stl",
         "has_materials": true,
         "has_machine_quality": true,
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white"],
         "first_start_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
         "supported_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel", "UpgradeFirmware"],
         "machine_extruder_trains":
