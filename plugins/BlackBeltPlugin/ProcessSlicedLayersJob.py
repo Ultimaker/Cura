@@ -146,11 +146,24 @@ class ProcessSlicedLayersJob(Job):
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
+                half_outer_wall_thickness = global_container_stack.getProperty("wall_line_width_0", "value") / 2
 
-                # Adjust layer data to show Belt Wall, if it is enabled
-                belt_wall_enabled = global_container_stack.getProperty("blackbelt_belt_wall_enabled", "value")
-                if belt_wall_enabled:
-                    half_outer_wall_thickness = global_container_stack.getProperty("wall_line_width_0", "value") / 2
+                # Adjust layer data to show Raft line type, if it is enabled
+                if global_container_stack.getProperty("blackbelt_raft", "value"):
+                    raft_thickness = global_container_stack.getProperty("blackbelt_raft_thickness", "value")
+
+                    extrusion_started = False
+                    for index, segment_type in enumerate(line_types):
+                        if points[index + 1][1] <= half_outer_wall_thickness + raft_thickness:
+                            if segment_type in [LayerPolygon.LayerPolygon.Inset0Type, LayerPolygon.LayerPolygon.InsetXType]:
+                                line_types[index] = LayerPolygon.LayerPolygon.SkirtType
+                                extrusion_started = True
+                            elif extrusion_started:
+                                break
+                        #line_types.fill(LayerPolygon.LayerPolygon.SkirtType)
+
+                # Adjust layer data to show Belt Wall feed rate, if it is enabled
+                if global_container_stack.getProperty("blackbelt_belt_wall_enabled", "value"):
                     belt_wall_feedrate = global_container_stack.getProperty("blackbelt_belt_wall_speed", "value")
 
                     belt_wall_indices = []
