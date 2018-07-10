@@ -125,7 +125,6 @@ class BrandMaterialsModel(ListModel):
                     "material": metadata["material"],
                     "color_name": metadata["color_name"],
                     "container_node": container_node,
-                    "compatible": metadata.get("compatible", True)
                     }
             brand_group_dict[brand][material_type].append(item)
 

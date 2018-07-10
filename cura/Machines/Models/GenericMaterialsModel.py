@@ -54,7 +54,6 @@ class GenericMaterialsModel(BaseMaterialsModel):
                     "material": metadata["material"],
                     "color_name": metadata["color_name"],
                     "container_node": container_node,
-                    "compatible": metadata.get("compatible", True)
                     }
             item_list.append(item)
 
