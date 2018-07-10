@@ -175,14 +175,18 @@ class ProcessSlicedLayersJob(Job):
                         else:
                             last_point_hit_wall = False
 
-                    edited_points = numpy.copy(points)
                     dimensionality = points.shape[1]
+                    edited_points = points.flatten()
+                    line_types = line_types.flatten()
+                    line_widths = line_widths.flatten()
+                    line_thicknesses = line_thicknesses.flatten()
+                    line_feedrates = line_feedrates.flatten()
                     for index in reversed(belt_wall_indices):
-                        edited_points = numpy.insert(edited_points, dimensionality * index, points[index + 1])
-                        line_types = numpy.insert(line_types, index, line_types[index])
-                        line_widths = numpy.insert(line_widths, index, line_widths[index])
-                        line_thicknesses = numpy.insert(line_thicknesses, index, line_thicknesses[index])
-                        line_feedrates = numpy.insert(line_feedrates, index, belt_wall_feedrate)
+                        edited_points = numpy.insert(edited_points, dimensionality * index, numpy.append(points[index], points[index + 1]))
+                        line_types = numpy.insert(line_types, index, [line_types[index]] * 2)
+                        line_widths = numpy.insert(line_widths, index, [line_widths[index]] * 2)
+                        line_thicknesses = numpy.insert(line_thicknesses, index, [line_thicknesses[index]] * 2)
+                        line_feedrates = numpy.insert(line_feedrates, index, [belt_wall_feedrate] * 2)
 
                     # Fix shape of adjusted data
                     if polygon.point_type == 0:
