@@ -20,6 +20,7 @@ from UM.Settings.SettingRelation import RelationType
 from cura.Settings.CuraContainerStack import CuraContainerStack
 
 from UM.Math.Vector import Vector
+from UM.Math.Polygon import Polygon
 from UM.Mesh.MeshData import transformVertices
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Scene.SceneNode import SceneNode
@@ -299,7 +300,6 @@ class StartSliceJob(Job):
                             extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
                 self._buildExtruderMessage(extruder_stack)
 
-            raft_enabled = stack.getProperty("blackbelt_raft", "value")
             bottom_cutting_meshes = []
             raft_meshes = []
             if gantry_angle: # not 0 or None
@@ -316,9 +316,13 @@ class StartSliceJob(Job):
                         # ConvexHullNodes get none of the usual decorators. If it made it here, it is meant to be printed
                         if type(object) is ConvexHullNode:
                             raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
+                            raft_margin = stack.getProperty("blackbelt_raft_margin", "value")
 
                             mb = MeshBuilder()
-                            mb.addConvexPolygonExtrusion(object.getHull().getPoints()[::-1], 0, raft_thickness)
+                            hull_polygon = object.getHull()
+                            if raft_margin > 0:
+                                hull_polygon = hull_polygon.getMinkowskiHull(Polygon.approximatedCircle(raft_margin))
+                            mb.addConvexPolygonExtrusion(hull_polygon.getPoints()[::-1], 0, raft_thickness)
 
                             new_node = self._addMesh(mb, "raftMesh")
                             added_meshes.append(new_node)
@@ -359,7 +363,7 @@ class StartSliceJob(Job):
             raft_speed = None
             raft_flow = 1.0
 
-            if raft_enabled:
+            if stack.getProperty("blackbelt_raft", "value"):
                 raft_offset = stack.getProperty("blackbelt_raft_thickness", "value") + stack.getProperty("blackbelt_raft_gap", "value")
                 raft_speed = stack.getProperty("blackbelt_raft_speed", "value")
                 raft_flow = stack.getProperty("blackbelt_raft_flow", "value") * math.sin(gantry_angle)
@@ -382,8 +386,6 @@ class StartSliceJob(Job):
 
                     # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                     verts = mesh_data.getVertices()
-                    if type(object) is ConvexHullNode:
-                        verts = verts * numpy.array([1, hull_scale, 1], numpy.float32)
                     verts = verts.dot(rot_scale)
                     verts += translate
 

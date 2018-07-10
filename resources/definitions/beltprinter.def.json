@@ -45,6 +45,19 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "blackbelt_raft_margin":
+                {
+                    "label": "Raft Extra Margin",
+                    "description": "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "20",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "blackbelt_raft_thickness":
                 {
                     "label": "Raft Thickness",
@@ -383,8 +396,7 @@
                 "zigzag": "Zig Zag",
                 "cross": "Cross",
                 "cross_3d": "Cross 3D"
-            },
-            "value": "'lines'"
+            }
         },
         "infill_angles":
         {
