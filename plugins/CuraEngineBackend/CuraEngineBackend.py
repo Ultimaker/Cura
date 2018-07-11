@@ -587,7 +587,9 @@ class CuraEngineBackend(QObject, Backend):
         if self._start_slice_job_build_plate:
             if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
                 self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
-            self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
+        else:
+            self._start_slice_job_build_plate = 0
+        self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
     ##  Called when a progress message is received from the engine.
     #
