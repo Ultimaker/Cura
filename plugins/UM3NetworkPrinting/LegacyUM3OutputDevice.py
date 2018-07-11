@@ -458,15 +458,9 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _saveAuthentication(self):
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            if "network_authentication_key" in global_container_stack.getMetaData():
-                global_container_stack.setMetaDataEntry("network_authentication_key", self._authentication_key)
-            else:
-                global_container_stack.addMetaDataEntry("network_authentication_key", self._authentication_key)
+            global_container_stack.setMetaDataEntry("network_authentication_key", self._authentication_key)
 
-            if "network_authentication_id" in global_container_stack.getMetaData():
-                global_container_stack.setMetaDataEntry("network_authentication_id", self._authentication_id)
-            else:
-                global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
+            global_container_stack.setMetaDataEntry("network_authentication_id", self._authentication_id)
 
             # Force save so we are sure the data is not lost.
             CuraApplication.getInstance().saveStack(global_container_stack)

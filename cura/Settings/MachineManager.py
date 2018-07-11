@@ -1299,9 +1299,9 @@ class MachineManager(QObject):
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
                 return
-            new_machine.addMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
-            new_machine.addMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
-            new_machine.addMetaDataEntry("hidden", False)
+            new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
+            new_machine.setMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
+            new_machine.setMetaDataEntry("hidden", False)
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey)
             new_machine.setMetaDataEntry("hidden", False)

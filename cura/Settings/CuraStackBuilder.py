@@ -146,7 +146,7 @@ class CuraStackBuilder:
         stack.setName(extruder_definition.getName())
         stack.setDefinition(extruder_definition)
 
-        stack.addMetaDataEntry("position", position)
+        stack.setMetaDataEntry("position", position)
 
         user_container = cls.createUserChangesContainer(new_stack_id + "_user", machine_definition_id, new_stack_id,
                                                         is_global_stack = False)
@@ -208,11 +208,11 @@ class CuraStackBuilder:
 
         container = InstanceContainer(unique_container_name)
         container.setDefinition(definition_id)
-        container.addMetaDataEntry("type", "user")
-        container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        container.setMetaDataEntry("type", "user")
+        container.setMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 
         metadata_key_to_add = "machine" if is_global_stack else "extruder"
-        container.addMetaDataEntry(metadata_key_to_add, stack_id)
+        container.setMetaDataEntry(metadata_key_to_add, stack_id)
 
         return container
 
@@ -226,8 +226,8 @@ class CuraStackBuilder:
 
         definition_changes_container = InstanceContainer(unique_container_name)
         definition_changes_container.setDefinition(container_stack.getBottom().getId())
-        definition_changes_container.addMetaDataEntry("type", "definition_changes")
-        definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        definition_changes_container.setMetaDataEntry("type", "definition_changes")
+        definition_changes_container.setMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 
         registry.addContainer(definition_changes_container)
         container_stack.definitionChanges = definition_changes_container

@@ -135,10 +135,7 @@ class MachineSettingsAction(MachineAction):
 
         material_node = None
         if has_materials:
-            if "has_materials" in self._global_container_stack.getMetaData():
-                self._global_container_stack.setMetaDataEntry("has_materials", True)
-            else:
-                self._global_container_stack.addMetaDataEntry("has_materials", True)
+            self._global_container_stack.setMetaDataEntry("has_materials", True)
         else:
             # The metadata entry is stored in an ini, and ini files are parsed as strings only.
             # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.

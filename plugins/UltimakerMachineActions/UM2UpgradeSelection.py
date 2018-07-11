@@ -47,10 +47,7 @@ class UM2UpgradeSelection(MachineAction):
             variant_container = global_container_stack.extruders["0"].variant
 
             if has_variants:
-                if "has_variants" in global_container_stack.getMetaData():
-                    global_container_stack.setMetaDataEntry("has_variants", True)
-                else:
-                    global_container_stack.addMetaDataEntry("has_variants", True)
+                global_container_stack.setMetaDataEntry("has_variants", True)
 
                 # Set the variant container to a sane default
                 empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()

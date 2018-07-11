@@ -63,7 +63,6 @@ class XmlMaterialProfile(InstanceContainer):
 
         # Prevent recursion
         if not apply_to_all:
-            super().addMetaDataEntry(key, value)
             super().setMetaDataEntry(key, value)
             return
 
@@ -75,14 +74,12 @@ class XmlMaterialProfile(InstanceContainer):
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
-            root_material_container.addMetaDataEntry(key, value)
             root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
             container = node.getContainer()
             if container is not None:
-                container.addMetaDataEntry(key, value)
                 container.setMetaDataEntry(key, value, apply_to_all = False)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
