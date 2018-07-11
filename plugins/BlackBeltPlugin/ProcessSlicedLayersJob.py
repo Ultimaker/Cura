@@ -182,7 +182,7 @@ class ProcessSlicedLayersJob(Job):
                     line_thicknesses = line_thicknesses.flatten()
                     line_feedrates = line_feedrates.flatten()
                     for index in reversed(belt_wall_indices):
-                        edited_points = numpy.insert(edited_points, dimensionality * index, numpy.append(points[index], points[index + 1]))
+                        edited_points = numpy.insert(edited_points, dimensionality * (index + 1), numpy.append(points[index], points[index + 1]))
                         line_types = numpy.insert(line_types, index, [line_types[index]] * 2)
                         line_widths = numpy.insert(line_widths, index, [line_widths[index]] * 2)
                         line_thicknesses = numpy.insert(line_thicknesses, index, [line_thicknesses[index]] * 2)
