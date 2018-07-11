@@ -22,6 +22,12 @@ UM.MainWindow
 
     backgroundColor: UM.Theme.getColor("viewport_background")
 
+    // Event which does the check before closing the window
+    onPreCloseChange:
+    {
+        event.accepted = CuraApplication.preCloseEventHandler()
+    }
+
     // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
     // It should be phased out in newer plugin versions.
     Connections

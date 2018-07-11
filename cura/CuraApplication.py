@@ -1701,3 +1701,22 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def showMoreInformationDialogForAnonymousDataCollection(self):
         cast(SliceInfo, self._plugin_registry.getPluginObject("SliceInfoPlugin")).showMoreInfoDialog()
+
+    ##  Signal to check whether the application can be closed or not
+    checkCuraCloseChange = pyqtSignal()
+
+    # This variable is necessary to ensure that all methods that were subscribed for the checkCuraCloseChange event
+    # have been passed checks
+    _isCuraCanBeClosed = True
+
+    def setCuraCanBeClosed(self, value: bool):
+        self._isCuraCanBeClosed = value
+
+    @pyqtSlot(result=bool)
+    def preCloseEventHandler(self)-> bool:
+
+        # If any of checks failed then then _isCuraCanBeClosed should be set to False and Cura will not be closed
+        # after clicking the quit button
+        self.checkCuraCloseChange.emit()
+
+        return self._isCuraCanBeClosed
