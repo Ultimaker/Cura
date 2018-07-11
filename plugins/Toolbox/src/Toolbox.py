@@ -360,15 +360,37 @@ class Toolbox(QObject, Extension):
         material_manager = application.getMaterialManager()
         quality_manager = application.getQualityManager()
         machine_manager = application.getMachineManager()
-        for global_stack, extruder_nr, _ in self._package_used_materials:
+
+        for global_stack, extruder_nr, container_id in self._package_used_materials:
             default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
             machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
-        for global_stack, extruder_nr, _ in self._package_used_qualities:
+        for global_stack, extruder_nr, container_id in self._package_used_qualities:
             default_quality_group = quality_manager.getDefaultQualityType(global_stack)
             machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
+
+        self._markPackageMaterialsAsRemove(self._package_id_to_uninstall)
+
         self.uninstall(self._package_id_to_uninstall)
         self._resetUninstallVariables()
         self.closeConfirmResetDialog()
+
+    def _markPackageMaterialsAsRemove(self, package_id: str) -> None:
+        container_registry = self._application.getContainerRegistry()
+
+        all_containers = self._package_manager.getPackageContainerIds(package_id)
+        for container_id in all_containers:
+            containers = container_registry.findInstanceContainers(id = container_id)
+            if not containers:
+                continue
+            container = containers[0]
+            if container.getMetaDataEntry("type") != "material":
+                continue
+            root_material_id = container.getMetaDataEntry("base_file")
+            root_material_containers = container_registry.findInstanceContainers(id = root_material_id)
+            if not root_material_containers:
+                continue
+            root_material_container = root_material_containers[0]
+            root_material_container.setMetaDataEntry("removed", True)
 
     @pyqtSlot(str)
     def uninstall(self, package_id: str) -> None:

@@ -6,7 +6,6 @@ from cura.Settings.GlobalStack import GlobalStack
 
 from UM.PackageManager import PackageManager #The class we're extending.
 from UM.Resources import Resources #To find storage paths for some resource types.
-from UM.Settings.ContainerRegistry import ContainerRegistry
 
 
 class CuraPackageManager(PackageManager):
@@ -25,14 +24,14 @@ class CuraPackageManager(PackageManager):
     #   The list consists of 3-tuples: (global_stack, extruder_nr, container_id)
     def getMachinesUsingPackage(self, package_id: str):
         ids = self.getPackageContainerIds(package_id)
-        container_stacks = ContainerRegistry.getInstance().findContainerStacks()
+        container_stacks = self._application.getContainerRegistry().findContainerStacks()
         global_stacks = [container_stack for container_stack in container_stacks if isinstance(container_stack, GlobalStack)]
         machine_with_materials = []
         machine_with_qualities = []
         for container_id in ids:
             for global_stack in global_stacks:
                 for extruder_nr, extruder_stack in global_stack.extruders.items():
-                    if container_id == extruder_stack.material.getId() or container_id == extruder_stack.material.getMetaData().get("base_file"):
+                    if container_id in (extruder_stack.material.getId(), extruder_stack.material.getMetaData().get("base_file")):
                         machine_with_materials.append((global_stack, extruder_nr, container_id))
                     if container_id == extruder_stack.quality.getId():
                         machine_with_qualities.append((global_stack, extruder_nr, container_id))

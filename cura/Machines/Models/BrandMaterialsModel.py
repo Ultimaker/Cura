@@ -109,6 +109,10 @@ class BrandMaterialsModel(ListModel):
             if brand.lower() == "generic":
                 continue
 
+            # Do not include the materials from a to-be-removed package
+            if bool(metadata.get("removed", False)):
+                continue
+
             if brand not in brand_group_dict:
                 brand_group_dict[brand] = {}
 
