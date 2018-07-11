@@ -177,6 +177,9 @@
         "expand_skins_expand_distance": {
             "value": "0"
         },
+        "retraction_extra_prime_amount": {
+            "value": "1"
+        },
         "retraction_extrusion_window": {
             "value": "3"
         },
