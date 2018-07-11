@@ -136,9 +136,14 @@ Item
                             }
                             var availableMin = 0;
                             var availableMax = qualityModel.totalTicks;
+                            var stepSize = 0.05;
+                            if (variantLayerHeight.properties.value <= 0.1)
+                            {
+                                stepSize = 0.02;
+                            }
                             for (var i = 0; i <= qualityModel.totalTicks; i++) {
-                                var layer_height = Number(variantLayerHeight.properties.value) + 0.05 * (i - (availableMax/2))
-                                if (Math.abs(layer_height - currentLayerHeight.properties.value) < 0.025)
+                                var layer_height = Number(variantLayerHeight.properties.value) + stepSize * (i - (availableMax / 2))
+                                if (Math.abs(layer_height - currentLayerHeight.properties.value) < stepSize / 2)
                                 {
                                     qualityModel.qualitySliderActiveIndex = i;
                                     qualityModel.existingQualityProfile = 1
