@@ -40,6 +40,21 @@ Item
                 source: model.icon_url || "../images/logobot.svg"
                 mipmap: true
             }
+            UM.RecolorImage
+            {
+                width: (parent.width * 0.4) | 0
+                height: (parent.height * 0.4) | 0
+                anchors
+                {
+                    bottom: parent.bottom
+                    right: parent.right
+                }
+                sourceSize.width: width
+                sourceSize.height: height
+                visible: toolbox.isInstalled(model.id)
+                color: UM.Theme.getColor("primary")
+                source: "../images/installed_check.svg"
+            }
         }
         Column
         {
