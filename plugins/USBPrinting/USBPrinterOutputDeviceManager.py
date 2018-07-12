@@ -6,7 +6,8 @@ import platform
 import time
 import serial.tools.list_ports
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QCoreApplication
+from PyQt5.QtWidgets import QMessageBox
 
 from UM.Logger import Logger
 from UM.Resources import Resources
@@ -49,6 +50,11 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice)
 
         self._application.globalContainerStackChanged.connect(self.updateUSBPrinterOutputDevices)
+
+        self._application.checkCuraCloseChange.connect(self.checkWheterUSBIsActiveOrNot)
+
+        self._lock = threading.Lock()
+        self._confirm_dialog_visible = False
 
     # The method updates/reset the USB settings for all connected USB devices
     def updateUSBPrinterOutputDevices(self):
@@ -184,3 +190,51 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "USBPrinterOutputDeviceManager":
         return cls.__instance
+
+    # The method checks whether a printer is printing via USB or not before closing cura. If the printer is printing then pop up a
+    # dialog to confirm stop printing
+    def checkWheterUSBIsActiveOrNot(self)-> None:
+
+        is_printing = False
+        for key, device in self._usb_output_devices.items():
+            if type(device) is USBPrinterOutputDevice.USBPrinterOutputDevice:
+                if device.getIsPrinting():
+                    is_printing = True
+                    break
+
+        if is_printing:
+            if threading.current_thread() != threading.main_thread():
+                self._lock.acquire()
+            self._confirm_dialog_visible = True
+
+            CuraApplication.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Confirm stop printing"),
+                                                     i18n_catalog.i18nc("@window:message","A USB print is in progress, closing Cura will stop this print. Are you sure?"),
+                                                     buttons=QMessageBox.Yes + QMessageBox.No,
+                                                     icon=QMessageBox.Question,
+                                                     callback=self._messageBoxCallback)
+            # Wait for dialog result
+            self.waitForClose()
+
+    ##  Block thread until the dialog is closed.
+    def waitForClose(self)-> None:
+        if self._confirm_dialog_visible:
+            if threading.current_thread() != threading.main_thread():
+                self._lock.acquire()
+                self._lock.release()
+            else:
+                # If this is not run from a separate thread, we need to ensure that the events are still processed.
+                while self._confirm_dialog_visible:
+                    time.sleep(1 / 50)
+                    QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+
+    def _messageBoxCallback(self, button):
+        if button == QMessageBox.Yes:
+            self._application.setCuraCanBeClosed(True)
+        else:
+            self._application.setCuraCanBeClosed(False)
+
+        self._confirm_dialog_visible = False
+        try:
+            self._lock.release()
+        except:
+            pass
