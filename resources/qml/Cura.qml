@@ -120,31 +120,10 @@ UM.MainWindow
 
                 RecentFilesMenu { }
 
-                MenuSeparator { }
-
-                MenuItem
-                {
-                    text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
-                    enabled: UM.Selection.hasSelection;
-                    iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
-                }
-
-                MenuItem
-                {
-                    id: saveAsMenu
-                    text: catalog.i18nc("@title:menu menubar:file", "Save &As...")
-                    onTriggered:
-                    {
-                        var localDeviceId = "local_file";
-                        UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
-                    }
-                }
-
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Save &Project...")
+                    text: catalog.i18nc("@title:menu menubar:file","&Save...")
                     onTriggered:
                     {
                         var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetype": "application/x-curaproject+xml" };
@@ -159,6 +138,29 @@ UM.MainWindow
                         }
                     }
                 }
+
+                MenuSeparator { }
+
+                MenuItem
+                {
+                    id: saveAsMenu
+                    text: catalog.i18nc("@title:menu menubar:file", "&Export...")
+                    onTriggered:
+                    {
+                        var localDeviceId = "local_file";
+                        UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
+                    }
+                }
+
+                MenuItem
+                {
+                    text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...");
+                    enabled: UM.Selection.hasSelection;
+                    iconName: "document-save-as";
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
+                }
+
+                MenuSeparator { }
 
                 MenuItem { action: Cura.Actions.reloadAll; }
 
