@@ -963,7 +963,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not extruder_info:
                 continue
             if "enabled" not in extruder_stack.getMetaData():
-                extruder_stack.addMetaDataEntry("enabled", "True")
+                extruder_stack.setMetaDataEntry("enabled", "True")
             extruder_stack.setMetaDataEntry("enabled", str(extruder_info.enabled))
 
     def _updateActiveMachine(self, global_stack):

@@ -23,25 +23,25 @@ def creteEmptyContainers():
     empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
     empty_variant_container = copy.deepcopy(empty_container)
     empty_variant_container.setMetaDataEntry("id", "empty_variant")
-    empty_variant_container.addMetaDataEntry("type", "variant")
+    empty_variant_container.setMetaDataEntry("type", "variant")
     ContainerRegistry.getInstance().addContainer(empty_variant_container)
 
     empty_material_container = copy.deepcopy(empty_container)
     empty_material_container.setMetaDataEntry("id", "empty_material")
-    empty_material_container.addMetaDataEntry("type", "material")
+    empty_material_container.setMetaDataEntry("type", "material")
     ContainerRegistry.getInstance().addContainer(empty_material_container)
 
     empty_quality_container = copy.deepcopy(empty_container)
     empty_quality_container.setMetaDataEntry("id", "empty_quality")
     empty_quality_container.setName("Not Supported")
-    empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
-    empty_quality_container.addMetaDataEntry("type", "quality")
-    empty_quality_container.addMetaDataEntry("supported", False)
+    empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
+    empty_quality_container.setMetaDataEntry("type", "quality")
+    empty_quality_container.setMetaDataEntry("supported", False)
     ContainerRegistry.getInstance().addContainer(empty_quality_container)
 
     empty_quality_changes_container = copy.deepcopy(empty_container)
     empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-    empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+    empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
     ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
 ##  Gives a fresh CuraContainerRegistry instance.
@@ -69,7 +69,7 @@ def test_addContainerExtruderStack(container_registry, definition_container):
     container_registry.addContainer(definition_container)
 
     container_stack = UM.Settings.ContainerStack.ContainerStack(stack_id = "Test Container Stack") #A container we're going to convert.
-    container_stack.addMetaDataEntry("type", "extruder_train") #This is now an extruder train.
+    container_stack.setMetaDataEntry("type", "extruder_train") #This is now an extruder train.
     container_stack.insertContainer(0, definition_container) #Add a definition to it so it doesn't complain.
 
     mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
@@ -85,7 +85,7 @@ def test_addContainerGlobalStack(container_registry, definition_container):
     container_registry.addContainer(definition_container)
 
     container_stack = UM.Settings.ContainerStack.ContainerStack(stack_id = "Test Container Stack") #A container we're going to convert.
-    container_stack.addMetaDataEntry("type", "machine") #This is now a global stack.
+    container_stack.setMetaDataEntry("type", "machine") #This is now a global stack.
     container_stack.insertContainer(0, definition_container) #Must have a definition.
 
     mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
@@ -102,7 +102,7 @@ def test_addContainerGoodSettingVersion(container_registry, definition_container
     container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
-    instance.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+    instance.setMetaDataEntry("setting_version", CuraApplication.SettingVersion)
     instance.setDefinition(definition_container.getId())
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting containers get registered.
@@ -132,7 +132,7 @@ def test_addContainerBadSettingVersion(container_registry, definition_container)
     container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
-    instance.addMetaDataEntry("setting_version", 9001) #Wrong version!
+    instance.setMetaDataEntry("setting_version", 9001) #Wrong version!
     instance.setDefinition(definition_container.getId())
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting container should not get registered.

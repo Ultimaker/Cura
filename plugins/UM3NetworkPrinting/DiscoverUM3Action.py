@@ -108,8 +108,8 @@ class DiscoverUM3Action(MachineAction):
                 # Find all the places where there is the same group name and change it accordingly
                 CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connect_group_name", value = previous_connect_group_name, new_value = group_name)
             else:
-                global_container_stack.addMetaDataEntry("connect_group_name", group_name)
-                global_container_stack.addMetaDataEntry("hidden", False)
+                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
+                global_container_stack.setMetaDataEntry("hidden", False)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
@@ -130,7 +130,7 @@ class DiscoverUM3Action(MachineAction):
                 global_container_stack.removeMetaDataEntry("network_authentication_key")
                 CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = key)
             else:
-                global_container_stack.addMetaDataEntry("um_network_key", key)
+                global_container_stack.setMetaDataEntry("um_network_key", key)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.

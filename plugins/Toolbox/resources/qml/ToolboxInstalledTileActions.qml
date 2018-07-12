@@ -83,7 +83,7 @@ Column
                 font: UM.Theme.getFont("default")
             }
         }
-        onClicked: toolbox.uninstall(model.id)
+        onClicked: toolbox.checkPackageUsageAndUninstall(model.id)
         Connections
         {
             target: toolbox

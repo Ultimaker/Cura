@@ -29,7 +29,7 @@ class ExtruderStack(CuraContainerStack):
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
-        self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
+        self.setMetaDataEntry("type", "extruder_train") # For backward compatibility
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
 
@@ -42,7 +42,7 @@ class ExtruderStack(CuraContainerStack):
     def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
-        self.addMetaDataEntry("machine", stack.id)
+        self.setMetaDataEntry("machine", stack.id)
 
         # For backward compatibility: Register the extruder with the Extruder Manager
         ExtruderManager.getInstance().registerExtruder(self, stack.id)
@@ -53,7 +53,7 @@ class ExtruderStack(CuraContainerStack):
 
     def setEnabled(self, enabled: bool) -> None:
         if "enabled" not in self._metadata:
-            self.addMetaDataEntry("enabled", "True")
+            self.setMetaDataEntry("enabled", "True")
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
@@ -138,7 +138,7 @@ class ExtruderStack(CuraContainerStack):
     def deserialize(self, contents: str, file_name: Optional[str] = None) -> None:
         super().deserialize(contents, file_name)
         if "enabled" not in self.getMetaData():
-            self.addMetaDataEntry("enabled", "True")
+            self.setMetaDataEntry("enabled", "True")
         stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
         if stacks:
             self.setNextStack(stacks[0])

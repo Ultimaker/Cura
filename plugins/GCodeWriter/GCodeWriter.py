@@ -127,11 +127,11 @@ class GCodeWriter(MeshWriter):
         flat_global_container = self._createFlattenedContainerInstance(stack.userChanges, container_with_profile)
         # If the quality changes is not set, we need to set type manually
         if flat_global_container.getMetaDataEntry("type", None) is None:
-            flat_global_container.addMetaDataEntry("type", "quality_changes")
+            flat_global_container.setMetaDataEntry("type", "quality_changes")
 
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
         if flat_global_container.getMetaDataEntry("quality_type", None) is None:
-            flat_global_container.addMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
+            flat_global_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
         # Get the machine definition ID for quality profiles
         machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(stack.definition)
@@ -151,15 +151,15 @@ class GCodeWriter(MeshWriter):
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.userChanges, extruder_quality)
             # If the quality changes is not set, we need to set type manually
             if flat_extruder_quality.getMetaDataEntry("type", None) is None:
-                flat_extruder_quality.addMetaDataEntry("type", "quality_changes")
+                flat_extruder_quality.setMetaDataEntry("type", "quality_changes")
 
             # Ensure that extruder is set. (Can happen if we have empty quality changes).
             if flat_extruder_quality.getMetaDataEntry("position", None) is None:
-                flat_extruder_quality.addMetaDataEntry("position", extruder.getMetaDataEntry("position"))
+                flat_extruder_quality.setMetaDataEntry("position", extruder.getMetaDataEntry("position"))
 
             # Ensure that quality_type is set. (Can happen if we have empty quality changes).
             if flat_extruder_quality.getMetaDataEntry("quality_type", None) is None:
-                flat_extruder_quality.addMetaDataEntry("quality_type", extruder.quality.getMetaDataEntry("quality_type", "normal"))
+                flat_extruder_quality.setMetaDataEntry("quality_type", extruder.quality.getMetaDataEntry("quality_type", "normal"))
 
             # Change the default definition
             flat_extruder_quality.setMetaDataEntry("definition", machine_definition_id_for_quality)
