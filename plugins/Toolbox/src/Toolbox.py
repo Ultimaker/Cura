@@ -330,7 +330,10 @@ class Toolbox(QObject, Extension):
             if self._confirm_reset_dialog is None:
                 self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
             self.uninstallVariablesChanged.emit()
-            self._confirm_reset_dialog.show()
+            if self._confirm_reset_dialog is None:
+                Logger.log("e", "ToolboxConfirmUninstallResetDialog should have been initialized, but it is not. Not showing dialog and not uninstalling package.")
+            else:
+                self._confirm_reset_dialog.show()
         else:
             # Plain uninstall
             self.uninstall(package_id)
@@ -368,13 +371,13 @@ class Toolbox(QObject, Extension):
             default_quality_group = quality_manager.getDefaultQualityType(global_stack)
             machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
 
-        self._markPackageMaterialsAsRemove(self._package_id_to_uninstall)
+        self._markPackageMaterialsAsToBeUninstalled(self._package_id_to_uninstall)
 
         self.uninstall(self._package_id_to_uninstall)
         self._resetUninstallVariables()
         self.closeConfirmResetDialog()
 
-    def _markPackageMaterialsAsRemove(self, package_id: str) -> None:
+    def _markPackageMaterialsAsToBeUninstalled(self, package_id: str) -> None:
         container_registry = self._application.getContainerRegistry()
 
         all_containers = self._package_manager.getPackageContainerIds(package_id)

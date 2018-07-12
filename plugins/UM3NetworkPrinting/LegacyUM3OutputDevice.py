@@ -455,8 +455,14 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self.setAuthenticationState(AuthState.AuthenticationDenied)
             self._authentication_failed_message.show()
 
-    def _saveAuthentication(self):
+    def _saveAuthentication(self) -> None:
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if self._authentication_key is None:
+            Logger.log("e", "Authentication key is None, nothing to save.")
+            return
+        if self._authentication_id is None:
+            Logger.log("e", "Authentication id is None, nothing to save.")
+            return
         if global_container_stack:
             global_container_stack.setMetaDataEntry("network_authentication_key", self._authentication_key)
 

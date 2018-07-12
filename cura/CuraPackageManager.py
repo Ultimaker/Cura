@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import List, Tuple
+
 from cura.CuraApplication import CuraApplication #To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
 
@@ -22,7 +24,7 @@ class CuraPackageManager(PackageManager):
     #   empty if it is never used.
     #   It loops through all the package contents and see if some of the ids are used.
     #   The list consists of 3-tuples: (global_stack, extruder_nr, container_id)
-    def getMachinesUsingPackage(self, package_id: str):
+    def getMachinesUsingPackage(self, package_id: str) -> Tuple[List[Tuple[GlobalStack, str, str]], List[Tuple[GlobalStack, str, str]]]:
         ids = self.getPackageContainerIds(package_id)
         container_stacks = self._application.getContainerRegistry().findContainerStacks()
         global_stacks = [container_stack for container_stack in container_stacks if isinstance(container_stack, GlobalStack)]

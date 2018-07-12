@@ -32,11 +32,14 @@ UM.Dialog
     {
         UM.I18nCatalog { id: catalog; name: "cura" }
 
-        anchors.fill: parent
-        anchors.leftMargin: Math.round(20 * screenScaleFactor)
-        anchors.rightMargin: Math.round(20 * screenScaleFactor)
-        anchors.topMargin: Math.round(10 * screenScaleFactor)
-        anchors.bottomMargin: Math.round(10 * screenScaleFactor)
+        anchors
+        {
+            fill: parent
+            leftMargin: Math.round(20 * screenScaleFactor)
+            rightMargin: Math.round(20 * screenScaleFactor)
+            topMargin: Math.round(10 * screenScaleFactor)
+            bottomMargin: Math.round(10 * screenScaleFactor)
+        }
         spacing: Math.round(15 * screenScaleFactor)
 
         Label
