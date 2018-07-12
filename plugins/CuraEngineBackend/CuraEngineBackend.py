@@ -457,7 +457,8 @@ class CuraEngineBackend(QObject, Backend):
             # Only count sliceable objects
             if node.callDecoration("isSliceable"):
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
-                num_objects[build_plate_number] += 1
+                if build_plate_number is not None:
+                    num_objects[build_plate_number] += 1
         return num_objects
 
     ##  Listener for when the scene has changed.
@@ -490,7 +491,9 @@ class CuraEngineBackend(QObject, Backend):
                 if mesh_data and mesh_data.getVertices() is None:
                     return
 
-            build_plate_changed.add(source_build_plate_number)
+            # There are some SceneNodes that do not have any build plate associated, then do not add to the list.
+            if source_build_plate_number is not None:
+                build_plate_changed.add(source_build_plate_number)
 
         if not build_plate_changed:
             return
