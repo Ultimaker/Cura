@@ -268,7 +268,7 @@
 
 
         "blackbelt_raft_gap": {
-            "value": "0.4"
+            "value": "0.2"
         },
         "blackbelt_belt_wall_enabled": {
             "value": "True"
