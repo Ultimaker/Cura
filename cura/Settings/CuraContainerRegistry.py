@@ -260,11 +260,11 @@ class CuraContainerRegistry(ContainerRegistry):
                         profile_id = ContainerRegistry.getInstance().uniqueName(global_stack.getId() + "_extruder_" + str(idx + 1))
                         profile = InstanceContainer(profile_id)
                         profile.setName(quality_name)
-                        profile.addMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
-                        profile.addMetaDataEntry("type", "quality_changes")
-                        profile.addMetaDataEntry("definition", expected_machine_definition)
-                        profile.addMetaDataEntry("quality_type", quality_type)
-                        profile.addMetaDataEntry("position", "0")
+                        profile.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
+                        profile.setMetaDataEntry("type", "quality_changes")
+                        profile.setMetaDataEntry("definition", expected_machine_definition)
+                        profile.setMetaDataEntry("quality_type", quality_type)
+                        profile.setMetaDataEntry("position", "0")
                         profile.setDirty(True)
                         if idx == 0:
                             # move all per-extruder settings to the first extruder's quality_changes
@@ -298,7 +298,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         extruder_id = machine_extruders[profile_index - 1].definition.getId()
                         extruder_position = str(profile_index - 1)
                         if not profile.getMetaDataEntry("position"):
-                            profile.addMetaDataEntry("position", extruder_position)
+                            profile.setMetaDataEntry("position", extruder_position)
                         else:
                             profile.setMetaDataEntry("position", extruder_position)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
@@ -349,7 +349,7 @@ class CuraContainerRegistry(ContainerRegistry):
         if "type" in profile.getMetaData():
             profile.setMetaDataEntry("type", "quality_changes")
         else:
-            profile.addMetaDataEntry("type", "quality_changes")
+            profile.setMetaDataEntry("type", "quality_changes")
 
         quality_type = profile.getMetaDataEntry("quality_type")
         if not quality_type:
@@ -480,16 +480,16 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack = ExtruderStack.ExtruderStack(unique_name)
         extruder_stack.setName(extruder_definition.getName())
         extruder_stack.setDefinition(extruder_definition)
-        extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
+        extruder_stack.setMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
 
         # create a new definition_changes container for the extruder stack
         definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings") if create_new_ids else extruder_stack.getId() + "_settings"
         definition_changes_name = definition_changes_id
         definition_changes = InstanceContainer(definition_changes_id, parent = application)
         definition_changes.setName(definition_changes_name)
-        definition_changes.addMetaDataEntry("setting_version", application.SettingVersion)
-        definition_changes.addMetaDataEntry("type", "definition_changes")
-        definition_changes.addMetaDataEntry("definition", extruder_definition.getId())
+        definition_changes.setMetaDataEntry("setting_version", application.SettingVersion)
+        definition_changes.setMetaDataEntry("type", "definition_changes")
+        definition_changes.setMetaDataEntry("definition", extruder_definition.getId())
 
         # move definition_changes settings if exist
         for setting_key in definition_changes.getAllKeys():
@@ -514,9 +514,9 @@ class CuraContainerRegistry(ContainerRegistry):
         user_container_name = user_container_id
         user_container = InstanceContainer(user_container_id, parent = application)
         user_container.setName(user_container_name)
-        user_container.addMetaDataEntry("type", "user")
-        user_container.addMetaDataEntry("machine", machine.getId())
-        user_container.addMetaDataEntry("setting_version", application.SettingVersion)
+        user_container.setMetaDataEntry("type", "user")
+        user_container.setMetaDataEntry("machine", machine.getId())
+        user_container.setMetaDataEntry("setting_version", application.SettingVersion)
         user_container.setDefinition(machine.definition.getId())
         user_container.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
 
@@ -580,7 +580,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine_quality_changes.getName())
                 if extruder_quality_changes_container:
                     quality_changes_id = extruder_quality_changes_container.getId()
-                    extruder_quality_changes_container.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
+                    extruder_quality_changes_container.setMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
                     extruder_stack.qualityChanges = self.findInstanceContainers(id = quality_changes_id)[0]
                 else:
                     # if we still cannot find a quality changes container for the extruder, create a new one
@@ -588,10 +588,10 @@ class CuraContainerRegistry(ContainerRegistry):
                     container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
                     extruder_quality_changes_container = InstanceContainer(container_id, parent = application)
                     extruder_quality_changes_container.setName(container_name)
-                    extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
-                    extruder_quality_changes_container.addMetaDataEntry("setting_version", application.SettingVersion)
-                    extruder_quality_changes_container.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
-                    extruder_quality_changes_container.addMetaDataEntry("quality_type", machine_quality_changes.getMetaDataEntry("quality_type"))
+                    extruder_quality_changes_container.setMetaDataEntry("type", "quality_changes")
+                    extruder_quality_changes_container.setMetaDataEntry("setting_version", application.SettingVersion)
+                    extruder_quality_changes_container.setMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
+                    extruder_quality_changes_container.setMetaDataEntry("quality_type", machine_quality_changes.getMetaDataEntry("quality_type"))
                     extruder_quality_changes_container.setDefinition(machine_quality_changes.getDefinition().getId())
 
                     self.addContainer(extruder_quality_changes_container)

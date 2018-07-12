@@ -102,6 +102,9 @@ class Toolbox(QObject, Extension):
         self._active_package = None # type: Optional[Dict[str, Any]]
 
         self._dialog = None #type: Optional[QObject]
+        self._confirm_reset_dialog = None #type: Optional[QObject]
+        self._resetUninstallVariables()
+
         self._restart_required = False #type: bool
 
         # variables for the license agreement dialog
@@ -130,6 +133,13 @@ class Toolbox(QObject, Extension):
     filterChanged = pyqtSignal()
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
+    uninstallVariablesChanged = pyqtSignal()
+
+    def _resetUninstallVariables(self):
+        self._package_id_to_uninstall = None
+        self._package_name_to_uninstall = ""
+        self._package_used_materials = []
+        self._package_used_qualities = []
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
@@ -246,7 +256,6 @@ class Toolbox(QObject, Extension):
             raise Exception("Failed to create toolbox dialog")
         return dialog
 
-
     def _convertPluginMetadata(self, plugin: Dict[str, Any]) -> Dict[str, Any]:
         formatted = {
             "package_id": plugin["id"],
@@ -305,9 +314,90 @@ class Toolbox(QObject, Extension):
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
+    ##  Check package usage and uninstall
+    #   If the package is in use, you'll get a confirmation dialog to set everything to default
     @pyqtSlot(str)
-    def uninstall(self, plugin_id: str) -> None:
-        self._package_manager.removePackage(plugin_id, force_add = True)
+    def checkPackageUsageAndUninstall(self, package_id: str) -> None:
+        package_used_materials, package_used_qualities = self._package_manager.getMachinesUsingPackage(package_id)
+        if package_used_materials or package_used_qualities:
+            # Set up "uninstall variables" for resetMaterialsQualitiesAndUninstall
+            self._package_id_to_uninstall = package_id
+            package_info = self._package_manager.getInstalledPackageInfo(package_id)
+            self._package_name_to_uninstall = package_info.get("display_name", package_info.get("package_id"))
+            self._package_used_materials = package_used_materials
+            self._package_used_qualities = package_used_qualities
+            # Ask change to default material / profile
+            if self._confirm_reset_dialog is None:
+                self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
+            self.uninstallVariablesChanged.emit()
+            if self._confirm_reset_dialog is None:
+                Logger.log("e", "ToolboxConfirmUninstallResetDialog should have been initialized, but it is not. Not showing dialog and not uninstalling package.")
+            else:
+                self._confirm_reset_dialog.show()
+        else:
+            # Plain uninstall
+            self.uninstall(package_id)
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def pluginToUninstall(self):
+        return self._package_name_to_uninstall
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def uninstallUsedMaterials(self):
+        return "\n".join(["%s (%s)" % (str(global_stack.getName()), material) for global_stack, extruder_nr, material in self._package_used_materials])
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def uninstallUsedQualities(self):
+        return "\n".join(["%s (%s)" % (str(global_stack.getName()), quality) for global_stack, extruder_nr, quality in self._package_used_qualities])
+
+    @pyqtSlot()
+    def closeConfirmResetDialog(self):
+        if self._confirm_reset_dialog is not None:
+            self._confirm_reset_dialog.close()
+
+    ##  Uses "uninstall variables" to reset qualities and materials, then uninstall
+    #   It's used as an action on Confirm reset on Uninstall
+    @pyqtSlot()
+    def resetMaterialsQualitiesAndUninstall(self):
+        application = CuraApplication.getInstance()
+        material_manager = application.getMaterialManager()
+        quality_manager = application.getQualityManager()
+        machine_manager = application.getMachineManager()
+
+        for global_stack, extruder_nr, container_id in self._package_used_materials:
+            default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
+            machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
+        for global_stack, extruder_nr, container_id in self._package_used_qualities:
+            default_quality_group = quality_manager.getDefaultQualityType(global_stack)
+            machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
+
+        self._markPackageMaterialsAsToBeUninstalled(self._package_id_to_uninstall)
+
+        self.uninstall(self._package_id_to_uninstall)
+        self._resetUninstallVariables()
+        self.closeConfirmResetDialog()
+
+    def _markPackageMaterialsAsToBeUninstalled(self, package_id: str) -> None:
+        container_registry = self._application.getContainerRegistry()
+
+        all_containers = self._package_manager.getPackageContainerIds(package_id)
+        for container_id in all_containers:
+            containers = container_registry.findInstanceContainers(id = container_id)
+            if not containers:
+                continue
+            container = containers[0]
+            if container.getMetaDataEntry("type") != "material":
+                continue
+            root_material_id = container.getMetaDataEntry("base_file")
+            root_material_containers = container_registry.findInstanceContainers(id = root_material_id)
+            if not root_material_containers:
+                continue
+            root_material_container = root_material_containers[0]
+            root_material_container.setMetaDataEntry("removed", True)
+
+    @pyqtSlot(str)
+    def uninstall(self, package_id: str) -> None:
+        self._package_manager.removePackage(package_id, force_add = True)
         self.installChanged.emit()
         self._updateInstalledModels()
         self.metadataChanged.emit()
