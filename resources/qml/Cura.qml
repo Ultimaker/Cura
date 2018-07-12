@@ -120,12 +120,10 @@ UM.MainWindow
 
                 RecentFilesMenu { }
 
-                MenuSeparator { }
-
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","&Save..")
+                    text: catalog.i18nc("@title:menu menubar:file","&Save...")
                     onTriggered:
                     {
                         var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetype": "application/x-curaproject+xml" };
@@ -141,10 +139,12 @@ UM.MainWindow
                     }
                 }
 
+                MenuSeparator { }
+
                 MenuItem
                 {
                     id: saveAsMenu
-                    text: catalog.i18nc("@title:menu menubar:file", "&Export..")
+                    text: catalog.i18nc("@title:menu menubar:file", "&Export...")
                     onTriggered:
                     {
                         var localDeviceId = "local_file";
@@ -154,7 +154,7 @@ UM.MainWindow
 
                 MenuItem
                 {
-                    text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection to File");
+                    text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
                     onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
