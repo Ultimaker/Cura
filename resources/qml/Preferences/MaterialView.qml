@@ -269,7 +269,7 @@ TabView
                 {
                     id: spoolWeightSpinBox
                     width: scrollView.columnWidth
-                    value: base.getMaterialPreferenceValue(properties.guid, "spool_weight")
+                    value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
                     suffix: " g"
                     stepSize: 100
                     decimals: 0
@@ -466,7 +466,7 @@ TabView
         }
         if(!spoolWeight)
         {
-            spoolWeight = base.getMaterialPreferenceValue(properties.guid, "spool_weight");
+            spoolWeight = base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"));
         }
 
         if (diameter == 0 || density == 0 || spoolWeight == 0)
@@ -535,18 +535,14 @@ TabView
         UM.Preferences.setValue("cura/material_settings", JSON.stringify(materialPreferenceValues));
     }
 
-    function getMaterialPreferenceValue(material_guid, entry_name)
+    function getMaterialPreferenceValue(material_guid, entry_name, default_value)
     {
         if(material_guid in materialPreferenceValues && entry_name in materialPreferenceValues[material_guid])
         {
             return materialPreferenceValues[material_guid][entry_name];
         }
-        if (entry_name === "spool_weight") {
-            // get the default value from the metadata
-            var material_weight = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/weight");
-            return material_weight || 0;
-        }
-        return 0;
+        default_value = default_value | 0;
+        return default_value;
     }
 
     // update the display name of the material
