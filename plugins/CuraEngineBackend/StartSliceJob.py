@@ -290,6 +290,9 @@ class StartSliceJob(Job):
     def isCancelled(self) -> bool:
         return self._is_cancelled
 
+    def setIsCancelled(self, value: bool):
+        self._is_cancelled = value
+
     ##  Creates a dictionary of tokens to replace in g-code pieces.
     #
     #   This indicates what should be replaced in the start and end g-codes.

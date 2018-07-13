@@ -534,6 +534,11 @@ class CuraEngineBackend(QObject, Backend):
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("w", "A socket error caused the connection to be reset")
 
+        # _terminate()' function sets the job status to 'cancel', after reconnecting to another Port the job status
+        # needs to be updated. Otherwise backendState is "Unable To Slice"
+        if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
+            self._start_slice_job.setIsCancelled(False)
+
     ##  Remove old layer data (if any)
     def _clearLayerData(self, build_plate_numbers: Set = None) -> None:
         for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
