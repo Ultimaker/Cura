@@ -228,6 +228,7 @@ class Toolbox(QObject, Extension):
         self._makeRequestByType("authors")
         self._makeRequestByType("plugins_showcase")
         self._makeRequestByType("materials_showcase")
+        self._makeRequestByType("materials_available")
 
         # Gather installed packages:
         self._updateInstalledModels()
@@ -506,8 +507,15 @@ class Toolbox(QObject, Extension):
         count = 0
         for package in self._metadata["materials_installed"]:
             if package["author"]["author_id"] == author_id:
-                if self.isInstalled(package["package_id"]):
-                    count += 1
+                count += 1
+        return count
+
+    @pyqtSlot(str, result = int)
+    def getTotalNumberOfPackagesByAuthor(self, author_id: str) -> int:
+        count = 0
+        for package in self._metadata["materials_available"]:
+            if package["author"]["author_id"] == author_id:
+                count += 1
         return count
 
     @pyqtSlot(str, result = bool)
