@@ -5,6 +5,7 @@ import copy
 import os
 import sys
 import time
+from typing import cast, TYPE_CHECKING, Optional
 
 import numpy
 
@@ -12,8 +13,6 @@ from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
-
-from typing import cast, TYPE_CHECKING
 
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -97,6 +96,8 @@ from . import CuraSplashScreen
 from . import CameraImageProvider
 from . import MachineActionManager
 
+from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
+
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.UserChangesModel import UserChangesModel
@@ -157,6 +158,8 @@ class CuraApplication(QtApplication):
         self.default_theme = "cura-light"
 
         self._boot_loading_time = time.time()
+
+        self._on_exit_callback_manager = OnExitCallbackManager(self)
 
         # Variables set from CLI
         self._files_to_open = []
@@ -520,8 +523,8 @@ class CuraApplication(QtApplication):
     def setNeedToShowUserAgreement(self, set_value = True):
         self._need_to_show_user_agreement = set_value
 
-    ## The "Quit" button click event handler.
-    @pyqtSlot()
+    # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
+    # pre-exit checks such as checking for in-progress USB printing, etc.
     def closeApplication(self):
         Logger.log("i", "Close application")
         main_window = self.getMainWindow()
@@ -529,6 +532,32 @@ class CuraApplication(QtApplication):
             main_window.close()
         else:
             self.exit(0)
+
+    # This function first performs all upon-exit checks such as USB printing that is in progress.
+    # Use this to close the application.
+    @pyqtSlot()
+    def checkAndExitApplication(self) -> None:
+        self._on_exit_callback_manager.resetCurrentState()
+        self._on_exit_callback_manager.triggerNextCallback()
+
+    @pyqtSlot(result = bool)
+    def getIsAllChecksPassed(self) -> bool:
+        return self._on_exit_callback_manager.getIsAllChecksPassed()
+
+    def getOnExitCallbackManager(self) -> "OnExitCallbackManager":
+        return self._on_exit_callback_manager
+
+    def triggerNextExitCheck(self) -> None:
+        self._on_exit_callback_manager.triggerNextCallback()
+
+    showConfirmExitDialog = pyqtSignal(str, arguments = ["message"])
+
+    def setConfirmExitDialogCallback(self, callback):
+        self._confirm_exit_dialog_callback = callback
+
+    @pyqtSlot(bool)
+    def callConfirmExitDialogCallback(self, yes_or_no: bool):
+        self._confirm_exit_dialog_callback(yes_or_no)
 
     ##  Signal to connect preferences action in QML
     showPreferencesWindow = pyqtSignal()

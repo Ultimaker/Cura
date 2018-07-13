@@ -1,11 +1,11 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.1
+import QtQuick.Dialogs 1.2
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -700,10 +700,42 @@ UM.MainWindow
         id: contextMenu
     }
 
+    onPreClosing:
+    {
+        close.accepted = CuraApplication.getIsAllChecksPassed();
+        if (!close.accepted)
+        {
+            CuraApplication.checkAndExitApplication();
+        }
+    }
+
+    MessageDialog
+    {
+        id: exitConfirmationDialog
+        title: catalog.i18nc("@title:window", "Closing Cura")
+        text: catalog.i18nc("@label", "Are you sure you want to exit Cura?")
+        icon: StandardIcon.Question
+        modality: Qt.ApplicationModal
+        standardButtons: StandardButton.Yes | StandardButton.No
+        onYes: CuraApplication.callConfirmExitDialogCallback(true)
+        onNo: CuraApplication.callConfirmExitDialogCallback(false)
+        onRejected: CuraApplication.callConfirmExitDialogCallback(false)
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onShowConfirmExitDialog:
+        {
+            exitConfirmationDialog.text = message;
+            exitConfirmationDialog.open();
+        }
+    }
+
     Connections
     {
         target: Cura.Actions.quit
-        onTriggered: CuraApplication.closeApplication();
+        onTriggered: CuraApplication.exitApplication();
     }
 
     Connections
