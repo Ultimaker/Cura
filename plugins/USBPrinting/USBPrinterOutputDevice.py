@@ -435,9 +435,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._gcode_position += 1
 
-    def getIsPrinting(self)-> bool:
-        return self._is_printing
-
 
 class FirmwareUpdateState(IntEnum):
     idle = 0
