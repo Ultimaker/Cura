@@ -88,6 +88,25 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._command_received = Event()
         self._command_received.set()
 
+        CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
+
+    # This is a callback function that checks if there is any printing in progress via USB when the application tries
+    # to exit. If so, it will show a confirmation before
+    def _checkActivePrintingUponAppExit(self) -> None:
+        application = CuraApplication.getInstance()
+        if not self._is_printing:
+            # This USB printer is not printing, so we have nothing to do. Call the next callback if exists.
+            application.triggerNextExitCheck()
+            return
+
+        application.setConfirmExitDialogCallback(self._onConfirmExitDialogResult)
+        application.showConfirmExitDialog.emit(catalog.i18nc("@label", "A USB print is in progress, closing Cura will stop this print. Are you sure?"))
+
+    def _onConfirmExitDialogResult(self, result: bool) -> None:
+        if result:
+            application = CuraApplication.getInstance()
+            application.triggerNextExitCheck()
+
     ## Reset USB device settings
     #
     def resetDeviceSettings(self):
@@ -434,9 +453,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         print_job.updateTimeTotal(estimated_time)
 
         self._gcode_position += 1
-
-    def getIsPrinting(self)-> bool:
-        return self._is_printing
 
 
 class FirmwareUpdateState(IntEnum):
