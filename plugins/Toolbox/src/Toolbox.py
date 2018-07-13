@@ -501,6 +501,15 @@ class Toolbox(QObject, Extension):
     def isInstalled(self, package_id: str) -> bool:
         return self._package_manager.isPackageInstalled(package_id)
 
+    @pyqtSlot(str, result = int)
+    def getNumberOfInstalledPackagesByAuthor(self, author_id: str) -> int:
+        count = 0
+        for package in self._metadata["materials_installed"]:
+            if package["author"]["author_id"] == author_id:
+                if self.isInstalled(package["package_id"]):
+                    count += 1
+        return count
+
     @pyqtSlot(str, result = bool)
     def isEnabled(self, package_id: str) -> bool:
         if package_id in self._plugin_registry.getActivePlugins():
@@ -722,27 +731,27 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     @pyqtProperty(QObject, notify = metadataChanged)
     def authorsModel(self) -> AuthorsModel:
-        return self._models["authors"]
+        return cast(AuthorsModel, self._models["authors"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def packagesModel(self) -> PackagesModel:
-        return self._models["packages"]
+        return cast(PackagesModel, self._models["packages"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def pluginsShowcaseModel(self) -> PackagesModel:
-        return self._models["plugins_showcase"]
+        return cast(PackagesModel, self._models["plugins_showcase"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def pluginsInstalledModel(self) -> PackagesModel:
-        return self._models["plugins_installed"]
+        return cast(PackagesModel, self._models["plugins_installed"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
-    def materialsShowcaseModel(self) -> PackagesModel:
-        return self._models["materials_showcase"]
+    def materialsShowcaseModel(self) -> AuthorsModel:
+        return cast(AuthorsModel, self._models["materials_showcase"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def materialsInstalledModel(self) -> PackagesModel:
-        return self._models["materials_installed"]
+        return cast(PackagesModel, self._models["materials_installed"])
 
 
 

@@ -63,7 +63,7 @@ Item
             Label
             {
                 id: name
-                text: model.name
+                text: toolbox.viewCategory == "material" ? model.name + " (" + toolbox.getNumberOfInstalledPackagesByAuthor(model.id) + "/" + model.package_count + ")" : model.name
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: UM.Theme.getColor("text")
