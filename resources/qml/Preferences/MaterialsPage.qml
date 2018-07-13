@@ -486,6 +486,7 @@ Item
 
                 materialProperties.name = currentItem.name ? currentItem.name : "Unknown";
                 materialProperties.guid = currentItem.guid;
+                materialProperties.container_id = currentItem.container_id;
 
                 materialProperties.brand = currentItem.brand ? currentItem.brand : "Unknown";
                 materialProperties.material = currentItem.material ? currentItem.material : "Unknown";
@@ -543,6 +544,7 @@ Item
                     id: materialProperties
 
                     property string guid: "00000000-0000-0000-0000-000000000000"
+                    property string container_id: "Unknown";
                     property string name: "Unknown";
                     property string profile_type: "Unknown";
                     property string brand: "Unknown";
