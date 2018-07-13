@@ -720,6 +720,14 @@ UM.MainWindow
         onYes: CuraApplication.callConfirmExitDialogCallback(true)
         onNo: CuraApplication.callConfirmExitDialogCallback(false)
         onRejected: CuraApplication.callConfirmExitDialogCallback(false)
+        onVisibilityChanged:
+        {
+            if (!visible)
+            {
+                // reset the text to default because other modules may change the message text.
+                text = catalog.i18nc("@label", "Are you sure you want to exit Cura?");
+            }
+        }
     }
 
     Connections
