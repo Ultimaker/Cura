@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, Callable, List
 
 from UM.Logger import Logger
 
@@ -19,11 +19,11 @@ class OnExitCallbackManager:
 
     def __init__(self, application: "CuraApplication") -> None:
         self._application = application
-        self._on_exit_callback_list = list()  # type: List[callable]
+        self._on_exit_callback_list = list()  # type: List[Callable]
         self._current_callback_idx = 0
         self._is_all_checks_passed = False
 
-    def addCallback(self, callback: callable) -> None:
+    def addCallback(self, callback: Callable) -> None:
         self._on_exit_callback_list.append(callback)
         Logger.log("d", "on-app-exit callback [%s] added.", callback)
 
