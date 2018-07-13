@@ -100,7 +100,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             return
 
         application.setConfirmExitDialogCallback(self._onConfirmExitDialogResult)
-        application.showConfirmExitDialog.emit("USB printing is in progress")
+        application.showConfirmExitDialog.emit(catalog.i18nc("@label", "A USB print is in progress, closing Cura will stop this print. Are you sure?"))
 
     def _onConfirmExitDialogResult(self, result: bool) -> None:
         if result:
