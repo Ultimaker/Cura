@@ -9,6 +9,8 @@ import UM 1.1 as UM
 
 Item
 {
+    property int packageCount: toolbox.viewCategory == "material" ? model.package_count : 1
+    property int installedPackages: toolbox.viewCategory == "material" ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
     height: childrenRect.height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
     Rectangle
@@ -51,8 +53,8 @@ Item
                 }
                 sourceSize.width: width
                 sourceSize.height: height
-                visible: toolbox.isInstalled(model.id)
-                color: UM.Theme.getColor("primary")
+                visible: installedPackages != 0
+                color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
                 source: "../images/installed_check.svg"
             }
         }
@@ -63,7 +65,7 @@ Item
             Label
             {
                 id: name
-                text: toolbox.viewCategory == "material" ? model.name + " (" + toolbox.getNumberOfInstalledPackagesByAuthor(model.id) + "/" + model.package_count + ")" : model.name
+                text: model.name
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: UM.Theme.getColor("text")
