@@ -9,6 +9,8 @@ import UM 1.1 as UM
 
 Rectangle
 {
+    property int packageCount: toolbox.viewCategory == "material" ? model.package_count : 1
+    property int installedPackages: toolbox.viewCategory == "material" ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
     id: tileBase
     width: UM.Theme.getSize("toolbox_thumbnail_large").width + (2 * UM.Theme.getSize("default_lining").width)
     height: thumbnail.height + packageNameBackground.height + (2 * UM.Theme.getSize("default_lining").width)
@@ -35,6 +37,22 @@ Rectangle
             fillMode: Image.PreserveAspectFit
             source: model.icon_url || "../images/logobot.svg"
             mipmap: true
+        }
+        UM.RecolorImage
+        {
+            width: (parent.width * 0.3) | 0
+            height: (parent.height * 0.3) | 0
+            anchors
+            {
+                bottom: parent.bottom
+                right: parent.right
+                bottomMargin: UM.Theme.getSize("default_lining").width
+            }
+            sourceSize.width: width
+            sourceSize.height: height
+            visible: installedPackages != 0
+            color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
+            source: "../images/installed_check.svg"
         }
     }
     Rectangle
