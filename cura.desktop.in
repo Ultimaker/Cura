@@ -15,4 +15,4 @@ Terminal=false
 Type=Application
 MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;model/x3d+xml;
 Categories=Graphics;
-Keywords=3D;Printing;
+Keywords=3D;Printing;Slicer;
