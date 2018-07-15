@@ -21,8 +21,41 @@ class CuraApplicationPatches():
         self._application = application
 
         self._application._readMeshFinished = self._readMeshFinished
+        self._application.arrange = self.arrange
+
+        self._margin_between_models = 50
+
+    ##  Arrange a set of nodes given a set of fixed nodes
+    #   \param nodes nodes that we have to place
+    #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes
+    #   Copied verbatim from CuraApplication.arrange, with a patch to place objects in a row
+    def arrange(self, nodes, fixed_nodes):
+        ### START PATCH: perform simplified arrange for blackbelt printers
+        global_container_stack = self._application.getGlobalContainerStack()
+        if not global_container_stack:
+            return
+
+        definition_container = global_container_stack.getBottom()
+        if definition_container.getId() == "blackbelt":
+            leading_edge = self._application.getBuildVolume().getBoundingBox().front
+
+            for fixed_node in fixed_nodes:
+                leading_edge = min(leading_edge, existing_node.getBoundingBox().back)
+
+            for node in nodes:
+                half_node_depth = node.getBoundingBox().depth / 2
+                node.setPosition(Vector(0, 0, leading_edge - half_node_depth - self._margin_between_models))
+                leading_edge = node.getBoundingBox().back
+
+            return
+        ### END PATCH
+
+        min_offset = self._application.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8))
+        job.start()
 
 
+    #   Copied verbatim from CuraApplication._readMeshFinished, with a patch to place objects in a row
     def _readMeshFinished(self, job):
         ### START PATCH: detect blackbelt printer
         global_container_stack = self._application.getGlobalContainerStack()
@@ -102,7 +135,6 @@ class CuraApplicationPatches():
             ### START PATCH: don't do standard arrange on load for blackbelt printers
             ###              but place in a line instead
             if is_blackbelt_printer:
-                margin_between_models = 50
                 half_node_depth = node.getBoundingBox().depth / 2
                 build_plate_empty = True
                 leading_edge = self._application.getBuildVolume().getBoundingBox().front
@@ -119,7 +151,7 @@ class CuraApplicationPatches():
                     leading_edge = min(leading_edge, existing_node.getBoundingBox().back)
 
                 if not build_plate_empty or leading_edge < half_node_depth:
-                    node.setPosition(Vector(0, 0, leading_edge - half_node_depth - margin_between_models ))
+                    node.setPosition(Vector(0, 0, leading_edge - half_node_depth - self._margin_between_models))
 
             ### END PATCH
             elif arrange_objects_on_load:
