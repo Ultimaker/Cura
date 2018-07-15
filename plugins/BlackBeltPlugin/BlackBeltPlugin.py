@@ -16,6 +16,8 @@ i18n_catalog = i18nCatalog("BlackBeltPlugin")
 
 from . import BlackBeltDecorator
 from . import BlackBeltSingleton
+
+from . import CuraApplicationPatches
 from . import BuildVolumePatches
 from . import CuraEngineBackendPatches
 from . import PrintInformationPatches
@@ -115,6 +117,7 @@ class BlackBeltPlugin(Extension):
         prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
 
         # Apply patches
+        self._cura_application_patches = CuraApplicationPatches.CuraApplicationPatches(self._application)
         self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
         self._cura_engine_backend_patches = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
         self._print_information_patches = PrintInformationPatches.PrintInformationPatches(self._application.getPrintInformation())
