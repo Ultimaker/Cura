@@ -100,8 +100,27 @@ class CuraApplicationPatches():
                     child.addDecorator(ConvexHullDecorator())
 
             ### START PATCH: don't do standard arrange on load for blackbelt printers
+            ###              but place in a line instead
             if is_blackbelt_printer:
-                pass
+                margin_between_models = 50
+                half_node_depth = node.getBoundingBox().depth / 2
+                build_plate_empty = True
+                leading_edge = self._application.getBuildVolume().getBoundingBox().front
+
+                for existing_node in DepthFirstIterator(root):
+                    if (
+                        not issubclass(type(existing_node), CuraSceneNode) or
+                        (not existing_node.getMeshData() and not existing_node.callDecoration("getLayerData")) or
+                        (existing_node.callDecoration("getBuildPlateNumber") != target_build_plate)):
+
+                        continue
+
+                    build_plate_empty = False
+                    leading_edge = min(leading_edge, existing_node.getBoundingBox().back)
+
+                if not build_plate_empty or leading_edge < half_node_depth:
+                    node.setPosition(Vector(0, 0, leading_edge - half_node_depth - margin_between_models ))
+
             ### END PATCH
             elif arrange_objects_on_load:
                 if node.callDecoration("isSliceable"):
