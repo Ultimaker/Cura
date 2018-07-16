@@ -109,7 +109,8 @@ class DiscoverUM3Action(MachineAction):
                 CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connect_group_name", value = previous_connect_group_name, new_value = group_name)
             else:
                 global_container_stack.setMetaDataEntry("connect_group_name", group_name)
-                global_container_stack.setMetaDataEntry("hidden", False)
+            # Set the default value for "hidden", which is used when you have a group with multiple types of printers
+            global_container_stack.setMetaDataEntry("hidden", False)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
