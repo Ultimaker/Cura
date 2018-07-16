@@ -535,7 +535,7 @@ Column
             y: -Math.round(UM.Theme.getSize("sidebar_margin").height / 3)
             anchors.left: parent.left
             width: parent.width - materialCompatibilityLink.width
-            text: catalog.i18nc("@label", "Use adhesion sheet or glue with this material combination")
+            text: catalog.i18nc("@label", "Use glue with this material combination")
             font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text")
             visible: buildplateCompatibilityError || buildplateCompatibilityWarning
