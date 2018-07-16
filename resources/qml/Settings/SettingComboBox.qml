@@ -116,6 +116,10 @@ SettingItem
 
             contentItem: Label
             {
+                // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+
                 text: modelData.value
                 renderType: Text.NativeRendering
                 color: control.contentItem.color
