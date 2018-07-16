@@ -164,8 +164,12 @@ Column
                     onClicked: {
                         switch (mouse.button) {
                             case Qt.LeftButton:
-                                forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                                Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
+                                if (extruder_enabled)
+                                {
+                                    forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                                    Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                }
                                 break;
                             case Qt.RightButton:
                                 extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
