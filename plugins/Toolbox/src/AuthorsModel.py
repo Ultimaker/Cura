@@ -43,7 +43,7 @@ class AuthorsModel(ListModel):
                 "package_count":  author["package_count"] if "package_count" in author else 0,
                 "package_types":  author["package_types"] if "package_types" in author else [],
                 "icon_url":       author["icon_url"] if "icon_url" in author else None,
-                "description":    "Material and quality profiles from {author_name}".format( author_name = author["display_name"])
+                "description":    "Material and quality profiles from {author_name}".format(author_name = author["display_name"])
             })
 
         # Filter on all the key-word arguments.
