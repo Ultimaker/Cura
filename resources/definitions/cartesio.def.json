@@ -15,7 +15,7 @@
         "has_variants": true,
 
         "variants_name": "Tool",
-        "preferred_variant_name": "0.8 mm",
+        "preferred_variant_name": "0.8mm thermoplastic extruder",
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
 
