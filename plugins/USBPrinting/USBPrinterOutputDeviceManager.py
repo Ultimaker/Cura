@@ -123,6 +123,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
                                    "ultimaker2_plus"          : "MarlinUltimaker2plus.hex",
                                    "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
                                    "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
+                                   "blackbelt"                : "MarlinBlackBelt3D.hex",
                                    }
         machine_with_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
                                    "ultimaker_original_dual"  : "MarlinUltimaker-HBK-{baudrate}-dual.hex",
