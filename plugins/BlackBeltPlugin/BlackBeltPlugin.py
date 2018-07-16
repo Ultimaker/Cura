@@ -22,6 +22,7 @@ from . import BuildVolumePatches
 from . import CuraEngineBackendPatches
 from . import PrintInformationPatches
 from . import PatchedMaterialManager
+from . import USBPrinterOutputDevicePatches
 
 from PyQt5.QtQml import qmlRegisterSingletonType
 
@@ -121,6 +122,7 @@ class BlackBeltPlugin(Extension):
         self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
         self._cura_engine_backend_patches = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
         self._print_information_patches = PrintInformationPatches.PrintInformationPatches(self._application.getPrintInformation())
+        self._output_device_patches = {}
 
         container_registry = ContainerRegistry.getInstance()
         self._application._material_manager = PatchedMaterialManager.PatchedMaterialManager(container_registry, self._application)
@@ -144,11 +146,7 @@ class BlackBeltPlugin(Extension):
         output_device_manager = Application.getInstance().getOutputDeviceManager()
         for output_device in output_device_manager.getOutputDevices():
             if "USBPrinterOutputDevice" in str(output_device):
-                devices_to_remove.append(output_device.getId())
-
-        for output_device in devices_to_remove:
-            Logger.log("d", "Removing USB printer output device %s from printer %s" % (output_device, self._global_container_stack.getId()))
-            output_device_manager.removeOutputDevice(output_device)
+                self._output_device_patches[output_device] = USBPrinterOutputDevicePatches.USBPrinterOutputDevicePatches(output_device)
 
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
