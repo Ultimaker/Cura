@@ -8,6 +8,54 @@ from UM.VersionUpgrade import VersionUpgrade
 
 deleted_settings = {"prime_tower_wall_thickness", "dual_pre_wipe", "prime_tower_purge_volume"}
 
+_RENAMED_MATERIAL_PROFILES = {
+    "dsm_arnitel2045_175_cartesio_0.25_mm": "dsm_arnitel2045_175_cartesio_0.25mm_thermoplastic_extruder",
+    "dsm_arnitel2045_175_cartesio_0.4_mm": "dsm_arnitel2045_175_cartesio_0.4mm_thermoplastic_extruder",
+    "dsm_arnitel2045_175_cartesio_0.8_mm": "dsm_arnitel2045_175_cartesio_0.8mm_thermoplastic_extruder",
+    "dsm_novamid1070_175_cartesio_0.25_mm": "dsm_novamid1070_175_cartesio_0.25mm_thermoplastic_extruder",
+    "dsm_novamid1070_175_cartesio_0.4_mm": "dsm_novamid1070_175_cartesio_0.4mm_thermoplastic_extruder",
+    "dsm_novamid1070_175_cartesio_0.8_mm": "dsm_novamid1070_175_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_abs_175_cartesio_0.25_mm": "generic_abs_175_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_abs_175_cartesio_0.4_mm": "generic_abs_175_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_abs_175_cartesio_0.8_mm": "generic_abs_175_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_hips_175_cartesio_0.25_mm": "generic_hips_175_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_hips_175_cartesio_0.4_mm": "generic_hips_175_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_hips_175_cartesio_0.8_mm": "generic_hips_175_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_nylon_175_cartesio_0.25_mm": "generic_nylon_175_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_nylon_175_cartesio_0.4_mm": "generic_nylon_175_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_nylon_175_cartesio_0.8_mm": "generic_nylon_175_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_pc_cartesio_0.25_mm": "generic_pc_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_pc_cartesio_0.4_mm": "generic_pc_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_pc_cartesio_0.8_mm": "generic_pc_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_pc_175_cartesio_0.25_mm": "generic_pc_175_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_pc_175_cartesio_0.4_mm": "generic_pc_175_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_pc_175_cartesio_0.8_mm": "generic_pc_175_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_petg_175_cartesio_0.25_mm": "generic_petg_175_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_petg_175_cartesio_0.4_mm": "generic_petg_175_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_petg_175_cartesio_0.8_mm": "generic_petg_175_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_pla_175_cartesio_0.25_mm": "generic_pla_175_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_pla_175_cartesio_0.4_mm": "generic_pla_175_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_pla_175_cartesio_0.8_mm": "generic_pla_175_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_pva_cartesio_0.25_mm": "generic_pva_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_pva_cartesio_0.4_mm": "generic_pva_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_pva_cartesio_0.8_mm": "generic_pva_cartesio_0.8mm_thermoplastic_extruder",
+    "generic_pva_175_cartesio_0.25_mm": "generic_pva_175_cartesio_0.25mm_thermoplastic_extruder",
+    "generic_pva_175_cartesio_0.4_mm": "generic_pva_175_cartesio_0.4mm_thermoplastic_extruder",
+    "generic_pva_175_cartesio_0.8_mm": "generic_pva_175_cartesio_0.8mm_thermoplastic_extruder",
+    "ultimaker_pc_black_cartesio_0.25_mm": "ultimaker_pc_black_cartesio_0.25mm_thermoplastic_extruder",
+    "ultimaker_pc_black_cartesio_0.4_mm": "ultimaker_pc_black_cartesio_0.4mm_thermoplastic_extruder",
+    "ultimaker_pc_black_cartesio_0.8_mm": "ultimaker_pc_black_cartesio_0.8mm_thermoplastic_extruder",
+    "ultimaker_pc_transparent_cartesio_0.25_mm": "ultimaker_pc_transparent_cartesio_0.25mm_thermoplastic_extruder",
+    "ultimaker_pc_transparent_cartesio_0.4_mm": "ultimaker_pc_transparent_cartesio_0.4mm_thermoplastic_extruder",
+    "ultimaker_pc_transparent_cartesio_0.8_mm": "ultimaker_pc_transparent_cartesio_0.8mm_thermoplastic_extruder",
+    "ultimaker_pc_white_cartesio_0.25_mm": "ultimaker_pc_white_cartesio_0.25mm_thermoplastic_extruder",
+    "ultimaker_pc_white_cartesio_0.4_mm": "ultimaker_pc_white_cartesio_0.4mm_thermoplastic_extruder",
+    "ultimaker_pc_white_cartesio_0.8_mm": "ultimaker_pc_white_cartesio_0.8mm_thermoplastic_extruder",
+    "ultimaker_pva_cartesio_0.25_mm": "ultimaker_pva_cartesio_0.25mm_thermoplastic_extruder",
+    "ultimaker_pva_cartesio_0.4_mm": "ultimaker_pva_cartesio_0.4mm_thermoplastic_extruder",
+    "ultimaker_pva_cartesio_0.8_mm": "ultimaker_pva_cartesio_0.8mm_thermoplastic_extruder"
+}
+
 ##  Upgrades configurations from the state they were in at version 3.4 to the
 #   state they should be in at version 4.0.
 class VersionUpgrade34to40(VersionUpgrade):
@@ -53,6 +101,10 @@ class VersionUpgrade34to40(VersionUpgrade):
         # Update version number.
         parser["general"]["version"] = "4"
         parser["metadata"]["setting_version"] = "5"
+
+        #Update the name of the quality profile.
+        if parser["containers"]["3"] in _RENAMED_MATERIAL_PROFILES:
+            parser["containers"]["3"] = _RENAMED_MATERIAL_PROFILES[parser["containers"]["3"]]
 
         result = io.StringIO()
         parser.write(result)
