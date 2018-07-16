@@ -1,10 +1,10 @@
 {
-    "id": "dagoma_discoeasy200_extruder_0",
+    "id": "dagoma_neva_magis_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "dagoma_discoeasy200",
+        "machine": "dagoma_neva_magis",
         "position": "0"
     },
 
