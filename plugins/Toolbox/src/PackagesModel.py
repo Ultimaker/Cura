@@ -33,6 +33,7 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 16, "has_configs")
         self.addRoleName(Qt.UserRole + 17, "supported_configs")
         self.addRoleName(Qt.UserRole + 18, "download_count")
+        self.addRoleName(Qt.UserRole + 19, "tags")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -78,13 +79,15 @@ class PackagesModel(ListModel):
                 "is_installed":      package["is_installed"] if "is_installed" in package else False,
                 "has_configs":       has_configs,
                 "supported_configs": configs_model,
-                "download_count":    package["download_count"] if "download_count" in package else 0
-
+                "download_count":    package["download_count"] if "download_count" in package else 0,
+                "tags":              package["tags"] if "tags" in package else []
             })
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if "*" in value:
+            if key is "tags":
+                key_filter = lambda item, value = value: value in item["tags"]
+            elif "*" in value:
                 key_filter = lambda candidate, key = key, value = value: self._matchRegExp(candidate, key, value)
             else:
                 key_filter = lambda candidate, key = key, value = value: self._matchString(candidate, key, value)
