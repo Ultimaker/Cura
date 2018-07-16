@@ -90,7 +90,7 @@ SettingItem
         popup: Popup {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
-            implicitHeight: contentItem.implicitHeight
+            implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
             contentItem: ListView {
@@ -117,8 +117,9 @@ SettingItem
             contentItem: Label
             {
                 // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                anchors.fill: parent
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
                 text: modelData.value
                 renderType: Text.NativeRendering
