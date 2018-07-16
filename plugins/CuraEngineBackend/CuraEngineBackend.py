@@ -488,7 +488,7 @@ class CuraEngineBackend(QObject, Backend):
             # we got a single scenenode
             if not source.callDecoration("isGroup"):
                 mesh_data = source.getMeshData()
-                if mesh_data and mesh_data.getVertices() is None:
+                if mesh_data is None or mesh_data.getVertices() is None:
                     return
 
             # There are some SceneNodes that do not have any build plate associated, then do not add to the list.

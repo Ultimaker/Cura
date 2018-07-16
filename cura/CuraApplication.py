@@ -1562,7 +1562,7 @@ class CuraApplication(QtApplication):
             self.callLater(self.openProjectFile.emit, file)
             return
 
-        if Preferences.getInstance().getValue("cura/select_models_on_load"):
+        if self.getPreferences().getValue("cura/select_models_on_load"):
             Selection.clear()
 
         f = file.toLocalFile()
@@ -1619,7 +1619,7 @@ class CuraApplication(QtApplication):
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
 
-        select_models_on_load = Preferences.getInstance().getValue("cura/select_models_on_load")
+        select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 
         for original_node in nodes:
 
