@@ -743,7 +743,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.quit
-        onTriggered: CuraApplication.exitApplication();
+        onTriggered: CuraApplication.checkAndExitApplication();
     }
 
     Connections
