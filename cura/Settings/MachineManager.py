@@ -335,6 +335,7 @@ class MachineManager(QObject):
                            global_stack.getName(), new_quality_changes_group.name)
         else:
             new_quality_group = quality_groups.get(quality_type)
+            print(quality_groups)
             if new_quality_group is not None:
                 self._setQualityGroup(new_quality_group, empty_quality_changes = True)
                 same_quality_found = True
@@ -1107,6 +1108,7 @@ class MachineManager(QObject):
         # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
             self._global_container_stack.extruders[str(position)].quality = node.getContainer()
+            print("#######", node.getContainer().getName())
             if empty_quality_changes:
                 self._global_container_stack.extruders[str(position)].qualityChanges = self._empty_quality_changes_container
 
