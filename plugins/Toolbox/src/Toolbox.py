@@ -71,7 +71,8 @@ class Toolbox(QObject, Extension):
             "plugins_installed":   [],
             "materials_showcase":  [],
             "materials_available": [],
-            "materials_installed": []
+            "materials_installed": [],
+            "materials_generic":   []
         } # type: Dict[str, List[Any]]
 
         # Models:
@@ -83,7 +84,8 @@ class Toolbox(QObject, Extension):
             "plugins_installed":   PackagesModel(self),
             "materials_showcase":  AuthorsModel(self),
             "materials_available": PackagesModel(self),
-            "materials_installed": PackagesModel(self)
+            "materials_installed": PackagesModel(self),
+            "materials_generic":   PackagesModel(self)
         } # type: Dict[str, ListModel]
 
         # These properties are for keeping track of the UI state:
@@ -178,7 +180,8 @@ class Toolbox(QObject, Extension):
             "plugins_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
             "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url=self._api_url)),
             "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
-            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url))
+            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url)),
+            "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url=self._api_url))
         }
 
     # Get the API root for the packages API depending on Cura version settings.
@@ -229,6 +232,7 @@ class Toolbox(QObject, Extension):
         self._makeRequestByType("plugins_showcase")
         self._makeRequestByType("materials_showcase")
         self._makeRequestByType("materials_available")
+        self._makeRequestByType("materials_generic")
 
         # Gather installed packages:
         self._updateInstalledModels()
@@ -640,6 +644,8 @@ class Toolbox(QObject, Extension):
                                 self._models[type].setFilter({"type": "plugin"})
                             if type is "authors":
                                 self._models[type].setFilter({"package_types": "material"})
+                            if type is "materials_generic":
+                                self._models[type].setFilter({"tags": "generic"})
 
                             self.metadataChanged.emit()
 
@@ -760,6 +766,10 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, notify = metadataChanged)
     def materialsInstalledModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["materials_installed"])
+
+    @pyqtProperty(QObject, notify=metadataChanged)
+    def materialsGenericModel(self) -> PackagesModel:
+        return cast(PackagesModel, self._models["materials_generic"])
 
 
 

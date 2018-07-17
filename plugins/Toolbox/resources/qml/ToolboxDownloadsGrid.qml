@@ -9,6 +9,9 @@ import UM 1.1 as UM
 
 Column
 {
+    property var heading: ""
+    property var model
+    id: gridArea
     height: childrenRect.height + 2 * padding
     width: parent.width
     spacing: UM.Theme.getSize("default_margin").height
@@ -16,7 +19,7 @@ Column
     Label
     {
         id: heading
-        text: toolbox.viewCategory == "material" ? catalog.i18nc("@label", "Community contributions") : catalog.i18nc("@label", "Community plugins")
+        text: gridArea.heading
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
@@ -24,14 +27,13 @@ Column
     GridLayout
     {
         id: grid
-        property var model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
         width: parent.width - 2 * parent.padding
         columns: 2
         columnSpacing: UM.Theme.getSize("default_margin").height
         rowSpacing: UM.Theme.getSize("default_margin").width
         Repeater
         {
-            model: grid.model
+            model: gridArea.model
             delegate: ToolboxDownloadsGridTile
             {
                 Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns

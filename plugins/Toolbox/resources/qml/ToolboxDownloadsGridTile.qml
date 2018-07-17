@@ -9,8 +9,8 @@ import UM 1.1 as UM
 
 Item
 {
-    property int packageCount: toolbox.viewCategory == "material" ? toolbox.getTotalNumberOfPackagesByAuthor(model.id) : 1
-    property int installedPackages: toolbox.viewCategory == "material" ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
+    property int packageCount: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getTotalNumberOfPackagesByAuthor(model.id) : 1
+    property int installedPackages: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
     height: childrenRect.height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
     Rectangle
@@ -104,8 +104,18 @@ Item
             switch(toolbox.viewCategory)
             {
                 case "material":
-                    toolbox.viewPage = "author"
-                    toolbox.filterModelByProp("packages", "author_id", model.id)
+
+                    // If model has a type, it must be a package
+                    if (model.type !== undefined)
+                    {
+                        toolbox.viewPage = "detail"
+                        toolbox.filterModelByProp("packages", "id", model.id)
+                    }
+                    else
+                    {
+                        toolbox.viewPage = "author"
+                        toolbox.filterModelByProp("packages", "author_id", model.id)
+                    }
                     break
                 default:
                     toolbox.viewPage = "detail"

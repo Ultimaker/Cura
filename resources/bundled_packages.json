@@ -713,6 +713,240 @@
             }
         }
     },
+    "GenericABS": {
+        "package_info": {
+            "package_id": "GenericABS",
+            "package_type": "material",
+            "display_name": "Generic ABS",
+            "description": "The generic ABS profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericBAM": {
+        "package_info": {
+            "package_id": "GenericBAM",
+            "package_type": "material",
+            "display_name": "Generic BAM",
+            "description": "The generic BAM profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericCPE": {
+        "package_info": {
+            "package_id": "GenericCPE",
+            "package_type": "material",
+            "display_name": "Generic CPE",
+            "description": "The generic CPE profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericCPEPlus": {
+        "package_info": {
+            "package_id": "GenericCPEPlus",
+            "package_type": "material",
+            "display_name": "Generic CPE+",
+            "description": "The generic CPE+ profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericHIPS": {
+        "package_info": {
+            "package_id": "GenericHIPS",
+            "package_type": "material",
+            "display_name": "Generic HIPS",
+            "description": "The generic HIPS profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericNylon": {
+        "package_info": {
+            "package_id": "GenericNylon",
+            "package_type": "material",
+            "display_name": "Generic Nylon",
+            "description": "The generic Nylon profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericPC": {
+        "package_info": {
+            "package_id": "GenericPC",
+            "package_type": "material",
+            "display_name": "Generic PC",
+            "description": "The generic PC profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericPETG": {
+        "package_info": {
+            "package_id": "GenericPETG",
+            "package_type": "material",
+            "display_name": "Generic PETG",
+            "description": "The generic PETG profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericPLA": {
+        "package_info": {
+            "package_id": "GenericPLA",
+            "package_type": "material",
+            "display_name": "Generic PLA",
+            "description": "The generic PLA profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericPP": {
+        "package_info": {
+            "package_id": "GenericPP",
+            "package_type": "material",
+            "display_name": "Generic PP",
+            "description": "The generic PP profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericPVA": {
+        "package_info": {
+            "package_id": "GenericPVA",
+            "package_type": "material",
+            "display_name": "Generic PVA",
+            "description": "The generic PVA profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericToughPLA": {
+        "package_info": {
+            "package_id": "GenericToughPLA",
+            "package_type": "material",
+            "display_name": "Generic Tough PLA",
+            "description": "The generic Tough PLA profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericTPU": {
+        "package_info": {
+            "package_id": "GenericTPU",
+            "package_type": "material",
+            "display_name": "Generic TPU",
+            "description": "The generic TPU profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
     "DagomaChromatikPLA": {
         "package_info": {
             "package_id": "DagomaChromatikPLA",
