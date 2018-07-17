@@ -178,7 +178,7 @@
             "value": "0"
         },
         "retraction_extra_prime_amount": {
-            "value": "1"
+            "value": "0 if machine_nozzle_size <= 0.4 else 1"
         },
         "retraction_extrusion_window": {
             "value": "3"
