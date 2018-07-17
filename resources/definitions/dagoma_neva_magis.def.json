@@ -1,5 +1,4 @@
 {
-    "id": "dagoma_neva_magis",
     "name": "Dagoma NEVA Magis",
     "version": 2,
     "inherits": "fdmprinter",
@@ -46,9 +45,6 @@
         },
         "machine_end_gcode": {
             "default_value": "\nM104 S0\nM106 S255\nM140 S0\nG91\nG1 E-1 F300\nG1 Z+3 E-2 F9000\nG90\nG28\n"
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "default_material_print_temperature": {
             "default_value": 205
