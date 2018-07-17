@@ -767,6 +767,24 @@
             }
         }
     },
+    "GenericCPEPlus": {
+        "package_info": {
+            "package_id": "GenericCPEPlus",
+            "package_type": "material",
+            "display_name": "Generic CPE+",
+            "description": "The generic CPE+ profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 6,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
     "GenericHIPS": {
         "package_info": {
             "package_id": "GenericHIPS",
