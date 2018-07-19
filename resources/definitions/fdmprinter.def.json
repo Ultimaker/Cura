@@ -5173,6 +5173,7 @@
                     "type": "bool",
                     "default_value": true,
                     "value": "extruders_enabled_count > 1",
+                    "enabled": "all(p != 'surface' for p in extruderValues('magic_mesh_surface_mode'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
@@ -5183,7 +5184,7 @@
                     "description": "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "carve_multiple_volumes",
+                    "enabled": "carve_multiple_volumes and all(p != 'surface' for p in extruderValues('magic_mesh_surface_mode'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
