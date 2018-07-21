@@ -160,7 +160,6 @@ class ProcessSlicedLayersJob(Job):
                                 extrusion_started = True
                             elif extrusion_started:
                                 break
-                        #line_types.fill(LayerPolygon.LayerPolygon.SkirtType)
 
                 # Adjust layer data to show Belt Wall feed rate, if it is enabled
                 if global_container_stack.getProperty("blackbelt_belt_wall_enabled", "value"):
@@ -170,7 +169,7 @@ class ProcessSlicedLayersJob(Job):
                     for index,point in enumerate(points):
                         if point[1] <= half_outer_wall_thickness:
                             if last_point_hit_wall and line_feedrates[index - 1] > belt_wall_feedrate:
-                                belt_wall_indices.append(index - 1)
+                                belt_wall_indices.append(index)
                             last_point_hit_wall = True
                         else:
                             last_point_hit_wall = False
@@ -182,11 +181,11 @@ class ProcessSlicedLayersJob(Job):
                     line_thicknesses = line_thicknesses.flatten()
                     line_feedrates = line_feedrates.flatten()
                     for index in reversed(belt_wall_indices):
-                        edited_points = numpy.insert(edited_points, dimensionality * (index + 1), numpy.append(points[index], points[index + 1]))
-                        line_types = numpy.insert(line_types, index, [line_types[index]] * 2)
-                        line_widths = numpy.insert(line_widths, index, [line_widths[index]] * 2)
-                        line_thicknesses = numpy.insert(line_thicknesses, index, [line_thicknesses[index]] * 2)
-                        line_feedrates = numpy.insert(line_feedrates, index, [belt_wall_feedrate] * 2)
+                        edited_points = numpy.insert(edited_points, dimensionality * (index), numpy.append(points[index - 1], points[index]))
+                        line_types = numpy.insert(line_types, index, [line_types[index - 1]] * 2)
+                        line_widths = numpy.insert(line_widths, index, [line_widths[index - 1]] * 2)
+                        line_thicknesses = numpy.insert(line_thicknesses, index, [line_thicknesses[index - 1]] * 2)
+                        line_feedrates = numpy.insert(line_feedrates, index - 1, [belt_wall_feedrate] * 2)
 
                     # Fix shape of adjusted data
                     if polygon.point_type == 0:
