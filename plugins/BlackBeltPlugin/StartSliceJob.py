@@ -273,9 +273,6 @@ class StartSliceJob(Job):
                 for key in ["layer_height", "layer_height_0"]:
                     current_value = stack.getProperty(key, "value")
                     stack.setProperty(key, "value", current_value / math.sin(gantry_angle))
-                for key in ["material_flow", "prime_tower_flow", "spaghetti_flow"]:
-                    current_value = stack.getProperty(key, "value")
-                    stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
 
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
@@ -295,8 +292,8 @@ class StartSliceJob(Job):
                     extruder_stack = _extruder_stack
                     extruder_stack.setNextStack(stack)
                     for key in ["material_flow", "prime_tower_flow", "spaghetti_flow"]:
-                        current_value = extruder_stack.getProperty(key, "value")
-                        if current_value:
+                        if extruder_stack.hasProperty(key, "value"):
+                            current_value = extruder_stack.getProperty(key, "value")
                             extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
                 self._buildExtruderMessage(extruder_stack)
 
