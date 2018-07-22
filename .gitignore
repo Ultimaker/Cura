@@ -60,7 +60,6 @@ Testing/
 CTestTestfile.cmake
 Makefile*
 junit-pytest-*
-CuraVersion.py
 cmake_install.cmake
 
 #Debug
