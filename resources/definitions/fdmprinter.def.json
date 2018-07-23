@@ -1644,7 +1644,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1677,6 +1677,18 @@
                     "type": "float",
                     "default_value": 0,
                     "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_multiplier":
+                {
+                    "label": "Infill Line Multiplier",
+                    "description": "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage.",
+                    "default_value": 1,
+                    "type": "int",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "infill_line_distance / infill_line_width",
+                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled and infill_pattern != 'zigzag'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
