@@ -6,8 +6,10 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 import xml.etree.ElementTree as ET
+from typing import Dict
+from typing import Iterator
 
 from UM.Resources import Resources
 from UM.Logger import Logger
@@ -132,7 +134,7 @@ class XmlMaterialProfile(InstanceContainer):
                               "version": self.CurrentFdmMaterialVersion})
 
         ## Begin Metadata Block
-        builder.start("metadata")
+        builder.start("metadata") # type: ignore
 
         metadata = copy.deepcopy(self.getMetaData())
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
@@ -156,21 +158,21 @@ class XmlMaterialProfile(InstanceContainer):
         metadata.pop("name", "")
 
         ## Begin Name Block
-        builder.start("name")
+        builder.start("name") # type: ignore
 
-        builder.start("brand")
+        builder.start("brand") # type: ignore
         builder.data(metadata.pop("brand", ""))
         builder.end("brand")
 
-        builder.start("material")
+        builder.start("material") # type: ignore
         builder.data(metadata.pop("material", ""))
         builder.end("material")
 
-        builder.start("color")
+        builder.start("color") # type: ignore
         builder.data(metadata.pop("color_name", ""))
         builder.end("color")
 
-        builder.start("label")
+        builder.start("label") # type: ignore
         builder.data(self.getName())
         builder.end("label")
 
@@ -178,7 +180,7 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Name Block
 
         for key, value in metadata.items():
-            builder.start(key)
+            builder.start(key) # type: ignore
             if value is not None: #Nones get handled well by the builder.
                 #Otherwise the builder always expects a string.
                 #Deserialize expects the stringified version.
@@ -190,10 +192,10 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Metadata Block
 
         ## Begin Properties Block
-        builder.start("properties")
+        builder.start("properties") # type: ignore
 
         for key, value in properties.items():
-            builder.start(key)
+            builder.start(key) # type: ignore
             builder.data(value)
             builder.end(key)
 
@@ -201,14 +203,14 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Properties Block
 
         ## Begin Settings Block
-        builder.start("settings")
+        builder.start("settings") # type: ignore
 
         if self.getMetaDataEntry("definition") == "fdmprinter":
             for instance in self.findInstances():
                 self._addSettingElement(builder, instance)
 
-        machine_container_map = {}
-        machine_variant_map = {}
+        machine_container_map = {} # type: Dict[str, InstanceContainer]
+        machine_variant_map = {} # type: Dict[str, Dict[str, Any]]
 
         variant_manager = CuraApplication.getInstance().getVariantManager()
 
@@ -248,7 +250,7 @@ class XmlMaterialProfile(InstanceContainer):
                     product = product_name
                     break
 
-            builder.start("machine")
+            builder.start("machine") # type: ignore
             builder.start("machine_identifier", {
                 "manufacturer": container.getMetaDataEntry("machine_manufacturer",
                                                            definition_metadata.get("manufacturer", "Unknown")),
@@ -264,7 +266,7 @@ class XmlMaterialProfile(InstanceContainer):
                 self._addSettingElement(builder, instance)
 
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
-            buildplate_dict = {}
+            buildplate_dict = {} # type: Dict[str, Any]
             for variant_name, variant_dict in machine_variant_map[definition_id].items():
                 variant_type = variant_dict["variant_node"].metadata["hardware_type"]
                 from cura.Machines.VariantManager import VariantType
@@ -331,9 +333,9 @@ class XmlMaterialProfile(InstanceContainer):
         stream = io.BytesIO()
         tree = ET.ElementTree(root)
         # this makes sure that the XML header states encoding="utf-8"
-        tree.write(stream, encoding="utf-8", xml_declaration=True)
+        tree.write(stream, encoding = "utf-8", xml_declaration=True)
 
-        return stream.getvalue().decode('utf-8')
+        return stream.getvalue().decode("utf-8")
 
     # Recursively resolve loading inherited files
     def _resolveInheritance(self, file_name):
@@ -349,7 +351,7 @@ class XmlMaterialProfile(InstanceContainer):
     def _loadFile(self, file_name):
         path = Resources.getPath(CuraApplication.getInstance().ResourceTypes.MaterialInstanceContainer, file_name + ".xml.fdm_material")
 
-        with open(path, encoding="utf-8") as f:
+        with open(path, encoding = "utf-8") as f:
             contents = f.read()
 
         self._inherited_files.append(path)
@@ -563,7 +565,16 @@ class XmlMaterialProfile(InstanceContainer):
         for entry in settings:
             key = entry.get("key")
             if key in self.__material_settings_setting_map:
-                common_setting_values[self.__material_settings_setting_map[key]] = entry.text
+                if key == "processing temperature graph": #This setting has no setting text but subtags.
+                    graph_nodes = entry.iterfind("./um:point", self.__namespaces)
+                    graph_points = []
+                    for graph_node in graph_nodes:
+                        flow = float(graph_node.get("flow"))
+                        temperature = float(graph_node.get("temperature"))
+                        graph_points.append([flow, temperature])
+                    common_setting_values[self.__material_settings_setting_map[key]] = str(graph_points)
+                else:
+                    common_setting_values[self.__material_settings_setting_map[key]] = entry.text
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
                     common_compatibility = self._parseCompatibleValue(entry.text)
@@ -596,7 +607,16 @@ class XmlMaterialProfile(InstanceContainer):
             for entry in settings:
                 key = entry.get("key")
                 if key in self.__material_settings_setting_map:
-                    machine_setting_values[self.__material_settings_setting_map[key]] = entry.text
+                    if key == "processing temperature graph": #This setting has no setting text but subtags.
+                        graph_nodes = entry.iterfind("./um:point", self.__namespaces)
+                        graph_points = []
+                        for graph_node in graph_nodes:
+                            flow = float(graph_node.get("flow"))
+                            temperature = float(graph_node.get("temperature"))
+                            graph_points.append([flow, temperature])
+                        machine_setting_values[self.__material_settings_setting_map[key]] = str(graph_points)
+                    else:
+                        machine_setting_values[self.__material_settings_setting_map[key]] = entry.text
                 elif key in self.__unmapped_settings:
                     if key == "hardware compatible":
                         machine_compatibility = self._parseCompatibleValue(entry.text)
@@ -714,7 +734,16 @@ class XmlMaterialProfile(InstanceContainer):
                         for entry in settings:
                             key = entry.get("key")
                             if key in self.__material_settings_setting_map:
-                                hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
+                                if key == "processing temperature graph": #This setting has no setting text but subtags.
+                                    graph_nodes = entry.iterfind("./um:point", self.__namespaces)
+                                    graph_points = []
+                                    for graph_node in graph_nodes:
+                                        flow = float(graph_node.get("flow"))
+                                        temperature = float(graph_node.get("temperature"))
+                                        graph_points.append([flow, temperature])
+                                    hotend_setting_values[self.__material_settings_setting_map[key]] = str(graph_points)
+                                else:
+                                    hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
                             elif key in self.__unmapped_settings:
                                 if key == "hardware compatible":
                                     hotend_compatibility = self._parseCompatibleValue(entry.text)
@@ -812,11 +841,14 @@ class XmlMaterialProfile(InstanceContainer):
                 if label is not None and label.text is not None:
                     base_metadata["name"] = label.text
                 else:
-                    base_metadata["name"] = cls._profile_name(material.text, color.text)
+                    if material is not None and color is not None:
+                        base_metadata["name"] = cls._profile_name(material.text, color.text)
+                    else:
+                        base_metadata["name"] = "Unknown Material"
 
-                base_metadata["brand"] = brand.text if brand.text is not None else "Unknown Brand"
-                base_metadata["material"] = material.text if material.text is not None else "Unknown Type"
-                base_metadata["color_name"] = color.text if color.text is not None else "Unknown Color"
+                base_metadata["brand"] = brand.text if brand is not None and brand.text is not None else "Unknown Brand"
+                base_metadata["material"] = material.text if material is not None and material.text is not None else "Unknown Type"
+                base_metadata["color_name"] = color.text if color is not None and color.text is not None else "Unknown Color"
                 continue
 
             #Setting_version is derived from the "version" tag in the schema earlier, so don't set it here.
@@ -836,13 +868,13 @@ class XmlMaterialProfile(InstanceContainer):
             tag_name = _tag_without_namespace(entry)
             property_values[tag_name] = entry.text
 
-        base_metadata["approximate_diameter"] = str(round(float(property_values.get("diameter", 2.85)))) # In mm
+        base_metadata["approximate_diameter"] = str(round(float(cast(float, property_values.get("diameter", 2.85))))) # In mm
         base_metadata["properties"] = property_values
         base_metadata["definition"] = "fdmprinter"
 
         compatible_entries = data.iterfind("./um:settings/um:setting[@key='hardware compatible']", cls.__namespaces)
         try:
-            common_compatibility = cls._parseCompatibleValue(next(compatible_entries).text)
+            common_compatibility = cls._parseCompatibleValue(next(compatible_entries).text) # type: ignore
         except StopIteration: #No 'hardware compatible' setting.
             common_compatibility = True
         base_metadata["compatible"] = common_compatibility
@@ -856,7 +888,8 @@ class XmlMaterialProfile(InstanceContainer):
             for entry in machine.iterfind("./um:setting", cls.__namespaces):
                 key = entry.get("key")
                 if key == "hardware compatible":
-                    machine_compatibility = cls._parseCompatibleValue(entry.text)
+                    if entry.text is not None:
+                        machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
@@ -864,11 +897,11 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
                 for machine_id in machine_id_list:
-                    definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
-                    if not definition_metadata:
+                    definition_metadatas = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
+                    if not definition_metadatas:
                         continue
 
-                    definition_metadata = definition_metadata[0]
+                    definition_metadata = definition_metadatas[0]
 
                     machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
@@ -891,7 +924,7 @@ class XmlMaterialProfile(InstanceContainer):
                     result_metadata.append(new_material_metadata)
 
                     buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
-                    buildplate_map = {}
+                    buildplate_map = {} # type: Dict[str, Dict[str, bool]]
                     buildplate_map["buildplate_compatible"] = {}
                     buildplate_map["buildplate_recommended"] = {}
                     for buildplate in buildplates:
@@ -912,10 +945,11 @@ class XmlMaterialProfile(InstanceContainer):
                         buildplate_recommended = True
                         for entry in settings:
                             key = entry.get("key")
-                            if key == "hardware compatible":
-                                buildplate_compatibility = cls._parseCompatibleValue(entry.text)
-                            elif key == "hardware recommended":
-                                buildplate_recommended = cls._parseCompatibleValue(entry.text)
+                            if entry.text is not None:
+                                if key == "hardware compatible":
+                                    buildplate_compatibility = cls._parseCompatibleValue(entry.text)
+                                elif key == "hardware recommended":
+                                    buildplate_recommended = cls._parseCompatibleValue(entry.text)
 
                         buildplate_map["buildplate_compatible"][buildplate_id] = buildplate_compatibility
                         buildplate_map["buildplate_recommended"][buildplate_id] = buildplate_recommended
@@ -929,7 +963,8 @@ class XmlMaterialProfile(InstanceContainer):
                         for entry in hotend.iterfind("./um:setting", cls.__namespaces):
                             key = entry.get("key")
                             if key == "hardware compatible":
-                                hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                                if entry.text is not None:
+                                    hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
                         new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
@@ -957,9 +992,21 @@ class XmlMaterialProfile(InstanceContainer):
     def _addSettingElement(self, builder, instance):
         key = instance.definition.key
         if key in self.__material_settings_setting_map.values():
-            # Setting has a key in the stabndard namespace
+            # Setting has a key in the standard namespace
             key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
             tag_name = "setting"
+
+            if key == "processing temperature graph": #The Processing Temperature Graph has its own little structure that we need to implement separately.
+                builder.start(tag_name, {"key": key})
+                graph_str = str(instance.value)
+                graph = graph_str.replace("[", "").replace("]", "").split(", ") #Crude parsing of this list: Flatten the list by removing all brackets, then split on ", ". Safe to eval attacks though!
+                graph = [graph[i:i + 2] for i in range(0, len(graph) - 1, 2)] #Convert to 2D array.
+                for point in graph:
+                    builder.start("point", {"flow": point[0], "temperature": point[1]})
+                    builder.end("point")
+                builder.end(tag_name)
+                return
+
         elif key not in self.__material_properties_setting_map.values() and key not in self.__material_metadata_setting_map.values():
             # Setting is not in the standard namespace, and not a material property (eg diameter) or metadata (eg GUID)
             tag_name = "cura:setting"
@@ -1018,7 +1065,7 @@ class XmlMaterialProfile(InstanceContainer):
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
         product_to_id_file = os.path.join(os.path.dirname(sys.modules[cls.__module__].__file__), "product_to_id.json")
-        with open(product_to_id_file) as f:
+        with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
         return product_to_id_map

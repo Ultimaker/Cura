@@ -26,7 +26,6 @@
         "machine_width": { "default_value": 215 },
         "machine_height": { "default_value": 400 },
         "machine_depth": { "default_value": 205 },
-        "material_diameter": { "default_value": 1.75 },
 
         "infill_pattern": {"value": "'triangles'" },
         "infill_before_walls": {"value": false },
@@ -55,7 +54,6 @@
         "prime_tower_position_y": { "default_value": 178 },
         "prime_tower_wipe_enabled": { "default_value": false },
         "prime_tower_min_volume": { "default_value": 50 },
-        "dual_pre_wipe": { "default_value": false },
 
         "prime_blob_enable": { "enabled": true },
 

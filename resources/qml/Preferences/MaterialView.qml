@@ -103,7 +103,6 @@ TabView
 
                     onYes:
                     {
-                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", new_diameter_value);
                         base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
                     }
@@ -230,7 +229,7 @@ TabView
                     {
                         // This does not use a SettingPropertyProvider, because we need to make the change to all containers
                         // which derive from the same base_file
-                        var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
+                        var old_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/diameter");
                         var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
                         var new_approximate_diameter = getApproximateDiameter(value);
                         if (new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
@@ -242,7 +241,6 @@ TabView
                             confirmDiameterChangeDialog.open()
                         }
                         else {
-                            Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                             base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
                             base.setMetaDataEntry("properties/diameter", properties.diameter, value);
                         }
@@ -271,7 +269,7 @@ TabView
                 {
                     id: spoolWeightSpinBox
                     width: scrollView.columnWidth
-                    value: base.getMaterialPreferenceValue(properties.guid, "spool_weight")
+                    value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
                     suffix: " g"
                     stepSize: 100
                     decimals: 0
@@ -468,7 +466,7 @@ TabView
         }
         if(!spoolWeight)
         {
-            spoolWeight = base.getMaterialPreferenceValue(properties.guid, "spool_weight");
+            spoolWeight = base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"));
         }
 
         if (diameter == 0 || density == 0 || spoolWeight == 0)
@@ -515,44 +513,62 @@ TabView
         if(entry_name in materialPreferenceValues[material_guid] && materialPreferenceValues[material_guid][entry_name] == new_value)
         {
             // value has not changed
-            return
+            return;
         }
-        materialPreferenceValues[material_guid][entry_name] = new_value;
+        if (entry_name in materialPreferenceValues[material_guid] && new_value.toString() == 0)
+        {
+            // no need to store a 0, that's the default, so remove it
+            materialPreferenceValues[material_guid].delete(entry_name);
+            if (!(materialPreferenceValues[material_guid]))
+            {
+                // remove empty map
+                materialPreferenceValues.delete(material_guid);
+            }
+        }
+        if (new_value.toString() != 0)
+        {
+            // store new value
+            materialPreferenceValues[material_guid][entry_name] = new_value;
+        }
 
         // store preference
         UM.Preferences.setValue("cura/material_settings", JSON.stringify(materialPreferenceValues));
     }
 
-    function getMaterialPreferenceValue(material_guid, entry_name)
+    function getMaterialPreferenceValue(material_guid, entry_name, default_value)
     {
         if(material_guid in materialPreferenceValues && entry_name in materialPreferenceValues[material_guid])
         {
             return materialPreferenceValues[material_guid][entry_name];
         }
-        return 0;
+        default_value = default_value | 0;
+        return default_value;
     }
 
     // update the display name of the material
-    function updateMaterialDisplayName (old_name, new_name) {
+    function updateMaterialDisplayName (old_name, new_name)
+    {
         // don't change when new name is the same
         if (old_name == new_name) {
-            return
+            return;
         }
 
         // update the values
-        base.materialManager.setMaterialName(base.currentMaterialNode, new_name)
-        materialProperties.name = new_name
+        base.materialManager.setMaterialName(base.currentMaterialNode, new_name);
+        materialProperties.name = new_name;
     }
 
     // update the type of the material
-    function updateMaterialType (old_type, new_type) {
-        base.setMetaDataEntry("material", old_type, new_type)
-        materialProperties.material= new_type
+    function updateMaterialType (old_type, new_type)
+    {
+        base.setMetaDataEntry("material", old_type, new_type);
+        materialProperties.material= new_type;
     }
 
     // update the brand of the material
-    function updateMaterialBrand (old_brand, new_brand) {
-        base.setMetaDataEntry("brand", old_brand, new_brand)
-        materialProperties.brand = new_brand
+    function updateMaterialBrand (old_brand, new_brand)
+    {
+        base.setMetaDataEntry("brand", old_brand, new_brand);
+        materialProperties.brand = new_brand;
     }
 }

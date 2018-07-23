@@ -7,7 +7,11 @@
         "author": "Ultimaker",
         "manufacturer": "Danny Lu",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "deltabot_extruder_0"
+        }
     },
 
     "overrides": {
@@ -18,7 +22,6 @@
         "speed_wall_0": { "default_value": 30 },
         "speed_topbottom": { "default_value": 30 },
         "layer_height": { "default_value": 0.2 },
-        "machine_nozzle_size": { "default_value": 0.5 },
         "speed_print": { "default_value": 30 },
         "speed_infill": { "default_value": 30 },
         "machine_extruder_count": { "default_value": 1 },

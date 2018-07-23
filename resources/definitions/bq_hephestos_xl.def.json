@@ -8,7 +8,11 @@
         "author": "BQ",
         "file_formats": "text/x-gcode",
         "platform": "bq_hephestos_platform.stl",
-        "platform_offset": [ 0, -82, 0]
+        "platform_offset": [ 0, -82, 0],
+        "machine_extruder_trains":
+        {
+            "0": "bq_hephestos_xl_extruder_0"
+        }
     },
 
     "overrides": {
@@ -57,9 +61,6 @@
         },
         "material_bed_temperature": {
             "default_value": 0
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 40

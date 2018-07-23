@@ -45,32 +45,32 @@ def extruder_stack() -> cura.Settings.ExtruderStack.ExtruderStack:
 #   \return An instance container instance.
 def getInstanceContainer(container_type) -> InstanceContainer:
     container = InstanceContainer(container_id = "InstanceContainer")
-    container.addMetaDataEntry("type", container_type)
+    container.setMetaDataEntry("type", container_type)
     return container
 
 def creteEmptyContainers():
     empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
     empty_variant_container = copy.deepcopy(empty_container)
     empty_variant_container.setMetaDataEntry("id", "empty_variant")
-    empty_variant_container.addMetaDataEntry("type", "variant")
+    empty_variant_container.setMetaDataEntry("type", "variant")
     ContainerRegistry.getInstance().addContainer(empty_variant_container)
 
     empty_material_container = copy.deepcopy(empty_container)
     empty_material_container.setMetaDataEntry("id", "empty_material")
-    empty_material_container.addMetaDataEntry("type", "material")
+    empty_material_container.setMetaDataEntry("type", "material")
     ContainerRegistry.getInstance().addContainer(empty_material_container)
 
     empty_quality_container = copy.deepcopy(empty_container)
     empty_quality_container.setMetaDataEntry("id", "empty_quality")
     empty_quality_container.setName("Not Supported")
-    empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
-    empty_quality_container.addMetaDataEntry("type", "quality")
-    empty_quality_container.addMetaDataEntry("supported", False)
+    empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
+    empty_quality_container.setMetaDataEntry("type", "quality")
+    empty_quality_container.setMetaDataEntry("supported", False)
     ContainerRegistry.getInstance().addContainer(empty_quality_container)
 
     empty_quality_changes_container = copy.deepcopy(empty_container)
     empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-    empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+    empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
     ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
 class DefinitionContainerSubClass(DefinitionContainer):
@@ -80,7 +80,7 @@ class DefinitionContainerSubClass(DefinitionContainer):
 class InstanceContainerSubClass(InstanceContainer):
     def __init__(self, container_type):
         super().__init__(container_id = "SubInstanceContainer")
-        self.addMetaDataEntry("type", container_type)
+        self.setMetaDataEntry("type", container_type)
 
 #############################START OF TEST CASES################################
 
@@ -341,25 +341,3 @@ def test_setPropertyUser(key, property, value, extruder_stack):
     extruder_stack.setProperty(key, property, value) #The actual test.
 
     extruder_stack.userChanges.setProperty.assert_called_once_with(key, property, value) #Make sure that the user container gets a setProperty call.
-
-##  Tests setting properties on specific containers on the global stack.
-@pytest.mark.parametrize("target_container,    stack_variable", [
-                        ("user",               "userChanges"),
-                        ("quality_changes",    "qualityChanges"),
-                        ("quality",            "quality"),
-                        ("material",           "material"),
-                        ("variant",            "variant")
-])
-def test_setPropertyOtherContainers(target_container, stack_variable, extruder_stack):
-    #Other parameters that don't need to be varied.
-    key = "layer_height"
-    property = "value"
-    value = 0.1337
-    #A mock container in the right spot.
-    container = unittest.mock.MagicMock()
-    container.getMetaDataEntry = unittest.mock.MagicMock(return_value = target_container)
-    setattr(extruder_stack, stack_variable, container) #For instance, set global_stack.qualityChanges = container.
-
-    extruder_stack.setProperty(key, property, value, target_container = target_container) #The actual test.
-
-    getattr(extruder_stack, stack_variable).setProperty.assert_called_once_with(key, property, value) #Make sure that the proper container gets a setProperty call.

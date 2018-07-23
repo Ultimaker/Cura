@@ -18,7 +18,7 @@ catalog = i18nCatalog("cura")
 
 
 def getMetaData() -> Dict:
-    # Workarround for osx not supporting double file extensions correctly.
+    # Workaround for osx not supporting double file extensions correctly.
     if Platform.isOSX():
         workspace_extension = "3mf"
     else:

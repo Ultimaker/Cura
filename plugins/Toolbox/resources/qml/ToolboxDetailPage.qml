@@ -74,6 +74,7 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
+            height: childrenRect.height
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
@@ -92,6 +93,12 @@ Item
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text_medium")
             }
+            Label
+            {
+                text: catalog.i18nc("@label", "Downloads") + ":"
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text_medium")
+            }
         }
         Column
         {
@@ -104,6 +111,7 @@ Item
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
+            height: childrenRect.height
             Label
             {
                 text: details.version || catalog.i18nc("@label", "Unknown")
@@ -137,6 +145,12 @@ Item
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
+            }
+            Label
+            {
+                text: details.download_count || catalog.i18nc("@label", "Unknown")
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text")
             }
         }
         Rectangle

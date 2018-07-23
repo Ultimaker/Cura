@@ -10,7 +10,11 @@
         "file_formats": "text/x-gcode",
         "platform": "rigid3d_mucit_platform.stl",
         "platform_offset": [ 0, -19, 0],
-        "preferred_quality_type": "draft"
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "rigid3d_mucit_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": { "default_value": "Rigid3D Mucit" },
@@ -34,9 +38,6 @@
         },
         "material_print_temperature": {
             "value": "205"
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 40
@@ -67,9 +68,6 @@
         },
         "machine_depth": {
             "default_value": 150
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap"

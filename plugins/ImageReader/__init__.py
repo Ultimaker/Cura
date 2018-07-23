@@ -32,5 +32,6 @@ def getMetaData():
         ]
     }
 
+
 def register(app):
-    return { "mesh_reader": ImageReader.ImageReader() }
+    return {"mesh_reader": ImageReader.ImageReader()}

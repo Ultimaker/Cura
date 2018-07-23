@@ -15,5 +15,6 @@ def getMetaData():
         ]
     }
 
+
 def register(app):
-    return { "mesh_reader": X3DReader.X3DReader() }
+    return {"mesh_reader": X3DReader.X3DReader()}

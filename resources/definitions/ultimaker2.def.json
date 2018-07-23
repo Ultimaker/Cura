@@ -16,7 +16,11 @@
         "has_machine_quality": true,
         "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white"],
         "first_start_actions": ["UM2UpgradeSelection"],
-        "supported_actions":["UM2UpgradeSelection", "UpgradeFirmware"]
+        "supported_actions":["UM2UpgradeSelection", "UpgradeFirmware"],
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker2_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": { "default_value": "Ultimaker 2" },
@@ -49,10 +53,6 @@
         },
         "machine_center_is_zero": {
             "default_value": false
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4,
-            "minimum_value": "0.001"
         },
         "gantry_height": {
             "default_value": 48

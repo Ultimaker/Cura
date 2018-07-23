@@ -1,7 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Preferences import Preferences
 from UM.Application import Application
 from UM.Message import Message
 from UM.Logger import Logger
@@ -51,11 +50,11 @@ class FirmwareUpdateCheckerJob(Job):
                 current_version = reader(current_version_file).readline().rstrip()
 
                 # If it is the first time the version is checked, the checked_version is ''
-                checked_version = Preferences.getInstance().getValue("info/latest_checked_firmware")
+                checked_version = Application.getInstance().getPreferences().getValue("info/latest_checked_firmware")
 
                 # If the checked_version is '', it's because is the first time we check firmware and in this case
                 # we will not show the notification, but we will store it for the next time
-                Preferences.getInstance().setValue("info/latest_checked_firmware", current_version)
+                Application.getInstance().getPreferences().setValue("info/latest_checked_firmware", current_version)
                 Logger.log("i", "Reading firmware version of %s: checked = %s - latest = %s", machine_name, checked_version, current_version)
 
                 # The first time we want to store the current version, the notification will not be shown,

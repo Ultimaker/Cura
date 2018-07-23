@@ -17,8 +17,8 @@ from cura.Scene.CuraSceneNode import CuraSceneNode as SceneNode
 
 
 class ImageReader(MeshReader):
-    def __init__(self):
-        super(ImageReader, self).__init__()
+    def __init__(self) -> None:
+        super().__init__()
         self._supported_extensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"]
         self._ui = ImageReaderUI(self)
 
@@ -44,7 +44,7 @@ class ImageReader(MeshReader):
             return MeshReader.PreReadResult.cancelled
         return MeshReader.PreReadResult.accepted
 
-    def read(self, file_name):
+    def _read(self, file_name):
         size = max(self._ui.getWidth(), self._ui.getDepth())
         return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.image_color_invert)
 

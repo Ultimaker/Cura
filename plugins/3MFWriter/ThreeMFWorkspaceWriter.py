@@ -51,7 +51,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 self._writeContainerToArchive(container, archive)
 
         # Write preferences to archive
-        original_preferences = Preferences.getInstance() #Copy only the preferences that we use to the workspace.
+        original_preferences = Application.getInstance().getPreferences() #Copy only the preferences that we use to the workspace.
         temp_preferences = Preferences()
         for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded"}:
             temp_preferences.addPreference(preference, None)

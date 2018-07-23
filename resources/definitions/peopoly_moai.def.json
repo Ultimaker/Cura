@@ -8,7 +8,11 @@
         "manufacturer": "Peopoly",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
-        "has_materials": false
+        "has_materials": false,
+        "machine_extruder_trains":
+        {
+            "0": "peopoly_moai_extruder_0"
+        }
     },
 
     "overrides": {
@@ -23,9 +27,6 @@
         },
         "machine_depth": {
             "default_value": 130
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.067
         },
         "machine_head_with_fans_polygon":
         {
@@ -133,10 +134,6 @@
         },
         "material_bed_temperature": {
             "enabled": false
-        },
-        "material_diameter": {
-            "enabled": false,
-            "default_value": 1.75
         },
         "cool_fan_enabled": {
             "enabled": false,

@@ -6,7 +6,11 @@
         "visible": true,
         "author": "ALYA",
         "manufacturer": "ALYA",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "alya3dp_extruder_0"
+        }
     },
 
     "overrides": {
@@ -21,9 +25,6 @@
         },
         "machine_center_is_zero": {
             "default_value": false
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "machine_head_polygon": {
             "default_value": [

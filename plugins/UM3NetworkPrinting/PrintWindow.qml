@@ -90,6 +90,7 @@ UM.Dialog
             onClicked: {
                 base.visible = false;
                 printerSelectionCombobox.currentIndex = 0
+                OutputDevice.cancelPrintSelection()
             }
         }
     ]

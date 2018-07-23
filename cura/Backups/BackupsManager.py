@@ -1,25 +1,25 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional
+
+from typing import Dict, Optional, Tuple
 
 from UM.Logger import Logger
 from cura.Backups.Backup import Backup
 from cura.CuraApplication import CuraApplication
 
 
+##  The BackupsManager is responsible for managing the creating and restoring of
+#   back-ups.
+#
+#   Back-ups themselves are represented in a different class.
 class BackupsManager:
-    """
-    The BackupsManager is responsible for managing the creating and restoring of backups.
-    Backups themselves are represented in a different class.
-    """
     def __init__(self):
         self._application = CuraApplication.getInstance()
 
-    def createBackup(self) -> (Optional[bytes], Optional[dict]):
-        """
-        Get a backup of the current configuration.
-        :return: A Tuple containing a ZipFile (the actual backup) and a dict containing some meta data (like version).
-        """
+    ##  Get a back-up of the current configuration.
+    #   \return A tuple containing a ZipFile (the actual back-up) and a dict
+    #   containing some metadata (like version).
+    def createBackup(self) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
         self._disableAutoSave()
         backup = Backup()
         backup.makeFromCurrent()
@@ -27,12 +27,11 @@ class BackupsManager:
         # We don't return a Backup here because we want plugins only to interact with our API and not full objects.
         return backup.zip_file, backup.meta_data
 
-    def restoreBackup(self, zip_file: bytes, meta_data: dict) -> None:
-        """
-        Restore a backup from a given ZipFile.
-        :param zip_file: A bytes object containing the actual backup.
-        :param meta_data: A dict containing some meta data that is needed to restore the backup correctly.
-        """
+    ##  Restore a back-up from a given ZipFile.
+    #   \param zip_file A bytes object containing the actual back-up.
+    #   \param meta_data A dict containing some metadata that is needed to
+    #   restore the back-up correctly.
+    def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, str]) -> None:
         if not meta_data.get("cura_release", None):
             # If there is no "cura_release" specified in the meta data, we don't execute a backup restore.
             Logger.log("w", "Tried to restore a backup without specifying a Cura version number.")
@@ -45,12 +44,13 @@ class BackupsManager:
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
             # We don't want to store the data at this point as that would override the just-restored backup.
-            self._application.windowClosed(save_data=False)
+            self._application.windowClosed(save_data = False)
 
-    def _disableAutoSave(self):
-        """Here we try to disable the auto-save plugin as it might interfere with restoring a backup."""
+    ##  Here we try to disable the auto-save plug-in as it might interfere with
+    #   restoring a back-up.
+    def _disableAutoSave(self) -> None:
         self._application.setSaveDataEnabled(False)
 
-    def _enableAutoSave(self):
-        """Re-enable auto-save after we're done."""
+    ##  Re-enable auto-save after we're done.
+    def _enableAutoSave(self) -> None:
         self._application.setSaveDataEnabled(True)
