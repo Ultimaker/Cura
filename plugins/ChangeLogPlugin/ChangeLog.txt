@@ -1,3 +1,8 @@
+[3.4.2]
+*BlackBelt changes
+- Fixed underextrusion when setting flow
+- Fixed an issue in Layer View when using Print as Support
+
 [3.4.1]
 *BlackBelt changes
 - Improved adjustments to walls touching the belt
