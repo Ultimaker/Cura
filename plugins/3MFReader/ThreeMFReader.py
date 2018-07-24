@@ -59,7 +59,7 @@ class ThreeMFReader(MeshReader):
         if transformation == "":
             return Matrix()
 
-        splitted_transformation = transformation.split()
+        split_transformation = transformation.split()
         ## Transformation is saved as:
         ## M00 M01 M02 0.0
         ## M10 M11 M12 0.0
@@ -68,20 +68,20 @@ class ThreeMFReader(MeshReader):
         ## We switch the row & cols as that is how everyone else uses matrices!
         temp_mat = Matrix()
         # Rotation & Scale
-        temp_mat._data[0, 0] = splitted_transformation[0]
-        temp_mat._data[1, 0] = splitted_transformation[1]
-        temp_mat._data[2, 0] = splitted_transformation[2]
-        temp_mat._data[0, 1] = splitted_transformation[3]
-        temp_mat._data[1, 1] = splitted_transformation[4]
-        temp_mat._data[2, 1] = splitted_transformation[5]
-        temp_mat._data[0, 2] = splitted_transformation[6]
-        temp_mat._data[1, 2] = splitted_transformation[7]
-        temp_mat._data[2, 2] = splitted_transformation[8]
+        temp_mat._data[0, 0] = split_transformation[0]
+        temp_mat._data[1, 0] = split_transformation[1]
+        temp_mat._data[2, 0] = split_transformation[2]
+        temp_mat._data[0, 1] = split_transformation[3]
+        temp_mat._data[1, 1] = split_transformation[4]
+        temp_mat._data[2, 1] = split_transformation[5]
+        temp_mat._data[0, 2] = split_transformation[6]
+        temp_mat._data[1, 2] = split_transformation[7]
+        temp_mat._data[2, 2] = split_transformation[8]
 
         # Translation
-        temp_mat._data[0, 3] = splitted_transformation[9]
-        temp_mat._data[1, 3] = splitted_transformation[10]
-        temp_mat._data[2, 3] = splitted_transformation[11]
+        temp_mat._data[0, 3] = split_transformation[9]
+        temp_mat._data[1, 3] = split_transformation[10]
+        temp_mat._data[2, 3] = split_transformation[11]
 
         return temp_mat
 
