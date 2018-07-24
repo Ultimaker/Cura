@@ -1,0 +1,19 @@
+{
+    "id": "winbo_mini2_extruder",
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "winbo_mini2",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "2"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 }
+    }
+}
