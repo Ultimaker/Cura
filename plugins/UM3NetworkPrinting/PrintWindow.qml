@@ -26,6 +26,10 @@ UM.Dialog
         {
             resetPrintersModel()
         }
+        else
+        {
+            OutputDevice.cancelPrintSelection()
+        }
     }
     title: catalog.i18nc("@title:window", "Print over network")
 
