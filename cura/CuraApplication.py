@@ -1640,10 +1640,7 @@ class CuraApplication(QtApplication):
             node.setName(os.path.basename(file_name))
             self.getBuildVolume().checkBoundsAndUpdate(node)
 
-            is_non_sliceable = False
-
-            if file_extension in self._non_sliceable_extensions:
-                is_non_sliceable = True
+            is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
 
             if is_non_sliceable:
                 self.callLater(lambda: self.getController().setActiveView("SimulationView"))
