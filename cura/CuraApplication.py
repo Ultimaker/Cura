@@ -1599,10 +1599,12 @@ class CuraApplication(QtApplication):
 
     def _readMeshFinished(self, job):
         nodes = job.getResult()
-        filename = job.getFileName()
-        self._currently_loading_files.remove(filename)
+        file_name = job.getFileName()
+        file_name_lower = file_name.lower()
+        file_extension = file_name_lower.split(".")[-1]
+        self._currently_loading_files.remove(file_name)
 
-        self.fileLoaded.emit(filename)
+        self.fileLoaded.emit(file_name)
         arrange_objects_on_load = not self.getPreferences().getValue("cura/use_multi_build_plate")
         target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
@@ -1635,15 +1637,14 @@ class CuraApplication(QtApplication):
                     node.scale(original_node.getScale())
 
             node.setSelectable(True)
-            node.setName(os.path.basename(filename))
+            node.setName(os.path.basename(file_name))
             self.getBuildVolume().checkBoundsAndUpdate(node)
 
             is_non_sliceable = False
-            filename_lower = filename.lower()
-            for extension in self._non_sliceable_extensions:
-                if filename_lower.endswith(extension):
-                    is_non_sliceable = True
-                    break
+
+            if file_extension in self._non_sliceable_extensions:
+                is_non_sliceable = True
+
             if is_non_sliceable:
                 self.callLater(lambda: self.getController().setActiveView("SimulationView"))
 
@@ -1662,7 +1663,7 @@ class CuraApplication(QtApplication):
                 if not child.getDecorator(ConvexHullDecorator):
                     child.addDecorator(ConvexHullDecorator())
 
-            if arrange_objects_on_load:
+            if file_extension != "3mf" and arrange_objects_on_load:
                 if node.callDecoration("isSliceable"):
                     # Only check position if it's not already blatantly obvious that it won't fit.
                     if node.getBoundingBox() is None or self._volume.getBoundingBox() is None or node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
@@ -1696,7 +1697,7 @@ class CuraApplication(QtApplication):
             if select_models_on_load:
                 Selection.add(node)
 
-        self.fileCompleted.emit(filename)
+        self.fileCompleted.emit(file_name)
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
