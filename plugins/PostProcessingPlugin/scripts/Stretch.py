@@ -136,9 +136,11 @@ class Stretcher():
                 # end of relative movement
                 elif _getValue(line, "G") == 90:
                     in_relative_movement = False
+                    current.setInRelativeMovement(in_relative_movement)
                 # start of relative movement
                 elif _getValue(line, "G") == 91:
                     in_relative_movement = True
+                    current.setInRelativeMovement(in_relative_movement)
 
                 elif _getValue(line, "G") == 92:
                     current.readStep(line)
