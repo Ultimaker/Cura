@@ -1,6 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import copy
 from PyQt5.QtCore import QTimer
 
 from UM.Application import Application
@@ -229,15 +230,53 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
     def _getHeadAndFans(self):
-        return Polygon(numpy.array(self._global_stack.getProperty("machine_head_with_fans_polygon", "value"), numpy.float32))
+        original_head_and_fans = self._global_stack.getProperty("machine_head_with_fans_polygon", "value")
+        full_area = copy.deepcopy(original_head_and_fans)
+
+        # In one at a time mode, when multiple extruders or not the 1st extruder is used, the head and fan convex hull
+        # needs to take into account the extruder offset(s) as well so it will not collide into a printed model.
+        # In this case, we calculate the head and fan convex hull by taking the union of all those used extruders.
+        # If, for example, only the 2nd extruder is used, we will still take into account the 1st extruder.
+        machine_manager = Application.getInstance().getMachineManager()
+        extruder_manager = ExtruderManager.getInstance()
+        # Take into account the extruder offset for creating the head-and-fans polygon
+        used_extruders = extruder_manager.getUsedExtruderStacks()
+        max_used_extruder_position = max(int(e.getMetaDataEntry("position")) for e in used_extruders)
+        multiple_extruders_in_use = max_used_extruder_position > 0
+        for extruder_position in range(max_used_extruder_position + 1):
+            extruder = machine_manager.activeMachine.extruders[str(extruder_position)]
+            offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
+            offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
+
+            offset_polygon = copy.deepcopy(original_head_and_fans)
+
+            def apply_offset(rect, offset):
+                for point in rect:
+                    point[0] += offset[0]
+                    point[1] += offset[1]
+
+            apply_offset(offset_polygon, [-offset_x, -offset_y])
+
+            def union(rect1, rect2):
+                bl = [min(rect1[0][0], rect2[0][0]), min(rect1[0][1], rect2[0][1])]
+                tl = [min(rect1[1][0], rect2[1][0]), max(rect1[1][1], rect2[1][1])]
+                tr = [max(rect1[2][0], rect2[2][0]), max(rect1[2][1], rect2[2][1])]
+                br = [max(rect1[3][0], rect2[3][0]), min(rect1[3][1], rect2[3][1])]
+                return [tl, bl, tr, br]
+            full_area = union(full_area, offset_polygon)
+
+        return Polygon(numpy.array(full_area, numpy.float32)), multiple_extruders_in_use
 
     def _compute2DConvexHeadFull(self):
-        return self._compute2DConvexHull().getMinkowskiHull(self._getHeadAndFans())
+        return self._compute2DConvexHull().getMinkowskiHull(self._getHeadAndFans()[0])
 
     def _compute2DConvexHeadMin(self):
-        headAndFans = self._getHeadAndFans()
-        mirrored = headAndFans.mirror([0, 0], [0, 1]).mirror([0, 0], [1, 0])  # Mirror horizontally & vertically.
-        head_and_fans = self._getHeadAndFans().intersectionConvexHulls(mirrored)
+        headAndFans, multiple_extruders_in_use = self._getHeadAndFans()
+        if not multiple_extruders_in_use:
+            mirrored = headAndFans.mirror([0, 0], [0, 1]).mirror([0, 0], [1, 0])  # Mirror horizontally & vertically.
+        else:
+            mirrored = headAndFans.mirror([0, 0], [0, 1])  # only mirror horizontally.
+        head_and_fans = self._getHeadAndFans()[0].intersectionConvexHulls(mirrored)
 
         # Min head hull is used for the push free
         min_head_hull = self._compute2DConvexHull().getMinkowskiHull(head_and_fans)
