@@ -2471,7 +2471,7 @@
                                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                                     "maximum_value_warning": "150",
                                     "default_value": 60,
-                                    "value": "speed_wall * 2", //Let's think about how to better calculate inner wall speed and limit it to print speed
+                                    "value": "(speed_wall + speed_infil) / 2", 
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
