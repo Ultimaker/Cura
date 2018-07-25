@@ -662,6 +662,23 @@
             }
         }
     },
+    "VersionUpgrade34to40": {
+        "package_info": {
+            "package_id": "VersionUpgrade34to40",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 3.4 to 4.0",
+            "description": "Upgrades configurations from Cura 3.4 to Cura 4.0.",
+            "package_version": "1.0.0",
+            "sdk_version": 4,
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "X3DReader": {
         "package_info": {
             "package_id": "X3DReader",
