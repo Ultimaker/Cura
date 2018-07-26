@@ -723,6 +723,16 @@
                     "default_value": 10.0,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "machine_cooling_fan_number":
+                {
+                    "label": "Print Cooling Fan Number",
+                    "description": "The number of the print cooling fan. For most printers, this should be 0. If you modify this, take care to ensure the correct fan is speed controlled.",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
