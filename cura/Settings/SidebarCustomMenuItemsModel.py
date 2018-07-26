@@ -1,5 +1,11 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import Any
+
 from UM.Qt.ListModel import ListModel
 from PyQt5.QtCore import pyqtSlot, Qt
+
 
 class SidebarCustomMenuItemsModel(ListModel):
     NameRole = Qt.UserRole + 1
@@ -27,7 +33,7 @@ class SidebarCustomMenuItemsModel(ListModel):
                 })
 
     @pyqtSlot(str, "QVariantList", "QVariantMap")
-    def callMenuItemMethod(self, menu_item_name: str, menu_item_actions: list, kwargs)-> None:
+    def callMenuItemMethod(self, menu_item_name: str, menu_item_actions: list, kwargs: Any)-> None:
         for item in self._items:
             if menu_item_name == item["name"]:
                 for method in menu_item_actions:
