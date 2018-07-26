@@ -5,6 +5,7 @@ import copy
 import os
 import sys
 import time
+from typing import cast, TYPE_CHECKING, Optional
 
 import numpy
 
@@ -12,8 +13,6 @@ from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
-
-from typing import cast, TYPE_CHECKING
 
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -84,7 +83,6 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
-from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -98,6 +96,8 @@ from . import CuraSplashScreen
 from . import CameraImageProvider
 from . import MachineActionManager
 
+from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
+
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.UserChangesModel import UserChangesModel
@@ -108,6 +108,10 @@ from cura.Settings.ContainerManager import ContainerManager
 from cura.ObjectsModel import ObjectsModel
 
 from UM.FlameProfiler import pyqtSlot
+
+
+if TYPE_CHECKING:
+    from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 
 numpy.seterr(all = "ignore")
@@ -154,6 +158,8 @@ class CuraApplication(QtApplication):
         self.default_theme = "cura-light"
 
         self._boot_loading_time = time.time()
+
+        self._on_exit_callback_manager = OnExitCallbackManager(self)
 
         # Variables set from CLI
         self._files_to_open = []
@@ -276,6 +282,8 @@ class CuraApplication(QtApplication):
         self._machine_action_manager = MachineActionManager.MachineActionManager(self)
         self._machine_action_manager.initialize()
 
+        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
+
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open)
 
@@ -359,35 +367,35 @@ class CuraApplication(QtApplication):
 
         empty_definition_changes_container = copy.deepcopy(empty_container)
         empty_definition_changes_container.setMetaDataEntry("id", "empty_definition_changes")
-        empty_definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        empty_definition_changes_container.setMetaDataEntry("type", "definition_changes")
         self._container_registry.addContainer(empty_definition_changes_container)
         self.empty_definition_changes_container = empty_definition_changes_container
 
         empty_variant_container = copy.deepcopy(empty_container)
         empty_variant_container.setMetaDataEntry("id", "empty_variant")
-        empty_variant_container.addMetaDataEntry("type", "variant")
+        empty_variant_container.setMetaDataEntry("type", "variant")
         self._container_registry.addContainer(empty_variant_container)
         self.empty_variant_container = empty_variant_container
 
         empty_material_container = copy.deepcopy(empty_container)
         empty_material_container.setMetaDataEntry("id", "empty_material")
-        empty_material_container.addMetaDataEntry("type", "material")
+        empty_material_container.setMetaDataEntry("type", "material")
         self._container_registry.addContainer(empty_material_container)
         self.empty_material_container = empty_material_container
 
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container.setMetaDataEntry("id", "empty_quality")
         empty_quality_container.setName("Not Supported")
-        empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
-        empty_quality_container.addMetaDataEntry("type", "quality")
-        empty_quality_container.addMetaDataEntry("supported", False)
+        empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
+        empty_quality_container.setMetaDataEntry("type", "quality")
+        empty_quality_container.setMetaDataEntry("supported", False)
         self._container_registry.addContainer(empty_quality_container)
         self.empty_quality_container = empty_quality_container
 
         empty_quality_changes_container = copy.deepcopy(empty_container)
         empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-        empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
-        empty_quality_changes_container.addMetaDataEntry("quality_type", "not_supported")
+        empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
+        empty_quality_changes_container.setMetaDataEntry("quality_type", "not_supported")
         self._container_registry.addContainer(empty_quality_changes_container)
         self.empty_quality_changes_container = empty_quality_changes_container
 
@@ -407,43 +415,6 @@ class CuraApplication(QtApplication):
             }
         )
 
-        """
-        self._currently_loading_files = []
-        self._non_sliceable_extensions = []
-
-        self._machine_action_manager = MachineActionManager.MachineActionManager()
-        self._machine_manager = None    # This is initialized on demand.
-        self._extruder_manager = None
-        self._material_manager = None
-        self._quality_manager = None
-        self._object_manager = None
-        self._build_plate_model = None
-        self._multi_build_plate_model = None
-        self._setting_visibility_presets_model = None
-        self._setting_inheritance_manager = None
-        self._simple_mode_settings_manager = None
-        self._cura_scene_controller = None
-        self._machine_error_checker = None
-        self._auto_save = None
-        self._save_data_enabled = True
-
-        self._additional_components = {} # Components to add to certain areas in the interface
-
-        super().__init__(name = "cura",
-                         version = CuraVersion,
-                         buildtype = CuraBuildType,
-                         is_debug_mode = CuraDebugMode,
-                         tray_icon_name = "cura-icon-32.png",
-                         **kwargs)
-
-        # FOR TESTING ONLY
-        if kwargs["parsed_command_line"].get("trigger_early_crash", False):
-            assert not "This crash is triggered by the trigger_early_crash command line argument."
-
-        self._variant_manager = None
-
-        self.default_theme = "cura-light"
-        """
     # Runs preparations that needs to be done before the starting process.
     def startSplashWindowPhase(self):
         super().startSplashWindowPhase()
@@ -554,8 +525,8 @@ class CuraApplication(QtApplication):
     def setNeedToShowUserAgreement(self, set_value = True):
         self._need_to_show_user_agreement = set_value
 
-    ## The "Quit" button click event handler.
-    @pyqtSlot()
+    # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
+    # pre-exit checks such as checking for in-progress USB printing, etc.
     def closeApplication(self):
         Logger.log("i", "Close application")
         main_window = self.getMainWindow()
@@ -563,6 +534,32 @@ class CuraApplication(QtApplication):
             main_window.close()
         else:
             self.exit(0)
+
+    # This function first performs all upon-exit checks such as USB printing that is in progress.
+    # Use this to close the application.
+    @pyqtSlot()
+    def checkAndExitApplication(self) -> None:
+        self._on_exit_callback_manager.resetCurrentState()
+        self._on_exit_callback_manager.triggerNextCallback()
+
+    @pyqtSlot(result = bool)
+    def getIsAllChecksPassed(self) -> bool:
+        return self._on_exit_callback_manager.getIsAllChecksPassed()
+
+    def getOnExitCallbackManager(self) -> "OnExitCallbackManager":
+        return self._on_exit_callback_manager
+
+    def triggerNextExitCheck(self) -> None:
+        self._on_exit_callback_manager.triggerNextCallback()
+
+    showConfirmExitDialog = pyqtSignal(str, arguments = ["message"])
+
+    def setConfirmExitDialogCallback(self, callback):
+        self._confirm_exit_dialog_callback = callback
+
+    @pyqtSlot(bool)
+    def callConfirmExitDialogCallback(self, yes_or_no: bool):
+        self._confirm_exit_dialog_callback(yes_or_no)
 
     ##  Signal to connect preferences action in QML
     showPreferencesWindow = pyqtSignal()
@@ -1565,7 +1562,7 @@ class CuraApplication(QtApplication):
             self.callLater(self.openProjectFile.emit, file)
             return
 
-        if Preferences.getInstance().getValue("cura/select_models_on_load"):
+        if self.getPreferences().getValue("cura/select_models_on_load"):
             Selection.clear()
 
         f = file.toLocalFile()
@@ -1602,10 +1599,12 @@ class CuraApplication(QtApplication):
 
     def _readMeshFinished(self, job):
         nodes = job.getResult()
-        filename = job.getFileName()
-        self._currently_loading_files.remove(filename)
+        file_name = job.getFileName()
+        file_name_lower = file_name.lower()
+        file_extension = file_name_lower.split(".")[-1]
+        self._currently_loading_files.remove(file_name)
 
-        self.fileLoaded.emit(filename)
+        self.fileLoaded.emit(file_name)
         arrange_objects_on_load = not self.getPreferences().getValue("cura/use_multi_build_plate")
         target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
@@ -1622,7 +1621,7 @@ class CuraApplication(QtApplication):
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
 
-        select_models_on_load = Preferences.getInstance().getValue("cura/select_models_on_load")
+        select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 
         for original_node in nodes:
 
@@ -1638,15 +1637,11 @@ class CuraApplication(QtApplication):
                     node.scale(original_node.getScale())
 
             node.setSelectable(True)
-            node.setName(os.path.basename(filename))
+            node.setName(os.path.basename(file_name))
             self.getBuildVolume().checkBoundsAndUpdate(node)
 
-            is_non_sliceable = False
-            filename_lower = filename.lower()
-            for extension in self._non_sliceable_extensions:
-                if filename_lower.endswith(extension):
-                    is_non_sliceable = True
-                    break
+            is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
+
             if is_non_sliceable:
                 self.callLater(lambda: self.getController().setActiveView("SimulationView"))
 
@@ -1665,7 +1660,7 @@ class CuraApplication(QtApplication):
                 if not child.getDecorator(ConvexHullDecorator):
                     child.addDecorator(ConvexHullDecorator())
 
-            if arrange_objects_on_load:
+            if file_extension != "3mf" and arrange_objects_on_load:
                 if node.callDecoration("isSliceable"):
                     # Only check position if it's not already blatantly obvious that it won't fit.
                     if node.getBoundingBox() is None or self._volume.getBoundingBox() is None or node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
@@ -1699,7 +1694,7 @@ class CuraApplication(QtApplication):
             if select_models_on_load:
                 Selection.add(node)
 
-        self.fileCompleted.emit(filename)
+        self.fileCompleted.emit(file_name)
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)

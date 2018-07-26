@@ -103,9 +103,24 @@ Rectangle
         id: mouse
         anchors.fill: parent
         onClicked: activateConfiguration()
+        cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
-        onEntered: parent.border.color = UM.Theme.getColor("configuration_item_border_hover")
-        onExited:  updateBorderColor()
+        onEntered:
+        {
+            parent.border.color = UM.Theme.getColor("configuration_item_border_hover")
+            if (configurationItem.selected == false)
+            {
+                configurationItem.color = UM.Theme.getColor("sidebar_lining")
+            }
+        }
+        onExited:
+        {
+            updateBorderColor()
+            if (configurationItem.selected == false)
+            {
+                configurationItem.color = UM.Theme.getColor("configuration_item")
+            }
+        }
     }
 
     Connections
@@ -121,5 +136,14 @@ Rectangle
     {
         configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
         updateBorderColor()
+    }
+
+    onVisibleChanged:
+    {
+        if(visible)
+        {
+            // I cannot trigger function updateBorderColor() after visibility change
+            color = selected ? UM.Theme.getColor("configuration_item_active") : UM.Theme.getColor("configuration_item")
+        }
     }
 }

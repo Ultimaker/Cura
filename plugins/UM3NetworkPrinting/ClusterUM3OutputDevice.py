@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, Set, Tuple, Union
+from typing import Any, cast, Optional, Set, Tuple, Union
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.FileWriter import FileWriter #To choose based on the output file mode (text vs. binary).
@@ -9,6 +9,7 @@ from UM.FileHandler.WriteFileJob import WriteFileJob #To call the file writer as
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
+from UM.Mesh.MeshWriter import MeshWriter # For typing
 from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.OutputDevice import OutputDeviceError #To show that something went wrong when writing.
@@ -103,8 +104,13 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         else:
             file_formats = CuraApplication.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
 
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         #Create a list from the supported file formats string.
-        machine_file_formats = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("file_formats").split(";")
+        if not global_stack:
+            Logger.log("e", "Missing global stack!")
+            return
+
+        machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
         #Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
         if "application/x-ufp" not in machine_file_formats and self.printerType == "ultimaker3" and Version(self.firmwareVersion) >= Version("4.4"):
@@ -125,7 +131,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         else:
             writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(cast(str, preferred_format["mime_type"]))
 
+        if not writer:
+            Logger.log("e", "Unexpected error when trying to get the FileWriter")
+            return
+
         #This function pauses with the yield, waiting on instructions on which printer it needs to print with.
+        if not writer:
+            Logger.log("e", "Missing file or mesh writer!")
+            return
         self._sending_job = self._sendPrintJob(writer, preferred_format, nodes)
         self._sending_job.send(None) #Start the generator.
 
@@ -205,14 +218,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         yield #To prevent having to catch the StopIteration exception.
 
     def _sendPrintJobWaitOnWriteJobFinished(self, job: WriteFileJob) -> None:
-        self._write_job_progress_message.hide()
+        if self._write_job_progress_message:
+            self._write_job_progress_message.hide()
 
         self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0, dismissable = False, progress = -1,
                                          title = i18n_catalog.i18nc("@info:title", "Sending Data"))
         self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = None, description = "")
         self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
         self._progress_message.show()
-
         parts = []
 
         target_printer, preferred_format, stream = self._dummy_lambdas
@@ -249,7 +262,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self.activePrinterChanged.emit()
 
     def _onPostPrintJobFinished(self, reply: QNetworkReply) -> None:
-        self._progress_message.hide()
+        if self._progress_message:
+            self._progress_message.hide()
         self._compressing_gcode = False
         self._sending_gcode = False
 

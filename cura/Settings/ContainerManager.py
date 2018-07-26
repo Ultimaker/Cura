@@ -5,7 +5,7 @@ import os
 import urllib.parse
 import uuid
 from typing import Any
-from typing import Dict, Union
+from typing import Dict, Union, Optional
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
 from PyQt5.QtWidgets import QMessageBox
@@ -47,13 +47,20 @@ class ContainerManager(QObject):
         self._container_name_filters = {}   # type: Dict[str, Dict[str, Any]]
 
     @pyqtSlot(str, str, result=str)
-    def getContainerMetaDataEntry(self, container_id, entry_name):
+    def getContainerMetaDataEntry(self, container_id: str, entry_names: str) -> str:
         metadatas = self._container_registry.findContainersMetadata(id = container_id)
         if not metadatas:
             Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
             return ""
 
-        return str(metadatas[0].get(entry_name, ""))
+        entries = entry_names.split("/")
+        result = metadatas[0]
+        while entries:
+            entry = entries.pop(0)
+            result = result.get(entry, {})
+        if not result:
+            return ""
+        return str(result)
 
     ##  Set a metadata entry of the specified container.
     #
@@ -68,6 +75,7 @@ class ContainerManager(QObject):
     #
     #   \return True if successful, False if not.
     #  TODO: This is ONLY used by MaterialView for material containers. Maybe refactor this.
+    #  Update: In order for QML to use objects and sub objects, those (sub) objects must all be QObject. Is that what we want?
     @pyqtSlot("QVariant", str, str)
     def setContainerMetaDataEntry(self, container_node, entry_name, entry_value):
         root_material_id = container_node.metadata["base_file"]
@@ -101,63 +109,6 @@ class ContainerManager(QObject):
             container.setMetaDataEntry(entry_name, entry_value)
             if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
                 container.metaDataChanged.emit(container)
-
-    ##  Set a setting property of the specified container.
-    #
-    #   This will set the specified property of the specified setting of the container
-    #   and all containers that share the same base_file (if any). The latter only
-    #   happens for material containers.
-    #
-    #   \param container_id \type{str} The ID of the container to change.
-    #   \param setting_key \type{str} The key of the setting.
-    #   \param property_name \type{str} The name of the property, eg "value".
-    #   \param property_value \type{str} The new value of the property.
-    #
-    #   \return True if successful, False if not.
-    @pyqtSlot(str, str, str, str, result = bool)
-    def setContainerProperty(self, container_id, setting_key, property_name, property_value):
-        if self._container_registry.isReadOnly(container_id):
-            Logger.log("w", "Cannot set properties of read-only container %s.", container_id)
-            return False
-
-        containers = self._container_registry.findContainers(id = container_id)
-        if not containers:
-            Logger.log("w", "Could not set properties of container %s because it was not found.", container_id)
-            return False
-
-        container = containers[0]
-
-        container.setProperty(setting_key, property_name, property_value)
-
-        basefile = container.getMetaDataEntry("base_file", container_id)
-        for sibbling_container in self._container_registry.findInstanceContainers(base_file = basefile):
-            if sibbling_container != container:
-                sibbling_container.setProperty(setting_key, property_name, property_value)
-
-        return True
-
-    ##  Get a setting property of the specified container.
-    #
-    #   This will get the specified property of the specified setting of the
-    #   specified container.
-    #
-    #   \param container_id The ID of the container to get the setting property
-    #   of.
-    #   \param setting_key The key of the setting to get the property of.
-    #   \param property_name The property to obtain.
-    #   \return The value of the specified property. The type of this property
-    #   value depends on the type of the property. For instance, the "value"
-    #   property of an integer setting will be a Python int, but the "value"
-    #   property of an enum setting will be a Python str.
-    @pyqtSlot(str, str, str, result = QVariant)
-    def getContainerProperty(self, container_id: str, setting_key: str, property_name: str):
-        containers = self._container_registry.findContainers(id = container_id)
-        if not containers:
-            Logger.log("w", "Could not get properties of container %s because it was not found.", container_id)
-            return ""
-        container = containers[0]
-
-        return container.getProperty(setting_key, property_name)
 
     @pyqtSlot(str, result = str)
     def makeUniqueName(self, original_name):

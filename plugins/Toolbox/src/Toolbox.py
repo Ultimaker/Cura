@@ -6,7 +6,7 @@ import json
 import os
 import tempfile
 import platform
-from typing import List
+from typing import cast, List
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -71,7 +71,8 @@ class Toolbox(QObject, Extension):
             "plugins_installed":   [],
             "materials_showcase":  [],
             "materials_available": [],
-            "materials_installed": []
+            "materials_installed": [],
+            "materials_generic":   []
         } # type: Dict[str, List[Any]]
 
         # Models:
@@ -83,7 +84,8 @@ class Toolbox(QObject, Extension):
             "plugins_installed":   PackagesModel(self),
             "materials_showcase":  AuthorsModel(self),
             "materials_available": PackagesModel(self),
-            "materials_installed": PackagesModel(self)
+            "materials_installed": PackagesModel(self),
+            "materials_generic":   PackagesModel(self)
         } # type: Dict[str, ListModel]
 
         # These properties are for keeping track of the UI state:
@@ -102,6 +104,9 @@ class Toolbox(QObject, Extension):
         self._active_package = None # type: Optional[Dict[str, Any]]
 
         self._dialog = None #type: Optional[QObject]
+        self._confirm_reset_dialog = None #type: Optional[QObject]
+        self._resetUninstallVariables()
+
         self._restart_required = False #type: bool
 
         # variables for the license agreement dialog
@@ -130,6 +135,13 @@ class Toolbox(QObject, Extension):
     filterChanged = pyqtSignal()
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
+    uninstallVariablesChanged = pyqtSignal()
+
+    def _resetUninstallVariables(self):
+        self._package_id_to_uninstall = None
+        self._package_name_to_uninstall = ""
+        self._package_used_materials = []
+        self._package_used_qualities = []
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
@@ -168,7 +180,8 @@ class Toolbox(QObject, Extension):
             "plugins_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
             "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url=self._api_url)),
             "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
-            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url))
+            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url)),
+            "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url=self._api_url))
         }
 
     # Get the API root for the packages API depending on Cura version settings.
@@ -218,12 +231,19 @@ class Toolbox(QObject, Extension):
         self._makeRequestByType("authors")
         self._makeRequestByType("plugins_showcase")
         self._makeRequestByType("materials_showcase")
+        self._makeRequestByType("materials_available")
+        self._makeRequestByType("materials_generic")
 
         # Gather installed packages:
         self._updateInstalledModels()
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
+
+        if not self._dialog:
+            Logger.log("e", "Unexpected error trying to create the 'Toolbox' dialog.")
+            return
+
         self._dialog.show()
 
         # Apply enabled/disabled state to installed plugins
@@ -231,10 +251,15 @@ class Toolbox(QObject, Extension):
 
     def _createDialog(self, qml_name: str) -> Optional[QObject]:
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
-        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
+        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        if not plugin_path:
+            return None
+        path = os.path.join(plugin_path, "resources", "qml", qml_name)
+        
         dialog = self._application.createQmlComponent(path, {"toolbox": self})
+        if not dialog:
+            raise Exception("Failed to create toolbox dialog")
         return dialog
-
 
     def _convertPluginMetadata(self, plugin: Dict[str, Any]) -> Dict[str, Any]:
         formatted = {
@@ -294,9 +319,90 @@ class Toolbox(QObject, Extension):
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
+    ##  Check package usage and uninstall
+    #   If the package is in use, you'll get a confirmation dialog to set everything to default
     @pyqtSlot(str)
-    def uninstall(self, plugin_id: str) -> None:
-        self._package_manager.removePackage(plugin_id, force_add = True)
+    def checkPackageUsageAndUninstall(self, package_id: str) -> None:
+        package_used_materials, package_used_qualities = self._package_manager.getMachinesUsingPackage(package_id)
+        if package_used_materials or package_used_qualities:
+            # Set up "uninstall variables" for resetMaterialsQualitiesAndUninstall
+            self._package_id_to_uninstall = package_id
+            package_info = self._package_manager.getInstalledPackageInfo(package_id)
+            self._package_name_to_uninstall = package_info.get("display_name", package_info.get("package_id"))
+            self._package_used_materials = package_used_materials
+            self._package_used_qualities = package_used_qualities
+            # Ask change to default material / profile
+            if self._confirm_reset_dialog is None:
+                self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
+            self.uninstallVariablesChanged.emit()
+            if self._confirm_reset_dialog is None:
+                Logger.log("e", "ToolboxConfirmUninstallResetDialog should have been initialized, but it is not. Not showing dialog and not uninstalling package.")
+            else:
+                self._confirm_reset_dialog.show()
+        else:
+            # Plain uninstall
+            self.uninstall(package_id)
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def pluginToUninstall(self):
+        return self._package_name_to_uninstall
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def uninstallUsedMaterials(self):
+        return "\n".join(["%s (%s)" % (str(global_stack.getName()), material) for global_stack, extruder_nr, material in self._package_used_materials])
+
+    @pyqtProperty(str, notify = uninstallVariablesChanged)
+    def uninstallUsedQualities(self):
+        return "\n".join(["%s (%s)" % (str(global_stack.getName()), quality) for global_stack, extruder_nr, quality in self._package_used_qualities])
+
+    @pyqtSlot()
+    def closeConfirmResetDialog(self):
+        if self._confirm_reset_dialog is not None:
+            self._confirm_reset_dialog.close()
+
+    ##  Uses "uninstall variables" to reset qualities and materials, then uninstall
+    #   It's used as an action on Confirm reset on Uninstall
+    @pyqtSlot()
+    def resetMaterialsQualitiesAndUninstall(self):
+        application = CuraApplication.getInstance()
+        material_manager = application.getMaterialManager()
+        quality_manager = application.getQualityManager()
+        machine_manager = application.getMachineManager()
+
+        for global_stack, extruder_nr, container_id in self._package_used_materials:
+            default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
+            machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
+        for global_stack, extruder_nr, container_id in self._package_used_qualities:
+            default_quality_group = quality_manager.getDefaultQualityType(global_stack)
+            machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
+
+        self._markPackageMaterialsAsToBeUninstalled(self._package_id_to_uninstall)
+
+        self.uninstall(self._package_id_to_uninstall)
+        self._resetUninstallVariables()
+        self.closeConfirmResetDialog()
+
+    def _markPackageMaterialsAsToBeUninstalled(self, package_id: str) -> None:
+        container_registry = self._application.getContainerRegistry()
+
+        all_containers = self._package_manager.getPackageContainerIds(package_id)
+        for container_id in all_containers:
+            containers = container_registry.findInstanceContainers(id = container_id)
+            if not containers:
+                continue
+            container = containers[0]
+            if container.getMetaDataEntry("type") != "material":
+                continue
+            root_material_id = container.getMetaDataEntry("base_file")
+            root_material_containers = container_registry.findInstanceContainers(id = root_material_id)
+            if not root_material_containers:
+                continue
+            root_material_container = root_material_containers[0]
+            root_material_container.setMetaDataEntry("removed", True)
+
+    @pyqtSlot(str)
+    def uninstall(self, package_id: str) -> None:
+        self._package_manager.removePackage(package_id, force_add = True)
         self.installChanged.emit()
         self._updateInstalledModels()
         self.metadataChanged.emit()
@@ -399,6 +505,22 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
         return self._package_manager.isPackageInstalled(package_id)
+
+    @pyqtSlot(str, result = int)
+    def getNumberOfInstalledPackagesByAuthor(self, author_id: str) -> int:
+        count = 0
+        for package in self._metadata["materials_installed"]:
+            if package["author"]["author_id"] == author_id:
+                count += 1
+        return count
+
+    @pyqtSlot(str, result = int)
+    def getTotalNumberOfPackagesByAuthor(self, author_id: str) -> int:
+        count = 0
+        for package in self._metadata["materials_available"]:
+            if package["author"]["author_id"] == author_id:
+                count += 1
+        return count
 
     @pyqtSlot(str, result = bool)
     def isEnabled(self, package_id: str) -> bool:
@@ -522,6 +644,8 @@ class Toolbox(QObject, Extension):
                                 self._models[type].setFilter({"type": "plugin"})
                             if type is "authors":
                                 self._models[type].setFilter({"package_types": "material"})
+                            if type is "materials_generic":
+                                self._models[type].setFilter({"tags": "generic"})
 
                             self.metadataChanged.emit()
 
@@ -621,27 +745,31 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     @pyqtProperty(QObject, notify = metadataChanged)
     def authorsModel(self) -> AuthorsModel:
-        return self._models["authors"]
+        return cast(AuthorsModel, self._models["authors"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def packagesModel(self) -> PackagesModel:
-        return self._models["packages"]
+        return cast(PackagesModel, self._models["packages"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def pluginsShowcaseModel(self) -> PackagesModel:
-        return self._models["plugins_showcase"]
+        return cast(PackagesModel, self._models["plugins_showcase"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def pluginsInstalledModel(self) -> PackagesModel:
-        return self._models["plugins_installed"]
+        return cast(PackagesModel, self._models["plugins_installed"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
-    def materialsShowcaseModel(self) -> PackagesModel:
-        return self._models["materials_showcase"]
+    def materialsShowcaseModel(self) -> AuthorsModel:
+        return cast(AuthorsModel, self._models["materials_showcase"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def materialsInstalledModel(self) -> PackagesModel:
-        return self._models["materials_installed"]
+        return cast(PackagesModel, self._models["materials_installed"])
+
+    @pyqtProperty(QObject, notify=metadataChanged)
+    def materialsGenericModel(self) -> PackagesModel:
+        return cast(PackagesModel, self._models["materials_generic"])
 
 
 

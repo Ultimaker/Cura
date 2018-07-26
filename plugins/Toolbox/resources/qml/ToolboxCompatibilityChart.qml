@@ -76,11 +76,26 @@ Item
             }
         }
 
+        Component
+        {
+            id: columnTextDelegate
+            Label
+            {
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+                text: styleData.value || ""
+                elide: Text.ElideRight
+                color: UM.Theme.getColor("text_medium")
+                font: UM.Theme.getFont("default")
+            }
+        }
+
         TableViewColumn
         {
             role: "machine"
             title: "Machine"
             width: Math.floor(table.width * 0.25)
+            delegate: columnTextDelegate
         }
         TableViewColumn
         {

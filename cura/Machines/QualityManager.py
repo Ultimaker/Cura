@@ -340,6 +340,13 @@ class QualityManager(QObject):
 
         return quality_group_dict
 
+    def getDefaultQualityType(self, machine: "GlobalStack") -> Optional[QualityGroup]:
+        preferred_quality_type = machine.definition.getMetaDataEntry("preferred_quality_type")
+        quality_group_dict = self.getQualityGroups(machine)
+        quality_group = quality_group_dict.get(preferred_quality_type)
+        return quality_group
+
+
     #
     # Methods for GUI
     #
@@ -459,18 +466,18 @@ class QualityManager(QObject):
         # Create a new quality_changes container for the quality.
         quality_changes = InstanceContainer(new_id)
         quality_changes.setName(new_name)
-        quality_changes.addMetaDataEntry("type", "quality_changes")
-        quality_changes.addMetaDataEntry("quality_type", quality_type)
+        quality_changes.setMetaDataEntry("type", "quality_changes")
+        quality_changes.setMetaDataEntry("quality_type", quality_type)
 
         # If we are creating a container for an extruder, ensure we add that to the container
         if extruder_stack is not None:
-            quality_changes.addMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
+            quality_changes.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
 
         # If the machine specifies qualities should be filtered, ensure we match the current criteria.
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
         quality_changes.setDefinition(machine_definition_id)
 
-        quality_changes.addMetaDataEntry("setting_version", self._application.SettingVersion)
+        quality_changes.setMetaDataEntry("setting_version", self._application.SettingVersion)
         return quality_changes
 
 

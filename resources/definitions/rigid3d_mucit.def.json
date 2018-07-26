@@ -69,9 +69,6 @@
         "machine_depth": {
             "default_value": 150
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "machine_gcode_flavor": {
             "default_value": "RepRap"
         },

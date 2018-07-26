@@ -45,32 +45,32 @@ def global_stack() -> cura.Settings.GlobalStack.GlobalStack:
 #   \return An instance container instance.
 def getInstanceContainer(container_type) -> InstanceContainer:
     container = InstanceContainer(container_id = "InstanceContainer")
-    container.addMetaDataEntry("type", container_type)
+    container.setMetaDataEntry("type", container_type)
     return container
 
 def creteEmptyContainers():
     empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
     empty_variant_container = copy.deepcopy(empty_container)
     empty_variant_container.setMetaDataEntry("id", "empty_variant")
-    empty_variant_container.addMetaDataEntry("type", "variant")
+    empty_variant_container.setMetaDataEntry("type", "variant")
     ContainerRegistry.getInstance().addContainer(empty_variant_container)
 
     empty_material_container = copy.deepcopy(empty_container)
     empty_material_container.setMetaDataEntry("id", "empty_material")
-    empty_material_container.addMetaDataEntry("type", "material")
+    empty_material_container.setMetaDataEntry("type", "material")
     ContainerRegistry.getInstance().addContainer(empty_material_container)
 
     empty_quality_container = copy.deepcopy(empty_container)
     empty_quality_container.setMetaDataEntry("id", "empty_quality")
     empty_quality_container.setName("Not Supported")
-    empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
-    empty_quality_container.addMetaDataEntry("type", "quality")
-    empty_quality_container.addMetaDataEntry("supported", False)
+    empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
+    empty_quality_container.setMetaDataEntry("type", "quality")
+    empty_quality_container.setMetaDataEntry("supported", False)
     ContainerRegistry.getInstance().addContainer(empty_quality_container)
 
     empty_quality_changes_container = copy.deepcopy(empty_container)
     empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-    empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+    empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
     ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
 class DefinitionContainerSubClass(DefinitionContainer):
@@ -80,7 +80,7 @@ class DefinitionContainerSubClass(DefinitionContainer):
 class InstanceContainerSubClass(InstanceContainer):
     def __init__(self, container_type):
         super().__init__(container_id = "SubInstanceContainer")
-        self.addMetaDataEntry("type", container_type)
+        self.setMetaDataEntry("type", container_type)
 
 #############################START OF TEST CASES################################
 

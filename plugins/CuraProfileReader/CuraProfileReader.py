@@ -75,7 +75,7 @@ class CuraProfileReader(ProfileReader):
     def _loadProfile(self, serialized, profile_id):
         # Create an empty profile.
         profile = InstanceContainer(profile_id)
-        profile.addMetaDataEntry("type", "quality_changes")
+        profile.setMetaDataEntry("type", "quality_changes")
         try:
             profile.deserialize(serialized)
         except ContainerFormatError as e:

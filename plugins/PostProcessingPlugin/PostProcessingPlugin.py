@@ -248,7 +248,7 @@ class PostProcessingPlugin(QObject, Extension):
 
         global_stack = Application.getInstance().getGlobalContainerStack()
         if "post_processing_scripts" not in global_stack.getMetaData():
-            global_stack.addMetaDataEntry("post_processing_scripts", "")
+            global_stack.setMetaDataEntry("post_processing_scripts", "")
         Application.getInstance().getGlobalContainerStack().setMetaDataEntry("post_processing_scripts", script_list_strs)
 
     ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.

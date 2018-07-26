@@ -27,7 +27,7 @@ class GlobalStack(CuraContainerStack):
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
-        self.addMetaDataEntry("type", "machine")  # For backward compatibility
+        self.setMetaDataEntry("type", "machine")  # For backward compatibility
 
         self._extruders = {}  # type: Dict[str, "ExtruderStack"]
 

@@ -164,8 +164,12 @@ Column
                     onClicked: {
                         switch (mouse.button) {
                             case Qt.LeftButton:
-                                forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                                Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
+                                if (extruder_enabled)
+                                {
+                                    forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                                    Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                }
                                 break;
                             case Qt.RightButton:
                                 extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
@@ -408,7 +412,7 @@ Column
                 {
                     return false;
                 }
-                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible") == "True"
+                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible", "") == "True"
             }
         }
     }
@@ -535,7 +539,7 @@ Column
             y: -Math.round(UM.Theme.getSize("sidebar_margin").height / 3)
             anchors.left: parent.left
             width: parent.width - materialCompatibilityLink.width
-            text: catalog.i18nc("@label", "Use adhesion sheet or glue with this material combination")
+            text: catalog.i18nc("@label", "Use glue with this material combination")
             font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text")
             visible: buildplateCompatibilityError || buildplateCompatibilityWarning

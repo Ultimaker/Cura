@@ -985,6 +985,11 @@ class MachineManager(QObject):
         self.updateDefaultExtruder()
         self.updateNumberExtrudersEnabled()
         self.correctExtruderSettings()
+
+        # In case this extruder is being disabled and it's the currently selected one, switch to the default extruder
+        if not enabled and position == ExtruderManager.getInstance().activeExtruderIndex:
+            ExtruderManager.getInstance().setActiveExtruderIndex(int(self._default_extruder_position))
+
         # ensure that the quality profile is compatible with current combination, or choose a compatible one if available
         self._updateQualityWithMaterial()
         self.extruderChanged.emit()
@@ -1299,9 +1304,9 @@ class MachineManager(QObject):
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
                 return
-            new_machine.addMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
-            new_machine.addMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
-            new_machine.addMetaDataEntry("hidden", False)
+            new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
+            new_machine.setMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
+            new_machine.setMetaDataEntry("hidden", False)
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey)
             new_machine.setMetaDataEntry("hidden", False)
@@ -1392,8 +1397,13 @@ class MachineManager(QObject):
         material_node = self._material_manager.getMaterialNode(machine_definition_id, variant_name, material_diameter, root_material_id)
         self.setMaterial(position, material_node)
 
+    ##  global_stack: if you want to provide your own global_stack instead of the current active one
+    #   if you update an active machine, special measures have to be taken.
     @pyqtSlot(str, "QVariant")
-    def setMaterial(self, position: str, container_node) -> None:
+    def setMaterial(self, position: str, container_node, global_stack: Optional["GlobalStack"] = None) -> None:
+        if global_stack is not None and global_stack != self._global_container_stack:
+            global_stack.extruders[position].material = container_node.getContainer()
+            return
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
@@ -1434,8 +1444,22 @@ class MachineManager(QObject):
         quality_group = quality_group_dict[quality_type]
         self.setQualityGroup(quality_group)
 
+    ##  Optionally provide global_stack if you want to use your own
+    #   The active global_stack is treated differently.
     @pyqtSlot(QObject)
-    def setQualityGroup(self, quality_group: QualityGroup, no_dialog: bool = False) -> None:
+    def setQualityGroup(self, quality_group: QualityGroup, no_dialog: bool = False, global_stack: Optional["GlobalStack"] = None) -> None:
+        if global_stack is not None and global_stack != self._global_container_stack:
+            if quality_group is None:
+                Logger.log("e", "Could not set quality group because quality group is None")
+                return
+            if quality_group.node_for_global is None:
+                Logger.log("e", "Could not set quality group [%s] because it has no node_for_global", str(quality_group))
+                return
+            global_stack.quality = quality_group.node_for_global.getContainer()
+            for extruder_nr, extruder_stack in global_stack.extruders.items():
+                extruder_stack.quality = quality_group.nodes_for_extruders[extruder_nr].getContainer()
+            return
+
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(quality_group)

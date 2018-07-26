@@ -12,14 +12,14 @@ from UM.Platform import Platform
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
-parser.add_argument('--debug',
-                    action='store_true',
+parser.add_argument("--debug",
+                    action="store_true",
                     default = False,
                     help = "Turn on the debug mode by setting this option."
                     )
-parser.add_argument('--trigger-early-crash',
-                    dest = 'trigger_early_crash',
-                    action = 'store_true',
+parser.add_argument("--trigger-early-crash",
+                    dest = "trigger_early_crash",
+                    action = "store_true",
                     default = False,
                     help = "FOR TESTING ONLY. Trigger an early crash to show the crash dialog."
                     )
@@ -131,6 +131,7 @@ faulthandler.enable(all_threads = True)
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
+import Savitar #@UnusedImport
 from cura.CuraApplication import CuraApplication
 
 app = CuraApplication()

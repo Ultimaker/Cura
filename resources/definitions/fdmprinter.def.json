@@ -1074,7 +1074,7 @@
                     "maximum_value_warning": "top_layers - 1",
                     "type": "int",
                     "value": "0",
-                    "limit_to_extruder": "roofing_extruder_nr",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "enabled": "top_layers > 0"
                 },
@@ -1194,6 +1194,16 @@
                     "default_value": "lines",
                     "value": "top_bottom_pattern",
                     "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "connect_skin_polygons":
+                {
+                    "label": "Connect Top/Bottom Polygons",
+                    "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "top_bottom_pattern == 'concentric'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "skin_angles":
@@ -1644,7 +1654,18 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "connect_infill_polygons":
+                {
+                    "label": "Connect Infill Polygons",
+                    "description": "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time.",
+                    "type": "bool",
+                    "default_value": true,
+                    "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0",
+                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1677,6 +1698,18 @@
                     "type": "float",
                     "default_value": 0,
                     "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_multiplier":
+                {
+                    "label": "Infill Line Multiplier",
+                    "description": "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage.",
+                    "default_value": 1,
+                    "type": "int",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "infill_line_distance / infill_line_width",
+                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled and infill_pattern != 'zigzag'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4247,6 +4280,27 @@
                         }
                     }
                 },
+                "support_fan_enable":
+                {
+                    "label": "Fan Speed Override",
+                    "description": "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable",
+                    "settable_per_mesh": false
+                },
+                "support_supported_skin_fan_speed":
+                {
+                    "label": "Supported Skin Fan Speed",
+                    "description": "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove.",
+                    "unit": "%",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 100,
+                    "type": "float",
+                    "enabled": "support_enable and support_fan_enable",
+                    "settable_per_mesh": false
+                },
                 "support_use_towers":
                 {
                     "label": "Use Towers",
@@ -4992,32 +5046,12 @@
                     "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
                     "unit": "mm³",
                     "type": "float",
-                    "default_value": 10,
-                    "value": "8.48 if prime_tower_circular else 10",
+                    "default_value": 5,
                     "minimum_value": "0",
-                    "maximum_value_warning": "round((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height'), 2) if prime_tower_circular else resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')",
+                    "maximum_value_warning": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') if prime_tower_circular else resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')) - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "prime_tower_wall_thickness":
-                        {
-                            "label": "Prime Tower Thickness",
-                            "description": "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 2,
-                            "value": "round(max(2 * prime_tower_line_width, (0.5 * (prime_tower_size - math.sqrt(max(0, prime_tower_size ** 2 - 4 * prime_tower_min_volume / (3.14159 * layer_height))))) if prime_tower_circular else (0.5 * (prime_tower_size - math.sqrt(max(0, prime_tower_size ** 2 - prime_tower_min_volume / layer_height))))), 3)",
-                            "resolve": "max(extruderValues('prime_tower_wall_thickness'))",
-                            "minimum_value": "0.001",
-                            "minimum_value_warning": "2 * min(extruderValues('prime_tower_line_width')) - 0.0001",
-                            "maximum_value_warning": "prime_tower_size / 2",
-                            "enabled": "prime_tower_enable",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        }
-                    }
+                    "settable_per_extruder": true
                 },
                 "prime_tower_position_x":
                 {
@@ -5069,29 +5103,6 @@
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": true,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "dual_pre_wipe":
-                {
-                    "label": "Wipe Nozzle After Switch",
-                    "description": "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print.",
-                    "type": "bool",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": true,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "prime_tower_purge_volume":
-                {
-                    "label": "Prime Tower Purge Volume",
-                    "description": "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle.",
-                    "type": "float",
-                    "enabled": "resolveOrValue('prime_tower_enable') and dual_pre_wipe",
-                    "unit": "mm³",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "2.5",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -5195,6 +5206,7 @@
                     "type": "bool",
                     "default_value": true,
                     "value": "extruders_enabled_count > 1",
+                    "enabled": "all(p != 'surface' for p in extruderValues('magic_mesh_surface_mode'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
@@ -5205,7 +5217,7 @@
                     "description": "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "carve_multiple_volumes",
+                    "enabled": "carve_multiple_volumes and all(p != 'surface' for p in extruderValues('magic_mesh_surface_mode'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true

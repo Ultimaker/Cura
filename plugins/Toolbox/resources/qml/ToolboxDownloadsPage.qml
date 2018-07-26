@@ -29,6 +29,17 @@ ScrollView
         {
             id: allPlugins
             width: parent.width
+            heading: toolbox.viewCategory == "material" ? catalog.i18nc("@label", "Community Contributions") : catalog.i18nc("@label", "Community Plugins")
+            model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
+        }
+
+        ToolboxDownloadsGrid
+        {
+            id: genericMaterials
+            visible: toolbox.viewCategory == "material"
+            width: parent.width
+            heading: catalog.i18nc("@label", "Generic Materials")
+            model: toolbox.materialsGenericModel
         }
     }
 }

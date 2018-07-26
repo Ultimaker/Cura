@@ -1,12 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import io
 import os
 import re
 
 import shutil
 
-from typing import Optional
+from typing import Dict, Optional
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
 
 from UM import i18nCatalog
@@ -28,9 +29,9 @@ class Backup:
     # Re-use translation catalog.
     catalog = i18nCatalog("cura")
 
-    def __init__(self, zip_file: bytes = None, meta_data: dict = None) -> None:
+    def __init__(self, zip_file: bytes = None, meta_data: Dict[str, str] = None) -> None:
         self.zip_file = zip_file  # type: Optional[bytes]
-        self.meta_data = meta_data  # type: Optional[dict]
+        self.meta_data = meta_data  # type: Optional[Dict[str, str]]
 
     ##  Create a back-up from the current user config folder.
     def makeFromCurrent(self) -> None:
