@@ -5139,6 +5139,179 @@
                 }
             }
         },
+        "texture_processing":
+        {
+            "label": "Texture Processing",
+            "type": "category",
+            "icon": "category_blackmagic",
+            "description": "Texture processing stuff",
+            "children":
+            {
+                "wavy_walls":
+                {
+                    "label": "wavy_walls",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
+                "wave_halftoning_map_enabled":
+                {
+                    "label": "wave_halftoning_map_enabled",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
+                "wave_halftoning_amplitude_min":
+                {
+                    "label": "wave_halftoning_amplitude_min",
+                    "description": "...",
+                    "type": "float",
+                    "default_value": 0.375,
+                    "settable_per_mesh": true
+                },
+                "wave_halftoning_amplitude_max":
+                {
+                    "label": "wave_halftoning_amplitude_max",
+                    "description": "...",
+                    "type": "float",
+                    "default_value": 0.75,
+                    "settable_per_mesh": true
+                },
+                "wave_halftoning_wave_length":
+                {
+                    "label": "wave_halftoning_wave_length",
+                    "description": "...",
+                    "type": "float",
+                    "default_value": 1.2,
+                    "settable_per_mesh": true
+                },
+                "wave_halftoning_texture_color":
+                {
+                    "label": "wave_halftoning_texture_color",
+                    "description": "...",
+                    "type": "str",
+                    "default_value": "gray",
+                    "settable_per_mesh": true
+                },
+                "wave_halftoning_is_white":
+                {
+                    "label": "wave_halftoning_is_white",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": true
+                },
+                "fuzz_map_enabled":
+                {
+                    "label": "fuzz_map_enabled",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
+                "fuzz_map_texture_color":
+                {
+                    "label": "fuzz_map_enabled",
+                    "description": "...",
+                    "type": "str",
+                    "default_value": "gray",
+                    "settable_per_mesh": true
+                },
+                "bump_map_face_angle_correction":
+                {
+                    "label": "bump_map_face_angle_correction",
+                    "description": "...",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "settable_per_mesh": true
+                },
+                "bump_map_alternate":
+                {
+                    "label": "bump_map_alternate",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": true
+                },
+                "bump_map_enabled":
+                {
+                    "label": "bump_map_enabled",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": true
+                },
+                "bump_map_texture_color":
+                {
+                    "label": "bump_map_texture_color",
+                    "description": "...",
+                    "type": "str",
+                    "default_value": "gray",
+                    "settable_per_mesh": true
+                },
+                "bump_map_point_dist":
+                {
+                    "label": "bump_map_point_dist",
+                    "description": "...",
+                    "type": "float",
+                    "default_value": 0.1,
+                    "settable_per_mesh": true
+                },
+                "bump_map_offset":
+                {
+                    "label": "bump_map_offset",
+                    "description": "...",
+                    "type": "float",
+                    "default_value": 0.1,
+                    "settable_per_mesh": true
+                },
+                "bump_map_angle_correction_min":
+                {
+                    "label": "bump_map_angle_correction_min",
+                    "description": "...",
+                    "unit": "*",
+                    "type": "float",
+                    "default_value": 10,
+                    "settable_per_mesh": true
+                },
+                "bump_map_amplitude":
+                {
+                    "label": "bump_map_amplitude",
+                    "description": "...",
+                    "type": "float",
+                    "default_value": 0,
+                    "settable_per_mesh": true
+                },
+                "bump_map_orthogonal_view":
+                {
+                    "label": "bump_map_orthogonal_view",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": true
+                },
+                "bump_map_sagging_per_overhang":
+                {
+                    "label": "bump_map_sagging_per_overhang",
+                    "description": "...",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 55.5556,
+                    "settable_per_mesh": true
+                },
+                "bump_map_is_white":
+                {
+                    "label": "bump_map_is_white",
+                    "description": "...",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                }
+            }
+        },
         "blackmagic":
         {
             "label": "Special Modes",
