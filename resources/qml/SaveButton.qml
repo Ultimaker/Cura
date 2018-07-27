@@ -168,8 +168,6 @@ Item {
         Button {
             id: prepareButton
 
-            property bool showPrepare : false;
-
             tooltip: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
             enabled: base.backendState != "undefined" && ([1, 2].indexOf(base.backendState) != -1) && base.activity
@@ -182,19 +180,9 @@ Item {
             anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             // 1 = not started, 4 = error, 5 = disabled
-            text: {
-
-                if (base.backendState == 1 && showPrepare)
-                {
-                    showPrepare = false
-                    return catalog.i18nc("@label:Printjob", "Preparing")
-                }
-
-                return [1, 4, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
-            }
+            text: [1, 4, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
-                showPrepare = true
                 sliceOrStopSlicing();
             }
 
