@@ -1713,6 +1713,16 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_wall_line_count":
+                {
+                    "label": "infill_wall_line_count",
+                    "description": "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage.",
+                    "default_value": 0,
+                    "type": "int",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "infill_line_distance / infill_line_width",
+                    "settable_per_mesh": true
+                },
                 "sub_div_rad_add":
                 {
                     "label": "Cubic Subdivision Shell",
@@ -4723,7 +4733,7 @@
                 },
                 "raft_base_line_spacing":
                 {
-                    "label": "Raft Line Spacing",
+                    "label": "Raft Base Line Spacing",
                     "description": "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
                     "unit": "mm",
                     "type": "float",
