@@ -33,6 +33,7 @@
         "material_final_print_temperature":      { "value": "material_print_temperature - 5" },
         "material_initial_print_temperature":    { "value": "material_print_temperature" },
         "material_print_temperature_layer_0":    { "value": "material_print_temperature + 5" },
+        "material_diameter":                     { "default_value": 1.75 },
         "travel_avoid_distance":                 { "default_value": 1, "value": "1" },
         "speed_print" :                          { "default_value": 70 },
         "speed_travel":                          { "value": "150.0" },
@@ -55,6 +56,7 @@
         "support_use_towers" :                   { "default_value": false },
         "jerk_wall_0" :                          { "value": "30" },
         "jerk_travel" :                          { "default_value": 20 },
-        "acceleration_travel" :                  { "value": 10000 }
+        "acceleration_travel" :                  { "value": 10000 },
+        "machine_max_feedrate_z" :               { "default_value": 150 }
     }
 }
