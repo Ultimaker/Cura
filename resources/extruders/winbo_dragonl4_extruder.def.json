@@ -1,5 +1,4 @@
 {
-    "id": "winbo_dragonl4_extruder",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
@@ -13,6 +12,8 @@
             "default_value": 0,
             "maximum_value": "2"
         },
+        "material_diameter": { "default_value": 3.0 },
+        "machine_nozzle_size": { "default_value": 0.8 },
         "machine_nozzle_offset_x": { "default_value": 0.0 },
         "machine_nozzle_offset_y": { "default_value": 0.0 }
     }
