@@ -25,7 +25,6 @@
         "machine_filament_park_distance": { "value": "machine_heat_zone_length" },
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
         "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
-        "machine_nozzle_size": { "default_value": 0.8 },
         "machine_head_with_fans_polygon":
         {
             "default_value":
@@ -42,7 +41,6 @@
         "machine_extruder_count": { "default_value": 1 },
         "machine_start_gcode": { "default_value": "G21\nG90\nM82\nM107\nM9998\nG28 X0 Y0\nG28 Z0\nG1 F6000 Z0.3\nG92 E0\nG1 F800 X585 E12\nG92 E0" },
         "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E2\nG1 E0 F200\nG28 X0 Y0\nM84 X Y E" },
-        "material_diameter": { "default_value": 3.0 },
         "prime_blob_enable": { "enabled": true },
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
