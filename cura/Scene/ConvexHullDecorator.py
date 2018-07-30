@@ -257,13 +257,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
             apply_offset(offset_polygon, [-offset_x, -offset_y])
 
-            def union(rect1, rect2):
-                bl = [min(rect1[0][0], rect2[0][0]), min(rect1[0][1], rect2[0][1])]
-                tl = [min(rect1[1][0], rect2[1][0]), max(rect1[1][1], rect2[1][1])]
-                tr = [max(rect1[2][0], rect2[2][0]), max(rect1[2][1], rect2[2][1])]
-                br = [max(rect1[3][0], rect2[3][0]), min(rect1[3][1], rect2[3][1])]
+            def take_max_bounding_box(rect1, rect2):
+                tl = [min(rect1[0][0], rect2[0][0]), max(rect1[0][1], rect2[0][1])]  # top left
+                bl = [min(rect1[1][0], rect2[1][0]), min(rect1[1][1], rect2[1][1])]  # bottom left
+                tr = [max(rect1[2][0], rect2[2][0]), max(rect1[2][1], rect2[2][1])]  # top right
+                br = [max(rect1[3][0], rect2[3][0]), min(rect1[3][1], rect2[3][1])]  # bottom right
                 return [tl, bl, tr, br]
-            full_area = union(full_area, offset_polygon)
+            full_area = take_max_bounding_box(full_area, offset_polygon)
 
         return Polygon(numpy.array(full_area, numpy.float32)), multiple_extruders_in_use
 
