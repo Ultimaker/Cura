@@ -48,7 +48,7 @@ Item {
     }
 
     function sliceOrStopSlicing() {
-        if ( [ 1, 5 ].indexOf( base.backendState ) != -1 )
+        if ([1, 5].indexOf(base.backendState) != -1)
         {
             prepareButton.preparingToSlice = true;
             CuraApplication.backend.forceSlice();
@@ -182,13 +182,13 @@ Item {
 
             // 1 = not started, 4 = error, 5 = disabled
             text: {
-                if ( preparingToSlice )
+                if (preparingToSlice)
                 {
                     return catalog.i18nc("@label:Printjob", "Preparing");
                 }
                 else
                 {
-                    if ( [ 1, 4, 5 ].indexOf( base.backendState ) != -1 )
+                    if ([1, 4, 5].indexOf(base.backendState) != -1)
                     {
                         return catalog.i18nc("@label:Printjob", "Prepare");
                     }
@@ -259,11 +259,10 @@ Item {
                 target: UM.Backend
                 onStateChanged:
                 {
-                    if ( [ 2, 3 ].indexOf( UM.Backend.state) != -1 )
+                    if ([2, 3].indexOf(UM.Backend.state) != -1)
                     {
                         prepareButton.preparingToSlice = false;
                     }
-
                 }
             }
         }
