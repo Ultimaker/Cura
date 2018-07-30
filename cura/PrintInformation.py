@@ -369,8 +369,9 @@ class PrintInformation(QObject):
     def baseName(self):
         return self._base_name
 
-    ##  Created an acronymn-like abbreviated machine name from the currently active machine name
-    #   Called each time the global stack is switched
+    ##  Created an acronym-like abbreviated machine name from the currently
+    #   active machine name.
+    #   Called each time the global stack is switched.
     def _setAbbreviatedMachineName(self):
         global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:

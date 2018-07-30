@@ -28,7 +28,7 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 11, "download_url")
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
-        self.addRoleName(Qt.UserRole + 14, "is_enabled")
+        self.addRoleName(Qt.UserRole + 14, "is_active")
         self.addRoleName(Qt.UserRole + 15, "is_installed") # Scheduled pkgs are included in the model but should not be marked as actually installed
         self.addRoleName(Qt.UserRole + 16, "has_configs")
         self.addRoleName(Qt.UserRole + 17, "supported_configs")
@@ -75,7 +75,7 @@ class PackagesModel(ListModel):
                 "download_url":      package["download_url"] if "download_url" in package else None,
                 "last_updated":      package["last_updated"] if "last_updated" in package else None,
                 "is_bundled":        package["is_bundled"] if "is_bundled" in package else False,
-                "is_enabled":        package["is_enabled"] if "is_enabled" in package else False,
+                "is_active":         package["is_active"] if "is_active" in package else False,
                 "is_installed":      package["is_installed"] if "is_installed" in package else False,
                 "has_configs":       has_configs,
                 "supported_configs": configs_model,
