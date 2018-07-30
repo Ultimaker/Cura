@@ -1715,12 +1715,13 @@
                 },
                 "infill_wall_line_count":
                 {
-                    "label": "infill_wall_line_count",
-                    "description": "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage.",
+                    "label": "Extra Infill Wall Count",
+                    "description": "Add extra wals around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "infill_line_distance / infill_line_width",
+                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "sub_div_rad_add":
