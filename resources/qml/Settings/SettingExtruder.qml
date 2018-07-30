@@ -71,13 +71,6 @@ SettingItem
 
         currentIndex: propertyProvider.properties.value
 
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            onWheel: wheel.accepted = true;
-        }
-
         property string color: "#fff"
 
         Binding
