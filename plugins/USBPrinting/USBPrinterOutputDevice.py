@@ -127,8 +127,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot(str)
     def updateFirmware(self, file):
-        # the file path could be qurl encoded.
-        if file[:7] == "file://":
+        # the file path could be url-encoded.
+        if file.startswith("file://"):
             self._firmware_location = QUrl(file).toLocalFile()
         else:
             self._firmware_location = file
