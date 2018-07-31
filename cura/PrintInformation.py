@@ -267,6 +267,7 @@ class PrintInformation(QObject):
         new_active_build_plate = self._multi_build_plate_model.activeBuildPlate
         if new_active_build_plate != self._active_build_plate:
             self._active_build_plate = new_active_build_plate
+            self._updateJobName()
 
             self._initVariablesWithBuildPlate(self._active_build_plate)
 
@@ -310,15 +311,18 @@ class PrintInformation(QObject):
         # Only update the job name when it's not user-specified.
         if not self._is_user_specified_job_name:
             if self._pre_sliced:
-                self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
+                job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
             elif self._application.getInstance().getPreferences().getValue("cura/jobname_prefix"):
                 # Don't add abbreviation if it already has the exact same abbreviation.
                 if base_name.startswith(self._abbr_machine + "_"):
-                    self._job_name = base_name
+                    job_name = base_name
                 else:
-                    self._job_name = self._abbr_machine + "_" + base_name
+                    job_name = self._abbr_machine + "_" + base_name
             else:
-                self._job_name = base_name
+                job_name = base_name
+            if self._active_build_plate != 0:
+                job_name += "-{}".format(self._active_build_plate)
+            self._job_name = job_name
 
         self.jobNameChanged.emit()
 
