@@ -1074,7 +1074,7 @@
                     "maximum_value_warning": "top_layers - 1",
                     "type": "int",
                     "value": "0",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true,
                     "enabled": "top_layers > 0"
                 },
