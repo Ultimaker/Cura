@@ -25,10 +25,6 @@ UM.PointingRectangle {
     width: valueLabel.width + UM.Theme.getSize("default_margin").width
     visible: false
 
-    // make sure the text field is focussed when pressing the parent handle
-    // needed to connect the key bindings when switching active handle
-    onVisibleChanged: if (visible) valueLabel.forceActiveFocus()
-
     color: UM.Theme.getColor("tool_panel_background")
     borderColor: UM.Theme.getColor("lining")
     borderWidth: UM.Theme.getSize("default_lining").width

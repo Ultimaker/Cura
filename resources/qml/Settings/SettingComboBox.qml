@@ -20,13 +20,6 @@ SettingItem
 
         anchors.fill: parent
 
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            onWheel: wheel.accepted = true
-        }
-
         background: Rectangle
         {
             color:

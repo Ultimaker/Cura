@@ -1605,8 +1605,7 @@ class CuraApplication(QtApplication):
         self._currently_loading_files.remove(file_name)
 
         self.fileLoaded.emit(file_name)
-        arrange_objects_on_load = not self.getPreferences().getValue("cura/use_multi_build_plate")
-        target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
+        target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
 
         root = self.getController().getScene().getRoot()
         fixed_nodes = []
@@ -1660,7 +1659,7 @@ class CuraApplication(QtApplication):
                 if not child.getDecorator(ConvexHullDecorator):
                     child.addDecorator(ConvexHullDecorator())
 
-            if file_extension != "3mf" and arrange_objects_on_load:
+            if file_extension != "3mf":
                 if node.callDecoration("isSliceable"):
                     # Only check position if it's not already blatantly obvious that it won't fit.
                     if node.getBoundingBox() is None or self._volume.getBoundingBox() is None or node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:

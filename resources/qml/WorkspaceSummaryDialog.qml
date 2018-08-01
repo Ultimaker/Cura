@@ -24,6 +24,10 @@ UM.Dialog
 
     signal yes();
 
+    function accept() {  // pressing enter will call this function
+        close();
+        yes();
+    }
 
     onClosing:
     {
