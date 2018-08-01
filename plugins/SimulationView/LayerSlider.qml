@@ -67,6 +67,10 @@ Item {
         activeHandle = handle
     }
 
+    // make sure the upper handle is focussed when pressing the parent handle
+    // needed to connect the key bindings when switching active handle
+    onVisibleChanged: if (visible) upperHandleLabel.forceActiveFocus()
+
     // slider track
     Rectangle {
         id: track
