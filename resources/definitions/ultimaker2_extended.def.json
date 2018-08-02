@@ -14,7 +14,8 @@
         "machine_extruder_trains":
         {
             "0": "ultimaker2_extended_extruder_0"
-        }
+        },
+        "firmware_file": "MarlinUltimaker2extended.hex"
     },
 
     "overrides": {

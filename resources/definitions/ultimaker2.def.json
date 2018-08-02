@@ -20,7 +20,8 @@
         "machine_extruder_trains":
         {
             "0": "ultimaker2_extruder_0"
-        }
+        },
+        "firmware_file": "MarlinUltimaker2.hex"
     },
     "overrides": {
         "machine_name": { "default_value": "Ultimaker 2" },
