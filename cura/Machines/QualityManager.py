@@ -45,7 +45,7 @@ class QualityManager(QObject):
         self._empty_quality_container = self._application.empty_quality_container
         self._empty_quality_changes_container = self._application.empty_quality_changes_container
 
-        self._machine_variant_material_quality_type_to_quality_dict = {}  # for quality lookup
+        self._machine_nozzle_buildplate_material_quality_type_to_quality_dict = {}  # for quality lookup
         self._machine_quality_type_to_quality_changes_dict = {}  # for quality_changes lookup
 
         self._default_machine_definition_id = "fdmprinter"
@@ -64,10 +64,10 @@ class QualityManager(QObject):
 
     def initialize(self):
         # Initialize the lookup tree for quality profiles with following structure:
-        # <machine> -> <variant> -> <material>
-        #           -> <material>
+        # <machine> -> <nozzle> -> <buildplate> -> <material>
+        # <machine> -> <material>
 
-        self._machine_variant_material_quality_type_to_quality_dict = {}  # for quality lookup
+        self._machine_nozzle_buildplate_material_quality_type_to_quality_dict = {}  # for quality lookup
         self._machine_quality_type_to_quality_changes_dict = {}  # for quality_changes lookup
 
         quality_metadata_list = self._container_registry.findContainersMetadata(type = "quality")
@@ -79,47 +79,58 @@ class QualityManager(QObject):
             quality_type = metadata["quality_type"]
 
             root_material_id = metadata.get("material")
-            variant_name = metadata.get("variant")
+            nozzle_name = metadata.get("variant")
+            buildplate_name = metadata.get("buildplate")
             is_global_quality = metadata.get("global_quality", False)
-            is_global_quality = is_global_quality or (root_material_id is None and variant_name is None)
+            is_global_quality = is_global_quality or (root_material_id is None and nozzle_name is None and buildplate_name is None)
 
             # Sanity check: material+variant and is_global_quality cannot be present at the same time
-            if is_global_quality and (root_material_id or variant_name):
+            if is_global_quality and (root_material_id or nozzle_name):
                 ConfigurationErrorMessage.getInstance().addFaultyContainers(metadata["id"])
                 continue
 
-            if definition_id not in self._machine_variant_material_quality_type_to_quality_dict:
-                self._machine_variant_material_quality_type_to_quality_dict[definition_id] = QualityNode()
-            machine_node = cast(QualityNode, self._machine_variant_material_quality_type_to_quality_dict[definition_id])
+            if definition_id not in self._machine_nozzle_buildplate_material_quality_type_to_quality_dict:
+                self._machine_nozzle_buildplate_material_quality_type_to_quality_dict[definition_id] = QualityNode()
+            machine_node = cast(QualityNode, self._machine_nozzle_buildplate_material_quality_type_to_quality_dict[definition_id])
 
             if is_global_quality:
                 # For global qualities, save data in the machine node
                 machine_node.addQualityMetadata(quality_type, metadata)
                 continue
 
-            if variant_name is not None:
-                # If variant_name is specified in the quality/quality_changes profile, check if material is specified,
-                # too.
-                if variant_name not in machine_node.children_map:
-                    machine_node.children_map[variant_name] = QualityNode()
-                variant_node = cast(QualityNode, machine_node.children_map[variant_name])
+            # Check if nozzle si specified
+            if nozzle_name is not None:
+                if nozzle_name not in machine_node.children_map:
+                    machine_node.children_map[nozzle_name] = QualityNode()
+                nozzle_node = cast(QualityNode, machine_node.children_map[nozzle_name])
 
-                if root_material_id is None:
-                    # If only variant_name is specified but material is not, add the quality/quality_changes metadata
-                    # into the current variant node.
-                    variant_node.addQualityMetadata(quality_type, metadata)
+                # Check if buildplate is specified
+                if buildplate_name is not None:
+                    if buildplate_name not in nozzle_node.children_map:
+                        nozzle_node.children_map[buildplate_name] = QualityNode()
+                    buildplate_node = cast(QualityNode, nozzle_node.children_map[buildplate_name])
+
+                    if root_material_id is None:
+                        buildplate_node.addQualityMetadata(quality_type, metadata)
+                    else:
+                        if root_material_id not in buildplate_node.children_map:
+                            buildplate_node.children_map[root_material_id] = QualityNode()
+                        material_node = cast(QualityNode, buildplate_node.children_map[root_material_id])
+
+                        material_node.addQualityMetadata(quality_type, metadata)
+
                 else:
-                    # If only variant_name and material are both specified, go one level deeper: create a material node
-                    # under the current variant node, and then add the quality/quality_changes metadata into the
-                    # material node.
-                    if root_material_id not in variant_node.children_map:
-                        variant_node.children_map[root_material_id] = QualityNode()
-                    material_node = cast(QualityNode, variant_node.children_map[root_material_id])
+                    if root_material_id is None:
+                        nozzle_node.addQualityMetadata(quality_type, metadata)
+                    else:
+                        if root_material_id not in nozzle_node.children_map:
+                            nozzle_node.children_map[root_material_id] = QualityNode()
+                        material_node = cast(QualityNode, nozzle_node.children_map[root_material_id])
 
-                    material_node.addQualityMetadata(quality_type, metadata)
+                        material_node.addQualityMetadata(quality_type, metadata)
 
             else:
-                # If variant_name is not specified, check if material is specified.
+                # If nozzle is not specified, check if material is specified.
                 if root_material_id is not None:
                     if root_material_id not in machine_node.children_map:
                         machine_node.children_map[root_material_id] = QualityNode()
@@ -217,8 +228,8 @@ class QualityManager(QObject):
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
         #   (2) the generic node
-        machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(machine_definition_id)
-        default_machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(self._default_machine_definition_id)
+        machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(machine_definition_id)
+        default_machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(self._default_machine_definition_id)
         nodes_to_check = [machine_node, default_machine_node]
 
         # Iterate over all quality_types in the machine node
@@ -238,11 +249,13 @@ class QualityManager(QObject):
                     quality_group_dict[quality_type] = quality_group
                 break
 
+        buildplate_name = machine.getBuildplateName()
+
         # Iterate over all extruders to find quality containers for each extruder
         for position, extruder in machine.extruders.items():
-            variant_name = None
+            nozzle_name = None
             if extruder.variant.getId() != "empty_variant":
-                variant_name = extruder.variant.getName()
+                nozzle_name = extruder.variant.getName()
 
             # This is a list of root material IDs to use for searching for suitable quality profiles.
             # The root material IDs in this list are in prioritized order.
@@ -258,34 +271,47 @@ class QualityManager(QObject):
                 # Also try to get the fallback material
                 material_type = extruder.material.getMetaDataEntry("material")
                 fallback_root_material_id = self._material_manager.getFallbackMaterialIdByMaterialType(material_type)
-                if fallback_root_material_id:
+                if fallback_root_material_id and root_material_id not in root_material_id_list:
                     root_material_id_list.append(fallback_root_material_id)
 
             # Here we construct a list of nodes we want to look for qualities with the highest priority first.
             # The use case is that, when we look for qualities for a machine, we first want to search in the following
             # order:
-            #   1. machine-variant-and-material-specific qualities if exist
-            #   2. machine-variant-specific qualities if exist
-            #   3. machine-material-specific qualities if exist
-            #   4. machine-specific qualities if exist
-            #   5. generic qualities if exist
+            #   1. machine-nozzle-buildplate-and-material-specific qualities if exist
+            #   2. machine-nozzle-and-material-specific qualities if exist
+            #   3. machine-nozzle-specific qualities if exist
+            #   4. machine-material-specific qualities if exist
+            #   5. machine-specific qualities if exist
+            #   6. generic qualities if exist
             # Each points above can be represented as a node in the lookup tree, so here we simply put those nodes into
             # the list with priorities as the order. Later, we just need to loop over each node in this list and fetch
             # qualities from there.
             nodes_to_check = []
 
-            if variant_name:
-                # In this case, we have both a specific variant and a specific material
-                variant_node = machine_node.getChildNode(variant_name)
-                if variant_node and has_material:
+            if nozzle_name:
+                # In this case, we have both a specific nozzle and a specific material
+                nozzle_node = machine_node.getChildNode(nozzle_name)
+                if nozzle_node and has_material:
+                    # Check build plate if exists
+                    if buildplate_name:
+                        buildplate_node = nozzle_node.getChildNode(buildplate_name)
+                        if buildplate_node and has_material:
+                            for root_material_id in root_material_id_list:
+                                material_node = buildplate_node.getChildNode(root_material_id)
+                                if material_node:
+                                    nodes_to_check.append(material_node)
+                                    break
+                        nodes_to_check.append(buildplate_node)
+
+                    # Then add nozzle specific materials
                     for root_material_id in root_material_id_list:
-                        material_node = variant_node.getChildNode(root_material_id)
+                        material_node = nozzle_node.getChildNode(root_material_id)
                         if material_node:
                             nodes_to_check.append(material_node)
                             break
-                nodes_to_check.append(variant_node)
+                nodes_to_check.append(nozzle_node)
 
-            # In this case, we only have a specific material but NOT a variant
+            # In this case, we only have a specific material but NOT a nozzle
             if has_material:
                 for root_material_id in root_material_id_list:
                     material_node = machine_node.getChildNode(root_material_id)
@@ -309,8 +335,9 @@ class QualityManager(QObject):
                             quality_group_dict[quality_type] = quality_group
 
                         quality_group = quality_group_dict[quality_type]
-                        quality_group.nodes_for_extruders[position] = quality_node
-                    break
+                        if position not in quality_group.nodes_for_extruders:
+                            quality_group.nodes_for_extruders[position] = quality_node
+                    #break
 
         # Update availabilities for each quality group
         self._updateQualityGroupsAvailability(machine, quality_group_dict.values())
@@ -323,8 +350,8 @@ class QualityManager(QObject):
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
         #   (2) the generic node
-        machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(machine_definition_id)
-        default_machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(
+        machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(machine_definition_id)
+        default_machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(
             self._default_machine_definition_id)
         nodes_to_check = [machine_node, default_machine_node]
 
