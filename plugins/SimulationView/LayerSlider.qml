@@ -40,31 +40,39 @@ Item {
 
     property bool layersVisible: true
 
-    function getUpperValueFromSliderHandle () {
+    function getUpperValueFromSliderHandle() {
         return upperHandle.getValue()
     }
 
-    function setUpperValue (value) {
+    function setUpperValue(value) {
         upperHandle.setValue(value)
         updateRangeHandle()
     }
 
-    function getLowerValueFromSliderHandle () {
+    function getLowerValueFromSliderHandle() {
         return lowerHandle.getValue()
     }
 
-    function setLowerValue (value) {
+    function setLowerValue(value) {
         lowerHandle.setValue(value)
         updateRangeHandle()
     }
 
-    function updateRangeHandle () {
+    function updateRangeHandle() {
         rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height)
     }
 
     // set the active handle to show only one label at a time
-    function setActiveHandle (handle) {
+    function setActiveHandle(handle) {
         activeHandle = handle
+    }
+
+    function normalizeValue(value) {
+        if (value > sliderRoot.maximumValue)
+            return sliderRoot.maximumValue
+        else if (value < sliderRoot.minimumValue)
+            return sliderRoot.minimumValue
+        return value
     }
 
     // slider track
@@ -188,6 +196,8 @@ Item {
 
         // set the slider position based on the upper value
         function setValue (value) {
+            // Normalize values between range, since using arrow keys will create out-of-the-range values
+            value = sliderRoot.normalizeValue(value)
 
             UM.SimulationView.setCurrentLayer(value)
 
@@ -274,6 +284,8 @@ Item {
 
         // set the slider position based on the lower value
         function setValue (value) {
+            // Normalize values between range, since using arrow keys will create out-of-the-range values
+            value = sliderRoot.normalizeValue(value)
 
             UM.SimulationView.setMinimumLayer(value)
 
