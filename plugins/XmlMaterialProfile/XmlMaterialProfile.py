@@ -19,7 +19,10 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
+from cura.Machines.VariantType import VariantType
+
 from .XmlMaterialValidator import XmlMaterialValidator
+
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
@@ -269,7 +272,6 @@ class XmlMaterialProfile(InstanceContainer):
             buildplate_dict = {} # type: Dict[str, Any]
             for variant_name, variant_dict in machine_variant_map[definition_id].items():
                 variant_type = variant_dict["variant_node"].metadata["hardware_type"]
-                from cura.Machines.VariantManager import VariantType
                 variant_type = VariantType(variant_type)
                 if variant_type == VariantType.NOZZLE:
                     # The hotend identifier is not the containers name, but its "name".

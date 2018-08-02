@@ -8,7 +8,7 @@ from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
-from cura.Machines.VariantManager import VariantType
+from cura.Machines.VariantType import VariantType
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 

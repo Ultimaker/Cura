@@ -8,6 +8,8 @@ from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Util import parseBool
 
+from cura.Machines.VariantType import VariantType
+
 
 class NozzleModel(ListModel):
     IdRole = Qt.UserRole + 1
@@ -43,7 +45,6 @@ class NozzleModel(ListModel):
             self.setItems([])
             return
 
-        from cura.Machines.VariantManager import VariantType
         variant_node_dict = self._variant_manager.getVariantNodes(global_stack, VariantType.NOZZLE)
         if not variant_node_dict:
             self.setItems([])

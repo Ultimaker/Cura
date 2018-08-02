@@ -24,6 +24,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
 
+from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
@@ -889,7 +890,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = self._machine_info.variant_info.parser
             variant_name = parser["general"]["name"]
 
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.BUILD_PLATE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
@@ -905,7 +905,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = extruder_info.variant_info.parser
 
             variant_name = parser["general"]["name"]
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.NOZZLE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
