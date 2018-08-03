@@ -788,7 +788,6 @@ class Toolbox(QObject, Extension):
         if not self._models[modelType]:
             Logger.log("w", "Toolbox: Couldn't filter %s model because it doesn't exist.", modelType)
             return
-        print(filterDict)
         self._models[modelType].setFilter(filterDict)
         self.filterChanged.emit()
 
