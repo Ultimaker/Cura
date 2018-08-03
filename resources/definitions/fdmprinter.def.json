@@ -5057,7 +5057,7 @@
                     "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
                     "unit": "mm³",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 6,
                     "minimum_value": "0",
                     "maximum_value_warning": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') if prime_tower_circular else resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')) - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",
