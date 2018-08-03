@@ -267,6 +267,7 @@ class PrintInformation(QObject):
         new_active_build_plate = self._multi_build_plate_model.activeBuildPlate
         if new_active_build_plate != self._active_build_plate:
             self._active_build_plate = new_active_build_plate
+            self._updateJobName()
 
             self._initVariablesWithBuildPlate(self._active_build_plate)
 
@@ -319,6 +320,15 @@ class PrintInformation(QObject):
                     self._job_name = self._abbr_machine + "_" + base_name
             else:
                 self._job_name = base_name
+
+        # In case there are several buildplates, a suffix is attached
+        if self._multi_build_plate_model.maxBuildPlate > 0:
+            connector = "_#"
+            suffix = connector + str(self._active_build_plate + 1)
+            if connector in self._job_name:
+                self._job_name = self._job_name.split(connector)[0] # get the real name
+            if self._active_build_plate != 0:
+                self._job_name += suffix
 
         self.jobNameChanged.emit()
 
