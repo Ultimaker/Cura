@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Winbo FDM-Dragon(L)4",
+    "name": "Winbo Dragon(L)4",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Winbo",
@@ -16,7 +16,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Winbo FDM-Dragon(L)4" },
+        "machine_name": { "default_value": "Winbo Dragon(L)4" },
         "machine_width": { "default_value": 615 },
         "machine_depth": { "default_value": 463 },
         "machine_height": { "default_value": 615 },
