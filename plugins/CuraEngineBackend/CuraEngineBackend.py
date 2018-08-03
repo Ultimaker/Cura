@@ -541,6 +541,9 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Remove old layer data (if any)
     def _clearLayerData(self, build_plate_numbers: Set = None) -> None:
+        # Clear out any old gcode
+        self._scene.gcode_dict = {}  # type: dict
+
         for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
