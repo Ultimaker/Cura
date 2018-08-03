@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Winbo FDM-Mini2",
+    "name": "Winbo Mini2",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Winbo",
@@ -16,7 +16,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Winbo FDM-Mini2" },
+        "machine_name": { "default_value": "Winbo Mini2" },
         "machine_width": { "default_value": 205 },
         "machine_depth": { "default_value": 155 },
         "machine_height": { "default_value": 205 },
