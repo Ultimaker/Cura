@@ -29,6 +29,16 @@ Item
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width
         frameVisible: false
+
+        // Workaround for scroll issues (QTBUG-49652)
+        flickableItem.interactive: false
+        Component.onCompleted:
+        {
+            for (var i = 0; i < flickableItem.children.length; ++i)
+            {
+                flickableItem.children[i].enabled = false
+            }
+        }
         selectionMode: 0
         model: packageData.supported_configs
         headerDelegate: Rectangle
