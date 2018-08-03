@@ -192,73 +192,74 @@ class MaterialManager(QObject):
         # "machine" -> "nozzle name" -> "buildplate name" -> "root material ID" -> specific material InstanceContainer
         self._diameter_machine_nozzle_buildplate_material_map = dict()
         for material_metadata in material_metadatas.values():
-            # We don't store empty material in the lookup tables
-            if material_metadata["id"] == "empty_material":
-                continue
-
-            root_material_id = material_metadata["base_file"]
-            definition = material_metadata["definition"]
-            approximate_diameter = material_metadata["approximate_diameter"]
-
-            if approximate_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
-                self._diameter_machine_nozzle_buildplate_material_map[approximate_diameter] = {}
-
-            machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[approximate_diameter]
-            if definition not in machine_nozzle_buildplate_material_map:
-                machine_nozzle_buildplate_material_map[definition] = MaterialNode()
-
-            machine_node = machine_nozzle_buildplate_material_map[definition]
-            nozzle_name = material_metadata.get("variant_name")
-            buildplate_name = material_metadata.get("buildplate_name")
-            if not nozzle_name:
-                # if there is no nozzle, this material is for the machine, so put its metadata in the machine node.
-                machine_node.material_map[root_material_id] = MaterialNode(material_metadata)
-            else:
-                # this material is nozzle-specific, so we save it in a nozzle-specific node under the
-                # machine-specific node
-
-                # Check first if the nozzle exists in the manager
-                existing_nozzle = variant_manager.getVariantNode(definition, nozzle_name, VariantType.NOZZLE)
-                if existing_nozzle is not None:
-                    if nozzle_name not in machine_node.children_map:
-                        machine_node.children_map[nozzle_name] = MaterialNode()
-
-                    nozzle_node = machine_node.children_map[nozzle_name]
-
-                    # Check build plate node
-                    if not buildplate_name:
-                        # if there is no buildplate, this material is for the machine, so put its metadata in the machine node.
-                        if root_material_id in nozzle_node.material_map:  # We shouldn't have duplicated nozzle-specific materials for the same machine.
-                            ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
-                            continue
-                        nozzle_node.material_map[root_material_id] = MaterialNode(material_metadata)
-                    else:
-                        # this material is nozzle-and-buildplate-specific, so we save it in a buildplate-specific node
-                        # under the machine-specific node
-
-                        # Check first if the buildplate exists in the manager
-                        existing_buildplate = variant_manager.getVariantNode(definition, buildplate_name, VariantType.BUILD_PLATE)
-                        if existing_buildplate is not None:
-                            if buildplate_name not in nozzle_node.children_map:
-                                nozzle_node.children_map[buildplate_name] = MaterialNode()
-
-                            buildplate_node = nozzle_node.children_map[buildplate_name]
-                            if root_material_id in buildplate_node.material_map:  # We shouldn't have duplicated nozzle-and-buildplate-specific materials for the same machine.
-                                ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
-                                continue
-                            buildplate_node.material_map[root_material_id] = MaterialNode(material_metadata)
-
-                        else:
-                            # Add this container id to the wrong containers list in the registry
-                            Logger.log("w", "Not adding {id} to the material manager because the buildplate does not exist.".format(id = material_metadata["id"]))
-                            self._container_registry.addWrongContainerId(material_metadata["id"])
-
-                else:
-                    # Add this container id to the wrong containers list in the registry
-                    Logger.log("w", "Not adding {id} to the material manager because the nozzle does not exist.".format(id = material_metadata["id"]))
-                    self._container_registry.addWrongContainerId(material_metadata["id"])
+            self.__addMaterialMetadataIntoLookupTree(material_metadata)
 
         self.materialsUpdated.emit()
+
+    def __addMaterialMetadataIntoLookupTree(self, material_metadata: dict) -> None:
+        material_id = material_metadata["id"]
+
+        # We don't store empty material in the lookup tables
+        if material_id == "empty_material":
+            return
+
+        root_material_id = material_metadata["base_file"]
+        definition = material_metadata["definition"]
+        approximate_diameter = material_metadata["approximate_diameter"]
+
+        if approximate_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
+            self._diameter_machine_nozzle_buildplate_material_map[approximate_diameter] = {}
+
+        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[
+            approximate_diameter]
+        if definition not in machine_nozzle_buildplate_material_map:
+            machine_nozzle_buildplate_material_map[definition] = MaterialNode()
+
+        # This is a list of information regarding the intermediate nodes:
+        #    nozzle -> buildplate
+        nozzle_name = material_metadata.get("variant_name")
+        buildplate_name = material_metadata.get("buildplate_name")
+        intermediate_node_info_list = [(nozzle_name, VariantType.NOZZLE),
+                                       (buildplate_name, VariantType.BUILD_PLATE),
+                                       ]
+
+        variant_manager = self._application.getVariantManager()
+
+        machine_node = machine_nozzle_buildplate_material_map[definition]
+        current_node = machine_node
+        current_intermediate_node_info_idx = 0
+        error_message = None  # type: Optional[str]
+        while current_intermediate_node_info_idx < len(intermediate_node_info_list):
+            variant_name, variant_type = intermediate_node_info_list[current_intermediate_node_info_idx]
+            if variant_name is not None:
+                # The new material has a specific variant, so it needs to be added to that specific branch in the tree.
+                variant = variant_manager.getVariantNode(definition, variant_name, variant_type)
+                if variant is None:
+                    error_message = "Material {id} contains a variant {name} that does not exist.".format(
+                        id = material_metadata["id"], name = variant_name)
+                    break
+
+                # Update the current node to advance to a more specific branch
+                if variant_name not in current_node.children_map:
+                    current_node.children_map[variant_name] = MaterialNode()
+                current_node = current_node.children_map[variant_name]
+
+            current_intermediate_node_info_idx += 1
+
+        if error_message is not None:
+            Logger.log("e", "%s It will not be added into the material lookup tree.", error_message)
+            self._container_registry.addWrongContainerId(material_metadata["id"])
+            return
+
+        # Add the material to the current tree node, which is the deepest (the most specific) branch we can find.
+        # Sanity check: Make sure that there is no duplicated materials.
+        if root_material_id in current_node.material_map:
+            Logger.log("e", "Duplicated material [%s] with root ID [%s]. It has already been added.",
+                       material_id, root_material_id)
+            ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
+            return
+
+        current_node.material_map[root_material_id] = MaterialNode(material_metadata)
 
     def _updateMaps(self):
         Logger.log("i", "Updating material lookup data ...")
@@ -290,7 +291,7 @@ class MaterialManager(QObject):
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
-    def getAvailableMaterials(self, machine_definition: "DefinitionContainer", extruder_nozzle_name: Optional[str],
+    def getAvailableMaterials(self, machine_definition: "DefinitionContainer", nozzle_name: Optional[str],
                               buildplate_name: Optional[str], diameter: float) -> Dict[str, MaterialNode]:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
@@ -306,8 +307,8 @@ class MaterialManager(QObject):
         default_machine_node = machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)
         nozzle_node = None
         buildplate_node = None
-        if extruder_nozzle_name is not None and machine_node is not None:
-            nozzle_node = machine_node.getChildNode(extruder_nozzle_name)
+        if nozzle_name is not None and machine_node is not None:
+            nozzle_node = machine_node.getChildNode(nozzle_name)
             # Get buildplate node if possible
             if nozzle_node is not None and buildplate_name is not None:
                 buildplate_node = nozzle_node.getChildNode(buildplate_name)
