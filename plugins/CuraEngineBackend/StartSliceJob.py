@@ -41,11 +41,14 @@ class StartJobResult(IntEnum):
 
 ##  Formatter class that handles token expansion in start/end gcode
 class GcodeStartEndFormatter(Formatter):
-    def get_value(self, key: str, *args: str, default_extruder_nr: str = "-1", **kwargs) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
+    def get_value(self, key: str, *args: str, **kwargs) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
         # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
         # and a default_extruder_nr to use when no extruder_nr is specified
 
-        extruder_nr = int(default_extruder_nr)
+        try:
+            extruder_nr = int(kwargs["default_extruder_nr"])
+        except ValueError:
+            extruder_nr = -1
 
         key_fragments = [fragment.strip() for fragment in key.split(",")]
         if len(key_fragments) == 2:
@@ -53,7 +56,7 @@ class GcodeStartEndFormatter(Formatter):
                 extruder_nr = int(key_fragments[1])
             except ValueError:
                 try:
-                    extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack #TODO: How can you ever provide the '-1' kwarg?
+                    extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack
                 except (KeyError, ValueError):
                     # either the key does not exist, or the value is not an int
                     Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end g-code, using global stack", key_fragments[1], key_fragments[0])
