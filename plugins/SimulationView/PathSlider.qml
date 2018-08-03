@@ -49,11 +49,7 @@ Item {
     }
 
     function normalizeValue(value) {
-        if (value > sliderRoot.maximumValue)
-            return sliderRoot.maximumValue
-        else if (value < sliderRoot.minimumValue)
-            return sliderRoot.minimumValue
-        return value
+        return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
     // slider track
