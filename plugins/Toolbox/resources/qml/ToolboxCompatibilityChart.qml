@@ -32,8 +32,10 @@ Item
 
         // Workaround for scroll issues (QTBUG-49652)
         flickableItem.interactive: false
-        Component.onCompleted: {
-            for (var i = 0; i < flickableItem.children.length; ++i) {
+        Component.onCompleted:
+        {
+            for (var i = 0; i < flickableItem.children.length; ++i)
+            {
                 flickableItem.children[i].enabled = false
             }
         }
