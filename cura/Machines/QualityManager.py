@@ -98,45 +98,22 @@ class QualityManager(QObject):
                 machine_node.addQualityMetadata(quality_type, metadata)
                 continue
 
-            # Check if nozzle si specified
-            if nozzle_name is not None:
-                if nozzle_name not in machine_node.children_map:
-                    machine_node.children_map[nozzle_name] = QualityNode()
-                nozzle_node = cast(QualityNode, machine_node.children_map[nozzle_name])
+            current_node = machine_node
+            intermediate_node_info_list = [nozzle_name, buildplate_name, root_material_id]
+            current_intermediate_node_info_idx = 0
 
-                # Check if buildplate is specified
-                if buildplate_name is not None:
-                    if buildplate_name not in nozzle_node.children_map:
-                        nozzle_node.children_map[buildplate_name] = QualityNode()
-                    buildplate_node = cast(QualityNode, nozzle_node.children_map[buildplate_name])
+            while current_intermediate_node_info_idx < len(intermediate_node_info_list):
+                node_name = intermediate_node_info_list[current_intermediate_node_info_idx]
+                if node_name is not None:
+                    # There is specific information, update the current node to go deeper so we can add this quality
+                    # at the most specific branch in the lookup tree.
+                    if node_name not in current_node.children_map:
+                        current_node.children_map[node_name] = QualityNode()
+                    current_node = cast(QualityNode, current_node.children_map[node_name])
 
-                    if root_material_id is None:
-                        buildplate_node.addQualityMetadata(quality_type, metadata)
-                    else:
-                        if root_material_id not in buildplate_node.children_map:
-                            buildplate_node.children_map[root_material_id] = QualityNode()
-                        material_node = cast(QualityNode, buildplate_node.children_map[root_material_id])
+                current_intermediate_node_info_idx += 1
 
-                        material_node.addQualityMetadata(quality_type, metadata)
-
-                else:
-                    if root_material_id is None:
-                        nozzle_node.addQualityMetadata(quality_type, metadata)
-                    else:
-                        if root_material_id not in nozzle_node.children_map:
-                            nozzle_node.children_map[root_material_id] = QualityNode()
-                        material_node = cast(QualityNode, nozzle_node.children_map[root_material_id])
-
-                        material_node.addQualityMetadata(quality_type, metadata)
-
-            else:
-                # If nozzle is not specified, check if material is specified.
-                if root_material_id is not None:
-                    if root_material_id not in machine_node.children_map:
-                        machine_node.children_map[root_material_id] = QualityNode()
-                    material_node = cast(QualityNode, machine_node.children_map[root_material_id])
-
-                    material_node.addQualityMetadata(quality_type, metadata)
+            current_node.addQualityMetadata(quality_type, metadata)
 
         # Initialize the lookup tree for quality_changes profiles with following structure:
         # <machine> -> <quality_type> -> <name>
@@ -337,7 +314,6 @@ class QualityManager(QObject):
                         quality_group = quality_group_dict[quality_type]
                         if position not in quality_group.nodes_for_extruders:
                             quality_group.nodes_for_extruders[position] = quality_node
-                    #break
 
         # Update availabilities for each quality group
         self._updateQualityGroupsAvailability(machine, quality_group_dict.values())
