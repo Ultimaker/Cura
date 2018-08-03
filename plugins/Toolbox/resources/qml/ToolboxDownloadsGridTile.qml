@@ -115,6 +115,10 @@ Item
                     {
                         toolbox.viewPage = "author"
                         toolbox.filterModelByProp("packages", "author_id", model.id)
+                        toolbox.setFilters("packages", {
+                            "author_id": model.id,
+                            "type": "material"
+                        })
                     }
                     break
                 default:

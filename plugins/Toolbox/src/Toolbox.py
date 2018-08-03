@@ -783,7 +783,16 @@ class Toolbox(QObject, Extension):
         self._models[modelType].setFilter({ filterType: parameter })
         self.filterChanged.emit()
 
-    @pyqtSlot()
+    @pyqtSlot(str, "QVariantMap")
+    def setFilters(self, modelType: str, filterDict: dict):
+        if not self._models[modelType]:
+            Logger.log("w", "Toolbox: Couldn't filter %s model because it doesn't exist.", modelType)
+            return
+        print(filterDict)
+        self._models[modelType].setFilter(filterDict)
+        self.filterChanged.emit()
+
+    @pyqtSlot(str)
     def removeFilters(self, modelType: str):
         if not self._models[modelType]:
             Logger.log("w", "Toolbox: Couldn't remove filters on %s model because it doesn't exist.", modelType)
