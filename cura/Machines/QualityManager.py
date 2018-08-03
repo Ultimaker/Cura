@@ -263,38 +263,31 @@ class QualityManager(QObject):
             # Each points above can be represented as a node in the lookup tree, so here we simply put those nodes into
             # the list with priorities as the order. Later, we just need to loop over each node in this list and fetch
             # qualities from there.
+            node_info_list_0 = [nozzle_name, buildplate_name, root_material_id]
+            current_node_info_idx = 0
             nodes_to_check = []
 
-            if nozzle_name:
-                # In this case, we have both a specific nozzle and a specific material
-                nozzle_node = machine_node.getChildNode(nozzle_name)
-                if nozzle_node and has_material:
-                    # Check build plate if exists
-                    if buildplate_name:
-                        buildplate_node = nozzle_node.getChildNode(buildplate_name)
-                        if buildplate_node and has_material:
-                            for root_material_id in root_material_id_list:
-                                material_node = buildplate_node.getChildNode(root_material_id)
-                                if material_node:
-                                    nodes_to_check.append(material_node)
-                                    break
-                        nodes_to_check.append(buildplate_node)
+            # This function tries to recursively find the deepest (the most specific) branch and add those nodes to
+            # the search list in the order described above. So, by iterating over that search node list, we first look
+            # in the more specific branches and then the less specific (generic) ones.
+            def addNodesToCheck(node, nodes_to_check_list, node_info_list, node_info_idx):
+                if current_node_info_idx < len(node_info_list):
+                    node_name = node_info_list[node_info_idx]
+                    if node_name is not None:
+                        current_node = node.getChildNode(node_name)
+                        if current_node is not None and has_material:
+                            addNodesToCheck(current_node, nodes_to_check_list, node_info_list, node_info_idx + 1)
 
-                    # Then add nozzle specific materials
-                    for root_material_id in root_material_id_list:
-                        material_node = nozzle_node.getChildNode(root_material_id)
+                if has_material:
+                    for rmid in root_material_id_list:
+                        material_node = node.getChildNode(rmid)
                         if material_node:
-                            nodes_to_check.append(material_node)
+                            nodes_to_check_list.append(material_node)
                             break
-                nodes_to_check.append(nozzle_node)
 
-            # In this case, we only have a specific material but NOT a nozzle
-            if has_material:
-                for root_material_id in root_material_id_list:
-                    material_node = machine_node.getChildNode(root_material_id)
-                    if material_node:
-                        nodes_to_check.append(material_node)
-                        break
+                nodes_to_check_list.append(node)
+
+            addNodesToCheck(machine_node, nodes_to_check, node_info_list_0, 0)
 
             nodes_to_check += [machine_node, default_machine_node]
             for node in nodes_to_check:
