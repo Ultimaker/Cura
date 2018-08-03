@@ -12,7 +12,13 @@ class CameraImageProvider(QQuickImageProvider):
     def requestImage(self, id, size):
         for output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices():
             try:
-                return output_device.activePrinter.camera.getImage(), QSize(15, 15)
+
+                image = output_device.activePrinter.camera.getImage()
+
+                if image.isNull():
+                    return QImage(), QSize(15, 15)
+
+                return image, QSize(15, 15)
             except AttributeError:
                 pass
         return QImage(), QSize(15, 15)
