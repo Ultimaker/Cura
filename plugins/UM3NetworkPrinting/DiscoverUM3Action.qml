@@ -349,11 +349,6 @@ Cura.MachineAction
             addressField.focus = true;
         }
 
-        onAccepted:
-        {
-            manager.setManualDevice(printerKey, addressText)
-        }
-
         Column {
             anchors.fill: parent
             spacing: UM.Theme.getSize("default_margin").height
@@ -393,7 +388,7 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
-                    manualPrinterDialog.accept()
+                    manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
                     manualPrinterDialog.hide()
                 }
                 enabled: manualPrinterDialog.addressText.trim() != ""
