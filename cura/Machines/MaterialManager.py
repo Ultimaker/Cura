@@ -186,7 +186,6 @@ class MaterialManager(QObject):
             for root_material_id in data_dict.values():
                 self._diameter_material_map[root_material_id] = default_root_material_id
 
-        variant_manager = self._application.getVariantManager()
 
         # Map #4
         # "machine" -> "nozzle name" -> "buildplate name" -> "root material ID" -> specific material InstanceContainer
