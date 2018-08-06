@@ -178,8 +178,7 @@ class CuraEngineBackend(QObject, Backend):
     #   This is useful for debugging and used to actually start the engine.
     #   \return list of commands and args / parameters.
     def getEngineCommand(self) -> List[str]:
-        json_path = Resources.getPath(Resources.DefinitionContainers, "fdmprinter.def.json")
-        return [self._application.getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, ""]
+        return [self._application.getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), ""]
 
     ##  Emitted when we get a message containing print duration and material amount.
     #   This also implies the slicing has finished.
