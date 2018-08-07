@@ -3,6 +3,9 @@
 
 import sys
 
+from shapely import affinity
+from shapely.geometry import Polygon
+
 from UM.Scene.Iterator import Iterator
 from UM.Scene.SceneNode import SceneNode
 
@@ -73,12 +76,10 @@ class OneAtATimeIterator(Iterator.Iterator):
         def flip_x(polygon):
             tm2 = [-1, 0, 0, 1, 0, 0]
             return affinity.affine_transform(affinity.translate(polygon, xoff = -machine_size[0]), tm2)
+
         def flip_y(polygon):
             tm2 = [1, 0, 0, -1, 0, 0]
             return affinity.affine_transform(affinity.translate(polygon, yoff = -machine_size[1]), tm2)
-
-        from shapely import affinity
-        from shapely.geometry import Polygon
 
         node_list = []
         for node in self._scene_node.getChildren():
