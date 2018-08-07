@@ -3025,7 +3025,7 @@
                         {
                             "label": "Initial Layer Print Acceleration",
                             "description": "The acceleration during the printing of the initial layer.",
-                            "unit": "mm/s",
+                            "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
                             "value": "acceleration_layer_0",
@@ -3039,7 +3039,7 @@
                         {
                             "label": "Initial Layer Travel Acceleration",
                             "description": "The acceleration for travel moves in the initial layer.",
-                            "unit": "mm/s",
+                            "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
                             "value": "acceleration_layer_0 * acceleration_travel / acceleration_print",
