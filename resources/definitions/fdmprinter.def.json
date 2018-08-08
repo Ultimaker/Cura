@@ -3873,6 +3873,19 @@
                         }
                     }
                 },
+                "support_infill_angle":
+                {
+                    "label": "Support Infill Line Direction",
+                    "description": "The minimum angle of overhangs for which support is added. At a value of 0° all overhangs are supported, 90° will not provide any support.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "-90",
+                    "maximum_value": "90",
+                    "default_value": 0,
+                    "enabled": "support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
