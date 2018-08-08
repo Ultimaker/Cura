@@ -18,6 +18,7 @@ class PrinterOutputController:
         self.can_pre_heat_hotends = True
         self.can_send_raw_gcode = True
         self.can_control_manually = True
+        self.can_update_firmware = False
         self._output_device = output_device
 
     def setTargetHotendTemperature(self, printer: "PrinterOutputModel", extruder: "ExtruderOutputModel", temperature: int):

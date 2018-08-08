@@ -9,7 +9,6 @@ from .avr_isp import stk500v2, intelHex
 
 from enum import IntEnum
 
-@signalemitter
 class AvrFirmwareUpdater(QObject):
     firmwareProgressChanged = pyqtSignal()
     firmwareUpdateStateChanged = pyqtSignal()

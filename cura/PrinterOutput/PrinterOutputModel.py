@@ -277,6 +277,13 @@ class PrinterOutputModel(QObject):
             return self._controller.can_control_manually
         return False
 
+    # Does the printer support upgrading firmware
+    @pyqtProperty(bool, notify = canUpdateFirmwareChanged)
+    def canUpdateFirmware(self):
+        if self._controller:
+            return self._controller.can_update_firmware
+        return False
+
     # Returns the configuration (material, variant and buildplate) of the current printer
     @pyqtProperty(QObject, notify = configurationChanged)
     def printerConfiguration(self):
