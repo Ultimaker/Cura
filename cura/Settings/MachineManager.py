@@ -1460,7 +1460,8 @@ class MachineManager(QObject):
             for extruder_nr, extruder_stack in global_stack.extruders.items():
                 quality_container = self._empty_quality_container
                 if extruder_nr in quality_group.nodes_for_extruders:
-                    quality_container = quality_group.nodes_for_extruders[extruder_nr].getContainer()
+                    container = quality_group.nodes_for_extruders[extruder_nr].getContainer()
+                    quality_container = container if container is not None else quality_container
                 extruder_stack.quality = quality_container
             return
 
