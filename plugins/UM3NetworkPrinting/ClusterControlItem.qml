@@ -30,7 +30,12 @@ Component
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right:parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             text: Cura.MachineManager.printerOutputDevices[0].name
+            elide: Text.ElideRight
         }
 
         Rectangle
