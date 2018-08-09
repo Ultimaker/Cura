@@ -928,12 +928,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = extruder_info.root_material_id
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
+            build_plate_id = global_stack.variant.getId()
+
             # get material diameter of this extruder
             machine_material_diameter = extruder_stack.materialDiameter
             material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
                                                              extruder_stack.variant.getName(),
+                                                             build_plate_id,
                                                              machine_material_diameter,
                                                              root_material_id)
+
             if material_node is not None and material_node.getContainer() is not None:
                 extruder_stack.material = material_node.getContainer()
 
