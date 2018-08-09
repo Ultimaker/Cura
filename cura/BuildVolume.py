@@ -3,6 +3,7 @@
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Application import Application #To modify the maximum zoom level.
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -551,6 +552,11 @@ class BuildVolume(SceneNode):
 
             if self._engine_ready:
                 self.rebuild()
+
+            diagonal_size = math.sqrt(self._width * self._width + self._height * self._height + self._depth * self._depth)
+            camera = Application.getInstance().getController().getCameraTool()
+            if camera:
+                camera.setZoomRange(min = 1, max = diagonal_size * 5) #You can zoom out up to 5 times the diagonal across your screen (to see models bigger than your volume).
 
     def _onEngineCreated(self):
         self._engine_ready = True
