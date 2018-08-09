@@ -3,7 +3,7 @@
 
 from cura.CuraApplication import CuraApplication
 
-##  The back-ups API provides a version-proof bridge between Cura's
+##  The sidebar context menu API provides a version-proof bridge between Cura's
 #   Sidebar Context Menu and plug-ins that hook into it.
 #
 #   Usage:
