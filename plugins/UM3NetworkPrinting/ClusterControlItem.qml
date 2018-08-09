@@ -41,14 +41,18 @@ Component
         Rectangle
         {
             id: printJobArea
+
             border.width: UM.Theme.getSize("default_lining").width
             border.color: lineColor
-            anchors.top: activePrintersLabel.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            anchors.rightMargin:UM.Theme.getSize("default_margin").width
+
+            anchors
+            {
+                top: activePrintersLabel.bottom
+                margins: UM.Theme.getSize("default_margin").width
+                left: parent.left
+                right: parent.right
+            }
+
             radius: cornerRadius
             height: childrenRect.height
 
@@ -81,12 +85,14 @@ Component
             Column
             {
                 id: printJobColumn
-                anchors.top: printJobTitleBar.bottom
-                anchors.topMargin: UM.Theme.getSize("default_margin").height
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                anchors
+                {
+                    top: printJobTitleBar.bottom
+                    margins: UM.Theme.getSize("default_margin").height
+                    right: parent.right
+                    left: parent.left
+                }
 
                 Item
                 {
@@ -99,6 +105,7 @@ Component
                         font: UM.Theme.getFont("very_small")
 
                     }
+
                     Label
                     {
                         text: manager.activePrintJobs.length
@@ -106,6 +113,7 @@ Component
                         anchors.right: parent.right
                     }
                 }
+
                 Item
                 {
                     width: parent.width
@@ -116,6 +124,7 @@ Component
                         text: catalog.i18nc("@label", "Queued")
                         font: UM.Theme.getFont("very_small")
                     }
+
                     Label
                     {
                         text: manager.queuedPrintJobs.length
@@ -124,6 +133,7 @@ Component
                     }
                 }
             }
+
             OpenPanelButton
             {
                 anchors.top: printJobColumn.bottom
