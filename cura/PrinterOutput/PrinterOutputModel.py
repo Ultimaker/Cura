@@ -44,12 +44,8 @@ class PrinterOutputModel(QObject):
         self._printer_type = ""
         self._buildplate_name = None
 
-
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
-
-        #for extruder_configuration in self._printer_configuration.extruderConfigurations:
-        #    extruder_configuration.extruderConfigurationChanged.connect(self.configurationChanged)
 
         self._camera = None
 
@@ -287,7 +283,3 @@ class PrinterOutputModel(QObject):
         if self._printer_configuration.isValid():
             return self._printer_configuration
         return None
-
-    #def _updateExtruderConfiguration(self):
-
-        #self.configurationChanged.emit()
