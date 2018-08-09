@@ -25,8 +25,8 @@ class SidebarContextMenu:
 
     ##  Add items to the sidebar context menu.
     #   \param menu_item dict containing the menu item to add.
-    def addSidebarMenuItem(self, menu_items: dict) -> None:
-        self._application.addSidebarCustomMenuItem(menu_items)
+    def addSidebarMenuItem(self, menu_item: dict) -> None:
+        self._application.addSidebarCustomMenuItem(menu_item)
 
     ##  Get all custom items currently added to the sidebar context menu.
     #   \return List containing all custom context menu items.
