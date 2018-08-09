@@ -43,9 +43,13 @@ class PrinterOutputModel(QObject):
         self._is_preheating = False
         self._printer_type = ""
         self._buildplate_name = None
-        # Update the printer configuration every time any of the extruders changes its configuration
-        for extruder in self._extruders:
-            extruder.extruderConfigurationChanged.connect(self._updateExtruderConfiguration)
+
+
+        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
+                                                              self._extruders]
+
+        #for extruder_configuration in self._printer_configuration.extruderConfigurations:
+        #    extruder_configuration.extruderConfigurationChanged.connect(self.configurationChanged)
 
         self._camera = None
 
@@ -284,6 +288,6 @@ class PrinterOutputModel(QObject):
             return self._printer_configuration
         return None
 
-    def _updateExtruderConfiguration(self):
-        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in self._extruders]
-        self.configurationChanged.emit()
+    #def _updateExtruderConfiguration(self):
+
+        #self.configurationChanged.emit()

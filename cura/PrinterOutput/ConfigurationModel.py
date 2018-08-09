@@ -27,7 +27,13 @@ class ConfigurationModel(QObject):
         return self._printer_type
 
     def setExtruderConfigurations(self, extruder_configurations):
-        self._extruder_configurations = extruder_configurations
+        if self._extruder_configurations != extruder_configurations:
+            self._extruder_configurations = extruder_configurations
+
+            for extruder_configuration in self._extruder_configurations:
+                extruder_configuration.extruderConfigurationChanged.connect(self.configurationChanged)
+
+            self.configurationChanged.emit()
 
     @pyqtProperty("QVariantList", fset = setExtruderConfigurations, notify = configurationChanged)
     def extruderConfigurations(self):
