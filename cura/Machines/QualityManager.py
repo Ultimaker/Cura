@@ -271,7 +271,7 @@ class QualityManager(QObject):
             # the search list in the order described above. So, by iterating over that search node list, we first look
             # in the more specific branches and then the less specific (generic) ones.
             def addNodesToCheck(node, nodes_to_check_list, node_info_list, node_info_idx):
-                if current_node_info_idx < len(node_info_list):
+                if node_info_idx < len(node_info_list):
                     node_name = node_info_list[node_info_idx]
                     if node_name is not None:
                         current_node = node.getChildNode(node_name)
