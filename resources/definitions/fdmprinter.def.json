@@ -3876,7 +3876,7 @@
                 "support_infill_angle":
                 {
                     "label": "Support Infill Line Direction",
-                    "description": "The minimum angle of overhangs for which support is added. At a value of 0° all overhangs are supported, 90° will not provide any support.",
+                    "description": "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane.",
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "-90",
