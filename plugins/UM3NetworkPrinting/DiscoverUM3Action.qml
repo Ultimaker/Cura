@@ -299,11 +299,11 @@ Cura.MachineAction
                         }
                         else if (base.selectedDevice.clusterSize === 0)
                         {
-                            return catalog.i18nc("@label", "This printer is not set up to host a group of Ultimaker 3 printers.");
+                            return catalog.i18nc("@label", "This printer is not set up to host a group of printers.");
                         }
                         else
                         {
-                            return catalog.i18nc("@label", "This printer is the host for a group of %1 Ultimaker 3 printers.".arg(base.selectedDevice.clusterSize));
+                            return catalog.i18nc("@label", "This printer is the host for a group of %1 printers.".arg(base.selectedDevice.clusterSize));
                         }
                     }
 
