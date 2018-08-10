@@ -16,7 +16,7 @@ Item
 
     Rectangle
     {
-        anchors.fill: parent
+        height: childrenRect.height
         color: UM.Theme.getColor("setting_category")
         property var activePrinter: outputDevice != null ? outputDevice.activePrinter : null
 

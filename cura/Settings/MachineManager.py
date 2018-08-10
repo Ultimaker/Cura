@@ -1455,9 +1455,14 @@ class MachineManager(QObject):
             if quality_group.node_for_global is None:
                 Logger.log("e", "Could not set quality group [%s] because it has no node_for_global", str(quality_group))
                 return
+            # This is not changing the quality for the active machine !!!!!!!!
             global_stack.quality = quality_group.node_for_global.getContainer()
             for extruder_nr, extruder_stack in global_stack.extruders.items():
-                extruder_stack.quality = quality_group.nodes_for_extruders[extruder_nr].getContainer()
+                quality_container = self._empty_quality_container
+                if extruder_nr in quality_group.nodes_for_extruders:
+                    container = quality_group.nodes_for_extruders[extruder_nr].getContainer()
+                    quality_container = container if container is not None else quality_container
+                extruder_stack.quality = quality_container
             return
 
         self.blurSettings.emit()

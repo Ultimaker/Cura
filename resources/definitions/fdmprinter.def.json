@@ -1713,6 +1713,17 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_wall_line_count":
+                {
+                    "label": "Extra Infill Wall Count",
+                    "description": "Add extra wals around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
+                    "default_value": 0,
+                    "type": "int",
+                    "minimum_value": "0",
+                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "sub_div_rad_add":
                 {
                     "label": "Cubic Subdivision Shell",
@@ -3014,7 +3025,7 @@
                         {
                             "label": "Initial Layer Print Acceleration",
                             "description": "The acceleration during the printing of the initial layer.",
-                            "unit": "mm/s",
+                            "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
                             "value": "acceleration_layer_0",
@@ -3028,7 +3039,7 @@
                         {
                             "label": "Initial Layer Travel Acceleration",
                             "description": "The acceleration for travel moves in the initial layer.",
-                            "unit": "mm/s",
+                            "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
                             "value": "acceleration_layer_0 * acceleration_travel / acceleration_print",
@@ -4723,7 +4734,7 @@
                 },
                 "raft_base_line_spacing":
                 {
-                    "label": "Raft Line Spacing",
+                    "label": "Raft Base Line Spacing",
                     "description": "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
                     "unit": "mm",
                     "type": "float",
@@ -5046,7 +5057,7 @@
                     "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
                     "unit": "mm³",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 6,
                     "minimum_value": "0",
                     "maximum_value_warning": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') if prime_tower_circular else resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')) - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",

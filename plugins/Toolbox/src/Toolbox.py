@@ -776,17 +776,25 @@ class Toolbox(QObject, Extension):
     # Filter Models:
     # --------------------------------------------------------------------------
     @pyqtSlot(str, str, str)
-    def filterModelByProp(self, modelType: str, filterType: str, parameter: str):
-        if not self._models[modelType]:
-            Logger.log("w", "Toolbox: Couldn't filter %s model because it doesn't exist.", modelType)
+    def filterModelByProp(self, model_type: str, filter_type: str, parameter: str) -> None:
+        if not self._models[model_type]:
+            Logger.log("w", "Toolbox: Couldn't filter %s model because it doesn't exist.", model_type)
             return
-        self._models[modelType].setFilter({ filterType: parameter })
+        self._models[model_type].setFilter({filter_type: parameter})
         self.filterChanged.emit()
 
-    @pyqtSlot()
-    def removeFilters(self, modelType: str):
-        if not self._models[modelType]:
-            Logger.log("w", "Toolbox: Couldn't remove filters on %s model because it doesn't exist.", modelType)
+    @pyqtSlot(str, "QVariantMap")
+    def setFilters(self, model_type: str, filter_dict: dict) -> None:
+        if not self._models[model_type]:
+            Logger.log("w", "Toolbox: Couldn't filter %s model because it doesn't exist.", model_type)
             return
-        self._models[modelType].setFilter({})
+        self._models[model_type].setFilter(filter_dict)
+        self.filterChanged.emit()
+
+    @pyqtSlot(str)
+    def removeFilters(self, model_type: str) -> None:
+        if not self._models[model_type]:
+            Logger.log("w", "Toolbox: Couldn't remove filters on %s model because it doesn't exist.", model_type)
+            return
+        self._models[model_type].setFilter({})
         self.filterChanged.emit()

@@ -41,7 +41,7 @@ class StartJobResult(IntEnum):
 
 ##  Formatter class that handles token expansion in start/end gcode
 class GcodeStartEndFormatter(Formatter):
-    def get_value(self, key: str, *args: str, default_extruder_nr: str = "-1", **kwargs) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
+    def get_value(self, key: str, args: str, kwargs: dict, default_extruder_nr: str = "-1") -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
         # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
         # and a default_extruder_nr to use when no extruder_nr is specified
 
