@@ -172,9 +172,6 @@ class GlobalStack(CuraContainerStack):
                 return False
         return True
 
-    def getHeadAndFansCoordinates(self):
-        return self.getProperty("machine_head_with_fans_polygon", "value")
-
 
 ## private:
 global_stack_mime = MimeType(
