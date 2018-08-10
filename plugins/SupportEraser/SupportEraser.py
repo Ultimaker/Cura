@@ -28,7 +28,7 @@ from UM.Settings.SettingInstance import SettingInstance
 class SupportEraser(Tool):
     def __init__(self):
         super().__init__()
-        self._shortcut_key = Qt.Key_G
+        self._shortcut_key = Qt.Key_E
         self._controller = self.getController()
 
         self._selection_pass = None
