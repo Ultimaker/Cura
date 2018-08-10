@@ -13,6 +13,7 @@ from cura.Backups.BackupsManager import BackupsManager
 #       api = CuraAPI()
 #       api.backups.createBackup()
 #       api.backups.restoreBackup(my_zip_file, {"cura_release": "3.1"})``
+
 class Backups:
     manager = BackupsManager()  # Re-used instance of the backups manager.
 

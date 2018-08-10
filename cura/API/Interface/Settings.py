@@ -3,32 +3,31 @@
 
 from cura.CuraApplication import CuraApplication
 
-##  The sidebar context menu API provides a version-proof bridge between Cura's
-#   Sidebar Context Menu and plug-ins that hook into it.
+##  The Interface.Settings API provides a version-proof bridge between Cura's
+#   (currently) sidebar UI and plug-ins that hook into it.
 #
 #   Usage:
 #       ``from cura.API import CuraAPI
 #       api = CuraAPI()
-#       api.sidebar.getContextMenuItems()
-#       menu_actions = []
-#       menu_actions.append("sidebarMenuItemOnClickHandler")
+#       api.interface.settings.getContextMenuItems()
 #       data = {
 #           "name": "My Plugin Action",
 #           "iconName": "my-plugin-icon",
-#           "actions": menu_actions,
+#           "actions": my_menu_actions,
 #           "menu_item": MyPluginAction(self)
 #       }
-#       api.sidebar.addContextMenuItem(data)``
-class Sidebar:
+#       api.interface.settings.addContextMenuItem(data)``
 
-    _application = CuraApplication.getInstance()  # type: CuraApplication
+class Settings:
+    # Re-used instance of Cura:
+    application = CuraApplication.getInstance()  # type: CuraApplication
 
     ##  Add items to the sidebar context menu.
     #   \param menu_item dict containing the menu item to add.
     def addContextMenuItem(self, menu_item: dict) -> None:
-        self._application.addSidebarCustomMenuItem(menu_item)
+        self.application.addSidebarCustomMenuItem(menu_item)
 
     ##  Get all custom items currently added to the sidebar context menu.
     #   \return List containing all custom context menu items.
     def getContextMenuItems(self) -> list:
-        return self._application.getSidebarCustomMenuItems()
+        return self.application.getSidebarCustomMenuItems()
