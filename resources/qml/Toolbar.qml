@@ -34,7 +34,7 @@ Item
             height: childrenRect.height
             Button
             {
-                text: model.name
+                text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
                 iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                 checkable: true
                 checked: model.active
