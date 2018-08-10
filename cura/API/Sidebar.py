@@ -9,26 +9,26 @@ from cura.CuraApplication import CuraApplication
 #   Usage:
 #       ``from cura.API import CuraAPI
 #       api = CuraAPI()
-#       api.sidebar_context_menu.getSidebarMenuItems()
+#       api.sidebar.getContextMenuItems()
 #       menu_actions = []
-#       menu_actions.append("sidebarMenuItemOnClickHander")
+#       menu_actions.append("sidebarMenuItemOnClickHandler")
 #       data = {
 #           "name": "My Plugin Action",
 #           "iconName": "my-plugin-icon",
 #           "actions": menu_actions,
 #           "menu_item": MyPluginAction(self)
 #       }
-#       api.sidebar_context_menu.addSidebarMenuItems([])``
-class SidebarContextMenu:
+#       api.sidebar.addContextMenuItem(data)``
+class Sidebar:
 
     _application = CuraApplication.getInstance()  # type: CuraApplication
 
     ##  Add items to the sidebar context menu.
     #   \param menu_item dict containing the menu item to add.
-    def addSidebarMenuItem(self, menu_item: dict) -> None:
+    def addContextMenuItem(self, menu_item: dict) -> None:
         self._application.addSidebarCustomMenuItem(menu_item)
 
     ##  Get all custom items currently added to the sidebar context menu.
     #   \return List containing all custom context menu items.
-    def getSidebarMenuItems(self) -> list:
+    def getContextMenuItems(self) -> list:
         return self._application.getSidebarCustomMenuItems()

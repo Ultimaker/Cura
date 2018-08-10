@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from UM.PluginRegistry import PluginRegistry
 from cura.API.Backups import Backups
-from cura.API.SidebarContextMenu import SidebarContextMenu
+from cura.API.Sidebar import Sidebar
 
 ##  The official Cura API that plug-ins can use to interact with Cura.
 #
@@ -19,4 +19,4 @@ class CuraAPI:
     backups = Backups()
 
     # Sidebar Context Menu API
-    sidebar_context_menu = SidebarContextMenu()
+    sidebar = Sidebar()
