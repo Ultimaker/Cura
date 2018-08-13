@@ -264,7 +264,6 @@ class QualityManager(QObject):
             # the list with priorities as the order. Later, we just need to loop over each node in this list and fetch
             # qualities from there.
             node_info_list_0 = [nozzle_name, buildplate_name, root_material_id]
-            current_node_info_idx = 0
             nodes_to_check = []
 
             # This function tries to recursively find the deepest (the most specific) branch and add those nodes to
