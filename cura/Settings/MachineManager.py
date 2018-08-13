@@ -1183,7 +1183,7 @@ class MachineManager(QObject):
         if not self._global_container_stack.variant:
             self._global_container_stack.variant = self._application.empty_variant_container
 
-    def _setMaterial(self, position: str, container_node: ContainerNode = None) -> None:
+    def _setMaterial(self, position: str, container_node: Optional["ContainerNode"] = None) -> None:
         if self._global_container_stack is None:
             return
         if container_node and container_node.getContainer():
