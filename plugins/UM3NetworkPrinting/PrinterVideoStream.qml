@@ -89,9 +89,11 @@ Item
 
     MouseArea
     {
-      anchors.fill: cameraImage
-      onClicked: { /* no-op */ }
-      z: 1
+        anchors.fill: cameraImage
+        onClicked:
+        {
+            OutputDevice.setActivePrinter(null)
+        }
+        z: 1
     }
-
 }

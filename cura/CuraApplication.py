@@ -226,6 +226,8 @@ class CuraApplication(QtApplication):
 
         self._need_to_show_user_agreement = True
 
+        self._plugins_loaded = False
+
         # Backups
         self._auto_save = None
         self._save_data_enabled = True

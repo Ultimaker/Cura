@@ -39,12 +39,12 @@ class SendMaterialJob(Job):
         try:
             remote_materials_list = json.loads(remote_materials_list)
         except json.JSONDecodeError:
-            Logger.log("e", "Current material storage on printer was a corrupted reply.")
+            Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
             return
         try:
             remote_materials_by_guid = {material["guid"]: material for material in remote_materials_list} #Index by GUID.
         except KeyError:
-            Logger.log("e", "Current material storage on printer was an invalid reply (missing GUIDs).")
+            Logger.log("e", "Request material storage on printer: Printer's answer was missing GUIDs.")
             return
 
         container_registry = ContainerRegistry.getInstance()
