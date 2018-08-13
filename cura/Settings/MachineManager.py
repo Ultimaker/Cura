@@ -49,7 +49,7 @@ class MachineManager(QObject):
     def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
 
-        self._active_container_stack = None     # type: Optional[ExtruderManager]
+        self._active_container_stack = None     # type: Optional[ExtruderStack]
         self._global_container_stack = None     # type: Optional[GlobalStack]
 
         self._current_root_material_id = {}  # type: Dict[str, str]
