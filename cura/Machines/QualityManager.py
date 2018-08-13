@@ -238,6 +238,7 @@ class QualityManager(QObject):
             # The root material IDs in this list are in prioritized order.
             root_material_id_list = []
             has_material = False  # flag indicating whether this extruder has a material assigned
+            root_material_id = None
             if extruder.material.getId() != "empty_material":
                 has_material = True
                 root_material_id = extruder.material.getMetaDataEntry("base_file")
@@ -248,7 +249,7 @@ class QualityManager(QObject):
                 # Also try to get the fallback material
                 material_type = extruder.material.getMetaDataEntry("material")
                 fallback_root_material_id = self._material_manager.getFallbackMaterialIdByMaterialType(material_type)
-                if fallback_root_material_id and root_material_id not in root_material_id_list:
+                if fallback_root_material_id:
                     root_material_id_list.append(fallback_root_material_id)
 
             # Here we construct a list of nodes we want to look for qualities with the highest priority first.
