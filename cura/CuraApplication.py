@@ -631,7 +631,7 @@ class CuraApplication(QtApplication):
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self):
         if not self.started or not self._save_data_enabled:
-            # Do not do saving during application start or when data should not be safed on quit.
+            # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
         self.savePreferences()
