@@ -21,9 +21,6 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication
-from cura.Machines.ContainerNode import ContainerNode #For typing.
-from cura.Machines.QualityChangesGroup import QualityChangesGroup #For typing.
-from cura.Machines.QualityGroup import QualityGroup #For typing.
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
@@ -44,12 +41,16 @@ if TYPE_CHECKING:
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
     from cura.Machines.VariantManager import VariantManager
+    from cura.Machines.ContainerNode import ContainerNode
+    from cura.Machines.QualityChangesGroup import QualityChangesGroup
+    from cura.Machines.QualityGroup import QualityGroup
+
 
 class MachineManager(QObject):
     def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
 
-        self._active_container_stack = None     # type: Optional[ExtruderManager]
+        self._active_container_stack = None     # type: Optional[ExtruderStack]
         self._global_container_stack = None     # type: Optional[GlobalStack]
 
         self._current_root_material_id = {}  # type: Dict[str, str]
@@ -1087,7 +1088,7 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
-    def _setQualityGroup(self, quality_group: Optional[QualityGroup], empty_quality_changes: bool = True) -> None:
+    def _setQualityGroup(self, quality_group: Optional["QualityGroup"], empty_quality_changes: bool = True) -> None:
         if self._global_container_stack is None:
             return
         if quality_group is None:
@@ -1118,7 +1119,7 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
-    def _fixQualityChangesGroupToNotSupported(self, quality_changes_group: QualityChangesGroup) -> None:
+    def _fixQualityChangesGroupToNotSupported(self, quality_changes_group: "QualityChangesGroup") -> None:
         nodes = [quality_changes_group.node_for_global] + list(quality_changes_group.nodes_for_extruders.values())
         containers = [n.getContainer() for n in nodes if n is not None]
         for container in containers:
@@ -1126,7 +1127,7 @@ class MachineManager(QObject):
                 container.setMetaDataEntry("quality_type", "not_supported")
         quality_changes_group.quality_type = "not_supported"
 
-    def _setQualityChangesGroup(self, quality_changes_group: QualityChangesGroup) -> None:
+    def _setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
         if self._global_container_stack is None:
             return #Can't change that.
         quality_type = quality_changes_group.quality_type
@@ -1170,20 +1171,20 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
-    def _setVariantNode(self, position: str, container_node: ContainerNode) -> None:
+    def _setVariantNode(self, position: str, container_node: "ContainerNode") -> None:
         if container_node.getContainer() is None or self._global_container_stack is None:
             return
         self._global_container_stack.extruders[position].variant = container_node.getContainer()
         self.activeVariantChanged.emit()
 
-    def _setGlobalVariant(self, container_node: ContainerNode) -> None:
+    def _setGlobalVariant(self, container_node: "ContainerNode") -> None:
         if self._global_container_stack is None:
             return
         self._global_container_stack.variant = container_node.getContainer()
         if not self._global_container_stack.variant:
             self._global_container_stack.variant = self._application.empty_variant_container
 
-    def _setMaterial(self, position: str, container_node: ContainerNode = None) -> None:
+    def _setMaterial(self, position: str, container_node: Optional["ContainerNode"] = None) -> None:
         if self._global_container_stack is None:
             return
         if container_node and container_node.getContainer():
@@ -1388,7 +1389,7 @@ class MachineManager(QObject):
         return bool(containers)
 
     @pyqtSlot("QVariant")
-    def setGlobalVariant(self, container_node: ContainerNode) -> None:
+    def setGlobalVariant(self, container_node: "ContainerNode") -> None:
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setGlobalVariant(container_node)
@@ -1438,7 +1439,7 @@ class MachineManager(QObject):
         self.setVariant(position, variant_node)
 
     @pyqtSlot(str, "QVariant")
-    def setVariant(self, position: str, container_node: ContainerNode) -> None:
+    def setVariant(self, position: str, container_node: "ContainerNode") -> None:
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
@@ -1462,7 +1463,7 @@ class MachineManager(QObject):
     ##  Optionally provide global_stack if you want to use your own
     #   The active global_stack is treated differently.
     @pyqtSlot(QObject)
-    def setQualityGroup(self, quality_group: QualityGroup, no_dialog: bool = False, global_stack: Optional["GlobalStack"] = None) -> None:
+    def setQualityGroup(self, quality_group: "QualityGroup", no_dialog: bool = False, global_stack: Optional["GlobalStack"] = None) -> None:
         if global_stack is not None and global_stack != self._global_container_stack:
             if quality_group is None:
                 Logger.log("e", "Could not set quality group because quality group is None")
@@ -1489,11 +1490,11 @@ class MachineManager(QObject):
             self._application.discardOrKeepProfileChanges()
 
     @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
-    def activeQualityGroup(self) -> Optional[QualityGroup]:
+    def activeQualityGroup(self) -> Optional["QualityGroup"]:
         return self._current_quality_group
 
     @pyqtSlot(QObject)
-    def setQualityChangesGroup(self, quality_changes_group: QualityChangesGroup, no_dialog: bool = False) -> None:
+    def setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", no_dialog: bool = False) -> None:
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityChangesGroup(quality_changes_group)
@@ -1512,7 +1513,7 @@ class MachineManager(QObject):
                 stack.userChanges.clear()
 
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
-    def activeQualityChangesGroup(self) -> Optional[QualityChangesGroup]:
+    def activeQualityChangesGroup(self) -> Optional["QualityChangesGroup"]:
         return self._current_quality_changes_group
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)

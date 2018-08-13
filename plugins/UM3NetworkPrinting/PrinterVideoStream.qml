@@ -16,9 +16,9 @@ Item
 
     MouseArea
     {
-      anchors.fill: parent
-      onClicked: OutputDevice.setActivePrinter(null)
-      z: 0
+        anchors.fill: parent
+        onClicked: OutputDevice.setActivePrinter(null)
+        z: 0
     }
 
     Button
@@ -28,7 +28,7 @@ Item
         anchors.bottomMargin: UM.Theme.getSize("default_margin").width
         anchors.right: cameraImage.right
 
-        // TODO: Harcoded sizes
+        // TODO: Hardcoded sizes
         width: 20 * screenScaleFactor
         height: 20 * screenScaleFactor
 
