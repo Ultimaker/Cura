@@ -1,15 +1,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from collections import namedtuple
 import copy
 import io
-import json #To parse the product-to-id mapping file.
-import os.path #To find the product-to-id mapping.
+import json
+import os
 import sys
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, List, Optional, cast
 import xml.etree.ElementTree as ET
 from typing import Dict
-from typing import Iterator
 
 from UM.Resources import Resources
 from UM.Logger import Logger
@@ -21,9 +21,13 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from .XmlMaterialValidator import XmlMaterialValidator
 
+HotendNameAndAlternativeNamesResult = namedtuple("HotendNameAndAlternativeNamesResult",
+                                                 ["main_name", "alternative_name_list"])
+
+
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
-    CurrentFdmMaterialVersion = "1.3"
+    CurrentFdmMaterialVersion = "1.4"
     Version = 1
 
     def __init__(self, container_id, *args, **kwargs):
@@ -41,7 +45,7 @@ class XmlMaterialProfile(InstanceContainer):
     #   \return The corresponding setting_version.
     @classmethod
     def xmlVersionToSettingVersion(cls, xml_version: str) -> int:
-        if xml_version == "1.3":
+        if xml_version == "1.4":
             return CuraApplication.SettingVersion
         return 0 #Older than 1.3.
 
@@ -273,7 +277,12 @@ class XmlMaterialProfile(InstanceContainer):
                 variant_type = VariantType(variant_type)
                 if variant_type == VariantType.NOZZLE:
                     # The hotend identifier is not the containers name, but its "name".
-                    builder.start("hotend", {"id": variant_name})
+                    hotend_attributes_dict = {"id": variant_name}
+                    alternative_variant_names = self.getMetaDataEntry("alternative_variant_ids")
+                    if alternative_variant_names is not None:
+                        hotend_attributes_dict["alternative_ids"] = ";".join(alternative_variant_names)
+
+                    builder.start("hotend", hotend_attributes_dict)
 
                     # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
                     material_container = variant_dict["material_container"]
@@ -718,15 +727,12 @@ class XmlMaterialProfile(InstanceContainer):
 
                     hotends = machine.iterfind("./um:hotend", self.__namespaces)
                     for hotend in hotends:
-                        # The "id" field for hotends in material profiles are actually
-                        hotend_name = hotend.get("id")
-                        if hotend_name is None:
+                        result = self.__getHotendNameandAlternativeNamesFromNode(hotend, machine_id, True)
+                        if result.main_name is None:
                             continue
 
-                        variant_manager = CuraApplication.getInstance().getVariantManager()
-                        variant_node = variant_manager.getVariantNode(machine_id, hotend_name)
-                        if not variant_node:
-                            continue
+                        hotend_name = result.main_name
+                        alternative_name_list = result.alternative_name_list
 
                         hotend_compatibility = machine_compatibility
                         hotend_setting_values = {}
@@ -775,6 +781,8 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material.getMetaData()["id"] = new_hotend_specific_material_id
                         new_hotend_material.getMetaData()["name"] = self.getName()
                         new_hotend_material.getMetaData()["variant_name"] = hotend_name
+                        if alternative_name_list:
+                            new_hotend_material.getMetaData()["alternative_variant_ids"] = ";".join(alternative_name_list)
                         new_hotend_material.setDefinition(machine_id)
                         # Don't use setMetadata, as that overrides it for all materials with same base file
                         new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
@@ -800,6 +808,42 @@ class XmlMaterialProfile(InstanceContainer):
 
         for container_to_add in containers_to_add:
             ContainerRegistry.getInstance().addContainer(container_to_add)
+
+    @classmethod
+    def __getHotendNameandAlternativeNamesFromNode(cls, node, machine_id: str, check_if_variants_exist: bool) -> HotendNameAndAlternativeNamesResult:
+        # The "id" field for hotends in material profiles are actually
+        hotend_name_list = [node.get("id")]
+        alternative_ids = node.get("alternative_ids")
+        if alternative_ids:
+            hotend_name_list += alternative_ids.split(";")
+
+        # Find the hotend name that exists, and that's the main hotend name.
+        if not check_if_variants_exist:
+            main_name = node.get("id")
+            alternative_name_list = None
+            if alternative_ids:
+                alternative_name_list = alternative_ids.split(";")
+        else:
+            main_name = None
+            for name in hotend_name_list:
+                if name is None:
+                    continue
+
+                variant_manager = CuraApplication.getInstance().getVariantManager()
+                variant_node = variant_manager.getVariantNode(machine_id, name)
+                if not variant_node:
+                    continue
+
+                main_name = name
+                break
+
+            # Alternative names are the ones that are different from the main hotend name
+            alternative_name_list = None
+            if main_name is not None:
+                alternative_name_list = sorted([n for n in hotend_name_list if n is not None and n != main_name])
+
+        return HotendNameAndAlternativeNamesResult(main_name = main_name,
+                                                   alternative_name_list = alternative_name_list)
 
     @classmethod
     def deserializeMetadata(cls, serialized: str, container_id: str) -> List[Dict[str, Any]]:
@@ -955,33 +999,39 @@ class XmlMaterialProfile(InstanceContainer):
                         buildplate_map["buildplate_recommended"][buildplate_id] = buildplate_recommended
 
                     for hotend in machine.iterfind("./um:hotend", cls.__namespaces):
-                        hotend_name = hotend.get("id")
-                        if hotend_name is None:
+                        result = cls.__getHotendNameandAlternativeNamesFromNode(hotend, machine_id, False)
+                        if result.main_name is None:
                             continue
 
-                        hotend_compatibility = machine_compatibility
-                        for entry in hotend.iterfind("./um:setting", cls.__namespaces):
-                            key = entry.get("key")
-                            if key == "hardware compatible":
-                                if entry.text is not None:
-                                    hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                        alternative_name_list = result.alternative_name_list
+                        if not alternative_name_list:
+                            alternative_name_list = []
+                        for hotend_name in [result.main_name] + alternative_name_list:
+                            hotend_compatibility = machine_compatibility
+                            for entry in hotend.iterfind("./um:setting", cls.__namespaces):
+                                key = entry.get("key")
+                                if key == "hardware compatible":
+                                    if entry.text is not None:
+                                        hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
-                        new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
+                            new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
-                        # Same as above, do not overwrite existing metadata.
-                        new_hotend_material_metadata = {}
+                            # Same as above, do not overwrite existing metadata.
+                            new_hotend_material_metadata = {}
 
-                        new_hotend_material_metadata.update(base_metadata)
-                        new_hotend_material_metadata["variant_name"] = hotend_name
-                        new_hotend_material_metadata["compatible"] = hotend_compatibility
-                        new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
-                        new_hotend_material_metadata["id"] = new_hotend_specific_material_id
-                        new_hotend_material_metadata["definition"] = machine_id
-                        if buildplate_map["buildplate_compatible"]:
-                            new_hotend_material_metadata["buildplate_compatible"] = buildplate_map["buildplate_compatible"]
-                            new_hotend_material_metadata["buildplate_recommended"] = buildplate_map["buildplate_recommended"]
+                            new_hotend_material_metadata.update(base_metadata)
+                            new_hotend_material_metadata["variant_name"] = hotend_name
+                            if alternative_name_list:
+                                new_hotend_material_metadata["alternative_variant_ids"] = ";".join(alternative_name_list)
+                            new_hotend_material_metadata["compatible"] = hotend_compatibility
+                            new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
+                            new_hotend_material_metadata["id"] = new_hotend_specific_material_id
+                            new_hotend_material_metadata["definition"] = machine_id
+                            if buildplate_map["buildplate_compatible"]:
+                                new_hotend_material_metadata["buildplate_compatible"] = buildplate_map["buildplate_compatible"]
+                                new_hotend_material_metadata["buildplate_recommended"] = buildplate_map["buildplate_recommended"]
 
-                        result_metadata.append(new_hotend_material_metadata)
+                            result_metadata.append(new_hotend_material_metadata)
 
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
                     # a workable ID for that machine, so there is no need to continue
