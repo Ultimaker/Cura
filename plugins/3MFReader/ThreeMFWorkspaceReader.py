@@ -24,6 +24,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
 
+from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
@@ -889,7 +890,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = self._machine_info.variant_info.parser
             variant_name = parser["general"]["name"]
 
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.BUILD_PLATE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
@@ -905,7 +905,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = extruder_info.variant_info.parser
 
             variant_name = parser["general"]["name"]
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.NOZZLE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
@@ -929,12 +928,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = extruder_info.root_material_id
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
+            build_plate_id = global_stack.variant.getId()
+
             # get material diameter of this extruder
             machine_material_diameter = extruder_stack.materialDiameter
             material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
                                                              extruder_stack.variant.getName(),
+                                                             build_plate_id,
                                                              machine_material_diameter,
                                                              root_material_id)
+
             if material_node is not None and material_node.getContainer() is not None:
                 extruder_stack.material = material_node.getContainer()
 
