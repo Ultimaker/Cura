@@ -1736,8 +1736,7 @@ class CuraApplication(QtApplication):
     def showMoreInformationDialogForAnonymousDataCollection(self):
         cast(SliceInfo, self._plugin_registry.getPluginObject("SliceInfoPlugin")).showMoreInfoDialog()
 
-
-    def addSidebarCustomMenuItem(self, menu_item: list) -> None:
+    def addSidebarCustomMenuItem(self, menu_item: dict) -> None:
         self._sidebar_custom_menu_items.append(menu_item)
 
     def getSidebarCustomMenuItems(self) -> list:
