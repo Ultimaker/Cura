@@ -533,6 +533,7 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
+        // TODO This was added to replace the buildplate selector. Remove this component when the feature is ready
         Label
         {
             id: materialCompatibilityLabel
@@ -542,7 +543,7 @@ Column
             text: catalog.i18nc("@label", "Use glue with this material combination")
             font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text")
-            visible: buildplateCompatibilityError || buildplateCompatibilityWarning
+            visible: CuraSDKVersion == "dev" ? false : buildplateCompatibilityError || buildplateCompatibilityWarning
             wrapMode: Text.WordWrap
             opacity: 0.5
         }
