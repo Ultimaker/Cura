@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from enum import Enum
 from collections import OrderedDict
 from typing import Optional, TYPE_CHECKING
 
@@ -11,18 +10,11 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
+from cura.Machines.VariantType import VariantType, ALL_VARIANT_TYPES
 from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
-
-
-class VariantType(Enum):
-    BUILD_PLATE = "buildplate"
-    NOZZLE = "nozzle"
-
-
-ALL_VARIANT_TYPES = (VariantType.BUILD_PLATE, VariantType.NOZZLE)
 
 
 #

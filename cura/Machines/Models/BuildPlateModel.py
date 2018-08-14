@@ -8,7 +8,7 @@ from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Util import parseBool
 
-from cura.Machines.VariantManager import VariantType
+from cura.Machines.VariantType import VariantType
 
 
 class BuildPlateModel(ListModel):

@@ -25,10 +25,12 @@ from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 
 from UM.Settings.SettingInstance import SettingInstance
 
+import numpy
+
 class SupportEraser(Tool):
     def __init__(self):
         super().__init__()
-        self._shortcut_key = Qt.Key_G
+        self._shortcut_key = Qt.Key_E
         self._controller = self.getController()
 
         self._selection_pass = None
@@ -96,8 +98,7 @@ class SupportEraser(Tool):
 
         node.setName("Eraser")
         node.setSelectable(True)
-        mesh = MeshBuilder()
-        mesh.addCube(10,10,10)
+        mesh = self._createCube(10)
         node.setMeshData(mesh.build())
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
@@ -160,3 +161,28 @@ class SupportEraser(Tool):
             self._skip_press = False
 
         self._had_selection = has_selection
+
+    def _createCube(self, size):
+        mesh = MeshBuilder()
+
+        # Can't use MeshBuilder.addCube() because that does not get per-vertex normals
+        # Per-vertex normals require duplication of vertices
+        s = size / 2
+        verts = [ # 6 faces with 4 corners each
+            [-s, -s,  s], [-s,  s,  s], [ s,  s,  s], [ s, -s,  s],
+            [-s,  s, -s], [-s, -s, -s], [ s, -s, -s], [ s,  s, -s],
+            [ s, -s, -s], [-s, -s, -s], [-s, -s,  s], [ s, -s,  s],
+            [-s,  s, -s], [ s,  s, -s], [ s,  s,  s], [-s,  s,  s],
+            [-s, -s,  s], [-s, -s, -s], [-s,  s, -s], [-s,  s,  s],
+            [ s, -s, -s], [ s, -s,  s], [ s,  s,  s], [ s,  s, -s]
+        ]
+        mesh.setVertices(numpy.asarray(verts, dtype=numpy.float32))
+
+        indices = []
+        for i in range(0, 24, 4): # All 6 quads (12 triangles)
+            indices.append([i, i+2, i+1])
+            indices.append([i, i+3, i+2])
+        mesh.setIndices(numpy.asarray(indices, dtype=numpy.int32))
+
+        mesh.calculateNormals()
+        return mesh
