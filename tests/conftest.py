@@ -20,4 +20,4 @@ def application() -> CuraApplication:
 # Returns a MachineActionManager instance.
 @pytest.fixture()
 def machine_action_manager(application) -> MachineActionManager:
-    return application.getMachineActionManager()
+    return MachineActionManager(application)
