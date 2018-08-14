@@ -179,7 +179,7 @@ def test_constrainDefinitionChangesValid(container, global_stack):
     getInstanceContainer(container_type = "wrong class"),
     getInstanceContainer(container_type = "material"), #Existing, but still wrong class.
 ])
-def test_constrainVariantInvalid(container, global_stack):
+def test_constrainDefinitionInvalid(container, global_stack):
     with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
         global_stack.definition = container
 

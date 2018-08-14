@@ -35,4 +35,9 @@ def global_stack() -> GlobalStack:
 ##  An empty extruder stack to test with.
 @pytest.fixture()
 def extruder_stack() -> ExtruderStack:
-    return ExtruderStack("TestExtruderStack")
+    extruder_stack= ExtruderStack("TestExtruderStack")
+    # There is a restriction here that the definition changes cannot be an empty container. Added in CURA-5281
+    definition_changes_container = InstanceContainer(container_id = "InstanceContainer")
+    definition_changes_container.setMetaDataEntry("type", "definition_changes")
+    extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.DefinitionChanges] = definition_changes_container
+    return extruder_stack
