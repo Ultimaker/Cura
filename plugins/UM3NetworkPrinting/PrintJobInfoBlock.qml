@@ -44,6 +44,15 @@ Item
                 text: "OwnerName"
             }
 
+            Image
+            {
+                source: printJob.preview_image_url
+                anchors.top: ownerName.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: totalTimeLabel.top
+                width: height
+            }
+
             Label
             {
                 id: totalTimeLabel

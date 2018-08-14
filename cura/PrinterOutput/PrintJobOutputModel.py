@@ -4,6 +4,9 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 from typing import Optional, TYPE_CHECKING
 
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QImage
+
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -18,7 +21,8 @@ class PrintJobOutputModel(QObject):
     keyChanged = pyqtSignal()
     assignedPrinterChanged = pyqtSignal()
     ownerChanged = pyqtSignal()
-    configurationChanged =pyqtSignal()
+    configurationChanged = pyqtSignal()
+    previewImageChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -32,6 +36,27 @@ class PrintJobOutputModel(QObject):
         self._owner = ""  # Who started/owns the print job?
 
         self._configuration = None  # type: Optional[ConfigurationModel]
+
+        self._preview_image_id = 0
+
+        self._preview_image = None
+
+    @pyqtProperty(QUrl, notify=previewImageChanged)
+    def preview_image_url(self):
+        self._preview_image_id += 1
+        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
+        # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
+        # as new (instead of relying on cached version and thus forces an update.
+        temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key
+        return QUrl(temp, QUrl.TolerantMode)
+
+    def getPreviewImage(self):
+        return self._preview_image
+
+    def updatePreviewImage(self, preview_image: Optional[QImage]):
+        if self._preview_image != preview_image:
+            self._preview_image = preview_image
+            self.previewImageChanged.emit()
 
     @pyqtProperty(QObject, notify=configurationChanged)
     def configuration(self) -> Optional["ConfigurationModel"]:

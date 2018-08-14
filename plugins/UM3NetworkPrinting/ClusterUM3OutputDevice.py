@@ -29,7 +29,7 @@ from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .SendMaterialJob import SendMaterialJob
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
-from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtGui import QDesktopServices, QImage
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
 from time import time
@@ -394,10 +394,27 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         super().connect()
         self.sendMaterialProfiles()
 
+    def _onGetPreviewImageFinished(self, reply: QNetworkReply) -> None:
+        reply_url = reply.url().toString()
+        print(reply_url)
+
+        uuid = reply_url[reply_url.find("print_jobs/")+len("print_jobs/"):reply_url.rfind("/preview_image")]
+
+        print_job = findByKey(self._print_jobs, uuid)
+        if print_job:
+            image = QImage()
+            image.loadFromData(reply.readAll())
+            print_job.updatePreviewImage(image)
+
+
     def _update(self) -> None:
         super()._update()
         self.get("printers/", on_finished = self._onGetPrintersDataFinished)
         self.get("print_jobs/", on_finished = self._onGetPrintJobsFinished)
+
+        for print_job in self._print_jobs:
+            if print_job.getPreviewImage() is None:
+                self.get("print_jobs/{uuid}/preview_image".format(uuid=print_job.key), on_finished=self._onGetPreviewImageFinished)
 
     def _onGetPrintJobsFinished(self, reply: QNetworkReply) -> None:
         if not checkValidGetReply(reply):

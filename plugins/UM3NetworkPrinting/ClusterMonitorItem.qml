@@ -82,12 +82,13 @@ Component
                 leftMargin: UM.Theme.getSize("default_lining").width // To ensure border can be drawn.
                 rightMargin: UM.Theme.getSize("default_lining").width
                 right: parent.right
+                bottom: parent.bottom
             }
 
             ListView
             {
                 anchors.fill: parent
-                spacing: -UM.Theme.getSize("default_lining").height
+                spacing: UM.Theme.getSize("default_margin").height
 
                 model: OutputDevice.queuedPrintJobs
 
