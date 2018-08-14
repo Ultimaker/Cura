@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import copy
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional
+from typing import cast, TYPE_CHECKING
 
 import numpy
 
@@ -105,6 +104,7 @@ from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
+import cura.CuraEmptyInstanceContainers
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -368,42 +368,20 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        empty_container = self._container_registry.getEmptyInstanceContainer()
-        self.empty_container = empty_container
+        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_definition_changes_container)
+        self.empty_definition_changes_container = cura.CuraEmptyInstanceContainers.empty_definition_changes_container
 
-        empty_definition_changes_container = copy.deepcopy(empty_container)
-        empty_definition_changes_container.setMetaDataEntry("id", "empty_definition_changes")
-        empty_definition_changes_container.setMetaDataEntry("type", "definition_changes")
-        self._container_registry.addContainer(empty_definition_changes_container)
-        self.empty_definition_changes_container = empty_definition_changes_container
+        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_variant_container)
+        self.empty_variant_container = cura.CuraEmptyInstanceContainers.empty_variant_container
 
-        empty_variant_container = copy.deepcopy(empty_container)
-        empty_variant_container.setMetaDataEntry("id", "empty_variant")
-        empty_variant_container.setMetaDataEntry("type", "variant")
-        self._container_registry.addContainer(empty_variant_container)
-        self.empty_variant_container = empty_variant_container
+        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_material_container)
+        self.empty_material_container = cura.CuraEmptyInstanceContainers.empty_material_container
 
-        empty_material_container = copy.deepcopy(empty_container)
-        empty_material_container.setMetaDataEntry("id", "empty_material")
-        empty_material_container.setMetaDataEntry("type", "material")
-        self._container_registry.addContainer(empty_material_container)
-        self.empty_material_container = empty_material_container
+        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_quality_container)
+        self.empty_quality_container = cura.CuraEmptyInstanceContainers.empty_quality_container
 
-        empty_quality_container = copy.deepcopy(empty_container)
-        empty_quality_container.setMetaDataEntry("id", "empty_quality")
-        empty_quality_container.setName("Not Supported")
-        empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
-        empty_quality_container.setMetaDataEntry("type", "quality")
-        empty_quality_container.setMetaDataEntry("supported", False)
-        self._container_registry.addContainer(empty_quality_container)
-        self.empty_quality_container = empty_quality_container
-
-        empty_quality_changes_container = copy.deepcopy(empty_container)
-        empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-        empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
-        empty_quality_changes_container.setMetaDataEntry("quality_type", "not_supported")
-        self._container_registry.addContainer(empty_quality_changes_container)
-        self.empty_quality_changes_container = empty_quality_changes_container
+        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_quality_changes_container)
+        self.empty_quality_changes_container = cura.CuraEmptyInstanceContainers.empty_quality_changes_container
 
     # Initializes the version upgrade manager with by providing the paths for each resource type and the latest
     # versions.

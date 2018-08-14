@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, List, Optional, Union
+from typing import Any, cast, List, Optional
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
@@ -13,6 +13,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, DefinitionContainerInterface
+from UM.Settings.EmptyInstanceContainer import empty_container
+from cura import CuraEmptyInstanceContainers
 
 from . import Exceptions
 
@@ -39,14 +41,12 @@ class CuraContainerStack(ContainerStack):
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
-        self._container_registry = ContainerRegistry.getInstance() #type: ContainerRegistry
+        self._empty_instance_container = empty_container #type: InstanceContainer
 
-        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer() #type: InstanceContainer
-
-        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0] #type: InstanceContainer
-        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0] #type: InstanceContainer
-        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0] #type: InstanceContainer
-        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0] #type: InstanceContainer
+        self._empty_quality_changes = CuraEmptyInstanceContainers.empty_quality_changes_container #type: InstanceContainer
+        self._empty_quality = CuraEmptyInstanceContainers.empty_quality_container #type: InstanceContainer
+        self._empty_material = CuraEmptyInstanceContainers.empty_material_container #type: InstanceContainer
+        self._empty_variant = CuraEmptyInstanceContainers.empty_variant_container #type: InstanceContainer
 
         self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[ContainerInterface]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
