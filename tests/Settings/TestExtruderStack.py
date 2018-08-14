@@ -1,9 +1,8 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest #This module contains automated tests.
 import unittest.mock #For the mocking and monkeypatching functionality.
-import copy
 
 import cura.CuraApplication
 import UM.Settings.ContainerRegistry #To create empty instance containers.
@@ -14,29 +13,27 @@ import cura.Settings.ExtruderStack #The module we're testing.
 from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError #To check whether the correct exceptions are raised.
 
 from cura.Settings.ExtruderManager import ExtruderManager
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 
 ##  Fake container registry that always provides all containers you ask of.
-@pytest.yield_fixture()
-def container_registry():
-    registry = unittest.mock.MagicMock()
-    registry.return_value = unittest.mock.NonCallableMagicMock()
-    registry.findInstanceContainers = lambda *args, registry = registry, **kwargs: [registry.return_value]
-    registry.findDefinitionContainers = lambda *args, registry = registry, **kwargs: [registry.return_value]
-
-    UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
-    UM.Settings.ContainerStack._containerRegistry = registry
-
-    yield registry
-
-    UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = None
-    UM.Settings.ContainerStack._containerRegistry = None
+# @pytest.yield_fixture()
+# def container_registry():
+#     registry = unittest.mock.MagicMock()
+#     registry.return_value = unittest.mock.NonCallableMagicMock()
+#     registry.findInstanceContainers = lambda *args, registry = registry, **kwargs: [registry.return_value]
+#     registry.findDefinitionContainers = lambda *args, registry = registry, **kwargs: [registry.return_value]
+#
+#     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
+#     UM.Settings.ContainerStack._containerRegistry = registry
+#
+#     yield registry
+#
+#     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = None
+#     UM.Settings.ContainerStack._containerRegistry = None
 
 ##  An empty extruder stack to test with.
 @pytest.fixture()
 def extruder_stack() -> cura.Settings.ExtruderStack.ExtruderStack:
-    creteEmptyContainers()
     return cura.Settings.ExtruderStack.ExtruderStack("TestStack")
 
 ##  Gets an instance container with a specified container type.
@@ -47,31 +44,6 @@ def getInstanceContainer(container_type) -> InstanceContainer:
     container = InstanceContainer(container_id = "InstanceContainer")
     container.setMetaDataEntry("type", container_type)
     return container
-
-def creteEmptyContainers():
-    empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
-    empty_variant_container = copy.deepcopy(empty_container)
-    empty_variant_container.setMetaDataEntry("id", "empty_variant")
-    empty_variant_container.setMetaDataEntry("type", "variant")
-    ContainerRegistry.getInstance().addContainer(empty_variant_container)
-
-    empty_material_container = copy.deepcopy(empty_container)
-    empty_material_container.setMetaDataEntry("id", "empty_material")
-    empty_material_container.setMetaDataEntry("type", "material")
-    ContainerRegistry.getInstance().addContainer(empty_material_container)
-
-    empty_quality_container = copy.deepcopy(empty_container)
-    empty_quality_container.setMetaDataEntry("id", "empty_quality")
-    empty_quality_container.setName("Not Supported")
-    empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
-    empty_quality_container.setMetaDataEntry("type", "quality")
-    empty_quality_container.setMetaDataEntry("supported", False)
-    ContainerRegistry.getInstance().addContainer(empty_quality_container)
-
-    empty_quality_changes_container = copy.deepcopy(empty_container)
-    empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-    empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
-    ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
 class DefinitionContainerSubClass(DefinitionContainer):
     def __init__(self):
