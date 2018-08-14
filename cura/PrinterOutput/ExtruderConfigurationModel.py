@@ -30,7 +30,7 @@ class ExtruderConfigurationModel(QObject):
             self.extruderConfigurationChanged.emit()
 
     @pyqtProperty(QObject, fset = setMaterial, notify = extruderConfigurationChanged)
-    def material(self) -> MaterialOutputModel:
+    def activeMaterial(self) -> MaterialOutputModel:
         return self._material
 
     def setHotendID(self, hotend_id: Optional[str]) -> None:
@@ -52,7 +52,7 @@ class ExtruderConfigurationModel(QObject):
         message_chunks = []
         message_chunks.append("Position: " + str(self._position))
         message_chunks.append("-")
-        message_chunks.append("Material: " + self.material.type if self.material else "empty")
+        message_chunks.append("Material: " + self.activeMaterial.type if self.activeMaterial else "empty")
         message_chunks.append("-")
         message_chunks.append("HotendID: " + self.hotendID if self.hotendID else "empty")
         return " ".join(message_chunks)

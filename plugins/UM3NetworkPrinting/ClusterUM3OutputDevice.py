@@ -17,6 +17,8 @@ from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.Version import Version #To check against firmware versions for support.
 
 from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
@@ -478,6 +480,23 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _createPrintJobModel(self, data: Dict[str, Any]) -> PrintJobOutputModel:
         print_job = PrintJobOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
                                         key=data["uuid"], name= data["name"])
+
+        configuration = ConfigurationModel()
+        extruders = []
+        for index in range(0, self._number_of_extruders):
+            extruder = ExtruderConfigurationModel()
+            extruder.setPosition(index)
+            try:
+                extruder_data = data["configuration"][index]
+            except IndexError:
+                break
+
+            extruder.setHotendID(extruder_data.get("print_core_id", ""))
+            extruder.setMaterial(self._createMaterialOutputModel(extruder_data.get("material", {})))
+            extruders.append(extruder)
+        configuration.setExtruderConfigurations(extruders)
+        print_job.updateConfiguration(configuration)
+
         print_job.stateChanged.connect(self._printJobStateChanged)
         self._print_jobs.append(print_job)
         return print_job
@@ -487,6 +506,24 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job.updateTimeElapsed(data["time_elapsed"])
         print_job.updateState(data["status"])
         print_job.updateOwner(data["owner"])
+
+    def _createMaterialOutputModel(self, material_data) -> MaterialOutputModel:
+        containers = ContainerRegistry.getInstance().findInstanceContainers(type="material", GUID=material_data["guid"])
+        if containers:
+            color = containers[0].getMetaDataEntry("color_code")
+            brand = containers[0].getMetaDataEntry("brand")
+            material_type = containers[0].getMetaDataEntry("material")
+            name = containers[0].getName()
+        else:
+            Logger.log("w",
+                       "Unable to find material with guid {guid}. Using data as provided by cluster".format(
+                           guid=material_data["guid"]))
+            color = material_data["color"]
+            brand = material_data["brand"]
+            material_type = material_data["material"]
+            name = "Empty" if material_data["material"] == "empty" else "Unknown"
+        return MaterialOutputModel(guid=material_data["guid"], type=material_type,
+                                       brand=brand, color=color, name=name)
 
     def _updatePrinter(self, printer: PrinterOutputModel, data: Dict[str, Any]) -> None:
         # For some unknown reason the cluster wants UUID for everything, except for sending a job directly to a printer.
@@ -523,24 +560,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
             material_data = extruder_data["material"]
             if extruder.activeMaterial is None or extruder.activeMaterial.guid != material_data["guid"]:
-                containers = ContainerRegistry.getInstance().findInstanceContainers(type="material",
-                                                                                    GUID=material_data["guid"])
-                if containers:
-                    color = containers[0].getMetaDataEntry("color_code")
-                    brand = containers[0].getMetaDataEntry("brand")
-                    material_type = containers[0].getMetaDataEntry("material")
-                    name = containers[0].getName()
-                else:
-                    Logger.log("w",
-                               "Unable to find material with guid {guid}. Using data as provided by cluster".format(
-                                   guid=material_data["guid"]))
-                    color = material_data["color"]
-                    brand = material_data["brand"]
-                    material_type = material_data["material"]
-                    name = "Empty" if material_data["material"] == "empty" else "Unknown"
-
-                material = MaterialOutputModel(guid=material_data["guid"], type=material_type,
-                                               brand=brand, color=color, name=name)
+                material = self._createMaterialOutputModel(material_data)
                 extruder.updateActiveMaterial(material)
 
     def _removeJob(self, job: PrintJobOutputModel) -> bool:

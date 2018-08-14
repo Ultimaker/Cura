@@ -12,14 +12,16 @@ Item
 
     width: Math.round(parent.width / 2)
     height: childrenRect.height
+
     Label
     {
         id: materialLabel
-        text: printCoreConfiguration.activeMaterial != null ? printCoreConfiguration.activeMaterial.name : ""
+        text: printCoreConfiguration.activeMaterial != null ? printCoreConfiguration.activeMaterial.name : ":("
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("very_small")
     }
+
     Label
     {
         id: printCoreLabel

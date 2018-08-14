@@ -28,7 +28,8 @@ Component
             id: activePrintersLabel
             font: UM.Theme.getFont("large")
 
-            anchors {
+            anchors
+            {
                 top: parent.top
                 topMargin: UM.Theme.getSize("default_margin").height * 2 // a bit more spacing to give it some breathing room
                 horizontalCenter: parent.horizontalCenter
@@ -71,25 +72,28 @@ Component
 
         ScrollView
         {
-            id: printerScrollView
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            anchors.top: activePrintersLabel.bottom
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_lining").width // To ensure border can be drawn.
-            anchors.rightMargin: UM.Theme.getSize("default_lining").width
-            anchors.right: parent.right
+            id: queuedPrintJobs
+
+            anchors
+            {
+                margins: UM.Theme.getSize("default_margin").width
+                top: activePrintersLabel.bottom
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_lining").width // To ensure border can be drawn.
+                rightMargin: UM.Theme.getSize("default_lining").width
+                right: parent.right
+            }
 
             ListView
             {
                 anchors.fill: parent
                 spacing: -UM.Theme.getSize("default_lining").height
 
-                model: OutputDevice.printers
+                model: OutputDevice.queuedPrintJobs
 
-                delegate: PrinterInfoBlock
+                delegate: PrintJobInfoBlock
                 {
-                    printer: modelData
+                    printJob: modelData
                     width: Math.min(800 * screenScaleFactor, maximumWidth)
                     height: 125 * screenScaleFactor
 
@@ -102,7 +106,7 @@ Component
         PrinterVideoStream
         {
             visible: OutputDevice.activePrinter != null
-            anchors.fill:parent
+            anchors.fill: parent
         }
 
         onVisibleChanged:

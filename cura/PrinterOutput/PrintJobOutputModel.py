@@ -7,6 +7,7 @@ from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 
 
 class PrintJobOutputModel(QObject):
@@ -17,6 +18,7 @@ class PrintJobOutputModel(QObject):
     keyChanged = pyqtSignal()
     assignedPrinterChanged = pyqtSignal()
     ownerChanged = pyqtSignal()
+    configurationChanged =pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -28,6 +30,17 @@ class PrintJobOutputModel(QObject):
         self._key = key  # Unique identifier
         self._assigned_printer = None  # type: Optional[PrinterOutputModel]
         self._owner = ""  # Who started/owns the print job?
+
+        self._configuration = None  # type: Optional[ConfigurationModel]
+
+    @pyqtProperty(QObject, notify=configurationChanged)
+    def configuration(self) -> Optional["ConfigurationModel"]:
+        return self._configuration
+
+    def updateConfiguration(self, configuration: Optional["ConfigurationModel"]) -> None:
+        if self._configuration != configuration:
+            self._configuration = configuration
+            self.configurationChanged.emit()
 
     @pyqtProperty(str, notify=ownerChanged)
     def owner(self):

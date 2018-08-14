@@ -48,7 +48,7 @@ class ExtruderOutputModel(QObject):
 
     @pyqtProperty(QObject, notify = extruderConfigurationChanged)
     def activeMaterial(self) -> Optional["MaterialOutputModel"]:
-        return self._extruder_configuration.material
+        return self._extruder_configuration.activeMaterial
 
     def updateActiveMaterial(self, material: Optional["MaterialOutputModel"]):
         self._extruder_configuration.setMaterial(material)
