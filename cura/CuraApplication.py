@@ -368,6 +368,8 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
+        self.empty_container = cura.CuraEmptyInstanceContainers.empty_container
+
         self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_definition_changes_container)
         self.empty_definition_changes_container = cura.CuraEmptyInstanceContainers.empty_definition_changes_container
 
