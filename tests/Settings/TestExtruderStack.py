@@ -9,9 +9,9 @@ import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
 from UM.Settings.InstanceContainer import InstanceContainer #To check against the class of InstanceContainer.
-from UM.Settings.EmptyInstanceContainer import empty_container
 from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError #To check whether the correct exceptions are raised.
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.cura_empty_instance_containers import empty_container
 
 ##  Gets an instance container with a specified container type.
 #

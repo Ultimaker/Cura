@@ -9,10 +9,11 @@ from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationErro
 from UM.Settings.DefinitionContainer import DefinitionContainer #To test against the class DefinitionContainer.
 from UM.Settings.InstanceContainer import InstanceContainer #To test against the class InstanceContainer.
 from UM.Settings.SettingInstance import InstanceState
-from UM.Settings.EmptyInstanceContainer import empty_container
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
 import UM.Settings.SettingDefinition #To add settings to the definition.
+
+from cura.Settings.cura_empty_instance_containers import empty_container
 
 ##  Gets an instance container with a specified container type.
 #

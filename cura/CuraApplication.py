@@ -104,7 +104,7 @@ from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
-import cura.CuraEmptyInstanceContainers
+import cura.Settings.cura_empty_instance_containers
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -368,22 +368,23 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        self.empty_container = cura.CuraEmptyInstanceContainers.empty_container
+        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container
 
-        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_definition_changes_container)
-        self.empty_definition_changes_container = cura.CuraEmptyInstanceContainers.empty_definition_changes_container
+        self._container_registry.addContainer(
+            cura.Settings.cura_empty_instance_containers.empty_definition_changes_container)
+        self.empty_definition_changes_container = cura.Settings.cura_empty_instance_containers.empty_definition_changes_container
 
-        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_variant_container)
-        self.empty_variant_container = cura.CuraEmptyInstanceContainers.empty_variant_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_variant_container)
+        self.empty_variant_container = cura.Settings.cura_empty_instance_containers.empty_variant_container
 
-        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_material_container)
-        self.empty_material_container = cura.CuraEmptyInstanceContainers.empty_material_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_material_container)
+        self.empty_material_container = cura.Settings.cura_empty_instance_containers.empty_material_container
 
-        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_quality_container)
-        self.empty_quality_container = cura.CuraEmptyInstanceContainers.empty_quality_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_quality_container)
+        self.empty_quality_container = cura.Settings.cura_empty_instance_containers.empty_quality_container
 
-        self._container_registry.addContainer(cura.CuraEmptyInstanceContainers.empty_quality_changes_container)
-        self.empty_quality_changes_container = cura.CuraEmptyInstanceContainers.empty_quality_changes_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_quality_changes_container)
+        self.empty_quality_changes_container = cura.Settings.cura_empty_instance_containers.empty_quality_changes_container
 
     # Initializes the version upgrade manager with by providing the paths for each resource type and the latest
     # versions.

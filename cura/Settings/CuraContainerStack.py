@@ -13,8 +13,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, DefinitionContainerInterface
-from UM.Settings.EmptyInstanceContainer import empty_container
-from cura import CuraEmptyInstanceContainers
+from cura.Settings import cura_empty_instance_containers
 
 from . import Exceptions
 
@@ -41,12 +40,12 @@ class CuraContainerStack(ContainerStack):
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
-        self._empty_instance_container = empty_container #type: InstanceContainer
+        self._empty_instance_container = cura_empty_instance_containers.empty_container #type: InstanceContainer
 
-        self._empty_quality_changes = CuraEmptyInstanceContainers.empty_quality_changes_container #type: InstanceContainer
-        self._empty_quality = CuraEmptyInstanceContainers.empty_quality_container #type: InstanceContainer
-        self._empty_material = CuraEmptyInstanceContainers.empty_material_container #type: InstanceContainer
-        self._empty_variant = CuraEmptyInstanceContainers.empty_variant_container #type: InstanceContainer
+        self._empty_quality_changes = cura_empty_instance_containers.empty_quality_changes_container #type: InstanceContainer
+        self._empty_quality = cura_empty_instance_containers.empty_quality_container #type: InstanceContainer
+        self._empty_material = cura_empty_instance_containers.empty_material_container #type: InstanceContainer
+        self._empty_variant = cura_empty_instance_containers.empty_variant_container #type: InstanceContainer
 
         self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[ContainerInterface]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
