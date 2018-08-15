@@ -69,6 +69,7 @@ from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfile
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
+from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
 from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
 from cura.Machines.Models.BrandMaterialsModel import BrandMaterialsModel
 from cura.Machines.Models.QualityManagementModel import QualityManagementModel
@@ -501,6 +502,15 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/sidebar_collapsed", False)
 
         self._need_to_show_user_agreement = not self.getPreferences().getValue("general/accepted_user_agreement")
+        favorites = [
+            "ultimaker_cpe_green_ultimaker_s5_AA_0.4",
+            "ultimaker_pla_green_ultimaker_s5_AA_0.4",
+            "ultimaker_abs_grey_ultimaker_s5_AA_0.4",
+            "an_incorrect_id"
+        ]
+        preferences.addPreference("cura/favorite_materials", favorites)
+        print("FAVORITES ARE NOW SET")
+
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -931,6 +941,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
+        qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
         qmlRegisterType(MaterialManagementModel, "Cura", 1, 0, "MaterialManagementModel")
