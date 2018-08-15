@@ -171,6 +171,12 @@ class BuildVolume(SceneNode):
         if shape:
             self._shape = shape
 
+    ##  Get the length of the 3D diagonal through the build volume.
+    #
+    #   This gives a sense of the scale of the build volume in general.
+    def getDiagonalSize(self) -> float:
+        return math.sqrt(self._width * self._width + self._height * self._height + self._depth * self._depth)
+
     def getDisallowedAreas(self) -> List[Polygon]:
         return self._disallowed_areas
 
@@ -553,10 +559,9 @@ class BuildVolume(SceneNode):
             if self._engine_ready:
                 self.rebuild()
 
-            diagonal_size = math.sqrt(self._width * self._width + self._height * self._height + self._depth * self._depth)
             camera = Application.getInstance().getController().getCameraTool()
             if camera:
-                camera.setZoomRange(min = 1, max = diagonal_size * 5) #You can zoom out up to 5 times the diagonal across your screen (to see models bigger than your volume).
+                camera.setZoomRange(min = 1, max = self.getDiagonalSize() * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
 
     def _onEngineCreated(self):
         self._engine_ready = True
