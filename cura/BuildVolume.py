@@ -3,6 +3,7 @@
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Application import Application #To modify the maximum zoom level.
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -169,6 +170,12 @@ class BuildVolume(SceneNode):
     def setShape(self, shape: str) -> None:
         if shape:
             self._shape = shape
+
+    ##  Get the length of the 3D diagonal through the build volume.
+    #
+    #   This gives a sense of the scale of the build volume in general.
+    def getDiagonalSize(self) -> float:
+        return math.sqrt(self._width * self._width + self._height * self._height + self._depth * self._depth)
 
     def getDisallowedAreas(self) -> List[Polygon]:
         return self._disallowed_areas
@@ -551,6 +558,10 @@ class BuildVolume(SceneNode):
 
             if self._engine_ready:
                 self.rebuild()
+
+            camera = Application.getInstance().getController().getCameraTool()
+            if camera:
+                camera.setZoomRange(min = 1, max = self.getDiagonalSize() * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
 
     def _onEngineCreated(self):
         self._engine_ready = True

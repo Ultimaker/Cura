@@ -780,7 +780,7 @@ class CuraApplication(QtApplication):
         # Initialize camera
         root = controller.getScene().getRoot()
         camera = Camera("3d", root)
-        camera.setPosition(Vector(-80, 250, 700))
+        camera.setPosition(Vector(-80, 250, 700) * self.getBuildVolume().getDiagonalSize() / 375)
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")

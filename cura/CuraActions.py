@@ -50,7 +50,8 @@ class CuraActions(QObject):
         scene = cura.CuraApplication.CuraApplication.getInstance().getController().getScene()
         camera = scene.getActiveCamera()
         if camera:
-            camera.setPosition(Vector(-80, 250, 700))
+            diagonal_size = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getDiagonalSize()
+            camera.setPosition(Vector(-80, 250, 700) * diagonal_size / 375)
             camera.setPerspective(True)
             camera.lookAt(Vector(0, 0, 0))
 
