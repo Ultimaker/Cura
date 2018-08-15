@@ -113,7 +113,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
         #Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
-        if "application/x-ufp" not in machine_file_formats and self.printerType == "ultimaker3" and Version(self.firmwareVersion) >= Version("4.4"):
+        if "application/x-ufp" not in machine_file_formats and Version(self.firmwareVersion) >= Version("4.4"):
             machine_file_formats = ["application/x-ufp"] + machine_file_formats
 
         # Take the intersection between file_formats and machine_file_formats.
