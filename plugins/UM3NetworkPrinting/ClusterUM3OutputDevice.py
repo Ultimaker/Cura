@@ -403,7 +403,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _onGetPreviewImageFinished(self, reply: QNetworkReply) -> None:
         reply_url = reply.url().toString()
-        print(reply_url)
 
         uuid = reply_url[reply_url.find("print_jobs/")+len("print_jobs/"):reply_url.rfind("/preview_image")]
 
