@@ -366,6 +366,13 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
         return (datetime_completed.strftime("%a %b ") + "{day}".format(day=datetime_completed.day)).upper()
 
+    @pyqtSlot(str)
+    def sendJobToTop(self, print_job_uuid: str) -> None:
+        # This function is part of the output device (and not of the printjob output model) as this type of operation
+        # is a modification of the cluster queue and not of the actual job.
+        data = "{\"to_position\": 0}"
+        self.put("print_jobs/{uuid}/move_to_position".format(uuid = print_job_uuid), data, on_finished=None)
+
     def _printJobStateChanged(self) -> None:
         username = self._getUserName()
 
