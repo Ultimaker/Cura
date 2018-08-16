@@ -13,6 +13,27 @@ Item
     width: Math.round(parent.width / 2)
     height: childrenRect.height
 
+    Item
+    {
+        id: extruderCircle
+        width: 30
+        height: 30
+        Rectangle
+        {
+            anchors.fill: parent
+            radius: Math.round(width / 2)
+            border.width: 1
+            border.color: "black"
+        }
+
+        Label
+        {
+            anchors.centerIn: parent
+            font: UM.Theme.getFont("default_bold")
+            text: printCoreConfiguration.position + 1
+        }
+    }
+
     Label
     {
         id: materialLabel
@@ -20,6 +41,8 @@ Item
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("default_bold")
+        anchors.left: extruderCircle.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").height
     }
 
     Label
@@ -29,5 +52,7 @@ Item
         anchors.top: materialLabel.bottom
         elide: Text.ElideRight
         width: parent.width
+        anchors.left: extruderCircle.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").height
     }
 }

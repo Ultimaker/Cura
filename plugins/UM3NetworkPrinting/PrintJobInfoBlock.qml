@@ -110,7 +110,7 @@ Item
             {
                 popup.visible ? popup.close() : popup.open()
             }
-            
+
             Button
             {
                 id: contextButton
@@ -191,22 +191,14 @@ Item
                 PrintCoreConfiguration
                 {
                     id: leftExtruderInfo
-                    width: Math.round((parent.width - extruderSeperator.width) / 2)
+                    width: Math.round(parent.width  / 2)
                     printCoreConfiguration: printJob.configuration.extruderConfigurations[0]
-                }
-
-                Rectangle
-                {
-                    id: extruderSeperator
-                    width: UM.Theme.getSize("default_lining").width
-                    height: parent.height
-                    color: lineColor
                 }
 
                 PrintCoreConfiguration
                 {
                     id: rightExtruderInfo
-                    width: Math.round((parent.width - extruderSeperator.width) / 2)
+                    width: Math.round(parent.width / 2)
                     printCoreConfiguration: printJob.configuration.extruderConfigurations[1]
                 }
             }
