@@ -5625,10 +5625,10 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "snap_distance":
+                "minimum_polygon_circumference":
                 {
-                    "label": "Snap Distance",
-                    "description": "Snap distance between polygons in mm. Controls the polygons that may be filtered out when the model is sliced. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details.",
+                    "label": "Minimum polygon circumference",
+                    "description": "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1.0,
