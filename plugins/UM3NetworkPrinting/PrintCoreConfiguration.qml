@@ -19,7 +19,7 @@ Item
         text: printCoreConfiguration.activeMaterial != null ? printCoreConfiguration.activeMaterial.name : ":("
         elide: Text.ElideRight
         width: parent.width
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default_bold")
     }
 
     Label
@@ -29,7 +29,5 @@ Item
         anchors.top: materialLabel.bottom
         elide: Text.ElideRight
         width: parent.width
-        font: UM.Theme.getFont("very_small")
-        opacity: 0.5
     }
 }

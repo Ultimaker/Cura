@@ -35,14 +35,15 @@ Item
             Label
             {
                 id: printJobName
-                text: "printJobName"
+                text: printJob.name
+                font: UM.Theme.getFont("default_bold")
             }
 
             Label
             {
                 id: ownerName
                 anchors.top: printJobName.bottom
-                text: "OwnerName"
+                text: printJob.owner
             }
 
             Image
@@ -61,7 +62,7 @@ Item
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
 
-                text: printJob != null ? getPrettyTime(printJob.timeTotal) : "3h 12m"
+                text: printJob != null ? getPrettyTime(printJob.timeTotal) : ""
                 elide: Text.ElideRight
             }
         }
@@ -81,7 +82,27 @@ Item
             Label
             {
                 id: targetPrinterLabel
-                text: "Waiting for: first available"
+                elide: Text.ElideRight
+                font: UM.Theme.getFont("default_bold")
+                text:
+                {
+                    if(printJob.assignedPrinter == null)
+                    {
+                        return "Waiting for: first available"
+                    }
+                    else
+                    {
+                        return "Waiting for: " + printJob.assignedPrinter.name
+                    }
+
+                }
+
+                anchors
+                {
+                    left: parent.left
+                    right: contextButton.left
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                }
             }
 
 
@@ -89,6 +110,7 @@ Item
             {
                 popup.visible ? popup.close() : popup.open()
             }
+            
             Button
             {
                 id: contextButton
@@ -119,8 +141,8 @@ Item
                 transformOrigin: Popup.Top
                 contentItem: Item
                 {
-                    width: panelWidth - 2 * popup.padding
-                    height: cildrenRect.height
+                    width: popup.width - 2 * popup.padding
+                    height: childrenRect.height
                     Button
                     {
                         text: "Send to top"
