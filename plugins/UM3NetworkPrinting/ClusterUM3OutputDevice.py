@@ -432,12 +432,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         print_jobs_seen = []
         job_list_changed = False
-        for print_job_data in result:
+        for idx, print_job_data in enumerate(result):
             print_job = findByKey(self._print_jobs, print_job_data["uuid"])
-
             if print_job is None:
                 print_job = self._createPrintJobModel(print_job_data)
                 job_list_changed = True
+            elif not job_list_changed:
+                # Check if the order of the jobs has changed since the last check
+                if self._print_jobs.index(print_job) != idx:
+                    job_list_changed = True
 
             self._updatePrintJob(print_job, print_job_data)
 
@@ -462,6 +465,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             job_list_changed = job_list_changed or self._removeJob(removed_job)
 
         if job_list_changed:
+            # Override the old list with the new list (either because jobs were removed / added or order changed)
+            self._print_jobs = print_jobs_seen
             self.printJobsChanged.emit()  # Do a single emit for all print job changes.
 
     def _onGetPrintersDataFinished(self, reply: QNetworkReply) -> None:
@@ -521,7 +526,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job.updateConfiguration(configuration)
 
         print_job.stateChanged.connect(self._printJobStateChanged)
-        self._print_jobs.append(print_job)
         return print_job
 
     def _updatePrintJob(self, print_job: PrintJobOutputModel, data: Dict[str, Any]) -> None:
