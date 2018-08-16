@@ -5628,7 +5628,7 @@
                 },
                 "minimum_polygon_circumference":
                 {
-                    "label": "Minimum polygon circumference",
+                    "label": "Minimum Polygon Circumference",
                     "description": "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details.",
                     "unit": "mm",
                     "type": "float",
