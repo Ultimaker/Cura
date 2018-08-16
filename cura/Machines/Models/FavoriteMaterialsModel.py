@@ -45,7 +45,7 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
             metadata = container_node.metadata
 
             # Only add results for favorite materials
-            if metadata["id"] not in favorite_ids:
+            if root_material_id not in favorite_ids:
                 continue
 
             # Do not include the materials from a to-be-removed package
@@ -66,5 +66,4 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
         # Sort the item list by material name alphabetically
         item_list = sorted(item_list, key = lambda d: d["name"].upper())
 
-        print("FINAL FAVORITE LIST:", item_list)
         self.setItems(item_list)
