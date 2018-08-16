@@ -501,16 +501,9 @@ class CuraApplication(QtApplication):
         preferences.addPreference("view/filter_current_build_plate", False)
         preferences.addPreference("cura/sidebar_collapsed", False)
 
-        self._need_to_show_user_agreement = not self.getPreferences().getValue("general/accepted_user_agreement")
-        favorites = [
-            "ultimaker_cpe_green_ultimaker_s5_AA_0.4",
-            "ultimaker_pla_green_ultimaker_s5_AA_0.4",
-            "ultimaker_abs_grey_ultimaker_s5_AA_0.4",
-            "an_incorrect_id"
-        ]
-        preferences.addPreference("cura/favorite_materials", favorites)
-        print("FAVORITES ARE NOW SET")
+        preferences.addPreference("cura/favorite_materials", [])
 
+        self._need_to_show_user_agreement = not preferences.getValue("general/accepted_user_agreement")
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
