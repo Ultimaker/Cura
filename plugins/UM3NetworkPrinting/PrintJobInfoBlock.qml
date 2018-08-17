@@ -15,6 +15,12 @@ Item
         return OutputDevice.formatDuration(time)
     }
 
+    UM.I18nCatalog
+    {
+        id: catalog
+        name: "cura"
+    }
+
     Rectangle
     {
         id: background
@@ -88,11 +94,11 @@ Item
                 {
                     if(printJob.assignedPrinter == null)
                     {
-                        return "Waiting for: first available"
+                        return catalog.i18nc("@label", "Waiting for: first available")
                     }
                     else
                     {
-                        return "Waiting for: " + printJob.assignedPrinter.name
+                        return catalog.i18nc("@label", "Waiting for: ") + printJob.assignedPrinter.name
                     }
 
                 }
@@ -146,7 +152,7 @@ Item
                     Button
                     {
                         id: sendToTopButton
-                        text: "Send to top"
+                        text: catalog.i18nc("@label", "Move to top")
                         onClicked: OutputDevice.sendJobToTop(printJob.key)
                         width: parent.width
                         enabled: OutputDevice.printJobs[0].key != printJob.key
@@ -154,7 +160,7 @@ Item
                     Button
                     {
                         id: deleteButton
-                        text: "Delete"
+                        text: catalog.i18nc("@label", "Delete")
                         onClicked: OutputDevice.deleteJobFromQueue(printJob.key)
                         width: parent.width
                         anchors.top: sendToTopButton.bottom
