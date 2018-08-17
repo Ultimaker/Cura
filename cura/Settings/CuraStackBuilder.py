@@ -108,7 +108,14 @@ class CuraStackBuilder:
 
         preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
         quality_group_dict = quality_manager.getQualityGroups(new_global_stack)
-        if quality_group_dict: #There are any quality profiles.
+        if not quality_group_dict:
+            # There is no available quality group, set all quality containers to empty.
+            new_global_stack.quality = application.empty_quality_container
+            for extruder_stack in new_global_stack.extruders.values():
+                extruder_stack.quality = application.empty_quality_container
+        else:
+            # Set the quality containers to the preferred quality type if available, otherwise use the first quality
+            # type that's available.
             if preferred_quality_type not in quality_group_dict:
                 Logger.log("w", "The preferred quality {quality_type} doesn't exist for this set-up. Choosing a random one.".format(quality_type = preferred_quality_type))
                 preferred_quality_type = next(iter(quality_group_dict))
