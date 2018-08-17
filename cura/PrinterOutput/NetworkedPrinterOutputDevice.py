@@ -200,6 +200,13 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         reply = self._manager.put(request, data.encode())
         self._registerOnFinishedCallback(reply, on_finished)
 
+    def delete(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
+        request = self._createEmptyRequest(target)
+        self._last_request_time = time()
+        reply = self._manager.delete(request)
+        self._registerOnFinishedCallback(reply, on_finished)
+
     def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         self._validateManager()
         request = self._createEmptyRequest(target)
