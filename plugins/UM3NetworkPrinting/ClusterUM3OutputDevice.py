@@ -4,17 +4,17 @@
 from typing import Any, cast, Optional, Set, Tuple, Union
 
 from UM.FileHandler.FileHandler import FileHandler
-from UM.FileHandler.FileWriter import FileWriter #To choose based on the output file mode (text vs. binary).
-from UM.FileHandler.WriteFileJob import WriteFileJob #To call the file writer asynchronously.
+from UM.FileHandler.FileWriter import FileWriter  # To choose based on the output file mode (text vs. binary).
+from UM.FileHandler.WriteFileJob import WriteFileJob  # To call the file writer asynchronously.
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
-from UM.Mesh.MeshWriter import MeshWriter # For typing
+
 from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
-from UM.OutputDevice import OutputDeviceError #To show that something went wrong when writing.
-from UM.Scene.SceneNode import SceneNode #For typing.
-from UM.Version import Version #To check against firmware versions for support.
+from UM.OutputDevice import OutputDeviceError  # To show that something went wrong when writing.
+from UM.Scene.SceneNode import SceneNode  # For typing.
+from UM.Version import Version  # To check against firmware versions for support.
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
@@ -34,9 +34,9 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
 from time import time
 from datetime import datetime
-from typing import Optional, Dict, List, Set
+from typing import Optional, Dict, List
 
-import io #To create the correct buffers for sending data to the printer.
+import io  # To create the correct buffers for sending data to the printer.
 import json
 import os
 
@@ -67,18 +67,18 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # See comments about this hack with the clusterPrintersChanged signal
         self.printersChanged.connect(self.clusterPrintersChanged)
 
-        self._accepts_commands = True #type: bool
+        self._accepts_commands = True  # type: bool
 
         # Cluster does not have authentication, so default to authenticated
         self._authentication_state = AuthState.Authenticated
 
-        self._error_message = None #type: Optional[Message]
-        self._write_job_progress_message = None #type: Optional[Message]
-        self._progress_message = None #type: Optional[Message]
+        self._error_message = None  # type: Optional[Message]
+        self._write_job_progress_message = None  # type: Optional[Message]
+        self._progress_message = None  # type: Optional[Message]
 
         self._active_printer = None  # type: Optional[PrinterOutputModel]
 
-        self._printer_selection_dialog = None #type: QObject
+        self._printer_selection_dialog = None  # type: QObject
 
         self.setPriority(3)  # Make sure the output device gets selected above local file output
         self.setName(self._id)
@@ -89,32 +89,33 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._printer_uuid_to_unique_name_mapping = {}  # type: Dict[str, str]
 
-        self._finished_jobs = [] # type: List[PrintJobOutputModel]
+        self._finished_jobs = []  # type: List[PrintJobOutputModel]
 
-        self._cluster_size = int(properties.get(b"cluster_size", 0))
+        self._cluster_size = int(properties.get(b"cluster_size", 0))  # type: int
 
-        self._latest_reply_handler = None #type: Optional[QNetworkReply]
+        self._latest_reply_handler = None  # type: Optional[QNetworkReply]
+        self._sending_job = None
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
 
         self.sendMaterialProfiles()
 
-        #Formats supported by this application (file types that we can actually write).
+        # Formats supported by this application (file types that we can actually write).
         if file_handler:
             file_formats = file_handler.getSupportedFileTypesWrite()
         else:
             file_formats = CuraApplication.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
 
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        #Create a list from the supported file formats string.
+        # Create a list from the supported file formats string.
         if not global_stack:
             Logger.log("e", "Missing global stack!")
             return
 
         machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
-        #Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
+        # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
         if "application/x-ufp" not in machine_file_formats and Version(self.firmwareVersion) >= Version("4.4"):
             machine_file_formats = ["application/x-ufp"] + machine_file_formats
 
@@ -127,7 +128,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             raise OutputDeviceError.WriteRequestFailedError(i18n_catalog.i18nc("@info:status", "There are no file formats available to write with!"))
         preferred_format = file_formats[0]
 
-        #Just take the first file format available.
+        #J ust take the first file format available.
         if file_handler is not None:
             writer = file_handler.getWriterByMimeType(cast(str, preferred_format["mime_type"]))
         else:
@@ -137,18 +138,18 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             Logger.log("e", "Unexpected error when trying to get the FileWriter")
             return
 
-        #This function pauses with the yield, waiting on instructions on which printer it needs to print with.
+        # This function pauses with the yield, waiting on instructions on which printer it needs to print with.
         if not writer:
             Logger.log("e", "Missing file or mesh writer!")
             return
         self._sending_job = self._sendPrintJob(writer, preferred_format, nodes)
-        self._sending_job.send(None) #Start the generator.
+        self._sending_job.send(None)  # Start the generator.
 
-        if len(self._printers) > 1: #We need to ask the user.
+        if len(self._printers) > 1:  # We need to ask the user.
             self._spawnPrinterSelectionDialog()
             is_job_sent = True
-        else: #Just immediately continue.
-            self._sending_job.send("") #No specifically selected printer.
+        else:  # Just immediately continue.
+            self._sending_job.send("")  # No specifically selected printer.
             is_job_sent = self._sending_job.send(None)
 
     def _spawnPrinterSelectionDialog(self):
@@ -159,7 +160,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._printer_selection_dialog.show()
 
     @pyqtProperty(int, constant=True)
-    def clusterSize(self):
+    def clusterSize(self) -> int:
         return self._cluster_size
 
     ##  Allows the user to choose a printer to print with from the printer
@@ -216,8 +217,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         job.start()
 
-        yield True #Return that we had success!
-        yield #To prevent having to catch the StopIteration exception.
+        yield True  # Return that we had success!
+        yield  # To prevent having to catch the StopIteration exception.
 
     def _sendPrintJobWaitOnWriteJobFinished(self, job: WriteFileJob) -> None:
         if self._write_job_progress_message:
@@ -242,7 +243,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         file_name = CuraApplication.getInstance().getPrintInformation().jobName + "." + preferred_format["extension"]
 
-        output = stream.getvalue() #Either str or bytes depending on the output mode.
+        output = stream.getvalue()  # Either str or bytes depending on the output mode.
         if isinstance(stream, io.StringIO):
             output = cast(str, output).encode("utf-8")
         output = cast(bytes, output)
@@ -281,8 +282,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
             # If successfully sent:
             if bytes_sent == bytes_total:
-                # Show a confirmation to the user so they know the job was sucessful and provide the option to switch to the
-                # monitor tab.
+                # Show a confirmation to the user so they know the job was sucessful and provide the option to switch to
+                # the monitor tab.
                 self._success_message = Message(
                     i18n_catalog.i18nc("@info:status", "Print job was successfully sent to the printer."),
                     lifetime=5, dismissable=True,
@@ -411,7 +412,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             image = QImage()
             image.loadFromData(reply.readAll())
             print_job.updatePreviewImage(image)
-
 
     def _update(self) -> None:
         super()._update()
@@ -615,6 +615,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         job = SendMaterialJob(device = self)
         job.run()
 
+
 def loadJsonFromReply(reply: QNetworkReply) -> Optional[List[Dict[str, Any]]]:
     try:
         result = json.loads(bytes(reply.readAll()).decode("utf-8"))
@@ -633,8 +634,8 @@ def checkValidGetReply(reply: QNetworkReply) -> bool:
     return True
 
 
-def findByKey(list: List[Union[PrintJobOutputModel, PrinterOutputModel]], key: str) -> Optional[PrintJobOutputModel]:
-    for item in list:
+def findByKey(lst: List[Union[PrintJobOutputModel, PrinterOutputModel]], key: str) -> Optional[PrintJobOutputModel]:
+    for item in lst:
         if item.key == key:
             return item
     return None

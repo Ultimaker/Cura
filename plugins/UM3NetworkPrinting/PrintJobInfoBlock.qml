@@ -148,6 +148,7 @@ Item
                         text: "Send to top"
                         onClicked: OutputDevice.sendJobToTop(printJob.key)
                         width: parent.width
+                        enabled: OutputDevice.printJobs[0].key != printJob.key
                     }
                 }
 
