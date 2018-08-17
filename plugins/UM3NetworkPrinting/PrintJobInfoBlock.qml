@@ -193,7 +193,7 @@ Item
             // PrintCore && Material config
             Row
             {
-                id: extruderInfo
+                id: extrudersInfo
                 anchors.bottom: parent.bottom
 
                 anchors

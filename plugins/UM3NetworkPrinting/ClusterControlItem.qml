@@ -1,5 +1,6 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.3
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -9,11 +10,9 @@ Component
     Rectangle
     {
         id: base
-        property var manager: Cura.MachineManager.printerOutputDevices[0]
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
-
-        visible: manager != null
+        visible: OutputDevice != null
         anchors.fill: parent
         color: UM.Theme.getColor("viewport_background")
 
@@ -35,217 +34,201 @@ Component
                 right: parent.right
             }
 
-            text: Cura.MachineManager.printerOutputDevices[0].name
+            text: OutputDevice.name
             elide: Text.ElideRight
         }
 
-        Rectangle
-        {
-            id: printJobArea
 
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: lineColor
+        ScrollView
+        {
+            id: queuedPrintJobs
 
             anchors
             {
                 top: activePrintersLabel.bottom
-                margins: UM.Theme.getSize("default_margin").width
                 left: parent.left
                 right: parent.right
+                margins: UM.Theme.getSize("default_margin").width
+                bottom: parent.bottom
             }
-
-            radius: cornerRadius
-            height: childrenRect.height
-
-            Item
+            ListView
             {
-                id: printJobTitleBar
-                width: parent.width
-                height: printJobTitleLabel.height + 2 * UM.Theme.getSize("default_margin").height
+                anchors.fill: parent
+                spacing: UM.Theme.getSize("default_margin").height
 
-                Label
-                {
-                    id: printJobTitleLabel
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
-                    text: catalog.i18nc("@title", "Print jobs")
-                    font: UM.Theme.getFont("default")
-                    opacity: 0.75
-                }
-                Rectangle
-                {
-                    anchors.bottom: parent.bottom
-                    height: UM.Theme.getSize("default_lining").width
-                    color: lineColor
-                    width: parent.width
-                }
-            }
-
-            Column
-            {
-                id: printJobColumn
-
-                anchors
-                {
-                    top: printJobTitleBar.bottom
-                    margins: UM.Theme.getSize("default_margin").height
-                    right: parent.right
-                    left: parent.left
-                }
-
-                Item
+                model: OutputDevice.printers
+                delegate: Rectangle
                 {
                     width: parent.width
-                    height: childrenRect.height
-                    opacity: 0.65
-                    Label
-                    {
-                        text: catalog.i18nc("@label", "Printing")
-                        font: UM.Theme.getFont("very_small")
+                    height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
 
-                    }
-
-                    Label
-                    {
-                        text: manager.activePrintJobs.length
-                        font: UM.Theme.getFont("small")
-                        anchors.right: parent.right
-                    }
-                }
-
-                Item
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    opacity: 0.65
-                    Label
-                    {
-                        text: catalog.i18nc("@label", "Queued")
-                        font: UM.Theme.getFont("very_small")
-                    }
-
-                    Label
-                    {
-                        text: manager.queuedPrintJobs.length
-                        font: UM.Theme.getFont("small")
-                        anchors.right: parent.right
-                    }
-                }
-            }
-
-            OpenPanelButton
-            {
-                anchors.top: printJobColumn.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: UM.Theme.getSize("default_margin").height
-                id: configButton
-                onClicked: base.manager.openPrintJobControlPanel()
-                text: catalog.i18nc("@action:button", "View print jobs")
-            }
-
-            Item
-            {
-                // spacer
-                anchors.top: configButton.bottom
-                width: UM.Theme.getSize("default_margin").width
-                height: UM.Theme.getSize("default_margin").height
-            }
-        }
-
-
-        Rectangle
-        {
-            id: printersArea
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: lineColor
-            anchors.top: printJobArea.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            anchors.rightMargin:UM.Theme.getSize("default_margin").width
-            radius: cornerRadius
-            height: childrenRect.height
-
-            Item
-            {
-                id: printersTitleBar
-                width: parent.width
-                height: printJobTitleLabel.height + 2 * UM.Theme.getSize("default_margin").height
-
-                Label
-                {
-                    id: printersTitleLabel
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
-                    text: catalog.i18nc("@label:title", "Printers")
-                    font: UM.Theme.getFont("default")
-                    opacity: 0.75
-                }
-                Rectangle
-                {
-                    anchors.bottom: parent.bottom
-                    height: UM.Theme.getSize("default_lining").width
-                    color: lineColor
-                    width: parent.width
-                }
-            }
-            Column
-            {
-                id: printersColumn
-                anchors.top: printersTitleBar.bottom
-                anchors.topMargin: UM.Theme.getSize("default_margin").height
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                Repeater
-                {
-                    model: manager.connectedPrintersTypeCount
+                    id: base
+                    property var collapsed: true
                     Item
                     {
-                        width: parent.width
-                        height: childrenRect.height
-                        opacity: 0.65
-                        Label
+                        id: printerInfo
+                        height: machineIcon.height
+                        anchors
                         {
-                            text: modelData.machine_type
-                            font: UM.Theme.getFont("very_small")
+                            top: parent.top
+                            left: parent.left
+                            right: parent.right
+
+                            margins: UM.Theme.getSize("default_margin").width
+                        }
+
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: base.collapsed = !base.collapsed
+                            enabled: modelData.activePrintJob != null
+                        }
+
+                        Rectangle
+                        {
+                            id: machineIcon
+                            anchors.top: parent.top
+                            width: 50
+                            height: 50
+                            color: "blue"
                         }
 
                         Label
                         {
-                            text: modelData.count
-                            font: UM.Theme.getFont("small")
+                            id: machineNameLabel
+                            text: modelData.name
+                            anchors.top: machineIcon.top
+                            anchors.left: machineIcon.right
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            anchors.right: collapseIcon.left
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            elide: Text.ElideRight
+                        }
+
+                        UM.RecolorImage
+                        {
+                            id: collapseIcon
+                            width: 15
+                            height: 15
+                            visible: modelData.activePrintJob != null
+                            sourceSize.width: width
+                            sourceSize.height: height
+                            source: base.collapsed ?  UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+                            anchors.verticalCenter: parent.verticalCenter
                             anchors.right: parent.right
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            color: "black"
+                        }
+
+                        Label
+                        {
+                            id: activeJobLabel
+                            text: modelData.activePrintJob != null ? modelData.activePrintJob.name : "waiting"
+                            anchors.top: machineNameLabel.bottom
+                            anchors.left: machineNameLabel.left
+                            anchors.right: collapseIcon.left
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            elide: Text.ElideRight
+                        }
+                    }
+
+                    Item
+                    {
+                        id: detailedInfo
+                        property var printJob: modelData.activePrintJob
+                        visible: !base.collapsed
+                        anchors.top: printerInfo.bottom
+                        width: parent.width
+                        height: visible ? childrenRect.height : 0
+
+                        Rectangle
+                        {
+                            id: topSpacer
+                            color: "grey"
+                            height: 1
+                            anchors
+                            {
+                                left: parent.left
+                                right: parent.right
+                                margins: UM.Theme.getSize("default_margin").width
+                                top: parent.top
+                            }
+                        }
+
+                        Row
+                        {
+                            id: extrudersInfo
+                            anchors.top: topSpacer.bottom
+                            anchors.topMargin : UM.Theme.getSize("default_margin").height
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            anchors.right: parent.right
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            height: childrenRect.height
+                            spacing: UM.Theme.getSize("default_margin").width
+
+                            PrintCoreConfiguration
+                            {
+                                id: leftExtruderInfo
+                                width: Math.round(parent.width  / 2)
+                                printCoreConfiguration: modelData.printerConfiguration.extruderConfigurations[0]
+                            }
+
+                            PrintCoreConfiguration
+                            {
+                                id: rightExtruderInfo
+                                width: Math.round(parent.width / 2)
+                                printCoreConfiguration: modelData.printerConfiguration.extruderConfigurations[1]
+                            }
+                        }
+
+                        Rectangle
+                        {
+                            id: jobSpacer
+                            color: "grey"
+                            height: 1
+                            anchors
+                            {
+                                left: parent.left
+                                right: parent.right
+                                margins: UM.Theme.getSize("default_margin").width
+                                top: extrudersInfo.bottom
+                            }
+                        }
+
+                        Item
+                        {
+                            id: jobInfo
+                            anchors.top: jobSpacer.bottom
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.margins: UM.Theme.getSize("default_margin").width
+                            height: childrenRect.height
+                            Label
+                            {
+                                id: printJobName
+                                text: modelData.activePrintJob.name
+                                font: UM.Theme.getFont("default_bold")
+                            }
+                            Label
+                            {
+                                id: ownerName
+                                anchors.top: printJobName.bottom
+                                text: modelData.activePrintJob.owner
+                            }
+
+                            Image
+                            {
+                                source: modelData.activePrintJob.preview_image_url
+                                anchors.top: ownerName.bottom
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.bottom: totalTimeLabel.top
+                                width: height
+                            }
+
                         }
                     }
                 }
-            }
-            OpenPanelButton
-            {
-                anchors.top: printersColumn.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: UM.Theme.getSize("default_margin").height
-                id: printerConfigButton
-                onClicked: base.manager.openPrinterControlPanel()
-
-                text: catalog.i18nc("@action:button", "View printers")
-            }
-
-            Item
-            {
-                // spacer
-                anchors.top: printerConfigButton.bottom
-                width: UM.Theme.getSize("default_margin").width
-                height: UM.Theme.getSize("default_margin").height
             }
         }
     }

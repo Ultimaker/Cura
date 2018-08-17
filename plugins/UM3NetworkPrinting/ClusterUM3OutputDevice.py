@@ -351,6 +351,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             result.append({"machine_type": machine_type, "count": str(printer_count[machine_type])})
         return result
 
+    @pyqtProperty("QVariantList", notify=clusterPrintersChanged)
+    def printers(self):
+        return self._printers
+
     @pyqtSlot(int, result = str)
     def formatDuration(self, seconds: int) -> str:
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
