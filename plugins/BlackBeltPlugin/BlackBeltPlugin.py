@@ -388,7 +388,8 @@ class BlackBeltPlugin(Extension):
                         line_has_e = False
                         line_has_axis = False
 
-                        if line[:2] not in ["G0", "G1"]:
+                        gcode_command = line.split(' ', 1)[0]
+                        if gcode_command not in ["G0", "G1", "G92"]:
                             continue
 
                         result = re.findall(move_parameters_regex, line)
@@ -409,7 +410,7 @@ class BlackBeltPlugin(Extension):
                             elif parameter in "XZ":
                                 line_has_axis = True
 
-                        if line_has_axis and line_has_e and f is not None and y is not None and y <= minimum_y and last_y is not None and last_y <= minimum_y:
+                        if gcode_command != "G92" and line_has_axis and line_has_e and f is not None and y is not None and y <= minimum_y and last_y is not None and last_y <= minimum_y:
                             if f > belt_wall_speed:
                                 # Remove pre-existing move speed and add our own
                                 line = re.sub(speed_regex, r"", line)
