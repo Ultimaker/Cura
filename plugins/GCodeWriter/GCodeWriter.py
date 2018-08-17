@@ -47,7 +47,7 @@ class GCodeWriter(MeshWriter):
     _setting_keyword = ";SETTING_"
 
     def __init__(self):
-        super().__init__()
+        super().__init__(add_to_recent_files = False)
 
         self._application = Application.getInstance()
 
