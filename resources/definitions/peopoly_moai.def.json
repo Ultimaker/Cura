@@ -168,7 +168,7 @@
         "cool_fan_full_layer": {
             "enabled": false
         },
-        "snap_distance": {
+        "minimum_polygon_circumference": {
             "value": "0.1"
         },
         "meshfix_maximum_resolution": {
