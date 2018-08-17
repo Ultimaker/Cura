@@ -10,7 +10,10 @@
         "has_machine_quality": true,
         "has_materials": false,
         "platform": "moai.obj",
-        "platform_texture": "moai.jpg"
+        "platform_texture": "moai.jpg",
+        "machine_extruder_trains": {
+            "0": "peopoly_moai_extruder_0"
+        }
     },
 
     "overrides": {
@@ -26,9 +29,6 @@
         "machine_depth": {
             "default_value": 130
         },
-        "machine_nozzle_size": {
-            "default_value": 0.067
-        },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -37,10 +37,6 @@
                 [ 10, 10 ],
                 [ 10, -10 ]
             ]
-        },
-        "material_diameter": {
-            "enabled": false,
-            "value": 1.75
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
