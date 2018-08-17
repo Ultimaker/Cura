@@ -561,7 +561,9 @@ class BuildVolume(SceneNode):
 
             camera = Application.getInstance().getController().getCameraTool()
             if camera:
-                camera.setZoomRange(min = 1, max = self.getDiagonalSize() * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
+                diagonal = self.getDiagonalSize()
+                if diagonal > 1:
+                    camera.setZoomRange(min = 0.1, max = diagonal * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
 
     def _onEngineCreated(self):
         self._engine_ready = True
