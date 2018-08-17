@@ -28,7 +28,7 @@ class PauseAtHeight(Script):
                 "pause_height":
                 {
                     "label": "Pause Height",
-                    "description": "At what height should the pause occur",
+                    "description": "At what height should the pause occur?",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5.0,
@@ -39,7 +39,7 @@ class PauseAtHeight(Script):
                 "pause_layer":
                 {
                     "label": "Pause Layer",
-                    "description": "At what layer should the pause occur",
+                    "description": "At what layer should the pause occur?",
                     "type": "int",
                     "value": "math.floor((pause_height - 0.27) / 0.1) + 1",
                     "minimum_value": "0",
@@ -142,13 +142,14 @@ class PauseAtHeight(Script):
         standby_temperature = self.getSettingValueByKey("standby_temperature")
         firmware_retract = Application.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value")
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
+        initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
 
         is_griffin = False
 
         # T = ExtruderManager.getInstance().getActiveExtruderStack().getProperty("material_print_temperature", "value")
 
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
-        layer_0_z = 0.
+        layer_0_z = 0
         current_z = 0
         got_first_g_cmd_on_layer_0 = False
         current_t = 0 #Tracks the current extruder for tracking the target temperature.
@@ -195,11 +196,10 @@ class PauseAtHeight(Script):
                     # This block is executed once, the first time there is a G
                     # command, to get the z offset (z for first positive layer)
                     if not got_first_g_cmd_on_layer_0:
-                        layer_0_z = current_z
+                        layer_0_z = current_z - initial_layer_height
                         got_first_g_cmd_on_layer_0 = True
 
                     current_height = current_z - layer_0_z
-
                     if current_height < pause_height:
                         break  # Try the next layer.
 
