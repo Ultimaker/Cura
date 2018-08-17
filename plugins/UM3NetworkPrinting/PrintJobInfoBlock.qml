@@ -135,7 +135,7 @@ Item
                 //y: configurationSelector.height - UM.Theme.getSize("default_lining").height
                 //x: configurationSelector.width - width
                 width: 200
-                height: childrenRect.height
+                height: contentItem.height + 2 * padding
                 visible: false
                 padding: UM.Theme.getSize("default_lining").width
                 transformOrigin: Popup.Top
@@ -145,10 +145,19 @@ Item
                     height: childrenRect.height
                     Button
                     {
+                        id: sendToTopButton
                         text: "Send to top"
                         onClicked: OutputDevice.sendJobToTop(printJob.key)
                         width: parent.width
                         enabled: OutputDevice.printJobs[0].key != printJob.key
+                    }
+                    Button
+                    {
+                        id: deleteButton
+                        text: "Delete"
+                        onClicked: OutputDevice.deleteJobFromQueue(printJob.key)
+                        width: parent.width
+                        anchors.top: sendToTopButton.bottom
                     }
                 }
 
@@ -156,6 +165,7 @@ Item
                 {
                     color: UM.Theme.getColor("setting_control")
                     border.color: UM.Theme.getColor("setting_control_border")
+                    height: popup.height
                 }
 
                 exit: Transition
