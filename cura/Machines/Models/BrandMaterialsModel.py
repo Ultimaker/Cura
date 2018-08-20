@@ -50,6 +50,7 @@ class BrandMaterialsModel(ListModel):
         self._extruder_stack = None
 
         from cura.CuraApplication import CuraApplication
+        self._container_registry = CuraApplication.getInstance().getContainerRegistry()
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
         self._material_manager = CuraApplication.getInstance().getMaterialManager()
@@ -104,30 +105,45 @@ class BrandMaterialsModel(ListModel):
         brand_group_dict = {}
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
-            brand = metadata["brand"]
-            # Only add results for generic materials
-            if brand.lower() == "generic":
-                continue
+
 
             # Do not include the materials from a to-be-removed package
             if bool(metadata.get("removed", False)):
                 continue
 
+            # Skip generic materials, and add brands we haven't seen yet to the dict
+            brand = metadata["brand"]
+            if brand.lower() == "generic":
+                continue
             if brand not in brand_group_dict:
                 brand_group_dict[brand] = {}
 
+            # Add material types we haven't seen yet to the dict
             material_type = metadata["material"]
             if material_type not in brand_group_dict[brand]:
                 brand_group_dict[brand][material_type] = []
 
-            item = {"root_material_id": root_material_id,
-                    "id": metadata["id"],
-                    "name": metadata["name"],
-                    "brand": metadata["brand"],
-                    "material": metadata["material"],
-                    "color_name": metadata["color_name"],
-                    "container_node": container_node
-                    }
+            # Now handle the individual materials
+            item = {
+                "root_material_id": root_material_id,
+                # "root_material_id": container_node.metadata["base_file"] <- as written in material management model
+                "id":               metadata["id"],
+                "container_id":     metadata["id"], # TODO: Remove duplicate in material manager qml
+                "guid":             metadata["GUID"],
+                "name":             metadata["name"],
+                "brand":            metadata["brand"],
+                "description":      metadata["description"],
+                "material":         metadata["material"],
+                "color_name":       metadata["color_name"],
+                "color_code":       metadata["color_code"],
+                "density":          metadata.get("properties", {}).get("density", ""),
+                "diameter":         metadata.get("properties", {}).get("diameter", ""),
+                "approximate_diameter": metadata["approximate_diameter"],
+                "adhesion_info":    metadata["adhesion_info"],
+                "is_read_only":     self._container_registry.isReadOnly(metadata["id"]),
+                "container_node":   container_node,
+                "is_favorite":      False
+            }
             brand_group_dict[brand][material_type].append(item)
 
         for brand, material_dict in brand_group_dict.items():

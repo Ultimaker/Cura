@@ -17,7 +17,7 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
 
         self._machine_manager.activeStackChanged.connect(self._update) #Update when switching machines.
         self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
-
+        self._material_manager.favoritesUpdated.connect(self._update) # Update when favorites are changed
         self._update()
 
     def _update(self):
@@ -38,7 +38,9 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
             self.setItems([])
             return
 
-        favorite_ids = self._preferences.getValue("cura/favorite_materials")
+        favorite_ids = self._material_manager.getFavorites()
+
+        print("favorite_ids:", favorite_ids)
 
         item_list = []
         for root_material_id, container_node in available_material_dict.items():

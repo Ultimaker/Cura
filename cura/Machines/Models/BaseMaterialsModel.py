@@ -21,6 +21,8 @@ class BaseMaterialsModel(ListModel):
     MaterialRole = Qt.UserRole + 5
     ColorRole = Qt.UserRole + 6
     ContainerNodeRole = Qt.UserRole + 7
+    ColorCodeRole = Qt.UserRole + 8
+    GUIDRole = Qt.UserRole + 9
 
     extruderPositionChanged = pyqtSignal()
 
@@ -31,10 +33,12 @@ class BaseMaterialsModel(ListModel):
 
         self.addRoleName(self.RootMaterialIdRole, "root_material_id")
         self.addRoleName(self.IdRole, "id")
+        self.addRoleName(self.GUIDRole, "guid")
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.BrandRole, "brand")
         self.addRoleName(self.MaterialRole, "material")
         self.addRoleName(self.ColorRole, "color_name")
+        self.addRoleName(self.ColorCodeRole, "color_code")
         self.addRoleName(self.ContainerNodeRole, "container_node")
 
         self._extruder_position = 0
