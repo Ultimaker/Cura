@@ -242,6 +242,8 @@ class BuildVolume(SceneNode):
 
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
+                if extruder_position not in self._global_container_stack.extruders:
+                    continue
                 if not self._global_container_stack.extruders[extruder_position].isEnabled:
                     node.setOutsideBuildArea(True)
                     continue
