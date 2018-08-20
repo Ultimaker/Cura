@@ -433,6 +433,18 @@ Cura.MachineAction
                             property bool allowNegative: true
                         }
 
+                        Loader
+                        {
+                            id: extruderCoolingFanNumberField
+                            sourceComponent: numericTextFieldWithUnit
+                            property string settingKey: "machine_extruder_cooling_fan_number"
+                            property string label: catalog.i18nc("@label", "Cooling Fan Number")
+                            property string unit: catalog.i18nc("@label", "")
+                            property bool isExtruderSetting: true
+                            property bool forceUpdateOnChange: true
+                            property bool allowNegative: false
+                        }
+
                         Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
                         Row
