@@ -90,7 +90,6 @@ class ObjectsModel(ListModel):
         
         nodes = sorted(nodes, key=lambda n: n["name"])
         self.setItems(nodes)
-        print(nodes)
 
         self.itemsChanged.emit()
 
