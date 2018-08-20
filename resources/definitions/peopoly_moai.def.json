@@ -76,7 +76,13 @@
         },
         "top_bottom_thickness": {
             "minimum_value_warning": "0.1",
-            "value": "0.4"
+            "value": "0.1"
+        },
+        "top_thickness": {
+            "minimum_value_warning": "resolveOrValue('layer_height')"
+        },
+        "bottom_thickness": {
+            "minimum_value_warning": "resolveOrValue('layer_height')"
         },
         "infill_sparse_thickness": {
             "maximum_value_warning": "0.5"
@@ -115,7 +121,7 @@
             "value": 3
         },
         "infill_overlap": {
-            "value": 15
+            "value": 12
         },
         "adhesion_type": {
             "value": "'none'"
@@ -182,14 +188,20 @@
         "travel_compensate_overlapping_walls_x_enabled": {
             "value": "False"
         },
+        "wall_0_wipe_dist": {
+            "value": "machine_nozzle_size / 3"
+        },
         "wall_thickness": {
-            "value": 0.4
+            "value": 0.5
         },
         "infill_sparse_density": {
             "value": 70
         },
         "infill_pattern": {
             "value": "'lines'"
+        },
+        "infill_angles": {
+            "valie": "[10,55,100,145,190,235,280,325]"
         },
         "cool_min_layer_time": {
             "enabled": false,
@@ -231,13 +243,42 @@
             "value": "False"
         },
         "skin_overlap": {
-            "value": 6
+            "value": 3
         },
         "infill_wipe_dist": {
             "value": 0
         },
+        "expand_skins_expand_distance": {
+            "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2"
+        },
         "max_feedrate_z_override": {
             "value": 0,
+            "enabled": false
+        },
+        "flow_rate_max_extrusion_offset": {
+            "enabled": false
+        },
+        "flow_rate_extrusion_offset_factor": {
+            "enabled": false
+        },
+        "adaptive_layer_height_enabled": {
+            "value": "False",
+            "enabled": false
+        },
+        "bridge_settings_enabled": {
+            "value": "False",
+            "enabled": false            
+        },
+        "acceleration_enabled": {
+            "value": "False",
+            "enabled": false
+        },
+        "relative_extrusion": {
+            "value": "False",
+            "enabled": false
+        },
+        "coasting_enable": {
+            "value": "False",
             "enabled": false
         }
     }
