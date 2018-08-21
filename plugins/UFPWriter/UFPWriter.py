@@ -20,7 +20,7 @@ catalog = i18nCatalog("cura")
 
 class UFPWriter(MeshWriter):
     def __init__(self):
-        super().__init__()
+        super().__init__(add_to_recent_files = False)
         self._snapshot = None
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._createSnapshot)
 
