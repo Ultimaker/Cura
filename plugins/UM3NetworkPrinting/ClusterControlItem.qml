@@ -203,29 +203,50 @@ Component
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.margins: UM.Theme.getSize("default_margin").width
-                            height: childrenRect.height
+                            height: childrenRect.height + UM.Theme.getSize("default_margin").height
                             Label
                             {
                                 id: printJobName
-                                text: modelData.activePrintJob.name
+                                text: modelData.activePrintJob != null ? modelData.activePrintJob.name : ""
                                 font: UM.Theme.getFont("default_bold")
                             }
                             Label
                             {
                                 id: ownerName
                                 anchors.top: printJobName.bottom
-                                text: modelData.activePrintJob.owner
+                                text: modelData.activePrintJob != null ? modelData.activePrintJob.owner : ""
                             }
 
                             Image
                             {
-                                source: modelData.activePrintJob.preview_image_url
+                                id: printJobPreview
+                                source: modelData.activePrintJob != null ? modelData.activePrintJob.preview_image_url : ""
                                 anchors.top: ownerName.bottom
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.bottom: totalTimeLabel.top
-                                width: height
+                                //anchors.bottom: totalTimeLabel.top
+                                width: parent.width / 3
+                                height: width
                             }
 
+                            Rectangle
+                            {
+                                id: showCameraIcon
+                                width: 30 * screenScaleFactor
+                                height: width
+                                radius: width
+                                anchors.left: parent.left
+                                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                                anchors.bottom: printJobPreview.bottom
+                                color: UM.Theme.getColor("setting_control_border_highlight")
+                                Image
+                                {
+                                    width: parent.width
+                                    height: width
+                                    anchors.right: parent.right
+                                    anchors.rightMargin: parent.rightMargin
+                                    source: "camera-icon.svg"
+                                }
+                            }
                         }
                     }
                 }

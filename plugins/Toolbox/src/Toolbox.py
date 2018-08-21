@@ -183,6 +183,7 @@ class Toolbox(QObject, Extension):
             "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url)),
             "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url=self._api_url))
         }
+        print("*******", self._request_urls )
 
     # Get the API root for the packages API depending on Cura version settings.
     def _getCloudAPIRoot(self) -> str:

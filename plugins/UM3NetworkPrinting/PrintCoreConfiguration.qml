@@ -30,14 +30,22 @@ Item
         {
             anchors.centerIn: parent
             font: UM.Theme.getFont("default_bold")
-            text: printCoreConfiguration.position + 1
+            text: printCoreConfiguration != undefined ? printCoreConfiguration.position + 1 : ""
         }
     }
 
     Label
     {
         id: materialLabel
-        text: printCoreConfiguration.activeMaterial != null ? printCoreConfiguration.activeMaterial.name : ":("
+        text:
+
+        {
+            if(printCoreConfiguration != undefined  && printCoreConfiguration.activeMaterial != undefined)
+            {
+                return printCoreConfiguration.activeMaterial.name
+            }
+            return ""
+        }
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("default_bold")
@@ -48,7 +56,14 @@ Item
     Label
     {
         id: printCoreLabel
-        text: printCoreConfiguration.hotendID
+        text:
+        {
+            if(printCoreConfiguration != undefined  && printCoreConfiguration.hotendID != undefined)
+            {
+                return printCoreConfiguration.hotendID
+            }
+            return ""
+        }
         anchors.top: materialLabel.bottom
         elide: Text.ElideRight
         width: parent.width
