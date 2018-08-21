@@ -630,6 +630,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                                            type = "extruder_train")
             extruder_stack_dict = {stack.getMetaDataEntry("position"): stack for stack in extruder_stacks}
 
+            # Make sure that those extruders have the global stack as the next stack or later some value evaluation
+            # will fail.
+            for stack in extruder_stacks:
+                stack.setNextStack(global_stack, connect_signals = False)
+
         Logger.log("d", "Workspace loading is checking definitions...")
         # Get all the definition files & check if they exist. If not, add them.
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
