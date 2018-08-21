@@ -520,18 +520,16 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                                         key=data["uuid"], name= data["name"])
 
         configuration = ConfigurationModel()
-        extruders = []
+        extruders = [ExtruderConfigurationModel(position = idx) for idx in range(0, self._number_of_extruders)]
         for index in range(0, self._number_of_extruders):
-            extruder = ExtruderConfigurationModel()
-            extruder.setPosition(index)
             try:
                 extruder_data = data["configuration"][index]
             except IndexError:
-                break
-
+                continue
+            extruder = extruders[int(data["configuration"][index]["extruder_index"])]
             extruder.setHotendID(extruder_data.get("print_core_id", ""))
             extruder.setMaterial(self._createMaterialOutputModel(extruder_data.get("material", {})))
-            extruders.append(extruder)
+
         configuration.setExtruderConfigurations(extruders)
         print_job.updateConfiguration(configuration)
 

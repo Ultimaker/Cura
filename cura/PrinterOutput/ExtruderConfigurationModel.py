@@ -11,9 +11,9 @@ class ExtruderConfigurationModel(QObject):
 
     extruderConfigurationChanged = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, position: int = -1):
         super().__init__()
-        self._position = -1  # type: int
+        self._position = position  # type: int
         self._material = None  # type: Optional[MaterialOutputModel]
         self._hotend_id = None  # type: Optional[str]
 

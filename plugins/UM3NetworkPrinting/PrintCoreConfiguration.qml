@@ -18,6 +18,15 @@ Item
         id: extruderCircle
         width: 30
         height: 30
+        opacity:
+        {
+            if(printCoreConfiguration == undefined || printCoreConfiguration.activeMaterial == undefined || printCoreConfiguration.hotendID == undefined)
+            {
+                return 0.5
+            }
+            return 1
+        }
+
         Rectangle
         {
             anchors.fill: parent
@@ -30,7 +39,7 @@ Item
         {
             anchors.centerIn: parent
             font: UM.Theme.getFont("default_bold")
-            text: printCoreConfiguration != undefined ? printCoreConfiguration.position + 1 : ""
+            text:  printCoreConfiguration.position + 1
         }
     }
 
@@ -40,7 +49,7 @@ Item
         text:
 
         {
-            if(printCoreConfiguration != undefined  && printCoreConfiguration.activeMaterial != undefined)
+            if(printCoreConfiguration != undefined && printCoreConfiguration.activeMaterial != undefined)
             {
                 return printCoreConfiguration.activeMaterial.name
             }
@@ -58,7 +67,7 @@ Item
         id: printCoreLabel
         text:
         {
-            if(printCoreConfiguration != undefined  && printCoreConfiguration.hotendID != undefined)
+            if(printCoreConfiguration != undefined && printCoreConfiguration.hotendID != undefined)
             {
                 return printCoreConfiguration.hotendID
             }
