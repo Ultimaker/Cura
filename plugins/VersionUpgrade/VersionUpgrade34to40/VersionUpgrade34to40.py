@@ -8,6 +8,9 @@ from UM.VersionUpgrade import VersionUpgrade
 
 deleted_settings = {"prime_tower_wall_thickness", "dual_pre_wipe", "prime_tower_purge_volume"}
 
+changed_settings = {'retraction_combing': 'noskin'}
+updated_settings = {'retraction_combing': 'infill'}
+
 _RENAMED_MATERIAL_PROFILES = {
     "dsm_arnitel2045_175_cartesio_0.25_mm": "dsm_arnitel2045_175_cartesio_0.25mm_thermoplastic_extruder",
     "dsm_arnitel2045_175_cartesio_0.4_mm": "dsm_arnitel2045_175_cartesio_0.4mm_thermoplastic_extruder",
@@ -126,6 +129,13 @@ class VersionUpgrade34to40(VersionUpgrade):
                 if deleted_setting not in parser["values"]:
                     continue
                 del parser["values"][deleted_setting]
+
+            for setting_key in changed_settings:
+                if setting_key not in parser["values"]:
+                    continue
+
+                if parser["values"][setting_key] == changed_settings[setting_key]:
+                    parser["values"][setting_key] = updated_settings[setting_key]
 
         result = io.StringIO()
         parser.write(result)
