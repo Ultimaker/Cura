@@ -81,7 +81,6 @@ Component
                         {
                             anchors.fill: parent
                             onClicked: base.collapsed = !base.collapsed
-                            enabled: modelData.activePrintJob != null
                         }
 
                         Rectangle
@@ -110,7 +109,6 @@ Component
                             id: collapseIcon
                             width: 15
                             height: 15
-                            visible: modelData.activePrintJob != null
                             sourceSize.width: width
                             sourceSize.height: height
                             source: base.collapsed ?  UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
@@ -199,11 +197,14 @@ Component
                         Item
                         {
                             id: jobInfo
+                            property var showJobInfo: modelData.activePrintJob != null && modelData.activePrintJob.state != "queued"
+
                             anchors.top: jobSpacer.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.margins: UM.Theme.getSize("default_margin").width
-                            height: childrenRect.height + UM.Theme.getSize("default_margin").height
+                            height: showJobInfo ? childrenRect.height + UM.Theme.getSize("default_margin").height: 0
+                            visible: showJobInfo
                             Label
                             {
                                 id: printJobName
