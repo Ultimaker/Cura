@@ -224,7 +224,6 @@ Component
                                 source: modelData.activePrintJob != null ? modelData.activePrintJob.preview_image_url : ""
                                 anchors.top: ownerName.bottom
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                //anchors.bottom: totalTimeLabel.top
                                 width: parent.width / 3
                                 height: width
                             }

@@ -120,11 +120,24 @@ Item
             Button
             {
                 id: contextButton
-                text: "..."
+                text: "\u22EE" //Unicode; Three stacked points.
+
+                width: 30
+                height: width
                 anchors
                 {
                     right: parent.right
                     top: parent.top
+                }
+                hoverEnabled: true
+
+                background: Rectangle
+                {
+                    opacity: contextButton.down || contextButton.hovered ? 1 : 0
+                    width: contextButton.width
+                    height: contextButton.height
+                    radius: 0.5 * width
+                    color: "grey"
                 }
                 onClicked: parent.switchPopupState()
             }
@@ -138,8 +151,6 @@ Item
                 closePolicy: Popup.CloseOnPressOutsideParent
                 x: parent.width - width
                 y: contextButton.height
-                //y: configurationSelector.height - UM.Theme.getSize("default_lining").height
-                //x: configurationSelector.width - width
                 width: 200
                 height: contentItem.height + 2 * padding
                 visible: false
