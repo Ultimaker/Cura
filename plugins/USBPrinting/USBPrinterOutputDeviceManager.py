@@ -2,14 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import threading
-import platform
 import time
 import serial.tools.list_ports
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Logger import Logger
-from UM.Resources import Resources
 from UM.Signal import Signal, signalemitter
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.i18n import i18nCatalog
@@ -86,39 +84,6 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
                     port_list = self.getSerialPortList(only_list_usb=True)
             self._addRemovePorts(port_list)
             time.sleep(5)
-
-    @pyqtSlot(result = str)
-    def getDefaultFirmwareName(self):
-        # Check if there is a valid global container stack
-        global_container_stack = self._application.getGlobalContainerStack()
-        if not global_container_stack:
-            Logger.log("e", "There is no global container stack. Can not update firmware.")
-            return ""
-
-        # The bottom of the containerstack is the machine definition
-        machine_id = global_container_stack.getBottom().id
-        machine_has_heated_bed = global_container_stack.getProperty("machine_heated_bed", "value")
-
-        baudrate = 250000
-        if platform.system() == "Linux":
-            # Linux prefers a baudrate of 115200 here because older versions of
-            # pySerial did not support a baudrate of 250000
-            baudrate = 115200
-
-        # If a firmware file is available, it should be specified in the definition for the printer
-        hex_file = global_container_stack.getMetaDataEntry("firmware_file", None)
-        if machine_has_heated_bed:
-            hex_file = global_container_stack.getMetaDataEntry("firmware_hbk_file", hex_file)
-
-        if hex_file:
-            try:
-                return Resources.getPath(CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
-            except FileNotFoundError:
-                Logger.log("w", "Firmware file %s not found.", hex_file)
-                return ""
-        else:
-            Logger.log("w", "There is no firmware for machine %s.", machine_id)
-            return ""
 
     ##  Helper to identify serial ports (and scan for them)
     def _addRemovePorts(self, serial_ports):

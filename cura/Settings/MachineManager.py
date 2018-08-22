@@ -4,6 +4,7 @@
 import collections
 import time
 from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
+import platform
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -16,6 +17,7 @@ from UM.FlameProfiler import pyqtSlot
 from UM import Util
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Resources import Resources
 
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
@@ -1531,3 +1533,35 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()
+
+    ##  Get default firmware file name if one is specified in the firmware
+    @pyqtSlot(result = str)
+    def getDefaultFirmwareName(self):
+        # Check if there is a valid global container stack
+        if not self._global_container_stack:
+            return ""
+
+        # The bottom of the containerstack is the machine definition
+        machine_id = self._global_container_stack.getBottom().id
+        machine_has_heated_bed = self._global_container_stack.getProperty("machine_heated_bed", "value")
+
+        baudrate = 250000
+        if platform.system() == "Linux":
+            # Linux prefers a baudrate of 115200 here because older versions of
+            # pySerial did not support a baudrate of 250000
+            baudrate = 115200
+
+        # If a firmware file is available, it should be specified in the definition for the printer
+        hex_file = self._global_container_stack.getMetaDataEntry("firmware_file", None)
+        if machine_has_heated_bed:
+            hex_file = self._global_container_stack.getMetaDataEntry("firmware_hbk_file", hex_file)
+
+        if hex_file:
+            try:
+                return Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
+            except FileNotFoundError:
+                Logger.log("w", "Firmware file %s not found.", hex_file)
+                return ""
+        else:
+            Logger.log("w", "There is no firmware for machine %s.", machine_id)
+            return ""

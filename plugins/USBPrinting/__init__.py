@@ -14,5 +14,4 @@ def getMetaData():
 def register(app):
     # We are violating the QT API here (as we use a factory, which is technically not allowed).
     # but we don't really have another means for doing this (and it seems to you know -work-)
-    qmlRegisterSingletonType(USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager, "Cura", 1, 0, "USBPrinterManager", USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager.getInstance)
     return {"output_device": USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager(app)}
