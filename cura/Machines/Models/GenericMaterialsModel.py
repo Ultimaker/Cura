@@ -38,6 +38,8 @@ class GenericMaterialsModel(BaseMaterialsModel):
             self.setItems([])
             return
 
+        favorites = self._material_manager.getFavorites()
+
         item_list = []
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
@@ -50,14 +52,17 @@ class GenericMaterialsModel(BaseMaterialsModel):
             if bool(metadata.get("removed", False)):
                 continue
 
-            item = {"root_material_id": root_material_id,
-                    "id": metadata["id"],
-                    "name": metadata["name"],
-                    "brand": metadata["brand"],
-                    "material": metadata["material"],
-                    "color_name": metadata["color_name"],
-                    "container_node": container_node
-                    }
+            item = {
+                "root_material_id": root_material_id,
+                "id": metadata["id"],
+                "name": metadata["name"],
+                "brand": metadata["brand"],
+                "material": metadata["material"],
+                "color_name": metadata["color_name"],
+                "color_code": metadata["color_code"],
+                "container_node": container_node,
+                "is_favorite": root_material_id in favorites
+            }
             item_list.append(item)
 
         # Sort the item list by material name alphabetically

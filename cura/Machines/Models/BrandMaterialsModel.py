@@ -58,6 +58,7 @@ class BrandMaterialsModel(ListModel):
         self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
         self._machine_manager.activeStackChanged.connect(self._update) #Update when switching machines.
         self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
+        # self._material_manager.favoritesUpdated.connect(self._update) # Update when favorites are changed
         self._update()
 
     def _updateExtruderStack(self):
@@ -106,6 +107,7 @@ class BrandMaterialsModel(ListModel):
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
 
+            favorites = self._material_manager.getFavorites()
 
             # Do not include the materials from a to-be-removed package
             if bool(metadata.get("removed", False)):
@@ -142,7 +144,7 @@ class BrandMaterialsModel(ListModel):
                 "adhesion_info":    metadata["adhesion_info"],
                 "is_read_only":     self._container_registry.isReadOnly(metadata["id"]),
                 "container_node":   container_node,
-                "is_favorite":      False
+                "is_favorite":      root_material_id in favorites
             }
             brand_group_dict[brand][material_type].append(item)
 

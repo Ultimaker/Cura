@@ -27,6 +27,7 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
         if global_stack is None:
             self.setItems([])
             return
+
         extruder_position = str(self._extruder_position)
         if extruder_position not in global_stack.extruders:
             self.setItems([])
@@ -39,8 +40,6 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
             return
 
         favorite_ids = self._material_manager.getFavorites()
-
-        print("favorite_ids:", favorite_ids)
 
         item_list = []
         for root_material_id, container_node in available_material_dict.items():
@@ -61,11 +60,13 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
                 "brand":            metadata["brand"],
                 "material":         metadata["material"],
                 "color_name":       metadata["color_name"],
-                "container_node":   container_node
+                "color_code":       metadata["color_code"],
+                "container_node":   container_node,
+                "is_favorite":      True
             }
             item_list.append(item)
 
         # Sort the item list by material name alphabetically
-        item_list = sorted(item_list, key = lambda d: d["name"].upper())
+        item_list = sorted(item_list, key = lambda d: d["brand"].upper())
 
         self.setItems(item_list)
