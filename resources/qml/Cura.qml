@@ -1,11 +1,11 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.1
+import QtQuick.Dialogs 1.2
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -19,6 +19,8 @@ UM.MainWindow
     title: catalog.i18nc("@title:window","Ultimaker Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
+
+    backgroundColor: UM.Theme.getColor("viewport_background")
 
     // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
     // It should be phased out in newer plugin versions.
@@ -112,20 +114,31 @@ UM.MainWindow
 
                 RecentFilesMenu { }
 
+                MenuItem
+                {
+                    id: saveWorkspaceMenu
+                    text: catalog.i18nc("@title:menu menubar:file","&Save...")
+                    onTriggered:
+                    {
+                        var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetype": "application/x-curaproject+xml" };
+                        if(UM.Preferences.getValue("cura/dialog_on_project_save"))
+                        {
+                            saveWorkspaceDialog.args = args;
+                            saveWorkspaceDialog.open()
+                        }
+                        else
+                        {
+                            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+                        }
+                    }
+                }
+
                 MenuSeparator { }
 
                 MenuItem
                 {
-                    text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
-                    enabled: UM.Selection.hasSelection;
-                    iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
-                }
-
-                MenuItem
-                {
                     id: saveAsMenu
-                    text: catalog.i18nc("@title:menu menubar:file", "Save &As...")
+                    text: catalog.i18nc("@title:menu menubar:file", "&Export...")
                     onTriggered:
                     {
                         var localDeviceId = "local_file";
@@ -135,20 +148,13 @@ UM.MainWindow
 
                 MenuItem
                 {
-                    id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Save &Project...")
-                    onTriggered:
-                    {
-                        if(UM.Preferences.getValue("cura/dialog_on_project_save"))
-                        {
-                            saveWorkspaceDialog.open()
-                        }
-                        else
-                        {
-                            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
-                        }
-                    }
+                    text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...");
+                    enabled: UM.Selection.hasSelection;
+                    iconName: "document-save-as";
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                 }
+
+                MenuSeparator { }
 
                 MenuItem { action: Cura.Actions.reloadAll; }
 
@@ -225,7 +231,8 @@ UM.MainWindow
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
-                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: Cura.MachineManager.hasVariantBuildplates }
+                // TODO Only show in dev mode. Remove check when feature ready
+                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: CuraSDKVersion == "dev" ? Cura.MachineManager.hasVariantBuildplates : false }
                 ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                 MenuSeparator { }
@@ -270,9 +277,9 @@ UM.MainWindow
             Menu
             {
                 id: plugin_menu
-                title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
+                title: catalog.i18nc("@title:menu menubar:toplevel", "&Toolbox")
 
-                MenuItem { action: Cura.Actions.browsePlugins }
+                MenuItem { action: Cura.Actions.browsePackages }
             }
 
             Menu
@@ -322,32 +329,25 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
-                        // As the drop area also supports plugins, first check if it's a plugin that was dropped.
-                        if (drop.urls.length == 1)
+
+                        var nonPackages = [];
+                        for (var i = 0; i < drop.urls.length; i++)
                         {
-                            if (PluginRegistry.isPluginFile(drop.urls[0]))
+                            var filename = drop.urls[i];
+                            if (filename.endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
-                                var result = PluginRegistry.installPlugin(drop.urls[0]);
-                                pluginInstallDialog.text = result.message;
-                                if (result.status == "ok")
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Information;
-                                }
-                                else if (result.status == "duplicate")
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Warning;
-                                }
-                                else
-                                {
-                                    pluginInstallDialog.icon = StandardIcon.Critical;
-                                }
-                                pluginInstallDialog.open();
-                                return;
+                                CuraApplication.getPackageManager().installPackageViaDragAndDrop(filename);
+                                packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
+                                packageInstallDialog.icon = StandardIcon.Information;
+                                packageInstallDialog.open();
+                            }
+                            else
+                            {
+                                nonPackages.push(filename);
                             }
                         }
-
-                        openDialog.handleOpenFileUrls(drop.urls);
+                        openDialog.handleOpenFileUrls(nonPackages);
                     }
                 }
             }
@@ -513,6 +513,7 @@ UM.MainWindow
                     horizontalCenterOffset: -(Math.round(UM.Theme.getSize("sidebar").width / 2))
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
+                    bottomMargin:  UM.Theme.getSize("default_margin").height
                 }
             }
         }
@@ -562,7 +563,8 @@ UM.MainWindow
     WorkspaceSummaryDialog
     {
         id: saveWorkspaceDialog
-        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
+        property var args
+        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
     }
 
     Connections
@@ -668,9 +670,9 @@ UM.MainWindow
     // show the plugin browser dialog
     Connections
     {
-        target: Cura.Actions.browsePlugins
+        target: Cura.Actions.browsePackages
         onTriggered: {
-            curaExtensions.callExtensionMethod("Plugin Browser", "browsePlugins")
+            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
         }
     }
 
@@ -698,10 +700,50 @@ UM.MainWindow
         id: contextMenu
     }
 
+    onPreClosing:
+    {
+        close.accepted = CuraApplication.getIsAllChecksPassed();
+        if (!close.accepted)
+        {
+            CuraApplication.checkAndExitApplication();
+        }
+    }
+
+    MessageDialog
+    {
+        id: exitConfirmationDialog
+        title: catalog.i18nc("@title:window", "Closing Cura")
+        text: catalog.i18nc("@label", "Are you sure you want to exit Cura?")
+        icon: StandardIcon.Question
+        modality: Qt.ApplicationModal
+        standardButtons: StandardButton.Yes | StandardButton.No
+        onYes: CuraApplication.callConfirmExitDialogCallback(true)
+        onNo: CuraApplication.callConfirmExitDialogCallback(false)
+        onRejected: CuraApplication.callConfirmExitDialogCallback(false)
+        onVisibilityChanged:
+        {
+            if (!visible)
+            {
+                // reset the text to default because other modules may change the message text.
+                text = catalog.i18nc("@label", "Are you sure you want to exit Cura?");
+            }
+        }
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onShowConfirmExitDialog:
+        {
+            exitConfirmationDialog.text = message;
+            exitConfirmationDialog.open();
+        }
+    }
+
     Connections
     {
         target: Cura.Actions.quit
-        onTriggered: CuraApplication.closeApplication();
+        onTriggered: CuraApplication.checkAndExitApplication();
     }
 
     Connections
@@ -815,8 +857,8 @@ UM.MainWindow
 
     MessageDialog
     {
-        id: pluginInstallDialog
-        title: catalog.i18nc("@window:title", "Install Plugin");
+        id: packageInstallDialog
+        title: catalog.i18nc("@window:title", "Install Package");
         standardButtons: StandardButton.Ok
         modality: Qt.ApplicationModal
     }
@@ -880,6 +922,9 @@ UM.MainWindow
                 path = path.replace(/\\/g,"/");
             }
             Qt.openUrlExternally(path);
+            if(Qt.platform.os == "linux") {
+                Qt.openUrlExternally(UM.Resources.getPath(UM.Resources.Resources, ""));
+            }
         }
     }
 

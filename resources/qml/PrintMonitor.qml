@@ -26,7 +26,6 @@ Column
 
     OutputDeviceHeader
     {
-        width: parent.width
         outputDevice: connectedDevice
     }
 
@@ -67,7 +66,7 @@ Column
     HeatedBedBox
     {
         visible: {
-            if(activePrinter != null && activePrinter.bed_temperature != -1)
+            if(activePrinter != null && activePrinter.bedTemperature != -1)
             {
                 return true
             }

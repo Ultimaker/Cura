@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.3\n"
+"Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2018-03-29 08:36+0200\n"
+"POT-Creation-Date: 2018-06-06 16:13+0200\n"
 "PO-Revision-Date: 2018-04-19 16:10+0900\n"
 "Last-Translator: Jinbuhm Kim <Jinbuhm.Kim@gmail.com>\n"
 "Language-Team: Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
@@ -42,26 +42,18 @@ msgstr "G-code 파일"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
-msgid "Model Checker Warning"
-msgstr "모델 검사기 경고"
+msgid "3D Model Assistant"
+msgstr "3D 모델 도우미"
 
-#: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:66
+#: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:80
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
-"Some models may not be printed optimally due to object size and chosen "
-"material for models: {model_names}.\n"
-"Tips that may be useful to improve the print quality:\n"
-"1) Use rounded corners.\n"
-"2) Turn the fan off (only if there are no tiny details on the model).\n"
-"3) Use a different material."
-msgstr ""
-"모델의 크기 및 재질 {model_names} 때문에 일부 모델이 최적으로 인쇄되지 않을 "
-"수 있습니다.\n"
-"인쇄 품질을 향상시키는 데 유용한 팁 :\n"
-"1) 둥근 모서리를 사용하십시오.\n"
-"2) 팬을 끄십시오 (모델에 작은 세부 사항이없는 경우에만).\n"
-"3) 다른 재료를 사용하십시오."
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr "<P>하나 이상의 3D 모델이 모델 크기 및 재료 구성으로 인해 최적의 상태로 인쇄되지 않을 수 있습니다.</p>\n<p>{model_names}</p>\n<p>인쇄 품질 및 안정성을 최고로 높이는 방법을 알아보십시오.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">인쇄 품질 가이드 보기</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -81,15 +73,15 @@ msgstr "Doodle3D Connect에 연결"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:87
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:155
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:258
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:184
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:391
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:204
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:398
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrintWindow.qml:88
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:355
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:143
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:188
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:391
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:124
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:87
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:278
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:275
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "취소"
@@ -102,8 +94,7 @@ msgstr "Doodle3D Connect에 데이터 보내기"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:161
 msgctxt "@info:status"
 msgid "Unable to send data to Doodle3D Connect. Is another job still active?"
-msgstr ""
-"Doodle3D Connect에 데이터를 보낼 수 없습니다. 다른 작업이 진행중인가요?"
+msgstr "Doodle3D Connect에 데이터를 보낼 수 없습니다. 다른 작업이 진행중인가요?"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:175
 msgctxt "@info:status"
@@ -160,18 +151,29 @@ msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "USB를 통해 연결"
 
-#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:14
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/install/X3GWriter/__init__.py:15
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
 msgstr "X3G 파일"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:14
-#: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:14
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
+msgctxt "X3g Writer Plugin Description"
+msgid "Writes X3g to files"
+msgstr "파일에 X3g 쓰기"
+
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:21
+msgctxt "X3g Writer File Description"
+msgid "X3g File"
+msgstr "X3g 파일"
+
+#: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:17
+#: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "압축된 G-code 파일"
 
-#: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:28
+#: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:38
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Ultimaker 포맷 패키지"
@@ -193,7 +195,7 @@ msgid "Save to Removable Drive {0}"
 msgstr "이동식 드라이브  {0}에 저장"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:64
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:110
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:113
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "쓸 수있는 파일 형식이 없습니다!"
@@ -230,9 +232,9 @@ msgid "Could not save to removable drive {0}: {1}"
 msgstr "이동식 드라이브  {0}: {1} 에 저장할 수 없습니다 :"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:137
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:134
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:141
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1577
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:133
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:140
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1592
 msgctxt "@info:title"
 msgid "Error"
 msgstr "오류"
@@ -261,8 +263,8 @@ msgstr "이동식 장치 {0} 꺼내기"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1568
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1662
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1582
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1681
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "경고"
@@ -282,8 +284,7 @@ msgstr "하드웨어 안전하게 제거"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
-msgstr ""
-"{0}를 배출하지 못했습니다. 다른 프로그램이 드라이브를 사용 중일 수 있습니다."
+msgstr "{0}를 배출하지 못했습니다. 다른 프로그램이 드라이브를 사용 중일 수 있습니다."
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:68
 msgctxt "@item:intext"
@@ -291,13 +292,13 @@ msgid "Removable Drive"
 msgstr "이동식 드라이브"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:70
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:75
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:78
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "네트워크를 통해 프린팅"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:71
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:76
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:79
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "네트워크를 통해 프린팅"
@@ -309,20 +310,17 @@ msgstr "네트워크를 통해 연결됨."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:87
 msgctxt "@info:status"
-msgid ""
-"Connected over the network. Please approve the access request on the printer."
+msgid "Connected over the network. Please approve the access request on the printer."
 msgstr "네트워크를 통해 연결되었습니다. 프린터의 접근 요청을 승인하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:89
 msgctxt "@info:status"
 msgid "Connected over the network. No access to control the printer."
-msgstr ""
-"네트워크를 통해 연결되었습니다. 프린터를 제어할 수 있는 권한이 없습니다."
+msgstr "네트워크를 통해 연결되었습니다. 프린터를 제어할 수 있는 권한이 없습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:94
 msgctxt "@info:status"
-msgid ""
-"Access to the printer requested. Please approve the request on the printer"
+msgid "Access to the printer requested. Please approve the request on the printer"
 msgstr "요청된 프린터에 대한 액세스. 프린터에서 요청을 승인하십시오"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:97
@@ -383,12 +381,8 @@ msgstr "새 프린팅 작업을 시작할 수 없습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:200
 msgctxt "@label"
-msgid ""
-"There is an issue with the configuration of your Ultimaker, which makes it "
-"impossible to start the print. Please resolve this issues before continuing."
-msgstr ""
-"Ultimaker의 설정에 문제가 있어 프린팅을 시작할 수 없습니다. 계속하기 전에 이 "
-"문제를 해결하십시오."
+msgid "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. Please resolve this issues before continuing."
+msgstr "Ultimaker의 설정에 문제가 있어 프린팅을 시작할 수 없습니다. 계속하기 전에 이 문제를 해결하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:206
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:228
@@ -403,29 +397,25 @@ msgstr "선택한 구성으로 프린팅 하시겠습니까?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:222
 msgctxt "@label"
-msgid ""
-"There is a mismatch between the configuration or calibration of the printer "
-"and Cura. For the best result, always slice for the PrintCores and materials "
-"that are inserted in your printer."
-msgstr ""
-"프린터와 Cura의 설정이 일치하지 않습니다. 최상의 결과를 얻으려면 프린터에 삽"
-"입 된 PrintCores 및 재료로 슬라이싱을 하십시오."
+msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
+msgstr "프린터와 Cura의 설정이 일치하지 않습니다. 최상의 결과를 얻으려면 프린터에 삽입 된 PrintCores 및 재료로 슬라이싱을 하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:249
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:163
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:166
 msgctxt "@info:status"
-msgid ""
-"Sending new jobs (temporarily) blocked, still sending the previous print job."
+msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
 msgstr "새로운 작업 전송 (일시적)이 차단되어 이전 프린팅 작업을 계속 보냅니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:256
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:182
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:185
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:202
 msgctxt "@info:status"
 msgid "Sending data to printer"
 msgstr "프린터로 데이터 보내기"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:257
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:183
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:186
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:203
 msgctxt "@info:title"
 msgid "Sending Data"
 msgstr "데이터 전송 중"
@@ -445,12 +435,8 @@ msgstr "{slot_number}에 로드 된 재료가 없음"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:350
 #, python-brace-format
 msgctxt "@label"
-msgid ""
-"Different PrintCore (Cura: {cura_printcore_name}, Printer: "
-"{remote_printcore_name}) selected for extruder {extruder_id}"
-msgstr ""
-"익스트루더 {extruder_id}에 대해 다른 프린터코어 (Cura : "
-"{cura_printcore_name}, 프린터 : {remote_printcore_name})가 선택되었습니다."
+msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
+msgstr "익스트루더 {extruder_id}에 대해 다른 프린터코어 (Cura : {cura_printcore_name}, 프린터 : {remote_printcore_name})가 선택되었습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:359
 #, python-brace-format
@@ -470,47 +456,42 @@ msgstr "Cura에서 현재 프린터 구성을 사용 하시겠습니까?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:549
 msgctxt "@label"
-msgid ""
-"The PrintCores and/or materials on your printer differ from those within "
-"your current project. For the best result, always slice for the PrintCores "
-"and materials that are inserted in your printer."
-msgstr ""
-"프린터의 PrintCores와 재료는 현재 프로젝트 내의 재료와 다릅니다. 최상의 결과"
-"를 얻으려면 프린터에 삽입 된 PrintCores 및 재료로 슬라이싱 하십시오."
+msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
+msgstr "프린터의 PrintCores와 재료는 현재 프로젝트 내의 재료와 다릅니다. 최상의 결과를 얻으려면 프린터에 삽입 된 PrintCores 및 재료로 슬라이싱 하십시오."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:78
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:81
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "네트워크를 통해 연결됨"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:247
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:262
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
 msgstr "출력 작업이 프린터에 성공적으로 보내졌습니다."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:249
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:264
 msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "데이터 전송 됨"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:250
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:265
 msgctxt "@action:button"
 msgid "View in Monitor"
 msgstr "모니터에서 보기"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:338
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:353
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Printer '{printer_name}' has finished printing '{job_name}'."
 msgstr "'{printer_name} 프린터가 '{job_name}' 프린팅을 완료했습니다."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:340
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:355
 #, python-brace-format
 msgctxt "@info:status"
 msgid "The print job '{job_name}' was finished."
 msgstr "인쇄 작업 ‘{job_name}’이 완료되었습니다."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:341
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:356
 msgctxt "@info:status"
 msgid "Print finished"
 msgstr "프린팅이 완료됨"
@@ -525,132 +506,27 @@ msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "모니터"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:66
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:69
 #, python-brace-format
-msgctxt ""
-"@info Don't translate {machine_name}, since it gets replaced by a printer "
-"name!"
-msgid ""
-"New features are available for your {machine_name}! It is recommended to "
-"update the firmware on your printer."
-msgstr ""
-"{machine_name}의 새로운 기능을 사용할 수 있습니다! 프린터의 펌웨어를 업데이트"
-"하는 것이 좋습니다."
+msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
+msgid "New features are available for your {machine_name}! It is recommended to update the firmware on your printer."
+msgstr "{machine_name}의 새로운 기능을 사용할 수 있습니다! 프린터의 펌웨어를 업데이트하는 것이 좋습니다."
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:67
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:73
 #, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s firmware available"
 msgstr "새로운 %s 펌웨어를 사용할 수 있습니다"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:68
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:76
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "업데이트하는 방법"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:79
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:92
 msgctxt "@info"
 msgid "Could not access update information."
 msgstr "업데이트 정보에 액세스 할 수 없습니다."
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:579
-msgctxt "@info:status"
-msgid ""
-"SolidWorks reported errors while opening your file. We recommend to solve "
-"these issues inside SolidWorks itself."
-msgstr ""
-"파일을 여는 도중 SolidWorks가 오류 보고를 했습니다. SolidWorks 자체에서 이 문"
-"제를 해결하도록 권장합니다."
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:591
-msgctxt "@info:status"
-msgid ""
-"Found no models inside your drawing. Could you please check its content "
-"again and make sure one part or assembly is inside?\n"
-"\n"
-"Thanks!"
-msgstr ""
-"도면에 모델이 없습니다. 내부에 하나의 부품이나 조립만 있는지 확인하시겠습니"
-"까?\n"
-"\n"
-" 감사합니다!"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:595
-msgctxt "@info:status"
-msgid ""
-"Found more than one part or assembly inside your drawing. We currently only "
-"support drawings with exactly one part or assembly inside.\n"
-"\n"
-"Sorry!"
-msgstr ""
-"도면에 하나 이상의 부품 또는 조립이 있습니다. 현재 버전은 하나의 부품 또는 조"
-"립만 있는 도면을 지원합니다.\n"
-"\n"
-"죄송합니다!"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:25
-msgctxt "@item:inlistbox"
-msgid "SolidWorks part file"
-msgstr "SolidWorks 부품 파일"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:29
-msgctxt "@item:inlistbox"
-msgid "SolidWorks assembly file"
-msgstr "SolidWorks 어셈블리 파일"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:33
-msgctxt "@item:inlistbox"
-msgid "SolidWorks drawing file"
-msgstr "SolidWorks 도면 파일"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:48
-msgctxt "@info:status"
-msgid ""
-"Dear customer,\n"
-"We could not find a valid installation of SolidWorks on your system. That "
-"means that either SolidWorks is not installed or you don't own an valid "
-"license. Please make sure that running SolidWorks itself works without "
-"issues and/or contact your ICT.\n"
-"\n"
-"With kind regards\n"
-" - Thomas Karl Pietrowski"
-msgstr ""
-"안녕하십니까,\n"
-"귀하의 시스템에 유효한 SolidWorks를 찾을 수 없습니다. 이는 곧 SolidWorks가 설"
-"치되어 있지 않거나 유효한 라이센스가 없음을 의미합니다. SolidWorks가 문제없"
-"이 실행될 수 있도록 해주시고 그리고/또는 귀사의 ICT에 연락해 주십시오.\n"
-"\n"
-"감사합니다.\n"
-" - Thomas Karl Pietrowski"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:57
-msgctxt "@info:status"
-msgid ""
-"Dear customer,\n"
-"You are currently running this plugin on an operating system other than "
-"Windows. This plugin will only work on Windows with SolidWorks installed, "
-"including an valid license. Please install this plugin on a Windows machine "
-"with SolidWorks installed.\n"
-"\n"
-"With kind regards\n"
-" - Thomas Karl Pietrowski"
-msgstr ""
-"안녕하십니까,\n"
-"귀하는 현재 Windows가 아닌 다른 운영 시스템에서 이 플러그인을 실행 중입니다. "
-"이 플러그인은 유효한 라이센스가 있는 SolidWorks가 설치된 Windows에서만 사용 "
-"가능합니다. 이 플러그인을 SolidWorks가 설치된 Windows 컴퓨터에 설치하십시"
-"오.\n"
-"\n"
-"감사합니다\n"
-" - Thomas Karl Pietrowski"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:70
-msgid "Configure"
-msgstr "구성"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:71
-msgid "Installation guide for SolidWorks macro"
-msgstr "SolidWorks 매크로 설치 가이드"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -660,8 +536,7 @@ msgstr "레이어 뷰"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:103
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled"
-msgstr ""
-"와이어 프린팅이 활성화되어 있을 때 Cura는 레이어를 정확하게 표시하지 않습니다"
+msgstr "와이어 프린팅이 활성화되어 있을 때 Cura는 레이어를 정확하게 표시하지 않습니다"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:104
 msgctxt "@info:title"
@@ -675,52 +550,42 @@ msgstr "G 코드 수정"
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
-msgstr "지지대 차단기"
+msgstr "서포트 차단기"
 
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:13
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "서포트가 프린팅되지 않는 볼륨을 만듭니다."
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:44
 msgctxt "@info"
 msgid "Cura collects anonymized usage statistics."
 msgstr "Cura는 익명의 사용 통계를 수집합니다."
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:46
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:47
 msgctxt "@info:title"
 msgid "Collecting Data"
 msgstr "데이터 수집"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:48
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
+msgctxt "@action:button"
+msgid "More info"
+msgstr "추가 정보"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
+msgctxt "@action:tooltip"
+msgid "See more information on what data Cura sends."
+msgstr "Cura가 전송하는 데이터에 대한 추가 정보를 확인하십시오."
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:52
 msgctxt "@action:button"
 msgid "Allow"
 msgstr "허용"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:53
 msgctxt "@action:tooltip"
-msgid ""
-"Allow Cura to send anonymized usage statistics to help prioritize future "
-"improvements to Cura. Some of your preferences and settings are sent, the "
-"Cura version and a hash of the models you're slicing."
-msgstr ""
-"Cura가 익명의 사용 통계를 보내 Cura에 대한 향후 개선을 우선화하는 데 도움을 "
-"줍니다. Cura 버전과 슬라이싱하는 모델의 해쉬 등 일부 환경설정 값이 발송됩니"
-"다."
-
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
-msgctxt "@action:button"
-msgid "Disable"
-msgstr "사용 안함"
-
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:51
-msgctxt "@action:tooltip"
-msgid ""
-"Don't allow Cura to send anonymized usage statistics. You can enable it "
-"again in the preferences."
-msgstr ""
-"Cura가 익명의 사용 통계를 보내지 않게 합니다. 환경 설정에서 다시 활성화 시킬 "
-"수 있습니다."
+msgid "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."
+msgstr "Cura가 익명의 사용 통계를 보내 Cura에 대한 향후 개선을 우선화하는 데 도움을 줍니다. Cura 버전과 슬라이싱하는 모델의 해쉬 등 일부 환경설정 값이 발송됩니다."
 
 #: /home/ruben/Projects/Cura/plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -737,9 +602,7 @@ msgctxt "@info:status"
 msgid ""
 "Could not export using \"{}\" quality!\n"
 "Felt back to \"{}\"."
-msgstr ""
-"\"{}\" 품질을 사용하여 내보낼 수 없습니다!\n"
-" \"{}\"(으)로 돌아갑니다."
+msgstr "\"{}\" 품질을 사용하여 내보낼 수 없습니다!\n \"{}\"(으)로 돌아갑니다."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -768,12 +631,8 @@ msgstr "GIF 이미지"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:315
 msgctxt "@info:status"
-msgid ""
-"Unable to slice with the current material as it is incompatible with the "
-"selected machine or configuration."
-msgstr ""
-"선택한 소재 또는 구성과 호환되지 않기 때문에 현재 소재로 슬라이스 할 수 없습"
-"니다."
+msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
+msgstr "선택한 소재 또는 구성과 호환되지 않기 때문에 현재 소재로 슬라이스 할 수 없습니다."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:315
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:344
@@ -787,36 +646,24 @@ msgstr "슬라이스 할 수 없습니다"
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:343
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Unable to slice with the current settings. The following settings have "
-"errors: {0}"
-msgstr ""
-"현재 설정으로 슬라이스 할 수 없습니다. 다음 설정에는 오류가 있습니다 : {0}"
+msgid "Unable to slice with the current settings. The following settings have errors: {0}"
+msgstr "현재 설정으로 슬라이스 할 수 없습니다. 다음 설정에는 오류가 있습니다 : {0}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:366
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Unable to slice due to some per-model settings. The following settings have "
-"errors on one or more models: {error_labels}"
-msgstr ""
-"일부 모델별 설정으로 인해 슬라이스할 수 없습니다. 하나 이상의 모델에서 다음 "
-"설정에 오류가 있습니다. {error_labels}"
+msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
+msgstr "일부 모델별 설정으로 인해 슬라이스할 수 없습니다. 하나 이상의 모델에서 다음 설정에 오류가 있습니다. {error_labels}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:375
 msgctxt "@info:status"
-msgid ""
-"Unable to slice because the prime tower or prime position(s) are invalid."
+msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "프라임 타워 또는 위치가 유효하지 않아 슬라이스 할 수 없습니다."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:385
 msgctxt "@info:status"
-msgid ""
-"Nothing to slice because none of the models fit the build volume. Please "
-"scale or rotate models to fit."
-msgstr ""
-"어떤 모델도 빌드 볼륨에 맞지 않으므로 슬라이스 할 수 없습니다. 크기에 맞게 모"
-"델을 회전하거나 회전하십시오."
+msgid "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."
+msgstr "어떤 모델도 빌드 볼륨에 맞지 않으므로 슬라이스 할 수 없습니다. 크기에 맞게 모델을 회전하거나 회전하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:243
@@ -839,77 +686,29 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "모델 별 설정 구성"
 
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:23
-msgid "Install"
-msgstr "설치"
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:43
-msgid ""
-"Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It "
-"is not set to a directory."
-msgstr ""
-"Siemens NX 플러그인 파일을 복사하지 못했습니다. UGII_USER_DIR을 확인하십시"
-"오. 디렉터리에 할당되지 않았습니다."
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:50
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:59
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:81
-msgid "Successfully installed Siemens NX Cura plugin."
-msgstr "Siemens NX Cura 플러그인을 성공적으로 설치했습니다."
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:65
-msgid ""
-"Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
-msgstr ""
-"Siemens NX 플러그인 파일을 복사하지 못했습니다. UGII_USER_DIR을 확인하십시오."
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:85
-msgid ""
-"Failed to install Siemens NX plugin. Could not set environment variable "
-"UGII_USER_DIR for Siemens NX."
-msgstr ""
-"Siemens NX 플러그인을 설치하지 못했습니다. Siemens NX의 환경 변수 "
-"UGII_USER_DIR을 설정할 수 없습니다."
-
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:175
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:627
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:576
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "추천"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:177
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:632
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:581
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:30
-#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:36
+#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:32
+#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:38
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF 파일"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:214
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:658
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:199
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:695
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "노즐"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:179
-#, python-brace-format
-msgctxt "@info:status"
-msgid "Failed to get plugin ID from <filename>{0}</filename>"
-msgstr "<filename>{0}</filename> 에서 플러그인 ID를 가져 오는 데 실패했습니다"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:180
-msgctxt "@info:tile"
-msgid "Warning"
-msgstr "경고"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:235
-msgctxt "@window:title"
-msgid "Plugin browser"
-msgstr "플러그인 브라우저"
 
 #: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:12
 msgctxt "@item:inmenu"
@@ -921,25 +720,21 @@ msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G 파일"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:321
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:322
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G 코드 파싱"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:323
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:464
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:324
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:470
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-코드 세부 정보"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:462
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:468
 msgctxt "@info:generic"
-msgid ""
-"Make sure the g-code is suitable for your printer and printer configuration "
-"before sending the file to it. The g-code representation may not be accurate."
-msgstr ""
-"파일을 보내기 전에 g-코드가 프린터 및 프린터 구성에 적합한 지 확인하십시오. "
-"g-코드가 정확하지 않을 수 있습니다."
+msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
+msgstr "파일을 보내기 전에 g-코드가 프린터 및 프린터 구성에 적합한 지 확인하십시오. g-코드가 정확하지 않을 수 있습니다."
 
 #: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:14
@@ -971,92 +766,90 @@ msgstr "펌웨어 업그레이드"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:14
 msgctxt "@action"
 msgid "Checkup"
-msgstr "대조"
+msgstr "검사"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:21
 msgctxt "@action"
 msgid "Level build plate"
 msgstr "레벨 빌드 플레이트"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:96
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:98
 msgctxt "@tooltip"
 msgid "Outer Wall"
 msgstr "외벽"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:97
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:99
 msgctxt "@tooltip"
 msgid "Inner Walls"
 msgstr "내벽"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:98
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:100
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr "외판"
+msgstr "스킨"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:99
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:101
 msgctxt "@tooltip"
 msgid "Infill"
 msgstr "내부채움"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:100
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:102
 msgctxt "@tooltip"
 msgid "Support Infill"
 msgstr "내부채움 서포트"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:101
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:103
 msgctxt "@tooltip"
 msgid "Support Interface"
 msgstr "지원하는 인터페이스"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:102
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:104
 msgctxt "@tooltip"
 msgid "Support"
 msgstr "서포트"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:103
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:105
 msgctxt "@tooltip"
 msgid "Skirt"
 msgstr "스커트"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:104
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:106
 msgctxt "@tooltip"
 msgid "Travel"
 msgstr "움직임 경로"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:105
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:107
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "리트랙션"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:106
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:108
 msgctxt "@tooltip"
 msgid "Other"
 msgstr "다른"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:226
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:229
 msgctxt "@label unknown material"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:300
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:313
 #, python-brace-format
 msgctxt "@label"
 msgid "Pre-sliced file {0}"
 msgstr "미리 슬라이싱한 파일 {0}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:236
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:235
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "파일이 이미 있습니다"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:237
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:123
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:236
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
-msgid ""
-"The file <filename>{0}</filename> already exists. Are you sure you want to "
-"overwrite it?"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "파일 <filename>{0}</filename>이 이미 있습니다. 덮어 쓰시겠습니까?"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ExtrudersModel.py:212
@@ -1064,129 +857,106 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "재정의되지 않음"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:115
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:119
 msgctxt "@info:status"
-msgid ""
-"The selected material is incompatible with the selected machine or "
-"configuration."
+msgid "The selected material is incompatible with the selected machine or configuration."
 msgstr "선택한 재료가 선택한 기기 또는 구성과 호환되지 않습니다."
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:116
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:120
 msgctxt "@info:title"
 msgid "Incompatible Material"
 msgstr "호환되지 않는 재료"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:803
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:842
 #, python-format
 msgctxt "@info:generic"
-msgid ""
-"Settings have been changed to match the current availability of extruders: "
-"[%s]"
+msgid "Settings have been changed to match the current availability of extruders: [%s]"
 msgstr "현재 사용가능한 익스트루더: [% s]에 맞도록 설정이 변경되었습니다"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:805
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:844
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "설정이 업데이트되었습니다"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:132
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:131
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid ""
-"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
-msgstr ""
-"프로파일을 <filename>{0}</filename>: <message>{1}</message>로 내보내는데 실패"
-"했습니다"
+msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "프로파일을 <filename>{0}</filename>: <message>{1}</message>로 내보내는데 실패했습니다"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:139
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:138
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
-msgid ""
-"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
-"failure."
-msgstr ""
-"프로파일을 <filename>{0}</filename>로 내보내지 못했습니다. Writer 플러그인이 "
-"오류를 보고했습니다."
+msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
+msgstr "프로파일을 <filename>{0}</filename>로 내보내지 못했습니다. Writer 플러그인이 오류를 보고했습니다."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "프로파일을 <filename>{0}</filename> 에 내보냅니다"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:145
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "내보내기 완료"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:171
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:195
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:314
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:170
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:313
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid ""
-"Failed to import profile from <filename>{0}</filename>: <message>{1}</"
-"message>"
-msgstr ""
-"<filename>{0}</filename>: <message>{1}</message> 에서 프로파일을 가져 오지 못"
-"했습니다"
+msgid "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>"
+msgstr "<filename>{0}</filename>: <message>{1}</message> 에서 프로파일을 가져 오지 못했습니다"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:191
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:190
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "<filename>{0}</filename> 로 가져올 사용자 정의 프로파일이 없습니다"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:219
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:229
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid ""
-"This profile <filename>{0}</filename> contains incorrect data, could not "
-"import it."
-msgstr ""
-"프로파일 <filename>{0}</filename> 에는 정확하지 않은 데이터가 포함되어 있으므"
-"로, 불러올 수 없습니다."
+msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
+msgstr "프로파일 <filename>{0}</filename> 에는 정확하지 않은 데이터가 포함되어 있으므로, 불러올 수 없습니다."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:242
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid ""
-"The machine defined in profile <filename>{0}</filename> ({1}) doesn't match "
-"with your current machine ({2}), could not import it."
-msgstr ""
-"The machine defined in profile <filename>{0}</filename> ({1}) doesn’t match "
-"with your current machine ({2}), could not import it."
+msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
+msgstr "The machine defined in profile <filename>{0}</filename> ({1}) doesn’t match with your current machine ({2}), could not import it."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:317
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:316
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}"
 msgstr "프로파일 {0}을 성공적으로 가져 왔습니다."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:320
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:319
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "파일 {0}에 유효한 프로파일이 포함되어 있지 않습니다."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:323
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:322
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "프로파일 {0}에 알 수 없는 파일 유형이 있거나 손상되었습니다."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:341
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:340
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "사용자 정의 프로파일"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:357
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:356
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "프로파일에 품질 타입이 누락되었습니다."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:369
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:368
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not find a quality type {0} for the current configuration."
@@ -1208,263 +978,253 @@ msgctxt "@info:title"
 msgid "Local printers"
 msgstr "로컬 프린터"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:108
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:109
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "지원되는 모든 유형 ({0})"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:109
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:110
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "모든 파일 (*)"
 
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:511
+#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:544
 msgctxt "@label"
 msgid "Custom Material"
 msgstr "사용자 정의 소재"
 
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:512
+#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:545
 msgctxt "@label"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: /home/ruben/Projects/Cura/cura/BuildVolume.py:78
-msgctxt "@info:status"
-msgid ""
-"The build volume height has been reduced due to the value of the \"Print "
-"Sequence\" setting to prevent the gantry from colliding with printed models."
-msgstr ""
-"\"프린팅 순서\"설정 값으로 인해 갠트리가 프린팅 된 모델과 충돌하지 않도록 출"
-"력물 높이가 줄어 들었습니다."
-
 #: /home/ruben/Projects/Cura/cura/BuildVolume.py:80
+msgctxt "@info:status"
+msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
+msgstr "\"프린팅 순서\"설정 값으로 인해 갠트리가 프린팅 된 모델과 충돌하지 않도록 출력물 높이가 줄어 들었습니다."
+
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:82
 msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "출력물 크기"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:25
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:99
+msgctxt "@info:backup_failed"
+msgid "Could not create archive from user data directory: {}"
+msgstr "사용자 데이터 디렉터리에서 압축 파일을 만들 수 없습니다: {}"
+
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:104
+msgctxt "@info:title"
+msgid "Backup"
+msgstr "백업"
+
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:116
+msgctxt "@info:backup_failed"
+msgid "Tried to restore a Cura backup without having proper data or meta data."
+msgstr "적절한 데이터 또는 메타 데이터 없이 Cura 백업을 복원하려고 시도했습니다."
+
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:126
+msgctxt "@info:backup_failed"
+msgid "Tried to restore a Cura backup that does not match your current version."
+msgstr "현재 버전과 일치하지 않는 Cura 백업을 복원하려고 시도했습니다."
+
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "객체를 증가시키고 배치"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:26
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:81
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:28
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:99
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "개체 배치 중"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:81
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:88
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:152
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:99
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:96
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:149
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "모든 개체가 출력할 수 있는 최대 사이즈 내에 위치할 수 없습니다"
 
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:29
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:64
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:30
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:66
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "객체의 새 위치 찾기"
 
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:33
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:68
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:34
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:70
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "위치 찾기"
 
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:89
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:153
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:97
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "위치를 찾을 수 없음"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:88
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:87
 msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "큐라를 시작할 수 없습니다"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:94
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:93
 msgctxt "@label crash message"
 msgid ""
-"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right."
-"</p></b>\n"
-"                    <p>We encountered an unrecoverable error during start "
-"up. It was possibly caused by some incorrect configuration files. We suggest "
-"to backup and reset your configuration.</p>\n"
-"                    <p>Backups can be found in the configuration folder.</"
-"p>\n"
-"                    <p>Please send us this Crash Report to fix the problem.</"
-"p>\n"
+"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr ""
-"<p> <b> 죄송합니다, Ultimaker Cura가 정상적이지 않습니다. </ p> </ b>\n"
-"                     <p> 시작할 때 복구 할 수없는 오류가 발생했습니다. 이 오"
-"류는 잘못된 구성 파일로 인해 발생할 수 있습니다. 설정을 백업하고 재설정하는 "
-"것이 좋습니다. </ p>\n"
-"                     <p> 백업은 설정 폴더에서 찾을 수 있습니다. </ p>\n"
-"                     <p> 문제를 해결하기 위해이 오류 보고서를 보내주십시오. "
-"</ p>\n"
-"                 "
+msgstr "<p> <b> 죄송합니다, Ultimaker Cura가 정상적이지 않습니다. </ p> </ b>\n                     <p> 시작할 때 복구 할 수없는 오류가 발생했습니다. 이 오류는 잘못된 구성 파일로 인해 발생할 수 있습니다. 설정을 백업하고 재설정하는 것이 좋습니다. </ p>\n                     <p> 백업은 설정 폴더에서 찾을 수 있습니다. </ p>\n                     <p> 문제를 해결하기 위해이 오류 보고서를 보내주십시오. </ p>\n                 "
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:103
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
 msgid "Send crash report to Ultimaker"
 msgstr "충돌 보고서를 Ultimaker에 보내기"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:106
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:105
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "충돌 리포트 보기"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:110
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:109
 msgctxt "@action:button"
 msgid "Show configuration folder"
 msgstr "설정 폴더 보기"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:121
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:120
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "백업 및 리셋 설정"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:203
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:149
 msgctxt "@title:window"
 msgid "Crash Report"
 msgstr "충돌 보고서"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:223
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:169
 msgctxt "@label crash message"
 msgid ""
-"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report "
-"to fix the problem</p></b>\n"
-"            <p>Please use the \"Send report\" button to post a bug report "
-"automatically to our servers</p>\n"
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr ""
-"<p><b>치명적인 오류가 발생했습니다. 문제를 해결할 수 있도록 이 충돌 보고서를 "
-"보내주십시오</p></b>\n"
-"            <p>\"보고서 전송\" 버튼을 사용하면 버그 보고서가 서버에 자동으로 "
-"전달됩니다</p>\n"
-"        "
+msgstr "<p><b>치명적인 오류가 발생했습니다. 문제를 해결할 수 있도록 이 충돌 보고서를 보내주십시오</p></b>\n            <p>\"보고서 전송\" 버튼을 사용하면 버그 보고서가 서버에 자동으로 전달됩니다</p>\n        "
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:231
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
 msgid "System information"
 msgstr "시스템 정보"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:239
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:185
 msgctxt "@label unknown version of Cura"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:241
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:187
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Cura 버전"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:242
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:188
 msgctxt "@label Type of platform"
 msgid "Platform"
 msgstr "플랫폼"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:243
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:189
 msgctxt "@label"
 msgid "Qt version"
 msgstr "Qt 버전"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:244
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:190
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQt 버전"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:245
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:191
 msgctxt "@label OpenGL version"
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:262
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:208
 msgctxt "@label"
 msgid "Not yet initialized<br/>"
 msgstr "아직 초기화되지 않음<br/>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:265
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:211
 #, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL 버전: {version}</li>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:266
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:212
 #, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL 공급업체: {vendor}</li>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:267
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:213
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL Renderer: {renderer}</li>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:276
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:222
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "오류 추적"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:357
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:303
 msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "로그"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:380
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:326
 msgctxt "@title:groupbox"
 msgid "User description"
 msgstr "사용자 설명"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:399
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:345
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "보고서 전송"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:300
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:328
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "기기로드 중 ..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:712
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:756
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "장면 설정 중..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:751
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:789
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "인터페이스 로드 중 ..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:975
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1023
 #, python-format
-msgctxt ""
-"@info 'width', 'depth' and 'height' are variable names that must NOT be "
-"translated; just translate the format of ##x##x## mm."
+msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1567
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1581
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
-msgstr ""
-"한 번에 하나의 G-코드 파일만 로드 할 수 있습니다. {0} 가져 오기를 건너 뛰었습"
-"니다."
+msgstr "한 번에 하나의 G-코드 파일만 로드 할 수 있습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1576
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1591
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
-msgstr ""
-"G-코드가 로드되어 있으면 다른 파일을 열 수 없습니다. {0} 가져 오기를 건너 뛰"
-"었습니다."
+msgstr "G-코드가 로드되어 있으면 다른 파일을 열 수 없습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1661
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1680
 msgctxt "@info:status"
 msgid "The selected model was too small to load."
 msgstr "선택한 모델이 너무 작아서 로드할 수 없습니다."
@@ -1544,13 +1304,8 @@ msgstr "X 최소값"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:192
 msgctxt "@tooltip"
-msgid ""
-"Distance from the left of the printhead to the center of the nozzle. Used to "
-"prevent colissions between previous prints and the printhead when printing "
-"\"One at a Time\"."
-msgstr ""
-"프린트 헤드 왼쪽에서 노즐 중심까지의 거리. \"한 번에 하나\"를 프린팅 할 때 이"
-"전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
+msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "프린트 헤드 왼쪽에서 노즐 중심까지의 거리. \"한 번에 하나\"를 프린팅 할 때 이전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:201
 msgctxt "@label"
@@ -1559,13 +1314,8 @@ msgstr "Y 최소값"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:202
 msgctxt "@tooltip"
-msgid ""
-"Distance from the front of the printhead to the center of the nozzle. Used "
-"to prevent colissions between previous prints and the printhead when "
-"printing \"One at a Time\"."
-msgstr ""
-"프린트 헤드 전면에서 노즐 중앙까지의 거리. \"한 번에 하나\"를 프린팅 할 때 이"
-"전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
+msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "프린트 헤드 전면에서 노즐 중앙까지의 거리. \"한 번에 하나\"를 프린팅 할 때 이전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:211
 msgctxt "@label"
@@ -1574,13 +1324,8 @@ msgstr "X 최대값"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:212
 msgctxt "@tooltip"
-msgid ""
-"Distance from the right of the printhead to the center of the nozzle. Used "
-"to prevent colissions between previous prints and the printhead when "
-"printing \"One at a Time\"."
-msgstr ""
-"프린트 헤드의 오른쪽에서 노즐 중앙까지의 거리. \"한 번에 하나\"를 프린팅 할 "
-"때 이전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
+msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "프린트 헤드의 오른쪽에서 노즐 중앙까지의 거리. \"한 번에 하나\"를 프린팅 할 때 이전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:221
 msgctxt "@label"
@@ -1589,13 +1334,8 @@ msgstr "Y 최대값"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:222
 msgctxt "@tooltip"
-msgid ""
-"Distance from the rear of the printhead to the center of the nozzle. Used to "
-"prevent colissions between previous prints and the printhead when printing "
-"\"One at a Time\"."
-msgstr ""
-"프린트 헤드의 뒤쪽에서 노즐 중심까지의 거리. \"한 번에 하나\"를 프린팅 할 때 "
-"이전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
+msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "프린트 헤드의 뒤쪽에서 노즐 중심까지의 거리. \"한 번에 하나\"를 프린팅 할 때 이전 프린팅물과 프린팅 헤드 사이의 충돌을 방지하는 데 사용됩니다."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:234
 msgctxt "@label"
@@ -1604,13 +1344,8 @@ msgstr "갠트리 높이"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:236
 msgctxt "@tooltip"
-msgid ""
-"The height difference between the tip of the nozzle and the gantry system (X "
-"and Y axes). Used to prevent collisions between previous prints and the "
-"gantry when printing \"One at a Time\"."
-msgstr ""
-"노즐 끝과 갠트리 시스템 사이의 높이 차이 (X 및 Y 축). \"한 번에 하나\"를 프린"
-"팅 할 때 이전 프린팅물과 갠트리 사이의 충돌을 방지하는 데 사용됩니다."
+msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
+msgstr "노즐 끝과 갠트리 시스템 사이의 높이 차이 (X 및 Y 축). \"한 번에 하나\"를 프린팅 할 때 이전 프린팅물과 갠트리 사이의 충돌을 방지하는 데 사용됩니다."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:255
 msgctxt "@label"
@@ -1654,12 +1389,8 @@ msgstr "호환되는 재료의 직경"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:401
 msgctxt "@tooltip"
-msgid ""
-"The nominal diameter of filament supported by the printer. The exact "
-"diameter will be overridden by the material and/or the profile."
-msgstr ""
-"프린터가 지원하는 필라멘트의 직경. 정확한 직경은 소재 및 / 또는 프로파일에 의"
-"해 덮어써집니다."
+msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
+msgstr "프린터가 지원하는 필라멘트의 직경. 정확한 직경은 소재 및 / 또는 프로파일에 의해 덮어써집니다."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:417
 msgctxt "@label"
@@ -1681,14 +1412,153 @@ msgctxt "@label"
 msgid "Extruder End G-code"
 msgstr "익스트루더 종료 Gcode"
 
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:17
+msgctxt "@action:button"
+msgid "Install"
+msgstr "설치"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
+msgctxt "@action:button"
+msgid "Installed"
+msgstr "설치됨"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
+msgctxt "@info"
+msgid "Could not connect to the Cura Package database. Please check your connection."
+msgstr "Cura 패키지 데이터베이스에 연결할 수 없습니다. 연결을 확인하십시오."
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:35
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:26
+msgctxt "@title:tab"
+msgid "Plugins"
+msgstr "플러그인"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
+msgctxt "@label"
+msgid "Version"
+msgstr "버전"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
+msgctxt "@label"
+msgid "Last updated"
+msgstr "마지막으로 업데이트한 날짜"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
+msgctxt "@label"
+msgid "Author"
+msgstr "원작자"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
+msgctxt "@label"
+msgid "Unknown"
+msgstr "알 수 없는"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:44
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:30
+msgctxt "@action:button"
+msgid "Update"
+msgstr "업데이트"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:45
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
+msgctxt "@action:button"
+msgid "Updating"
+msgstr "업데이트 중"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
+msgctxt "@action:button"
+msgid "Updated"
+msgstr "업데이트됨"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
+msgctxt "@title"
+msgid "Toolbox"
+msgstr "도구 상자"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
+msgctxt "@action:button"
+msgid "Back"
+msgstr "뒤로"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
+msgctxt "@info"
+msgid "You will need to restart Cura before changes in packages have effect."
+msgstr "패키지의 변경 사항이 적용되기 전에 Cura를 다시 시작해야 합니다"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:32
+msgctxt "@info:button"
+msgid "Quit Cura"
+msgstr "Cura 끝내기"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:54
+msgctxt "@title:tab"
+msgid "Installed"
+msgstr "설치됨"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
+msgctxt "@label"
+msgid "Will install upon restarting"
+msgstr "다시 시작 시 설치 예정"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+msgctxt "@action:button"
+msgid "Downgrade"
+msgstr "다운그레이드"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+msgctxt "@action:button"
+msgid "Uninstall"
+msgstr "설치 제거"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
+msgctxt "@title:window"
+msgid "Plugin License Agreement"
+msgstr "플러그인 사용 계약"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:33
+msgctxt "@label"
+msgid ""
+"This plugin contains a license.\n"
+"You need to accept this license to install this plugin.\n"
+"Do you agree with the terms below?"
+msgstr "이 플러그인에는 라이선스가 포함되어 있습니다.\n이 플러그인을 설치하려면 이 라이선스를 수락해야 합니다.\n아래의 약관에 동의하시겠습니까?"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
+msgctxt "@action:button"
+msgid "Accept"
+msgstr "동의"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:65
+msgctxt "@action:button"
+msgid "Decline"
+msgstr "거절"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:17
+msgctxt "@label"
+msgid "Featured"
+msgstr "추천"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:20
+msgctxt "@label"
+msgid "Compatibility"
+msgstr "호환성"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
+msgctxt "@info"
+msgid "Fetching packages..."
+msgstr "패키지 가져오는 중..."
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:87
+msgctxt "@label"
+msgid "Contact"
+msgstr "연락처"
+
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
-msgid ""
-"Some things could be problematic in this print. Click to see tips for "
-"adjustment."
-msgstr ""
-"이 출력물에는 문제가있을 수 있습니다. 조정을 위한 도움말을 보려면 클릭하십시"
-"오."
+msgid "Some things could be problematic in this print. Click to see tips for adjustment."
+msgstr "이 출력물에는 문제가있을 수 있습니다. 조정을 위한 도움말을 보려면 클릭하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
 msgctxt "@label"
@@ -1698,10 +1568,8 @@ msgstr "변경 내역"
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:37
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:84
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:56
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:306
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:464
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:509
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:173
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:121
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
 #: /home/ruben/Projects/Cura/resources/qml/EngineLog.qml:38
@@ -1744,6 +1612,11 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "펌웨어 누락으로 인해 펌웨어 업데이트에 실패했습니다."
 
+#: /home/ruben/Projects/Cura/plugins/UserAgreement/UserAgreement.qml:16
+msgctxt "@title:window"
+msgid "User Agreement"
+msgstr "사용자 계약"
+
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:57
 msgctxt "@window:title"
 msgid "Existing Connection"
@@ -1751,11 +1624,8 @@ msgstr "기존 연결"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:59
 msgctxt "@message:text"
-msgid ""
-"This printer/group is already added to Cura. Please select another printer/"
-"group."
-msgstr ""
-"이 프린터/그룹은 이미 Cura에 추가되었습니다. 다른 프린터/그룹을 선택하십시오."
+msgid "This printer/group is already added to Cura. Please select another printer/group."
+msgstr "이 프린터/그룹은 이미 Cura에 추가되었습니다. 다른 프린터/그룹을 선택하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:76
 msgctxt "@title:window"
@@ -1765,20 +1635,10 @@ msgstr "네트워크 프린터에 연결"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:86
 msgctxt "@label"
 msgid ""
-"To print directly to your printer over the network, please make sure your "
-"printer is connected to the network using a network cable or by connecting "
-"your printer to your WIFI network. If you don't connect Cura with your "
-"printer, you can still use a USB drive to transfer g-code files to your "
-"printer.\n"
+"To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"네트워크를 통해 프린터로 직접 프린팅하려면 네트워크 케이블을 사용하거나 프린"
-"터를 WIFI 네트워크에 연결하여 프린터가 네트워크에 연결되어 있는지 확인하십시"
-"오. Cura를 프린터에 연결하지 않은 경우에도 USB 드라이브를 사용하여 g 코드 파"
-"일을 프린터로 전송할 수 있습니다\n"
-"\n"
-"아래 목록에서 프린터를 선택하십시오:"
+msgstr "네트워크를 통해 프린터로 직접 프린팅하려면 네트워크 케이블을 사용하거나 프린터를 WIFI 네트워크에 연결하여 프린터가 네트워크에 연결되어 있는지 확인하십시오. Cura를 프린터에 연결하지 않은 경우에도 USB 드라이브를 사용하여 g 코드 파일을 프린터로 전송할 수 있습니다\n\n아래 목록에서 프린터를 선택하십시오:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:96
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:42
@@ -1804,76 +1664,59 @@ msgctxt "@action:button"
 msgid "Refresh"
 msgstr "새로고침"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:215
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:218
 msgctxt "@label"
-msgid ""
-"If your printer is not listed, read the <a href='%1'>network printing "
-"troubleshooting guide</a>"
+msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "프린터가 목록에 없으면 네트워크 프린팅 문제 해결 가이드를 읽어보십시오"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:242
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:245
 msgctxt "@label"
 msgid "Type"
 msgstr "유형"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:254
-msgctxt "@label"
-msgid "Ultimaker 3"
-msgstr "Ultimaker 3"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:257
-msgctxt "@label"
-msgid "Ultimaker 3 Extended"
-msgstr "Ultimaker 3 확장판"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:260
-msgctxt "@label"
-msgid "Unknown"
-msgstr "알 수 없는"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:273
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:282
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "펌웨어 버전"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:285
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:294
 msgctxt "@label"
 msgid "Address"
 msgstr "주소"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:307
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:316
 msgctxt "@label"
 msgid "This printer is not set up to host a group of Ultimaker 3 printers."
-msgstr ""
-"이 프린터는 Ultimaker 3 프린터 그룹을 호스트하도록 설정되지 않았습니다."
+msgstr "이 프린터는 Ultimaker 3 프린터 그룹을 호스트하도록 설정되지 않았습니다."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:311
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:320
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
 msgstr "이 프린터는 1% Ultimaker 3 프린터 그룹의 호스트입니다."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:321
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:330
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "이 주소의 프린터가 아직 응답하지 않았습니다."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:326
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:335
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:39
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "연결"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:340
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:349
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "프린터 주소"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:370
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:377
 msgctxt "@alabel"
 msgid "Enter the IP address or hostname of your printer on the network."
 msgstr "네트워크에 프린터의 IP 주소 또는 호스트 이름을 입력하십시오."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:400
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:407
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:132
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:181
 msgctxt "@action:button"
 msgid "OK"
@@ -1897,9 +1740,7 @@ msgstr "프린트"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterMonitorItem.qml:36
 msgctxt "@label: arg 1 is group name"
 msgid "%1 is not set up to host a group of connected Ultimaker 3 printers"
-msgstr ""
-"%1은 연결된 Ultimaker 3에 연결된 프린터 그룹을 호스트하도록 설정되지 않았습니"
-"다"
+msgstr "%1은 연결된 Ultimaker 3에 연결된 프린터 그룹을 호스트하도록 설정되지 않았습니다"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterMonitorItem.qml:55
 msgctxt "@label link to connect manager"
@@ -2050,176 +1891,6 @@ msgctxt "@action:button"
 msgid "Activate Configuration"
 msgstr "설정 활성화"
 
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:21
-msgctxt "@title:window"
-msgid "SolidWorks: Export wizard"
-msgstr "SolidWorks: 내보내기 마법사"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:45
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:140
-msgctxt "@action:label"
-msgid "Quality:"
-msgstr "품질:"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:78
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:179
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Fine (3D-printing)"
-msgstr "고품질 (3D-프린팅)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:79
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:180
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Coarse (3D-printing)"
-msgstr "저품질 (3D-프린팅)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:80
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:181
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Fine (SolidWorks)"
-msgstr "고품질 (SolidWorks)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:81
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:182
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Coarse (SolidWorks)"
-msgstr "저품질 (SolidWorks)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:94
-msgctxt "@text:window"
-msgid "Show this dialog again"
-msgstr "이 대화창을 다시 표시"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:104
-msgctxt "@action:button"
-msgid "Continue"
-msgstr "계속"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:116
-msgctxt "@action:button"
-msgid "Abort"
-msgstr "중단"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:21
-msgctxt "@title:window"
-msgid "How to install Cura SolidWorks macro"
-msgstr "Cura SolidWorks 매크로 설치 방법"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:62
-msgctxt "@description:label"
-msgid "Steps:"
-msgstr "단계:"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:140
-msgctxt "@action:button"
-msgid ""
-"Open the directory\n"
-"with macro and icon"
-msgstr ""
-"매크로와 아이콘으로\n"
-"디렉토리 열기"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:160
-msgctxt "@description:label"
-msgid "Instructions:"
-msgstr "안내:"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:202
-msgctxt "@action:playpause"
-msgid "Play"
-msgstr "재생"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:206
-msgctxt "@action:playpause"
-msgid "Pause"
-msgstr "중지"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:268
-msgctxt "@action:button"
-msgid "Previous Step"
-msgstr "이전 단계"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:283
-msgctxt "@action:button"
-msgid "Done"
-msgstr "완료"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:287
-msgctxt "@action:button"
-msgid "Next Step"
-msgstr "다음 단계"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:21
-msgctxt "@title:window"
-msgid "SolidWorks plugin: Configuration"
-msgstr "SolidWorks 플러그인: 구성"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:39
-msgctxt "@title:tab"
-msgid "Conversion settings"
-msgstr "변환 설정"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:66
-msgctxt "@label"
-msgid "First choice:"
-msgstr "첫 번째 선택:"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:86
-msgctxt "@text:menu"
-msgid "Latest installed version (Recommended)"
-msgstr "가장 최근 설치 버전(권장)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:95
-msgctxt "@text:menu"
-msgid "Default version"
-msgstr "기본 버전"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:193
-msgctxt "@label"
-msgid "Show wizard before opening SolidWorks files"
-msgstr "SolidWorks 파일을 열기 전 마법사 표시"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:203
-msgctxt "@label"
-msgid "Automatically rotate opened file into normed orientation"
-msgstr "열린 파일을 규정된 방향으로 자동 회전"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:210
-msgctxt "@title:tab"
-msgid "Installation(s)"
-msgstr "설치"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:284
-msgctxt "@label"
-msgid "COM service found"
-msgstr "COM 서비스 발견"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:295
-msgctxt "@label"
-msgid "Executable found"
-msgstr "실행가능 발견"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:306
-msgctxt "@label"
-msgid "COM starting"
-msgstr "COM 시작"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:317
-msgctxt "@label"
-msgid "Revision number"
-msgstr "수정 번호"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:328
-msgctxt "@label"
-msgid "Functions available"
-msgstr "사용가능한 기능"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:341
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:289
-msgctxt "@action:button"
-msgid "Save"
-msgstr "저장"
-
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:117
 msgctxt "@label"
 msgid "Color scheme"
@@ -2325,6 +1996,26 @@ msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts"
 msgstr "활성 사후 처리 스크립트 변경"
 
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
+msgctxt "@title:window"
+msgid "More information on anonymous data collection"
+msgstr "익명 데이터 수집에 대한 추가 정보"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:66
+msgctxt "@text:window"
+msgid "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
+msgstr "Cura는 인쇄 품질 및 사용자 환경을 개선하기 위해 익명 데이터를 Ultimaker로 전송합니다. 전송되는 모든 데이터에 대한 예는 다음과 같습니다."
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:101
+msgctxt "@text:window"
+msgid "I don't want to send these data"
+msgstr "이러한 데이터 전송을 원하지 않습니다"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:111
+msgctxt "@text:window"
+msgid "Allow sending these data to Ultimaker and help us improve Cura"
+msgstr "이러한 데이터를 Ultimaker에 전송해 Cura 개선에 도움을 주고 싶습니다"
+
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
 msgid "Convert Image..."
@@ -2348,7 +2039,7 @@ msgstr "밀리미터 단위의 빌드 플레이트에서 기저부 높이."
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:61
 msgctxt "@action:label"
 msgid "Base (mm)"
-msgstr "바다 (mm)"
+msgstr "바닥 (mm)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:79
 msgctxt "@info:tooltip"
@@ -2372,15 +2063,8 @@ msgstr "깊이 (mm)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:126
 msgctxt "@info:tooltip"
-msgid ""
-"By default, white pixels represent high points on the mesh and black pixels "
-"represent low points on the mesh. Change this option to reverse the behavior "
-"such that black pixels represent high points on the mesh and white pixels "
-"represent low points on the mesh."
-msgstr ""
-"기본적으로 흰색 픽셀은 메쉬에서 높은 점을 나타내고 검정색 픽셀은 메쉬에서 낮"
-"은 점을 나타냅니다. 이 옵션을 변경하면 검은 픽셀이 메쉬의 높은 점을 나타내고 "
-"흰색 픽셀은 메쉬의 낮은 점을 나타냅니다."
+msgid "By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh."
+msgstr "기본적으로 흰색 픽셀은 메쉬에서 높은 점을 나타내고 검정색 픽셀은 메쉬에서 낮은 점을 나타냅니다. 이 옵션을 변경하면 검은 픽셀이 메쉬의 높은 점을 나타내고 흰색 픽셀은 메쉬의 낮은 점을 나타냅니다."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:139
 msgctxt "@item:inlistbox"
@@ -2420,7 +2104,7 @@ msgstr "서포터로 프린팅"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:84
 msgctxt "@label"
 msgid "Don't support overlap with other models"
-msgstr "다른 모델과 오버랩되도록 지지하지 않음"
+msgstr "다른 모델과 오버랩되도록 지원하지 않음"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:92
 msgctxt "@label"
@@ -2470,13 +2154,13 @@ msgid "Create new"
 msgstr "새로 만들기"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:72
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:68
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "요약 - Cura 프로젝트"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:92
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:90
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:92
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "프린터 설정"
@@ -2493,7 +2177,7 @@ msgid "Update"
 msgstr "업데이트"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:143
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:99
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:101
 msgctxt "@action:label"
 msgid "Type"
 msgstr "유형"
@@ -2504,7 +2188,7 @@ msgid "Printer Group"
 msgstr "프린터 그룹"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:180
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:191
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:192
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "프로파일 설정"
@@ -2516,19 +2200,19 @@ msgstr "프로파일의 충돌을 어떻게 해결해야합니까?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:216
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:308
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:215
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:216
 msgctxt "@action:label"
 msgid "Name"
 msgstr "이름"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:199
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:200
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "프로파일에 없음"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:236
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:204
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:205
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2556,7 +2240,7 @@ msgid "How should the conflict in the material be resolved?"
 msgstr "재료의 충돌은 어떻게 해결되어야합니까?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:327
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:234
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:233
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "표시 설정"
@@ -2567,13 +2251,13 @@ msgid "Mode"
 msgstr "종류"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:352
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:243
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:242
 msgctxt "@action:label"
 msgid "Visible settings:"
 msgstr "표시 설정 :"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:357
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:248
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:247
 msgctxt "@action:label"
 msgid "%1 out of %2"
 msgstr "1 out of %2"
@@ -2587,52 +2271,6 @@ msgstr "프로젝트를 로드하면 빌드 플레이트의 모든 모델이 지
 msgctxt "@action:button"
 msgid "Open"
 msgstr "열기"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:127
-msgctxt "@action:button"
-msgid "Update"
-msgstr "업데이트"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:129
-msgctxt "@action:button"
-msgid "Install"
-msgstr "설치"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:17
-msgctxt "@title:tab"
-msgid "Plugins"
-msgstr "플러그인"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:216
-msgctxt "@title:window"
-msgid "Plugin License Agreement"
-msgstr "플러그인 사용 계약"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:237
-msgctxt "@label"
-msgid ""
-"This plugin contains a license.\n"
-"You need to accept this license to install this plugin.\n"
-"Do you agree with the terms below?"
-msgstr ""
-"이 플러그인에는 라이선스가 포함되어 있습니다.\n"
-"이 플러그인을 설치하려면 이 라이선스를 수락해야 합니다.\n"
-"아래의 약관에 동의하시겠습니까?"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:259
-msgctxt "@action:button"
-msgid "Accept"
-msgstr "동의"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:270
-msgctxt "@action:button"
-msgid "Decline"
-msgstr "거절"
-
-#: /home/ruben/Projects/Cura/plugins/UserAgreementPlugin/UserAgreement.qml:16
-msgctxt "@title:window"
-msgid "User Agreement"
-msgstr "사용자 계약"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:26
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
@@ -2657,24 +2295,13 @@ msgstr "빌드 플레이트 레벨링"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:38
 msgctxt "@label"
-msgid ""
-"To make sure your prints will come out great, you can now adjust your "
-"buildplate. When you click 'Move to Next Position' the nozzle will move to "
-"the different positions that can be adjusted."
-msgstr ""
-"프린팅이 잘 되도록 빌드 플레이트를 조정할 수 있습니다. '다음 위치로 이동'을 "
-"클릭하면 노즐이 조정할 수있는 다른 위치로 이동합니다."
+msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
+msgstr "프린팅이 잘 되도록 빌드 플레이트를 조정할 수 있습니다. '다음 위치로 이동'을 클릭하면 노즐이 조정할 수있는 다른 위치로 이동합니다."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:47
 msgctxt "@label"
-msgid ""
-"For every position; insert a piece of paper under the nozzle and adjust the "
-"print build plate height. The print build plate height is right when the "
-"paper is slightly gripped by the tip of the nozzle."
-msgstr ""
-"모든 자리에; 노즐 아래에 종이 한 장을 넣고 프린팅 빌드 플레이트 높이를 조정하"
-"십시오. 빌드플레이드의 높이는 종이의 끝 부분이 노즐의 끝부분으로 살짝 닿을 때"
-"의 높이입니다."
+msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
+msgstr "모든 자리에; 노즐 아래에 종이 한 장을 넣고 프린팅 빌드 플레이트 높이를 조정하십시오. 빌드플레이드의 높이는 종이의 끝 부분이 노즐의 끝부분으로 살짝 닿을 때의 높이입니다."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:62
 msgctxt "@action:button"
@@ -2693,22 +2320,13 @@ msgstr "펌웨어 업그레이드"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:41
 msgctxt "@label"
-msgid ""
-"Firmware is the piece of software running directly on your 3D printer. This "
-"firmware controls the step motors, regulates the temperature and ultimately "
-"makes your printer work."
-msgstr ""
-"펌웨어는 3D 프린터에서 직접 실행되는 소프트웨어입니다. 이 펌웨어는 스텝 모터"
-"를 제어하고 온도를 조절하며 프린터를 작동시킵니다."
+msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
+msgstr "펌웨어는 3D 프린터에서 직접 실행되는 소프트웨어입니다. 이 펌웨어는 스텝 모터를 제어하고 온도를 조절하며 프린터를 작동시킵니다."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:51
 msgctxt "@label"
-msgid ""
-"The firmware shipping with new printers works, but new versions tend to have "
-"more features and improvements."
-msgstr ""
-"새 프린터와 함께 제공되는 펌웨어는 작동하지만 새로운 버전은 더 많은 기능과 향"
-"상된 기능을 제공하는 경향이 있습니다."
+msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
+msgstr "새 프린터와 함께 제공되는 펌웨어는 작동하지만 새로운 버전은 더 많은 기능과 향상된 기능을 제공하는 경향이 있습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:65
 msgctxt "@action:button"
@@ -2742,12 +2360,8 @@ msgstr "프린터 확인"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
 msgctxt "@label"
-msgid ""
-"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
-"this step if you know your machine is functional"
-msgstr ""
-"Ultimaker에서 몇 가지 검사를 하는 것이 좋습니다. 기기가 제대로 작동한다고 생"
-"각이 되면 이 단계를 건너 뛸 수 있습니다"
+msgid "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
+msgstr "Ultimaker에서 몇 가지 검사를 하는 것이 좋습니다. 기기가 제대로 작동한다고 생각이 되면 이 단계를 건너 뛸 수 있습니다"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
 msgctxt "@action:button"
@@ -2832,72 +2446,72 @@ msgctxt "@label"
 msgid "Everything is in order! You're done with your CheckUp."
 msgstr "모든 점검이 순조롭게 끝났습니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:117
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"
 msgid "Not connected to a printer"
 msgstr "프린터에 연결되지 않음"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:121
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:123
 msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "프린터가 명령을 받아들이지 않습니다"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:131
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:133
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:197
 msgctxt "@label:MonitorStatus"
 msgid "In maintenance. Please check the printer"
 msgstr "유지 보수 중. 프린터를 확인하십시오"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:142
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:144
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "프린터와의 연결이 끊어졌습니다"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:144
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:146
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:187
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
 msgstr "프린팅..."
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:147
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:149
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:189
 msgctxt "@label:MonitorStatus"
 msgid "Paused"
 msgstr "일시 중지됨"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:150
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:152
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:191
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
 msgstr "준비 중..."
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:152
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:154
 msgctxt "@label:MonitorStatus"
 msgid "Please remove the print"
 msgstr "프린트물을 제거하십시오"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:282
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:291
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:284
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:293
 msgctxt "@label:"
 msgid "Pause"
 msgstr "중지"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:287
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:289
 msgctxt "@label:"
 msgid "Resume"
 msgstr "재개"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:323
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:325
 msgctxt "@label:"
 msgid "Abort Print"
 msgstr "프린팅 중단"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:333
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:335
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "프린팅 중단"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:335
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:337
 msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "프린팅를 중단 하시겠습니까?"
@@ -2912,9 +2526,7 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr ""
-"일부 프로파일 설정을 수정했습니다.\n"
-"이러한 설정을 유지하거나 삭제 하시겠습니까?"
+msgstr "일부 프로파일 설정을 수정했습니다.\n이러한 설정을 유지하거나 삭제 하시겠습니까?"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -2932,19 +2544,19 @@ msgid "Customized"
 msgstr "사용자 정의"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:157
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:595
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:634
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "항상 묻기"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:158
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:596
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:635
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr "최소하고 다시 묻지않기"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:159
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:597
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:636
 msgctxt "@option:discardOrKeep"
 msgid "Keep and never ask again"
 msgstr "계속하고 다시 묻지않기"
@@ -2975,12 +2587,9 @@ msgid "Confirm Diameter Change"
 msgstr "직경 변경 확인"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:95
-msgctxt "@label (%1 is object name)"
-msgid ""
-"The new material diameter is set to %1 mm, which is not compatible to the "
-"current machine. Do you wish to continue?"
-msgstr ""
-"새 재료의 지름은 현재 기기와 호환되지 않는 % 1mm입니다. 계속 하시겠습니까?"
+msgctxt "@label (%1 is a number)"
+msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
+msgstr "새 필라멘트의 직경은 %1 mm로 설정되었으며, 현재 압출기와 호환되지 않습니다. 계속하시겠습니까?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:128
 msgctxt "@label"
@@ -3097,294 +2706,279 @@ msgctxt "@title:column"
 msgid "Unit"
 msgstr "단위"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:14
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:536
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:15
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:531
 msgctxt "@title:tab"
 msgid "General"
 msgstr "일반"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:128
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:141
 msgctxt "@label"
 msgid "Interface"
 msgstr "인터페이스"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:139
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:152
 msgctxt "@label"
 msgid "Language:"
 msgstr "언어:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:207
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:220
 msgctxt "@label"
 msgid "Currency:"
 msgstr "통화:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:221
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:234
 msgctxt "@label"
 msgid "Theme:"
 msgstr "테마:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:281
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:294
 msgctxt "@label"
-msgid ""
-"You will need to restart the application for these changes to have effect."
+msgid "You will need to restart the application for these changes to have effect."
 msgstr "이러한 변경 사항을 적용하려면 응용 프로그램을 다시 시작해야합니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:298
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:311
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "설정이 변경되면 자동으로 슬라이싱 합니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:306
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:319
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "자동으로 슬라이싱"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:320
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:333
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "뷰포트 동작"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:328
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:341
 msgctxt "@info:tooltip"
-msgid ""
-"Highlight unsupported areas of the model in red. Without support these areas "
-"will not print properly."
-msgstr ""
-"지원되지 않는 모델 영역을 빨간색으로 강조 표시하십시오. 서포트가 없으면 이 영"
-"역이 제대로 프린팅되지 않습니다."
+msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
+msgstr "지원되지 않는 모델 영역을 빨간색으로 강조 표시하십시오. 서포트가 없으면 이 영역이 제대로 프린팅되지 않습니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:337
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:350
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "오버행 표시"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:344
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@info:tooltip"
-msgid ""
-"Moves the camera so the model is in the center of the view when a model is "
-"selected"
+msgid "Moves the camera so the model is in the center of the view when a model is selected"
 msgstr "모델을 선택하면 모델이 뷰의 가운데에 오도록 카메라를 이동합니다"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:349
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:362
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "항목을 선택하면 카메라를 중앙에 위치"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:358
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "큐라의 기본 확대 동작을 반전시켜야 합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:363
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "카메라 줌의 방향을 반전시키기."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:372
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:386
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "확대가 마우스 방향으로 이동해야 합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:377
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "마우스 방향으로 확대"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:386
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:401
 msgctxt "@info:tooltip"
-msgid ""
-"Should models on the platform be moved so that they no longer intersect?"
+msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "모델을 더 이상 교차시키지 않도록 이동해야합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:406
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "모델이 분리되어 있는지 확인"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:399
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:415
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "모델을 빌드 플레이트에 닿도록 아래로 움직여야합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:404
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:420
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "모델을 빌드 플레이트에 자동으로 놓기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:416
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:432
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "g-code 리더에 주의 메시지를 표시하기."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:425
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:441
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "g-code 리더의 주의 메시지"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:432
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:449
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "레이어가 호환 모드로 강제 설정되어야합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:437
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:454
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "레이어 뷰 호환성 모드로 전환 (다시 시작해야 함)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:453
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:470
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "파일 열기 및 저장"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:459
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:477
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "크기가 너무 큰 경우 모델을 빌드 볼륨에 맞게 조정해야합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:464
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:482
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "큰 모델의 사이즈 수정"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:473
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:492
 msgctxt "@info:tooltip"
-msgid ""
-"An model may appear extremely small if its unit is for example in meters "
-"rather than millimeters. Should these models be scaled up?"
-msgstr ""
-"단위가 밀리미터가 아닌 미터 단위 인 경우 모델이 매우 작게 나타날 수 있습니"
-"다. 이 모델을 확대할까요?"
+msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
+msgstr "단위가 밀리미터가 아닌 미터 단위 인 경우 모델이 매우 작게 나타날 수 있습니다. 이 모델을 확대할까요?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:478
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:497
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "매우 작은 모델의 크기 조정"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:487
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:507
 msgctxt "@info:tooltip"
-msgid ""
-"Should a prefix based on the printer name be added to the print job name "
-"automatically?"
-msgstr ""
-"프린터 이름에 기반한 접두어가 프린팅 작업 이름에 자동으로 추가되어야합니까?"
+msgid "Should models be selected after they are loaded?"
+msgstr "모델을 로드한 후에 선택해야 합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:492
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:512
+msgctxt "@option:check"
+msgid "Select models when loaded"
+msgstr "로드된 경우 모델 선택"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
+msgctxt "@info:tooltip"
+msgid "Should a prefix based on the printer name be added to the print job name automatically?"
+msgstr "프린터 이름에 기반한 접두어가 프린팅 작업 이름에 자동으로 추가되어야합니까?"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:527
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "작업 이름에 기기 접두어 추가"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:501
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "프로젝트 파일을 저장할 때 요약이 표시되어야합니까?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:505
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:541
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "프로젝트 저장시 요약 대화 상자 표시"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:514
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:551
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "프로젝트 파일을 열 때 기본 동작"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:559
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "프로젝트 파일을 열 때 기본 동작 "
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:535
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:573
 msgctxt "@option:openProject"
 msgid "Always ask"
 msgstr "항상 물어보기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:536
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:574
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "항상 프로젝트로 열기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:575
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "항상 모델 가져 오기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:573
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:611
 msgctxt "@info:tooltip"
-msgid ""
-"When you have made changes to a profile and switched to a different one, a "
-"dialog will be shown asking whether you want to keep your modifications or "
-"not, or you can choose a default behaviour and never show that dialog again."
-msgstr ""
-"프로파일을 변경하고 다른 프로파일로 전환하면 수정 사항을 유지할지 여부를 묻"
-"는 대화 상자가 표시됩니다. 기본 행동을 선택하면 해당 대화 상자를 다시 표시 하"
-"지 않을 수 있습니다."
+msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
+msgstr "프로파일을 변경하고 다른 프로파일로 전환하면 수정 사항을 유지할지 여부를 묻는 대화 상자가 표시됩니다. 기본 행동을 선택하면 해당 대화 상자를 다시 표시 하지 않을 수 있습니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:582
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:620
 msgctxt "@label"
 msgid "Override Profile"
 msgstr "프로파일 덮어쓰기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:631
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:670
 msgctxt "@label"
 msgid "Privacy"
 msgstr "보안"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:638
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:678
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
 msgstr "Cura가 프로그램이 시작될 때 업데이트를 확인할까요?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:643
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:683
 msgctxt "@option:check"
 msgid "Check for updates on start"
 msgstr "시작시 업데이트 확인"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:653
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:694
 msgctxt "@info:tooltip"
-msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
-"models, IP addresses or other personally identifiable information is sent or "
-"stored."
-msgstr ""
-"프린터에 대한 익명의 데이터를 Ultimaker로 보낼까요? 모델, IP 주소 또는 기타 "
-"개인 식별 정보는 전송되거나 저장되지 않습니다."
+msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
+msgstr "프린터에 대한 익명의 데이터를 Ultimaker로 보낼까요? 모델, IP 주소 또는 기타 개인 식별 정보는 전송되거나 저장되지 않습니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:658
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "(익명) 프린터 정보 보내기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:674
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:708
+msgctxt "@action:button"
+msgid "More information"
+msgstr "추가 정보"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:726
 msgctxt "@label"
 msgid "Experimental"
 msgstr "실험적 설정"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:680
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:733
 msgctxt "@info:tooltip"
 msgid "Use multi build plate functionality"
 msgstr "다수의 빌드 플레이트 사용하기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:685
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:738
 msgctxt "@option:check"
 msgid "Use multi build plate functionality (restart required)"
 msgstr "다수의 빌드 플레이트 사용하기(다시 시작해야 합니다)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:694
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:748
 msgctxt "@info:tooltip"
-msgid ""
-"Should newly loaded models be arranged on the build plate? Used in "
-"conjunction with multi build plate (EXPERIMENTAL)"
-msgstr ""
-"새롭게 로드한 모델을 빌드 플레이트에 정렬할까요? 다수의 빌드 플레이트 사용(실"
-"험적 설정)"
+msgid "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)"
+msgstr "새롭게 로드한 모델을 빌드 플레이트에 정렬할까요? 다수의 빌드 플레이트 사용(실험적 설정)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:753
 msgctxt "@option:check"
 msgid "Do not arrange objects on load"
 msgstr "로드 중인 대상물을 정렬하지 마십시오"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:541
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:536
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "프린터"
@@ -3439,7 +3033,7 @@ msgid "Aborting print..."
 msgstr "프린팅 중단 중 ..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:36
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:545
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:540
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "프로파일"
@@ -3530,12 +3124,8 @@ msgstr "현재 변경 사항 삭제"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:492
 msgctxt "@action:label"
-msgid ""
-"This profile uses the defaults specified by the printer, so it has no "
-"settings/overrides in the list below."
-msgstr ""
-"이 프로파일은 프린터에서 지정한 기본값을 사용하므로 아래 목록에 아무런 설정/"
-"재정의가 없습니다."
+msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
+msgstr "이 프로파일은 프린터에서 지정한 기본값을 사용하므로 아래 목록에 아무런 설정/재정의가 없습니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:499
 msgctxt "@action:label"
@@ -3548,7 +3138,7 @@ msgid "Global Settings"
 msgstr "전역 설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:40
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:543
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:538
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "재료"
@@ -3571,8 +3161,7 @@ msgstr "재료 가져 오기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:244
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid ""
-"Could not import material <filename>%1</filename>: <message>%2</message>"
+msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "재료를 가져올 수 없습니다"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:248
@@ -3588,8 +3177,7 @@ msgstr "재료 내보내기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:278
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
-msgid ""
-"Failed to export material to <filename>%1</filename>: <message>%2</message>"
+msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "재료를 내보내는데 실패했습니다"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:284
@@ -3603,7 +3191,7 @@ msgid "Printer"
 msgstr "프린터"
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:891
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:896
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "프린터 추가"
@@ -3631,16 +3219,14 @@ msgstr "버전: %1"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:56
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
-msgstr "3D 인쇄를 위해 필라멘트를 한줄로 용."
+msgstr "3D 프린팅을 위한 엔드 투 엔트 솔루션."
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
 msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"Cura는 커뮤니티와 공동으로 Ultimaker B.V.에 의해 개발되었습니다.\n"
-"Cura는 다음의 오픈 소스 프로젝트를 사용합니다:"
+msgstr "Cura는 커뮤니티와 공동으로 Ultimaker B.V.에 의해 개발되었습니다.\nCura는 다음의 오픈 소스 프로젝트를 사용합니다:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -3750,62 +3336,64 @@ msgstr "프로파일:"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:103
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the "
-"profile.\n"
+"Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"일부 설정/대체 값은 프로파일에 저장된 값과 다릅니다.\n"
-"\n"
-"프로파일 매니저를 열려면 클릭하십시오."
+msgstr "일부 설정/대체 값은 프로파일에 저장된 값과 다릅니다.\n\n프로파일 매니저를 열려면 클릭하십시오."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:190
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:199
 msgctxt "@label:textbox"
 msgid "Search..."
 msgstr "찾기..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:530
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:544
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "모든 익스트루더에 값 복사"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:539
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:553
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "변경된 사항을 모든 익스트루더에 복사"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:554
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:568
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "이 설정 숨기기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:572
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:586
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "이 설정을 표시하지 않음"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:576
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:590
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "이 설정을 계속 표시하십시오"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:600
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:614
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:426
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "설정 보기..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:251
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:621
+msgctxt "@action:inmenu"
+msgid "Collapse All"
+msgstr "모두 축소"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:626
+msgctxt "@action:inmenu"
+msgid "Expand All"
+msgstr "모두 확장"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:249
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated "
-"value.\n"
+"Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"일부 숨겨진 설정은 일반적인 계산 값과 다른 값을 사용합니다.\n"
-"\n"
-"이 설정을 표시하려면 클릭하십시오."
+msgstr "일부 숨겨진 설정은 일반적인 계산 값과 다른 값을 사용합니다.\n\n이 설정을 표시하려면 클릭하십시오."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3819,12 +3407,8 @@ msgstr "영향을 받다"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:154
 msgctxt "@label"
-msgid ""
-"This setting is always shared between all extruders. Changing it here will "
-"change the value for all extruders."
-msgstr ""
-"이 설정은 항상 모든 익스트루더 사이에 공유됩니다. 여기서 변경하면 모든 익스트"
-"루더에 대한 값이 변경됩니다."
+msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
+msgstr "이 설정은 항상 모든 익스트루더 사이에 공유됩니다. 여기서 변경하면 모든 익스트루더에 대한 값이 변경됩니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:157
 msgctxt "@label"
@@ -3837,86 +3421,15 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"이 설정에는 프로파일과 다른 값이 있습니다.\n"
-"\n"
-"프로파일 값을 복원하려면 클릭하십시오."
+msgstr "이 설정에는 프로파일과 다른 값이 있습니다.\n\n프로파일 값을 복원하려면 클릭하십시오."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:286
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value "
-"set.\n"
+"This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"이 설정은 일반적으로 계산되지만 현재는 절대 값이 설정되어 있습니다.\n"
-"\n"
-"계산 된 값을 복원하려면 클릭하십시오."
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:152
-msgctxt "@label:listbox"
-msgid "Print Setup"
-msgstr "프린팅 설정"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:152
-msgctxt "@label:listbox"
-msgid ""
-"Print Setup disabled\n"
-"G-code files cannot be modified"
-msgstr ""
-"프린팅 설정 사용 안 함\n"
-"G-코드 파일은 수정할 수 없습니다"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:380
-msgctxt "@label Hours and minutes"
-msgid "00h 00min"
-msgstr "00시간 00분"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:398
-msgctxt "@tooltip"
-msgid "Time specification"
-msgstr "시간 사양"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:480
-msgctxt "@label"
-msgid "Cost specification"
-msgstr "비용 사양"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:485
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:494
-msgctxt "@label m for meter"
-msgid "%1m"
-msgstr "%1m"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:486
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:495
-msgctxt "@label g for grams"
-msgid "%1g"
-msgstr "%1g"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:493
-msgctxt "@label"
-msgid "Total:"
-msgstr "총계:"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:628
-msgctxt "@tooltip"
-msgid ""
-"<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings "
-"for the selected printer, material and quality."
-msgstr ""
-"<b>권장 프린팅 설정</b><br/><br/>선택한 프린터, 재료 및 품질에 대한 권장 설정"
-"으로 프린팅하십시오."
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:633
-msgctxt "@tooltip"
-msgid ""
-"<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every "
-"last bit of the slicing process."
-msgstr ""
-"<b>사용자 정의 프린팅 설정</b><br/><br/>미세하게 슬라이싱 설정을 조절하여 프"
-"린팅하십시오."
+msgstr "이 설정은 일반적으로 계산되지만 현재는 절대 값이 설정되어 있습니다.\n\n계산 된 값을 복원하려면 클릭하십시오."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:129
 msgctxt "@label"
@@ -3950,27 +3463,19 @@ msgstr "Gcode 보내기"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:506
 msgctxt "@tooltip of G-code command input"
-msgid ""
-"Send a custom G-code command to the connected printer. Press 'enter' to send "
-"the command."
-msgstr ""
-"연결된 프린터에 사용자 정의 G 코드 명령을 보냅니다. ‘Enter’키를 눌러 명령을 "
-"전송하십시오."
+msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
+msgstr "연결된 프린터에 사용자 정의 G 코드 명령을 보냅니다. ‘Enter’키를 눌러 명령을 전송하십시오."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:36
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:256
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:268
 msgctxt "@label"
 msgid "Extruder"
 msgstr "익스트루더"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:66
 msgctxt "@tooltip"
-msgid ""
-"The target temperature of the hotend. The hotend will heat up or cool down "
-"towards this temperature. If this is 0, the hotend heating is turned off."
-msgstr ""
-"핫 엔드의 설정 온도입니다. 핫 엔드는 이 온도를 향해 가열되거나 냉각됩니다. "
-"이 값이 0이면 온열 가열이 꺼집니다."
+msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
+msgstr "핫 엔드의 설정 온도입니다. 핫 엔드는 이 온도를 향해 가열되거나 냉각됩니다. 이 값이 0이면 온열 가열이 꺼집니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:98
 msgctxt "@tooltip"
@@ -3996,14 +3501,8 @@ msgstr "예열"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:365
 msgctxt "@tooltip of pre-heat"
-msgid ""
-"Heat the hotend in advance before printing. You can continue adjusting your "
-"print while it is heating, and you won't have to wait for the hotend to heat "
-"up when you're ready to print."
-msgstr ""
-"프린팅하기 전에 노즐을 미리 가열하십시오. 가열되는 동안 계속해서 프린팅물을 "
-"조정할 수 있으며, 프린팅 준비가 되면 노즐이 가열 될 때까지 기다릴 필요가 없습"
-"니다."
+msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
+msgstr "프린팅하기 전에 노즐을 미리 가열하십시오. 가열되는 동안 계속해서 프린팅물을 조정할 수 있으며, 프린팅 준비가 되면 노즐이 가열 될 때까지 기다릴 필요가 없습니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:401
 msgctxt "@tooltip"
@@ -4021,19 +3520,15 @@ msgid "The nozzle inserted in this extruder."
 msgstr "이 익스트루더에 삽입 된 노즐."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:25
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:472
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:489
 msgctxt "@label"
 msgid "Build plate"
 msgstr "빌드 플레이트"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:55
 msgctxt "@tooltip"
-msgid ""
-"The target temperature of the heated bed. The bed will heat up or cool down "
-"towards this temperature. If this is 0, the bed heating is turned off."
-msgstr ""
-"가열 된 베드의 설정 온도. 베드가 이 온도로 가열되거나 식을 것입니다. 이 값이 "
-"0이면 베드 가열이 꺼집니다."
+msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
+msgstr "가열 된 베드의 설정 온도. 베드가 이 온도로 가열되거나 식을 것입니다. 이 값이 0이면 베드 가열이 꺼집니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:87
 msgctxt "@tooltip"
@@ -4047,14 +3542,8 @@ msgstr "베드를 예열하기 위한 온도."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:360
 msgctxt "@tooltip of pre-heat"
-msgid ""
-"Heat the bed in advance before printing. You can continue adjusting your "
-"print while it is heating, and you won't have to wait for the bed to heat up "
-"when you're ready to print."
-msgstr ""
-"프린팅하기 전에 베드를 미리 가열하십시오. 가열되는 동안 계속해서 프린팅물을 "
-"조정할 수 있으며, 프린팅 준비가 되면 베드가 가열 될 때까지 기다릴 필요가 없습"
-"니다."
+msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
+msgstr "프린팅하기 전에 베드를 미리 가열하십시오. 가열되는 동안 계속해서 프린팅물을 조정할 수 있으며, 프린팅 준비가 되면 베드가 가열 될 때까지 기다릴 필요가 없습니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/PrinterMenu.qml:25
 msgctxt "@label:category menu label"
@@ -4123,10 +3612,74 @@ msgctxt "@label:extruder label"
 msgid "Extruder"
 msgstr "익스트루더"
 
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
+msgctxt "@label:extruder label"
+msgid "Yes"
+msgstr "예"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
+msgctxt "@label:extruder label"
+msgid "No"
+msgstr "아니요"
+
 #: /home/ruben/Projects/Cura/resources/qml/Menus/RecentFilesMenu.qml:13
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "최근 열어본 파일 열기"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:150
+msgctxt "@label:listbox"
+msgid "Print Setup"
+msgstr "프린팅 설정"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:150
+msgctxt "@label:listbox"
+msgid ""
+"Print Setup disabled\n"
+"G-code files cannot be modified"
+msgstr "프린팅 설정 사용 안 함\nG-코드 파일은 수정할 수 없습니다"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:341
+msgctxt "@label Hours and minutes"
+msgid "00h 00min"
+msgstr "00시간 00분"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:359
+msgctxt "@tooltip"
+msgid "Time specification"
+msgstr "시간 사양"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:441
+msgctxt "@label"
+msgid "Cost specification"
+msgstr "비용 사양"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:446
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:455
+msgctxt "@label m for meter"
+msgid "%1m"
+msgstr "%1m"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:447
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:456
+msgctxt "@label g for grams"
+msgid "%1g"
+msgstr "%1g"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:454
+msgctxt "@label"
+msgid "Total:"
+msgstr "총계:"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:577
+msgctxt "@tooltip"
+msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
+msgstr "<b>권장 프린팅 설정</b><br/><br/>선택한 프린터, 재료 및 품질에 대한 권장 설정으로 프린팅하십시오."
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:582
+msgctxt "@tooltip"
+msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
+msgstr "<b>사용자 정의 프린팅 설정</b><br/><br/>미세하게 슬라이싱 설정을 조절하여 프린팅하십시오."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:107
 msgctxt "@label"
@@ -4359,8 +3912,8 @@ msgstr "설정 폴더 표시"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:433
 msgctxt "@action:menu"
-msgid "Browse plugins..."
-msgstr "플러그인 찾아보기..."
+msgid "Browse packages..."
+msgstr "패키지 찾아보기..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:440
 msgctxt "@action:inmenu menubar:view"
@@ -4423,21 +3976,15 @@ msgid "Select the active output device"
 msgstr "활성 출력 장치 선택"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:19
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:718
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:713
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "파일 열기"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:64
 msgctxt "@text:window"
-msgid ""
-"We have found one or more project file(s) within the files you have "
-"selected. You can open only one project file at a time. We suggest to only "
-"import models from those files. Would you like to proceed?"
-msgstr ""
-"선택한 파일 내에 하나 이상의 프로젝트 파일이 있습니다. 한 번에 하나의 프로젝"
-"트 파일 만 열 수 있습니다. 해당 파일에서 모델 만 가져 오기를 권장합니다. 계"
-"속 하시겠습니까?"
+msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
+msgstr "선택한 파일 내에 하나 이상의 프로젝트 파일이 있습니다. 한 번에 하나의 프로젝트 파일 만 열 수 있습니다. 해당 파일에서 모델 만 가져 오기를 권장합니다. 계속 하시겠습니까?"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:99
 msgctxt "@action:button"
@@ -4500,225 +4047,196 @@ msgid "Set as Active Extruder"
 msgstr "활성 익스트루더로 설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:210
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:172
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:184
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "익스트루더 사용"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:217
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:178
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:190
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "익스트루더 사용하지 않음"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:228
-msgctxt "@title:menu"
-msgid "&Build plate"
-msgstr "빌드 플레이트(&B)"
-
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:229
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
 msgctxt "@title:menu"
 msgid "&Profile"
 msgstr "프로파일"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:239
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:240
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "확장 프로그램"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:273
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:274
 msgctxt "@title:menu menubar:toplevel"
-msgid "P&lugins"
-msgstr "플러그인"
+msgid "&Toolbox"
+msgstr "도구 상자"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:280
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:281
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
 msgstr "환경설정"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:288
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:289
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "도움말"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:370
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:335
+msgctxt "@label"
+msgid "This package will be installed after restarting."
+msgstr "다시 시작한 후에 이 패키지가 설치됩니다."
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:364
 msgctxt "@action:button"
 msgid "Open File"
 msgstr "파일 열기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:539
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:534
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "설정"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:584
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:579
 msgctxt "@title:window"
 msgid "New project"
 msgstr "새 프로젝트"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:585
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:580
 msgctxt "@info:question"
-msgid ""
-"Are you sure you want to start a new project? This will clear the build "
-"plate and any unsaved settings."
-msgstr ""
-"새 프로젝트를 시작 하시겠습니까? 빌드 플레이트 및 저장하지 않은 설정이 지워집"
-"니다."
+msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
+msgstr "새 프로젝트를 시작 하시겠습니까? 빌드 플레이트 및 저장하지 않은 설정이 지워집니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:819
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:814
 msgctxt "@window:title"
-msgid "Install Plugin"
-msgstr "플러그인 설치"
+msgid "Install Package"
+msgstr "패키지 설치"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:826
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:821
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "파일 열기"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:829
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:824
 msgctxt "@text:window"
-msgid ""
-"We have found one or more G-Code files within the files you have selected. "
-"You can only open one G-Code file at a time. If you want to open a G-Code "
-"file, please just select only one."
-msgstr ""
-"선택한 파일 내에 하나 이상의 G-코드 파일이 있습니다. 한 번에 하나의 G-코드 파"
-"일 만 열 수 있습니다. G-코드 파일을 열려면 하나만 선택하십시오."
+msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
+msgstr "선택한 파일 내에 하나 이상의 G-코드 파일이 있습니다. 한 번에 하나의 G-코드 파일 만 열 수 있습니다. G-코드 파일을 열려면 하나만 선택하십시오."
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:14
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "프로젝트 저장"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:138
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:116
+msgctxt "@action:label"
+msgid ""
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:133
 msgctxt "@action:label"
 msgid "Build plate"
 msgstr "빌드 플레이트"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:161
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:165
 msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "%1익스트루더"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:171
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:175
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1 & 재료"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:267
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:264
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "프로젝트 요약을 다시 저장하지 마십시오"
+
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:283
+msgctxt "@action:button"
+msgid "Save"
+msgstr "저장"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:175
 msgctxt "@label"
 msgid "Layer Height"
 msgstr "레이어 높이"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:251
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:252
 msgctxt "@tooltip"
-msgid ""
-"This quality profile is not available for you current material and nozzle "
-"configuration. Please change these to enable this quality profile"
-msgstr ""
-"이 품질 프로파일은 현재 재료 및 노즐 설정에 사용할 수 없습니다. 이 품질 프로"
-"파일을 사용하려면 이 값을 변경하십시오"
+msgid "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile"
+msgstr "이 품질 프로파일은 현재 재료 및 노즐 설정에 사용할 수 없습니다. 이 품질 프로파일을 사용하려면 이 값을 변경하십시오"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:412
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:415
 msgctxt "@tooltip"
-msgid ""
-"A custom profile is currently active. To enable the quality slider, choose a "
-"default quality profile in Custom tab"
-msgstr ""
-"사용자 지정 프로파일이 현재 활성 상태입니다. 품질 슬라이더를 실행하려면 사용"
-"자 지정 탭에서 기본 품질 프로파일을 선택하십시오"
+msgid "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab"
+msgstr "사용자 지정 프로파일이 현재 활성 상태입니다. 품질 슬라이더를 실행하려면 사용자 지정 탭에서 기본 품질 프로파일을 선택하십시오"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:429
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:432
 msgctxt "@label"
 msgid "Print Speed"
 msgstr "프린팅 속도"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:441
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:444
 msgctxt "@label"
 msgid "Slower"
 msgstr "천천히"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:452
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:455
 msgctxt "@label"
 msgid "Faster"
 msgstr "빨리"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:480
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:483
 msgctxt "@tooltip"
-msgid ""
-"You have modified some profile settings. If you want to change these go to "
-"custom mode."
-msgstr ""
-"일부 프로파일 설정을 수정했습니다. 이러한 설정을 변경하려면 사용자 지정 모드"
-"로 이동하십시오."
+msgid "You have modified some profile settings. If you want to change these go to custom mode."
+msgstr "일부 프로파일 설정을 수정했습니다. 이러한 설정을 변경하려면 사용자 지정 모드로 이동하십시오."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:503
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:506
 msgctxt "@label"
 msgid "Infill"
 msgstr "내부채움"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:737
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:740
 msgctxt "@label"
-msgid ""
-"Gradual infill will gradually increase the amount of infill towards the top."
+msgid "Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "점차적인 내부채움은 점차적으로 빈 공간 채우기의 양을 증가시킵니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:749
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:752
 msgctxt "@label"
 msgid "Enable gradual"
 msgstr "점진적으로 사용"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:816
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:819
 msgctxt "@label"
 msgid "Generate Support"
 msgstr "서포트 생성"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:850
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:853
 msgctxt "@label"
-msgid ""
-"Generate structures to support parts of the model which have overhangs. "
-"Without these structures, such parts would collapse during printing."
-msgstr ""
-"오버행이 있는 모델 서포트를 생성합니다. 이러한 구조가 없으면 이러한 부분이 프"
-"린팅 중에 붕괴됩니다."
+msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
+msgstr "오버행이 있는 모델 서포트를 생성합니다. 이러한 구조가 없으면 이러한 부분이 프린팅 중에 붕괴됩니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:922
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:925
 msgctxt "@label"
-msgid ""
-"Select which extruder to use for support. This will build up supporting "
-"structures below the model to prevent the model from sagging or printing in "
-"mid air."
-msgstr ""
-"서포트에 사용할 익스트루더를 선택하십시오. 이렇게 하면 모형 아래에 지지 구조"
-"가 만들어져 모델이 중간 공기에서 처지거나 프린팅되는 것을 방지합니다."
+msgid "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."
+msgstr "서포트에 사용할 익스트루더를 선택하십시오. 이렇게 하면 모형 아래에 지지 구조가 만들어져 모델이 중간 공기에서 처지거나 프린팅되는 것을 방지합니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:945
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:948
 msgctxt "@label"
 msgid "Build Plate Adhesion"
 msgstr "빌드 플레이트 고정"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1000
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1003
 msgctxt "@label"
-msgid ""
-"Enable printing a brim or raft. This will add a flat area around or under "
-"your object which is easy to cut off afterwards."
-msgstr ""
-"브림이나 라프트를 사용합니다. 이렇게하면 출력물 주변이나 아래에 평평한 영역"
-"이 추가되어 나중에 쉽게 자를 수 있습니다."
+msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
+msgstr "브림이나 라프트를 사용합니다. 이렇게하면 출력물 주변이나 아래에 평평한 영역이 추가되어 나중에 쉽게 자를 수 있습니다."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1040
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1043
 msgctxt "@label"
-msgid ""
-"Need help improving your prints?<br>Read the <a href='%1'>Ultimaker "
-"Troubleshooting Guides</a>"
-msgstr ""
-"프린팅물 개선에 도움이 필요하십니까?<a href='%1'>Ultimaker Troubleshooting "
-"Guides</a> 읽기"
+msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
+msgstr "프린팅물 개선에 도움이 필요하십니까?<a href='%1'>Ultimaker Troubleshooting Guides</a> 읽기"
 
 #: /home/ruben/Projects/Cura/resources/qml/ExtruderButton.qml:16
 msgctxt "@label %1 is filled in with the name of an extruder"
@@ -4733,12 +4251,8 @@ msgstr "프로젝트 파일 열기"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:93
 msgctxt "@text:window"
-msgid ""
-"This is a Cura project file. Would you like to open it as a project or "
-"import the models from it?"
-msgstr ""
-"이 파일은 Cura 프로젝트 파일입니다. 프로젝트로 열거나 모델을 가져 오시겠습니"
-"까?"
+msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
+msgstr "이 파일은 Cura 프로젝트 파일입니다. 프로젝트로 열거나 모델을 가져 오시겠습니까?"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:103
 msgctxt "@text:window"
@@ -4760,22 +4274,27 @@ msgctxt "@title:window"
 msgid "Engine Log"
 msgstr "엔진 로그"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:58
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:70
 msgctxt "@label"
 msgid "Printer type"
 msgstr "프린터 유형"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:360
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:372
 msgctxt "@label"
 msgid "Material"
 msgstr "재료"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:536
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:538
+msgctxt "@label"
+msgid "Use adhesion sheet or glue with this material combination"
+msgstr "이 재료 조합과 함께 접착 시트 또는 접착제를 사용하십시오"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:570
 msgctxt "@label"
 msgid "Check compatibility"
 msgstr "호환성 확인"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:554
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:588
 msgctxt "@tooltip"
 msgid "Click to check the material compatibility on Ultimaker.com."
 msgstr "Ultimaker.com의 재료 호환성을 확인하려면 클릭하십시오."
@@ -4797,15 +4316,23 @@ msgstr "현재의 빌드 플레이트 정렬"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
-msgid ""
-"Provides a way to change machine settings (such as build volume, nozzle "
-"size, etc)"
-msgstr "기기 설정 (예 : 빌드 볼륨, 노즐 크기 등)을 변경하는 방법을 제공합니다."
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "기계 설정 (예 : 빌드 볼륨, 노즐 크기 등)을 변경하는 방법을 제공합니다."
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings action"
 msgstr "컴퓨터 설정 작업"
+
+#: Toolbox/plugin.json
+msgctxt "description"
+msgid "Find, manage and install new Cura packages."
+msgstr "새 Cura 패키지를 찾고, 관리하고 설치하십시오."
+
+#: Toolbox/plugin.json
+msgctxt "name"
+msgid "Toolbox"
+msgstr "도구 상자"
 
 #: XRayView/plugin.json
 msgctxt "description"
@@ -4839,9 +4366,7 @@ msgstr "GCode 작성자"
 
 #: ModelChecker/plugin.json
 msgctxt "description"
-msgid ""
-"Checks models and print configuration for possible printing issues and give "
-"suggestions."
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
 msgstr "가능한 프린팅 문제를 위해 모델 및 인쇄 구성을 확인하고 제안합니다."
 
 #: ModelChecker/plugin.json
@@ -4891,16 +4416,33 @@ msgstr "Profile flatener"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
-msgid ""
-"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr ""
-"G-코드를 수신하고 프린터로 보냅니다. 플러그인은 또한 펌웨어를 업데이트 할 수 "
-"있습니다."
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "G-코드를 수신하고 프린터로 보냅니다. 플러그인은 또한 펌웨어를 업데이트 할 수 있습니다."
 
 #: USBPrinting/plugin.json
 msgctxt "name"
 msgid "USB printing"
 msgstr "USB 프린팅"
+
+#: UserAgreement/plugin.json
+msgctxt "description"
+msgid "Ask the user once if he/she agrees with our license."
+msgstr "사용자에게 라이선스에 동의하는지 한 번 묻습니다."
+
+#: UserAgreement/plugin.json
+msgctxt "name"
+msgid "UserAgreement"
+msgstr "사용자 계약"
+
+#: X3GWriter/plugin.json
+msgctxt "description"
+msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
+msgstr "결과로 생성된 슬라이스를 X3G 파일로 저장해, 이 형식을 읽는 프린터를 지원합니다(Malyan, Makerbot 및 다른 Sailfish 기반 프린터)."
+
+#: X3GWriter/plugin.json
+msgctxt "name"
+msgid "X3GWriter"
+msgstr "X3GWriter"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
@@ -4954,7 +4496,7 @@ msgstr "이동식 드라이브 출력 장치 플러그인"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker 3 printers"
+msgid "Manages network connections to Ultimaker 3 printers."
 msgstr "Ultimaker 3 프린터에 대한 네트워크 연결을 관리합니다"
 
 #: UM3NetworkPrinting/plugin.json
@@ -4981,20 +4523,6 @@ msgstr "펌웨어 업데이트를 확인합니다."
 msgctxt "name"
 msgid "Firmware Update Checker"
 msgstr "펌웨어 업데이트 검사기"
-
-#: CuraSolidWorksPlugin/plugin.json
-msgctxt "description"
-msgid ""
-"Gives you the possibility to open certain files using SolidWorks itself. "
-"Conversion is done by this plugin and additional optimizations."
-msgstr ""
-"SolidWorks를 사용하여 특정 파일을 열 수 있는 가능성을 제공합니다. 이 플러그인"
-"과 추가적인 최적화를 통해 변환합니다."
-
-#: CuraSolidWorksPlugin/plugin.json
-msgctxt "name"
-msgid "SolidWorks Integration"
-msgstr "SolidWorks 통합"
 
 #: SimulationView/plugin.json
 msgctxt "description"
@@ -5028,8 +4556,7 @@ msgstr "후처리"
 
 #: SupportEraser/plugin.json
 msgctxt "description"
-msgid ""
-"Creates an eraser mesh to block the printing of support in certain places"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
 msgstr "특정 장소에서 서포트 프린팅을 막는 지우개 메쉬(eraser mesh)를 만듭니다"
 
 #: SupportEraser/plugin.json
@@ -5037,22 +4564,10 @@ msgctxt "name"
 msgid "Support Eraser"
 msgstr "Support Eraser"
 
-#: AutoSave/plugin.json
-msgctxt "description"
-msgid "Automatically saves Preferences, Machines and Profiles after changes."
-msgstr "변경 후 환경 설정, 기기 및 프로파일을 자동으로 저장합니다."
-
-#: AutoSave/plugin.json
-msgctxt "name"
-msgid "Auto Save"
-msgstr "자동 저장"
-
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr ""
-"익명의 슬라이스 정보를 제출하십시오. 환경 설정을 통해 비활성화 할 수 있습니"
-"다."
+msgstr "익명의 슬라이스 정보를 제출하십시오. 환경 설정을 통해 비활성화 할 수 있습니다."
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "name"
@@ -5108,6 +4623,16 @@ msgstr "Cura 3.2에서 Cura 3.3으로 구성을 업그레이드합니다."
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
 msgstr "3.2에서 3.3으로 버전 업그레이드"
+
+#: VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Cura 3.3에서 Cura 3.4로 구성을 업그레이드합니다."
+
+#: VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "버전 업그레이드 3.3에서 3.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -5199,16 +4724,6 @@ msgctxt "name"
 msgid "Per Model Settings Tool"
 msgstr "모델 별 설정 도구"
 
-#: cura-siemensnx-plugin/plugin.json
-msgctxt "description"
-msgid "Helps you to install an 'export to Cura' button in Siemens NX."
-msgstr "Siemens NX에서 'Cura로 내보내기' 버튼을 설치할 수 있습니다."
-
-#: cura-siemensnx-plugin/plugin.json
-msgctxt "name"
-msgid "Siemens NX Integration"
-msgstr "Siemens NX 통합"
-
 #: 3MFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
@@ -5218,16 +4733,6 @@ msgstr "3MF 파일 읽기 지원."
 msgctxt "name"
 msgid "3MF Reader"
 msgstr "3MF 리더"
-
-#: PluginBrowser/plugin.json
-msgctxt "description"
-msgid "Find, manage and install new plugins."
-msgstr "새 플러그인을 찾고, 관리하고 설치하십시오."
-
-#: PluginBrowser/plugin.json
-msgctxt "name"
-msgid "Plugin Browser"
-msgstr "플러그인 브라우저"
 
 #: SolidView/plugin.json
 msgctxt "description"
@@ -5269,24 +4774,10 @@ msgctxt "name"
 msgid "3MF Writer"
 msgstr "3MF 기록기"
 
-#: UserAgreementPlugin/plugin.json
-msgctxt "description"
-msgid "Ask the user once if he/she agrees with our license"
-msgstr "사용자에게 라이선스에 동의하는지 한 번 묻습니다"
-
-#: UserAgreementPlugin/plugin.json
-msgctxt "name"
-msgid "UserAgreement"
-msgstr "사용자 계약"
-
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid ""
-"Provides machine actions for Ultimaker machines (such as bed leveling "
-"wizard, selecting upgrades, etc)"
-msgstr ""
-"Ultimaker에 대한 기기 동작 제공(예 : 베드 수평조정 마법사, 업그레이드 선택 "
-"등)"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Ultimaker 기계에 대한 기계 작동 제공(예 : 침대 수평 조정 마법사, 업그레이드 선택 등)"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"
@@ -5303,38 +4794,356 @@ msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Cura 프로파일 리더"
 
+#~ msgctxt "@info:title"
+#~ msgid "Model Checker Warning"
+#~ msgstr "모델 검사기 경고"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Some models may not be printed optimally due to object size and chosen material for models: {model_names}.\n"
+#~ "Tips that may be useful to improve the print quality:\n"
+#~ "1) Use rounded corners.\n"
+#~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
+#~ "3) Use a different material."
+#~ msgstr ""
+#~ "모델의 크기 및 재질 {model_names} 때문에 일부 모델이 최적으로 인쇄되지 않을 수 있습니다.\n"
+#~ "인쇄 품질을 향상시키는 데 유용한 팁 :\n"
+#~ "1) 둥근 모서리를 사용하십시오.\n"
+#~ "2) 팬을 끄십시오 (모델에 작은 세부 사항이없는 경우에만).\n"
+#~ "3) 다른 재료를 사용하십시오."
+
+#~ msgctxt "@info:status"
+#~ msgid "SolidWorks reported errors while opening your file. We recommend to solve these issues inside SolidWorks itself."
+#~ msgstr "파일을 여는 도중 SolidWorks가 오류 보고를 했습니다. SolidWorks 자체에서 이 문제를 해결하도록 권장합니다."
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Found no models inside your drawing. Could you please check its content again and make sure one part or assembly is inside?\n"
+#~ "\n"
+#~ "Thanks!"
+#~ msgstr ""
+#~ "도면에 모델이 없습니다. 내부에 하나의 부품이나 조립만 있는지 확인하시겠습니까?\n"
+#~ "\n"
+#~ " 감사합니다!"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Found more than one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
+#~ "\n"
+#~ "Sorry!"
+#~ msgstr ""
+#~ "도면에 하나 이상의 부품 또는 조립이 있습니다. 현재 버전은 하나의 부품 또는 조립만 있는 도면을 지원합니다.\n"
+#~ "\n"
+#~ "죄송합니다!"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "SolidWorks part file"
+#~ msgstr "SolidWorks 부품 파일"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "SolidWorks assembly file"
+#~ msgstr "SolidWorks 어셈블리 파일"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "SolidWorks drawing file"
+#~ msgstr "SolidWorks 도면 파일"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Dear customer,\n"
+#~ "We could not find a valid installation of SolidWorks on your system. That means that either SolidWorks is not installed or you don't own an valid license. Please make sure that running SolidWorks itself works without issues and/or contact your ICT.\n"
+#~ "\n"
+#~ "With kind regards\n"
+#~ " - Thomas Karl Pietrowski"
+#~ msgstr ""
+#~ "안녕하십니까,\n"
+#~ "귀하의 시스템에 유효한 SolidWorks를 찾을 수 없습니다. 이는 곧 SolidWorks가 설치되어 있지 않거나 유효한 라이센스가 없음을 의미합니다. SolidWorks가 문제없이 실행될 수 있도록 해주시고 그리고/또는 귀사의 ICT에 연락해 주십시오.\n"
+#~ "\n"
+#~ "감사합니다.\n"
+#~ " - Thomas Karl Pietrowski"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Dear customer,\n"
+#~ "You are currently running this plugin on an operating system other than Windows. This plugin will only work on Windows with SolidWorks installed, including an valid license. Please install this plugin on a Windows machine with SolidWorks installed.\n"
+#~ "\n"
+#~ "With kind regards\n"
+#~ " - Thomas Karl Pietrowski"
+#~ msgstr ""
+#~ "안녕하십니까,\n"
+#~ "귀하는 현재 Windows가 아닌 다른 운영 시스템에서 이 플러그인을 실행 중입니다. 이 플러그인은 유효한 라이센스가 있는 SolidWorks가 설치된 Windows에서만 사용 가능합니다. 이 플러그인을 SolidWorks가 설치된 Windows 컴퓨터에 설치하십시오.\n"
+#~ "\n"
+#~ "감사합니다\n"
+#~ " - Thomas Karl Pietrowski"
+
+#~ msgid "Configure"
+#~ msgstr "구성"
+
+#~ msgid "Installation guide for SolidWorks macro"
+#~ msgstr "SolidWorks 매크로 설치 가이드"
+
+#~ msgctxt "@action:button"
+#~ msgid "Disable"
+#~ msgstr "사용 안함"
+
+#~ msgctxt "@action:tooltip"
+#~ msgid "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."
+#~ msgstr "Cura가 익명의 사용 통계를 보내지 않게 합니다. 환경 설정에서 다시 활성화 시킬 수 있습니다."
+
+#~ msgid "Install"
+#~ msgstr "설치"
+
+#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It is not set to a directory."
+#~ msgstr "Siemens NX 플러그인 파일을 복사하지 못했습니다. UGII_USER_DIR을 확인하십시오. 디렉터리에 할당되지 않았습니다."
+
+#~ msgid "Successfully installed Siemens NX Cura plugin."
+#~ msgstr "Siemens NX Cura 플러그인을 성공적으로 설치했습니다."
+
+#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
+#~ msgstr "Siemens NX 플러그인 파일을 복사하지 못했습니다. UGII_USER_DIR을 확인하십시오."
+
+#~ msgid "Failed to install Siemens NX plugin. Could not set environment variable UGII_USER_DIR for Siemens NX."
+#~ msgstr "Siemens NX 플러그인을 설치하지 못했습니다. Siemens NX의 환경 변수 UGII_USER_DIR을 설정할 수 없습니다."
+
+#~ msgctxt "@info:status"
+#~ msgid "Failed to get plugin ID from <filename>{0}</filename>"
+#~ msgstr "<filename>{0}</filename> 에서 플러그인 ID를 가져 오는 데 실패했습니다"
+
+#~ msgctxt "@info:tile"
+#~ msgid "Warning"
+#~ msgstr "경고"
+
+#~ msgctxt "@window:title"
+#~ msgid "Plugin browser"
+#~ msgstr "플러그인 브라우저"
+
+#~ msgctxt "@label"
+#~ msgid "Ultimaker 3"
+#~ msgstr "Ultimaker 3"
+
+#~ msgctxt "@label"
+#~ msgid "Ultimaker 3 Extended"
+#~ msgstr "Ultimaker 3 확장판"
+
+#~ msgctxt "@title:window"
+#~ msgid "SolidWorks: Export wizard"
+#~ msgstr "SolidWorks: 내보내기 마법사"
+
+#~ msgctxt "@action:label"
+#~ msgid "Quality:"
+#~ msgstr "품질:"
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Fine (3D-printing)"
+#~ msgstr "고품질 (3D-프린팅)"
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Coarse (3D-printing)"
+#~ msgstr "저품질 (3D-프린팅)"
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Fine (SolidWorks)"
+#~ msgstr "고품질 (SolidWorks)"
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Coarse (SolidWorks)"
+#~ msgstr "저품질 (SolidWorks)"
+
+#~ msgctxt "@text:window"
+#~ msgid "Show this dialog again"
+#~ msgstr "이 대화창을 다시 표시"
+
+#~ msgctxt "@action:button"
+#~ msgid "Continue"
+#~ msgstr "계속"
+
+#~ msgctxt "@action:button"
+#~ msgid "Abort"
+#~ msgstr "중단"
+
+#~ msgctxt "@title:window"
+#~ msgid "How to install Cura SolidWorks macro"
+#~ msgstr "Cura SolidWorks 매크로 설치 방법"
+
+#~ msgctxt "@description:label"
+#~ msgid "Steps:"
+#~ msgstr "단계:"
+
+#~ msgctxt "@action:button"
+#~ msgid ""
+#~ "Open the directory\n"
+#~ "with macro and icon"
+#~ msgstr ""
+#~ "매크로와 아이콘으로\n"
+#~ "디렉토리 열기"
+
+#~ msgctxt "@description:label"
+#~ msgid "Instructions:"
+#~ msgstr "안내:"
+
+#~ msgctxt "@action:playpause"
+#~ msgid "Play"
+#~ msgstr "재생"
+
+#~ msgctxt "@action:playpause"
+#~ msgid "Pause"
+#~ msgstr "중지"
+
+#~ msgctxt "@action:button"
+#~ msgid "Previous Step"
+#~ msgstr "이전 단계"
+
+#~ msgctxt "@action:button"
+#~ msgid "Done"
+#~ msgstr "완료"
+
+#~ msgctxt "@action:button"
+#~ msgid "Next Step"
+#~ msgstr "다음 단계"
+
+#~ msgctxt "@title:window"
+#~ msgid "SolidWorks plugin: Configuration"
+#~ msgstr "SolidWorks 플러그인: 구성"
+
+#~ msgctxt "@title:tab"
+#~ msgid "Conversion settings"
+#~ msgstr "변환 설정"
+
+#~ msgctxt "@label"
+#~ msgid "First choice:"
+#~ msgstr "첫 번째 선택:"
+
+#~ msgctxt "@text:menu"
+#~ msgid "Latest installed version (Recommended)"
+#~ msgstr "가장 최근 설치 버전(권장)"
+
+#~ msgctxt "@text:menu"
+#~ msgid "Default version"
+#~ msgstr "기본 버전"
+
+#~ msgctxt "@label"
+#~ msgid "Show wizard before opening SolidWorks files"
+#~ msgstr "SolidWorks 파일을 열기 전 마법사 표시"
+
+#~ msgctxt "@label"
+#~ msgid "Automatically rotate opened file into normed orientation"
+#~ msgstr "열린 파일을 규정된 방향으로 자동 회전"
+
+#~ msgctxt "@title:tab"
+#~ msgid "Installation(s)"
+#~ msgstr "설치"
+
+#~ msgctxt "@label"
+#~ msgid "COM service found"
+#~ msgstr "COM 서비스 발견"
+
+#~ msgctxt "@label"
+#~ msgid "Executable found"
+#~ msgstr "실행가능 발견"
+
+#~ msgctxt "@label"
+#~ msgid "COM starting"
+#~ msgstr "COM 시작"
+
+#~ msgctxt "@label"
+#~ msgid "Revision number"
+#~ msgstr "수정 번호"
+
+#~ msgctxt "@label"
+#~ msgid "Functions available"
+#~ msgstr "사용가능한 기능"
+
+#~ msgctxt "@label (%1 is object name)"
+#~ msgid "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?"
+#~ msgstr "새 재료의 지름은 현재 기기와 호환되지 않는 % 1mm입니다. 계속 하시겠습니까?"
+
+#~ msgctxt "@action:menu"
+#~ msgid "Browse plugins..."
+#~ msgstr "플러그인 찾아보기..."
+
+#~ msgctxt "@title:menu"
+#~ msgid "&Build plate"
+#~ msgstr "빌드 플레이트(&B)"
+
+#~ msgctxt "@title:menu menubar:toplevel"
+#~ msgid "P&lugins"
+#~ msgstr "플러그인"
+
+#~ msgctxt "@window:title"
+#~ msgid "Install Plugin"
+#~ msgstr "플러그인 설치"
+
+#~ msgctxt "description"
+#~ msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
+#~ msgstr "기기 설정 (예 : 빌드 볼륨, 노즐 크기 등)을 변경하는 방법을 제공합니다."
+
+#~ msgctxt "description"
+#~ msgid "Manages network connections to Ultimaker 3 printers"
+#~ msgstr "Ultimaker 3 프린터에 대한 네트워크 연결을 관리합니다"
+
+#~ msgctxt "description"
+#~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
+#~ msgstr "SolidWorks를 사용하여 특정 파일을 열 수 있는 가능성을 제공합니다. 이 플러그인과 추가적인 최적화를 통해 변환합니다."
+
+#~ msgctxt "name"
+#~ msgid "SolidWorks Integration"
+#~ msgstr "SolidWorks 통합"
+
+#~ msgctxt "description"
+#~ msgid "Automatically saves Preferences, Machines and Profiles after changes."
+#~ msgstr "변경 후 환경 설정, 기기 및 프로파일을 자동으로 저장합니다."
+
+#~ msgctxt "name"
+#~ msgid "Auto Save"
+#~ msgstr "자동 저장"
+
+#~ msgctxt "description"
+#~ msgid "Helps you to install an 'export to Cura' button in Siemens NX."
+#~ msgstr "Siemens NX에서 'Cura로 내보내기' 버튼을 설치할 수 있습니다."
+
+#~ msgctxt "name"
+#~ msgid "Siemens NX Integration"
+#~ msgstr "Siemens NX 통합"
+
+#~ msgctxt "description"
+#~ msgid "Find, manage and install new plugins."
+#~ msgstr "새 플러그인을 찾고, 관리하고 설치하십시오."
+
+#~ msgctxt "name"
+#~ msgid "Plugin Browser"
+#~ msgstr "플러그인 브라우저"
+
+#~ msgctxt "description"
+#~ msgid "Ask the user once if he/she agrees with our license"
+#~ msgstr "사용자에게 라이선스에 동의하는지 한 번 묻습니다"
+
+#~ msgctxt "description"
+#~ msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
+#~ msgstr "Ultimaker에 대한 기기 동작 제공(예 : 베드 수평조정 마법사, 업그레이드 선택 등)"
+
 #~ msgctxt "@item:inlistbox"
 #~ msgid "GCode File"
 #~ msgstr "GCode 파일"
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Unable to start a new job because the printer is busy or not connected."
-#~ msgstr ""
-#~ "프린터가 사용 중이거나 연결되어 있지 않아 작업을 시작할 수 없습니다."
+#~ msgid "Unable to start a new job because the printer is busy or not connected."
+#~ msgstr "프린터가 사용 중이거나 연결되어 있지 않아 작업을 시작할 수 없습니다."
 
 #~ msgctxt "@info:title"
 #~ msgid "Printer Unavailable"
 #~ msgstr "프린터 사용 불가"
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "This printer does not support USB printing because it uses UltiGCode "
-#~ "flavor."
-#~ msgstr ""
-#~ "이 프린터는 UltiGCode flavor를 사용하기 때문에 USB 프린팅를 지원하지 않습"
-#~ "니다."
+#~ msgid "This printer does not support USB printing because it uses UltiGCode flavor."
+#~ msgstr "이 프린터는 UltiGCode flavor를 사용하기 때문에 USB 프린팅를 지원하지 않습니다."
 
 #~ msgctxt "@info:title"
 #~ msgid "USB Printing"
 #~ msgstr "USB 프린팅"
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Unable to start a new job because the printer does not support usb "
-#~ "printing."
-#~ msgstr ""
-#~ "프린터가 USB 프린팅를 지원하지 않기 때문에 새 작업을 시작할 수 없습니다."
+#~ msgid "Unable to start a new job because the printer does not support usb printing."
+#~ msgstr "프린터가 USB 프린팅를 지원하지 않기 때문에 새 작업을 시작할 수 없습니다."
 
 #~ msgctxt "@info"
 #~ msgid "Unable to update firmware because there are no printers connected."
@@ -5369,19 +5178,12 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "네트워크 연결이 끊어졌습니다."
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "The connection with the printer was lost. Check your printer to see if it "
-#~ "is connected."
-#~ msgstr ""
-#~ "프린터와의 연결이 끊어졌습니다. 프린터가 연결되어 있는지 확인하십시오."
+#~ msgid "The connection with the printer was lost. Check your printer to see if it is connected."
+#~ msgstr "프린터와의 연결이 끊어졌습니다. 프린터가 연결되어 있는지 확인하십시오."
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Unable to start a new print job, printer is busy. Current printer status "
-#~ "is %s."
-#~ msgstr ""
-#~ "프린터가 사용중이라 새 프린팅 작업을 시작할 수 없습니다. 현재 프린터 상태"
-#~ "는 %s 입니다."
+#~ msgid "Unable to start a new print job, printer is busy. Current printer status is %s."
+#~ msgstr "프린터가 사용중이라 새 프린팅 작업을 시작할 수 없습니다. 현재 프린터 상태는 %s 입니다."
 
 #~ msgctxt "@info:title"
 #~ msgid "Printer Status"
@@ -5389,9 +5191,7 @@ msgstr "Cura 프로파일 리더"
 
 #~ msgctxt "@info:status"
 #~ msgid "Unable to start a new print job. No Printcore loaded in slot {0}"
-#~ msgstr ""
-#~ "새 프린팅 작업을 시작할 수 없습니다. 슬롯 {0}에 로드된 Printcore가 없습니"
-#~ "다."
+#~ msgstr "새 프린팅 작업을 시작할 수 없습니다. 슬롯 {0}에 로드된 Printcore가 없습니다."
 
 #~ msgctxt "@info:status"
 #~ msgid "Unable to start a new print job. No material loaded in slot {0}"
@@ -5402,23 +5202,16 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "스풀 {0}의 재료가 충분하지 않습니다."
 
 #~ msgctxt "@label"
-#~ msgid ""
-#~ "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
-#~ msgstr ""
-#~ "익스트루더 {2}에 다른 PrintCore (Cura : {0}, Printer : {1})가 선택됨"
+#~ msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
+#~ msgstr "익스트루더 {2}에 다른 PrintCore (Cura : {0}, Printer : {1})가 선택됨"
 
 #~ msgctxt "@label"
-#~ msgid ""
-#~ "PrintCore {0} is not properly calibrated. XY calibration needs to be "
-#~ "performed on the printer."
-#~ msgstr ""
-#~ "PrintCore {0}가 올바르게 조정되지 않았습니다. XY 교정은 프린터에서 수행해"
-#~ "야 합니다."
+#~ msgid "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer."
+#~ msgstr "PrintCore {0}가 올바르게 조정되지 않았습니다. XY 교정은 프린터에서 수행해야 합니다."
 
 #~ msgctxt "@info:status"
 #~ msgid "Unable to send data to printer. Is another job still active?"
-#~ msgstr ""
-#~ "프린터로 데이터를 보낼 수 없습니다. 다른 작업이 여전히 작동중인가요?"
+#~ msgstr "프린터로 데이터를 보낼 수 없습니다. 다른 작업이 여전히 작동중인가요?"
 
 #~ msgctxt "@label:MonitorStatus"
 #~ msgid "Print aborted. Please check the printer"
@@ -5432,42 +5225,22 @@ msgstr "Cura 프로파일 리더"
 #~ msgid "Resuming print..."
 #~ msgstr "프린팅 재개 중 ..."
 
-#~ msgid ""
-#~ "This printer is not set up to host a group of connected Ultimaker 3 "
-#~ "printers."
-#~ msgstr ""
-#~ "이 프린터는 연결된 Ultimaker 3 프린터 그룹을 호스트하도록 설정되어 있지 않"
-#~ "습니다."
+#~ msgid "This printer is not set up to host a group of connected Ultimaker 3 printers."
+#~ msgstr "이 프린터는 연결된 Ultimaker 3 프린터 그룹을 호스트하도록 설정되어 있지 않습니다."
 
 #~ msgctxt "Count is number of printers."
-#~ msgid ""
-#~ "This printer is the host for a group of {count} connected Ultimaker 3 "
-#~ "printers."
-#~ msgstr ""
-#~ "이 프린터는 연결된 Ultimaker 3 프린터 {count} 그룹을 호스트하도록 설정되"
-#~ "어 있습니다."
+#~ msgid "This printer is the host for a group of {count} connected Ultimaker 3 printers."
+#~ msgstr "이 프린터는 연결된 Ultimaker 3 프린터 {count} 그룹을 호스트하도록 설정되어 있습니다."
 
-#~ msgid ""
-#~ "{printer_name} has finished printing '{job_name}'. Please collect the "
-#~ "print and confirm clearing the build plate."
-#~ msgstr ""
-#~ "{printer_name} 프린터가 ‘{job_name}’ 프린팅을 완료했습니다. 프린팅물을 수"
-#~ "거하고 빌드 플레이트를 치우십시오."
+#~ msgid "{printer_name} has finished printing '{job_name}'. Please collect the print and confirm clearing the build plate."
+#~ msgstr "{printer_name} 프린터가 ‘{job_name}’ 프린팅을 완료했습니다. 프린팅물을 수거하고 빌드 플레이트를 치우십시오."
 
-#~ msgid ""
-#~ "{printer_name} is reserved to print '{job_name}'. Please change the "
-#~ "printer's configuration to match the job, for it to start printing."
-#~ msgstr ""
-#~ "'{job_name}'을 프린팅하기 위해 {printer_name}이 예약되어 있습니다. 프린팅"
-#~ "를 시작하려면 프린터의 구성을 작업에 맞게 변경하십시오."
+#~ msgid "{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing."
+#~ msgstr "'{job_name}'을 프린팅하기 위해 {printer_name}이 예약되어 있습니다. 프린팅를 시작하려면 프린터의 구성을 작업에 맞게 변경하십시오."
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Unable to send new print job: this 3D printer is not (yet) set up to host "
-#~ "a group of connected Ultimaker 3 printers."
-#~ msgstr ""
-#~ "새로운 프린팅 작업을 보낼 수 없습니다 :이 3D 프린터는 아직 연결된 "
-#~ "Ultimaker 3 프린터 그룹을 호스트하도록 설정되지 않았습니다."
+#~ msgid "Unable to send new print job: this 3D printer is not (yet) set up to host a group of connected Ultimaker 3 printers."
+#~ msgstr "새로운 프린팅 작업을 보낼 수 없습니다 :이 3D 프린터는 아직 연결된 Ultimaker 3 프린터 그룹을 호스트하도록 설정되지 않았습니다."
 
 #~ msgctxt "@info:status"
 #~ msgid "Unable to send print job to group {cluster_name}."
@@ -5494,34 +5267,26 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "<filename>{file_name}</filename> 을 {cluster_name} 그룹에 보냄"
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "SolidWorks reported errors, while opening your file. We recommend to "
-#~ "solve these issues inside SolidWorks itself."
-#~ msgstr ""
-#~ "파일을 여는 도중 SolidWorks가 오류 보고. SolidWorks 자체에서 이 문제를 해"
-#~ "결하도록 권장합니다."
+#~ msgid "SolidWorks reported errors, while opening your file. We recommend to solve these issues inside SolidWorks itself."
+#~ msgstr "파일을 여는 도중 SolidWorks가 오류 보고. SolidWorks 자체에서 이 문제를 해결하도록 권장합니다."
 
 #~ msgctxt "@info:status"
 #~ msgid ""
-#~ "Found no models inside your drawing. Could you please check it's content "
-#~ "again and make sure one part or assembly is inside?\n"
+#~ "Found no models inside your drawing. Could you please check it's content again and make sure one part or assembly is inside?\n"
 #~ "\n"
 #~ " Thanks!."
 #~ msgstr ""
-#~ "도면에 모델이 없습니다. 내용을 다시 확인하시고 내부에 하나의 부품이나 조립"
-#~ "만 있는지 확인하시겠습니까?\n"
+#~ "도면에 모델이 없습니다. 내용을 다시 확인하시고 내부에 하나의 부품이나 조립만 있는지 확인하시겠습니까?\n"
 #~ "\n"
 #~ " 감사합니다!."
 
 #~ msgctxt "@info:status"
 #~ msgid ""
-#~ "Found more then one part or assembly inside your drawing. We currently "
-#~ "only support drawings with exactly one part or assembly inside.\n"
+#~ "Found more then one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
-#~ "도면에 하나 이상의 부품 또는 조립이 있습니다. 저희는 현재 정확하게 하나의 "
-#~ "부품 또는 조립만 있는 도면을 지원합니다.\n"
+#~ "도면에 하나 이상의 부품 또는 조립이 있습니다. 저희는 현재 정확하게 하나의 부품 또는 조립만 있는 도면을 지원합니다.\n"
 #~ "\n"
 #~ "죄송합니다!"
 
@@ -5542,9 +5307,7 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "알 수 없는 재료"
 
 #~ msgctxt "@info:status Has a cancel button next to it."
-#~ msgid ""
-#~ "The selected material diameter causes the material to become incompatible "
-#~ "with the current printer."
+#~ msgid "The selected material diameter causes the material to become incompatible with the current printer."
 #~ msgstr "선택한 재료 직경으로 인해 재료가 현재 프린터와 호환되지 않습니다."
 
 #~ msgctxt "@action:button"
@@ -5556,25 +5319,17 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "변경한 재료의 직경 되돌리기."
 
 #~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-#~ msgid ""
-#~ "The machine defined in profile <filename>{0}</filename> doesn't match "
-#~ "with your current machine, could not import it."
-#~ msgstr ""
-#~ "프로파일 <filename>{0}</filename>에 정의된 기기가 현재 기기와 일치하지 않"
-#~ "으므로, 불러올 수 없습니다."
+#~ msgid "The machine defined in profile <filename>{0}</filename> doesn't match with your current machine, could not import it."
+#~ msgstr "프로파일 <filename>{0}</filename>에 정의된 기기가 현재 기기와 일치하지 않으므로, 불러올 수 없습니다."
 
 #~ msgctxt "@label crash message"
 #~ msgid ""
-#~ "<p><b>A fatal error has occurred. Please send us this Crash Report to fix "
-#~ "the problem</p></b>\n"
-#~ "            <p>Please use the \"Send report\" button to post a bug report "
-#~ "automatically to our servers</p>\n"
+#~ "<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>\n"
+#~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
-#~ "<p><b>치명적인 오류가 발생했습니다. 문제를 해결할 수 있도록 이 충돌 보고서"
-#~ "를 보내주십시오</p></b>\n"
-#~ "            <p>\"보고서 전송\" 버튼을 사용하면 버그 보고서가 서버에 자동으"
-#~ "로 게시됩니다</p>\n"
+#~ "<p><b>치명적인 오류가 발생했습니다. 문제를 해결할 수 있도록 이 충돌 보고서를 보내주십시오</p></b>\n"
+#~ "            <p>\"보고서 전송\" 버튼을 사용하면 버그 보고서가 서버에 자동으로 게시됩니다</p>\n"
 #~ "        "
 
 #~ msgctxt "@label"
@@ -5642,10 +5397,6 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "업그레이드"
 
 #~ msgctxt "@action:button"
-#~ msgid "Installed"
-#~ msgstr "설치됨"
-
-#~ msgctxt "@action:button"
 #~ msgid "Download"
 #~ msgstr "다운로드"
 
@@ -5661,9 +5412,7 @@ msgstr "Cura 프로파일 리더"
 #~ msgid "Import Profile"
 #~ msgstr "프로파일 가져 오기"
 
-#~ msgctxt ""
-#~ "@action:label %1 is printer name, %2 is how this printer names variants, "
-#~ "%3 is variant name"
+#~ msgctxt "@action:label %1 is printer name, %2 is how this printer names variants, %3 is variant name"
 #~ msgid "Printer: %1, %2: %3"
 #~ msgstr "프린터: %1, %2: %3"
 
@@ -5679,9 +5428,7 @@ msgstr "Cura 프로파일 리더"
 #~ msgid "Configure setting visiblity..."
 #~ msgstr "표시 설정..."
 
-#~ msgctxt ""
-#~ "@label Print estimates: m for meters, g for grams, %4 is currency and %3 "
-#~ "is print cost"
+#~ msgctxt "@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost"
 #~ msgid "%1m / ~ %2g / ~ %4 %3"
 #~ msgstr "%1m / ~ %2g / ~ %4 %3"
 
@@ -5726,25 +5473,16 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "GCode 프로파일 리더"
 
 #~ msgctxt "description"
-#~ msgid ""
-#~ "Allows material manufacturers to create new material and quality profiles "
-#~ "using a drop-in UI."
-#~ msgstr ""
-#~ "재료 제조사가 드롭 인 UI를 사용하여 새로운 재료와 품질 프로파일을 만들 수 "
-#~ "있게 합니다."
+#~ msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
+#~ msgstr "재료 제조사가 드롭 인 UI를 사용하여 새로운 재료와 품질 프로파일을 만들 수 있게 합니다."
 
 #~ msgctxt "name"
 #~ msgid "Print Profile Assistant"
 #~ msgstr "프린트 프로파일 어시스턴트"
 
 #~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Errors appeared while opening your SolidWorks file!             Please "
-#~ "check, whether it is possible to open your file in SolidWorks itself "
-#~ "without any problems as well!"
-#~ msgstr ""
-#~ "SolidWorks 파일을 여는 중 오류가 발생했습니다! 문제없이 SolidWorks에서 파"
-#~ "일을 열 수 있는지 확인하십시오"
+#~ msgid "Errors appeared while opening your SolidWorks file!             Please check, whether it is possible to open your file in SolidWorks itself without any problems as well!"
+#~ msgstr "SolidWorks 파일을 여는 중 오류가 발생했습니다! 문제없이 SolidWorks에서 파일을 열 수 있는지 확인하십시오"
 
 #~ msgctxt "@info:status"
 #~ msgid "Error while starting %s!"
@@ -5755,12 +5493,8 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "시뮬레이션 뷰"
 
 #~ msgctxt "@info"
-#~ msgid ""
-#~ "Cura collects anonymised slicing statistics. You can disable this in the "
-#~ "preferences."
-#~ msgstr ""
-#~ "Cura는 익명의 슬라이싱 통계를 수집합니다. 환경 설정에서 이 기능을 비활성"
-#~ "화 할 수 있습니다."
+#~ msgid "Cura collects anonymised slicing statistics. You can disable this in the preferences."
+#~ msgstr "Cura는 익명의 슬라이싱 통계를 수집합니다. 환경 설정에서 이 기능을 비활성화 할 수 있습니다."
 
 #~ msgctxt "@action:button"
 #~ msgid "Dismiss"
@@ -5772,16 +5506,12 @@ msgstr "Cura 프로파일 리더"
 
 #~ msgctxt "@label crash message"
 #~ msgid ""
-#~ "<p><b>A fatal exception has occurred. Please send us this Crash Report to "
-#~ "fix the problem</p></b>\n"
-#~ "            <p>Please use the \"Send report\" button to post a bug report "
-#~ "automatically to our servers</p>\n"
+#~ "<p><b>A fatal exception has occurred. Please send us this Crash Report to fix the problem</p></b>\n"
+#~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
-#~ "<p><b>치명적인 예외가 발생했습니다. 문제를 해결할 수 있도록 이 충돌 보고서"
-#~ "를 보내주십시오.</p></b>\n"
-#~ "            <p>\"보고서 전송\" 버튼을 사용하면 버그 보고서가 서버에 자동으"
-#~ "로 보고됩니다.</p>\n"
+#~ "<p><b>치명적인 예외가 발생했습니다. 문제를 해결할 수 있도록 이 충돌 보고서를 보내주십시오.</p></b>\n"
+#~ "            <p>\"보고서 전송\" 버튼을 사용하면 버그 보고서가 서버에 자동으로 보고됩니다.</p>\n"
 #~ "        "
 
 #~ msgctxt "@label Cura version"
@@ -5857,12 +5587,8 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "프로파일을 사용할 수 없음"
 
 #~ msgctxt "@label"
-#~ msgid ""
-#~ "This setting is always shared between all extruders. Changing it here "
-#~ "will change the value for all extruders"
-#~ msgstr ""
-#~ "이 설정은 항상 모든 익스트루더간에 공유됩니다. 여기에서 변경하면 모든 익스"
-#~ "트루더의 값이 변경됩니다"
+#~ msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders"
+#~ msgstr "이 설정은 항상 모든 익스트루더간에 공유됩니다. 여기에서 변경하면 모든 익스트루더의 값이 변경됩니다"
 
 #~ msgctxt "@tooltip"
 #~ msgid "<b>Time specification</b><br/><table>"
@@ -5889,12 +5615,8 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "<a href='%1'>호환성 확인</a>"
 
 #~ msgctxt "description"
-#~ msgid ""
-#~ "Gives you the possibility to open certain files via SolidWorks itself. "
-#~ "These are then converted and loaded into Cura"
-#~ msgstr ""
-#~ "SolidWorks 자체를 통해 특정 파일을 열 수 있습니다. 이것들은 변환되어 Cura"
-#~ "에 로드됩니다"
+#~ msgid "Gives you the possibility to open certain files via SolidWorks itself. These are then converted and loaded into Cura"
+#~ msgstr "SolidWorks 자체를 통해 특정 파일을 열 수 있습니다. 이것들은 변환되어 Cura에 로드됩니다"
 
 #~ msgctxt "@label:status"
 #~ msgid "Blocked"
@@ -5912,17 +5634,9 @@ msgstr "Cura 프로파일 리더"
 #~ msgid "Print Details"
 #~ msgstr "프린팅 세부 정보"
 
-#~ msgctxt ""
-#~ "@info Don't translate {machine_name}, since it gets replaced by a printer "
-#~ "name!"
-#~ msgid ""
-#~ "To ensure that your {machine_name} is equipped with the latest features "
-#~ "it is recommended to update the firmware regularly. This can be done on "
-#~ "the {machine_name} (when connected to the network) or via USB."
-#~ msgstr ""
-#~ "{machine_name}에 최신 기능이 탑재되어 있는지 확인하려면 정기적으로 펌웨어"
-#~ "를 업데이트하는 것이 좋습니다. 이 작업은 {machine_name} (네트워크에 연결"
-#~ "된 경우) 또는 USB를 통해 수행 할 수 있습니다."
+#~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
+#~ msgid "To ensure that your {machine_name} is equipped with the latest features it is recommended to update the firmware regularly. This can be done on the {machine_name} (when connected to the network) or via USB."
+#~ msgstr "{machine_name}에 최신 기능이 탑재되어 있는지 확인하려면 정기적으로 펌웨어를 업데이트하는 것이 좋습니다. 이 작업은 {machine_name} (네트워크에 연결된 경우) 또는 USB를 통해 수행 할 수 있습니다."
 
 #~ msgctxt "@info:title"
 #~ msgid "Layer View"
@@ -5939,9 +5653,7 @@ msgstr "Cura 프로파일 리더"
 #~ msgctxt "@label"
 #~ msgid ""
 #~ "<p>A fatal exception has occurred that we could not recover from!</p>\n"
-#~ "        <p>Please use the information below to post a bug report at <a "
-#~ "href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/"
-#~ "Ultimaker/Cura/issues</a></p>\n"
+#~ "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
 #~ msgstr ""
 #~ "복구 할 수없는 치명적인 예외가 발생했습니다!\n"
@@ -5956,16 +5668,11 @@ msgstr "Cura 프로파일 리더"
 #~ msgstr "승인"
 
 #~ msgctxt "@label"
-#~ msgid ""
-#~ "This printer is not set up to host a group of connected Ultimaker 3 "
-#~ "printers"
-#~ msgstr ""
-#~ "이 프린터는 Ultimaker 3 프린터에 연결된 그룹을 호스트하도록 설정되지 않았"
-#~ "습니다"
+#~ msgid "This printer is not set up to host a group of connected Ultimaker 3 printers"
+#~ msgstr "이 프린터는 Ultimaker 3 프린터에 연결된 그룹을 호스트하도록 설정되지 않았습니다"
 
 #~ msgctxt "@label"
-#~ msgid ""
-#~ "This printer is the host for a group of %1 connected Ultimaker 3 printers"
+#~ msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
 #~ msgstr "이 프린터는 Ultimaker 3에 연결된 프린터 그룹의 호스트입니다"
 
 #~ msgctxt "@label:status"

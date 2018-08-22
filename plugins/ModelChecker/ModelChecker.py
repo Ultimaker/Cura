@@ -27,13 +27,14 @@ class ModelChecker(QObject, Extension):
 
         self._caution_message = Message("", #Message text gets set when the message gets shown, to display the models in question.
             lifetime = 0,
-            title = catalog.i18nc("@info:title", "Model Checker Warning"))
+            title = catalog.i18nc("@info:title", "3D Model Assistant"))
 
         Application.getInstance().initializationFinished.connect(self._pluginsInitialized)
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onChanged)
+        Application.getInstance().globalContainerStackChanged.connect(self._onChanged)
 
     ##  Pass-through to allow UM.Signal to connect with a pyqtSignal.
-    def _onChanged(self, _):
+    def _onChanged(self, *args, **kwargs):
         self.onChanged.emit()
 
     ##  Called when plug-ins are initialized.
@@ -53,7 +54,6 @@ class ModelChecker(QObject, Extension):
         # has not done yet.
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
-            Application.getInstance().callLater(lambda: self.onChanged.emit())
             return False
 
         material_shrinkage = self._getMaterialShrinkage()

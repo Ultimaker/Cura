@@ -44,8 +44,6 @@ Item
         return Qt.point(0,0)
     }
 
-    visible: parent != null ? !parent.parent.monitoringPrint: true
-
     Rectangle {
         id: layerViewMenu
         anchors.right: parent.right

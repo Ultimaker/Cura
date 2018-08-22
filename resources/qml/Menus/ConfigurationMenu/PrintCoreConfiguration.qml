@@ -26,6 +26,7 @@ Column
         {
             id: extruderLabel
             text: catalog.i18nc("@label:extruder label", "Extruder")
+            renderType: Text.NativeRendering
             elide: Text.ElideRight
             anchors.left: parent.left
             font: UM.Theme.getFont("default")
@@ -59,6 +60,7 @@ Column
                 id: extruderNumberText
                 anchors.centerIn: parent
                 text: printCoreConfiguration.position + 1
+                renderType: Text.NativeRendering
                 font: UM.Theme.getFont("default")
                 color: mainColor
             }
@@ -69,6 +71,7 @@ Column
     {
         id: materialLabel
         text: printCoreConfiguration.material.name
+        renderType: Text.NativeRendering
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("default_bold")
@@ -79,6 +82,7 @@ Column
     {
         id: printCoreTypeLabel
         text: printCoreConfiguration.hotendID
+        renderType: Text.NativeRendering
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("default")

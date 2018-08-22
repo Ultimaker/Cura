@@ -15,6 +15,8 @@ Item
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
+    height: childrenRect.height + UM.Theme.getSize("sidebar_margin").height
+
     property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var activePrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0].activePrinter : null

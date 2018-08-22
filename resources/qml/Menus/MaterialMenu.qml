@@ -63,8 +63,7 @@ Menu
                             exclusiveGroup: group
                             onTriggered:
                             {
-                                var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
-                                Cura.MachineManager.setMaterial(activeExtruderIndex, model.container_node);
+                                Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
                             }
                         }
                         onObjectAdded: brandMaterialsMenu.insertItem(index, object)

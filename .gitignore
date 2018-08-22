@@ -14,6 +14,7 @@ CuraEngine.exe
 LC_MESSAGES
 .cache
 *.qmlc
+.mypy_cache
 
 #MacOS
 .DS_Store
@@ -38,6 +39,8 @@ plugins/cura-god-mode-plugin
 plugins/cura-siemensnx-plugin
 plugins/CuraBlenderPlugin
 plugins/CuraCloudPlugin
+plugins/CuraDrivePlugin
+plugins/CuraDrive
 plugins/CuraLiveScriptingPlugin
 plugins/CuraOpenSCADPlugin
 plugins/CuraPrintProfileCreator

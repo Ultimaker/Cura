@@ -6,7 +6,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
-from cura.ProfileReader import ProfileReader
+from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
 
@@ -75,7 +75,7 @@ class CuraProfileReader(ProfileReader):
     def _loadProfile(self, serialized, profile_id):
         # Create an empty profile.
         profile = InstanceContainer(profile_id)
-        profile.addMetaDataEntry("type", "quality_changes")
+        profile.setMetaDataEntry("type", "quality_changes")
         try:
             profile.deserialize(serialized)
         except ContainerFormatError as e:

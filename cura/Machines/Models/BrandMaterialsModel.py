@@ -47,22 +47,38 @@ class BrandMaterialsModel(ListModel):
         self.addRoleName(self.MaterialsRole, "materials")
 
         self._extruder_position = 0
+        self._extruder_stack = None
 
         from cura.CuraApplication import CuraApplication
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
         self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
+        self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
         self._machine_manager.activeStackChanged.connect(self._update) #Update when switching machines.
         self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
         self._update()
 
+    def _updateExtruderStack(self):
+        global_stack = self._machine_manager.activeMachine
+        if global_stack is None:
+            return
+
+        if self._extruder_stack is not None:
+            self._extruder_stack.pyqtContainersChanged.disconnect(self._update)
+        self._extruder_stack = global_stack.extruders.get(str(self._extruder_position))
+        if self._extruder_stack is not None:
+            self._extruder_stack.pyqtContainersChanged.connect(self._update)
+        # Force update the model when the extruder stack changes
+        self._update()
+
     def setExtruderPosition(self, position: int):
-        if self._extruder_position != position:
+        if self._extruder_stack is None or self._extruder_position != position:
             self._extruder_position = position
+            self._updateExtruderStack()
             self.extruderPositionChanged.emit()
 
-    @pyqtProperty(int, fset = setExtruderPosition, notify = extruderPositionChanged)
+    @pyqtProperty(int, fset=setExtruderPosition, notify=extruderPositionChanged)
     def extruderPosition(self) -> int:
         return self._extruder_position
 
@@ -91,6 +107,10 @@ class BrandMaterialsModel(ListModel):
             brand = metadata["brand"]
             # Only add results for generic materials
             if brand.lower() == "generic":
+                continue
+
+            # Do not include the materials from a to-be-removed package
+            if bool(metadata.get("removed", False)):
                 continue
 
             if brand not in brand_group_dict:

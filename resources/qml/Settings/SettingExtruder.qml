@@ -71,13 +71,6 @@ SettingItem
 
         currentIndex: propertyProvider.properties.value
 
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            onWheel: wheel.accepted = true;
-        }
-
         property string color: "#fff"
 
         Binding
@@ -93,14 +86,7 @@ SettingItem
         {
             target: control
             property: "currentIndex"
-            value:
-            {
-                if(propertyProvider.properties.value == -1)
-                {
-                    return control.getIndexByPosition(Cura.MachineManager.defaultExtruderPosition);
-                }
-                return propertyProvider.properties.value
-            }
+            value: control.getIndexByPosition(propertyProvider.properties.value)
             // Sometimes when the value is already changed, the model is still being built.
             // The when clause ensures that the current index is not updated when this happens.
             when: control.model.items.length > 0
@@ -187,7 +173,7 @@ SettingItem
         popup: Popup {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
-            implicitHeight: contentItem.implicitHeight
+            implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
             contentItem: ListView {
@@ -213,6 +199,10 @@ SettingItem
 
             contentItem: Label
             {
+                anchors.fill: parent
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+
                 text: model.name
                 renderType: Text.NativeRendering
                 color:

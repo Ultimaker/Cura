@@ -11,11 +11,19 @@
         "has_machine_quality": true,
         "has_materials": true,
         "preferred_quality_type": "normal",
-        "visible": true
+        "visible": true,
+        "machine_extruder_trains":
+        {
+            "0": "monoprice_select_mini_v2_extruder_0"
+        }
    },
 
     "overrides": {
         "machine_name": { "default_value": "Monoprice Select Mini V2" },
+        "machine_end_gcode":
+        {
+            "default_value": "G0 X0 Y120;(Stick out the part)\nM190 S0;(Turn off heat bed, don't wait.)\nG92 E10;(Set extruder to 10)\nG1 E7 F200;(retract 3mm)\nM104 S0;(Turn off nozzle, don't wait)\nG4 S300;(Delay 5 minutes)\nM107;(Turn off part fan)\nM84;(Turn off stepper motors.)"
+        },
         "adhesion_type": { "default_value": "brim" },
         "retraction_combing": { "default_value": "noskin" },
         "retraction_amount" : { "default_value": 2.5},

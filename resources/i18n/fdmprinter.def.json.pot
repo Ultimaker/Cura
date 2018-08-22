@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.3\n"
+"Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -1195,7 +1195,8 @@ msgid ""
 "Optimize the order in which walls are printed so as to reduce the number of "
 "retractions and the distance travelled. Most parts will benefit from this "
 "being enabled but some may actually take longer so please compare the print "
-"time estimates with and without optimization."
+"time estimates with and without optimization. First layer is not optimized "
+"when choosing brim as build plate adhesion type."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1886,6 +1887,32 @@ msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "infill_support_enabled label"
+msgid "Infill Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled description"
+msgid ""
+"Print infill structures only where tops of the model should be supported. "
+"Enabling this reduces print time and material usage, but leads to ununiform "
+"object strength."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle label"
+msgid "Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle description"
+msgid ""
+"The minimum angle of internal overhangs for which infill is added. At a "
+"value of 0° objects are totally filled with infill, 90° will not provide any "
+"infill."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
 msgstr ""
@@ -2291,6 +2318,19 @@ msgid ""
 "should be approximately the same as the retraction distance, so that "
 "effectively the number of times a retraction passes the same patch of "
 "material is limited."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid ""
+"Omit retraction when moving from support to support in a straight line. "
+"Enabling this setting saves print time, but can lead to excesive stringing "
+"within the support structure."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3081,7 +3121,19 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
-msgid "No Skin"
+msgid "Not in Skin"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance label"
+msgid "Max Comb Distance With No Retract"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance description"
+msgid ""
+"When non-zero, combing travel moves that are longer than this distance will "
+"use retraction."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3104,6 +3156,18 @@ msgctxt "travel_avoid_other_parts description"
 msgid ""
 "The nozzle avoids already printed parts when traveling. This option is only "
 "available when combing is enabled."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports label"
+msgid "Avoid Supports When Traveling"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports description"
+msgid ""
+"The nozzle avoids already printed supports when traveling. This option is "
+"only available when combing is enabled."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3530,6 +3594,19 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_pattern option cross"
 msgid "Cross"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count label"
+msgid "Support Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count description"
+msgid ""
+"The number of walls with which to surround support infill. Adding a wall can "
+"make support print more reliably and can support overhangs better, but "
+"increases print time and material used."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5340,6 +5417,20 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid ""
+"The minimum size of a travel line segment after slicing. If you increase "
+"this, the travel moves will have less smooth corners. This may allow the "
+"printer to keep up with the speed it has to process g-code, but it may cause "
+"model avoidance to become less accurate."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr ""
@@ -5535,16 +5626,27 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly label"
-msgid "Alternate Cross 3D Pockets"
+msgctxt "cross_infill_density_image label"
+msgid "Cross Infill Density Image"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly description"
+msgctxt "cross_infill_density_image description"
 msgid ""
-"Only apply pockets at half of the four-way crossings in the cross 3D pattern "
-"and alternate the location of the pockets between heights where the pattern "
-"is touching itself."
+"The file location of an image of which the brightness values determine the "
+"minimal density at the corresponding location in the infill of the print."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image label"
+msgid "Cross Fill Density Image for Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image description"
+msgid ""
+"The file location of an image of which the brightness values determine the "
+"minimal density at the corresponding location in the support."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5669,17 +5771,6 @@ msgctxt "support_conical_min_width description"
 msgid ""
 "Minimum width to which the base of the conical support area is reduced. "
 "Small widths can lead to unstable support structures."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow label"
-msgid "Hollow Out Objects"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow description"
-msgid ""
-"Remove all infill and make the inside of the object eligible for support."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6085,7 +6176,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
-msgid "The maximum allowed height different from the base layer height in mm."
+msgid "The maximum allowed height different from the base layer height."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6360,7 +6451,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
-msgid "Center object"
+msgid "Center Object"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6372,7 +6463,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
-msgid "Mesh position x"
+msgid "Mesh Position X"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6382,7 +6473,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
-msgid "Mesh position y"
+msgid "Mesh Position Y"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6392,7 +6483,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
-msgid "Mesh position z"
+msgid "Mesh Position Z"
 msgstr ""
 
 #: fdmprinter.def.json

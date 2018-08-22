@@ -11,7 +11,9 @@
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",
         "has_materials": true,
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "generic_pva", "generic_tough_pla"],
+        "has_machine_quality": true,
+        "quality_definition": "ultimaker_original",
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white"],
         "machine_extruder_trains":
         {
             "0": "ultimaker_original_dual_1st",
@@ -34,9 +36,6 @@
         },
         "machine_center_is_zero": {
             "default_value": false
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "machine_head_with_fans_polygon":
         {

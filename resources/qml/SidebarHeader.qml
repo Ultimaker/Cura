@@ -17,7 +17,17 @@ Column
     property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
     property bool printerConnected: Cura.MachineManager.printerConnected
-    property bool hasManyPrinterTypes: printerConnected ? Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1 : false
+    property bool hasManyPrinterTypes:
+    {
+        if (printerConnected)
+        {
+            if (Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount != null)
+            {
+                return Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1;
+            }
+        }
+        return false;
+    }
     property bool buildplateCompatibilityError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
     property bool buildplateCompatibilityWarning: Cura.MachineManager.variantBuildplateUsable
 
@@ -44,7 +54,7 @@ Column
     {
         id: printerTypeSelectionRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: printerConnected && hasManyPrinterTypes && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: printerConnected && hasManyPrinterTypes && !sidebar.hideSettings
 
         anchors
         {
@@ -94,7 +104,7 @@ Column
         id: extruderSelectionRow
         width: parent.width
         height: Math.round(UM.Theme.getSize("sidebar_tabs").height * 2 / 3)
-        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
+        visible: machineExtruderCount.properties.value > 1
 
         anchors
         {
@@ -154,8 +164,12 @@ Column
                     onClicked: {
                         switch (mouse.button) {
                             case Qt.LeftButton:
-                                forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                                Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
+                                if (extruder_enabled)
+                                {
+                                    forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                                    Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                }
                                 break;
                             case Qt.RightButton:
                                 extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
@@ -346,7 +360,7 @@ Column
     {
         id: materialRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasMaterials && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: Cura.MachineManager.hasMaterials && !sidebar.hideSettings
 
         anchors
         {
@@ -398,7 +412,7 @@ Column
                 {
                     return false;
                 }
-                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible") == "True"
+                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible", "") == "True"
             }
         }
     }
@@ -408,7 +422,7 @@ Column
     {
         id: variantRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: Cura.MachineManager.hasVariants && !sidebar.hideSettings
 
         anchors
         {
@@ -462,8 +476,8 @@ Column
     {
         id: buildplateRow
         height: UM.Theme.getSize("sidebar_setup").height
-        // TODO Temporary hidden, add back again when feature ready
-        visible: false //Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
+        // TODO Only show in dev mode. Remove check when feature ready
+        visible: CuraSDKVersion == "dev" ? Cura.MachineManager.hasVariantBuildplates && !sidebar.hideSettings : false
 
         anchors
         {
@@ -509,7 +523,7 @@ Column
     {
         id: materialInfoRow
         height: Math.round(UM.Theme.getSize("sidebar_setup").height / 2)
-        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariantBuildplates) && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariantBuildplates) && !sidebar.hideSettings
 
         anchors
         {
@@ -519,16 +533,17 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
+        // TODO This was added to replace the buildplate selector. Remove this component when the feature is ready
         Label
         {
             id: materialCompatibilityLabel
             y: -Math.round(UM.Theme.getSize("sidebar_margin").height / 3)
             anchors.left: parent.left
             width: parent.width - materialCompatibilityLink.width
-            text: catalog.i18nc("@label", "Use adhesion sheet or glue with this material combination")
+            text: catalog.i18nc("@label", "Use glue with this material combination")
             font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text")
-            visible: buildplateCompatibilityError || buildplateCompatibilityWarning
+            visible: CuraSDKVersion == "dev" ? false : buildplateCompatibilityError || buildplateCompatibilityWarning
             wrapMode: Text.WordWrap
             opacity: 0.5
         }

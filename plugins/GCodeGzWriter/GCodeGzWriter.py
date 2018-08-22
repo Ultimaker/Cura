@@ -3,12 +3,15 @@
 
 import gzip
 from io import StringIO, BufferedIOBase #To write the g-code to a temporary buffer, and for typing.
-from typing import List
+from typing import cast, List
 
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter #The class we're extending/implementing.
 from UM.PluginRegistry import PluginRegistry
 from UM.Scene.SceneNode import SceneNode #For typing.
+
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 ##  A file writer that writes gzipped g-code.
 #
@@ -28,12 +31,15 @@ class GCodeGzWriter(MeshWriter):
     def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode = MeshWriter.OutputMode.BinaryMode) -> bool:
         if mode != MeshWriter.OutputMode.BinaryMode:
             Logger.log("e", "GCodeGzWriter does not support text mode.")
+            self.setInformation(catalog.i18nc("@error:not supported", "GCodeGzWriter does not support text mode."))
             return False
 
         #Get the g-code from the g-code writer.
         gcode_textio = StringIO() #We have to convert the g-code into bytes.
-        success = PluginRegistry.getInstance().getPluginObject("GCodeWriter").write(gcode_textio, None)
+        gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
+        success = gcode_writer.write(gcode_textio, None)
         if not success: #Writing the g-code failed. Then I can also not write the gzipped g-code.
+            self.setInformation(gcode_writer.getInformation())
             return False
 
         result = gzip.compress(gcode_textio.getvalue().encode("utf-8"))

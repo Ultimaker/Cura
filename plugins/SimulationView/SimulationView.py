@@ -16,7 +16,6 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry
-from UM.Preferences import Preferences
 from UM.Resources import Resources
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
@@ -81,30 +80,30 @@ class SimulationView(View):
         self._show_travel_moves = False
         self._nozzle_node = None
 
-        Preferences.getInstance().addPreference("view/top_layer_count", 5)
-        Preferences.getInstance().addPreference("view/only_show_top_layers", False)
-        Preferences.getInstance().addPreference("view/force_layer_view_compatibility_mode", False)
+        Application.getInstance().getPreferences().addPreference("view/top_layer_count", 5)
+        Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
+        Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
 
-        Preferences.getInstance().addPreference("layerview/layer_view_type", 0)
-        Preferences.getInstance().addPreference("layerview/extruder_opacities", "")
+        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 0)
+        Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
 
-        Preferences.getInstance().addPreference("layerview/show_travel_moves", False)
-        Preferences.getInstance().addPreference("layerview/show_helpers", True)
-        Preferences.getInstance().addPreference("layerview/show_skin", True)
-        Preferences.getInstance().addPreference("layerview/show_infill", True)
+        Application.getInstance().getPreferences().addPreference("layerview/show_travel_moves", False)
+        Application.getInstance().getPreferences().addPreference("layerview/show_helpers", True)
+        Application.getInstance().getPreferences().addPreference("layerview/show_skin", True)
+        Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
 
-        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+        Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
         self._updateWithPreferences()
 
-        self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
-        self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
+        self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
+        self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
 
     def _evaluateCompatibilityMode(self):
-        return OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+        return OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode"))
 
     def _resetSettings(self):
         self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
@@ -543,23 +542,23 @@ class SimulationView(View):
         self._top_layers_job = None
 
     def _updateWithPreferences(self):
-        self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
-        self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
+        self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
+        self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self.setSimulationViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
+        self.setSimulationViewType(int(float(Application.getInstance().getPreferences().getValue("layerview/layer_view_type"))));
 
-        for extruder_nr, extruder_opacity in enumerate(Preferences.getInstance().getValue("layerview/extruder_opacities").split("|")):
+        for extruder_nr, extruder_opacity in enumerate(Application.getInstance().getPreferences().getValue("layerview/extruder_opacities").split("|")):
             try:
                 opacity = float(extruder_opacity)
             except ValueError:
                 opacity = 1.0
             self.setExtruderOpacity(extruder_nr, opacity)
 
-        self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
-        self.setShowHelpers(bool(Preferences.getInstance().getValue("layerview/show_helpers")))
-        self.setShowSkin(bool(Preferences.getInstance().getValue("layerview/show_skin")))
-        self.setShowInfill(bool(Preferences.getInstance().getValue("layerview/show_infill")))
+        self.setShowTravelMoves(bool(Application.getInstance().getPreferences().getValue("layerview/show_travel_moves")))
+        self.setShowHelpers(bool(Application.getInstance().getPreferences().getValue("layerview/show_helpers")))
+        self.setShowSkin(bool(Application.getInstance().getPreferences().getValue("layerview/show_skin")))
+        self.setShowInfill(bool(Application.getInstance().getPreferences().getValue("layerview/show_infill")))
 
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()

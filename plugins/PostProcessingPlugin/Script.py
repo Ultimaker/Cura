@@ -48,7 +48,7 @@ class Script:
         self._stack.addContainer(self._definition)
         self._instance = InstanceContainer(container_id="ScriptInstanceContainer")
         self._instance.setDefinition(self._definition.getId())
-        self._instance.addMetaDataEntry("setting_version", self._definition.getMetaDataEntry("setting_version", default = 0))
+        self._instance.setMetaDataEntry("setting_version", self._definition.getMetaDataEntry("setting_version", default = 0))
         self._stack.addContainer(self._instance)
         self._stack.propertyChanged.connect(self._onPropertyChanged)
 
@@ -105,9 +105,12 @@ class Script:
         if m is None:
             return default
         try:
-            return float(m.group(0))
-        except:
-            return default
+            return int(m.group(0))
+        except ValueError: #Not an integer.
+            try:
+                return float(m.group(0))
+            except ValueError: #Not a number at all.
+                return default
 
     ##  Convenience function to produce a line of g-code.
     #

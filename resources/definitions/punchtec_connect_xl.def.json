@@ -21,7 +21,6 @@
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "speed_wall_x": { "default_value": 40 },
         "speed_wall_0": { "default_value": 40 },
-        "material_diameter": { "default_value": 1.75 },
         "speed_topbottom": { "default_value": 40 },
         "layer_height": { "default_value": 0.2 },
         "material_print_temperature": { "default_value": 195 },

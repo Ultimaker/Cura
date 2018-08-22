@@ -27,7 +27,7 @@ class PrinterOutputModel(QObject):
     cameraChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = ""):
+    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
         super().__init__(parent)
         self._bed_temperature = -1  # Use -1 for no heated bed.
         self._target_bed_temperature = 0
@@ -120,7 +120,7 @@ class PrinterOutputModel(QObject):
 
     @pyqtProperty(QVariant, notify = headPositionChanged)
     def headPosition(self):
-        return {"x": self._head_position.x, "y": self._head_position.y, "z": self.head_position_z}
+        return {"x": self._head_position.x, "y": self._head_position.y, "z": self.head_position.z}
 
     def updateHeadPosition(self, x, y, z):
         if self._head_position.x != x or self._head_position.y != y or self._head_position.z != z:

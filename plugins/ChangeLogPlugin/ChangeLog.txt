@@ -1,3 +1,132 @@
+[3.4.1]
+*Bug fixes
+- Fixed an issue that would occasionally cause an unnecessary extra skin wall to be printed, which increased print time.
+- Fixed an issue in which supports were not generated on the initial layer, because the engine expected a brim to be in place.
+- Conical and tree supports are now limited within the build plate volume.
+- Fixed various startup crashes, including: copying of the version folder, errors while deleting packages, storing the old files, and losing data on install.
+
+[3.4.0]
+
+*Toolbox
+The plugin browser has been remodeled into the Toolbox. Navigation now involves graphical elements such as tiles, which can be clicked for further details.
+
+*Upgradable bundled resources
+It is now possible to have multiple versions of bundled resources installed: the bundled version and the downloaded upgrade. If an upgrade in the form of a package is present, the bundled version will not be loaded. If it's not present, Ultimaker Cura will revert to the bundled version.
+
+*Package manager recognizes bundled resources
+Bundled packages are now made visible to the CuraPackageMangager. This means the resources are included by default, as well as the "wrapping" of a package, (e.g. package.json) so that the CuraPackageManger and Toolbox recognize them as being installed.
+
+*Retraction combing max distance
+New setting for maximum combing travel distance. Combing travel moves longer than this value will use retraction. Contributed by smartavionics.
+
+*Infill support
+When enabled, infill will be generated only where it is needed using a specialized support generation algorithm for the internal support structures of a part. Contributed by BagelOrb.
+
+*Print outside perimeter before holes
+This prioritizes outside perimeters before printing holes. By printing holes as late as possible, there is a reduced risk of travel moves dislodging them from the build plate. This setting should only have an effect if printing outer before inner walls. Contributed by smartavionics.
+
+*Disable omitting retractions in support
+Previous versions had no option to disable omitting retraction moves when printing supports, which could cause issues with third-party machines or materials. An option has been added to disable this. Contributed by BagelOrb.
+
+*Support wall line count
+Added setting to configure how many walls to print around supports. Contributed by BagelOrb.
+
+*Maximum combing resolution
+Combing travel moves are kept at least 1.5 mm long to prevent buffer underruns.
+
+*Avoid supports when traveling
+Added setting to avoid supports when performing travel moves. This minimizes the risk of the print head hitting support material.
+
+*Rewrite cross infill
+Experimental setting that allows you to input a path to an image to manipulate the cross infill density. This will overlay that image on your model. Contributed by BagelOrb.
+
+*Backup and restore
+Added functionality to backup and restore settings and profiles to cloud using the Cura Backups plugin.
+
+*Auto-select model after import
+User can now set preferences for the behavior of selecting a newly imported model or not.
+
+*Settings filter timeout
+The settings filter is triggered on enter or after a 500ms timeout when typing a setting to filter.
+
+*Event measurements
+Added time measurement to logs for occurrences, including startup time, file load time, number of items on the build plate when slicing, slicing time, and time and performance when moving items on the build plate, for benchmarking purposes.
+
+*Send anonymous data
+Disable button on the ‘Send anonymous data’ popup has changed to a ‘more info’ button, with further options to enable/disable anonymous data messages.
+
+*Configuration error assistant
+Detect and show potential configuration file errors to users, e.g. incorrect files and duplicate files in material or quality profiles, there are several places to check. Information is stored and communicated to the user to prevent crashing in future.
+
+*Disable ensure models are kept apart
+Disable "Ensure models are kept apart" by default due to to a change in preference files.
+
+*Prepare and monitor QML files
+Created two separate QML files for the Prepare and Monitor stages.
+
+*Hide bed temperature
+Option to hide bed temperature when no heated bed is present. Contributed by ngraziano.
+
+*Reprap/Marlin GCODE flavor
+RepRap firmware now lists values for all extruders in the "Filament used" GCODE comment. Contributed by smartavionics.
+
+*AutoDesk Inventor integration
+Open AutoDesk inventor files (parts, assemblies, drawings) directly into Ultimaker Cura. Contributed by thopiekar.
+
+*Blender integration
+Open Blender files directly into Ultimaker Cura. Contributed by thopiekar.
+
+*OpenSCAD integration
+Open OpenSCAD files directly into Ultimaker Cura. Contributed by thopiekar.
+
+*FreeCAD integration
+Open FreeCAD files directly into Ultimaker Cura. Contributed by thopiekar.
+
+*OctoPrint plugin
+New version of the OctoPrint plugin for Ultimaker Cura. Contributed by fieldOfView.
+
+*Cura Backups
+Backup and restore your configuration, including settings, materials and plugins, for use across different systems.
+
+*MakePrintable
+New version of the MakePrintable plugin.
+
+*Compact Prepare sidebar
+Plugin that replaces the sidebar with a more compact variation of the original sidebar. Nozzle and material dropdowns are combined into a single line, the “Check compatibility” link is removed, extruder selection buttons are downsized, recommended and custom mode selection buttons are moved to a combobox at the top, and margins are tweaked. Contributed by fieldOfView.
+
+*PauseAtHeight plugin
+Bug fixes and improvements for PauseAtHeight plugin. Plugin now accounts for raft layers when choosing “Pause of layer no.” Now positions the nozzle at x and y values of the next layer when resuming. Contributed by JPFrancoia.
+
+*Bug fixes
+- Prime tower purge fix. Prime tower purge now starts away from the center, minimizing the chance of overextrusion and nozzle obstructions. Contributed by BagelOrb.
+- Extruder 2 temp via USB. Fixed a bug where temperatures can’t be read for a second extruder via USB. Contributed by kirilledelman.
+- Move to next object position before bed heat. Print one at a time mode caused waiting for the bed temperature to reach the first layer temperature while the nozzle was still positioned on the top of the last part. This has been fixed so that the nozzle moves to the location of the next part before waiting for heat up. Contributed by smartavionics.
+- Non-GCODE USB. Fixed a bug where the USB port doesn’t open if printer doesn't support GCODE. Contributed by ohrn.
+- Improved wall overlap compensation. Minimizes unexpected behavior on overlap lines, providing smoother results. Contributed by BagelOrb.
+- Configuration/sync. Fixes minor issues with the configuration/sync menu, such as text rendering on some OSX systems and untranslatable text. Contributed by fieldOfView.
+- Print job name reslice. Fixed behavior where print job name changes back to origin when reslicing.
+- Discard/keep. Customized settings don't give an 'discard or keep' dialog when changing material.
+- Message box styling. Fixed bugs related to message box styling, such as the progress bar overlapping the button in the ‘Sending Data’ popup.
+- Curaproject naming. Fixed bug related to two "curaprojects" in the file name when saving a project.
+- No support on first layers. Fixed a bug related to no support generated causing failed prints when model is floating above build plate.
+- False incompatible configuration. Fixed a bug where PrintCore and materials were flagged even though the configurations are compatible.
+- Spiralize contour overlaps. Fixed a bug related to spiralize contour overlaps.
+- Model saved outside build volume. Fixed a bug that would saved a model to file (GCODE) outside the build volume.
+- Filament diameter line width. Adjust filament diameter to calculate line width in the GCODE parser.
+- Holes in model surfaces. Fixed a bug where illogical travel moves leave holes in the model surface.
+- Nozzle legacy file variant. Fixed crashes caused by loading legacy nozzle variant files.
+- Brim wall order. Fixed a bug related to brim wall order. Contributed by smartavionics.
+- GCODE reader gaps. Fixed a GCODE reader bug that can create a gap at the start of a spiralized layer.
+- Korean translation. Fixed some typos in Korean translation.
+- ARM/Mali systems. Graphics pipeline for ARM/Mali fixed. Contributed by jwalt.
+- NGC Writer. Fixed missing author for NGC Writer plugin.
+- Support blocker legacy GPU. Fixes depth picking on older GPUs that do not support the 4.1 shading model which caused the support blocker to put cubes in unexpected locations. Contributed by fieldOfView.
+
+*Third-party printers
+- Felix Tec4 printer. Updated definitions for Felix Tec4. Contributed by kerog777.
+- Deltacomb. Updated definitions for Deltacomb. Contributed by kaleidoscopeit.
+- Rigid3D Mucit. Added definitions for Rigid3D Mucit. Contributed by Rigid3D.
+
 [3.3.0]
 
 *Profile for the Ultimaker S5
@@ -23,6 +152,9 @@ Refactored machine manager resulted in less manager classes. Changing settings, 
 
 *Multiply models faster
 Significant speed increase when multiplying models.
+
+*Auto slicing disabled by default
+The auto slice tool is now disabled by default. Users can still enable the feature in the user preferences dialog.
 
 *Updated fonts
 Default font changed to NotoSans to increase readability and consistency with Cura Connect.
@@ -63,8 +195,8 @@ Generate a cube mesh to prevent support material generation in specific areas of
 *Real bridging - smartavionics
 New experimental feature that detects bridges, adjusting the print speed, slow and fan speed to enhance print quality on bridging parts.
 
-*Updated CuraEngine executable - thopiekar
-The CuraEngine executable now contains a dedicated icon, author information and a license.
+*Updated CuraEngine executable - thopiekar & Ultimaker B.V.
+The CuraEngine executable contains a dedicated icon, author and license info on Windows now. The icon has been designed by Ultimaker B.V.
 
 *Use RapidJSON and ClipperLib from system libraries
 Application updated to use verified copies of libraries, reducing maintenance time keeping them up to date (the operating system is now responsible), as well as reducing the amount of code shipped (as necessary code is already on the user’s system).

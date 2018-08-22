@@ -5,17 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.3\n"
+"Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-04-11 14:40+0100\n"
+"PO-Revision-Date: 2018-06-22 11:44+0800\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: PCDotFan <pc@edu.ax>, Bothof <info@bothof.nl>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.8.13\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: fdmprinter.def.json
@@ -58,7 +58,9 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
+msgstr ""
+"在开始时执行的 G-code 命令 - 以 \n"
+" 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,7 +72,9 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
+msgstr ""
+"在结束前执行的 G-code 命令 - 以 \n"
+" 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1084,8 +1088,8 @@ msgstr "优化壁打印顺序"
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
-msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr "优化打印各个壁的顺序，以减少回抽次数和空驶距离。 启用此设置将对大部分零件有益，但有的则会耗费更长时间，因此请将优化和不优化的打印时间估计值进行对比。"
+msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
+msgstr "优化墙壁印刷的顺序，以减少回撤的数量和旅行的距离。大多数部件会从启用这个功能中受益，但有些可能会花费更长的时间，所以请将打印时间估算与不优化进行比较。第一层在选择边缘作为构建板附着力类型时没有进行优化。"
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1673,6 +1677,26 @@ msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "不要生成小于此面积的填充区域（使用皮肤取代）。"
 
 #: fdmprinter.def.json
+msgctxt "infill_support_enabled label"
+msgid "Infill Support"
+msgstr "填充支撑"
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled description"
+msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
+msgstr "只在模型的顶部支持打印填充结构。这样可以减少打印时间和材料的使用，但是会导致不一致的对象强度。"
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle label"
+msgid "Infill Overhang Angle"
+msgstr "填充悬垂角"
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle description"
+msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
+msgstr "添加内填充的内部覆盖的最小角度。在一个0的值中，完全填满了填充，90将不提供任何填充。"
+
+#: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
 msgstr "肤移除宽度"
@@ -2011,6 +2035,16 @@ msgstr "最小挤出距离范围"
 msgctxt "retraction_extrusion_window description"
 msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
 msgstr "执行最大回抽计数的范围。 该值应与回抽距离大致相同，以便一次回抽通过同一块材料的次数得到有效限制。"
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr "支撑限制被撤销"
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
+msgstr "当从支撑移动到支撑直线时，省略撤回。启用这个设置可以节省打印时间，但是可以在支撑结构中产生出色的字符串。"
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2704,8 +2738,18 @@ msgstr "所有"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
-msgid "No Skin"
-msgstr "无皮肤"
+msgid "Not in Skin"
+msgstr "除了皮肤"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance label"
+msgid "Max Comb Distance With No Retract"
+msgstr "最大梳距，无收缩"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance description"
+msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+msgstr "当非零的时候，梳理比这段距离更长的旅行移动将会使用撤回。"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2726,6 +2770,16 @@ msgstr "空驶时避开已打印部分"
 msgctxt "travel_avoid_other_parts description"
 msgid "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled."
 msgstr "喷嘴会在空驶时避开已打印的部分。 此选项仅在启用梳理功能时可用。"
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports label"
+msgid "Avoid Supports When Traveling"
+msgstr "避免移动时支撑"
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports description"
+msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
+msgstr "在空走时，喷嘴避免了已打印的支撑。只有在启用了梳理时才可以使用此选项。"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -3081,6 +3135,16 @@ msgstr "锯齿形"
 msgctxt "support_pattern option cross"
 msgid "Cross"
 msgstr "交叉"
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count label"
+msgid "Support Wall Line Count"
+msgstr "支撑墙行数"
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count description"
+msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr "包围支撑的墙的数量。添加一堵墙可以使支持打印更加可靠，并且可以更好地支持挂起，但增加了打印时间和使用的材料。"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
@@ -3652,7 +3716,9 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "skirt  和打印第一层之间的水平距离。\n这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgstr ""
+"skirt  和打印第一层之间的水平距离。\n"
+"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4610,6 +4676,16 @@ msgid "The minimum size of a line segment after slicing. If you increase this, t
 msgstr "走线部分在切片后的最小尺寸。如果提高此值，网格的分辨率将降低。这可让打印机保持处理 g-code 所需的速度，并将通过移除无法处理的网格细节提高切片速度。"
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr "空走的最大分辨率"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
+msgstr "切片后的旅行线路段的最小尺寸。如果你增加了这个，旅行的移动就会变得不那么平滑了。这可能使打印机能够跟上它处理g代码的速度，但是它可能导致模型的避免变得不那么准确。"
+
+#: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr "将支撑结构分拆成块状"
@@ -4770,14 +4846,24 @@ msgid "The size of pockets at four-way crossings in the cross 3D pattern at heig
 msgstr "交叉 3D 图案的四向交叉处的气槽大小，高度为图案与自身接触的位置。"
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly label"
-msgid "Alternate Cross 3D Pockets"
-msgstr "交替交叉 3D 气槽"
+msgctxt "cross_infill_density_image label"
+msgid "Cross Infill Density Image"
+msgstr "交叉加密图像密度"
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly description"
-msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr "仅在交叉 3D 图案的一半四向交叉处应用气槽，并在图案与自身接触的高度之间交替气槽的位置。"
+msgctxt "cross_infill_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
+msgstr "在打印的填充中，亮度值决定了相应位置的最小密度的图像的文件位置。"
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image label"
+msgid "Cross Fill Density Image for Support"
+msgstr "交叉填充密度图象"
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
+msgstr "一个图像的文件位置，在这个图像中，亮度值决定了在支持中相应位置的最小密度。"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4878,16 +4964,6 @@ msgstr "锥形支撑最小宽度"
 msgctxt "support_conical_min_width description"
 msgid "Minimum width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures."
 msgstr "锥形支撑区域底部被缩小至的最小宽度。 宽度较小可导致不稳定的支撑结构。"
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow label"
-msgid "Hollow Out Objects"
-msgstr "挖空模型"
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow description"
-msgid "Remove all infill and make the inside of the object eligible for support."
-msgstr "移除所有填充物并让模型内部可以进行支撑。"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
@@ -5099,7 +5175,9 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "以半速挤出的上行移动的距离。\n这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
+msgstr ""
+"以半速挤出的上行移动的距离。\n"
+"这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5223,8 +5301,8 @@ msgstr "自适应图层最大变化"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
-msgid "The maximum allowed height different from the base layer height in mm."
-msgstr "相比底层高度所允许的最大高度（单位：毫米）。"
+msgid "The maximum allowed height different from the base layer height."
+msgstr "最大允许高度与基层高度不同。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
@@ -5458,8 +5536,8 @@ msgstr "未从 Cura 前端调用 CuraEngine 时使用的设置。"
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
-msgid "Center object"
-msgstr "中心模型"
+msgid "Center Object"
+msgstr "中心点"
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
@@ -5468,8 +5546,8 @@ msgstr "是否将模型放置在打印平台中心 (0,0)，而不是使用模型
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
-msgid "Mesh position x"
-msgstr "网格位置 x"
+msgid "Mesh Position X"
+msgstr "网格X位置"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -5478,8 +5556,8 @@ msgstr "应用在模型 x 方向上的偏移量。"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
-msgid "Mesh position y"
-msgstr "网格位置 y"
+msgid "Mesh Position Y"
+msgstr "网格Y位置"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -5488,8 +5566,8 @@ msgstr "应用在模型 y 方向上的偏移量。"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
-msgid "Mesh position z"
-msgstr "网格位置 z"
+msgid "Mesh Position Z"
+msgstr "网格Z位置"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
@@ -5505,6 +5583,50 @@ msgstr "网格旋转矩阵"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
+
+#~ msgctxt "optimize_wall_printing_order description"
+#~ msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
+#~ msgstr "优化打印各个壁的顺序，以减少回抽次数和空驶距离。 启用此设置将对大部分零件有益，但有的则会耗费更长时间，因此请将优化和不优化的打印时间估计值进行对比。"
+
+#~ msgctxt "retraction_combing option noskin"
+#~ msgid "No Skin"
+#~ msgstr "无皮肤"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly label"
+#~ msgid "Alternate Cross 3D Pockets"
+#~ msgstr "交替交叉 3D 气槽"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly description"
+#~ msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
+#~ msgstr "仅在交叉 3D 图案的一半四向交叉处应用气槽，并在图案与自身接触的高度之间交替气槽的位置。"
+
+#~ msgctxt "infill_hollow label"
+#~ msgid "Hollow Out Objects"
+#~ msgstr "挖空模型"
+
+#~ msgctxt "infill_hollow description"
+#~ msgid "Remove all infill and make the inside of the object eligible for support."
+#~ msgstr "移除所有填充物并让模型内部可以进行支撑。"
+
+#~ msgctxt "adaptive_layer_height_variation description"
+#~ msgid "The maximum allowed height different from the base layer height in mm."
+#~ msgstr "相比底层高度所允许的最大高度（单位：毫米）。"
+
+#~ msgctxt "center_object label"
+#~ msgid "Center object"
+#~ msgstr "中心模型"
+
+#~ msgctxt "mesh_position_x label"
+#~ msgid "Mesh position x"
+#~ msgstr "网格位置 x"
+
+#~ msgctxt "mesh_position_y label"
+#~ msgid "Mesh position y"
+#~ msgstr "网格位置 y"
+
+#~ msgctxt "mesh_position_z label"
+#~ msgid "Mesh position z"
+#~ msgstr "网格位置 z"
 
 #~ msgctxt "machine_start_gcode label"
 #~ msgid "Start GCode"

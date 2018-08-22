@@ -14,20 +14,6 @@ Cura.MachineAction
     property var selectedDevice: null
     property bool completeProperties: true
 
-    Connections
-    {
-        target: dialog ? dialog : null
-        ignoreUnknownSignals: true
-        onNextClicked:
-        {
-            // Connect to the printer if the MachineAction is currently shown
-            if(base.parent.wizard == dialog)
-            {
-                connectToPrinter();
-            }
-        }
-    }
-
     function connectToPrinter()
     {
         if(base.selectedDevice && base.completeProperties)
@@ -158,7 +144,10 @@ Cura.MachineAction
                         model: manager.foundDevices
                         onModelChanged:
                         {
-                            var selectedKey = manager.getStoredKey();
+                            var selectedKey = manager.getLastManualEntryKey()
+                            // If there is no last manual entry key, then we select the stored key (if any)
+                            if (selectedKey == "")
+                                selectedKey = manager.getStoredKey()
                             for(var i = 0; i < model.length; i++) {
                                 if(model[i].key == selectedKey)
                                 {
@@ -310,11 +299,11 @@ Cura.MachineAction
                         }
                         else if (base.selectedDevice.clusterSize === 0)
                         {
-                            return catalog.i18nc("@label", "This printer is not set up to host a group of Ultimaker 3 printers.");
+                            return catalog.i18nc("@label", "This printer is not set up to host a group of printers.");
                         }
                         else
                         {
-                            return catalog.i18nc("@label", "This printer is the host for a group of %1 Ultimaker 3 printers.".arg(base.selectedDevice.clusterSize));
+                            return catalog.i18nc("@label", "This printer is the host for a group of %1 printers.".arg(base.selectedDevice.clusterSize));
                         }
                     }
 
@@ -354,17 +343,10 @@ Cura.MachineAction
         onShowDialog:
         {
             printerKey = key;
-
             addressText = address;
+            manualPrinterDialog.show();
             addressField.selectAll();
             addressField.focus = true;
-
-            manualPrinterDialog.show();
-        }
-
-        onAccepted:
-        {
-            manager.setManualDevice(printerKey, addressText)
         }
 
         Column {
@@ -406,7 +388,7 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
-                    manualPrinterDialog.accept()
+                    manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
                     manualPrinterDialog.hide()
                 }
                 enabled: manualPrinterDialog.addressText.trim() != ""

@@ -41,8 +41,13 @@ class GenericMaterialsModel(BaseMaterialsModel):
         item_list = []
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
+
             # Only add results for generic materials
             if metadata["brand"].lower() != "generic":
+                continue
+
+            # Do not include the materials from a to-be-removed package
+            if bool(metadata.get("removed", False)):
                 continue
 
             item = {"root_material_id": root_material_id,

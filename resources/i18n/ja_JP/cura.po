@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.3\n"
+"Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2018-03-29 08:36+0200\n"
+"POT-Creation-Date: 2018-06-06 16:13+0200\n"
 "PO-Revision-Date: 2018-04-11 14:40+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Japanese\n"
@@ -42,19 +42,18 @@ msgstr "G-codeファイル"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
-msgid "Model Checker Warning"
-msgstr "モデルチェッカー警告"
+msgid "3D Model Assistant"
+msgstr "3Dモデルアシスタント"
 
-#: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:66
+#: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:80
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
-"Some models may not be printed optimally due to object size and chosen material for models: {model_names}.\n"
-"Tips that may be useful to improve the print quality:\n"
-"1) Use rounded corners.\n"
-"2) Turn the fan off (only if there are no tiny details on the model).\n"
-"3) Use a different material."
-msgstr "オブジェクトサイズや選択した材料などにより一部のモデルが印刷されないことがあります: {model_names}.\n印刷の品質を高める便利なヒント:\n1) 縁を丸くする\n2) ファンを切る（モデルに詳細がない場合のみ）\n3) 異なる材料を使う"
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr "<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n<p>{model_names}</p>\n<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -74,15 +73,15 @@ msgstr "Doodle3D Connectに接続する"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:87
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:155
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:258
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:184
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:391
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:204
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:398
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrintWindow.qml:88
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:355
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:143
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:188
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:391
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:124
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:87
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:278
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:275
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "キャンセル"
@@ -154,18 +153,29 @@ msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "USBにて接続する"
 
-#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:14
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/install/X3GWriter/__init__.py:15
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
 msgstr "X3Gファイル"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:14
-#: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:14
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
+msgctxt "X3g Writer Plugin Description"
+msgid "Writes X3g to files"
+msgstr "X3Gをファイルに書き込む"
+
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:21
+msgctxt "X3g Writer File Description"
+msgid "X3g File"
+msgstr "X3Gファイル"
+
+#: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:17
+#: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "圧縮G-codeファイル"
 
-#: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:28
+#: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:38
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Ultimakerフォーマットパッケージ"
@@ -187,7 +197,7 @@ msgid "Save to Removable Drive {0}"
 msgstr "リムーバブルドライブ{0}に保存"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:64
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:110
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:113
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "書き出すために利用可能な形式のファイルがありません！"
@@ -224,9 +234,9 @@ msgid "Could not save to removable drive {0}: {1}"
 msgstr "リムーバブルドライブ{0}に保存することができませんでした: {1}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:137
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:134
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:141
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1577
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:133
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:140
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1592
 msgctxt "@info:title"
 msgid "Error"
 msgstr "エラー"
@@ -255,8 +265,8 @@ msgstr "リムーバブルデバイス{0}を取り出す"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1568
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1662
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1582
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1681
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "警告"
@@ -284,13 +294,13 @@ msgid "Removable Drive"
 msgstr "リムーバブルドライブ"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:70
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:75
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:78
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "ネットワーク上のプリント"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:71
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:76
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:79
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "ネットワークのプリント"
@@ -393,19 +403,21 @@ msgid "There is a mismatch between the configuration or calibration of the print
 msgstr "プリンターの設定、キャリブレーションとCuraの構成にミスマッチがあります。プリンターに設置されたプリントコア及びフィラメントを元にCuraをスライスすることで最良の印刷結果を出すことができます。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:249
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:163
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:166
 msgctxt "@info:status"
 msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
 msgstr "新しいデータの送信 (temporarily) をブロックします、前のプリントジョブが送信中です。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:256
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:182
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:185
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:202
 msgctxt "@info:status"
 msgid "Sending data to printer"
 msgstr "プリンターにプリントデータを送信中"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:257
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:183
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:186
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:203
 msgctxt "@info:title"
 msgid "Sending Data"
 msgstr "プリントデータを送信中"
@@ -449,39 +461,39 @@ msgctxt "@label"
 msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
 msgstr "プリンターのプリントコア及びフィラメントが現在のプロジェクトと異なります。最善な印刷結果のために、プリンタに装着しているプリントコア、フィラメントに合わせてスライスして頂くことをお勧めします。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:78
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:81
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "ネットワーク上で接続"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:247
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:262
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
 msgstr "プリントジョブは正常にプリンターに送信されました。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:249
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:264
 msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "データを送信しました"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:250
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:265
 msgctxt "@action:button"
 msgid "View in Monitor"
 msgstr "モニター表示"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:338
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:353
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Printer '{printer_name}' has finished printing '{job_name}'."
 msgstr "プリンター’{printer_name}’が’{job_name}’のプリントを終了しました。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:340
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:355
 #, python-brace-format
 msgctxt "@info:status"
 msgid "The print job '{job_name}' was finished."
 msgstr "プリントジョブ '{job_name}' は完了しました。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:341
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:356
 msgctxt "@info:status"
 msgid "Print finished"
 msgstr "プリント終了"
@@ -496,91 +508,27 @@ msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "モニター"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:66
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:69
 #, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features are available for your {machine_name}! It is recommended to update the firmware on your printer."
 msgstr "{machine_name} で利用可能な新しい機能があります。プリンターのファームウェアをアップデートしてください。"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:67
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:73
 #, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s firmware available"
 msgstr "新しい利用可能な%sファームウェアのアップデートがあります。"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:68
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:76
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "アップデートの仕方"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:79
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:92
 msgctxt "@info"
 msgid "Could not access update information."
 msgstr "必要なアップデートの情報にアクセスできません。"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:579
-msgctxt "@info:status"
-msgid "SolidWorks reported errors while opening your file. We recommend to solve these issues inside SolidWorks itself."
-msgstr "ソリッドワークスがファイルを開く際にエラーを報告しました。ソリッドワークス内で問題を解決することをお勧めします。"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:591
-msgctxt "@info:status"
-msgid ""
-"Found no models inside your drawing. Could you please check its content again and make sure one part or assembly is inside?\n"
-"\n"
-"Thanks!"
-msgstr "図面の中にモデルが見つかりません。中身を確認し、パートかアセンブリーが中に入っていることを確認してください。\n\n 再確認をお願いします。"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:595
-msgctxt "@info:status"
-msgid ""
-"Found more than one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
-"\n"
-"Sorry!"
-msgstr "図面の中にパートかアセンブリーが2個以上見つかりました。今のところ、本製品はパートかアセンブリーが1個の図面のみに対応しています。\n\n申し訳ありません。"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:25
-msgctxt "@item:inlistbox"
-msgid "SolidWorks part file"
-msgstr "ソリッドワークスパートファイル"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:29
-msgctxt "@item:inlistbox"
-msgid "SolidWorks assembly file"
-msgstr "ソリッドワークスアセンブリーファイル"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:33
-msgctxt "@item:inlistbox"
-msgid "SolidWorks drawing file"
-msgstr "ソリッドワークス図面ファイル"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:48
-msgctxt "@info:status"
-msgid ""
-"Dear customer,\n"
-"We could not find a valid installation of SolidWorks on your system. That means that either SolidWorks is not installed or you don't own an valid license. Please make sure that running SolidWorks itself works without issues and/or contact your ICT.\n"
-"\n"
-"With kind regards\n"
-" - Thomas Karl Pietrowski"
-msgstr "お客様へ\nシステム上に正規のソリッドワークスがインストールされていません。つまり、ソリッドワークスがインストールされていないか、有効なライセンスが存在しません。ソリッドワークスだけを問題なく使用できるようになっているか確認するか、自社のIT部門にご相談ください。\n\nお願いいたします。\n - Thomas Karl Pietrowski"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:57
-msgctxt "@info:status"
-msgid ""
-"Dear customer,\n"
-"You are currently running this plugin on an operating system other than Windows. This plugin will only work on Windows with SolidWorks installed, including an valid license. Please install this plugin on a Windows machine with SolidWorks installed.\n"
-"\n"
-"With kind regards\n"
-" - Thomas Karl Pietrowski"
-msgstr "お客様へ\nこのプラグインは現在Windows以外のOSで実行されています。このプラグインは、ソリッドワークスがインストールされたWindowsでしか動作しません。有効なライセンスも必要です。ソリッドワークスがインストールされたWindowsマシンにこのプラグインをインストールしてください。\n\nお願いいたします。\n - Thomas Karl Pietrowski"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:70
-msgid "Configure"
-msgstr "構成"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:71
-msgid "Installation guide for SolidWorks macro"
-msgstr "ソリッドワークス・マクロのインストールガイド"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -611,35 +559,35 @@ msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "サポートが印刷されないボリュームを作成します。"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:44
 msgctxt "@info"
 msgid "Cura collects anonymized usage statistics."
 msgstr "Curaは、匿名化した利用統計を収集します。"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:46
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:47
 msgctxt "@info:title"
 msgid "Collecting Data"
 msgstr "データを収集中"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:48
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
+msgctxt "@action:button"
+msgid "More info"
+msgstr "詳細"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
+msgctxt "@action:tooltip"
+msgid "See more information on what data Cura sends."
+msgstr "Curaが送信するデータについて詳しくご覧ください。"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:52
 msgctxt "@action:button"
 msgid "Allow"
 msgstr "許可"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:53
 msgctxt "@action:tooltip"
 msgid "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."
 msgstr "Curaが匿名化した利用統計を送信することを許可し、Curaの将来の改善を優先的に行うことに貢献します。プレファレンスと設定の一部、Curaのバージョン、スライスしているモデルのハッシュが送信されます。"
-
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
-msgctxt "@action:button"
-msgid "Disable"
-msgstr "無効化"
-
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:51
-msgctxt "@action:tooltip"
-msgid "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."
-msgstr "Curaが匿名化した利用統計を送信することを許可しません。プレファレンスで許可に変更することができます。"
 
 #: /home/ruben/Projects/Cura/plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -740,67 +688,29 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "各モデル構成設定"
 
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:23
-msgid "Install"
-msgstr "インストール"
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:43
-msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It is not set to a directory."
-msgstr "Siemens NXプラグインファイルのコピーに失敗しました。UGII_USER_DIRを確認してください。ディレクトリに割り当てられていません。"
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:50
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:59
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:81
-msgid "Successfully installed Siemens NX Cura plugin."
-msgstr "Siemens NX Curaプラグインを正常にインストールしました。"
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:65
-msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
-msgstr "Siemens NXプラグインファイルのコピーに失敗しました。UGII_USER_DIRを確認してください。"
-
-#: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:85
-msgid "Failed to install Siemens NX plugin. Could not set environment variable UGII_USER_DIR for Siemens NX."
-msgstr "Siemens NXプラグインのインストールに失敗しました。Siemens NX用の環境変数UGII_USER_DIRが設定できませんでした。"
-
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:175
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:627
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:576
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "推奨"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:177
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:632
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:581
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "カスタム"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:30
-#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:36
+#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:32
+#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:38
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF ファイル"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:214
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:658
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:199
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:695
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "ノズル"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:179
-#, python-brace-format
-msgctxt "@info:status"
-msgid "Failed to get plugin ID from <filename>{0}</filename>"
-msgstr "<filename>{0}</filename>からプラグインIDを取得することに失敗しました。"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:180
-msgctxt "@info:tile"
-msgid "Warning"
-msgstr "警告"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:235
-msgctxt "@window:title"
-msgid "Plugin browser"
-msgstr "プラグインブラウザー"
 
 #: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:12
 msgctxt "@item:inmenu"
@@ -812,18 +722,18 @@ msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "Gファイル"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:321
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:322
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-codeを解析"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:323
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:464
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:324
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:470
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-codeの詳細"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:462
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:468
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "データファイルを送信する前に、プリンターとプリンターの構成設定にそのG-codeが適応しているか確認してください。G-codeの表示が適切でない場合があります。"
@@ -865,80 +775,80 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "ビルドプレートを調整する"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:96
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:98
 msgctxt "@tooltip"
 msgid "Outer Wall"
 msgstr "アウターウォール"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:97
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:99
 msgctxt "@tooltip"
 msgid "Inner Walls"
 msgstr "インナーウォール"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:98
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:100
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "スキン"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:99
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:101
 msgctxt "@tooltip"
 msgid "Infill"
 msgstr "インフィル"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:100
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:102
 msgctxt "@tooltip"
 msgid "Support Infill"
 msgstr "サポートイルフィル"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:101
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:103
 msgctxt "@tooltip"
 msgid "Support Interface"
 msgstr "サポートインターフェイス"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:102
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:104
 msgctxt "@tooltip"
 msgid "Support"
 msgstr "サポート"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:103
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:105
 msgctxt "@tooltip"
 msgid "Skirt"
 msgstr "スカート"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:104
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:106
 msgctxt "@tooltip"
 msgid "Travel"
 msgstr "移動"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:105
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:107
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "退却"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:106
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:108
 msgctxt "@tooltip"
 msgid "Other"
 msgstr "他"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:226
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:229
 msgctxt "@label unknown material"
 msgid "Unknown"
 msgstr "不明"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:300
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:313
 #, python-brace-format
 msgctxt "@label"
 msgid "Pre-sliced file {0}"
 msgstr "スライス前ファイル {0}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:236
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:235
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "すでに存在するファイルです。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:237
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:123
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:236
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
@@ -949,106 +859,106 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "上書きできません"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:115
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:119
 msgctxt "@info:status"
 msgid "The selected material is incompatible with the selected machine or configuration."
 msgstr "選択されたフィラメントはプリンターとそのプリント構成に適応しておりません。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:116
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:120
 msgctxt "@info:title"
 msgid "Incompatible Material"
 msgstr "不適合フィラメント"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:803
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:842
 #, python-format
 msgctxt "@info:generic"
 msgid "Settings have been changed to match the current availability of extruders: [%s]"
 msgstr "現在利用可能なエクストルーダー [%s] に合わせて設定が変更されました。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:805
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:844
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "設定が更新されました"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:132
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:131
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "<filename>{0}</filename>にプロファイルを書き出すのに失敗しました: <message>{1}</message>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:139
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:138
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr " <filename>{0}</filename>にプロファイルを書き出すことに失敗しました。：ライタープラグイン失敗の報告"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "<filename>{0}</filename>にプロファイルを書き出しました。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:145
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "書き出し完了"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:171
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:195
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:314
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:170
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:313
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>"
 msgstr "<filename>{0}</filename>: <message>{1}</message>からプロファイルを取り込むことに失敗しました。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:191
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:190
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "ファイル<filename>{0}</filename>にはカスタムプロファイルがインポートされていません。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:219
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:229
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "このプロファイル<filename>{0}</filename>には、正しくないデータが含まれていて、インポートできません。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:242
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
 msgstr "プロファイル<filename>{0}</filename>の中で定義されているマシン({1})は、現在お使いのマシン({2})と一致しませんので、インポートできませんでした。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:317
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:316
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}"
 msgstr "プロファイル {0}の取り込み完了"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:320
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:319
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "ファイル{0}には、正しいプロファイルが含まれていません。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:323
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:322
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "プロファイル{0}は不特定なファイルまたは破損があります。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:341
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:340
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "カスタムプロファイル"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:357
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:356
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "プロファイルはクオリティータイプが不足しています。"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:369
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:368
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not find a quality type {0} for the current configuration."
@@ -1070,79 +980,99 @@ msgctxt "@info:title"
 msgid "Local printers"
 msgstr "ローカルプリンター"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:108
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:109
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "すべてのサポートのタイプ ({0})"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:109
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:110
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "全てのファイル"
 
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:511
+#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:544
 msgctxt "@label"
 msgid "Custom Material"
 msgstr "カスタムフィラメント"
 
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:512
+#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:545
 msgctxt "@label"
 msgid "Custom"
 msgstr "カスタム"
 
-#: /home/ruben/Projects/Cura/cura/BuildVolume.py:78
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:80
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
 msgstr "プリントシークエンス設定値により、ガントリーと造形物の衝突を避けるため印刷データの高さを低くしました。"
 
-#: /home/ruben/Projects/Cura/cura/BuildVolume.py:80
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:82
 msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "造形サイズ"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:25
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:99
+msgctxt "@info:backup_failed"
+msgid "Could not create archive from user data directory: {}"
+msgstr "ユーザーデータディレクトリからアーカイブを作成できません: {}"
+
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:104
+msgctxt "@info:title"
+msgid "Backup"
+msgstr "バックアップ"
+
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:116
+msgctxt "@info:backup_failed"
+msgid "Tried to restore a Cura backup without having proper data or meta data."
+msgstr "適切なデータまたはメタデータがないのにCuraバックアップをリストアしようとしました。"
+
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:126
+msgctxt "@info:backup_failed"
+msgid "Tried to restore a Cura backup that does not match your current version."
+msgstr "現行バージョンと一致しないCuraバックアップをリストアしようとしました。"
+
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "造形データを増やす、配置する。"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:26
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:81
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:28
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:99
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "造形データを配置"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:81
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:88
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:152
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:99
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:96
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:149
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "全ての造形物の造形サイズに対し、適切な位置が確認できません"
 
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:29
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:64
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:30
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:66
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "造形物のために新しい位置を探索中"
 
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:33
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:68
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:34
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:70
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "位置確認"
 
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:89
-#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:153
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:97
+#: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "位置を確保できません。"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:88
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:87
 msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Curaを開始できません"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:94
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:93
 msgctxt "@label crash message"
 msgid ""
 "<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>\n"
@@ -1152,32 +1082,32 @@ msgid ""
 "                "
 msgstr "<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n                    <p>バックアップは、設定フォルダに保存されます。</p>\n                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n                "
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:103
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
 msgid "Send crash report to Ultimaker"
 msgstr "クラッシュ報告をUltimakerに送信する"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:106
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:105
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "詳しいクラッシュ報告を表示する"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:110
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:109
 msgctxt "@action:button"
 msgid "Show configuration folder"
 msgstr "コンフィグレーションのフォルダーを表示する"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:121
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:120
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "バックアップとリセットの設定"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:203
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:149
 msgctxt "@title:window"
 msgid "Crash Report"
 msgstr "クラッシュ報告"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:223
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:169
 msgctxt "@label crash message"
 msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
@@ -1185,118 +1115,118 @@ msgid ""
 "        "
 msgstr "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n        "
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:231
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
 msgid "System information"
 msgstr "システム情報"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:239
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:185
 msgctxt "@label unknown version of Cura"
 msgid "Unknown"
 msgstr "不明"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:241
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:187
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Curaバージョン"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:242
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:188
 msgctxt "@label Type of platform"
 msgid "Platform"
 msgstr "プラットフォーム"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:243
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:189
 msgctxt "@label"
 msgid "Qt version"
 msgstr "Qtバージョン"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:244
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:190
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQtバージョン"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:245
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:191
 msgctxt "@label OpenGL version"
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:262
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:208
 msgctxt "@label"
 msgid "Not yet initialized<br/>"
 msgstr "初期化されていません<br/>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:265
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:211
 #, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGLバージョン: {version}</li>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:266
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:212
 #, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGLベンダー: {vendor}</li>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:267
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:213
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGLレンダラー: {renderer}</li>"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:276
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:222
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "エラー・トレースバック"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:357
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:303
 msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "ログ"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:380
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:326
 msgctxt "@title:groupbox"
 msgid "User description"
 msgstr "ユーザー詳細"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:399
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:345
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "レポート送信"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:300
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:328
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "プリンターを読み込み中…"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:712
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:756
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "シーンをセットアップ中…"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:751
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:789
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "インターフェイスを読み込み中…"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:975
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1023
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1567
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1581
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "一度に一つのG-codeしか読み取れません。{0}の取り込みをスキップしました。"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1576
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1591
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-codeを読み込み中は他のファイルを開くことができません。{0}の取り込みをスキップしました。"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1661
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1680
 msgctxt "@info:status"
 msgid "The selected model was too small to load."
 msgstr "選択したモデルは読み込むのに小さすぎます。"
@@ -1484,6 +1414,149 @@ msgctxt "@label"
 msgid "Extruder End G-code"
 msgstr "エクストルーダーがG-Codeを終了する"
 
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:17
+msgctxt "@action:button"
+msgid "Install"
+msgstr "インストール"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
+msgctxt "@action:button"
+msgid "Installed"
+msgstr "インストールした"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
+msgctxt "@info"
+msgid "Could not connect to the Cura Package database. Please check your connection."
+msgstr "Curaパッケージデータベースに接続できません。接続を確認してください。"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:35
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:26
+msgctxt "@title:tab"
+msgid "Plugins"
+msgstr "プラグイン"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
+msgctxt "@label"
+msgid "Version"
+msgstr "バージョン"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
+msgctxt "@label"
+msgid "Last updated"
+msgstr "最終更新日"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
+msgctxt "@label"
+msgid "Author"
+msgstr "著者"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:109
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:269
+msgctxt "@label"
+msgid "Unknown"
+msgstr "不明"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:44
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:30
+msgctxt "@action:button"
+msgid "Update"
+msgstr "アップデート"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:45
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
+msgctxt "@action:button"
+msgid "Updating"
+msgstr "更新中"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
+msgctxt "@action:button"
+msgid "Updated"
+msgstr "更新済み"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
+msgctxt "@title"
+msgid "Toolbox"
+msgstr "ツールボックス"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
+msgctxt "@action:button"
+msgid "Back"
+msgstr "戻る"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
+msgctxt "@info"
+msgid "You will need to restart Cura before changes in packages have effect."
+msgstr "パッケージへの変更を有効にするためにCuraを再起動する必要があります。"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:32
+msgctxt "@info:button"
+msgid "Quit Cura"
+msgstr "Curaを終了する"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:54
+msgctxt "@title:tab"
+msgid "Installed"
+msgstr "インストールした"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
+msgctxt "@label"
+msgid "Will install upon restarting"
+msgstr "再起動時にインストール"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+msgctxt "@action:button"
+msgid "Downgrade"
+msgstr "ダウングレード"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+msgctxt "@action:button"
+msgid "Uninstall"
+msgstr "アンインストール"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
+msgctxt "@title:window"
+msgid "Plugin License Agreement"
+msgstr "プラグインライセンス同意書"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:33
+msgctxt "@label"
+msgid ""
+"This plugin contains a license.\n"
+"You need to accept this license to install this plugin.\n"
+"Do you agree with the terms below?"
+msgstr "このプラグインにはライセンスが含まれています。\nこのプラグインをインストールするにはこのライセンスに同意する必要があります。\n下の利用規約に同意しますか？"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
+msgctxt "@action:button"
+msgid "Accept"
+msgstr "承認する"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:65
+msgctxt "@action:button"
+msgid "Decline"
+msgstr "拒否する"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:17
+msgctxt "@label"
+msgid "Featured"
+msgstr "特長"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:20
+msgctxt "@label"
+msgid "Compatibility"
+msgstr "互換性"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
+msgctxt "@info"
+msgid "Fetching packages..."
+msgstr "パッケージ取得中"
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:87
+msgctxt "@label"
+msgid "Contact"
+msgstr "連絡"
+
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
 msgid "Some things could be problematic in this print. Click to see tips for adjustment."
@@ -1497,10 +1570,8 @@ msgstr "Changelogの表示"
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:37
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:84
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:56
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:306
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:464
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:509
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:173
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:121
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
 #: /home/ruben/Projects/Cura/resources/qml/EngineLog.qml:38
@@ -1542,6 +1613,11 @@ msgstr "インプット/アウトプットエラーによりファームウェ�
 msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "ファームウェアが見つからず、ファームウェアアップデート失敗しました。"
+
+#: /home/ruben/Projects/Cura/plugins/UserAgreement/UserAgreement.qml:16
+msgctxt "@title:window"
+msgid "User Agreement"
+msgstr "ユーザー用使用許諾契約"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:57
 msgctxt "@window:title"
@@ -1590,73 +1666,59 @@ msgctxt "@action:button"
 msgid "Refresh"
 msgstr "更新"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:215
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:218
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "お持ちのプリンターがリストにない場合、<a href='%1'>ネットワーク・プリンティング・トラブルシューティング・ガイド</a>を読んでください。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:242
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:245
 msgctxt "@label"
 msgid "Type"
 msgstr "タイプ"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:254
-msgctxt "@label"
-msgid "Ultimaker 3"
-msgstr "Ultimaker 3"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:257
-msgctxt "@label"
-msgid "Ultimaker 3 Extended"
-msgstr "Ultimaker 3 Extended"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:260
-msgctxt "@label"
-msgid "Unknown"
-msgstr "不明"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:273
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:282
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "ファームウェアバージョン"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:285
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:294
 msgctxt "@label"
 msgid "Address"
 msgstr "アドレス"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:307
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:316
 msgctxt "@label"
 msgid "This printer is not set up to host a group of Ultimaker 3 printers."
 msgstr "Ultimaker３のグループをホストするために設定されていません。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:311
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:320
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
 msgstr "このプリンターはUltimaker3　%1グループのホストプリンターです。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:321
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:330
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "このアドレスのプリンターは応答していません。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:326
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:335
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:39
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "接続"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:340
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:349
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "プリンターアドレス"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:370
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:377
 msgctxt "@alabel"
 msgid "Enter the IP address or hostname of your printer on the network."
 msgstr "ネットワーク内のプリンターのIPアドレスまたはホストネームを入力してください。"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:400
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:407
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:132
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:181
 msgctxt "@action:button"
 msgid "OK"
@@ -1831,174 +1893,6 @@ msgctxt "@action:button"
 msgid "Activate Configuration"
 msgstr "プリント構成をアクティベートする"
 
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:21
-msgctxt "@title:window"
-msgid "SolidWorks: Export wizard"
-msgstr "ソリッドワークス: エクスポートウィザード"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:45
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:140
-msgctxt "@action:label"
-msgid "Quality:"
-msgstr "品質:  "
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:78
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:179
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Fine (3D-printing)"
-msgstr "精細 (3Dプリント)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:79
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:180
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Coarse (3D-printing)"
-msgstr "大まか (3Dプリント)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:80
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:181
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Fine (SolidWorks)"
-msgstr "精細 (ソリッドワークス)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:81
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:182
-msgctxt "@option:curaSolidworksStlQuality"
-msgid "Coarse (SolidWorks)"
-msgstr "大まか (ソリッドワークス)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:94
-msgctxt "@text:window"
-msgid "Show this dialog again"
-msgstr "このダイアログを再度表示する"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:104
-msgctxt "@action:button"
-msgid "Continue"
-msgstr "続行"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:116
-msgctxt "@action:button"
-msgid "Abort"
-msgstr "中断"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:21
-msgctxt "@title:window"
-msgid "How to install Cura SolidWorks macro"
-msgstr "Curaソリッドワークス・マクロのインストール方法"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:62
-msgctxt "@description:label"
-msgid "Steps:"
-msgstr "ステップ:  "
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:140
-msgctxt "@action:button"
-msgid ""
-"Open the directory\n"
-"with macro and icon"
-msgstr "ディレクトリーを開きます\n(マクロとアイコンで)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:160
-msgctxt "@description:label"
-msgid "Instructions:"
-msgstr "指示:  "
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:202
-msgctxt "@action:playpause"
-msgid "Play"
-msgstr "実行"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:206
-msgctxt "@action:playpause"
-msgid "Pause"
-msgstr "一時停止"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:268
-msgctxt "@action:button"
-msgid "Previous Step"
-msgstr "前のステップ"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:283
-msgctxt "@action:button"
-msgid "Done"
-msgstr "完了"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:287
-msgctxt "@action:button"
-msgid "Next Step"
-msgstr "次のステップ"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:21
-msgctxt "@title:window"
-msgid "SolidWorks plugin: Configuration"
-msgstr "ソリッドワークスプラグイン: コンフィグレーション"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:39
-msgctxt "@title:tab"
-msgid "Conversion settings"
-msgstr "変換設定"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:66
-msgctxt "@label"
-msgid "First choice:"
-msgstr "最初の選択:  "
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:86
-msgctxt "@text:menu"
-msgid "Latest installed version (Recommended)"
-msgstr "インストールされている最新バージョン (推奨)"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:95
-msgctxt "@text:menu"
-msgid "Default version"
-msgstr "デフォルトバージョン"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:193
-msgctxt "@label"
-msgid "Show wizard before opening SolidWorks files"
-msgstr "ソリッドワークスのファイルを開く前にウィザードを表示"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:203
-msgctxt "@label"
-msgid "Automatically rotate opened file into normed orientation"
-msgstr "開いたファイルを自動的に正規の向きに回転"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:210
-msgctxt "@title:tab"
-msgid "Installation(s)"
-msgstr "インストール"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:284
-msgctxt "@label"
-msgid "COM service found"
-msgstr "COMサービスが存在"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:295
-msgctxt "@label"
-msgid "Executable found"
-msgstr "実行ファイルが存在"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:306
-msgctxt "@label"
-msgid "COM starting"
-msgstr "COM開始"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:317
-msgctxt "@label"
-msgid "Revision number"
-msgstr "改訂番号"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:328
-msgctxt "@label"
-msgid "Functions available"
-msgstr "利用可能な関数"
-
-#: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:341
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:289
-msgctxt "@action:button"
-msgid "Save"
-msgstr "保存"
-
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:117
 msgctxt "@label"
 msgid "Color scheme"
@@ -2103,6 +1997,26 @@ msgstr "設定"
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts"
 msgstr "処理したスクリプトを変更する"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
+msgctxt "@title:window"
+msgid "More information on anonymous data collection"
+msgstr "匿名データの収集に関する詳細"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:66
+msgctxt "@text:window"
+msgid "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
+msgstr "Curaは印刷の品質とユーザー体験を向上させるために匿名のデータをUltimakerに送信します。以下は送信される全テータの例です。"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:101
+msgctxt "@text:window"
+msgid "I don't want to send these data"
+msgstr "そのようなデータは送信しない"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:111
+msgctxt "@text:window"
+msgid "Allow sending these data to Ultimaker and help us improve Cura"
+msgstr "Ultimakerへのデータ送信を許可し、Curaの改善を手助けする"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -2242,13 +2156,13 @@ msgid "Create new"
 msgstr "新しいものを作成する"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:72
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:68
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "サマリーCuraプロジェクト"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:92
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:90
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:92
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "プリンターの設定"
@@ -2265,7 +2179,7 @@ msgid "Update"
 msgstr "アップデート"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:143
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:99
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:101
 msgctxt "@action:label"
 msgid "Type"
 msgstr "タイプ"
@@ -2276,7 +2190,7 @@ msgid "Printer Group"
 msgstr "プリンターグループ"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:180
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:191
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:192
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "プロファイル設定"
@@ -2288,20 +2202,20 @@ msgstr "このプロファイルの問題をどのように解決すればいい
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:216
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:308
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:215
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:216
 msgctxt "@action:label"
 msgid "Name"
 msgstr "ネーム"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:199
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:200
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "プロファイル内にない"
 
 # Can’t edit the Japanese text
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:236
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:204
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:205
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2332,7 +2246,7 @@ msgid "How should the conflict in the material be resolved?"
 msgstr "このフィラメントの問題をどのように解決すればいいか？"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:327
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:234
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:233
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "視野設定"
@@ -2343,13 +2257,13 @@ msgid "Mode"
 msgstr "モード"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:352
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:243
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:242
 msgctxt "@action:label"
 msgid "Visible settings:"
 msgstr "ビジブル設定:"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:357
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:248
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:247
 msgctxt "@action:label"
 msgid "%1 out of %2"
 msgstr "%2のうち%1"
@@ -2363,49 +2277,6 @@ msgstr "プロジェクトを読み込むとビルドプレート上のすべて
 msgctxt "@action:button"
 msgid "Open"
 msgstr "開く"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:127
-msgctxt "@action:button"
-msgid "Update"
-msgstr "アップデート"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginEntry.qml:129
-msgctxt "@action:button"
-msgid "Install"
-msgstr "インストール"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:17
-msgctxt "@title:tab"
-msgid "Plugins"
-msgstr "プラグイン"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:216
-msgctxt "@title:window"
-msgid "Plugin License Agreement"
-msgstr "プラグインライセンス同意書"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:237
-msgctxt "@label"
-msgid ""
-"This plugin contains a license.\n"
-"You need to accept this license to install this plugin.\n"
-"Do you agree with the terms below?"
-msgstr "このプラグインにはライセンスが含まれています。\nこのプラグインをインストールするにはこのライセンスに同意する必要があります。\n下の利用規約に同意しますか？"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:259
-msgctxt "@action:button"
-msgid "Accept"
-msgstr "承認する"
-
-#: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:270
-msgctxt "@action:button"
-msgid "Decline"
-msgstr "拒否する"
-
-#: /home/ruben/Projects/Cura/plugins/UserAgreementPlugin/UserAgreement.qml:16
-msgctxt "@title:window"
-msgid "User Agreement"
-msgstr "ユーザー用使用許諾契約"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:26
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
@@ -2581,72 +2452,72 @@ msgctxt "@label"
 msgid "Everything is in order! You're done with your CheckUp."
 msgstr "すべてに異常はありません。チェックアップを終了しました。"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:117
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"
 msgid "Not connected to a printer"
 msgstr "プリンターにつながっていません。"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:121
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:123
 msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "今プリンタはコマンドを処理できません。"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:131
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:133
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:197
 msgctxt "@label:MonitorStatus"
 msgid "In maintenance. Please check the printer"
 msgstr "メンテナンス。プリンターをチェックしてください。"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:142
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:144
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "プリンターへの接続が切断されました。"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:144
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:146
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:187
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
 msgstr "プリント中"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:147
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:149
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:189
 msgctxt "@label:MonitorStatus"
 msgid "Paused"
 msgstr "一時停止しました"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:150
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:152
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:191
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
 msgstr "準備中"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:152
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:154
 msgctxt "@label:MonitorStatus"
 msgid "Please remove the print"
 msgstr "造形物を取り出してください。"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:282
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:291
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:284
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:293
 msgctxt "@label:"
 msgid "Pause"
 msgstr "一時停止"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:287
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:289
 msgctxt "@label:"
 msgid "Resume"
 msgstr "再開"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:323
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:325
 msgctxt "@label:"
 msgid "Abort Print"
 msgstr "プリント中止"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:333
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:335
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "プリント中止"
 
-#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:335
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:337
 msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "本当にプリントを中止してもいいですか。"
@@ -2679,19 +2550,19 @@ msgid "Customized"
 msgstr "カスタマイズ"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:157
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:595
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:634
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "毎回確認する"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:158
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:596
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:635
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr "取り消し、再度確認しない。"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:159
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:597
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:636
 msgctxt "@option:discardOrKeep"
 msgid "Keep and never ask again"
 msgstr "キープし、再度確認しない。"
@@ -2722,9 +2593,9 @@ msgid "Confirm Diameter Change"
 msgstr "直径変更の確認"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:95
-msgctxt "@label (%1 is object name)"
-msgid "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?"
-msgstr "新しい材料の直径は %1 mm に設定されています。これは現在のマシンに適応していません。続行しますか？"
+msgctxt "@label (%1 is a number)"
+msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
+msgstr "新しいフィラメントの直径は %1 mm に設定されています。これは現在のエクストルーダーに適応していません。続行しますか？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:128
 msgctxt "@label"
@@ -2841,264 +2712,279 @@ msgctxt "@title:column"
 msgid "Unit"
 msgstr "ユニット"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:14
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:536
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:15
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:531
 msgctxt "@title:tab"
 msgid "General"
 msgstr "一般"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:128
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:141
 msgctxt "@label"
 msgid "Interface"
 msgstr "インターフェイス"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:139
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:152
 msgctxt "@label"
 msgid "Language:"
 msgstr "言語:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:207
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:220
 msgctxt "@label"
 msgid "Currency:"
 msgstr "通貨:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:221
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:234
 msgctxt "@label"
 msgid "Theme:"
 msgstr "テーマ:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:281
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:294
 msgctxt "@label"
 msgid "You will need to restart the application for these changes to have effect."
 msgstr "それらの変更を有効にするためにはアプリケーションを再起動しなけらばなりません。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:298
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:311
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "セッティングを変更すると自動にスライスします。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:306
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:319
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "自動的にスライスする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:320
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:333
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "ビューポイント機能"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:328
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:341
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 msgstr "赤でサポートができないエリアをハイライトしてください。サポートがない場合、正確にプリントができない場合があります。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:337
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:350
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "ディスプレイオーバーハング"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:344
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
 msgstr "モデルの選択時にモデルがカメラの中心に見えるようにカメラを移動する"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:349
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:362
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "アイテムを選択するとカメラが中心にきます"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:358
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "Curaのデフォルトのズーム機能は変更できるべきか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:363
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "カメラのズーム方向を反転する"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:372
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:386
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "ズームはマウスの方向に動くべきか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:377
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "マウスの方向にズームする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:386
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:401
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "交差を避けるためにプラットホーム上のモデルを移動するべきですか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:406
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "モデルの距離が離れているように確認する"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:399
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:415
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "プラットホーム上のモデルはブルドプレートに触れるように下げるべきか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:404
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:420
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "自動的にモデルをビルドプレートに落とす"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:416
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:432
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "G-codeリーダーに注意メッセージを表示します。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:425
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:441
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "G-codeリーダーに注意メッセージ"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:432
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:449
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "レイヤーはコンパティビリティモードに強制されるべきか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:437
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:454
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "レイヤービューコンパティビリティモードを強制する。（再起動が必要）"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:453
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:470
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "ファイルを開くまた保存"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:459
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:477
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "モデルがビルドボリュームに対して大きすぎる場合はスケールされるべきか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:464
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:482
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "大きなモデルをスケールする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:473
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:492
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "ユニット値がミリメートルではなくメートルの場合、モデルが極端に小さく現れる場合があります。モデルはスケールアップされるべきですか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:478
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:497
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "極端に小さなモデルをスケールアップする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:487
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:507
+msgctxt "@info:tooltip"
+msgid "Should models be selected after they are loaded?"
+msgstr "モデルはロード後に選択しますか？"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:512
+msgctxt "@option:check"
+msgid "Select models when loaded"
+msgstr "ロード後にモデルを選択"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "プリンター名の敬称はプリントジョブの名前に自動的に加えられるべきか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:492
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:527
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "プリンターの敬称をジョブネームに加える"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:501
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "プロジェクトファイルを保存時にサマリーを表示するべきか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:505
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:541
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "プロジェクトを保存時にダイアログサマリーを表示する"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:514
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:551
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "プロジェクトファイルを開く際のデフォルト機能"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:559
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "プロジェクトファイル開く際のデフォルト機能:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:535
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:573
 msgctxt "@option:openProject"
 msgid "Always ask"
 msgstr "いつもお尋ねください。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:536
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:574
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "常にプロジェクトとして開く"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:575
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "常にモデルを取り込む"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:573
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:611
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "プロファイル内を変更し異なるプロファイルにしました、どこの変更点を保持、破棄したいのダイアログが表示されます、また何度もダイアログが表示されないようにデフォルト機能を選ぶことができます。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:582
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:620
 msgctxt "@label"
 msgid "Override Profile"
 msgstr "プロファイルを無効にする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:631
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:670
 msgctxt "@label"
 msgid "Privacy"
 msgstr "プライバシー"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:638
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:678
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
 msgstr "Curaのプログラム開始時にアップデートがあるかチェックしますか？"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:643
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:683
 msgctxt "@option:check"
 msgid "Check for updates on start"
 msgstr "スタート時にアップデートあるかどうかのチェック"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:653
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:694
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "プリンターの不明なデータをUltimakerにおくりますか？メモ、モデル、IPアドレス、個人的な情報は送信されたり保存されたりはしません。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:658
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr " (不特定な) プリントインフォメーションを送信"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:674
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:708
+msgctxt "@action:button"
+msgid "More information"
+msgstr "詳細"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:726
 msgctxt "@label"
 msgid "Experimental"
 msgstr "実験"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:680
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:733
 msgctxt "@info:tooltip"
 msgid "Use multi build plate functionality"
 msgstr "マルチビルドプレート機能を使用"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:685
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:738
 msgctxt "@option:check"
 msgid "Use multi build plate functionality (restart required)"
 msgstr "マルチビルドプレート機能を使用 (再起動が必要)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:694
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:748
 msgctxt "@info:tooltip"
 msgid "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)"
 msgstr "新たにロードしたモデルをビルドプレート上に配置すべきですか? マルチビルドプレートと共に使用 (実験的)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:753
 msgctxt "@option:check"
 msgid "Do not arrange objects on load"
 msgstr "ロード時にオブジェクトを配置しません"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:541
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:536
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "プリンター"
@@ -3153,7 +3039,7 @@ msgid "Aborting print..."
 msgstr "プリントを停止します…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:36
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:545
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:540
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "プロファイル"
@@ -3258,7 +3144,7 @@ msgid "Global Settings"
 msgstr "グローバル設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:40
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:543
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:538
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "マテリアル"
@@ -3311,7 +3197,7 @@ msgid "Printer"
 msgstr "プリンター"
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:891
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:896
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "プリンターを追加する"
@@ -3461,43 +3347,53 @@ msgid ""
 "Click to open the profile manager."
 msgstr "いくらかの設定プロファイルにある値とことなる場合無効にします。\nプロファイルマネージャーをクリックして開いてください。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:190
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:199
 msgctxt "@label:textbox"
 msgid "Search..."
 msgstr "検索…"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:530
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:544
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "すべてのエクストルーダーの値をコピーする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:539
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:553
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "すべてのエクストルーダーに対して変更された値をコピーする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:554
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:568
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "この設定を非表示にする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:572
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:586
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "この設定を表示しない"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:576
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:590
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "常に見えるように設定する"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:600
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:614
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:426
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "視野のセッティングを構成する"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:251
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:621
+msgctxt "@action:inmenu"
+msgid "Collapse All"
+msgstr "すべて折りたたむ"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:626
+msgctxt "@action:inmenu"
+msgid "Expand All"
+msgstr "すべて展開する"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:249
 msgctxt "@label"
 msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
@@ -3541,60 +3437,6 @@ msgid ""
 "Click to restore the calculated value."
 msgstr "このセッティングは通常計算されます、今は絶対値に固定されています。\n計算された値に変更するためにクリックを押してください。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:152
-msgctxt "@label:listbox"
-msgid "Print Setup"
-msgstr "プリントセットアップ"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:152
-msgctxt "@label:listbox"
-msgid ""
-"Print Setup disabled\n"
-"G-code files cannot be modified"
-msgstr "プリントセットアップが無効\nG-codeファイルを修正することができません。"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:380
-msgctxt "@label Hours and minutes"
-msgid "00h 00min"
-msgstr "00時間 00分"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:398
-msgctxt "@tooltip"
-msgid "Time specification"
-msgstr "時間仕様"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:480
-msgctxt "@label"
-msgid "Cost specification"
-msgstr "コスト仕様"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:485
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:494
-msgctxt "@label m for meter"
-msgid "%1m"
-msgstr "%1m"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:486
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:495
-msgctxt "@label g for grams"
-msgid "%1g"
-msgstr "%1g"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:493
-msgctxt "@label"
-msgid "Total:"
-msgstr "合計:"
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:628
-msgctxt "@tooltip"
-msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
-msgstr "<b>おすすめプリントセットアップ</b><br/><br/>選択されたプリンターにておすすめの設定、フィラメント、質にてプリントしてください。 "
-
-#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:633
-msgctxt "@tooltip"
-msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
-msgstr "<b>カスタムプリントセットアップ</b><br/><br/>スライス処理のきめ細かなコントロールにてプリントする"
-
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:129
 msgctxt "@label"
 msgid "Printer control"
@@ -3631,7 +3473,7 @@ msgid "Send a custom G-code command to the connected printer. Press 'enter' to s
 msgstr "カスタムG-codeコマンドを接続されているプリンターに送信します。「Enter」を押してコマンドを送信します。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:36
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:256
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:268
 msgctxt "@label"
 msgid "Extruder"
 msgstr "エクストルーダー"
@@ -3684,7 +3526,7 @@ msgid "The nozzle inserted in this extruder."
 msgstr "ノズルが入ったエクストルーダー"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:25
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:472
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:489
 msgctxt "@label"
 msgid "Build plate"
 msgstr "ビルドプレート"
@@ -3737,7 +3579,7 @@ msgstr "ビルドプレート (&B)"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
-msgstr "ビジブル設定:"
+msgstr "ビジブル設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:43
 msgctxt "@action:inmenu"
@@ -3778,10 +3620,74 @@ msgctxt "@label:extruder label"
 msgid "Extruder"
 msgstr "エクストルーダー"
 
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
+msgctxt "@label:extruder label"
+msgid "Yes"
+msgstr "はい"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/SyncButton.qml:16
+msgctxt "@label:extruder label"
+msgid "No"
+msgstr "いいえ"
+
 #: /home/ruben/Projects/Cura/resources/qml/Menus/RecentFilesMenu.qml:13
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "最近開いたファイルを開く"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:150
+msgctxt "@label:listbox"
+msgid "Print Setup"
+msgstr "プリントセットアップ"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:150
+msgctxt "@label:listbox"
+msgid ""
+"Print Setup disabled\n"
+"G-code files cannot be modified"
+msgstr "プリントセットアップが無効\nG-codeファイルを修正することができません。"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:341
+msgctxt "@label Hours and minutes"
+msgid "00h 00min"
+msgstr "00時間 00分"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:359
+msgctxt "@tooltip"
+msgid "Time specification"
+msgstr "時間仕様"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:441
+msgctxt "@label"
+msgid "Cost specification"
+msgstr "コスト仕様"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:446
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:455
+msgctxt "@label m for meter"
+msgid "%1m"
+msgstr "%1m"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:447
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:456
+msgctxt "@label g for grams"
+msgid "%1g"
+msgstr "%1g"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:454
+msgctxt "@label"
+msgid "Total:"
+msgstr "合計:"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:577
+msgctxt "@tooltip"
+msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
+msgstr "<b>おすすめプリントセットアップ</b><br/><br/>選択されたプリンターにておすすめの設定、フィラメント、質にてプリントしてください。 "
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:582
+msgctxt "@tooltip"
+msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
+msgstr "<b>カスタムプリントセットアップ</b><br/><br/>スライス処理のきめ細かなコントロールにてプリントする"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:107
 msgctxt "@label"
@@ -4017,8 +3923,8 @@ msgstr "コンフィグレーションのフォルダーを表示する"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:433
 msgctxt "@action:menu"
-msgid "Browse plugins..."
-msgstr "プラグインをみる"
+msgid "Browse packages..."
+msgstr "パッケージを見る…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:440
 msgctxt "@action:inmenu menubar:view"
@@ -4081,7 +3987,7 @@ msgid "Select the active output device"
 msgstr "アクティブなアウトプットデバイスを選択する"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:19
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:718
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:713
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "ファイルを開く"
@@ -4152,78 +4058,78 @@ msgid "Set as Active Extruder"
 msgstr "アクティブエクストルーダーとしてセットする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:210
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:172
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:184
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "エクストルーダーを有効にする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:217
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:178
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:190
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "エクストルーダーを無効にする"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:228
-msgctxt "@title:menu"
-msgid "&Build plate"
-msgstr "ビルドプレート (&B)"
-
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:229
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
 msgctxt "@title:menu"
 msgid "&Profile"
 msgstr "&プロファイル"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:239
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:240
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "拡張子"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:273
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:274
 msgctxt "@title:menu menubar:toplevel"
-msgid "P&lugins"
-msgstr "プラグイン"
+msgid "&Toolbox"
+msgstr "&ツールボックス"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:280
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:281
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
 msgstr "プレファレンス"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:288
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:289
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "ヘルプ"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:370
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:335
+msgctxt "@label"
+msgid "This package will be installed after restarting."
+msgstr "このパッケージは再起動後にインストールされます。"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:364
 msgctxt "@action:button"
 msgid "Open File"
 msgstr "ファイルを開く"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:539
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:534
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "設定"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:584
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:579
 msgctxt "@title:window"
 msgid "New project"
 msgstr "新しいプロジェクト…"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:585
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:580
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 msgstr "新しいプロジェクトを開始しますか？この作業では保存していない設定やビルドプレートをクリアします。"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:819
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:814
 msgctxt "@window:title"
-msgid "Install Plugin"
-msgstr "プラグインをインストール"
+msgid "Install Package"
+msgstr "パッケージをインストール"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:826
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:821
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "ファイルを開く(s)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:829
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:824
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "選択したファイルの中に複数のG-codeが存在します。1つのG-codeのみ一度に開けます。G-codeファイルを開く場合は、1点のみ選んでください。"
@@ -4233,107 +4139,112 @@ msgctxt "@title:window"
 msgid "Save Project"
 msgstr "プロジェクトを保存"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:114
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:116
 msgctxt "@action:label"
 msgid ""
 msgstr ""
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:138
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:133
 msgctxt "@action:label"
 msgid "Build plate"
 msgstr "ビルドプレート"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:161
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:165
 msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "エクストルーダー%1"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:171
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:175
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1とフィラメント"
 
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:267
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:264
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "保存中のプロジェクトサマリーを非表示にする"
+
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:283
+msgctxt "@action:button"
+msgid "Save"
+msgstr "保存"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:175
 msgctxt "@label"
 msgid "Layer Height"
 msgstr "レイヤーの高さ"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:251
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:252
 msgctxt "@tooltip"
 msgid "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile"
 msgstr "この品質プロファイルは現在の材料およびノズル構成では使用できません。この品質プロファイルを使用できるように変更してください。"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:412
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:415
 msgctxt "@tooltip"
 msgid "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab"
 msgstr "カスタムプロファイルが有効になっています。品質スライダーを有効にするには、カスタムタブでデフォルトの品質プロファイルを選択してください"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:429
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:432
 msgctxt "@label"
 msgid "Print Speed"
 msgstr "プリントスピード"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:441
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:444
 msgctxt "@label"
 msgid "Slower"
 msgstr "ゆっくり"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:452
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:455
 msgctxt "@label"
 msgid "Faster"
 msgstr "早く"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:480
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:483
 msgctxt "@tooltip"
 msgid "You have modified some profile settings. If you want to change these go to custom mode."
 msgstr "プロファイルの設定がいくつか変更されました。変更を有効にするにはカスタムモードに移動してください。"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:503
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:506
 msgctxt "@label"
 msgid "Infill"
 msgstr "インフィル"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:737
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:740
 msgctxt "@label"
 msgid "Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "グラデュアルインフィルはトップに向かうに従ってインフィルの量を増やします。"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:749
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:752
 msgctxt "@label"
 msgid "Enable gradual"
 msgstr "グラデュアルを有効にする"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:816
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:819
 msgctxt "@label"
 msgid "Generate Support"
 msgstr "サポートを生成します。"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:850
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:853
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
 msgstr "オーバーハングがあるモデルにサポートを生成します。このサポート構造なしでは、プリント中にオーバーハングのパーツが崩壊してしまいます。"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:922
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:925
 msgctxt "@label"
 msgid "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."
 msgstr "サポートに使うエクストルーダーを選択してください。モデルの垂れや中空プリントを避けるためにモデルの下にサポート構造を生成します。"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:945
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:948
 msgctxt "@label"
 msgid "Build Plate Adhesion"
 msgstr "ビルドプレートの接着"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1000
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1003
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "ブリムまたはラフトのプリントの有効化。それぞれ、プリントの周り、また造形物の下に底面を加え切り取りやすくします。"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1040
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1043
 msgctxt "@label"
 msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
 msgstr "プリントにヘルプが必要ですか？<br> <a href='%1'>Ultimakerトラブルシューティングガイド</a>を読んでください。"
@@ -4375,22 +4286,27 @@ msgctxt "@title:window"
 msgid "Engine Log"
 msgstr "エンジンログ"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:58
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:70
 msgctxt "@label"
 msgid "Printer type"
-msgstr "プリンタータイプ:"
+msgstr "プリンタータイプ"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:360
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:372
 msgctxt "@label"
 msgid "Material"
 msgstr "フィラメント"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:536
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:538
+msgctxt "@label"
+msgid "Use adhesion sheet or glue with this material combination"
+msgstr "密着性シートを使用する、またはこの材料の組み合わせで接着する"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:570
 msgctxt "@label"
 msgid "Check compatibility"
 msgstr "互換性の確認"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:554
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:588
 msgctxt "@tooltip"
 msgid "Click to check the material compatibility on Ultimaker.com."
 msgstr "Ultimaker.comにてマテリアルのコンパティビリティを調べるためにクリック"
@@ -4412,13 +4328,23 @@ msgstr "現在のビルドプレートを配置"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
 msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings action"
 msgstr "プリンターの設定アクション"
+
+#: Toolbox/plugin.json
+msgctxt "description"
+msgid "Find, manage and install new Cura packages."
+msgstr "新しいCuraパッケージを検索、管理、インストールします。"
+
+#: Toolbox/plugin.json
+msgctxt "name"
+msgid "Toolbox"
+msgstr "ツールボックス"
 
 #: XRayView/plugin.json
 msgctxt "description"
@@ -4510,6 +4436,26 @@ msgctxt "name"
 msgid "USB printing"
 msgstr "USBプリンティング"
 
+#: UserAgreement/plugin.json
+msgctxt "description"
+msgid "Ask the user once if he/she agrees with our license."
+msgstr "ライセンスに同意するかどうかユーザーに1回だけ確認する"
+
+#: UserAgreement/plugin.json
+msgctxt "name"
+msgid "UserAgreement"
+msgstr "UserAgreement"
+
+#: X3GWriter/plugin.json
+msgctxt "description"
+msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
+msgstr "結果スライスをX3Gファイルとして保存して、このフォーマット（Malyan、Makerbot、およびその他のSailfishベースのプリンター）を読むプリンターをサポートできるようにします。"
+
+#: X3GWriter/plugin.json
+msgctxt "name"
+msgid "X3GWriter"
+msgstr "X3GWriter"
+
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
 msgid "Writes g-code to a compressed archive."
@@ -4562,7 +4508,7 @@ msgstr "取り外し可能なドライブアウトプットデバイスプラグ
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker 3 printers"
+msgid "Manages network connections to Ultimaker 3 printers."
 msgstr "Ultimaker3のプリンターのネットワーク接続を管理する。"
 
 #: UM3NetworkPrinting/plugin.json
@@ -4589,16 +4535,6 @@ msgstr "ファームウェアアップデートをチェックする"
 msgctxt "name"
 msgid "Firmware Update Checker"
 msgstr "ファームウェアアップデートチェッカー"
-
-#: CuraSolidWorksPlugin/plugin.json
-msgctxt "description"
-msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
-msgstr "ソリッドワークス自体を使って特定のファイルを開くことが可能です。変換はこのプラグインによって行われ、追加の最適化も行われます。"
-
-#: CuraSolidWorksPlugin/plugin.json
-msgctxt "name"
-msgid "SolidWorks Integration"
-msgstr "ソリッドワークスインタグレーション"
 
 #: SimulationView/plugin.json
 msgctxt "description"
@@ -4639,16 +4575,6 @@ msgstr "特定箇所のサポートを印刷するブロックを消去するメ
 msgctxt "name"
 msgid "Support Eraser"
 msgstr "サポート消去機能"
-
-#: AutoSave/plugin.json
-msgctxt "description"
-msgid "Automatically saves Preferences, Machines and Profiles after changes."
-msgstr "変更後プリンターやプロファイルプレファレンスを自動的に保存します、"
-
-#: AutoSave/plugin.json
-msgctxt "name"
-msgid "Auto Save"
-msgstr "自動保存"
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
@@ -4709,6 +4635,16 @@ msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレ�
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
 msgstr "3.2から3.3にバージョンアップグレート"
+
+#: VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート"
+
+#: VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "3.3から3.4にバージョンアップグレート"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -4800,16 +4736,6 @@ msgctxt "name"
 msgid "Per Model Settings Tool"
 msgstr "各モデル設定ツール"
 
-#: cura-siemensnx-plugin/plugin.json
-msgctxt "description"
-msgid "Helps you to install an 'export to Cura' button in Siemens NX."
-msgstr "Siemens NXの「Curaにエクスポート」ボタンをインストールできるようにします。"
-
-#: cura-siemensnx-plugin/plugin.json
-msgctxt "name"
-msgid "Siemens NX Integration"
-msgstr "Siemens NX Integration"
-
 #: 3MFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
@@ -4819,16 +4745,6 @@ msgstr "３MFファイルを読むこむためのサポートを供給する"
 msgctxt "name"
 msgid "3MF Reader"
 msgstr "3MFリーダー"
-
-#: PluginBrowser/plugin.json
-msgctxt "description"
-msgid "Find, manage and install new plugins."
-msgstr "探す、新しいプラグインを管理、インストール"
-
-#: PluginBrowser/plugin.json
-msgctxt "name"
-msgid "Plugin Browser"
-msgstr "プラグインブラウザー"
 
 #: SolidView/plugin.json
 msgctxt "description"
@@ -4870,19 +4786,9 @@ msgctxt "name"
 msgid "3MF Writer"
 msgstr "3MFリーダー"
 
-#: UserAgreementPlugin/plugin.json
-msgctxt "description"
-msgid "Ask the user once if he/she agrees with our license"
-msgstr "ライセンスに同意するかどうかユーザーに1回だけ確認する"
-
-#: UserAgreementPlugin/plugin.json
-msgctxt "name"
-msgid "UserAgreement"
-msgstr "UserAgreement"
-
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
 msgstr "Ultimakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
 
 #: UltimakerMachineActions/plugin.json
@@ -4899,6 +4805,333 @@ msgstr "Curaプロファイルを取り込むためのサポートを供給す�
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Curaプロファイルリーダー"
+
+#~ msgctxt "@info:title"
+#~ msgid "Model Checker Warning"
+#~ msgstr "モデルチェッカー警告"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Some models may not be printed optimally due to object size and chosen material for models: {model_names}.\n"
+#~ "Tips that may be useful to improve the print quality:\n"
+#~ "1) Use rounded corners.\n"
+#~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
+#~ "3) Use a different material."
+#~ msgstr ""
+#~ "オブジェクトサイズや選択した材料などにより一部のモデルが印刷されないことがあります: {model_names}.\n"
+#~ "印刷の品質を高める便利なヒント:\n"
+#~ "1) 縁を丸くする\n"
+#~ "2) ファンを切る（モデルに詳細がない場合のみ）\n"
+#~ "3) 異なる材料を使う"
+
+#~ msgctxt "@info:status"
+#~ msgid "SolidWorks reported errors while opening your file. We recommend to solve these issues inside SolidWorks itself."
+#~ msgstr "ソリッドワークスがファイルを開く際にエラーを報告しました。ソリッドワークス内で問題を解決することをお勧めします。"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Found no models inside your drawing. Could you please check its content again and make sure one part or assembly is inside?\n"
+#~ "\n"
+#~ "Thanks!"
+#~ msgstr ""
+#~ "図面の中にモデルが見つかりません。中身を確認し、パートかアセンブリーが中に入っていることを確認してください。\n"
+#~ "\n"
+#~ " 再確認をお願いします。"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Found more than one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
+#~ "\n"
+#~ "Sorry!"
+#~ msgstr ""
+#~ "図面の中にパートかアセンブリーが2個以上見つかりました。今のところ、本製品はパートかアセンブリーが1個の図面のみに対応しています。\n"
+#~ "\n"
+#~ "申し訳ありません。"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "SolidWorks part file"
+#~ msgstr "ソリッドワークスパートファイル"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "SolidWorks assembly file"
+#~ msgstr "ソリッドワークスアセンブリーファイル"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "SolidWorks drawing file"
+#~ msgstr "ソリッドワークス図面ファイル"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Dear customer,\n"
+#~ "We could not find a valid installation of SolidWorks on your system. That means that either SolidWorks is not installed or you don't own an valid license. Please make sure that running SolidWorks itself works without issues and/or contact your ICT.\n"
+#~ "\n"
+#~ "With kind regards\n"
+#~ " - Thomas Karl Pietrowski"
+#~ msgstr ""
+#~ "お客様へ\n"
+#~ "システム上に正規のソリッドワークスがインストールされていません。つまり、ソリッドワークスがインストールされていないか、有効なライセンスが存在しません。ソリッドワークスだけを問題なく使用できるようになっているか確認するか、自社のIT部門にご相談ください。\n"
+#~ "\n"
+#~ "お願いいたします。\n"
+#~ " - Thomas Karl Pietrowski"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Dear customer,\n"
+#~ "You are currently running this plugin on an operating system other than Windows. This plugin will only work on Windows with SolidWorks installed, including an valid license. Please install this plugin on a Windows machine with SolidWorks installed.\n"
+#~ "\n"
+#~ "With kind regards\n"
+#~ " - Thomas Karl Pietrowski"
+#~ msgstr ""
+#~ "お客様へ\n"
+#~ "このプラグインは現在Windows以外のOSで実行されています。このプラグインは、ソリッドワークスがインストールされたWindowsでしか動作しません。有効なライセンスも必要です。ソリッドワークスがインストールされたWindowsマシンにこのプラグインをインストールしてください。\n"
+#~ "\n"
+#~ "お願いいたします。\n"
+#~ " - Thomas Karl Pietrowski"
+
+#~ msgid "Configure"
+#~ msgstr "構成"
+
+#~ msgid "Installation guide for SolidWorks macro"
+#~ msgstr "ソリッドワークス・マクロのインストールガイド"
+
+#~ msgctxt "@action:button"
+#~ msgid "Disable"
+#~ msgstr "無効化"
+
+#~ msgctxt "@action:tooltip"
+#~ msgid "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."
+#~ msgstr "Curaが匿名化した利用統計を送信することを許可しません。プレファレンスで許可に変更することができます。"
+
+#~ msgid "Install"
+#~ msgstr "インストール"
+
+#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It is not set to a directory."
+#~ msgstr "Siemens NXプラグインファイルのコピーに失敗しました。UGII_USER_DIRを確認してください。ディレクトリに割り当てられていません。"
+
+#~ msgid "Successfully installed Siemens NX Cura plugin."
+#~ msgstr "Siemens NX Curaプラグインを正常にインストールしました。"
+
+#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
+#~ msgstr "Siemens NXプラグインファイルのコピーに失敗しました。UGII_USER_DIRを確認してください。"
+
+#~ msgid "Failed to install Siemens NX plugin. Could not set environment variable UGII_USER_DIR for Siemens NX."
+#~ msgstr "Siemens NXプラグインのインストールに失敗しました。Siemens NX用の環境変数UGII_USER_DIRが設定できませんでした。"
+
+#~ msgctxt "@info:status"
+#~ msgid "Failed to get plugin ID from <filename>{0}</filename>"
+#~ msgstr "<filename>{0}</filename>からプラグインIDを取得することに失敗しました。"
+
+#~ msgctxt "@info:tile"
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#~ msgctxt "@window:title"
+#~ msgid "Plugin browser"
+#~ msgstr "プラグインブラウザー"
+
+#~ msgctxt "@label"
+#~ msgid "Ultimaker 3"
+#~ msgstr "Ultimaker 3"
+
+#~ msgctxt "@label"
+#~ msgid "Ultimaker 3 Extended"
+#~ msgstr "Ultimaker 3 Extended"
+
+#~ msgctxt "@title:window"
+#~ msgid "SolidWorks: Export wizard"
+#~ msgstr "ソリッドワークス: エクスポートウィザード"
+
+#~ msgctxt "@action:label"
+#~ msgid "Quality:"
+#~ msgstr "品質:  "
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Fine (3D-printing)"
+#~ msgstr "精細 (3Dプリント)"
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Coarse (3D-printing)"
+#~ msgstr "大まか (3Dプリント)"
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Fine (SolidWorks)"
+#~ msgstr "精細 (ソリッドワークス)"
+
+#~ msgctxt "@option:curaSolidworksStlQuality"
+#~ msgid "Coarse (SolidWorks)"
+#~ msgstr "大まか (ソリッドワークス)"
+
+#~ msgctxt "@text:window"
+#~ msgid "Show this dialog again"
+#~ msgstr "このダイアログを再度表示する"
+
+#~ msgctxt "@action:button"
+#~ msgid "Continue"
+#~ msgstr "続行"
+
+#~ msgctxt "@action:button"
+#~ msgid "Abort"
+#~ msgstr "中断"
+
+#~ msgctxt "@title:window"
+#~ msgid "How to install Cura SolidWorks macro"
+#~ msgstr "Curaソリッドワークス・マクロのインストール方法"
+
+#~ msgctxt "@description:label"
+#~ msgid "Steps:"
+#~ msgstr "ステップ:  "
+
+#~ msgctxt "@action:button"
+#~ msgid ""
+#~ "Open the directory\n"
+#~ "with macro and icon"
+#~ msgstr ""
+#~ "ディレクトリーを開きます\n"
+#~ "(マクロとアイコンで)"
+
+#~ msgctxt "@description:label"
+#~ msgid "Instructions:"
+#~ msgstr "指示:  "
+
+#~ msgctxt "@action:playpause"
+#~ msgid "Play"
+#~ msgstr "実行"
+
+#~ msgctxt "@action:playpause"
+#~ msgid "Pause"
+#~ msgstr "一時停止"
+
+#~ msgctxt "@action:button"
+#~ msgid "Previous Step"
+#~ msgstr "前のステップ"
+
+#~ msgctxt "@action:button"
+#~ msgid "Done"
+#~ msgstr "完了"
+
+#~ msgctxt "@action:button"
+#~ msgid "Next Step"
+#~ msgstr "次のステップ"
+
+#~ msgctxt "@title:window"
+#~ msgid "SolidWorks plugin: Configuration"
+#~ msgstr "ソリッドワークスプラグイン: コンフィグレーション"
+
+#~ msgctxt "@title:tab"
+#~ msgid "Conversion settings"
+#~ msgstr "変換設定"
+
+#~ msgctxt "@label"
+#~ msgid "First choice:"
+#~ msgstr "最初の選択:  "
+
+#~ msgctxt "@text:menu"
+#~ msgid "Latest installed version (Recommended)"
+#~ msgstr "インストールされている最新バージョン (推奨)"
+
+#~ msgctxt "@text:menu"
+#~ msgid "Default version"
+#~ msgstr "デフォルトバージョン"
+
+#~ msgctxt "@label"
+#~ msgid "Show wizard before opening SolidWorks files"
+#~ msgstr "ソリッドワークスのファイルを開く前にウィザードを表示"
+
+#~ msgctxt "@label"
+#~ msgid "Automatically rotate opened file into normed orientation"
+#~ msgstr "開いたファイルを自動的に正規の向きに回転"
+
+#~ msgctxt "@title:tab"
+#~ msgid "Installation(s)"
+#~ msgstr "インストール"
+
+#~ msgctxt "@label"
+#~ msgid "COM service found"
+#~ msgstr "COMサービスが存在"
+
+#~ msgctxt "@label"
+#~ msgid "Executable found"
+#~ msgstr "実行ファイルが存在"
+
+#~ msgctxt "@label"
+#~ msgid "COM starting"
+#~ msgstr "COM開始"
+
+#~ msgctxt "@label"
+#~ msgid "Revision number"
+#~ msgstr "改訂番号"
+
+#~ msgctxt "@label"
+#~ msgid "Functions available"
+#~ msgstr "利用可能な関数"
+
+#~ msgctxt "@label (%1 is object name)"
+#~ msgid "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?"
+#~ msgstr "新しい材料の直径は %1 mm に設定されています。これは現在のマシンに適応していません。続行しますか？"
+
+#~ msgctxt "@action:menu"
+#~ msgid "Browse plugins..."
+#~ msgstr "プラグインをみる"
+
+#~ msgctxt "@title:menu"
+#~ msgid "&Build plate"
+#~ msgstr "ビルドプレート (&B)"
+
+#~ msgctxt "@title:menu menubar:toplevel"
+#~ msgid "P&lugins"
+#~ msgstr "プラグイン"
+
+#~ msgctxt "@window:title"
+#~ msgid "Install Plugin"
+#~ msgstr "プラグインをインストール"
+
+#~ msgctxt "description"
+#~ msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
+#~ msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
+
+#~ msgctxt "description"
+#~ msgid "Manages network connections to Ultimaker 3 printers"
+#~ msgstr "Ultimaker3のプリンターのネットワーク接続を管理する。"
+
+#~ msgctxt "description"
+#~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
+#~ msgstr "ソリッドワークス自体を使って特定のファイルを開くことが可能です。変換はこのプラグインによって行われ、追加の最適化も行われます。"
+
+#~ msgctxt "name"
+#~ msgid "SolidWorks Integration"
+#~ msgstr "ソリッドワークスインタグレーション"
+
+#~ msgctxt "description"
+#~ msgid "Automatically saves Preferences, Machines and Profiles after changes."
+#~ msgstr "変更後プリンターやプロファイルプレファレンスを自動的に保存します、"
+
+#~ msgctxt "name"
+#~ msgid "Auto Save"
+#~ msgstr "自動保存"
+
+#~ msgctxt "description"
+#~ msgid "Helps you to install an 'export to Cura' button in Siemens NX."
+#~ msgstr "Siemens NXの「Curaにエクスポート」ボタンをインストールできるようにします。"
+
+#~ msgctxt "name"
+#~ msgid "Siemens NX Integration"
+#~ msgstr "Siemens NX Integration"
+
+#~ msgctxt "description"
+#~ msgid "Find, manage and install new plugins."
+#~ msgstr "探す、新しいプラグインを管理、インストール"
+
+#~ msgctxt "name"
+#~ msgid "Plugin Browser"
+#~ msgstr "プラグインブラウザー"
+
+#~ msgctxt "description"
+#~ msgid "Ask the user once if he/she agrees with our license"
+#~ msgstr "ライセンスに同意するかどうかユーザーに1回だけ確認する"
+
+#~ msgctxt "description"
+#~ msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
+#~ msgstr "Ultimakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "GCode File"
@@ -5174,10 +5407,6 @@ msgstr "Curaプロファイルリーダー"
 #~ msgctxt "@action:button"
 #~ msgid "Upgrade"
 #~ msgstr "アップグレード"
-
-#~ msgctxt "@action:button"
-#~ msgid "Installed"
-#~ msgstr "インストールした"
 
 #~ msgctxt "@action:button"
 #~ msgid "Download"

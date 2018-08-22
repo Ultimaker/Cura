@@ -19,18 +19,6 @@ Item {
 
     height: childrenRect.height
 
-    Connections
-    {
-        target: backgroundItem
-        onHasMesh:
-        {
-            if (PrintInformation.baseName == "")
-            {
-                PrintInformation.baseName = name;
-            }
-        }
-    }
-
     onActivityChanged: {
         if (activity == false) {
             //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
@@ -92,13 +80,10 @@ Item {
                 property int unremovableSpacing: 5
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
-                onTextChanged: {
-                    PrintInformation.setJobName(text);
-                }
                 onEditingFinished: {
-                    if (printJobTextfield.text != ''){
-                        printJobTextfield.focus = false;
-                    }
+                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "unnamed") : text;
+                    PrintInformation.setJobName(new_name, true);
+                    printJobTextfield.focus = false;
                 }
                 validator: RegExpValidator {
                     regExp: /^[^\\ \/ \*\?\|\[\]]*$/

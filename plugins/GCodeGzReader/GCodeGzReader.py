@@ -3,21 +3,19 @@
 
 import gzip
 
-from io import TextIOWrapper
-
 from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementing.
 from UM.PluginRegistry import PluginRegistry
+
 
 ##  A file reader that reads gzipped g-code.
 #
 #   If you're zipping g-code, you might as well use gzip!
 class GCodeGzReader(MeshReader):
-
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._supported_extensions = [".gcode.gz"]
 
-    def read(self, file_name):
+    def _read(self, file_name):
         with open(file_name, "rb") as file:
             file_data = file.read()
         uncompressed_gcode = gzip.decompress(file_data).decode("utf-8")

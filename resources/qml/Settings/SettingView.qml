@@ -25,7 +25,7 @@ Item
     {
         id: globalProfileRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: !sidebar.hideSettings
 
         anchors
         {
@@ -179,6 +179,15 @@ Item
         height: visible ? UM.Theme.getSize("setting_control").height : 0
         Behavior on height { NumberAnimation { duration: 100 } }
 
+        Timer
+        {
+            id: settingsSearchTimer
+            onTriggered: filter.editingFinished()
+            interval: 500
+            running: false
+            repeat: false
+        }
+
         TextField
         {
             id: filter;
@@ -201,6 +210,11 @@ Item
             property bool lastFindingSettings: false
 
             onTextChanged:
+            {
+                settingsSearchTimer.restart()
+            }
+
+            onEditingFinished:
             {
                 definitionsModel.filter = {"i18n_label": "*" + text};
                 findingSettings = (text.length > 0);
@@ -545,6 +559,28 @@ Item
                 MenuSeparator
                 {
                     visible: machineExtruderCount.properties.value > 1
+                }
+
+                Instantiator
+                {
+                    id: customMenuItems
+                    model: Cura.SidebarCustomMenuItemsModel { }
+                    MenuItem
+                    {
+                        text: model.name
+                        iconName: model.icon_name
+                        onTriggered:
+                        {
+                            customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
+                        }
+                    }
+                   onObjectAdded: contextMenu.insertItem(index, object)
+                   onObjectRemoved: contextMenu.removeItem(object)
+                }
+
+                MenuSeparator
+                {
+                    visible: customMenuItems.count > 0
                 }
 
                 MenuItem

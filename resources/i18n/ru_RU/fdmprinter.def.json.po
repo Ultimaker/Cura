@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.3\n"
+"Project-Id-Version: Cura 3.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
 "PO-Revision-Date: 2018-04-11 14:40+0100\n"
@@ -280,7 +280,7 @@ msgstr "Расстояние парковки материала"
 #: fdmprinter.def.json
 msgctxt "machine_filament_park_distance description"
 msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "Расстояние от кончика сопла до места, где останавливается материал пока экструдер не используется."
+msgstr "Расстояние от кончика сопла до места, где останавливается материал, пока экструдер не используется."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -735,7 +735,7 @@ msgstr "Ширина линии"
 #: fdmprinter.def.json
 msgctxt "line_width description"
 msgid "Width of a single line. Generally, the width of each line should correspond to the width of the nozzle. However, slightly reducing this value could produce better prints."
-msgstr "Ширина одной линии. Обычно, ширина каждой линии должна соответствовать диаметру сопла. Однако, небольшое уменьшение этого значение приводит к лучшей печати."
+msgstr "Ширина одной линии. Обычно, ширина каждой линии должна соответствовать диаметру сопла. Однако небольшое уменьшение этого значение приводит к лучшей печати."
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width label"
@@ -1065,7 +1065,7 @@ msgstr "Направление линии дна/крышки"
 #: fdmprinter.def.json
 msgctxt "skin_angles description"
 msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "Список направлений линии при печати слоёв дна/крышки линиями или зигзагом. Элементы списка используются последовательно по мере печати слоёв и когда конец списка будет достигнут, он начнётся сначала. Элементы списка отделяются запятыми и сам список заключён в квадратные скобки. По умолчанию, он пустой, что означает использование стандартных углов (45 и 135 градусов)."
+msgstr "Список направлений линии при печати слоёв дна/крышки линиями или зигзагом. Элементы списка используются последовательно по мере печати слоёв, и, когда конец списка будет достигнут, он начнётся сначала. Элементы списка отделяются запятыми и сам список заключён в квадратные скобки. По умолчанию, он пустой, что означает использование стандартных углов (45 и 135 градусов)."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1080,12 +1080,12 @@ msgstr "Вставка применяется для внешних стенок
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
-msgstr "Оптимазация порядка печати стенок"
+msgstr "Оптимизация порядка печати стенок"
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
-msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr "Оптимизирует порядок, в котором печатаются стенки для уменьшения количества откатов и перемещений. Большинство моделей будут распечатываться быстрее, но не все. Сравнивайте печать с оптимизацией и без."
+msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
+msgstr "Оптимизирует порядок, в котором печатаются стенки, для уменьшения количества откатов и перемещений. Большинство моделей будут распечатываться быстрее, но не все. Сравнивайте оценочное время печати с оптимизацией и без нее. При выборе каймы в качестве типа приклеивания к рабочему столу первый слой не оптимизируется."
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1095,7 +1095,7 @@ msgstr "Печать внешних стенок"
 #: fdmprinter.def.json
 msgctxt "outer_inset_first description"
 msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
-msgstr "Указывает печатать стенки снаружи внутрь. Это помогает улучшить аккуратность печати по осям X и Y, при использовании вязких пластиков подобно ABS. Однако, это может отрицательно повлиять на качество печати внешних поверхностей, особенно нависающих."
+msgstr "Указывает печатать стенки снаружи внутрь. Это помогает улучшить аккуратность печати по осям X и Y, при использовании вязких пластиков подобно ABS. Однако это может отрицательно повлиять на качество печати внешних поверхностей, особенно нависающих."
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter label"
@@ -1105,7 +1105,7 @@ msgstr "Чередующаяся стенка"
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
-msgstr "Печатает дополнительную стенку через слой. Таким образом заполнение заключается между этими дополнительными стенками, что приводит к повышению прочности печати."
+msgstr "Печатает дополнительную стенку через слой. Таким образом, заполнение заключается между этими дополнительными стенками, что приводит к повышению прочности печати."
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_enabled label"
@@ -1115,7 +1115,7 @@ msgstr "Компенсация перекрытия стен"
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_enabled description"
 msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-msgstr "Компенсирует поток для печатаемых частей стен в местах где уже напечатана стена."
+msgstr "Компенсирует поток для печатаемых частей стен в местах, где уже напечатана стена."
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_0_enabled label"
@@ -1125,7 +1125,7 @@ msgstr "Компенсация перекрытия внешних стен"
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_0_enabled description"
 msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
-msgstr "Компенсирует поток для печатаемых частей внешних стен в местах где уже напечатана стена."
+msgstr "Компенсирует поток для печатаемых частей внешних стен в местах, где уже напечатана стена."
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_x_enabled label"
@@ -1135,7 +1135,7 @@ msgstr "Компенсация перекрытия внутренних сте�
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_x_enabled description"
 msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
-msgstr "Компенсирует поток для печатаемых частей внутренних стен в местах где уже напечатана стена."
+msgstr "Компенсирует поток для печатаемых частей внутренних стен в местах, где уже напечатана стена."
 
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps label"
@@ -1185,7 +1185,7 @@ msgstr "Горизонтальное расширение"
 #: fdmprinter.def.json
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
-msgstr "Сумма смещения применяемая ко всем полигонам на каждом слое. Позитивные значения могут возместить потери для слишком больших отверстий; негативные значения могут возместить потери для слишком малых отверстий."
+msgstr "Сумма смещения, применяемая ко всем полигонам на каждом слое. Позитивные значения могут возместить потери для слишком больших отверстий; негативные значения могут возместить потери для слишком малых отверстий."
 
 #: fdmprinter.def.json
 msgctxt "xy_offset_layer_0 label"
@@ -1235,7 +1235,7 @@ msgstr "X координата для Z шва"
 #: fdmprinter.def.json
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr "X координата позиции вблизи которой следует начинать путь на каждом слое."
+msgstr "X координата позиции, вблизи которой следует начинать путь на каждом слое."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
@@ -1245,7 +1245,7 @@ msgstr "Y координата для Z шва"
 #: fdmprinter.def.json
 msgctxt "z_seam_y description"
 msgid "The Y coordinate of the position near where to start printing each part in a layer."
-msgstr "Y координата позиции вблизи которой следует начинать путь на каждом слое."
+msgstr "Y координата позиции, вблизи которой следует начинать путь на каждом слое."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner label"
@@ -1673,6 +1673,26 @@ msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "Не генерировать области заполнения меньше чем указано здесь (вместо этого использовать оболочку)."
 
 #: fdmprinter.def.json
+msgctxt "infill_support_enabled label"
+msgid "Infill Support"
+msgstr "Поддержка заполнения"
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled description"
+msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
+msgstr "Печать заполненных структур только там, где должны поддерживаться верхние части моделей. Активация этой функции сокращает время печати и расход материалов, однако приводит к неравномерной прочности."
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle label"
+msgid "Infill Overhang Angle"
+msgstr "Угол нависания при заполнении"
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle description"
+msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
+msgstr "Минимальный угол внутренних нависаний, для которых добавляется заполнение. При 0° объекты полностью заполняются, при 90° заполнение отсутствует."
+
+#: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
 msgstr "Ширина удаляемой оболочки"
@@ -2011,6 +2031,16 @@ msgstr "Окно минимальной расстояния экструзии"
 msgctxt "retraction_extrusion_window description"
 msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
 msgstr "Окно, в котором может быть выполнено максимальное количество откатов. Это значение приблизительно должно совпадать с расстоянием отката таким образом, чтобы количество выполненных откатов распределялось на величину выдавленного материала."
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr "Ограничить откаты поддержки"
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
+msgstr "Избежание отката при перемещении от поддержки к поддержке по прямой. Активация этой настройки сокращает время печати, однако может привести к излишней строчности в поддерживающей структуре."
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2704,8 +2734,18 @@ msgstr "Везде"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
-msgid "No Skin"
-msgstr "Без поверхности"
+msgid "Not in Skin"
+msgstr "Не в оболочке"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance label"
+msgid "Max Comb Distance With No Retract"
+msgstr "Макс. расстояние комб. без отката"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance description"
+msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+msgstr "При ненулевом значении перемещения комбинга, превышающие указанное расстояние, будут выполняться с откатом."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2726,6 +2766,16 @@ msgstr "Избегать напечатанных частей при перем
 msgctxt "travel_avoid_other_parts description"
 msgid "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled."
 msgstr "Сопло избегает уже напечатанных частей при перемещении. Эта опция доступна только при включенном комбинге."
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports label"
+msgid "Avoid Supports When Traveling"
+msgstr "Избегать поддержек при перемещении"
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports description"
+msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
+msgstr "При перемещении сопла оно будет избегать напечатанных поддержек. Эта опция доступна только при включенном комбинге."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -3081,6 +3131,16 @@ msgstr "Зигзаг"
 msgctxt "support_pattern option cross"
 msgid "Cross"
 msgstr "Крест"
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count label"
+msgid "Support Wall Line Count"
+msgstr "Количество линий стенки поддержки"
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count description"
+msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr "Количество стенок, окружающих заполнение поддержек. Добавление стенки может повысить надежность печати поддержки и оптимизировать нависания поддержки, однако оно увеличивает время печати и расход материалов."
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
@@ -4610,6 +4670,16 @@ msgid "The minimum size of a line segment after slicing. If you increase this, t
 msgstr "Минимальный размер сегмента линии после слайсинга. Увеличение значения этого параметра понизит разрешение модели. Это может позволить принтеру поддерживать скорость обработки кода G и увеличит скорость слайсинга за счет удаления деталей модели, которые он в любом случае не сможет обработать."
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr "Максимальное разрешение перемещения"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
+msgstr "Минимальный размер сегмента линии перемещения после разделения на слои. При увеличении этого значения углы при перемещении будут менее сглаженными. Это может помочь принтеру поддерживать скорость обработки G-кода, однако при этом может снизиться точность избегания моделей."
+
+#: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr "Разбить поддержки на части"
@@ -4770,14 +4840,24 @@ msgid "The size of pockets at four-way crossings in the cross 3D pattern at heig
 msgstr "Размер карманов при печати шаблоном крест 3D по высоте, когда шаблон касается сам себя."
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly label"
-msgid "Alternate Cross 3D Pockets"
-msgstr "Смена карманов креста 3D"
+msgctxt "cross_infill_density_image label"
+msgid "Cross Infill Density Image"
+msgstr "Изображение плотности перекрестного заполнения"
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly description"
-msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr "Применяется только к карманам на половине шаблона креста 3D и меняет расположение карманов по высоте, когда шаблон касается сам себя."
+msgctxt "cross_infill_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
+msgstr "Путь к файлу изображения, из которого значения яркости определяют минимальную плотность в соответствующем месте заполнения при печати."
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image label"
+msgid "Cross Fill Density Image for Support"
+msgstr "Изображение плотности перекрестного заполнения для поддержки"
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
+msgstr "Путь к файлу изображения, из которого значения яркости определяют минимальную плотность в соответствующем месте поддержки."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4878,16 +4958,6 @@ msgstr "Минимальная ширина конических поддерж�
 msgctxt "support_conical_min_width description"
 msgid "Minimum width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures."
 msgstr "Минимальная ширина, до которой может быть уменьшен низ конуса. Малая ширина может сделать такую структуру поддержек нестабильной."
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow label"
-msgid "Hollow Out Objects"
-msgstr "Пустые объекты"
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow description"
-msgid "Remove all infill and make the inside of the object eligible for support."
-msgstr "Удаляет всё заполнение и разрешает генерацию поддержек внутри объекта."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
@@ -5223,8 +5293,8 @@ msgstr "Максимальная вариация адаптивных слое�
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
-msgid "The maximum allowed height different from the base layer height in mm."
-msgstr "Максимальная разрешенная высота по сравнению с высотой базового уровня (в мм)."
+msgid "The maximum allowed height different from the base layer height."
+msgstr "Максимальная разрешенная высота по сравнению с высотой базового уровня."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
@@ -5458,7 +5528,7 @@ msgstr "Параметры, которые используются в случ�
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
-msgid "Center object"
+msgid "Center Object"
 msgstr "Центрирование объекта"
 
 #: fdmprinter.def.json
@@ -5468,7 +5538,7 @@ msgstr "Следует ли размещать объект в центре ст
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
-msgid "Mesh position x"
+msgid "Mesh Position X"
 msgstr "X позиция объекта"
 
 #: fdmprinter.def.json
@@ -5478,7 +5548,7 @@ msgstr "Смещение, применяемое к объект по оси X."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
-msgid "Mesh position y"
+msgid "Mesh Position Y"
 msgstr "Y позиция объекта"
 
 #: fdmprinter.def.json
@@ -5488,7 +5558,7 @@ msgstr "Смещение, применяемое к объект по оси Y."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
-msgid "Mesh position z"
+msgid "Mesh Position Z"
 msgstr "Z позиция объекта"
 
 #: fdmprinter.def.json
@@ -5505,6 +5575,50 @@ msgstr "Матрица вращения объекта"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Матрица преобразования, применяемая к модели при её загрузки из файла."
+
+#~ msgctxt "optimize_wall_printing_order description"
+#~ msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
+#~ msgstr "Оптимизирует порядок, в котором печатаются стенки для уменьшения количества откатов и перемещений. Большинство моделей будут распечатываться быстрее, но не все. Сравнивайте печать с оптимизацией и без."
+
+#~ msgctxt "retraction_combing option noskin"
+#~ msgid "No Skin"
+#~ msgstr "Без поверхности"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly label"
+#~ msgid "Alternate Cross 3D Pockets"
+#~ msgstr "Смена карманов креста 3D"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly description"
+#~ msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
+#~ msgstr "Применяется только к карманам на половине шаблона креста 3D и меняет расположение карманов по высоте, когда шаблон касается сам себя."
+
+#~ msgctxt "infill_hollow label"
+#~ msgid "Hollow Out Objects"
+#~ msgstr "Пустые объекты"
+
+#~ msgctxt "infill_hollow description"
+#~ msgid "Remove all infill and make the inside of the object eligible for support."
+#~ msgstr "Удаляет всё заполнение и разрешает генерацию поддержек внутри объекта."
+
+#~ msgctxt "adaptive_layer_height_variation description"
+#~ msgid "The maximum allowed height different from the base layer height in mm."
+#~ msgstr "Максимальная разрешенная высота по сравнению с высотой базового уровня (в мм)."
+
+#~ msgctxt "center_object label"
+#~ msgid "Center object"
+#~ msgstr "Центрирование объекта"
+
+#~ msgctxt "mesh_position_x label"
+#~ msgid "Mesh position x"
+#~ msgstr "X позиция объекта"
+
+#~ msgctxt "mesh_position_y label"
+#~ msgid "Mesh position y"
+#~ msgstr "Y позиция объекта"
+
+#~ msgctxt "mesh_position_z label"
+#~ msgid "Mesh position z"
+#~ msgstr "Z позиция объекта"
 
 #~ msgctxt "machine_start_gcode label"
 #~ msgid "Start GCode"

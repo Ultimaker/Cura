@@ -79,6 +79,8 @@ UM.PreferencesPage
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
         UM.Preferences.resetPreference("mesh/scale_tiny_meshes")
         scaleTinyCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
+        UM.Preferences.resetPreference("cura/select_models_on_load")
+        selectModelsOnLoadCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/select_models_on_load"))
         UM.Preferences.resetPreference("cura/jobname_prefix")
         prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
         UM.Preferences.resetPreference("view/show_overhang");
@@ -168,7 +170,7 @@ UM.PreferencesPage
                             append({ text: "日本語", code: "ja_JP" })
                             append({ text: "한국어", code: "ko_KR" })
                             append({ text: "Nederlands", code: "nl_NL" })
-                            append({ text: "Polski", code: "pl_PL" })
+                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
                             append({ text: "Português do Brasil", code: "pt_BR" })
                             append({ text: "Português", code: "pt_PT" })
                             append({ text: "Русский", code: "ru_RU" })
@@ -502,6 +504,21 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should models be selected after they are loaded?")
+
+                CheckBox
+                {
+                    id: selectModelsOnLoadCheckbox
+                    text: catalog.i18nc("@option:check","Select models when loaded")
+                    checked: boolCheck(UM.Preferences.getValue("cura/select_models_on_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/select_models_on_load", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
 
                 CheckBox
@@ -553,7 +570,7 @@ UM.PreferencesPage
 
                             Component.onCompleted:
                             {
-                                append({ text: catalog.i18nc("@option:openProject", "Always ask"), code: "always_ask" })
+                                append({ text: catalog.i18nc("@option:openProject", "Always ask me this"), code: "always_ask" })
                                 append({ text: catalog.i18nc("@option:openProject", "Always open as a project"), code: "open_as_project" })
                                 append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
                             }
@@ -600,7 +617,12 @@ UM.PreferencesPage
                     Label
                     {
                         font.bold: true
-                        text: catalog.i18nc("@label", "Override Profile")
+                        text: catalog.i18nc("@label", "Profiles")
+                    }
+
+                    Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
                     ComboBox
@@ -615,8 +637,8 @@ UM.PreferencesPage
                             Component.onCompleted:
                             {
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
-                                append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
-                                append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Always discard changed settings"), code: "always_discard" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Always transfer changed settings to new profile"), code: "always_keep" })
                             }
                         }
 
@@ -721,21 +743,6 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Use multi build plate functionality (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("cura/use_multi_build_plate"))
                     onCheckedChanged: UM.Preferences.setValue("cura/use_multi_build_plate", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
-
-                CheckBox
-                {
-                    id: arrangeOnLoadCheckbox
-                    text: catalog.i18nc("@option:check", "Do not arrange objects on load")
-                    checked: boolCheck(UM.Preferences.getValue("cura/not_arrange_objects_on_load"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/not_arrange_objects_on_load", checked)
                 }
             }
 

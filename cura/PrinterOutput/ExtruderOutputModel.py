@@ -4,10 +4,9 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
-MYPY = False
-if MYPY:
+if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
@@ -20,12 +19,12 @@ class ExtruderOutputModel(QObject):
     extruderConfigurationChanged = pyqtSignal()
     isPreheatingChanged = pyqtSignal()
 
-    def __init__(self, printer: "PrinterOutputModel", position, parent=None):
+    def __init__(self, printer: "PrinterOutputModel", position, parent=None) -> None:
         super().__init__(parent)
         self._printer = printer
         self._position = position
-        self._target_hotend_temperature = 0
-        self._hotend_temperature = 0
+        self._target_hotend_temperature = 0 # type: float
+        self._hotend_temperature = 0 # type: float
         self._hotend_id = ""
         self._active_material = None  # type: Optional[MaterialOutputModel]
         self._extruder_configuration = ExtruderConfigurationModel()
@@ -47,7 +46,7 @@ class ExtruderOutputModel(QObject):
         return False
 
     @pyqtProperty(QObject, notify = activeMaterialChanged)
-    def activeMaterial(self) -> "MaterialOutputModel":
+    def activeMaterial(self) -> Optional["MaterialOutputModel"]:
         return self._active_material
 
     def updateActiveMaterial(self, material: Optional["MaterialOutputModel"]):

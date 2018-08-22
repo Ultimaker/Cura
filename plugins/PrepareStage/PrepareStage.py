@@ -14,5 +14,6 @@ class PrepareStage(CuraStage):
         Application.getInstance().engineCreatedSignal.connect(self._engineCreated)
 
     def _engineCreated(self):
-        sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles), "Sidebar.qml")
+        sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles),
+                                              "PrepareSidebar.qml")
         self.addDisplayComponent("sidebar", sidebar_component_path)

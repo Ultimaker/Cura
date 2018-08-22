@@ -404,6 +404,8 @@ Item
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.right: parent.right
 
+                        property bool isCurrentItem: parent.ListView.isCurrentItem
+
                         property bool isItemActivated:
                         {
                             const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
@@ -416,7 +418,7 @@ Item
                             width: Math.floor(parent.height * 0.8)
                             height: Math.floor(parent.height * 0.8)
                             color: model.color_code
-                            border.color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+                            border.color: materialRow.isCurrentItem ? palette.highlightedText : palette.text;
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Label
@@ -425,14 +427,14 @@ Item
                             text: model.material
                             elide: Text.ElideRight
                             font.italic: materialRow.isItemActivated
-                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+                            color: materialRow.isCurrentItem ? palette.highlightedText : palette.text;
                         }
                         Label
                         {
                             text: (model.name != model.material) ? model.name : ""
                             elide: Text.ElideRight
                             font.italic: materialRow.isItemActivated
-                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+                            color: materialRow.isCurrentItem ? palette.highlightedText : palette.text;
                         }
                     }
 
@@ -482,8 +484,9 @@ Item
             {
                 var currentItem = materialsModel.getItem(materialListView.currentIndex);
 
-                materialProperties.name = currentItem.name;
+                materialProperties.name = currentItem.name ? currentItem.name : "Unknown";
                 materialProperties.guid = currentItem.guid;
+                materialProperties.container_id = currentItem.container_id;
 
                 materialProperties.brand = currentItem.brand ? currentItem.brand : "Unknown";
                 materialProperties.material = currentItem.material ? currentItem.material : "Unknown";
@@ -541,6 +544,7 @@ Item
                     id: materialProperties
 
                     property string guid: "00000000-0000-0000-0000-000000000000"
+                    property string container_id: "Unknown";
                     property string name: "Unknown";
                     property string profile_type: "Unknown";
                     property string brand: "Unknown";

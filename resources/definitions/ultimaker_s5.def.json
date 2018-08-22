@@ -37,7 +37,7 @@
     "overrides": {
         "machine_name": { "default_value": "Ultimaker S5" },
         "machine_width": { "default_value": 330 },
-        "machine_depth": { "default_value": 245 },
+        "machine_depth": { "default_value": 240 },
         "machine_height": { "default_value": 300 },
         "machine_heated_bed": { "default_value": true },
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
@@ -119,7 +119,7 @@
         "raft_margin": { "value": "10" },
         "raft_speed": { "value": "25" },
         "raft_surface_layers": { "value": "1" },
-        "retraction_amount": { "value": "2" },
+        "retraction_amount": { "value": "6.5" },
         "retraction_count_max": { "value": "10" },
         "retraction_extrusion_window": { "value": "1" },
         "retraction_hop": { "value": "2" },
@@ -154,6 +154,6 @@
         "optimize_wall_printing_order": { "value": "True" },
         "retraction_combing": { "default_value": "all" },
         "initial_layer_line_width_factor": { "value": "120" },
-        "zig_zaggify_infill": { "value": "True" }
+        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
     }
 }

@@ -12,8 +12,7 @@ from UM.Logger import Logger  # Logging errors.
 from UM.PluginRegistry import PluginRegistry  # For getting the path to this plugin's directory.
 from UM.Settings.ContainerRegistry import ContainerRegistry #To create unique profile IDs.
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
-from cura.ProfileReader import ProfileReader  # The plug-in type to implement.
-from cura.Settings.ExtruderManager import ExtruderManager #To get the current extruder definition.
+from cura.ReaderWriters.ProfileReader import ProfileReader  # The plug-in type to implement.
 
 
 ##  A plugin that reads profile data from legacy Cura versions.
@@ -101,7 +100,7 @@ class LegacyProfileReader(ProfileReader):
             return None
 
         try:
-            with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
+            with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", encoding = "utf-8") as f:
                 dict_of_doom = json.load(f)  # Parse the Dictionary of Doom.
         except IOError as e:
             Logger.log("e", "Could not open DictionaryOfDoom.json for reading: %s", str(e))
@@ -146,9 +145,9 @@ class LegacyProfileReader(ProfileReader):
         if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
 
-        profile.addMetaDataEntry("type", "profile")
+        profile.setMetaDataEntry("type", "profile")
         # don't know what quality_type it is based on, so use "normal" by default
-        profile.addMetaDataEntry("quality_type", "normal")
+        profile.setMetaDataEntry("quality_type", "normal")
         profile.setName(profile_id)
         profile.setDirty(True)
 

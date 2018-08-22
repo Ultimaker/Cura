@@ -8,9 +8,9 @@ from configparser import ConfigParser
 
 from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot
 
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-from UM.Preferences import Preferences
 from UM.Resources import Resources
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
 
@@ -33,7 +33,7 @@ class SettingVisibilityPresetsModel(ListModel):
         basic_item = self.items[1]
         basic_visibile_settings = ";".join(basic_item["settings"])
 
-        self._preferences = Preferences.getInstance()
+        self._preferences = Application.getInstance().getPreferences()
         # Preference to store which preset is currently selected
         self._preferences.addPreference("cura/active_setting_visibility_preset", "basic")
         # Preference that stores the "custom" set so it can always be restored (even after a restart)

@@ -7,7 +7,11 @@
         "author": "Ultimaker",
         "manufacturer": "Robo 3D",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "robo_3d_r1_extruder_0"
+        }
     },
 
     "overrides": {
@@ -30,7 +34,6 @@
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "support_enable": { "default_value": true },
         "cool_fan_full_at_height": { "default_value": 0.1 },
-        "material_diameter": { "default_value": 1.75 },
         "bottom_thickness": { "default_value": 1.2 },
         "raft_airgap": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.15 },
