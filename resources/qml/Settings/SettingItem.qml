@@ -243,39 +243,7 @@ Item {
                 onClicked: {
                     focus = true;
 
-                    // Get the most shallow function value (eg not a number) that we can find.
-                    var last_entry = propertyProvider.stackLevels[propertyProvider.stackLevels.length - 1]
-                    for (var i = 1; i < base.stackLevels.length; i++)
-                    {
-                        var has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";
-                        if(has_setting_function)
-                        {
-                            last_entry = propertyProvider.stackLevels[i]
-                            break;
-                        }
-                    }
-                    if((last_entry == 4 || last_entry == 11) && base.stackLevel == 0 && base.stackLevels.length == 2)
-                    {
-                        // Special case of the inherit reset. If only the definition (4th or 11th) container) and the first
-                        // entry (user container) are set, we can simply remove the container.
-                        propertyProvider.removeFromContainer(0)
-                    }
-                    else if(last_entry - 1 == base.stackLevel)
-                    {
-                        // Another special case. The setting that is overriden is only 1 instance container deeper,
-                        // so we can remove it.
-                        propertyProvider.removeFromContainer(last_entry - 1)
-                    }
-                    else
-                    {
-                        // Put that entry into the "top" instance container.
-                        // This ensures that the value in any of the deeper containers need not be removed, which is
-                        // needed for the reset button (which deletes the top value) to correctly go back to profile
-                        // defaults.
-                        propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
-                        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
-
-                    }
+                    propertyProvider.callCalculateSettingValue()
                 }
 
                 color: UM.Theme.getColor("setting_control_button")

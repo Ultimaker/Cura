@@ -484,6 +484,19 @@ class MachineManager(QObject):
         for container in send_emits_containers:
             container.sendPostponedEmits()
 
+    @pyqtSlot(str)
+    def callCalculateSettingValue(self, key: str) -> None:
+        if not self._global_container_stack:
+            return
+
+        top_container = self._global_container_stack.getTop()
+        value = self._global_container_stack.getRawProperty(key, "value")
+
+        m_value = ""
+
+        # Get top stack and retrieve value from there
+
+
     ##  Check if none of the stacks contain error states
     #   Note that the _stacks_have_errors is cached due to performance issues
     #   Calling _checkStack(s)ForErrors on every change is simply too expensive
