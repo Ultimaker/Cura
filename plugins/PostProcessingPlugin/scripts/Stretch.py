@@ -62,13 +62,12 @@ class GCodeStep():
             delta_step_y = _getValue(line, "Y", 0)
             delta_step_z = _getValue(line, "Z", 0)
             delta_step_e = _getValue(line, "E", 0)
-            delta_step_f = _getValue(line, "F", 0)
 
             self.step_x += delta_step_x
             self.step_y += delta_step_y
             self.step_z += delta_step_z
             self.step_e += delta_step_e
-            self.step_f += delta_step_f
+            self.step_f = _getValue(line, "F", self.step_f)  # the feedrate is not relative
 
     def copyPosFrom(self, step):
         """

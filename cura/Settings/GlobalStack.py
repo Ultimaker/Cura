@@ -55,6 +55,12 @@ class GlobalStack(CuraContainerStack):
             return "machine_stack"
         return configuration_type
 
+    def getBuildplateName(self) -> Optional[str]:
+        name = None
+        if self.variant.getId() != "empty_variant":
+            name = self.variant.getName()
+        return name
+
     ##  Add an extruder to the list of extruders of this stack.
     #
     #   \param extruder The extruder to add.
@@ -96,6 +102,9 @@ class GlobalStack(CuraContainerStack):
 
         # Handle the "resolve" property.
         #TODO: Why the hell does this involve threading?
+        # Answer: Because if multiple threads start resolving properties that have the same underlying properties that's
+        # related, without taking a note of which thread a resolve paths belongs to, they can bump into each other and
+        # generate unexpected behaviours.
         if self._shouldResolve(key, property_name, context):
             current_thread = threading.current_thread()
             self._resolving_settings[current_thread.name].add(key)
@@ -171,6 +180,9 @@ class GlobalStack(CuraContainerStack):
             if str(check_position) not in extruder_check_position:
                 return False
         return True
+
+    def getHeadAndFansCoordinates(self):
+        return self.getProperty("machine_head_with_fans_polygon", "value")
 
 
 ## private:

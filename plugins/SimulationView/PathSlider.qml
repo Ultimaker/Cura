@@ -29,6 +29,7 @@ Item {
 
     // value properties
     property real maximumValue: 100
+    property real minimumValue: 0
     property bool roundValues: true
     property real handleValue: maximumValue
 
@@ -45,6 +46,10 @@ Item {
 
     function updateRangeHandle () {
         rangeHandle.width = handle.x - sliderRoot.handleSize
+    }
+
+    function normalizeValue(value) {
+        return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
     // slider track
@@ -110,6 +115,8 @@ Item {
 
         // set the slider position based on the value
         function setValue (value) {
+            // Normalize values between range, since using arrow keys will create out-of-the-range values
+            value = sliderRoot.normalizeValue(value)
 
             UM.SimulationView.setCurrentPath(value)
 

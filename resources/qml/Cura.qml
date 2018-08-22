@@ -231,8 +231,8 @@ UM.MainWindow
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
-                // TODO Temporary hidden, add back again when feature ready
-//                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: Cura.MachineManager.hasVariantBuildplates }
+                // TODO Only show in dev mode. Remove check when feature ready
+                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: CuraSDKVersion == "dev" ? Cura.MachineManager.hasVariantBuildplates : false }
                 ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                 MenuSeparator { }

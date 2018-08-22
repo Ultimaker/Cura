@@ -12,6 +12,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 ##  Writes g-code to a file.
 #
@@ -62,11 +64,13 @@ class GCodeWriter(MeshWriter):
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
         if mode != MeshWriter.OutputMode.TextMode:
             Logger.log("e", "GCodeWriter does not support non-text mode.")
+            self.setInformation(catalog.i18nc("@error:not supported", "GCodeWriter does not support non-text mode."))
             return False
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
         if not hasattr(scene, "gcode_dict"):
+            self.setInformation(catalog.i18nc("@warning:status", "Please generate G-code before saving."))
             return False
         gcode_dict = getattr(scene, "gcode_dict")
         gcode_list = gcode_dict.get(active_build_plate, None)
@@ -82,6 +86,7 @@ class GCodeWriter(MeshWriter):
                 stream.write(settings)
             return True
 
+        self.setInformation(catalog.i18nc("@warning:status", "Please generate G-code before saving."))
         return False
 
     ##  Create a new container with container 2 as base and container 1 written over it.

@@ -1,5 +1,6 @@
 #Copyright (c) 2018 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
+from typing import cast
 
 from Charon.VirtualFile import VirtualFile #To open UFP files.
 from Charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
@@ -12,6 +13,9 @@ from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
 from cura.Snapshot import Snapshot
+
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 
 class UFPWriter(MeshWriter):
@@ -32,7 +36,11 @@ class UFPWriter(MeshWriter):
         #Store the g-code from the scene.
         archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
         gcode_textio = StringIO() #We have to convert the g-code into bytes.
-        PluginRegistry.getInstance().getPluginObject("GCodeWriter").write(gcode_textio, None)
+        gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
+        success = gcode_writer.write(gcode_textio, None)
+        if not success: #Writing the g-code failed. Then I can also not write the gzipped g-code.
+            self.setInformation(gcode_writer.getInformation())
+            return False
         gcode = archive.getStream("/3D/model.gcode")
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
         archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")

@@ -229,7 +229,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
     def _getHeadAndFans(self):
-        return Polygon(numpy.array(self._global_stack.getProperty("machine_head_with_fans_polygon", "value"), numpy.float32))
+        return Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
 
     def _compute2DConvexHeadFull(self):
         return self._compute2DConvexHull().getMinkowskiHull(self._getHeadAndFans())

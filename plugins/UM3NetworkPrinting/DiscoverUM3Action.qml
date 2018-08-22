@@ -299,11 +299,11 @@ Cura.MachineAction
                         }
                         else if (base.selectedDevice.clusterSize === 0)
                         {
-                            return catalog.i18nc("@label", "This printer is not set up to host a group of Ultimaker 3 printers.");
+                            return catalog.i18nc("@label", "This printer is not set up to host a group of printers.");
                         }
                         else
                         {
-                            return catalog.i18nc("@label", "This printer is the host for a group of %1 Ultimaker 3 printers.".arg(base.selectedDevice.clusterSize));
+                            return catalog.i18nc("@label", "This printer is the host for a group of %1 printers.".arg(base.selectedDevice.clusterSize));
                         }
                     }
 
@@ -349,11 +349,6 @@ Cura.MachineAction
             addressField.focus = true;
         }
 
-        onAccepted:
-        {
-            manager.setManualDevice(printerKey, addressText)
-        }
-
         Column {
             anchors.fill: parent
             spacing: UM.Theme.getSize("default_margin").height
@@ -393,7 +388,7 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
-                    manualPrinterDialog.accept()
+                    manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
                     manualPrinterDialog.hide()
                 }
                 enabled: manualPrinterDialog.addressText.trim() != ""

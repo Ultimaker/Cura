@@ -198,7 +198,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
             instance_name = "manual:%s" % address
             properties = {
-                b"name": system_info["name"].encode("utf-8"),
+                b"name": (system_info["name"] + " (manual)").encode("utf-8"),
                 b"address": address.encode("utf-8"),
                 b"firmware_version": system_info["firmware"].encode("utf-8"),
                 b"manual": b"true",

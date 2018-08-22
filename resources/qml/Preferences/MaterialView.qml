@@ -30,20 +30,24 @@ TabView
     property bool reevaluateLinkedMaterials: false
     property string linkedMaterialNames:
     {
-        if (reevaluateLinkedMaterials) {
+        if (reevaluateLinkedMaterials)
+        {
             reevaluateLinkedMaterials = false;
         }
-        if (!base.containerId || !base.editingEnabled) {
+        if (!base.containerId || !base.editingEnabled)
+        {
             return ""
         }
         var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode, true);
-        if (linkedMaterials.length == 0) {
+        if (linkedMaterials.length == 0)
+        {
             return ""
         }
         return linkedMaterials.join(", ");
     }
 
-    function getApproximateDiameter(diameter) {
+    function getApproximateDiameter(diameter)
+    {
         return Math.round(diameter);
     }
 
@@ -154,13 +158,15 @@ TabView
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
-                Row {
+                Row
+                {
                     width: scrollView.columnWidth
                     height:  parent.rowHeight
                     spacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
 
                     // color indicator square
-                    Rectangle {
+                    Rectangle
+                    {
                         id: colorSelector
                         color: properties.color_code
 
@@ -171,7 +177,8 @@ TabView
                         anchors.verticalCenter: parent.verticalCenter
 
                         // open the color selection dialog on click
-                        MouseArea {
+                        MouseArea
+                        {
                             anchors.fill: parent
                             onClicked: colorDialog.open()
                             enabled: base.editingEnabled
@@ -179,7 +186,8 @@ TabView
                     }
 
                     // pretty color name text field
-                    ReadOnlyTextField {
+                    ReadOnlyTextField
+                    {
                         id: colorLabel;
                         text: properties.color_name;
                         readOnly: !base.editingEnabled
@@ -188,7 +196,8 @@ TabView
 
                     // popup dialog to select a new color
                     // if successful it sets the properties.color_code value to the new color
-                    ColorDialog {
+                    ColorDialog
+                    {
                         id: colorDialog
                         color: properties.color_code
                         onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
@@ -258,7 +267,8 @@ TabView
                     decimals: 2
                     maximumValue: 100000000
 
-                    onValueChanged: {
+                    onValueChanged:
+                    {
                         base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
                         updateCostPerMeter()
                     }
@@ -275,7 +285,8 @@ TabView
                     decimals: 0
                     maximumValue: 10000
 
-                    onValueChanged: {
+                    onValueChanged:
+                    {
                         base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
                         updateCostPerMeter()
                     }
@@ -401,7 +412,8 @@ TabView
                     {
                         id: spinBox
                         anchors.left: label.right
-                        value: {
+                        value:
+                        {
                             // In case the setting is not in the material...
                             if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
                             {
@@ -493,8 +505,10 @@ TabView
     }
 
     // Tiny convenience function to check if a value really changed before trying to set it.
-    function setMetaDataEntry(entry_name, old_value, new_value) {
-        if (old_value != new_value) {
+    function setMetaDataEntry(entry_name, old_value, new_value)
+    {
+        if (old_value != new_value)
+        {
             Cura.ContainerManager.setContainerMetaDataEntry(base.currentMaterialNode, entry_name, new_value)
             // make sure the UI properties are updated as well since we don't re-fetch the entire model here
             // When the entry_name is something like properties/diameter, we take the last part of the entry_name
@@ -546,10 +560,11 @@ TabView
     }
 
     // update the display name of the material
-    function updateMaterialDisplayName (old_name, new_name)
+    function updateMaterialDisplayName(old_name, new_name)
     {
         // don't change when new name is the same
-        if (old_name == new_name) {
+        if (old_name == new_name)
+        {
             return;
         }
 

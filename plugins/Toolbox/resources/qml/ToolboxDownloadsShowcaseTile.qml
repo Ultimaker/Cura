@@ -105,8 +105,21 @@ Rectangle
             switch(toolbox.viewCategory)
             {
                 case "material":
-                    toolbox.viewPage = "author"
-                    toolbox.filterModelByProp("packages", "author_name", model.name)
+
+                    // If model has a type, it must be a package
+                    if (model.type !== undefined)
+                    {
+                        toolbox.viewPage = "detail"
+                        toolbox.filterModelByProp("packages", "id", model.id)
+                    }
+                    else
+                    {
+                        toolbox.viewPage = "author"
+                        toolbox.setFilters("packages", {
+                            "author_id": model.id,
+                            "type": "material"
+                        })
+                    }
                     break
                 default:
                     toolbox.viewPage = "detail"

@@ -561,6 +561,28 @@ Item
                     visible: machineExtruderCount.properties.value > 1
                 }
 
+                Instantiator
+                {
+                    id: customMenuItems
+                    model: Cura.SidebarCustomMenuItemsModel { }
+                    MenuItem
+                    {
+                        text: model.name
+                        iconName: model.icon_name
+                        onTriggered:
+                        {
+                            customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
+                        }
+                    }
+                   onObjectAdded: contextMenu.insertItem(index, object)
+                   onObjectRemoved: contextMenu.removeItem(object)
+                }
+
+                MenuSeparator
+                {
+                    visible: customMenuItems.count > 0
+                }
+
                 MenuItem
                 {
                     //: Settings context menu action

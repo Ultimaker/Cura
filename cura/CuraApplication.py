@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import copy
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional
+from typing import cast, TYPE_CHECKING
 
 import numpy
 
@@ -104,6 +103,8 @@ from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
+import cura.Settings.cura_empty_instance_containers
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -117,11 +118,12 @@ if TYPE_CHECKING:
 numpy.seterr(all = "ignore")
 
 try:
-    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
+    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion
 except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
+    CuraSDKVersion = ""
 
 
 class CuraApplication(QtApplication):
@@ -225,6 +227,10 @@ class CuraApplication(QtApplication):
         self._update_platform_activity_timer = None
 
         self._need_to_show_user_agreement = True
+
+        self._sidebar_custom_menu_items = []  # type: list # Keeps list of custom menu items for the side bar
+
+        self._plugins_loaded = False
 
         # Backups
         self._auto_save = None
@@ -362,42 +368,23 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        empty_container = self._container_registry.getEmptyInstanceContainer()
-        self.empty_container = empty_container
+        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container
 
-        empty_definition_changes_container = copy.deepcopy(empty_container)
-        empty_definition_changes_container.setMetaDataEntry("id", "empty_definition_changes")
-        empty_definition_changes_container.setMetaDataEntry("type", "definition_changes")
-        self._container_registry.addContainer(empty_definition_changes_container)
-        self.empty_definition_changes_container = empty_definition_changes_container
+        self._container_registry.addContainer(
+            cura.Settings.cura_empty_instance_containers.empty_definition_changes_container)
+        self.empty_definition_changes_container = cura.Settings.cura_empty_instance_containers.empty_definition_changes_container
 
-        empty_variant_container = copy.deepcopy(empty_container)
-        empty_variant_container.setMetaDataEntry("id", "empty_variant")
-        empty_variant_container.setMetaDataEntry("type", "variant")
-        self._container_registry.addContainer(empty_variant_container)
-        self.empty_variant_container = empty_variant_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_variant_container)
+        self.empty_variant_container = cura.Settings.cura_empty_instance_containers.empty_variant_container
 
-        empty_material_container = copy.deepcopy(empty_container)
-        empty_material_container.setMetaDataEntry("id", "empty_material")
-        empty_material_container.setMetaDataEntry("type", "material")
-        self._container_registry.addContainer(empty_material_container)
-        self.empty_material_container = empty_material_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_material_container)
+        self.empty_material_container = cura.Settings.cura_empty_instance_containers.empty_material_container
 
-        empty_quality_container = copy.deepcopy(empty_container)
-        empty_quality_container.setMetaDataEntry("id", "empty_quality")
-        empty_quality_container.setName("Not Supported")
-        empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
-        empty_quality_container.setMetaDataEntry("type", "quality")
-        empty_quality_container.setMetaDataEntry("supported", False)
-        self._container_registry.addContainer(empty_quality_container)
-        self.empty_quality_container = empty_quality_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_quality_container)
+        self.empty_quality_container = cura.Settings.cura_empty_instance_containers.empty_quality_container
 
-        empty_quality_changes_container = copy.deepcopy(empty_container)
-        empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-        empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
-        empty_quality_changes_container.setMetaDataEntry("quality_type", "not_supported")
-        self._container_registry.addContainer(empty_quality_changes_container)
-        self.empty_quality_changes_container = empty_quality_changes_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_quality_changes_container)
+        self.empty_quality_changes_container = cura.Settings.cura_empty_instance_containers.empty_quality_changes_container
 
     # Initializes the version upgrade manager with by providing the paths for each resource type and the latest
     # versions.
@@ -625,7 +612,7 @@ class CuraApplication(QtApplication):
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self):
         if not self.started or not self._save_data_enabled:
-            # Do not do saving during application start or when data should not be safed on quit.
+            # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
         self.savePreferences()
@@ -774,7 +761,10 @@ class CuraApplication(QtApplication):
         # Initialize camera
         root = controller.getScene().getRoot()
         camera = Camera("3d", root)
-        camera.setPosition(Vector(-80, 250, 700))
+        diagonal = self.getBuildVolume().getDiagonalSize()
+        if diagonal < 1: #No printer added yet. Set a default camera distance for normal-sized printers.
+            diagonal = 375
+        camera.setPosition(Vector(-80, 250, 700) * diagonal / 375)
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
@@ -908,6 +898,7 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraApplication", self)
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
+        engine.rootContext().setContextProperty("CuraSDKVersion", CuraSDKVersion)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
@@ -942,6 +933,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)
+        qmlRegisterType(SidebarCustomMenuItemsModel, "Cura", 1, 0, "SidebarCustomMenuItemsModel")
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
@@ -1729,3 +1721,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def showMoreInformationDialogForAnonymousDataCollection(self):
         cast(SliceInfo, self._plugin_registry.getPluginObject("SliceInfoPlugin")).showMoreInfoDialog()
+
+    def addSidebarCustomMenuItem(self, menu_item: dict) -> None:
+        self._sidebar_custom_menu_items.append(menu_item)
+
+    def getSidebarCustomMenuItems(self) -> list:
+        return self._sidebar_custom_menu_items
+
