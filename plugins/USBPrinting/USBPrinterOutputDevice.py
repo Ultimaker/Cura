@@ -15,7 +15,7 @@ from cura.PrinterOutput.GenericOutputController import GenericOutputController
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .avr_isp import stk500v2, intelHex
 
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty, QUrl
 
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
@@ -146,8 +146,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot(str)
     def updateFirmware(self, file):
-        # the file path is qurl encoded.
-        self._firmware_location = file.replace("file://", "")
+        # the file path could be url-encoded.
+        if file.startswith("file://"):
+            self._firmware_location = QUrl(file).toLocalFile()
+        else:
+            self._firmware_location = file
         self.showFirmwareInterface()
         self.setFirmwareUpdateState(FirmwareUpdateState.updating)
         self._update_firmware_thread.start()

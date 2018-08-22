@@ -7,6 +7,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Item {
     id: base;
@@ -48,15 +49,14 @@ Item {
     }
 
     function sliceOrStopSlicing() {
-        if ([1, 5].indexOf(base.backendState) != -1)
-        {
-            prepareButton.preparingToSlice = true;
-            CuraApplication.backend.forceSlice();
-        }
-        else
-        {
-            prepareButton.preparingToSlice = false;
-            CuraApplication.backend.stopSlicing();
+        try {
+            if ([1, 5].indexOf(base.backendState) != -1) {
+                CuraApplication.backend.forceSlice();
+            } else {
+                CuraApplication.backend.stopSlicing();
+            }
+        } catch (e) {
+            console.log('Could not start or stop slicing', e)
         }
     }
 
@@ -168,10 +168,10 @@ Item {
         // Prepare button, only shows if auto_slice is off
         Button {
             id: prepareButton
-            property bool preparingToSlice: false
+
             tooltip: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
-            enabled: !preparingToSlice && base.backendState != "undefined" && ([1, 2].indexOf(base.backendState) != -1) && base.activity
+            enabled: base.backendState != "undefined" && ([1, 2].indexOf(base.backendState) != -1) && base.activity
             visible: base.backendState != "undefined" && !autoSlice && ([1, 2, 4].indexOf(base.backendState) != -1) && base.activity
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
@@ -181,23 +181,7 @@ Item {
             anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             // 1 = not started, 4 = error, 5 = disabled
-            text: {
-                if (preparingToSlice)
-                {
-                    return catalog.i18nc("@label:Printjob", "Preparing");
-                }
-                else
-                {
-                    if ([1, 4, 5].indexOf(base.backendState) != -1)
-                    {
-                        return catalog.i18nc("@label:Printjob", "Prepare");
-                    }
-                    else
-                    {
-                        return catalog.i18nc("@label:Printjob", "Cancel")
-                    }
-                }
-            }
+            text: [1, 4, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
                 sliceOrStopSlicing();
@@ -254,17 +238,6 @@ Item {
                 }
                 label: Item { }
             }
-
-            Connections {
-                target: UM.Backend
-                onStateChanged:
-                {
-                    if ([2, 3].indexOf(UM.Backend.state) != -1)
-                    {
-                        prepareButton.preparingToSlice = false;
-                    }
-                }
-            }
         }
 
         Button {
@@ -285,7 +258,8 @@ Item {
             onClicked:
             {
                 forceActiveFocus();
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true, "preferred_mimetype":Printer.preferredOutputMimetype });
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName,
+                    { "filter_by_machine": true, "preferred_mimetypes": Cura.MachineManager.activeMachine.preferred_output_file_formats });
             }
 
             style: ButtonStyle {

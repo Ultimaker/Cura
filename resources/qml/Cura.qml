@@ -120,7 +120,7 @@ UM.MainWindow
                     text: catalog.i18nc("@title:menu menubar:file","&Save...")
                     onTriggered:
                     {
-                        var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetype": "application/x-curaproject+xml" };
+                        var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/x-curaproject+xml" };
                         if(UM.Preferences.getValue("cura/dialog_on_project_save"))
                         {
                             saveWorkspaceDialog.args = args;
@@ -142,7 +142,7 @@ UM.MainWindow
                     onTriggered:
                     {
                         var localDeviceId = "local_file";
-                        UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
+                        UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                     }
                 }
 
@@ -151,7 +151,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                 }
 
                 MenuSeparator { }
@@ -231,8 +231,8 @@ UM.MainWindow
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
-                // TODO Temporary hidden, add back again when feature ready
-//                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: Cura.MachineManager.hasVariantBuildplates }
+                // TODO Only show in dev mode. Remove check when feature ready
+                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: CuraSDKVersion == "dev" ? Cura.MachineManager.hasVariantBuildplates : false }
                 ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                 MenuSeparator { }
