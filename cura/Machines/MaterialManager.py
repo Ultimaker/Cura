@@ -199,11 +199,8 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
         favorites = self._application.getPreferences().getValue("cura/favorite_materials")
-        print(favorites)
-        for item in favorites:
-            print(item)
+        for item in favorites.split(";"):
             self._favorites.add(item)
-        print("LOADED FAVES", self._favorites)
         self.favoritesUpdated.emit()
 
     def __addMaterialMetadataIntoLookupTree(self, material_metadata: dict) -> None:
@@ -623,24 +620,20 @@ class MaterialManager(QObject):
 
     @pyqtSlot(str)
     def addFavorite(self, root_material_id: str):
-        print(root_material_id)
         self._favorites.add(root_material_id)
         self.favoritesUpdated.emit()
-        print(self._favorites)
-        print(list(self._favorites))
 
         # Ensure all settings are saved.
-        self._application.getPreferences().setValue("cura/favorite_materials", list(self._favorites))
+        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
         self._application.saveSettings()
 
     @pyqtSlot(str)
     def removeFavorite(self, root_material_id: str):
         self._favorites.remove(root_material_id)
         self.favoritesUpdated.emit()
-        print(self._favorites)
 
         # Ensure all settings are saved.
-        self._application.getPreferences().setValue("cura/favorite_materials", list(self._favorites))
+        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
         self._application.saveSettings()
 
     @pyqtSlot()
