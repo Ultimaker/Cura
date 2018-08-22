@@ -21,7 +21,7 @@ Rectangle
     width: parent.width
     color: base.currentItem == model ? UM.Theme.getColor("favorites_row_selected") : "transparent"
     
-    Row
+    Item
     {
         height: parent.height
         width: parent.width

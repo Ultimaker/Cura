@@ -55,6 +55,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
             item = {
                 "root_material_id": root_material_id,
                 "id": metadata["id"],
+                "GUID": metadata["GUID"],
                 "name": metadata["name"],
                 "brand": metadata["brand"],
                 "material": metadata["material"],

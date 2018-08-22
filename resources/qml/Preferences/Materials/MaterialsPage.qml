@@ -56,8 +56,8 @@ Item
     //     }
     //     materialListView.currentIndex = itemIndex;
     // }
-    
-    // This connection makes sure that we will switch to the new
+
+    onCurrentItemChanged: { MaterialsDetailsPanel.currentItem = currentItem }
     Connections
     {
         target: materialsModel
@@ -284,17 +284,17 @@ Item
             MaterialsList {}
         }
 
-        // MaterialsDetailsPanel
-        // {
-        //     anchors
-        //     {
-        //         left: materialScrollView.right
-        //         leftMargin: UM.Theme.getSize("default_margin").width
-        //         top: parent.top
-        //         bottom: parent.bottom
-        //         right: parent.right
-        //     }
-        // }
+        MaterialsDetailsPanel
+        {
+            anchors
+            {
+                left: materialScrollView.right
+                leftMargin: UM.Theme.getSize("default_margin").width
+                top: parent.top
+                bottom: parent.bottom
+                right: parent.right
+            }
+        }
     }
 
     // Dialogs

@@ -127,24 +127,23 @@ class BrandMaterialsModel(ListModel):
 
             # Now handle the individual materials
             item = {
-                "root_material_id": root_material_id,
-                # "root_material_id": container_node.metadata["base_file"] <- as written in material management model
-                "id":               metadata["id"],
-                "container_id":     metadata["id"], # TODO: Remove duplicate in material manager qml
-                "guid":             metadata["GUID"],
-                "name":             metadata["name"],
-                "brand":            metadata["brand"],
-                "description":      metadata["description"],
-                "material":         metadata["material"],
-                "color_name":       metadata["color_name"],
-                "color_code":       metadata["color_code"],
-                "density":          metadata.get("properties", {}).get("density", ""),
-                "diameter":         metadata.get("properties", {}).get("diameter", ""),
+                "root_material_id":     root_material_id,
+                "id":                   metadata["id"],
+                "container_id":         metadata["id"], # TODO: Remove duplicate in material manager qml
+                "GUID":                 metadata["GUID"],
+                "name":                 metadata["name"],
+                "brand":                metadata["brand"],
+                "description":          metadata["description"],
+                "material":             metadata["material"],
+                "color_name":           metadata["color_name"],
+                "color_code":           metadata["color_code"],
+                "density":              metadata.get("properties", {}).get("density", ""),
+                "diameter":             metadata.get("properties", {}).get("diameter", ""),
                 "approximate_diameter": metadata["approximate_diameter"],
-                "adhesion_info":    metadata["adhesion_info"],
-                "is_read_only":     self._container_registry.isReadOnly(metadata["id"]),
-                "container_node":   container_node,
-                "is_favorite":      root_material_id in favorites
+                "adhesion_info":        metadata["adhesion_info"],
+                "is_read_only":         self._container_registry.isReadOnly(metadata["id"]),
+                "container_node":       container_node,
+                "is_favorite":          root_material_id in favorites
             }
             brand_group_dict[brand][material_type].append(item)
 

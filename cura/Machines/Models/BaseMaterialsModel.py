@@ -34,7 +34,7 @@ class BaseMaterialsModel(ListModel):
 
         self.addRoleName(self.RootMaterialIdRole, "root_material_id")
         self.addRoleName(self.IdRole, "id")
-        self.addRoleName(self.GUIDRole, "guid")
+        self.addRoleName(self.GUIDRole, "GUID")
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.BrandRole, "brand")
         self.addRoleName(self.MaterialRole, "material")
