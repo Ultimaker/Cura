@@ -15,6 +15,7 @@ LC_MESSAGES
 .cache
 *.qmlc
 .mypy_cache
+.pytest_cache
 
 #MacOS
 .DS_Store

@@ -1,3 +1,0 @@
-[
-  "plugins/VersionUpgrade/VersionUpgrade34to40/tests/TestVersionUpgrade34to40.py::test_upgradeVersionNr[Empty config file-[general]\\n    version = 5\\n    [metadata]\\n    setting_version = 4\\n]"
-]
