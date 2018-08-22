@@ -215,7 +215,6 @@ class CuraApplication(QtApplication):
 
         self._message_box_callback = None
         self._message_box_callback_arguments = []
-        self._preferred_mimetype = ""
         self._i18n_catalog = None
 
         self._currently_loading_files = []
@@ -494,9 +493,6 @@ class CuraApplication(QtApplication):
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
-
-        self.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
-        self._onGlobalContainerChanged()
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
@@ -981,29 +977,13 @@ class CuraApplication(QtApplication):
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
 
-    def _onGlobalContainerChanged(self):
-        if self._global_container_stack is not None:
-            machine_file_formats = [file_type.strip() for file_type in self._global_container_stack.getMetaDataEntry("file_formats").split(";")]
-            new_preferred_mimetype = ""
-            if machine_file_formats:
-                new_preferred_mimetype =  machine_file_formats[0]
-
-            if new_preferred_mimetype != self._preferred_mimetype:
-                self._preferred_mimetype = new_preferred_mimetype
-                self.preferredOutputMimetypeChanged.emit()
-
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
     sceneBoundingBoxChanged = pyqtSignal()
-    preferredOutputMimetypeChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def platformActivity(self):
         return self._platform_activity
-
-    @pyqtProperty(str, notify=preferredOutputMimetypeChanged)
-    def preferredOutputMimetype(self):
-        return self._preferred_mimetype
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
