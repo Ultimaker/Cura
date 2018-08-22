@@ -26,6 +26,7 @@ class PrinterOutputModel(QObject):
     buildplateChanged = pyqtSignal()
     cameraChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
+    canUpdateFirmwareChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
         super().__init__(parent)
@@ -34,6 +35,7 @@ class PrinterOutputModel(QObject):
         self._name = ""
         self._key = ""  # Unique identifier
         self._controller = output_controller
+        self._controller.canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
         self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
         self._printer_configuration = ConfigurationModel()    # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
@@ -283,6 +285,10 @@ class PrinterOutputModel(QObject):
         if self._controller:
             return self._controller.can_update_firmware
         return False
+
+    # Stub to connect UM.Signal to pyqtSignal
+    def _onControllerCanUpdateFirmwareChanged(self):
+        self.canUpdateFirmwareChanged.emit()
 
     # Returns the configuration (material, variant and buildplate) of the current printer
     @pyqtProperty(QObject, notify = configurationChanged)

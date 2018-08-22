@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
+from UM.Signal import Signal
 
 MYPY = False
 if MYPY:
@@ -56,3 +57,9 @@ class PrinterOutputController:
 
     def sendRawCommand(self, printer: "PrinterOutputModel", command: str):
         Logger.log("w", "Custom command not implemented in controller")
+
+    canUpdateFirmwareChanged = Signal()
+    def setCanUpdateFirmware(self, can_update_firmware: bool):
+        if can_update_firmware != self.can_update_firmware:
+            self.can_update_firmware = can_update_firmware
+            self.canUpdateFirmwareChanged.emit()

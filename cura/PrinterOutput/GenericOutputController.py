@@ -29,8 +29,6 @@ class GenericOutputController(PrinterOutputController):
         self._output_device.printersChanged.connect(self._onPrintersChanged)
         self._active_printer = None
 
-        self.can_update_firmware = True
-
     def _onPrintersChanged(self):
         if self._active_printer:
             self._active_printer.stateChanged.disconnect(self._onPrinterStateChanged)

@@ -16,17 +16,17 @@ Cura.MachineAction
     anchors.fill: parent;
     property bool printerConnected: Cura.MachineManager.printerConnected
     property var activeOutputDevice: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
-    property var canUpdateFirmware: activeOutputDevice ? activeOutputDevice.canUpdateFirmware : False
+    property var canUpdateFirmware: activeOutputDevice ? activeOutputDevice.activePrinter.canUpdateFirmware : False
 
-    Item
+    Column
     {
         id: upgradeFirmwareMachineAction
         anchors.fill: parent;
         UM.I18nCatalog { id: catalog; name:"cura"}
+        spacing: UM.Theme.getSize("default_margin").height
 
         Label
         {
-            id: pageTitle
             width: parent.width
             text: catalog.i18nc("@title", "Upgrade Firmware")
             wrapMode: Text.WordWrap
@@ -34,9 +34,6 @@ Cura.MachineAction
         }
         Label
         {
-            id: pageDescription
-            anchors.top: pageTitle.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label", "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work.")
@@ -44,9 +41,6 @@ Cura.MachineAction
 
         Label
         {
-            id: upgradeText1
-            anchors.top: pageDescription.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label", "The firmware shipping with new printers works, but new versions tend to have more features and improvements.");
@@ -54,8 +48,6 @@ Cura.MachineAction
 
         Row
         {
-            anchors.top: upgradeText1.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
             width: childrenRect.width
             spacing: UM.Theme.getSize("default_margin").width
@@ -64,7 +56,7 @@ Cura.MachineAction
             {
                 id: autoUpgradeButton
                 text: catalog.i18nc("@action:button", "Automatically upgrade Firmware");
-                enabled: parent.firmwareName != "" && activeOutputDevice
+                enabled: parent.firmwareName != "" && canUpdateFirmware
                 onClicked:
                 {
                     activeOutputDevice.updateFirmware(parent.firmwareName)
@@ -74,12 +66,28 @@ Cura.MachineAction
             {
                 id: manualUpgradeButton
                 text: catalog.i18nc("@action:button", "Upload custom Firmware");
-                enabled: activeOutputDevice != null
+                enabled: canUpdateFirmware
                 onClicked:
                 {
                     customFirmwareDialog.open()
                 }
             }
+        }
+
+        Label
+        {
+            width: parent.width
+            wrapMode: Text.WordWrap
+            visible: !printerConnected
+            text: catalog.i18nc("@label", "Firmware can not be upgraded because there is no connection with the printer.");
+        }
+
+        Label
+        {
+            width: parent.width
+            wrapMode: Text.WordWrap
+            visible: printerConnected && !canUpdateFirmware
+            text: catalog.i18nc("@label", "Firmware can not be upgraded because the connection with the printer does not support upgrading firmware.");
         }
 
         FileDialog

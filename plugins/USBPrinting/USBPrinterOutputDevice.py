@@ -183,7 +183,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
-        self._printers = [PrinterOutputModel(output_controller=GenericOutputController(self), number_of_extruders=num_extruders)]
+        controller = GenericOutputController(self)
+        controller.setCanUpdateFirmware(True)
+        self._printers = [PrinterOutputModel(output_controller=controller, number_of_extruders=num_extruders)]
         self._printers[0].updateName(container_stack.getName())
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
@@ -353,7 +355,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
-            print_job = PrintJobOutputModel(output_controller = GenericOutputController(self), name= CuraApplication.getInstance().getPrintInformation().jobName)
+            controller = GenericOutputController(self)
+            controller.setCanUpdateFirmware(True)
+            print_job = PrintJobOutputModel(output_controller = controller, name= CuraApplication.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 
