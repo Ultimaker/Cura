@@ -17,6 +17,10 @@ catalog = i18nCatalog("cura")
 #
 #   If you're zipping g-code, you might as well use gzip!
 class GCodeGzWriter(MeshWriter):
+
+    def __init__(self) -> None:
+        super().__init__(add_to_recent_files = False)
+
     ##  Writes the gzipped g-code to a stream.
     #
     #   Note that even though the function accepts a collection of nodes, the
