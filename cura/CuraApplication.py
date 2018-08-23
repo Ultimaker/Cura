@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import copy
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional
+from typing import cast, TYPE_CHECKING
 
 import numpy
 
@@ -106,6 +105,7 @@ from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
+import cura.Settings.cura_empty_instance_containers
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -216,7 +216,6 @@ class CuraApplication(QtApplication):
 
         self._message_box_callback = None
         self._message_box_callback_arguments = []
-        self._preferred_mimetype = ""
         self._i18n_catalog = None
 
         self._currently_loading_files = []
@@ -369,42 +368,23 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        empty_container = self._container_registry.getEmptyInstanceContainer()
-        self.empty_container = empty_container
+        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container
 
-        empty_definition_changes_container = copy.deepcopy(empty_container)
-        empty_definition_changes_container.setMetaDataEntry("id", "empty_definition_changes")
-        empty_definition_changes_container.setMetaDataEntry("type", "definition_changes")
-        self._container_registry.addContainer(empty_definition_changes_container)
-        self.empty_definition_changes_container = empty_definition_changes_container
+        self._container_registry.addContainer(
+            cura.Settings.cura_empty_instance_containers.empty_definition_changes_container)
+        self.empty_definition_changes_container = cura.Settings.cura_empty_instance_containers.empty_definition_changes_container
 
-        empty_variant_container = copy.deepcopy(empty_container)
-        empty_variant_container.setMetaDataEntry("id", "empty_variant")
-        empty_variant_container.setMetaDataEntry("type", "variant")
-        self._container_registry.addContainer(empty_variant_container)
-        self.empty_variant_container = empty_variant_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_variant_container)
+        self.empty_variant_container = cura.Settings.cura_empty_instance_containers.empty_variant_container
 
-        empty_material_container = copy.deepcopy(empty_container)
-        empty_material_container.setMetaDataEntry("id", "empty_material")
-        empty_material_container.setMetaDataEntry("type", "material")
-        self._container_registry.addContainer(empty_material_container)
-        self.empty_material_container = empty_material_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_material_container)
+        self.empty_material_container = cura.Settings.cura_empty_instance_containers.empty_material_container
 
-        empty_quality_container = copy.deepcopy(empty_container)
-        empty_quality_container.setMetaDataEntry("id", "empty_quality")
-        empty_quality_container.setName("Not Supported")
-        empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
-        empty_quality_container.setMetaDataEntry("type", "quality")
-        empty_quality_container.setMetaDataEntry("supported", False)
-        self._container_registry.addContainer(empty_quality_container)
-        self.empty_quality_container = empty_quality_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_quality_container)
+        self.empty_quality_container = cura.Settings.cura_empty_instance_containers.empty_quality_container
 
-        empty_quality_changes_container = copy.deepcopy(empty_container)
-        empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
-        empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
-        empty_quality_changes_container.setMetaDataEntry("quality_type", "not_supported")
-        self._container_registry.addContainer(empty_quality_changes_container)
-        self.empty_quality_changes_container = empty_quality_changes_container
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_quality_changes_container)
+        self.empty_quality_changes_container = cura.Settings.cura_empty_instance_containers.empty_quality_changes_container
 
     # Initializes the version upgrade manager with by providing the paths for each resource type and the latest
     # versions.
@@ -514,9 +494,6 @@ class CuraApplication(QtApplication):
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
-
-        self.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
-        self._onGlobalContainerChanged()
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
@@ -782,7 +759,10 @@ class CuraApplication(QtApplication):
         # Initialize camera
         root = controller.getScene().getRoot()
         camera = Camera("3d", root)
-        camera.setPosition(Vector(-80, 250, 700) * self.getBuildVolume().getDiagonalSize() / 375)
+        diagonal = self.getBuildVolume().getDiagonalSize()
+        if diagonal < 1: #No printer added yet. Set a default camera distance for normal-sized printers.
+            diagonal = 375
+        camera.setPosition(Vector(-80, 250, 700) * diagonal / 375)
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
@@ -999,29 +979,13 @@ class CuraApplication(QtApplication):
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
 
-    def _onGlobalContainerChanged(self):
-        if self._global_container_stack is not None:
-            machine_file_formats = [file_type.strip() for file_type in self._global_container_stack.getMetaDataEntry("file_formats").split(";")]
-            new_preferred_mimetype = ""
-            if machine_file_formats:
-                new_preferred_mimetype =  machine_file_formats[0]
-
-            if new_preferred_mimetype != self._preferred_mimetype:
-                self._preferred_mimetype = new_preferred_mimetype
-                self.preferredOutputMimetypeChanged.emit()
-
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
     sceneBoundingBoxChanged = pyqtSignal()
-    preferredOutputMimetypeChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def platformActivity(self):
         return self._platform_activity
-
-    @pyqtProperty(str, notify=preferredOutputMimetypeChanged)
-    def preferredOutputMimetype(self):
-        return self._preferred_mimetype
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):

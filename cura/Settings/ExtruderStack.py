@@ -139,9 +139,6 @@ class ExtruderStack(CuraContainerStack):
         super().deserialize(contents, file_name)
         if "enabled" not in self.getMetaData():
             self.setMetaDataEntry("enabled", "True")
-        stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
-        if stacks:
-            self.setNextStack(stacks[0])
 
     def _onPropertiesChanged(self, key: str, properties: Dict[str, Any]) -> None:
         # When there is a setting that is not settable per extruder that depends on a value from a setting that is,
