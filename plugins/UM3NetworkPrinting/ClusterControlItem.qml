@@ -53,6 +53,7 @@ Component
                 right: parent.right
                 topMargin: UM.Theme.getSize("default_margin").height
                 bottom: parent.bottom
+                bottomMargin: UM.Theme.getSize("default_margin").height
             }
 
             style: UM.Theme.styles.scrollview
@@ -69,7 +70,6 @@ Component
                     rightMargin: 2 * UM.Theme.getSize("default_margin").width
                 }
                 spacing: UM.Theme.getSize("default_margin").height
-                displayMarginBeginning: 2
                 model: OutputDevice.printers
 
                 delegate: Rectangle
@@ -167,7 +167,7 @@ Component
                         height: !base.collapsed ? childrenRect.height : 0
                         opacity: visible ? 1 : 0
                         Behavior on height { NumberAnimation { duration: 100 } }
-                        Behavior on opacity { NumberAnimation { duration: 50 } }
+                        Behavior on opacity { NumberAnimation { duration: 100 } }
                         Rectangle
                         {
                             id: topSpacer
@@ -179,7 +179,7 @@ Component
                                 right: parent.right
                                 margins: UM.Theme.getSize("default_margin").width
                                 top: parent.top
-                                topMargin: 2 * UM.Theme.getSize("default_margin").width
+                                topMargin: UM.Theme.getSize("default_margin").width
                             }
                         }
 
@@ -236,7 +236,7 @@ Component
                             anchors.right: parent.right
                             anchors.margins: UM.Theme.getSize("default_margin").width
                             anchors.leftMargin: 2 * UM.Theme.getSize("default_margin").width
-                            height: showJobInfo ? childrenRect.height + 3 * UM.Theme.getSize("default_margin").height: 0
+                            height: showJobInfo ? childrenRect.height + 2 * UM.Theme.getSize("default_margin").height: 0
                             visible: showJobInfo
                             Label
                             {
@@ -286,6 +286,10 @@ Component
                     {
                         property var progress:
                         {
+                            if(modelData.activePrintJob == null)
+                            {
+                                return 0
+                            }
                             var result =  modelData.activePrintJob.timeElapsed / modelData.activePrintJob.timeTotal
                             if(result > 1.0)
                             {
@@ -311,17 +315,23 @@ Component
                                     return ""
                                 }
 
-                                if(modelData.activePrintJob.state == "wait_cleanup")
+                                switch(modelData.activePrintJob.state)
                                 {
-                                    return "Finshed"
-                                }
-                                else if(modelData.activePrintJob.state == "pre_print")
-                                {
-                                    return "Preparing"
-                                }
-                                else
-                                {
-                                    return OutputDevice.formatDuration(modelData.activePrintJob.timeTotal - modelData.activePrintJob.timeElapsed)
+                                    case "wait_cleanup":
+                                        return catalog.i18nc("@label:status", "Finshed")
+                                    case "pre_print":
+                                    case "sent_to_printer":
+                                        return catalog.i18nc("@label:status", "Preparing")
+                                    case "aborted":
+                                    case "wait_user_action":
+                                        return catalog.i18nc("@label:status", "Aborted")
+                                    case "pausing":
+                                    case "paused":
+                                        return catalog.i18nc("@label:status", "Paused")
+                                    case "resuming":
+                                        return catalog.i18nc("@label:status", "Resuming")
+                                    default:
+                                        OutputDevice.formatDuration(modelData.activePrintJob.timeTotal - modelData.activePrintJob.timeElapsed)
                                 }
                             }
 
