@@ -5,12 +5,16 @@ import QtQuick.Controls.Styles 1.3
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
+
+
 Component
 {
     Rectangle
     {
         id: base
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
+
+
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
         visible: OutputDevice != null
         anchors.fill: parent
@@ -41,8 +45,6 @@ Component
 
         ScrollView
         {
-            id: queuedPrintJobs
-
             anchors
             {
                 top: activePrintersLabel.bottom
@@ -60,7 +62,7 @@ Component
                 delegate: Rectangle
                 {
                     width: parent.width
-                    height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
+                    height: childrenRect.height + UM.Theme.getSize("default_margin").height
 
                     id: base
                     property var collapsed: true
@@ -89,7 +91,7 @@ Component
                             anchors.top: parent.top
                             width: 50
                             height: 50
-                            color: "blue"
+                            color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
                         }
 
                         Label
@@ -245,6 +247,86 @@ Component
                                     anchors.right: parent.right
                                     anchors.rightMargin: parent.rightMargin
                                     source: "camera-icon.svg"
+                                }
+                            }
+                        }
+                    }
+
+                    ProgressBar
+                    {
+                        property var progress:
+                        {
+                            var result =  modelData.activePrintJob.timeElapsed / modelData.activePrintJob.timeTotal
+                            if(result > 1.0)
+                            {
+                                result = 1.0
+                            }
+                            return result
+                        }
+
+                        id: jobProgressBar
+                        width: parent.width
+                        value: progress
+                        anchors.top: detailedInfo.bottom
+                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+                        visible: modelData.activePrintJob != null && modelData.activePrintJob != undefined
+
+                        style: ProgressBarStyle
+                        {
+                            property var progressText:
+                            {
+                                if(modelData.activePrintJob == null)
+                                {
+                                    return ""
+                                }
+
+                                if(modelData.activePrintJob.state == "wait_cleanup")
+                                {
+                                    return "Finshed"
+                                }
+                                else if(modelData.activePrintJob.state == "pre_print")
+                                {
+                                    return "Preparing"
+                                }
+                                else
+                                {
+                                    return OutputDevice.formatDuration(modelData.activePrintJob.timeTotal - modelData.activePrintJob.timeElapsed)
+                                }
+                            }
+
+                            background: Rectangle
+                            {
+                                implicitWidth: 100
+                                implicitHeight: visible ? 24 : 0
+                                color: UM.Theme.getColor("viewport_background")
+                            }
+
+                            progress: Rectangle
+                            {
+                                color: UM.Theme.getColor("primary")
+                                id: progressItem
+                                function getTextOffset()
+                                {
+                                    if(progressItem.width + progressLabel.width < control.width)
+                                    {
+                                        return progressItem.width + UM.Theme.getSize("default_margin").width
+                                    }
+                                    else
+                                    {
+                                        return progressItem.width - progressLabel.width - UM.Theme.getSize("default_margin").width
+                                    }
+                                }
+
+                                Label
+                                {
+                                    id: progressLabel
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: getTextOffset()
+                                    text: progressText
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    color: progressItem.width + progressLabel.width < control.width ? "black" : "white"
+                                    width: contentWidth
                                 }
                             }
                         }
