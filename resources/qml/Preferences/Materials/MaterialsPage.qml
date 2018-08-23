@@ -31,7 +31,7 @@ Item
         id: catalog
         name: "cura"
     }
-    Cura.BrandMaterialsModel
+    Cura.MaterialBrandsModel
     {
         id: materialsModel
     }

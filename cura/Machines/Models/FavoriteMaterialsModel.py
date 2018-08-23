@@ -8,49 +8,30 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
-
-        from cura.CuraApplication import CuraApplication
-        self._preferences = CuraApplication.getInstance().getPreferences()
-        self._machine_manager = CuraApplication.getInstance().getMachineManager()
-        self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        self._material_manager = CuraApplication.getInstance().getMaterialManager()
-
-        self._machine_manager.activeStackChanged.connect(self._update) #Update when switching machines.
-        self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
         self._material_manager.favoritesUpdated.connect(self._update) # Update when favorites are changed
         self._update()
 
     def _update(self):
-        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
-        global_stack = self._machine_manager.activeMachine
-        if global_stack is None:
+        # Perform standard check and reset if the check fails
+        if not self._canUpdate():
             self.setItems([])
             return
 
-        extruder_position = str(self._extruder_position)
-        if extruder_position not in global_stack.extruders:
-            self.setItems([])
-            return
-        extruder_stack = global_stack.extruders[extruder_position]
-
-        available_material_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
-        if available_material_dict is None:
-            self.setItems([])
-            return
-
-        favorite_ids = self._material_manager.getFavorites()
+        # Get updated list of favorites
+        self._favorite_ids = self._material_manager.getFavorites()
 
         item_list = []
-        for root_material_id, container_node in available_material_dict.items():
-            metadata = container_node.metadata
 
-            # Only add results for favorite materials
-            if root_material_id not in favorite_ids:
-                continue
+        for root_material_id, container_node in self._available_materials.items():
+            metadata = container_node.metadata
 
             # Do not include the materials from a to-be-removed package
             if bool(metadata.get("removed", False)):
+                continue
+
+            # Only add results for favorite materials
+            if root_material_id not in self._favorite_ids:
                 continue
 
             item = {
@@ -63,11 +44,11 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
                 "color_name":       metadata["color_name"],
                 "color_code":       metadata["color_code"],
                 "container_node":   container_node,
-                "is_favorite":      True
+                "is_favorite":      True # Don't need to set since we only include favorites anyway
             }
             item_list.append(item)
 
-        # Sort the item list by material name alphabetically
+        # Sort the item list alphabetically by name
         item_list = sorted(item_list, key = lambda d: d["brand"].upper())
 
         self.setItems(item_list)

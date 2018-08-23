@@ -18,7 +18,7 @@ Item
 
     // Children
     UM.I18nCatalog { id: catalog; name: "cura"; }
-    Cura.BrandMaterialsModel { id: materialsModel }
+    Cura.MaterialBrandsModel { id: materialsModel }
     Cura.FavoriteMaterialsModel { id: favoriteMaterialsModel }
     Cura.GenericMaterialsModel { id: genericMaterialsModel }
     Column
@@ -186,7 +186,7 @@ Item
             {
                 id: brand_section
                 property var expanded: true
-                property var types_model: model.materials
+                property var types_model: model.material_types
                 height: childrenRect.height
                 width: parent.width
                 Rectangle

@@ -26,7 +26,7 @@ Menu
         extruderPosition: menu.extruderIndex
     }
 
-    Cura.BrandMaterialsModel
+    Cura.MaterialBrandsModel
     {
         id: brandModel
         extruderPosition: menu.extruderIndex
@@ -80,7 +80,7 @@ Menu
             id: brandMenu
             title: brandName
             property string brandName: model.name
-            property var brandMaterials: model.materials
+            property var brandMaterials: model.material_types
 
             Instantiator
             {
