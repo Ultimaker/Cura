@@ -142,8 +142,8 @@ Item
             {
                 id: contextButton
                 text: "\u22EE" //Unicode; Three stacked points.
-
-                width: 30
+                font.pixelSize: 25
+                width: 35
                 height: width
                 anchors
                 {
@@ -158,8 +158,9 @@ Item
                     width: contextButton.width
                     height: contextButton.height
                     radius: 0.5 * width
-                    color: "grey"
+                    color: UM.Theme.getColor("viewport_background")
                 }
+
                 onClicked: parent.switchPopupState()
             }
 
@@ -175,7 +176,7 @@ Item
                 width: 200
                 height: contentItem.height + 2 * padding
                 visible: false
-                padding: UM.Theme.getSize("default_lining").width
+
                 transformOrigin: Popup.Top
                 contentItem: Item
                 {
@@ -188,6 +189,12 @@ Item
                         onClicked: OutputDevice.sendJobToTop(printJob.key)
                         width: parent.width
                         enabled: OutputDevice.printJobs[0].key != printJob.key
+                        hoverEnabled: true
+                        background:  Rectangle
+                        {
+                            opacity: sendToTopButton.down || sendToTopButton.hovered ? 1 : 0
+                            color: UM.Theme.getColor("viewport_background")
+                        }
                     }
                     Button
                     {
@@ -196,14 +203,28 @@ Item
                         onClicked: OutputDevice.deleteJobFromQueue(printJob.key)
                         width: parent.width
                         anchors.top: sendToTopButton.bottom
+                        hoverEnabled: true
+                        background: Rectangle
+                        {
+                            opacity: deleteButton.down || deleteButton.hovered ? 1 : 0
+                            color: UM.Theme.getColor("viewport_background")
+                        }
                     }
                 }
 
                 background: Rectangle
                 {
                     color: UM.Theme.getColor("setting_control")
-                    border.color: UM.Theme.getColor("setting_control_border")
-                    height: popup.height
+                    height: popup.height - 10 // - 2 times the radius of the dropshadow.
+                    width: popup.width - 10
+                    layer.enabled: true
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    layer.effect: DropShadow
+                    {
+                        radius: 5
+                        color: "#3F000000"  // 25% shadow
+                    }
                 }
 
                 exit: Transition

@@ -99,7 +99,7 @@ Component
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").height
-                    height: 125 * screenScaleFactor
+                    height: 175 * screenScaleFactor
                 }
             }
         }
