@@ -3,19 +3,21 @@
 
 # The purpose of this class is to create fixtures or methods that can be shared among all tests.
 
+import unittest.mock
 import pytest
+
 from UM.Qt.QtApplication import QtApplication #QtApplication import is required, even though it isn't used.
 from cura.CuraApplication import CuraApplication
 from cura.MachineActionManager import MachineActionManager
+
+
 
 # Create a CuraApplication object that will be shared among all tests. It needs to be initialized.
 # Since we need to use it more that once, we create the application the first time and use its instance afterwards.
 @pytest.fixture()
 def application() -> CuraApplication:
-    application = CuraApplication.getInstance()
-    if application is None:
-        application = CuraApplication()
-    return application
+    app = unittest.mock.MagicMock()
+    return app
 
 # Returns a MachineActionManager instance.
 @pytest.fixture()
