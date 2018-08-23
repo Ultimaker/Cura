@@ -68,10 +68,9 @@ from cura.Machines.Models.NozzleModel import NozzleModel
 from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
-from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
 from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
 from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
-from cura.Machines.Models.BrandMaterialsModel import BrandMaterialsModel
+from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
 from cura.Machines.Models.QualityManagementModel import QualityManagementModel
 from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
 from cura.Machines.Models.MachineManagementModel import MachineManagementModel
@@ -936,8 +935,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
-        qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
-        qmlRegisterType(MaterialManagementModel, "Cura", 1, 0, "MaterialManagementModel")
+        qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
         qmlRegisterType(MachineManagementModel, "Cura", 1, 0, "MachineManagementModel")
 
