@@ -47,7 +47,6 @@ Item
     {
         id: materialLabel
         text:
-
         {
             if(printCoreConfiguration != undefined && printCoreConfiguration.activeMaterial != undefined)
             {
@@ -55,11 +54,15 @@ Item
             }
             return ""
         }
-        elide: Text.ElideRight
-        width: parent.width
         font: UM.Theme.getFont("default_bold")
-        anchors.left: extruderCircle.right
-        anchors.leftMargin: UM.Theme.getSize("default_margin").height
+        elide: Text.ElideRight
+
+        anchors
+        {
+            right: parent.right
+            left: extruderCircle.right
+            margins: UM.Theme.getSize("default_margin").width
+        }
     }
 
     Label
@@ -75,8 +78,14 @@ Item
         }
         anchors.top: materialLabel.bottom
         elide: Text.ElideRight
-        width: parent.width
-        anchors.left: extruderCircle.right
-        anchors.leftMargin: UM.Theme.getSize("default_margin").height
+
+        anchors
+        {
+            top: materialLabel.bottom
+            right: parent.right
+            left: extruderCircle.right
+            leftMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
     }
 }

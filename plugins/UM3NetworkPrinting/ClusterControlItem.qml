@@ -51,15 +51,27 @@ Component
                 top: activePrintersLabel.bottom
                 left: parent.left
                 right: parent.right
-                margins: UM.Theme.getSize("default_margin").width
+                topMargin: UM.Theme.getSize("default_margin").height
                 bottom: parent.bottom
             }
+
+            style: UM.Theme.styles.scrollview
+
             ListView
             {
-                anchors.fill: parent
+                anchors
+                {
+                    top: parent.top
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                    leftMargin: 2 * UM.Theme.getSize("default_margin").width
+                    rightMargin: 2 * UM.Theme.getSize("default_margin").width
+                }
                 spacing: UM.Theme.getSize("default_margin").height
                 displayMarginBeginning: 2
                 model: OutputDevice.printers
+
                 delegate: Rectangle
                 {
                     width: parent.width - 2 * shadowRadius
@@ -100,6 +112,8 @@ Component
                         {
                             id: machineIcon
                             anchors.top: parent.top
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            anchors.left: parent.left
                             width: 50
                             height: 50
                             color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
@@ -157,7 +171,7 @@ Component
                         Rectangle
                         {
                             id: topSpacer
-                            color: "grey"
+                            color: UM.Theme.getColor("viewport_background")
                             height: 1
                             anchors
                             {
@@ -165,6 +179,7 @@ Component
                                 right: parent.right
                                 margins: UM.Theme.getSize("default_margin").width
                                 top: parent.top
+                                topMargin: 2 * UM.Theme.getSize("default_margin").width
                             }
                         }
 
@@ -172,11 +187,11 @@ Component
                         {
                             id: extrudersInfo
                             anchors.top: topSpacer.bottom
-                            anchors.topMargin : UM.Theme.getSize("default_margin").height
+                            anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
                             anchors.left: parent.left
-                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            anchors.leftMargin: 2 * UM.Theme.getSize("default_margin").width
                             anchors.right: parent.right
-                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            anchors.rightMargin: 2 * UM.Theme.getSize("default_margin").width
                             height: childrenRect.height
                             spacing: UM.Theme.getSize("default_margin").width
 
@@ -198,7 +213,7 @@ Component
                         Rectangle
                         {
                             id: jobSpacer
-                            color: "grey"
+                            color: UM.Theme.getColor("viewport_background")
                             height: 1
                             anchors
                             {
@@ -206,6 +221,7 @@ Component
                                 right: parent.right
                                 margins: UM.Theme.getSize("default_margin").width
                                 top: extrudersInfo.bottom
+                                topMargin: 2 * UM.Theme.getSize("default_margin").height
                             }
                         }
 
@@ -215,10 +231,12 @@ Component
                             property var showJobInfo: modelData.activePrintJob != null && modelData.activePrintJob.state != "queued"
 
                             anchors.top: jobSpacer.bottom
+                            anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.margins: UM.Theme.getSize("default_margin").width
-                            height: showJobInfo ? childrenRect.height + UM.Theme.getSize("default_margin").height: 0
+                            anchors.leftMargin: 2 * UM.Theme.getSize("default_margin").width
+                            height: showJobInfo ? childrenRect.height + 3 * UM.Theme.getSize("default_margin").height: 0
                             visible: showJobInfo
                             Label
                             {
@@ -246,12 +264,11 @@ Component
                             Rectangle
                             {
                                 id: showCameraIcon
-                                width: 30 * screenScaleFactor
+                                width: 35 * screenScaleFactor
                                 height: width
-                                radius: width
+                                radius: 0.5 * width
                                 anchors.left: parent.left
-                                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                                anchors.bottom: printJobPreview.bottom
+                                anchors.top: printJobPreview.bottom
                                 color: UM.Theme.getColor("setting_control_border_highlight")
                                 Image
                                 {

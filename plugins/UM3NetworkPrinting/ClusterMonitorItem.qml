@@ -79,15 +79,16 @@ Component
                 margins: UM.Theme.getSize("default_margin").width
                 top: activePrintersLabel.bottom
                 left: parent.left
-                leftMargin: UM.Theme.getSize("default_lining").width // To ensure border can be drawn.
-                rightMargin: UM.Theme.getSize("default_lining").width
+                bottomMargin: 0
                 right: parent.right
                 bottom: parent.bottom
             }
+            style: UM.Theme.styles.scrollview
 
             ListView
             {
                 anchors.fill: parent
+                anchors.margins: UM.Theme.getSize("default_margin").height
                 spacing: UM.Theme.getSize("default_margin").height
 
                 model: OutputDevice.queuedPrintJobs
@@ -95,11 +96,10 @@ Component
                 delegate: PrintJobInfoBlock
                 {
                     printJob: modelData
-                    width: Math.min(800 * screenScaleFactor, maximumWidth)
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").height
                     height: 125 * screenScaleFactor
-
-                    // Add a 1 pix margin, as the border is sometimes cut off otherwise.
-                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
         }

@@ -54,7 +54,8 @@ Item
                 bottom: parent.bottom
                 left: parent.left
                 right: parent.horizontalCenter
-                margins:  UM.Theme.getSize("default_margin").width
+                margins: 2 * UM.Theme.getSize("default_margin").width
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             Label
@@ -101,7 +102,8 @@ Item
                 bottom: parent.bottom
                 left: parent.horizontalCenter
                 right: parent.right
-                margins:  UM.Theme.getSize("default_margin").width
+                margins: 2 * UM.Theme.getSize("default_margin").width
+                leftMargin: UM.Theme.getSize("default_margin").width
             }
 
             Label
@@ -254,7 +256,7 @@ Item
 
         Rectangle
         {
-            color: "grey"
+            color: UM.Theme.getColor("viewport_background")
             width: 1
 
             anchors.top: parent.top
