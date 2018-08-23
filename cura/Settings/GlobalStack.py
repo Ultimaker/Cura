@@ -61,6 +61,10 @@ class GlobalStack(CuraContainerStack):
             name = self.variant.getName()
         return name
 
+    @pyqtProperty(str, constant = True)
+    def preferred_output_file_formats(self) -> str:
+        return self.getMetaDataEntry("file_formats")
+
     ##  Add an extruder to the list of extruders of this stack.
     #
     #   \param extruder The extruder to add.

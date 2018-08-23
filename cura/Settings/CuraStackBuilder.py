@@ -108,16 +108,27 @@ class CuraStackBuilder:
 
         preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
         quality_group_dict = quality_manager.getQualityGroups(new_global_stack)
-        quality_group = quality_group_dict.get(preferred_quality_type)
-
-        new_global_stack.quality = quality_group.node_for_global.getContainer()
-        if not new_global_stack.quality:
+        if not quality_group_dict:
+            # There is no available quality group, set all quality containers to empty.
             new_global_stack.quality = application.empty_quality_container
-        for position, extruder_stack in new_global_stack.extruders.items():
-            if position in quality_group.nodes_for_extruders and quality_group.nodes_for_extruders[position].getContainer():
-                extruder_stack.quality = quality_group.nodes_for_extruders[position].getContainer()
-            else:
+            for extruder_stack in new_global_stack.extruders.values():
                 extruder_stack.quality = application.empty_quality_container
+        else:
+            # Set the quality containers to the preferred quality type if available, otherwise use the first quality
+            # type that's available.
+            if preferred_quality_type not in quality_group_dict:
+                Logger.log("w", "The preferred quality {quality_type} doesn't exist for this set-up. Choosing a random one.".format(quality_type = preferred_quality_type))
+                preferred_quality_type = next(iter(quality_group_dict))
+            quality_group = quality_group_dict.get(preferred_quality_type)
+
+            new_global_stack.quality = quality_group.node_for_global.getContainer()
+            if not new_global_stack.quality:
+                new_global_stack.quality = application.empty_quality_container
+            for position, extruder_stack in new_global_stack.extruders.items():
+                if position in quality_group.nodes_for_extruders and quality_group.nodes_for_extruders[position].getContainer():
+                    extruder_stack.quality = quality_group.nodes_for_extruders[position].getContainer()
+                else:
+                    extruder_stack.quality = application.empty_quality_container
 
         # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
         # extruder stack because the global stack didn't have one yet (which is enforced since Cura 3.1).

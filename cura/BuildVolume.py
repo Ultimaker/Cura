@@ -242,6 +242,8 @@ class BuildVolume(SceneNode):
 
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
+                if extruder_position not in self._global_container_stack.extruders:
+                    continue
                 if not self._global_container_stack.extruders[extruder_position].isEnabled:
                     node.setOutsideBuildArea(True)
                     continue
@@ -561,7 +563,9 @@ class BuildVolume(SceneNode):
 
             camera = Application.getInstance().getController().getCameraTool()
             if camera:
-                camera.setZoomRange(min = 1, max = self.getDiagonalSize() * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
+                diagonal = self.getDiagonalSize()
+                if diagonal > 1:
+                    camera.setZoomRange(min = 0.1, max = diagonal * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
 
     def _onEngineCreated(self):
         self._engine_ready = True
