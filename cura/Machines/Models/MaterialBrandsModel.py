@@ -21,12 +21,8 @@ class MaterialBrandsModel(BaseMaterialsModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        from cura.CuraApplication import CuraApplication
-
         self.addRoleName(Qt.UserRole + 1, "name")
         self.addRoleName(Qt.UserRole + 2, "material_types")
-
-        self._container_registry = CuraApplication.getInstance().getContainerRegistry()
 
         self._update()
 
@@ -64,25 +60,7 @@ class MaterialBrandsModel(BaseMaterialsModel):
                 brand_group_dict[brand][material_type] = []
 
             # Now handle the individual materials
-            item = {
-                "root_material_id":     root_material_id,
-                "id":                   metadata["id"],
-                "container_id":         metadata["id"], # TODO: Remove duplicate in material manager qml
-                "GUID":                 metadata["GUID"],
-                "name":                 metadata["name"],
-                "brand":                metadata["brand"],
-                "description":          metadata["description"],
-                "material":             metadata["material"],
-                "color_name":           metadata["color_name"],
-                "color_code":           metadata["color_code"],
-                "density":              metadata.get("properties", {}).get("density", ""),
-                "diameter":             metadata.get("properties", {}).get("diameter", ""),
-                "approximate_diameter": metadata["approximate_diameter"],
-                "adhesion_info":        metadata["adhesion_info"],
-                "is_read_only":         self._container_registry.isReadOnly(metadata["id"]),
-                "container_node":       container_node,
-                "is_favorite":          root_material_id in self._favorite_ids
-            }
+            item = self._createMaterialItem(root_material_id, container_node)
             brand_group_dict[brand][material_type].append(item)
 
         # Part 2: Organize the tree into models

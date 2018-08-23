@@ -25,26 +25,15 @@ class GenericMaterialsModel(BaseMaterialsModel):
         for root_material_id, container_node in self._available_materials.items():
             metadata = container_node.metadata
 
-            # Only add results for generic materials
-            if metadata["brand"].lower() != "generic":
-                continue
-
             # Do not include the materials from a to-be-removed package
             if bool(metadata.get("removed", False)):
                 continue
 
-            item = {
-                "root_material_id": root_material_id,
-                "id":               metadata["id"],
-                "GUID":             metadata["GUID"],
-                "name":             metadata["name"],
-                "brand":            metadata["brand"],
-                "material":         metadata["material"],
-                "color_name":       metadata["color_name"],
-                "color_code":       metadata["color_code"],
-                "container_node":   container_node,
-                "is_favorite":      root_material_id in self._favorite_ids
-            }
+            # Only add results for generic materials
+            if metadata["brand"].lower() != "generic":
+                continue
+
+            item = self._createMaterialItem(root_material_id, container_node)
             item_list.append(item)
 
         # Sort the item list alphabetically by name
