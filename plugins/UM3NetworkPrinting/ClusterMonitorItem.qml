@@ -40,34 +40,16 @@ Component
             visible: OutputDevice.printers.length == 0
         }
 
-        Item
+        Label
         {
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            id: queuedLabel
+            anchors.left: queuedPrintJobs.left
             anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            width: Math.min(800 * screenScaleFactor, maximumWidth)
-            height: children.height
-            visible: OutputDevice.printers.length != 0
-
-            Label
-            {
-                id: addRemovePrintersLabel
-                anchors.right: parent.right
-                text: catalog.i18nc("@label link to connect manager", "Add/Remove printers")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                linkColor: UM.Theme.getColor("text_link")
-            }
-
-            MouseArea
-            {
-                anchors.fill: addRemovePrintersLabel
-                hoverEnabled: true
-                onClicked: Cura.MachineManager.printerOutputDevices[0].openPrinterControlPanel()
-                onEntered: addRemovePrintersLabel.font.underline = true
-                onExited: addRemovePrintersLabel.font.underline = false
-            }
+            anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
+            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "Queued")
+            font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
         }
 
         ScrollView
@@ -77,7 +59,8 @@ Component
             anchors
             {
                 margins: UM.Theme.getSize("default_margin").width
-                top: activePrintersLabel.bottom
+                top: queuedLabel.bottom
+                topMargin: 0
                 left: parent.left
                 bottomMargin: 0
                 right: parent.right

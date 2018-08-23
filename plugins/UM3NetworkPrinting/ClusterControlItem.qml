@@ -39,7 +39,7 @@ Component
                 right: parent.right
             }
 
-            text: OutputDevice.name
+            text: catalog.i18nc("@label", "Printing")
             elide: Text.ElideRight
         }
 
