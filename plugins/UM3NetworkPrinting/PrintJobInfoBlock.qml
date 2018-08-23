@@ -1,15 +1,16 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
-
+import QtGraphicalEffects 1.0
 
 import UM 1.3 as UM
 
 
 Item
 {
+    id: base
     property var printJob: null
-
+    property var shadowRadius: 5
     function getPrettyTime(time)
     {
         return OutputDevice.formatDuration(time)
@@ -24,7 +25,25 @@ Item
     Rectangle
     {
         id: background
-        anchors.fill: parent
+        anchors
+        {
+            top: parent.top
+            topMargin: 3
+            left: parent.left
+            leftMargin: base.shadowRadius
+            rightMargin: base.shadowRadius
+            right: parent.right
+            bottom: parent.bottom
+            bottomMargin: base.shadowRadius
+        }
+
+        layer.enabled: true
+        layer.effect: DropShadow
+        {
+            radius: base.shadowRadius
+            verticalOffset: 2
+            color: "#3F000000"  // 25% shadow
+        }
 
         Item
         {

@@ -1,10 +1,11 @@
-import QtQuick 2.2
+import QtQuick 2.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.3
+import QtGraphicalEffects 1.0
+
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
-
 
 
 Component
@@ -57,15 +58,25 @@ Component
             {
                 anchors.fill: parent
                 spacing: UM.Theme.getSize("default_margin").height
-
+                displayMarginBeginning: 2
                 model: OutputDevice.printers
                 delegate: Rectangle
                 {
-                    width: parent.width
+                    width: parent.width - 2 * shadowRadius
                     height: childrenRect.height + UM.Theme.getSize("default_margin").height
-
+                    anchors.horizontalCenter: parent.horizontalCenter
                     id: base
+                    property var shadowRadius: 5
                     property var collapsed: true
+
+                    layer.enabled: true
+                    layer.effect: DropShadow
+                    {
+                        radius: base.shadowRadius
+                        verticalOffset: 2
+                        color: "#3F000000"  // 25% shadow
+                    }
+
                     Item
                     {
                         id: printerInfo
@@ -136,11 +147,13 @@ Component
                     {
                         id: detailedInfo
                         property var printJob: modelData.activePrintJob
-                        visible: !base.collapsed
+                        visible: height == childrenRect.height
                         anchors.top: printerInfo.bottom
                         width: parent.width
-                        height: visible ? childrenRect.height : 0
-
+                        height: !base.collapsed ? childrenRect.height : 0
+                        opacity: visible ? 1 : 0
+                        Behavior on height { NumberAnimation { duration: 100 } }
+                        Behavior on opacity { NumberAnimation { duration: 50 } }
                         Rectangle
                         {
                             id: topSpacer
