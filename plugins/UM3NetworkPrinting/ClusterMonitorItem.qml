@@ -89,17 +89,18 @@ Component
 
         PrinterVideoStream
         {
-            visible: OutputDevice.activePrinter != null
+            visible: OutputDevice.activeCamera != null
             anchors.fill: parent
+            camera: OutputDevice.activeCamera
         }
 
         onVisibleChanged:
         {
-            if (!monitorFrame.visible)
+            if (monitorFrame != null && !monitorFrame.visible)
             {
                 // After switching the Tab ensure that active printer is Null, the video stream image
                 // might be active
-                OutputDevice.setActivePrinter(null)
+                OutputDevice.setActiveCamera(null)
             }
         }
     }

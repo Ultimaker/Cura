@@ -278,6 +278,14 @@ Component
                                     anchors.rightMargin: parent.rightMargin
                                     source: "camera-icon.svg"
                                 }
+                                MouseArea
+                                {
+                                    anchors.fill:parent
+                                    onClicked:
+                                    {
+                                        OutputDevice.setActiveCamera(modelData.camera)
+                                    }
+                                }
                             }
                         }
                     }

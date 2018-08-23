@@ -46,6 +46,7 @@ i18n_catalog = i18nCatalog("cura")
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     printJobsChanged = pyqtSignal()
     activePrinterChanged = pyqtSignal()
+    activeCameraChanged = pyqtSignal()
 
     # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
     # Inheritance doesn't seem to work. Tying them together does work, but i'm open for better suggestions.
@@ -95,6 +96,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._latest_reply_handler = None  # type: Optional[QNetworkReply]
         self._sending_job = None
+
+        self._active_camera = None # type: Optional[NetworkCamera]
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
@@ -256,6 +259,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def activePrinter(self) -> Optional[PrinterOutputModel]:
         return self._active_printer
 
+    @pyqtProperty(QObject, notify=activeCameraChanged)
+    def activeCamera(self) -> Optional[NetworkCamera]:
+        return self._active_camera
+
     @pyqtSlot(QObject)
     def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
         if self._active_printer != printer:
@@ -263,6 +270,19 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 self._active_printer.camera.stop()
             self._active_printer = printer
             self.activePrinterChanged.emit()
+
+    @pyqtSlot(QObject)
+    def setActiveCamera(self, camera: Optional[NetworkCamera]) -> None:
+        if self._active_camera != camera:
+            if self._active_camera:
+                self._active_camera.stop()
+
+            self._active_camera = camera
+
+            if self._active_camera:
+                self._active_camera.start()
+
+            self.activeCameraChanged.emit()
 
     def _onPostPrintJobFinished(self, reply: QNetworkReply) -> None:
         if self._progress_message:
