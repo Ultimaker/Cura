@@ -3,6 +3,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
 
+import QtQuick.Controls 2.0 as Controls2
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -132,7 +133,7 @@ Component
                                 }
                                 width: sourceSize.width
                                 height: sourceSize.height
-                  
+
                                 color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
                             }
 
@@ -271,6 +272,163 @@ Component
                                     text: modelData.activePrintJob != null ? modelData.activePrintJob.owner : ""
                                     font: UM.Theme.getFont("default")
                                     opacity: 0.6
+                                }
+                                function switchPopupState()
+                                {
+                                    popup.visible ? popup.close() : popup.open()
+                                }
+                                Controls2.Button
+                                {
+                                    id: contextButton
+                                    text: "\u22EE" //Unicode; Three stacked points.
+                                    font.pixelSize: 25
+                                    width: 35
+                                    height: width
+                                    anchors
+                                    {
+                                        right: parent.right
+                                        top: parent.top
+                                    }
+                                    hoverEnabled: true
+
+                                    background: Rectangle
+                                    {
+                                        opacity: contextButton.down || contextButton.hovered ? 1 : 0
+                                        width: contextButton.width
+                                        height: contextButton.height
+                                        radius: 0.5 * width
+                                        color: UM.Theme.getColor("viewport_background")
+                                    }
+
+                                    onClicked: parent.switchPopupState()
+                                }
+
+                                Controls2.Popup
+                                {
+                                    // TODO Change once updating to Qt5.10 - The 'opened' property is in 5.10 but the behavior is now implemented with the visible property
+                                    id: popup
+                                    clip: true
+                                    closePolicy: Controls2.Popup.CloseOnPressOutsideParent
+                                    x: parent.width - width
+                                    y: contextButton.height
+                                    width: 200
+                                    height: contentItem.height + 2 * padding
+                                    visible: false
+
+                                    transformOrigin: Controls2.Popup.Top
+                                    contentItem: Item
+                                    {
+                                        width: popup.width - 2 * popup.padding
+                                        height: childrenRect.height + 15
+                                        Controls2.Button
+                                        {
+                                            id: pauseButton
+                                            text: modelData.activePrintJob.state == "paused" ? catalog.i18nc("@label", "Resume") : catalog.i18nc("@label", "Pause")
+                                            onClicked:
+                                            {
+                                                if(modelData.activePrintJob.state == "paused")
+                                                {
+                                                    modelData.activePrintJob.setState("print")
+                                                }
+                                                else if(modelData.activePrintJob.state == "printing")
+                                                {
+                                                    modelData.activePrintJob.setState("pause")
+                                                }
+                                                popup.close()
+                                            }
+                                            width: parent.width
+                                            enabled: ["paused", "printing"].indexOf(modelData.activePrintJob.state) >= 0
+                                            anchors.top: parent.top
+                                            anchors.topMargin: 10
+                                            hoverEnabled: true
+                                            background:  Rectangle
+                                            {
+                                                opacity: pauseButton.down || pauseButton.hovered ? 1 : 0
+                                                color: UM.Theme.getColor("viewport_background")
+                                            }
+                                        }
+
+                                        Controls2.Button
+                                        {
+                                            id: abortButton
+                                            text: catalog.i18nc("@label", "Abort")
+                                            onClicked:
+                                            {
+                                                modelData.activePrintJob.setState("abort")
+                                                popup.close()
+                                            }
+                                            width: parent.width
+                                            anchors.top: pauseButton.bottom
+                                            hoverEnabled: true
+                                            enabled: ["paused", "printing", "pre_print"].indexOf(modelData.activePrintJob.state) >= 0
+                                            background: Rectangle
+                                            {
+                                                opacity: abortButton.down || abortButton.hovered ? 1 : 0
+                                                color: UM.Theme.getColor("viewport_background")
+                                            }
+                                        }
+                                    }
+
+                                    background: Item
+                                    {
+                                        width: popup.width
+                                        height: popup.height
+
+                                        DropShadow
+                                        {
+                                            anchors.fill: pointedRectangle
+                                            radius: 5
+                                            color: "#3F000000"  // 25% shadow
+                                            source: pointedRectangle
+                                            transparentBorder: true
+                                            verticalOffset: 2
+                                        }
+
+                                        Item
+                                        {
+                                            id: pointedRectangle
+                                            width: parent.width -10
+                                            height: parent.height -10
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            anchors.verticalCenter: parent.verticalCenter
+
+                                            Rectangle
+                                            {
+                                                id: point
+                                                height: 13
+                                                width: 13
+                                                color: UM.Theme.getColor("setting_control")
+                                                transform: Rotation { angle: 45}
+                                                anchors.right: bloop.right
+                                                y: 1
+                                            }
+
+                                            Rectangle
+                                            {
+                                                id: bloop
+                                                color: UM.Theme.getColor("setting_control")
+                                                width: parent.width
+                                                anchors.top: parent.top
+                                                anchors.topMargin: 10
+                                                anchors.bottom: parent.bottom
+                                                anchors.bottomMargin: 5
+                                            }
+                                        }
+                                    }
+
+                                    exit: Transition
+                                    {
+                                        // This applies a default NumberAnimation to any changes a state change makes to x or y properties
+                                        NumberAnimation { property: "visible"; duration: 75; }
+                                    }
+                                    enter: Transition
+                                    {
+                                        // This applies a default NumberAnimation to any changes a state change makes to x or y properties
+                                        NumberAnimation { property: "visible"; duration: 75; }
+                                    }
+
+                                    onClosed: visible = false
+                                    onOpened: visible = true
                                 }
 
                                 Image

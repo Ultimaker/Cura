@@ -166,7 +166,6 @@ Item
                 onClicked: parent.switchPopupState()
             }
 
-
             Popup
             {
                 // TODO Change once updating to Qt5.10 - The 'opened' property is in 5.10 but the behavior is now implemented with the visible property
