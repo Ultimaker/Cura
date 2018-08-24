@@ -456,6 +456,38 @@ Component
                                                 return 1.0
                                         }
                                     }
+
+
+                                }
+
+                                UM.RecolorImage
+                                {
+                                    id: statusImage
+                                    anchors.centerIn: printJobPreview
+                                    source:
+                                    {
+                                        if(modelData.activePrintJob == null)
+                                        {
+                                            return ""
+                                        }
+                                        switch(modelData.activePrintJob.state)
+                                        {
+                                            case "paused":
+                                                return "paused-icon.svg"
+                                            case "wait_cleanup":
+                                                return "approved-icon.svg"
+                                            case "wait_user_action":
+                                                return "aborted-icon.svg"
+                                            default:
+                                                return ""
+                                        }
+                                    }
+                                    visible: source != ""
+                                    width: 0.5 * printJobPreview.width
+                                    height: 0.5 * printJobPreview.height
+                                    sourceSize.width: width
+                                    sourceSize.height: height
+                                    color: "black"
                                 }
 
                                 Rectangle
