@@ -235,6 +235,7 @@ Item
                         color: "#3F000000"  // 25% shadow
                         source: pointedRectangle
                         transparentBorder: true
+                        verticalOffset: 2
                     }
 
                     Item
