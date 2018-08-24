@@ -77,7 +77,7 @@ Item
                 source: printJob.preview_image_url
                 anchors.top: ownerName.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: totalTimeLabel.top
+                anchors.bottom: totalTimeLabel.bottom
                 width: height
             }
 
@@ -186,7 +186,11 @@ Item
                     {
                         id: sendToTopButton
                         text: catalog.i18nc("@label", "Move to top")
-                        onClicked: OutputDevice.sendJobToTop(printJob.key)
+                        onClicked:
+                        {
+                            OutputDevice.sendJobToTop(printJob.key)
+                            popup.close()
+                        }
                         width: parent.width
                         enabled: OutputDevice.printJobs[0].key != printJob.key
                         anchors.top: parent.top
@@ -198,12 +202,16 @@ Item
                             color: UM.Theme.getColor("viewport_background")
                         }
                     }
-                    
+
                     Button
                     {
                         id: deleteButton
                         text: catalog.i18nc("@label", "Delete")
-                        onClicked: OutputDevice.deleteJobFromQueue(printJob.key)
+                        onClicked:
+                        {
+                            OutputDevice.deleteJobFromQueue(printJob.key)
+                            popup.close()
+                        }
                         width: parent.width
                         anchors.top: sendToTopButton.bottom
                         hoverEnabled: true
@@ -312,14 +320,11 @@ Item
         Rectangle
         {
             color: UM.Theme.getColor("viewport_background")
-            width: 1
-
+            width: 2
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.margins: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
-
         }
-
     }
 }

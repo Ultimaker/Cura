@@ -19,7 +19,7 @@ Component
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
         visible: OutputDevice != null
         anchors.fill: parent
-        color: UM.Theme.getColor("viewport_background")
+        color: "white"
 
         UM.I18nCatalog
         {
@@ -29,11 +29,12 @@ Component
 
         Label
         {
-            id: activePrintersLabel
+            id: printingLabel
             font: UM.Theme.getFont("large")
             anchors
             {
-                margins: UM.Theme.getSize("default_margin").width
+                margins: 2 * UM.Theme.getSize("default_margin").width
+                leftMargin: 4 * UM.Theme.getSize("default_margin").width
                 top: parent.top
                 left: parent.left
                 right: parent.right
@@ -48,10 +49,10 @@ Component
         {
             anchors
             {
-                top: activePrintersLabel.bottom
+                top: printingLabel.bottom
                 left: parent.left
                 right: parent.right
-                topMargin: UM.Theme.getSize("default_margin").height
+                topMargin: 2 * UM.Theme.getSize("default_margin").height
                 bottom: parent.bottom
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
@@ -172,7 +173,7 @@ Component
                         {
                             id: topSpacer
                             color: UM.Theme.getColor("viewport_background")
-                            height: 1
+                            height: 2
                             anchors
                             {
                                 left: parent.left
@@ -214,7 +215,7 @@ Component
                         {
                             id: jobSpacer
                             color: UM.Theme.getColor("viewport_background")
-                            height: 1
+                            height: 2
                             anchors
                             {
                                 left: parent.left
@@ -257,7 +258,7 @@ Component
                                 source: modelData.activePrintJob != null ? modelData.activePrintJob.preview_image_url : ""
                                 anchors.top: ownerName.bottom
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                width: parent.width / 3
+                                width: parent.width / 2
                                 height: width
                             }
 
@@ -268,7 +269,7 @@ Component
                                 height: width
                                 radius: 0.5 * width
                                 anchors.left: parent.left
-                                anchors.top: printJobPreview.bottom
+                                anchors.bottom: printJobPreview.bottom
                                 color: UM.Theme.getColor("setting_control_border_highlight")
                                 Image
                                 {
