@@ -44,7 +44,6 @@ Component
             elide: Text.ElideRight
         }
 
-
         ScrollView
         {
             anchors

@@ -72,7 +72,7 @@ Component
             {
                 anchors.fill: parent
                 anchors.margins: UM.Theme.getSize("default_margin").height
-                spacing: UM.Theme.getSize("default_margin").height
+                spacing: UM.Theme.getSize("default_margin").height - 10 // 2x the shadow radius
 
                 model: OutputDevice.queuedPrintJobs
 
