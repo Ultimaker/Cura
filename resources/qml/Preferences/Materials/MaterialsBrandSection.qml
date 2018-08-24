@@ -12,36 +12,29 @@ import Cura 1.0 as Cura
 
 Rectangle
 {
-    id: material_type_section
+    id: brand_section
     property var expanded: true
-    property var colors_model: model.colors
+    property var types_model: model.material_types
     height: childrenRect.height
     width: parent.width
     Rectangle
     {
-        id: material_type_header_background
-        color: UM.Theme.getColor("lining")
-        anchors.bottom: material_type_header.bottom
-        anchors.left: material_type_header.left
-        height: UM.Theme.getSize("default_lining").height
-        width: material_type_header.width
+        id: brand_header_background
+        color: UM.Theme.getColor("favorites_header_bar")
+        anchors.fill: brand_header
     }
     Row
     {
-        id: material_type_header
-        width: parent.width - 8
-        anchors
-        {
-            left: parent.left
-            leftMargin: 8
-        }
+        id: brand_header
+        width: parent.width
         Label
         {
+            id: brand_name
             text: model.name
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - UM.Theme.getSize("favorites_button").width
-            id: material_type_name
             verticalAlignment: Text.AlignVCenter
+            leftPadding: 4
         }
         Button
         {
@@ -59,7 +52,7 @@ Rectangle
                 sourceSize.width: width
                 sourceSize.height: height
                 color: "black"
-                source: material_type_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                source: brand_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             }
             style: ButtonStyle
             {
@@ -73,25 +66,23 @@ Rectangle
     }
     MouseArea
     {
-        anchors.fill: material_type_header
+        anchors.fill: brand_header
         onPressed:
         {
-            material_type_section.expanded = !material_type_section.expanded
+            brand_section.expanded = !brand_section.expanded
         }
     }
     Column
     {
-        height: material_type_section.expanded ? childrenRect.height : 0
-        visible: material_type_section.expanded
+        anchors.top: brand_header.bottom
         width: parent.width
-        anchors.top: material_type_header.bottom
         anchors.left: parent.left
+        height: brand_section.expanded ? childrenRect.height : 0
+        visible: brand_section.expanded
         Repeater
         {
-            model: colors_model
-            delegate: MaterialSlot {
-                material: model
-            }
+            model: types_model
+            delegate: MaterialsTypeSection {}
         }
     }
 }

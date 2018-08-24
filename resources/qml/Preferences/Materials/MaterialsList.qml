@@ -94,7 +94,7 @@ Item
                 Repeater
                 {
                     model: favoriteMaterialsModel
-                    delegate: MaterialSlot {
+                    delegate: MaterialsSlot {
                         material: model
                     }
                 }
@@ -171,7 +171,7 @@ Item
                 Repeater
                 {
                     model: genericMaterialsModel
-                    delegate: MaterialSlot {
+                    delegate: MaterialsSlot {
                         material: model
                     }
                 }
@@ -181,7 +181,7 @@ Item
         {
             id: brand_list
             model: materialsModel
-            delegate: MaterialBrandSection {}
+            delegate: MaterialsBrandSection {}
         }
     }
 }

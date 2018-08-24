@@ -50,7 +50,7 @@ Item
             }
         }
 
-        MaterialView    // Material detailed information view below the title Label
+        MaterialsView    // Material detailed information view below the title Label
         {
             id: materialDetailsView
             anchors
