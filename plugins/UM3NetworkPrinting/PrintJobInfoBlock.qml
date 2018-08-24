@@ -181,7 +181,7 @@ Item
                 contentItem: Item
                 {
                     width: popup.width - 2 * popup.padding
-                    height: childrenRect.height
+                    height: childrenRect.height + 15
                     Button
                     {
                         id: sendToTopButton
@@ -189,6 +189,8 @@ Item
                         onClicked: OutputDevice.sendJobToTop(printJob.key)
                         width: parent.width
                         enabled: OutputDevice.printJobs[0].key != printJob.key
+                        anchors.top: parent.top
+                        anchors.topMargin: 10
                         hoverEnabled: true
                         background:  Rectangle
                         {
@@ -196,6 +198,7 @@ Item
                             color: UM.Theme.getColor("viewport_background")
                         }
                     }
+                    
                     Button
                     {
                         id: deleteButton
@@ -212,18 +215,49 @@ Item
                     }
                 }
 
-                background: Rectangle
+                background: Item
                 {
-                    color: UM.Theme.getColor("setting_control")
-                    height: popup.height - 10 // - 2 times the radius of the dropshadow.
-                    width: popup.width - 10
-                    layer.enabled: true
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    layer.effect: DropShadow
+                    width: popup.width
+                    height: popup.height
+
+                    DropShadow
                     {
+                        anchors.fill: pointedRectangle
                         radius: 5
                         color: "#3F000000"  // 25% shadow
+                        source: pointedRectangle
+                        transparentBorder: true
+                    }
+
+                    Item
+                    {
+                        id: pointedRectangle
+                        width: parent.width -10
+                        height: parent.height -10
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Rectangle
+                        {
+                            id: point
+                            height: 13
+                            width: 13
+                            color: UM.Theme.getColor("setting_control")
+                            transform: Rotation { angle: 45}
+                            anchors.right: bloop.right
+                            y: 1
+                        }
+
+                        Rectangle
+                        {
+                            id: bloop
+                            color: UM.Theme.getColor("setting_control")
+                            width: parent.width
+                            anchors.top: parent.top
+                            anchors.topMargin: 10
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: 5
+                        }
                     }
                 }
 
