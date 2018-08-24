@@ -112,14 +112,27 @@ Component
                                 onClicked: base.collapsed = !base.collapsed
                             }
 
-                            Rectangle
+                            UM.RecolorImage
                             {
                                 id: machineIcon
                                 anchors.top: parent.top
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.left: parent.left
-                                width: 50
-                                height: 50
+                                source:
+                                {
+                                    switch(modelData.type)
+                                    {
+                                        case "Ultimaker 3":
+                                            return "UM3-icon.svg"
+                                        case "Ultimaker 3 Extended":
+                                            return "UM3x-icon.svg"
+                                        case "Ultimaker S5":
+                                            return "UMs5-icon.svg"
+                                    }
+                                }
+                                width: sourceSize.width
+                                height: sourceSize.height
+                  
                                 color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
                             }
 
