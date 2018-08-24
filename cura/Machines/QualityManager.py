@@ -259,8 +259,12 @@ class QualityManager(QObject):
             #   2. machine-nozzle-and-material-specific qualities if exist
             #   3. machine-nozzle-specific qualities if exist
             #   4. machine-material-specific qualities if exist
-            #   5. machine-specific qualities if exist
-            #   6. generic qualities if exist
+            #   5. machine-specific global qualities if exist, otherwise generic global qualities
+            #      NOTE: We DO NOT fail back to generic global qualities if machine-specific global qualities exist.
+            #            This is because when a machine defines its own global qualities such as Normal, Fine, etc.,
+            #            it is intended to maintain those specific qualities ONLY. If we still fail back to the generic
+            #            global qualities, there can be unimplemented quality types e.g. "coarse", and this is not
+            #            correct.
             # Each points above can be represented as a node in the lookup tree, so here we simply put those nodes into
             # the list with priorities as the order. Later, we just need to loop over each node in this list and fetch
             # qualities from there.
@@ -289,7 +293,13 @@ class QualityManager(QObject):
 
             addNodesToCheck(machine_node, nodes_to_check, node_info_list_0, 0)
 
-            nodes_to_check += [machine_node, default_machine_node]
+            # The last fall back will be the global qualities (either from the machine-specific node or the generic
+            # node), but we only use one. For details see the overview comments above.
+            if machine_node.quality_type_map:
+                nodes_to_check += [machine_node]
+            else:
+                nodes_to_check += [default_machine_node]
+
             for node in nodes_to_check:
                 if node and node.quality_type_map:
                     if has_variant_materials:
