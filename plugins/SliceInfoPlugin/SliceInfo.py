@@ -95,6 +95,20 @@ class SliceInfo(QObject, Extension):
     def setSendSliceInfo(self, enabled: bool):
         Application.getInstance().getPreferences().setValue("info/send_slice_info", enabled)
 
+    def _getUserModifiedSettingKeys(self) -> list:
+        application = Application.getInstance()
+        machine_manager = application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        user_modified_setting_keys = set()
+
+        for stack in [global_stack] + list(global_stack.extruders.values()):
+            # Get all settings in user_changes and quality_changes
+            all_keys = stack.userChanges.getAllKeys() | stack.qualityChanges.getAllKeys()
+            user_modified_setting_keys |= all_keys
+
+        return list(sorted(user_modified_setting_keys))
+
     def _onWriteStarted(self, output_device):
         try:
             if not Application.getInstance().getPreferences().getValue("info/send_slice_info"):
@@ -163,6 +177,8 @@ class SliceInfo(QObject, Extension):
                 data["extruders"].append(extruder_dict)
 
             data["quality_profile"] = global_stack.quality.getMetaData().get("quality_type")
+
+            data["user_modified_setting_keys"] = ",".join(self._getUserModifiedSettingKeys())
 
             data["models"] = []
             # Listing all files placed on the build plate
