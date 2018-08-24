@@ -60,5 +60,43 @@ class UFPWriter(MeshWriter):
         else:
             Logger.log("d", "Thumbnail not created, cannot save it")
 
+        #Store the material.
+        application = Application.getInstance()
+        machine_manager = application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+        container_registry = application.getContainerRegistry()
+
+        archive.addContentType(extension="xml.fdm_material", mime_type="application/x-ultimaker-material-profile")
+
+        added_materials = []
+        for extruder_stack in global_stack.extruders.values():
+            material = extruder_stack.material
+            material_file_name = material.getMetaData()["base_file"] + ".xml.fdm_material"
+            material_file_name = "/Cura/" + material_file_name
+
+            #Same material cannot be added
+            if material_file_name in added_materials:
+                continue
+
+            material_file = archive.getStream(material_file_name)
+            material_containers = container_registry.findContainers(id=material.getMetaDataEntry("base_file"))
+
+            if not material_containers:
+                Logger.log("e", "Cannot find material container with id: %s", material.id)
+                return False
+
+            material_container = material_containers[0]
+            try:
+                serialized_material = material_container.serialize()
+            except NotImplementedError:
+                Logger.log("e", "Unable serialize material container with id: %s", material.id)
+                return False
+
+            material_file.write(serialized_material.encode("UTF-8"))
+            archive.addRelation(virtual_path=material_file_name,relation_type="http://schemas.ultimaker.org/package/2018/relationships/xml.fdm_material")
+
+
+            added_materials.append(material_file_name)
+
         archive.close()
         return True
