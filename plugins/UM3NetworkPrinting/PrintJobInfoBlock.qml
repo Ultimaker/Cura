@@ -70,6 +70,8 @@ Item
                 id: ownerName
                 anchors.top: printJobName.bottom
                 text: printJob.owner
+                font: UM.Theme.getFont("default")
+                opacity: 0.6
             }
 
             Image
@@ -84,10 +86,10 @@ Item
             Label
             {
                 id: totalTimeLabel
-
+                opacity: 0.6
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
-
+                font: UM.Theme.getFont("default")
                 text: printJob != null ? getPrettyTime(printJob.timeTotal) : ""
                 elide: Text.ElideRight
             }

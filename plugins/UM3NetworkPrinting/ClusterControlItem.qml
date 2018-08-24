@@ -52,7 +52,7 @@ Component
                 top: printingLabel.bottom
                 left: parent.left
                 right: parent.right
-                topMargin: 2 * UM.Theme.getSize("default_margin").height
+                topMargin: 1 * UM.Theme.getSize("default_margin").height
                 bottom: parent.bottom
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
@@ -134,6 +134,7 @@ Component
                                 anchors.right: collapseIcon.left
                                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                                 elide: Text.ElideRight
+                                font: UM.Theme.getFont("default_bold")
                             }
 
                             UM.RecolorImage
@@ -159,6 +160,8 @@ Component
                                 anchors.right: collapseIcon.left
                                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                                 elide: Text.ElideRight
+                                font: UM.Theme.getFont("default")
+                                opacity: 0.6
                             }
                         }
 
@@ -254,6 +257,8 @@ Component
                                     id: ownerName
                                     anchors.top: printJobName.bottom
                                     text: modelData.activePrintJob != null ? modelData.activePrintJob.owner : ""
+                                    font: UM.Theme.getFont("default")
+                                    opacity: 0.6
                                 }
 
                                 Image
@@ -380,6 +385,7 @@ Component
                                         anchors.verticalCenter: parent.verticalCenter
                                         color: progressItem.width + progressLabel.width < control.width ? "black" : "white"
                                         width: contentWidth
+                                        font: UM.Theme.getFont("default")
                                     }
                                 }
                             }

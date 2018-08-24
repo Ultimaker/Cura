@@ -79,6 +79,9 @@ Item
         anchors.top: materialLabel.bottom
         elide: Text.ElideRight
 
+        opacity: 0.6
+        font: UM.Theme.getFont("default")
+
         anchors
         {
             top: materialLabel.bottom
