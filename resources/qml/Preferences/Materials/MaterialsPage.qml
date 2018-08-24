@@ -26,36 +26,44 @@ Item
     property string newRootMaterialIdToSwitchTo: ""
     property bool toActivateNewMaterial: false
 
+    // TODO: Save these to preferences
+    property var collapsed_brands: []
+    property var collapsed_types: []
+
     UM.I18nCatalog
     {
         id: catalog
         name: "cura"
     }
-    Cura.MaterialBrandsModel
+    Cura.MaterialBrandsModel { id: materialsModel }
+
+    function findModelByRootId( search_root_id )
     {
-        id: materialsModel
+        for (var i = 0; i < materialsModel.rowCount(); i++)
+        {
+            var types_model = materialsModel.getItem(i).material_types;
+            for (var j = 0; j < types_model.rowCount(); j++)
+            {
+                var colors_model = types_model.getItem(j).colors;
+                for (var k = 0; k < colors_model.rowCount(); k++)
+                {
+                    var material = colors_model.getItem(k);
+                    if (material.root_material_id == search_root_id)
+                    {
+                        return material
+                    }
+                }
+            }
+        }
     }
-    Cura.GenericMaterialsModel
+    Component.onCompleted:
     {
-        id: genericMaterialsModel
+        // Select the activated material when this page shows up
+        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
+        const active_root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
+        console.log("goign to search for", active_root_material_id)
+        base.currentItem = findModelByRootId(active_root_material_id)
     }
-    // Component.onCompleted:
-    // {
-    //     // Select the activated material when this page shows up
-    //     const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-    //     const active_root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-    //     var itemIndex = -1;
-    //     for (var i = 0; i < materialsModel.rowCount(); ++i)
-    //     {
-    //         var item = materialsModel.getItem(i);
-    //         if (item.root_material_id == active_root_material_id)
-    //         {
-    //             itemIndex = i;
-    //             break;
-    //         }
-    //     }
-    //     materialListView.currentIndex = itemIndex;
-    // }
 
     onCurrentItemChanged: { MaterialsDetailsPanel.currentItem = currentItem }
     Connections

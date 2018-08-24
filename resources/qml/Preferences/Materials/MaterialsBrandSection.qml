@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: brand_section
-    property var expanded: true
+    property var expanded: base.collapsed_brands.indexOf(model.name) > -1
     property var types_model: model.material_types
     height: childrenRect.height
     width: parent.width
@@ -69,7 +69,19 @@ Rectangle
         anchors.fill: brand_header
         onPressed:
         {
-            brand_section.expanded = !brand_section.expanded
+            const i = base.collapsed_brands.indexOf(model.name)
+            if (i > -1)
+            {
+                // Remove it
+                base.collapsed_brands.splice(i, 1)
+                brand_section.expanded = false
+            }
+            else
+            {
+                // Add it
+                base.collapsed_brands.push(model.name)
+                brand_section.expanded = true
+            }
         }
     }
     Column

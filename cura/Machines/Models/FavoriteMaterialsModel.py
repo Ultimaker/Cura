@@ -8,7 +8,6 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
-        self._material_manager.favoritesUpdated.connect(self._update) # Update when favorites are changed
         self._update()
 
     def _update(self):

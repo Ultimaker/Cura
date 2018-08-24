@@ -102,7 +102,7 @@ Item
         }
         Rectangle
         {
-            property var expanded: true
+            property var expanded: base.collapsed_brands.indexOf("Generic") > -1
 
             id: generic_section
             height: childrenRect.height
@@ -158,7 +158,19 @@ Item
                 anchors.fill: generic_header
                 onPressed:
                 {
-                    generic_section.expanded = !generic_section.expanded
+                    const i = base.collapsed_brands.indexOf("Generic")
+                    if (i > -1)
+                    {
+                        // Remove it
+                        base.collapsed_brands.splice(i, 1)
+                        generic_section.expanded = false
+                    }
+                    else
+                    {
+                        // Add it
+                        base.collapsed_brands.push("Generic")
+                        generic_section.expanded = true
+                    }
                 }
             }
             Column
