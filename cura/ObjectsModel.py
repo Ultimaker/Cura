@@ -71,12 +71,12 @@ class ObjectsModel(ListModel):
             #check if we already have an instance of the object based on name
             duplicate = False
             for n in namecount:
-            	if name == n["name"]:
-            		name = "{0}({1})".format(name, n["count"])
-            		node.setName(name)
-            		n["count"] = n["count"]+1
-            		duplicate = True
-            		
+                if name == n["name"]:
+                    name = "{0}({1})".format(name, n["count"])
+                    node.setName(name)
+                    n["count"] = n["count"]+1
+                    duplicate = True
+                    
             if not duplicate:
                 namecount.append({"name" : name, "count" : 1})
 
