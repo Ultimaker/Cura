@@ -121,7 +121,7 @@
             "value": 3
         },
         "infill_overlap": {
-            "value": 12
+            "value": 15
         },
         "adhesion_type": {
             "value": "'none'"
@@ -243,7 +243,7 @@
             "value": "False"
         },
         "skin_overlap": {
-            "value": 3
+            "value": 5
         },
         "infill_wipe_dist": {
             "value": 0
