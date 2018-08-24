@@ -323,7 +323,7 @@ Component
                                         Controls2.Button
                                         {
                                             id: pauseButton
-                                            text: modelData.activePrintJob.state == "paused" ? catalog.i18nc("@label", "Resume") : catalog.i18nc("@label", "Pause")
+                                            text: modelData.activePrintJob != null && modelData.activePrintJob.state == "paused" ? catalog.i18nc("@label", "Resume") : catalog.i18nc("@label", "Pause")
                                             onClicked:
                                             {
                                                 if(modelData.activePrintJob.state == "paused")
@@ -337,7 +337,7 @@ Component
                                                 popup.close()
                                             }
                                             width: parent.width
-                                            enabled: ["paused", "printing"].indexOf(modelData.activePrintJob.state) >= 0
+                                            enabled: modelData.activePrintJob != null && ["paused", "printing"].indexOf(modelData.activePrintJob.state) >= 0
                                             anchors.top: parent.top
                                             anchors.topMargin: 10
                                             hoverEnabled: true
@@ -360,7 +360,7 @@ Component
                                             width: parent.width
                                             anchors.top: pauseButton.bottom
                                             hoverEnabled: true
-                                            enabled: ["paused", "printing", "pre_print"].indexOf(modelData.activePrintJob.state) >= 0
+                                            enabled: modelData.activePrintJob != null && ["paused", "printing", "pre_print"].indexOf(modelData.activePrintJob.state) >= 0
                                             background: Rectangle
                                             {
                                                 opacity: abortButton.down || abortButton.hovered ? 1 : 0
