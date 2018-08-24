@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.PrinterOutputDevice import PrinterOutputDevice
-from cura.FirmwareUpdater import FirmwareUpdater, FirmwareUpdateState
+from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater, FirmwareUpdateState
 
 from .avr_isp import stk500v2, intelHex
 
