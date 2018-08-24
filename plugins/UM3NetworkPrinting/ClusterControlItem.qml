@@ -439,6 +439,23 @@ Component
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: parent.width / 2
                                     height: width
+                                    opacity:
+                                    {
+                                        if(modelData.activePrintJob == null)
+                                        {
+                                            return 1.0
+                                        }
+
+                                        switch(modelData.activePrintJob.state)
+                                        {
+                                            case "wait_cleanup":
+                                            case "wait_user_action":
+                                            case "paused":
+                                                return 0.5
+                                            default:
+                                                return 1.0
+                                        }
+                                    }
                                 }
 
                                 Rectangle
