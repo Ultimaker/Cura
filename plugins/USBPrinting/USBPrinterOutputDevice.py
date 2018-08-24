@@ -205,6 +205,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._command_queue.put(command)
         else:
             self._sendCommand(command)
+
     def _sendCommand(self, command: Union[str, bytes]):
         if self._serial is None or self._connection_state != ConnectionState.connected:
             return
