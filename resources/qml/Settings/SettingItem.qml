@@ -243,7 +243,7 @@ Item {
                 onClicked: {
                     focus = true;
 
-                    propertyProvider.callCalculateSettingValue()
+                    Cura.MachineManager.calculateSettingValue(propertyProvider)
                 }
 
                 color: UM.Theme.getColor("setting_control_button")

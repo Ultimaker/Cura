@@ -1531,3 +1531,31 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()
+
+    @pyqtSlot(QObject)
+    def calculateSettingValue(self, propertyProvider):
+
+        property_value = None
+        stackLevels = propertyProvider.stackLevels
+        if(len(stackLevels) == 1 and stackLevels[0] == -1 ):
+            Logger.log("w", "Unable to find stack for the setting: [%s] ", propertyProvider.key)
+            return
+
+        # the setting is not overwritten by other stack, (machine, quality, etc). retrieve value directly
+        if len(stackLevels) is 2:
+            last_entry = stackLevels[-1]
+            property_value = propertyProvider.getPropertyValue("value", last_entry)
+        else:
+            # skip the first one, this stack from the user changes or from quality
+            for last_entry in stackLevels[1:]:
+                property_value = propertyProvider.getPropertyValue("value", last_entry)
+
+                if isinstance(property_value, SettingFunction):
+                    break
+
+        if property_value is None:
+            Logger.log("w","Unable to find a function for setting:[%s]", propertyProvider.key)
+            return
+
+        propertyProvider.setPropertyValue("value", property_value)
+        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
