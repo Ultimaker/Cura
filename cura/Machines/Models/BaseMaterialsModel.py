@@ -22,7 +22,6 @@ class BaseMaterialsModel(ListModel):
 
         # Make these managers available to all material models
         self._container_registry = self._application.getInstance().getContainerRegistry()
-        self._extruder_manager = self._application.getExtruderManager()
         self._machine_manager = self._application.getMachineManager()
         self._material_manager = self._application.getMaterialManager()
 
