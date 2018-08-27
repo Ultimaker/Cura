@@ -14,24 +14,64 @@ Menu
 
     property int extruderIndex: 0
 
+    Cura.FavoriteMaterialsModel
+    {
+        id: favoriteMaterialsModel
+        extruderPosition: menu.extruderIndex
+    }
+
+    Cura.GenericMaterialsModel
+    {
+        id: genericMaterialsModel
+        extruderPosition: menu.extruderIndex
+    }
+
+    Cura.MaterialBrandsModel
+    {
+        id: brandModel
+        extruderPosition: menu.extruderIndex
+    }
+
     Instantiator
     {
-        model: genericMaterialsModel
-        MenuItem
+        model: favoriteMaterialsModel
+        delegate: MenuItem
         {
-            text: model.name
+            text: model.brand + " " + model.name
             checkable: true
             checked: model.root_material_id == Cura.MachineManager.currentRootMaterialId[extruderIndex]
+            onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             exclusiveGroup: group
-            onTriggered:
-            {
-                Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
-            }
         }
         onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectRemoved: menu.removeItem(object) // TODO: This ain't gonna work, removeItem() takes an index, not object
     }
-    MenuSeparator { }
+
+    MenuSeparator {}
+
+    Menu
+    {
+        id: genericMenu
+        title: "Generic"
+
+        Instantiator
+        {
+            model: genericMaterialsModel
+            delegate: MenuItem
+            {
+                text: model.name
+                checkable: true
+                checked: model.root_material_id == Cura.MachineManager.currentRootMaterialId[extruderIndex]
+                exclusiveGroup: group
+                onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
+            }
+            onObjectAdded: genericMenu.insertItem(index, object)
+            onObjectRemoved: genericMenu.removeItem(object) // TODO: This ain't gonna work, removeItem() takes an index, not object
+        }
+    }
+
+    MenuSeparator {}
+
     Instantiator
     {
         model: brandModel
@@ -40,12 +80,12 @@ Menu
             id: brandMenu
             title: brandName
             property string brandName: model.name
-            property var brandMaterials: model.materials
+            property var brandMaterials: model.material_types
 
             Instantiator
             {
                 model: brandMaterials
-                Menu
+                delegate: Menu
                 {
                     id: brandMaterialsMenu
                     title: materialName
@@ -55,16 +95,13 @@ Menu
                     Instantiator
                     {
                         model: brandMaterialColors
-                        MenuItem
+                        delegate: MenuItem
                         {
                             text: model.name
                             checkable: true
                             checked: model.id == Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
                             exclusiveGroup: group
-                            onTriggered:
-                            {
-                                Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
-                            }
+                            onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
                         }
                         onObjectAdded: brandMaterialsMenu.insertItem(index, object)
                         onObjectRemoved: brandMaterialsMenu.removeItem(object)
@@ -78,21 +115,14 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    Cura.GenericMaterialsModel
-    {
-        id: genericMaterialsModel
-        extruderPosition: menu.extruderIndex
+    ExclusiveGroup {
+        id: group
     }
 
-    Cura.BrandMaterialsModel
+    MenuSeparator {}
+
+    MenuItem
     {
-        id: brandModel
-        extruderPosition: menu.extruderIndex
+        action: Cura.Actions.manageMaterials
     }
-
-    ExclusiveGroup { id: group }
-
-    MenuSeparator { }
-
-    MenuItem { action: Cura.Actions.manageMaterials }
 }

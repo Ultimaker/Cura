@@ -4,6 +4,7 @@
 from collections import defaultdict, OrderedDict
 import copy
 import uuid
+import json
 from typing import Dict, Optional, TYPE_CHECKING
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
@@ -38,7 +39,8 @@ if TYPE_CHECKING:
 #
 class MaterialManager(QObject):
 
-    materialsUpdated = pyqtSignal()  # Emitted whenever the material lookup tables are updated.
+    materialsUpdated = pyqtSignal() # Emitted whenever the material lookup tables are updated.
+    favoritesUpdated = pyqtSignal() # Emitted whenever the favorites are changed
 
     def __init__(self, container_registry, parent = None):
         super().__init__(parent)
@@ -74,6 +76,8 @@ class MaterialManager(QObject):
         self._container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
         self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
         self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
+
+        self._favorites = set()
 
     def initialize(self):
         # Find all materials and put them in a matrix for quick search.
@@ -193,6 +197,11 @@ class MaterialManager(QObject):
             self.__addMaterialMetadataIntoLookupTree(material_metadata)
 
         self.materialsUpdated.emit()
+
+        favorites = self._application.getPreferences().getValue("cura/favorite_materials")
+        for item in favorites.split(";"):
+            self._favorites.add(item)
+        self.favoritesUpdated.emit()
 
     def __addMaterialMetadataIntoLookupTree(self, material_metadata: dict) -> None:
         material_id = material_metadata["id"]
@@ -608,3 +617,25 @@ class MaterialManager(QObject):
                                new_base_id = new_id,
                                new_metadata = new_metadata)
         return new_id
+
+    @pyqtSlot(str)
+    def addFavorite(self, root_material_id: str):
+        self._favorites.add(root_material_id)
+        self.favoritesUpdated.emit()
+
+        # Ensure all settings are saved.
+        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
+        self._application.saveSettings()
+
+    @pyqtSlot(str)
+    def removeFavorite(self, root_material_id: str):
+        self._favorites.remove(root_material_id)
+        self.favoritesUpdated.emit()
+
+        # Ensure all settings are saved.
+        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
+        self._application.saveSettings()
+
+    @pyqtSlot()
+    def getFavorites(self):
+        return self._favorites
