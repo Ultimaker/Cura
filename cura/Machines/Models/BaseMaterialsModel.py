@@ -124,7 +124,7 @@ class BaseMaterialsModel(ListModel):
             "description":          metadata["description"],
             "material":             metadata["material"],
             "color_name":           metadata["color_name"],
-            "color_code":           metadata["color_code"],
+            "color_code":           metadata.get("color_code", ""),
             "density":              metadata.get("properties", {}).get("density", ""),
             "diameter":             metadata.get("properties", {}).get("diameter", ""),
             "approximate_diameter": metadata["approximate_diameter"],
