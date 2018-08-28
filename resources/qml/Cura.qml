@@ -117,7 +117,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","&Save...")
+                    text: catalog.i18nc("@title:menu menubar:file","Save...")
                     onTriggered:
                     {
                         var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/x-curaproject+xml" };
