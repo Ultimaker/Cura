@@ -201,7 +201,7 @@
             "value": "'lines'"
         },
         "infill_angles": {
-            "value": "[10,55,100,145,190,235,280,325]"
+            "value": "[0,90]"
         },
         "cool_min_layer_time": {
             "enabled": false,
