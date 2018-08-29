@@ -13,6 +13,7 @@ from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
 from cura.Snapshot import Snapshot
+from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -29,6 +30,11 @@ class UFPWriter(MeshWriter):
         Logger.log("d", "Creating thumbnail image...")
         self._snapshot = Snapshot.snapshot(width = 300, height = 300)
 
+    # This needs to be called on the main thread (Qt thread) because the serialization of material containers can
+    # trigger loading other containers. Because those loaded containers are QtObjects, they must be created on the
+    # Qt thread. The File read/write operations right now are executed on separated threads because they are scheduled
+    # by the Job class.
+    @call_on_qt_thread
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
         archive = VirtualFile()
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
