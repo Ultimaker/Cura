@@ -24,8 +24,6 @@ class UFPWriter(MeshWriter):
         self._snapshot = None
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._createSnapshot)
 
-        self._default_data_path ="/Cura/"
-
     def _createSnapshot(self, *args):
         # must be called from the main thread because of OpenGL
         Logger.log("d", "Creating thumbnail image...")
@@ -62,17 +60,17 @@ class UFPWriter(MeshWriter):
         else:
             Logger.log("d", "Thumbnail not created, cannot save it")
 
-        #Store the material.
+        # Store the material.
         application = Application.getInstance()
         machine_manager = application.getMachineManager()
+        material_manager = application.getMaterialManager()
         global_stack = machine_manager.activeMachine
-        container_registry = application.getContainerRegistry()
 
         material_extension = "xml.fdm_material"
         material_mime_type = "application/x-ultimaker-material-profile"
 
         try:
-            archive.addContentType(extension=material_extension, mime_type=material_mime_type)
+            archive.addContentType(extension = material_extension, mime_type = material_mime_type)
         except:
             Logger.log("w", "The material extension: %s was already added", material_extension)
 
@@ -80,28 +78,30 @@ class UFPWriter(MeshWriter):
         for extruder_stack in global_stack.extruders.values():
             material = extruder_stack.material
             material_file_name = material.getMetaData()["base_file"] + ".xml.fdm_material"
-            material_file_name = self._default_data_path + material_file_name
+            material_file_name = "/Materials/" + material_file_name
 
             #Same material cannot be added
             if material_file_name in added_materials:
                 continue
 
-            material_containers = container_registry.findContainers(id=material.getMetaDataEntry("base_file"))
-
-            if not material_containers:
-                Logger.log("e", "Cannot find material container with id: %s", material.id)
+            material_root_id = material.getMetaDataEntry("base_file")
+            material_group = material_manager.getMaterialGroup(material_root_id)
+            if material_group is None:
+                Logger.log("e", "Cannot find material container with root id [%s]", material_root_id)
                 return False
 
-            material_container = material_containers[0]
+            material_container = material_group.root_material_node
             try:
                 serialized_material = material_container.serialize()
             except NotImplementedError:
-                Logger.log("e", "Unable serialize material container with id: %s", material.id)
+                Logger.log("e", "Unable serialize material container with root id: %s", material_root_id)
                 return False
 
             material_file = archive.getStream(material_file_name)
             material_file.write(serialized_material.encode("UTF-8"))
-            archive.addRelation(virtual_path=material_file_name,relation_type="http://schemas.ultimaker.org/package/2018/relationships/xml.fdm_material")
+            archive.addRelation(virtual_path = material_file_name,
+                                relation_type = "http://schemas.ultimaker.org/package/2018/relationships/material",
+                                origin = "/3D/model.gcode")
 
             added_materials.append(material_file_name)
 
