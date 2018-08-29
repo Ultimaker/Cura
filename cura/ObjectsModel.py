@@ -9,6 +9,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.i18n import i18nCatalog
+from collections import defaultdict
 
 catalog = i18nCatalog("cura")
 
@@ -40,9 +41,8 @@ class ObjectsModel(ListModel):
         filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
         active_build_plate_number = self._build_plate_number
         group_nr = 1
-        instance = 1
-        namecount = []
-       
+        name_count_dict = defaultdict(int)
+
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
@@ -69,16 +69,12 @@ class ObjectsModel(ListModel):
                 is_outside_build_area = False
                 
             #check if we already have an instance of the object based on name
-            duplicate = False
-            for n in namecount:
-                if name == n["name"]:
-                    name = "{0}({1})".format(name, n["count"])
-                    node.setName(name)
-                    n["count"] = n["count"]+1
-                    duplicate = True
-                    
-            if not duplicate:
-                namecount.append({"name" : name, "count" : 1})
+            name_count_dict[name] += 1
+            name_count = name_count_dict[name]
+
+            if name_count > 1:
+                name = "{0}({1})".format(name, name_count-1)
+                node.setName(name)
 
             nodes.append({
                 "name": name,
@@ -87,7 +83,7 @@ class ObjectsModel(ListModel):
                 "buildPlateNumber": node_build_plate_number,
                 "node": node
             })
-        
+       
         nodes = sorted(nodes, key=lambda n: n["name"])
         self.setItems(nodes)
 
