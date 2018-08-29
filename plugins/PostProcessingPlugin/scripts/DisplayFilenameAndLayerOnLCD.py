@@ -6,7 +6,7 @@
 #               M117 - displays the filename and layer height to the LCD
 #               Alternatively, user can override the filename to display alt text + layer height
 
-..Script import Script
+from ..Script import Script
 from UM.Application import Application
 
 class DisplayFilenameAndLayerOnLCD(Script):
