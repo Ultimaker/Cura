@@ -89,7 +89,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             MimeType(
                 name="application/x-curaproject+xml",
                 comment="Cura Project File",
-                suffixes=["curaproject.3mf"]
+                suffixes=["3mf"]
             )
         )
 
@@ -726,8 +726,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             nodes = []
 
         base_file_name = os.path.basename(file_name)
-        if base_file_name.endswith(".curaproject.3mf"):
-            base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
 

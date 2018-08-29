@@ -15,11 +15,7 @@ from UM.Platform import Platform
 i18n_catalog = i18nCatalog("uranium")
 
 def getMetaData():
-    # Workarround for osx not supporting double file extensions correctly.
-    if Platform.isOSX():
-        workspace_extension = "3mf"
-    else:
-        workspace_extension = "curaproject.3mf"
+    workspace_extension = "3mf"
 
     metaData = {}
 
