@@ -220,8 +220,10 @@ class StartSliceJob(Job):
                 stack = global_stack
                 skip_group = False
                 for node in group:
+                    # Only check if the printing extruder is enabled for printing meshes
+                    is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
-                    if not extruders_enabled[extruder_position]:
+                    if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
                         skip_group = True
                         has_model_with_disabled_extruders = True
                         associated_disabled_extruders.add(extruder_position)
