@@ -3,11 +3,11 @@
 # Date:     August 28, 2018
 
 # Description:  This plugin inserts a line at the start of each layer,
-#               M117 displays the filename and layer height to the LCD
-#               ** user must enter 'filename'
-#               ** future update: include actual filename
+#               M117 - displays the filename and layer height to the LCD
+#               Alternatively, user can override the filename to display alt text + layer height
 
-from ..Script import Script
+..Script import Script
+from UM.Application import Application
 
 class DisplayFilenameAndLayerOnLCD(Script):
     def __init__(self):
@@ -23,16 +23,19 @@ class DisplayFilenameAndLayerOnLCD(Script):
             {
                 "name":
                 {
-                    "label": "filename",
-                    "description": "Enter filename",
+                    "label": "text to display:",
+                    "description": "By default the current filename will be displayed on the LCD. Enter text here to override the filename and display something else.",
                     "type": "str",
-                    "default_value": "default"
+                    "default_value": ""
                 }
             }
         }"""
     
     def execute(self, data):
-        name = self.getSettingValueByKey("name")
+        if self.getSettingValueByKey("name") != "":
+            name = self.getSettingValueByKey("name")
+        else:
+            name = Application.getInstance().getPrintInformation().jobName       
         lcd_text = "M117 " + name + " layer: "
         i = 0
         for layer in data:
