@@ -216,6 +216,7 @@
                     "label": "Number of Extruders that are enabled",
                     "description": "Number of extruder trains that are enabled; automatically set in software",
                     "value": "machine_extruder_count",
+                    "default_value": 1,
                     "minimum_value": "1",
                     "maximum_value": "16",
                     "type": "int",
