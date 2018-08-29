@@ -85,14 +85,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self) -> None:
         super().__init__()
 
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name="application/x-curaproject+xml",
-                comment="Cura Project File",
-                suffixes=["3mf"]
-            )
-        )
-
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
