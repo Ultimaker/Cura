@@ -264,6 +264,8 @@ Component
                                     id: printJobName
                                     text: modelData.activePrintJob != null ? modelData.activePrintJob.name : ""
                                     font: UM.Theme.getFont("default_bold")
+                                    width: parent.width
+                                    elide: Text.ElideRight
                                 }
                                 Label
                                 {
@@ -272,11 +274,15 @@ Component
                                     text: modelData.activePrintJob != null ? modelData.activePrintJob.owner : ""
                                     font: UM.Theme.getFont("default")
                                     opacity: 0.6
+                                    width: parent.width
+                                    elide: Text.ElideRight
                                 }
+
                                 function switchPopupState()
                                 {
                                     popup.visible ? popup.close() : popup.open()
                                 }
+
                                 Controls2.Button
                                 {
                                     id: contextButton

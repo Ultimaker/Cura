@@ -63,6 +63,8 @@ Item
                 id: printJobName
                 text: printJob.name
                 font: UM.Theme.getFont("default_bold")
+                width: parent.width
+                elide: Text.ElideRight
             }
 
             Label
@@ -72,6 +74,8 @@ Item
                 text: printJob.owner
                 font: UM.Theme.getFont("default")
                 opacity: 0.6
+                width: parent.width
+                elide: Text.ElideRight
             }
 
             Image
