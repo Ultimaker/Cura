@@ -1,8 +1,10 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import numpy
 
 from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ShapeArray import ShapeArray
-
 
 ##  Triangle of area 12
 def gimmeTriangle():
@@ -102,7 +104,7 @@ def test_centerFirst_rectangular():
 
 
 ##  Test centerFirst
-def test_centerFirst_rectangular():
+def test_centerFirst_rectangular2():
     ar = Arrange(10, 20, 5, 10, scale = 1)
     ar.centerFirst()
     print(ar._priority)

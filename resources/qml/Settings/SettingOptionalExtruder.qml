@@ -76,13 +76,6 @@ SettingItem
             when: control.model.items.length > 0
         }
 
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            onWheel: wheel.accepted = true;
-        }
-
         property string color: "#fff"
 
         Binding

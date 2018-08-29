@@ -131,6 +131,7 @@ faulthandler.enable(all_threads = True)
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
+import Savitar #@UnusedImport
 from cura.CuraApplication import CuraApplication
 
 app = CuraApplication()

@@ -1,6 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import argparse #To run the engine in debug mode if the front-end is in debug mode.
 from collections import defaultdict
 import os
 from PyQt5.QtCore import QObject, QTimer, pyqtSlot
@@ -179,7 +180,15 @@ class CuraEngineBackend(QObject, Backend):
     #   \return list of commands and args / parameters.
     def getEngineCommand(self) -> List[str]:
         json_path = Resources.getPath(Resources.DefinitionContainers, "fdmprinter.def.json")
-        return [self._application.getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, ""]
+        command = [self._application.getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, ""]
+
+        parser = argparse.ArgumentParser(prog = "cura", add_help = False)
+        parser.add_argument("--debug", action = "store_true", default = False, help = "Turn on the debug mode by setting this option.")
+        known_args = vars(parser.parse_known_args()[0])
+        if known_args["debug"]:
+            command.append("-vvv")
+
+        return command
 
     ##  Emitted when we get a message containing print duration and material amount.
     #   This also implies the slicing has finished.
@@ -541,6 +550,9 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Remove old layer data (if any)
     def _clearLayerData(self, build_plate_numbers: Set = None) -> None:
+        # Clear out any old gcode
+        self._scene.gcode_dict = {}  # type: ignore
+
         for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:

@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Job import Job
@@ -21,7 +21,6 @@ class AutoDetectBaudJob(Job):
 
     def run(self):
         Logger.log("d", "Auto detect baud rate started.")
-        timeout = 3
         wait_response_timeouts = [3, 15, 30]
         wait_bootloader_times = [1.5, 5, 15]
         write_timeout = 3
@@ -52,7 +51,7 @@ class AutoDetectBaudJob(Job):
                 if serial is None:
                     try:
                         serial = Serial(str(self._serial_port), baud_rate, timeout = read_timeout, writeTimeout = write_timeout)
-                    except SerialException as e:
+                    except SerialException:
                         Logger.logException("w", "Unable to create serial")
                         continue
                 else:
@@ -72,7 +71,7 @@ class AutoDetectBaudJob(Job):
 
                 while timeout_time > time():
                     line = serial.readline()
-                    if b"ok T:" in line:
+                    if b"ok " in line and b"T:" in line:
                         successful_responses += 1
                         if successful_responses >= 3:
                             self.setResult(baud_rate)
