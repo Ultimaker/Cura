@@ -18,6 +18,8 @@ Item
         id: extruderCircle
         width: 30
         height: 30
+
+        anchors.verticalCenter: printAndMaterialLabel.verticalCenter
         opacity:
         {
             if(printCoreConfiguration == undefined || printCoreConfiguration.activeMaterial == undefined || printCoreConfiguration.hotendID == undefined)
@@ -31,7 +33,7 @@ Item
         {
             anchors.fill: parent
             radius: Math.round(width / 2)
-            border.width: 1
+            border.width: 2
             border.color: "black"
         }
 
@@ -43,52 +45,48 @@ Item
         }
     }
 
-    Label
+    Item
     {
-        id: materialLabel
-        text:
-        {
-            if(printCoreConfiguration != undefined && printCoreConfiguration.activeMaterial != undefined)
-            {
-                return printCoreConfiguration.activeMaterial.name
-            }
-            return ""
-        }
-        font: UM.Theme.getFont("default_bold")
-        elide: Text.ElideRight
-
+        id: printAndMaterialLabel
         anchors
         {
             right: parent.right
             left: extruderCircle.right
             margins: UM.Theme.getSize("default_margin").width
         }
-    }
+        height: childrenRect.height
 
-    Label
-    {
-        id: printCoreLabel
-        text:
+        Label
         {
-            if(printCoreConfiguration != undefined && printCoreConfiguration.hotendID != undefined)
+            id: materialLabel
+            text:
             {
-                return printCoreConfiguration.hotendID
+                if(printCoreConfiguration != undefined && printCoreConfiguration.activeMaterial != undefined)
+                {
+                    return printCoreConfiguration.activeMaterial.name
+                }
+                return ""
             }
-            return ""
+            font: UM.Theme.getFont("default_bold")
+            elide: Text.ElideRight
         }
-        anchors.top: materialLabel.bottom
-        elide: Text.ElideRight
 
-        opacity: 0.6
-        font: UM.Theme.getFont("default")
-
-        anchors
+        Label
         {
-            top: materialLabel.bottom
-            right: parent.right
-            left: extruderCircle.right
-            leftMargin: UM.Theme.getSize("default_margin").width
-            rightMargin: UM.Theme.getSize("default_margin").width
+            id: printCoreLabel
+            text:
+            {
+                if(printCoreConfiguration != undefined && printCoreConfiguration.hotendID != undefined)
+                {
+                    return printCoreConfiguration.hotendID
+                }
+                return ""
+            }
+            anchors.top: materialLabel.bottom
+            elide: Text.ElideRight
+
+            opacity: 0.6
+            font: UM.Theme.getFont("default")
         }
     }
 }
