@@ -21,7 +21,7 @@ class LayerPolygon:
     __number_of_types = 11
 
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
-    
+
     ##  LayerPolygon, used in ProcessSlicedLayersJob
     #   \param extruder
     #   \param line_types array with line_types

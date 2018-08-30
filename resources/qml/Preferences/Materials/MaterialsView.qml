@@ -8,6 +8,8 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+import ".." // Access to ReadOnlyTextArea.qml
+
 TabView
 {
     id: base
@@ -38,7 +40,7 @@ TabView
         {
             return ""
         }
-        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode, true);
+        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentItem.container_node, true);
         if (linkedMaterials.length == 0)
         {
             return ""
