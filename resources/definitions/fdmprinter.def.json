@@ -3882,7 +3882,7 @@
                     "minimum_value": "-90",
                     "maximum_value": "90",
                     "default_value": 0,
-                    "enabled": "support_enable",
+                    "enabled": "support_enable and support_pattern != 'concentric' and support_infill_rate > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
