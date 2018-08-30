@@ -137,17 +137,38 @@ Component
                                 color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
                             }
 
-                            Label
+                            Item
                             {
-                                id: machineNameLabel
-                                text: modelData.name
-                                anchors.top: machineIcon.top
-                                anchors.left: machineIcon.right
-                                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                                anchors.right: collapseIcon.left
-                                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                                elide: Text.ElideRight
-                                font: UM.Theme.getFont("default_bold")
+                                height: childrenRect.height
+                                anchors
+                                {
+                                    right: collapseIcon.left
+                                    rightMargin: UM.Theme.getSize("default_margin").width
+                                    left: machineIcon.right
+                                    leftMargin: UM.Theme.getSize("default_margin").width
+
+                                    verticalCenter: machineIcon.verticalCenter
+                                }
+
+                                Label
+                                {
+                                    id: machineNameLabel
+                                    text: modelData.name
+                                    width: parent.width
+                                    elide: Text.ElideRight
+                                    font: UM.Theme.getFont("default_bold")
+                                }
+
+                                Label
+                                {
+                                    id: activeJobLabel
+                                    text: modelData.activePrintJob != null ? modelData.activePrintJob.name : "waiting"
+                                    anchors.top: machineNameLabel.bottom
+                                    width: parent.width
+                                    elide: Text.ElideRight
+                                    font: UM.Theme.getFont("default")
+                                    opacity: 0.6
+                                }
                             }
 
                             UM.RecolorImage
@@ -162,19 +183,6 @@ Component
                                 anchors.right: parent.right
                                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                                 color: "black"
-                            }
-
-                            Label
-                            {
-                                id: activeJobLabel
-                                text: modelData.activePrintJob != null ? modelData.activePrintJob.name : "waiting"
-                                anchors.top: machineNameLabel.bottom
-                                anchors.left: machineNameLabel.left
-                                anchors.right: collapseIcon.left
-                                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                                elide: Text.ElideRight
-                                font: UM.Theme.getFont("default")
-                                opacity: 0.6
                             }
                         }
 
@@ -573,6 +581,8 @@ Component
                                             return catalog.i18nc("@label:status", "Paused")
                                         case "resuming":
                                             return catalog.i18nc("@label:status", "Resuming")
+                                        case "queued":
+                                            return catalog.i18nc("@label:status", "Configuration change")
                                         default:
                                             OutputDevice.formatDuration(modelData.activePrintJob.timeTotal - modelData.activePrintJob.timeElapsed)
                                     }
