@@ -489,6 +489,10 @@ Component
                                             case "paused":
                                                 return "paused-icon.svg"
                                             case "wait_cleanup":
+                                                if(modelData.activePrintJob.timeElapsed < modelData.activePrintJob.timeTotal)
+                                                {
+                                                    return "aborted-icon.svg"
+                                                }
                                                 return "approved-icon.svg"
                                             case "wait_user_action":
                                                 return "aborted-icon.svg"
@@ -569,7 +573,11 @@ Component
                                     switch(modelData.activePrintJob.state)
                                     {
                                         case "wait_cleanup":
-                                            return catalog.i18nc("@label:status", "Finshed")
+                                            if(modelData.activePrintJob.timeTotal > modelData.activePrintJob.timeElapsed)
+                                            {
+                                                return catalog.i18nc("@label:status", "Aborted")
+                                            }
+                                            return catalog.i18nc("@label:status", "Finished")
                                         case "pre_print":
                                         case "sent_to_printer":
                                             return catalog.i18nc("@label:status", "Preparing")
