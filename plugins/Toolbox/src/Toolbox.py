@@ -83,7 +83,7 @@ class Toolbox(QObject, Extension):
             "plugins_available":   PackagesModel(self),
             "plugins_installed":   PackagesModel(self),
             "materials_showcase":  AuthorsModel(self),
-            "materials_available": PackagesModel(self),
+            "materials_available": AuthorsModel(self),
             "materials_installed": PackagesModel(self),
             "materials_generic":   PackagesModel(self)
         } # type: Dict[str, ListModel]
@@ -517,7 +517,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = int)
     def getTotalNumberOfPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._metadata["materials_available"]:
+        for package in self._metadata["packages"]:
             if package["author"]["author_id"] == author_id:
                 count += 1
         return count
@@ -624,24 +624,27 @@ class Toolbox(QObject, Extension):
                                 Logger.log("e", "Could not find the %s model.", type)
                                 break
 
-                            # HACK: Eventually get rid of the code from here...
-                            if type is "plugins_showcase" or type is "materials_showcase":
-                                self._metadata["plugins_showcase"] = json_data["data"]["plugin"]["packages"]
-                                self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
-                                self._metadata["materials_showcase"] = json_data["data"]["material"]["authors"]
-                                self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
-                            else:
-                                # ...until here.
-                                # This hack arises for multiple reasons but the main
-                                # one is because there are not separate API calls
-                                # for different kinds of showcases.
-                                self._metadata[type] = json_data["data"]
-                                self._models[type].setMetadata(self._metadata[type])
+                            # HACK
+                            do_not_handle = [
+                                "materials_available",
+                                "materials_showcase",
+                                "plugins_available",
+                                "plugins_showcase",
+                            ]
+
+                            # Do nothing because we'll handle these from the "packages" call
+                            if type in do_not_handle:
+                                return
+                            
+                            self._metadata[type] = json_data["data"]
+                            self._models[type].setMetadata(self._metadata[type])
 
                             # Do some auto filtering
                             # TODO: Make multiple API calls in the future to handle this
                             if type is "packages":
                                 self._models[type].setFilter({"type": "plugin"})
+                                self.buildMaterialsModels()
+                                self.buildPluginsModels()
                             if type is "authors":
                                 self._models[type].setFilter({"package_types": "material"})
                             if type is "materials_generic":
@@ -756,12 +759,20 @@ class Toolbox(QObject, Extension):
         return cast(PackagesModel, self._models["plugins_showcase"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
+    def pluginsAvailableModel(self) -> PackagesModel:
+        return cast(PackagesModel, self._models["plugins_available"])
+
+    @pyqtProperty(QObject, notify = metadataChanged)
     def pluginsInstalledModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["plugins_installed"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def materialsShowcaseModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["materials_showcase"])
+
+    @pyqtProperty(QObject, notify = metadataChanged)
+    def materialsAvailableModel(self) -> AuthorsModel:
+        return cast(AuthorsModel, self._models["materials_available"])
 
     @pyqtProperty(QObject, notify = metadataChanged)
     def materialsInstalledModel(self) -> PackagesModel:
@@ -798,3 +809,46 @@ class Toolbox(QObject, Extension):
             return
         self._models[model_type].setFilter({})
         self.filterChanged.emit()
+
+
+    # HACK(S):
+    # --------------------------------------------------------------------------
+    def buildMaterialsModels(self) -> None:
+
+        self._metadata["materials_showcase"] = []
+        self._metadata["materials_available"] = []
+
+        processed_authors = []
+
+        for item in self._metadata["packages"]:
+            if item["package_type"] == "material":
+
+                author = item["author"]
+                if author["author_id"] in processed_authors:
+                    continue
+
+                if "showcase" in item["tags"]:
+                    self._metadata["materials_showcase"].append(author)
+                else:
+                    self._metadata["materials_available"].append(author)
+
+                processed_authors.append(author["author_id"])
+
+        self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
+        self._models["materials_available"].setMetadata(self._metadata["materials_available"])
+
+    def buildPluginsModels(self) -> None:
+
+        self._metadata["plugins_showcase"] = []
+        self._metadata["plugins_available"] = []
+
+        for item in self._metadata["packages"]:
+            if item["package_type"] == "plugin":
+
+                if "showcase" in item["tags"]:
+                    self._metadata["plugins_showcase"].append(item)
+                else:
+                    self._metadata["plugins_available"].append(item)
+
+        self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
+        self._models["plugins_available"].setMetadata(self._metadata["plugins_available"])

@@ -30,7 +30,7 @@ ScrollView
             id: allPlugins
             width: parent.width
             heading: toolbox.viewCategory == "material" ? catalog.i18nc("@label", "Community Contributions") : catalog.i18nc("@label", "Community Plugins")
-            model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
+            model: toolbox.viewCategory == "material" ? toolbox.materialsAvailableModel : toolbox.pluginsAvailableModel
         }
 
         ToolboxDownloadsGrid
