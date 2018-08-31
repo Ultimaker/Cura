@@ -8,7 +8,31 @@ import UM 1.1 as UM
 
 Item
 {
+    id: base
+
     property var packageData
+    property var technical_data_sheet_url
+
+    function initiazeLinks()
+    {
+        var all_links = packageData.links
+        for(var index = 0; index < all_links.length; index++)
+        {
+            var temp_link = all_links[index]
+            var title = temp_link["title"]
+
+            if(title === "Technical Data Sheet")
+            {
+                base.technical_data_sheet_url = temp_link["url"]
+            }
+        }
+    }
+
+    Component.onCompleted:
+    {
+        initiazeLinks()
+    }
+
     anchors.topMargin: UM.Theme.getSize("default_margin").height
     height: visible ? childrenRect.height : 0
     visible: packageData.type == "material" && packageData.has_configs
@@ -132,4 +156,27 @@ Item
             width: Math.floor(table.width * 0.1)
         }
     }
+
+
+
+    Label
+    {
+        id: technical_data_sheet
+        anchors.top: table.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
+        visible: base.technical_data_sheet_url !== undefined
+        text:
+        {
+            if (base.technical_data_sheet_url !== undefined)
+            {
+                return "<a href='%1'>%2</a>".arg(base.technical_data_sheet_url).arg("Technical Data Sheet")
+            }
+            return ""
+        }
+        font: UM.Theme.getFont("very_small")
+        color: UM.Theme.getColor("text")
+        linkColor: UM.Theme.getColor("text_link")
+        onLinkActivated: Qt.openUrlExternally(link)
+    }
+
 }
