@@ -133,7 +133,7 @@ Item
                 {
                     if (details.email)
                     {
-                        return "<a href=\"mailto:"+details.email+"\">"+details.name+"</a>"
+                        return "<a href=\"mailto:"+details.email+"\">"+details.email+"</a>"
                     }
                     else
                     {
