@@ -114,12 +114,9 @@ Item
                 {
                     if (details.website)
                     {
-                        return "<a href=\""+details.website+"\">"+details.website+"</a>"
+                        return "<a href=\"" + details.website + "\">" + details.website + "</a>"
                     }
-                    else
-                    {
-                        return ""
-                    }
+                    return ""
                 }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
@@ -133,12 +130,9 @@ Item
                 {
                     if (details.email)
                     {
-                        return "<a href=\"mailto:"+details.email+"\">"+details.email+"</a>"
+                        return "<a href=\"mailto:" + details.email + "\">" + details.email + "</a>"
                     }
-                    else
-                    {
-                        return ""
-                    }
+                    return ""
                 }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
