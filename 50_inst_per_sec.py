@@ -1,8 +1,9 @@
-#!/usr/bin/env python
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import copy
 import math
 import os
-import sys
 import random
 from typing import Dict, List, Optional, Tuple
 
@@ -13,21 +14,16 @@ from typing import Dict, List, Optional, Tuple
 DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_MS = 50.0 / 1000.0  # The buffer filling rate in #commands/ms
 DEFAULT_BUFFER_SIZE = 15  # The buffer size in #commands
 
-
+##  Gets the code and number from the given g-code line.
 def get_code_and_num(gcode_line: str) -> Tuple[str, str]:
-    """
-    Gets the code and number from the given GCode line.
-    """
     gcode_line = gcode_line.strip()
     cmd_code = gcode_line[0].upper()
     cmd_num = str(gcode_line[1:])
     return cmd_code, cmd_num
 
-
+##  Fetches arguments such as X1 Y2 Z3 from the given part list and returns a
+#   dict.
 def get_value_dict(parts: List[str]) -> Dict[str, str]:
-    """
-    Fetches arguments such as X1 Y2 Z3 from the given part list and returns a dict.
-    """
     value_dict = {}
     for p in parts:
         p = p.strip()
@@ -50,12 +46,9 @@ def calc_distance(pos1, pos2):
     distance = math.sqrt(distance)
     return distance
 
-
+##  Given the initial speed, the target speed, and the acceleration, calculate
+#   the distance that's neede for the acceleration to finish.
 def calc_acceleration_distance(init_speed: float, target_speed: float, acceleration: float) -> float:
-    """
-    Given the initial speed, the target speed, and the acceleration, calculate the distance that's needed for the
-    acceleration to finish.
-    """
     if acceleration == 0:
         return 0.0
     return (target_speed**2 - init_speed**2) / (2 * acceleration)
