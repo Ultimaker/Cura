@@ -3785,7 +3785,7 @@ msgstr "&Crea profilo dalle impostazioni/esclusioni correnti..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Gestione profili..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

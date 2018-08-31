@@ -3791,7 +3791,7 @@ msgstr "&今の設定/無効からプロファイルを作成する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "プロファイルを管理する"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

@@ -199,7 +199,7 @@ Item
     Action
     {
         id: manageProfilesAction;
-        text: catalog.i18nc("@action:inmenu menubar:profile","Manage Profiles...");
+        text: catalog.i18nc("@action:inmenu menubar:profile","&Manage Profiles...");
         iconName: "configure";
     }
 

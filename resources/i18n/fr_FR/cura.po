@@ -3787,7 +3787,7 @@ msgstr "&Créer un profil à partir des paramètres / forçages actuels..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Gérer les profils..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

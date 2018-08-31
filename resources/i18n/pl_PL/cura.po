@@ -3821,7 +3821,7 @@ msgstr "&Utwórz profil z bieżących ustawień..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Zarządzaj profilami..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

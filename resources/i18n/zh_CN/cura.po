@@ -3821,7 +3821,7 @@ msgstr "从当前设置 / 重写值创建配置文件（&C）…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "管理配置文件.."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

@@ -3783,7 +3783,7 @@ msgstr "현재 설정으로 프로파일 생성..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "프로파일 관리..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

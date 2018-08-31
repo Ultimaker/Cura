@@ -3822,7 +3822,7 @@ msgstr "從目前設定 / 覆寫值建立列印參數（&C）…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "管理列印參數.."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

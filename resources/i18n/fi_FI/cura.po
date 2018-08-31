@@ -3806,7 +3806,7 @@ msgstr "&Luo profiili nykyisten asetusten tai ohitusten perusteella..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Profiilien hallinta..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209
