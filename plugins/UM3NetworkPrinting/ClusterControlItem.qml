@@ -233,11 +233,21 @@ Component
                                     topMargin: UM.Theme.getSize("default_margin").width
                                 }
                             }
-
+                            PrinterFamilyPill
+                            {
+                                id: printerFamilyPill
+                                color: UM.Theme.getColor("viewport_background")
+                                anchors.top: topSpacer.bottom
+                                anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
+                                text: modelData.type
+                                anchors.left: parent.left
+                                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                                padding: 3
+                            }
                             Row
                             {
                                 id: extrudersInfo
-                                anchors.top: topSpacer.bottom
+                                anchors.top: printerFamilyPill.bottom
                                 anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
                                 anchors.left: parent.left
                                 anchors.leftMargin: 2 * UM.Theme.getSize("default_margin").width
