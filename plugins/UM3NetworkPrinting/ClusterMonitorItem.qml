@@ -79,20 +79,18 @@ Component
 
             anchors
             {
-                margins: UM.Theme.getSize("default_margin").width
                 top: queuedLabel.bottom
                 topMargin: 0
-                left: parent.left
+                horizontalCenter: parent.horizontalCenter
                 bottomMargin: 0
-                right: parent.right
                 bottom: parent.bottom
             }
             style: UM.Theme.styles.scrollview
-
+            width: Math.min(800 * screenScaleFactor, maximumWidth)
             ListView
             {
                 anchors.fill: parent
-                anchors.margins: UM.Theme.getSize("default_margin").height
+                //anchors.margins: UM.Theme.getSize("default_margin").height
                 spacing: UM.Theme.getSize("default_margin").height - 10 // 2x the shadow radius
 
                 model: OutputDevice.queuedPrintJobs
@@ -103,6 +101,7 @@ Component
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").height
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").height
                     height: 175 * screenScaleFactor
                 }
             }
