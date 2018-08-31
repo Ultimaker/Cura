@@ -818,7 +818,7 @@ class Toolbox(QObject, Extension):
         self._metadata["materials_showcase"] = []
         self._metadata["materials_available"] = []
 
-        processed_authors = []
+        processed_authors = [] # type: List[str]
 
         for item in self._metadata["packages"]:
             if item["package_type"] == "material":
