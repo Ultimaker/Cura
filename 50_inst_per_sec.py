@@ -4,6 +4,7 @@
 import copy
 import math
 import os
+import sys
 import random
 from typing import Dict, List, Optional, Tuple
 
@@ -375,14 +376,12 @@ class CommandBuffer:
 
 
 if __name__ == "__main__":
-    #if len(sys.argv) != 3:
-    #    print("Usage: <input gcode> <output gcode>")
-    #    sys.exit(1)
-    #in_filename = sys.argv[1]
-    #out_filename = sys.argv[2]
+    if len(sys.argv) != 3:
+        print("Usage: <input gcode> <output gcode>")
+        sys.exit(1)
+    in_filename = sys.argv[1]
+    out_filename = sys.argv[2]
 
-    in_filename = "/home/lfei/UM3_elephant_pendant_2.gcode"
-    out_filename = "/home/lfei/UM3_elephant_pendant_2-annotated.gcode"
     with open(in_filename, "r", encoding = "utf-8") as f:
         all_lines = f.readlines()
 
