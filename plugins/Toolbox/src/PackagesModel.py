@@ -5,9 +5,12 @@ import re
 from typing import Dict
 
 from PyQt5.QtCore import Qt, pyqtProperty
-from UM.Qt.ListModel import ListModel
-from .ConfigsModel import ConfigsModel
+
 from UM.Logger import Logger
+from UM.Qt.ListModel import ListModel
+
+from .ConfigsModel import ConfigsModel
+
 
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
@@ -48,18 +51,16 @@ class PackagesModel(ListModel):
     def _update(self):
         items = []
 
-        #If a user has a slow internet connection then the metadata might be None
         if self._metadata is None:
             Logger.logException("w", "Failed to load packages for Toolbox")
             self.setItems(items)
             return
 
-
         for package in self._metadata:
-
             has_configs = False
             configs_model = None
-            data_links = []
+
+            links_dict = {}
             if "data" in package:
                 if "supported_configs" in package["data"]:
                     if len(package["data"]["supported_configs"]) > 0:
@@ -67,7 +68,10 @@ class PackagesModel(ListModel):
                         configs_model = ConfigsModel()
                         configs_model.setConfigs(package["data"]["supported_configs"])
 
-                data_links = package['data']['links'] if 'links' in package['data'] else []
+                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
+                # to process.
+                link_list = package['data']['links'] if 'links' in package['data'] else []
+                links_dict = {d["title"]: d["url"] for d in link_list}
 
             if "author_id" not in package["author"] or "display_name" not in package["author"]:
                 package["author"]["author_id"] = ""
@@ -94,19 +98,18 @@ class PackagesModel(ListModel):
                 "supported_configs":    configs_model,
                 "download_count":       package["download_count"] if "download_count" in package else 0,
                 "tags":                 package["tags"] if "tags" in package else [],
-                "links":                data_links,
+                "links":                links_dict,
                 "website":              package["website"] if "website" in package else None,
             })
-
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
             if key is "tags":
-                key_filter = lambda item, value = value: value in item["tags"]
+                key_filter = lambda item, v = value: v in item["tags"]
             elif "*" in value:
-                key_filter = lambda candidate, key = key, value = value: self._matchRegExp(candidate, key, value)
+                key_filter = lambda candidate, k = key, v = value: self._matchRegExp(candidate, k, v)
             else:
-                key_filter = lambda candidate, key = key, value = value: self._matchString(candidate, key, value)
+                key_filter = lambda candidate, k = key, v = value: self._matchString(candidate, k, v)
             items = filter(key_filter, items)
 
         # Execute all filters.

@@ -11,26 +11,13 @@ Item
     id: base
 
     property var packageData
-    property var technical_data_sheet_url
-
-    function initiazeLinks()
-    {
-        var all_links = packageData.links
-        for(var index = 0; index < all_links.length; index++)
+    property var technicalDataSheetUrl: {
+        var link = undefined
+        if ("Technical Data Sheet" in packageData.links)
         {
-            var temp_link = all_links[index]
-            var title = temp_link["title"]
-
-            if(title === "Technical Data Sheet")
-            {
-                base.technical_data_sheet_url = temp_link["url"]
-            }
+            link = packageData.links["Technical Data Sheet"]
         }
-    }
-
-    Component.onCompleted:
-    {
-        initiazeLinks()
+        return link
     }
 
     anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -157,19 +144,17 @@ Item
         }
     }
 
-
-
     Label
     {
         id: technical_data_sheet
         anchors.top: table.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
-        visible: base.technical_data_sheet_url !== undefined
+        visible: base.technicalDataSheetUrl !== undefined
         text:
         {
-            if (base.technical_data_sheet_url !== undefined)
+            if (base.technicalDataSheetUrl !== undefined)
             {
-                return "<a href='%1'>%2</a>".arg(base.technical_data_sheet_url).arg("Technical Data Sheet")
+                return "<a href='%1'>%2</a>".arg(base.technicalDataSheetUrl).arg("Technical Data Sheet")
             }
             return ""
         }
