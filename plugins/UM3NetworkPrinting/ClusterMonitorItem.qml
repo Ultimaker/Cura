@@ -42,6 +42,27 @@ Component
 
         Label
         {
+            id: manageQueueLabel
+            anchors.rightMargin: 5 * UM.Theme.getSize("default_margin").width
+            anchors.right: queuedPrintJobs.right
+            anchors.bottom: queuedLabel.bottom
+            text: catalog.i18nc("@label link to connect manager", "Manage queue")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("primary")
+            linkColor: UM.Theme.getColor("primary")
+        }
+
+        MouseArea
+        {
+            anchors.fill: manageQueueLabel
+            hoverEnabled: true
+            onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
+            onEntered: manageQueueLabel.font.underline = true
+            onExited: manageQueueLabel.font.underline = false
+        }
+
+        Label
+        {
             id: queuedLabel
             anchors.left: queuedPrintJobs.left
             anchors.top: parent.top

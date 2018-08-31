@@ -45,8 +45,30 @@ Component
             elide: Text.ElideRight
         }
 
+        Label
+        {
+            id: managePrintersLabel
+            anchors.rightMargin: 4 * UM.Theme.getSize("default_margin").width
+            anchors.right: printerScrollView.right
+            anchors.bottom: printingLabel.bottom
+            text: catalog.i18nc("@label link to connect manager", "Manage printers")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("primary")
+            linkColor: UM.Theme.getColor("primary")
+        }
+
+        MouseArea
+        {
+            anchors.fill: managePrintersLabel
+            hoverEnabled: true
+            onClicked: Cura.MachineManager.printerOutputDevices[0].openPrinterControlPanel()
+            onEntered: managePrintersLabel.font.underline = true
+            onExited: managePrintersLabel.font.underline = false
+        }
+
         ScrollView
         {
+            id: printerScrollView
             anchors
             {
                 top: printingLabel.bottom
