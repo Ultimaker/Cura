@@ -80,7 +80,7 @@ Component
             anchors
             {
                 top: queuedLabel.bottom
-                topMargin: 0
+                topMargin: UM.Theme.getSize("default_margin").height
                 horizontalCenter: parent.horizontalCenter
                 bottomMargin: 0
                 bottom: parent.bottom

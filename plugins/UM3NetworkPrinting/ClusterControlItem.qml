@@ -74,7 +74,7 @@ Component
                 top: printingLabel.bottom
                 left: parent.left
                 right: parent.right
-                topMargin: 1 * UM.Theme.getSize("default_margin").height
+                topMargin: UM.Theme.getSize("default_margin").height
                 bottom: parent.bottom
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
