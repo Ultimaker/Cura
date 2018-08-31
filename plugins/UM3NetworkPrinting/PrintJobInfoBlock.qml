@@ -178,7 +178,7 @@ Item
                 closePolicy: Popup.CloseOnPressOutsideParent
                 x: parent.width - width
                 y: contextButton.height
-                width: 200
+                width: 160
                 height: contentItem.height + 2 * padding
                 visible: false
 
