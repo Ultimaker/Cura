@@ -114,7 +114,7 @@ Item
                 {
                     if (details.website)
                     {
-                        return "<a href=\""+details.website+"\">Link</a>"
+                        return "<a href=\""+details.website+"\">"+details.website+"</a>"
                     }
                     else
                     {
