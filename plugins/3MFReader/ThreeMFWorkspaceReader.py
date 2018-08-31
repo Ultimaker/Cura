@@ -24,6 +24,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
 
+from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
@@ -83,14 +84,6 @@ class ExtruderInfo:
 class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self) -> None:
         super().__init__()
-
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name="application/x-curaproject+xml",
-                comment="Cura Project File",
-                suffixes=["curaproject.3mf"]
-            )
-        )
 
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
@@ -629,6 +622,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                                            type = "extruder_train")
             extruder_stack_dict = {stack.getMetaDataEntry("position"): stack for stack in extruder_stacks}
 
+            # Make sure that those extruders have the global stack as the next stack or later some value evaluation
+            # will fail.
+            for stack in extruder_stacks:
+                stack.setNextStack(global_stack, connect_signals = False)
+
         Logger.log("d", "Workspace loading is checking definitions...")
         # Get all the definition files & check if they exist. If not, add them.
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -720,8 +718,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             nodes = []
 
         base_file_name = os.path.basename(file_name)
-        if base_file_name.endswith(".curaproject.3mf"):
-            base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
 
@@ -889,7 +885,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = self._machine_info.variant_info.parser
             variant_name = parser["general"]["name"]
 
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.BUILD_PLATE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
@@ -905,7 +900,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = extruder_info.variant_info.parser
 
             variant_name = parser["general"]["name"]
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.NOZZLE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
@@ -929,12 +923,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = extruder_info.root_material_id
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
+            build_plate_id = global_stack.variant.getId()
+
             # get material diameter of this extruder
             machine_material_diameter = extruder_stack.materialDiameter
             material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
                                                              extruder_stack.variant.getName(),
+                                                             build_plate_id,
                                                              machine_material_diameter,
                                                              root_material_id)
+
             if material_node is not None and material_node.getContainer() is not None:
                 extruder_stack.material = material_node.getContainer()
 

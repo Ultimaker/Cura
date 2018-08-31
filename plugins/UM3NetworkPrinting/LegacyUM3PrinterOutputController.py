@@ -31,11 +31,11 @@ class LegacyUM3PrinterOutputController(PrinterOutputController):
 
     def setJobState(self, job: "PrintJobOutputModel", state: str):
         data = "{\"target\": \"%s\"}" % state
-        self._output_device.put("print_job/state", data, onFinished=None)
+        self._output_device.put("print_job/state", data, on_finished=None)
 
     def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int):
         data = str(temperature)
-        self._output_device.put("printer/bed/temperature/target", data, onFinished=self._onPutBedTemperatureCompleted)
+        self._output_device.put("printer/bed/temperature/target", data, on_finished=self._onPutBedTemperatureCompleted)
 
     def _onPutBedTemperatureCompleted(self, reply):
         if Version(self._preheat_printer.firmwareVersion) < Version("3.5.92"):
@@ -51,10 +51,10 @@ class LegacyUM3PrinterOutputController(PrinterOutputController):
         new_y = head_pos.y + y
         new_z = head_pos.z + z
         data = "{\n\"x\":%s,\n\"y\":%s,\n\"z\":%s\n}" %(new_x, new_y, new_z)
-        self._output_device.put("printer/heads/0/position", data, onFinished=None)
+        self._output_device.put("printer/heads/0/position", data, on_finished=None)
 
     def homeBed(self, printer):
-        self._output_device.put("printer/heads/0/position/z", "0", onFinished=None)
+        self._output_device.put("printer/heads/0/position/z", "0", on_finished=None)
 
     def _onPreheatBedTimerFinished(self):
         self.setTargetBedTemperature(self._preheat_printer, 0)
@@ -89,7 +89,7 @@ class LegacyUM3PrinterOutputController(PrinterOutputController):
             printer.updateIsPreheating(True)
             return
 
-        self._output_device.put("printer/bed/pre_heat", data, onFinished = self._onPutPreheatBedCompleted)
+        self._output_device.put("printer/bed/pre_heat", data, on_finished = self._onPutPreheatBedCompleted)
         printer.updateIsPreheating(True)
         self._preheat_request_in_progress = True
 

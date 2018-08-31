@@ -34,7 +34,7 @@
         "material_initial_print_temperature":    { "value": "material_print_temperature" },
         "material_print_temperature_layer_0":    { "value": "material_print_temperature + 5" },
         "travel_avoid_distance":                 { "default_value": 1, "value": "1" },
-        "speed_print" :                          { "default_value": 60 },
+        "speed_print" :                          { "default_value": 70 },
         "speed_travel":                          { "value": "150.0" },
         "speed_infill":                          { "value": "round(speed_print * 1.05, 0)" },
         "speed_topbottom":                       { "value": "round(speed_print * 0.95, 0)" },
@@ -52,6 +52,9 @@
         "top_bottom_thickness":                  { "default_value": 0.6 },
         "support_z_distance":                    { "value": "layer_height * 2" },
         "support_bottom_distance":               { "value": "layer_height" },
-        "support_use_towers" :                   { "default_value": false }
+        "support_use_towers" :                   { "default_value": false },
+        "jerk_wall_0" :                          { "value": "30" },
+        "jerk_travel" :                          { "default_value": 20 },
+        "acceleration_travel" :                  { "value": 10000 }
     }
 }

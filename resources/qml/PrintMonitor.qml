@@ -26,7 +26,6 @@ Column
 
     OutputDeviceHeader
     {
-        width: parent.width
         outputDevice: connectedDevice
     }
 

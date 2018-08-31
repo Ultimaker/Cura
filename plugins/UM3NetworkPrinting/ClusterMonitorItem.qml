@@ -9,6 +9,7 @@ Component
 {
     Rectangle
     {
+        id: monitorFrame
         width: maximumWidth
         height: maximumHeight
         color: UM.Theme.getColor("viewport_background")
@@ -102,6 +103,16 @@ Component
         {
             visible: OutputDevice.activePrinter != null
             anchors.fill:parent
+        }
+
+        onVisibleChanged:
+        {
+            if (!monitorFrame.visible)
+            {
+                // After switching the Tab ensure that active printer is Null, the video stream image
+                // might be active
+                OutputDevice.setActivePrinter(null)
+            }
         }
     }
 }

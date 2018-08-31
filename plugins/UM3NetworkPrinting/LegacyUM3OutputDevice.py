@@ -165,7 +165,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
                 file_name = "none.xml"
 
-                self.postForm("materials", "form-data; name=\"file\";filename=\"%s\"" % file_name, xml_data.encode(), onFinished=None)
+                self.postForm("materials", "form-data; name=\"file\";filename=\"%s\"" % file_name, xml_data.encode(), on_finished=None)
 
             except NotImplementedError:
                 # If the material container is not the most "generic" one it can't be serialized an will raise a
@@ -270,7 +270,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         file_name = "%s.gcode.gz" % CuraApplication.getInstance().getPrintInformation().jobName
         self.postForm("print_job", "form-data; name=\"file\";filename=\"%s\"" % file_name, compressed_gcode,
-                      onFinished=self._onPostPrintJobFinished)
+                      on_finished=self._onPostPrintJobFinished)
 
         return
 
@@ -381,8 +381,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._checkAuthentication()
 
         # We don't need authentication for requesting info, so we can go right ahead with requesting this.
-        self.get("printer", onFinished=self._onGetPrinterDataFinished)
-        self.get("print_job", onFinished=self._onGetPrintJobFinished)
+        self.get("printer", on_finished=self._onGetPrinterDataFinished)
+        self.get("print_job", on_finished=self._onGetPrintJobFinished)
 
     def _resetAuthenticationRequestedMessage(self):
         if self._authentication_requested_message:
@@ -404,7 +404,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _verifyAuthentication(self):
         Logger.log("d", "Attempting to verify authentication")
         # This will ensure that the "_onAuthenticationRequired" is triggered, which will setup the authenticator.
-        self.get("auth/verify", onFinished=self._onVerifyAuthenticationCompleted)
+        self.get("auth/verify", on_finished=self._onVerifyAuthenticationCompleted)
 
     def _onVerifyAuthenticationCompleted(self, reply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
@@ -426,7 +426,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkAuthentication(self):
         Logger.log("d", "Checking if authentication is correct for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
-        self.get("auth/check/" + str(self._authentication_id), onFinished=self._onCheckAuthenticationFinished)
+        self.get("auth/check/" + str(self._authentication_id), on_finished=self._onCheckAuthenticationFinished)
 
     def _onCheckAuthenticationFinished(self, reply):
         if str(self._authentication_id) not in reply.url().toString():
@@ -502,7 +502,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.post("auth/request",
                   json.dumps({"application":  "Cura-" + CuraApplication.getInstance().getVersion(),
                                                "user": self._getUserName()}).encode(),
-                  onFinished=self._onRequestAuthenticationFinished)
+                  on_finished=self._onRequestAuthenticationFinished)
 
         self.setAuthenticationState(AuthState.AuthenticationRequested)
 
