@@ -7,6 +7,7 @@ from UM.Resources import Resources
 from cura.PrinterOutputDevice import PrinterOutputDevice
 
 from enum import IntEnum
+from threading import Thread
 
 class FirmwareUpdater(QObject):
     firmwareProgressChanged = pyqtSignal()
