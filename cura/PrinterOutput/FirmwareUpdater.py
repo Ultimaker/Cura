@@ -16,7 +16,7 @@ class FirmwareUpdater(QObject):
     def __init__(self, output_device: PrinterOutputDevice) -> None:
         self._output_device = output_device
 
-        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon = True)
+        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
 
         self._firmware_view = None
         self._firmware_location = None

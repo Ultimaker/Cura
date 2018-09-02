@@ -55,7 +55,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._all_baud_rates = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
-        self._update_thread = Thread(target=self._update, daemon = True)
+        self._update_thread = Thread(target=self._update, daemon=True)
 
         self._last_temperature_request = None  # type: Optional[int]
 
@@ -358,7 +358,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if print_job is None:
             controller = GenericOutputController(self)
             controller.setCanUpdateFirmware(True)
-            print_job = PrintJobOutputModel(output_controller = controller, name= CuraApplication.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller=controller, name=CuraApplication.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 
