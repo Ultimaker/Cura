@@ -43,7 +43,7 @@ def calc_distance(pos1, pos2):
     delta = {k: pos1[k] - pos2[k] for k in pos1}
     distance = 0
     for value in delta.values():
-        distance += value**2
+        distance += value ** 2
     distance = math.sqrt(distance)
     return distance
 
@@ -52,11 +52,24 @@ def calc_distance(pos1, pos2):
 def calc_acceleration_distance(init_speed: float, target_speed: float, acceleration: float) -> float:
     if acceleration == 0:
         return 0.0
-    return (target_speed**2 - init_speed**2) / (2 * acceleration)
+    return (target_speed ** 2 - init_speed ** 2) / (2 * acceleration)
 
 
 def calc_travel_time(p0, p1, init_speed: float, target_speed: float, acceleration: float) -> float:
     pass
+
+##  Calculates the point at which you must start braking.
+#
+#   This gives the distance from the start of a line at which you must start
+#   decelerating (at a rate of `-acceleration`) if you started at speed
+#   `initial_feedrate` and accelerated until this point and want to end at the
+#   `final_feedrate` after a total travel of `distance`. This can be used to
+#   compute the intersection point between acceleration and deceleration in the
+#   cases where the trapezoid has no plateau (i.e. never reaches maximum speed).
+def calc_intersection_distance(initial_feedrate: float, final_feedrate: float, acceleration: float, distance: float) -> float:
+    if acceleration == 0:
+        return 0
+    return (2 * acceleration * distance - initial_feedrate * initial_feedrate + final_feedrate * final_feedrate) / (4 * acceleration)
 
 
 class State:
@@ -130,6 +143,33 @@ class Command:
         self._acceleration = 0
         self._delta = [0, 0, 0]
         self._abs_delta = [0, 0, 0]
+
+    ##  Calculate the velocity-time trapezoid function for this move.
+    #
+    #   Each move has a three-part function mapping time to velocity.
+    def calculate_trapezoid(self, entry_factor, exit_factor):
+        initial_feedrate = self._nominal_feedrate * entry_factor
+        final_feedrate = self._nominal_feedrate * exit_factor
+
+        #How far are we accelerating and how far are we decelerating?
+        accelerate_distance = calc_acceleration_distance(initial_feedrate, self._nominal_feedrate, self._acceleration)
+        decelerate_distance = calc_acceleration_distance(self._nominal_feedrate, final_feedrate, -self._acceleration)
+        plateau_distance = self._distance - accelerate_distance - decelerate_distance #And how far in between at max speed?
+
+        #Is the plateau negative size? That means no cruising, and we'll have to
+        #use intersection_distance to calculate when to abort acceleration and
+        #start braking in order to reach the final_rate exactly at the end of
+        #this command.
+        if plateau_distance < 0:
+            accelerate_distance = calc_intersection_distance(initial_feedrate, final_feedrate, self._acceleration, self._distance)
+            accelerate_distance = max(accelerate_distance, 0) #Due to rounding errors.
+            accelerate_distance = min(accelerate_distance, self._distance)
+            plateau_distance = 0
+
+        self._accelerate_until = accelerate_distance
+        self._decelerate_after = accelerate_distance + plateau_distance
+        self._initial_feedrate = initial_feedrate
+        self._final_feedrate = final_feedrate
 
     def get_after_state(self) -> State:
         return self._after_state
