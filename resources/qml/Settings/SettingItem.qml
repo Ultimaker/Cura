@@ -244,13 +244,13 @@ Item {
                     focus = true;
 
                     // Get the most shallow function value (eg not a number) that we can find.
-                    var last_entry = propertyProvider.stackLevels[propertyProvider.stackLevels.length - 1]
+                    var last_entry = base.stackLevels[base.stackLevels.length - 1]
                     for (var i = 1; i < base.stackLevels.length; i++)
                     {
                         var has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";
                         if(has_setting_function)
                         {
-                            last_entry = propertyProvider.stackLevels[i]
+                            last_entry = base.stackLevels[i]
                             break;
                         }
                     }
