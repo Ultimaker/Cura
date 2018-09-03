@@ -115,6 +115,22 @@ class Command:
         self._is_comment = False  # type: bool
         self._is_empty = False  # type: bool
 
+        #Fields taken from CuraEngine's implementation.
+        self._recalculate = False
+        self._accelerate_until = 0
+        self._decelerate_after = 0
+        self._initial_feedrate = 0
+        self._final_feedrate = 0
+        self._entry_speed = 0
+        self._max_entry_speed =0
+        self._nominal_length = False
+        self._nominal_feedrate = 0
+        self._max_travel = 0
+        self._distance = 0
+        self._acceleration = 0
+        self._delta = [0, 0, 0]
+        self._abs_delta = [0, 0, 0]
+
     def get_after_state(self) -> State:
         return self._after_state
 
@@ -136,10 +152,9 @@ class Command:
 
         return self._cmd_str.strip() + " ; --- " + info + os.linesep
 
+    ##  Estimates the execution time of this command and calculates the state
+    #   after this command is executed.
     def process(self) -> None:
-        """
-        Estimates the execution time of this command and calculates the state after this command is executed.
-        """
         line = self._cmd_str.strip()
         if not line:
             self._is_empty = True
