@@ -518,9 +518,10 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = int)
     def getTotalNumberOfMaterialPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._metadata["materials_available"]:
-            if package["author"]["author_id"] == author_id:
-                count += 1
+        for package in self._metadata["packages"]:
+            if package["package_type"] == "material":
+                if package["author"]["author_id"] == author_id:
+                    count += 1
         return count
 
     @pyqtSlot(str, result = bool)
