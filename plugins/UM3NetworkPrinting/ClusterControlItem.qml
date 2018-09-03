@@ -135,30 +135,38 @@ Component
                                 onClicked: base.collapsed = !base.collapsed
                             }
 
-                            UM.RecolorImage
+                            Item
                             {
                                 id: machineIcon
+                                // Yeah, this is hardcoded now, but I can't think of a good way to fix this.
+                                // The UI is going to get another update soon, so it's probably not worth the effort...
+                                width: 58
+                                height: 58
                                 anchors.top: parent.top
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.left: parent.left
-                                source:
+
+                                UM.RecolorImage
                                 {
-                                    switch(modelData.type)
+                                    anchors.centerIn: parent
+                                    source:
                                     {
-                                        case "Ultimaker 3":
-                                            return "UM3-icon.svg"
-                                        case "Ultimaker 3 Extended":
-                                            return "UM3x-icon.svg"
-                                        case "Ultimaker S5":
-                                            return "UMs5-icon.svg"
+                                        switch(modelData.type)
+                                        {
+                                            case "Ultimaker 3":
+                                                return "UM3-icon.svg"
+                                            case "Ultimaker 3 Extended":
+                                                return "UM3x-icon.svg"
+                                            case "Ultimaker S5":
+                                                return "UMs5-icon.svg"
+                                        }
                                     }
+                                    width: sourceSize.width
+                                    height: sourceSize.height
+
+                                    color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
                                 }
-                                width: sourceSize.width
-                                height: sourceSize.height
-
-                                color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
                             }
-
                             Item
                             {
                                 height: childrenRect.height
