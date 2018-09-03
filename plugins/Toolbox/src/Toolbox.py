@@ -514,10 +514,11 @@ class Toolbox(QObject, Extension):
                 count += 1
         return count
 
+    # This slot is only used to get the number of material packages by author, not any other type of packages.
     @pyqtSlot(str, result = int)
-    def getTotalNumberOfPackagesByAuthor(self, author_id: str) -> int:
+    def getTotalNumberOfMaterialPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._metadata["packages"]:
+        for package in self._metadata["materials_available"]:
             if package["author"]["author_id"] == author_id:
                 count += 1
         return count
@@ -606,8 +607,21 @@ class Toolbox(QObject, Extension):
             self.resetDownload()
             return
 
+        # HACK: These request are not handled independently at this moment, but together from the "packages" call
+        do_not_handle = [
+            "materials_available",
+            "materials_showcase",
+            "plugins_available",
+            "plugins_showcase",
+        ]
+
         if reply.operation() == QNetworkAccessManager.GetOperation:
             for type, url in self._request_urls.items():
+
+                # HACK: Do nothing because we'll handle these from the "packages" call
+                if type in do_not_handle:
+                    return
+
                 if reply.url() == url:
                     if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                         try:
@@ -623,18 +637,6 @@ class Toolbox(QObject, Extension):
                             if not self._models[type]:
                                 Logger.log("e", "Could not find the %s model.", type)
                                 break
-
-                            # HACK
-                            do_not_handle = [
-                                "materials_available",
-                                "materials_showcase",
-                                "plugins_available",
-                                "plugins_showcase",
-                            ]
-
-                            # Do nothing because we'll handle these from the "packages" call
-                            if type in do_not_handle:
-                                return
                             
                             self._metadata[type] = json_data["data"]
                             self._models[type].setMetadata(self._metadata[type])
