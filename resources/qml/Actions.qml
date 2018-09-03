@@ -138,7 +138,7 @@ Item
     Action
     {
         id: viewRightSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Right Side View");
+        text: catalog.i18nc("@action:inmenu menubar:view","Right Side View");
         onTriggered: UM.Controller.rotateView("x", -90);
     }
 

@@ -3761,28 +3761,28 @@ msgstr "&Zamknij"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "&Widok 3D"
+msgid "3D View"
+msgstr "Widok 3D"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "&Widok z przodu"
+msgid "Front View"
+msgstr "Widok z przodu"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "&Widok z góry"
+msgid "Top View"
+msgstr "Widok z góry"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "&Widok z lewej strony"
+msgid "Left Side View"
+msgstr "Widok z lewej strony"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "&Widok z prawej strony"
+msgid "Right Side View"
+msgstr "Widok z prawej strony"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3842,10 +3842,10 @@ msgstr "&O..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "Usuń &wybrany model"
-msgstr[1] "Usuń &wybrane modele"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Usuń wybrany model"
+msgstr[1] "Usuń wybrane modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3893,17 +3893,17 @@ msgstr "&Powiel model..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "&Wybierz wszystkie modele"
+msgid "Select All Models"
+msgstr "Wybierz wszystkie modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "&Wyczyść stół"
+msgid "Clear Build Plate"
+msgstr "Wyczyść stół"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
+msgid "Reload All Models"
 msgstr "Przeładuj wszystkie modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360

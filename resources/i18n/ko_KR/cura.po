@@ -3723,28 +3723,28 @@ msgstr "종료(&Q)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "3D 보기(&3)"
+msgid "3D View"
+msgstr "3D 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "앞에서 보기(&F)"
+msgid "Front View"
+msgstr "앞에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "위에서 보기(&T)"
+msgid "Top View"
+msgstr "위에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "왼쪽에서 보기(&L)"
+msgid "Left Side View"
+msgstr "왼쪽에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "오른쪽에서 보기(&R)"
+msgid "Right Side View"
+msgstr "오른쪽에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3804,8 +3804,8 @@ msgstr "소개..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
 msgstr[0] "선택한 모델 삭제"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
@@ -3852,17 +3852,17 @@ msgstr "모델 복제..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
+msgid "Select All Models"
 msgstr "모든 모델 선택"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
+msgid "Clear Build Plate"
 msgstr "빌드 플레이트 지우기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
+msgid "Reload All Models"
 msgstr "모든 모델 다시 로드"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360

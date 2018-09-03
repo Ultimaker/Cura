@@ -3727,28 +3727,28 @@ msgstr "&Beenden"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "&3D-Ansicht"
+msgid "3D View"
+msgstr "3D-Ansicht"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "&Vorderansicht"
+msgid "Front View"
+msgstr "Vorderansicht"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "&Draufsicht"
+msgid "Top View"
+msgstr "Draufsicht"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "&Ansicht von links"
+msgid "Left Side View"
+msgstr "Ansicht von links"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "&Ansicht von rechts"
+msgid "Right Side View"
+msgstr "Ansicht von rechts"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3808,10 +3808,10 @@ msgstr "&Über..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "&Ausgewähltes Modell löschen"
-msgstr[1] "&Ausgewählte Modelle löschen"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Ausgewähltes Modell löschen"
+msgstr[1] "Ausgewählte Modelle löschen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3859,18 +3859,18 @@ msgstr "Modell &multiplizieren"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "Alle Modelle &wählen"
+msgid "Select All Models"
+msgstr "Alle Modelle wählen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "Druckplatte &reinigen"
+msgid "Clear Build Plate"
+msgstr "Druckplatte reinigen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
-msgstr "Alle Modelle neu &laden"
+msgid "Reload All Models"
+msgstr "Alle Modelle neu laden"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"

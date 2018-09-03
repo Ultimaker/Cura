@@ -3725,28 +3725,28 @@ msgstr "E&sci"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "&Visualizzazione 3D"
+msgid "3D View"
+msgstr "Visualizzazione 3D"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "&Visualizzazione frontale"
+msgid "Front View"
+msgstr "Visualizzazione frontale"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "&Visualizzazione superiore"
+msgid "Top View"
+msgstr "Visualizzazione superiore"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "&Visualizzazione lato sinistro"
+msgid "Left Side View"
+msgstr "Visualizzazione lato sinistro"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "&Visualizzazione lato destro"
+msgid "Right Side View"
+msgstr "Visualizzazione lato destro"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3806,10 +3806,10 @@ msgstr "I&nformazioni..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "Cancella &modello selezionato"
-msgstr[1] "Cancella modelli &selezionati"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Cancella modello selezionato"
+msgstr[1] "Cancella modelli selezionati"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3857,18 +3857,18 @@ msgstr "Mo&ltiplica modello"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "Sel&eziona tutti i modelli"
+msgid "Select All Models"
+msgstr "Seleziona tutti i modelli"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "&Cancellare piano di stampa"
+msgid "Clear Build Plate"
+msgstr "Cancellare piano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
-msgstr "R&icarica tutti i modelli"
+msgid "Reload All Models"
+msgstr "Ricarica tutti i modelli"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
