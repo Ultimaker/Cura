@@ -8,30 +8,12 @@ MSGCTXT = "msgctxt" # Scope of the text
 MSGID =  "msgid" # The id of the text, also English version
 MSGTR = "msgstr" # The translation
 
+COLOR_WARNING = '\033[93m'
+COLOR_ENDC = '\033[0m'
+
 regex_patter = '(&[\w])' #"&[a-zA-Z0-9]" - Search char '&' and at least one character after it, the '+' returns one char after '&'
 
-
-# class TestShortcutKeys(unittest.TestCase):
-#
-#     language_folder = [
-#         "en_7S",
-#         "de_DE",
-#         "en_US",
-#         "es_ES",
-#         "fi_FI",
-#         "fr_FR",
-#         "hu_HU",
-#         "it_IT",
-#         "ja_JP",
-#         "ko_KR",
-#         "nl_NL",
-#         "pl_PL",
-#         "pt_BR",
-#         "ru_RU",
-#         "tr_TR"
-#     ]
-
-@pytest.mark.parametrize("language_type", [("en_7S"),("de_DE"),("es_ES"),("fi_FI"),("fr_FR"),("hu_HU")])
+@pytest.mark.parametrize("language_type", [("de_DE"),("es_ES"),("fi_FI"),("fr_FR"),("hu_HU"),("it_IT"),("ja_JP"),("ko_KR"),("nl_NL"),("pl_PL"),("pt_BR"),("ru_RU"),("tr_TR")])
 def test_shortcut_keys(language_type):
 
     language_folder = language_type
@@ -95,6 +77,7 @@ def test_shortcut_keys(language_type):
                 last_translation_id = ""
 
     not_valid_shortcut_keys = []
+
     #Validate all shortcut keys
     for shortcut_key, scopes in shortcut_keys.items():
 
@@ -102,18 +85,15 @@ def test_shortcut_keys(language_type):
         for key, items in scopes.items():
 
             if len (items) > 1:
-                not_valid_shortcut_keys.append(items)
+                not_valid_shortcut_keys += items
 
     if len(not_valid_shortcut_keys) != 0:
         temp='%s' % ', '.join(map(str, not_valid_shortcut_keys))
-        print("NOT VALID KEYS: " + temp)
+        print(COLOR_WARNING + "NOT VALID KEYS: " + temp + COLOR_ENDC)
 
 
     assert len(not_valid_shortcut_keys) == 0
 
 
 if __name__ == "__main__":
-    suite = unittest.TestSuite()
-
-
-    unittest.main(suite)
+    unittest.main()
