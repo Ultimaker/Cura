@@ -25,23 +25,6 @@ Component
 
         Label
         {
-            id: activePrintersLabel
-            font: UM.Theme.getFont("large")
-
-            anchors
-            {
-                top: parent.top
-                topMargin: UM.Theme.getSize("default_margin").height * 2 // a bit more spacing to give it some breathing room
-                horizontalCenter: parent.horizontalCenter
-            }
-
-            text: OutputDevice.printers.length == 0 ? catalog.i18nc("@label: arg 1 is group name", "%1 is not set up to host a group of connected Ultimaker 3 printers").arg(Cura.MachineManager.printerOutputDevices[0].name) : ""
-
-            visible: OutputDevice.printers.length == 0
-        }
-
-        Label
-        {
             id: manageQueueLabel
             anchors.rightMargin: 5 * UM.Theme.getSize("default_margin").width
             anchors.right: queuedPrintJobs.right
