@@ -194,7 +194,7 @@ class Command:
 
     ##  Estimates the execution time of this command and calculates the state
     #   after this command is executed.
-    def process(self) -> None:
+    def parse(self) -> None:
         line = self._cmd_str.strip()
         if not line:
             self._is_empty = True
@@ -381,7 +381,7 @@ class CommandBuffer:
         cmd_count = 0
         for idx, line in enumerate(self._all_lines):
             cmd = Command(line, previous_state)
-            cmd.process()
+            cmd.parse()
             self._all_commands.append(cmd)
             previous_state = cmd.get_after_state()
 
