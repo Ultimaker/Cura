@@ -35,7 +35,7 @@ class PrinterOutputModel(QObject):
         self._key = ""  # Unique identifier
         self._controller = output_controller
         self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
-        self._printer_configuration = ConfigurationModel()    # Indicates the current configuration setup in this printer
+        self._printer_configuration = ConfigurationModel()  # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version

@@ -290,7 +290,30 @@ Item
                 onOpened: visible = true
             }
 
+            Row
+            {
+                id: printerFamilyPills
+                spacing: 0.5 * UM.Theme.getSize("default_margin").width
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    bottom: extrudersInfo.top
+                    bottomMargin: UM.Theme.getSize("default_margin").height
+                }
+                height: childrenRect.height
+                Repeater
+                {
+                    model: printJob.compatibleMachineFamilies
 
+                    delegate: PrinterFamilyPill
+                    {
+                        text: modelData
+                        color: UM.Theme.getColor("viewport_background")
+                        padding: 3
+                    }
+                }
+            }
             // PrintCore && Material config
             Row
             {

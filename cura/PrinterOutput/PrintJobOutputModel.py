@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QImage
@@ -23,6 +23,7 @@ class PrintJobOutputModel(QObject):
     ownerChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
     previewImageChanged = pyqtSignal()
+    compatibleMachineFamiliesChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -36,10 +37,20 @@ class PrintJobOutputModel(QObject):
         self._owner = ""  # Who started/owns the print job?
 
         self._configuration = None  # type: Optional[ConfigurationModel]
-
+        self._compatible_machine_families = []  # type: List[str]
         self._preview_image_id = 0
 
         self._preview_image = None
+
+    @pyqtProperty("QStringList", notify=compatibleMachineFamiliesChanged)
+    def compatibleMachineFamilies(self):
+        # Hack; Some versions of cluster will return a family more than once...
+        return set(self._compatible_machine_families)
+
+    def setCompatibleMachineFamilies(self, compatible_machine_families: List[str]) -> None:
+        if self._compatible_machine_families != compatible_machine_families:
+            self._compatible_machine_families = compatible_machine_families
+            self.compatibleMachineFamiliesChanged.emit()
 
     @pyqtProperty(QUrl, notify=previewImageChanged)
     def preview_image_url(self):

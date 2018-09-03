@@ -131,7 +131,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             raise OutputDeviceError.WriteRequestFailedError(i18n_catalog.i18nc("@info:status", "There are no file formats available to write with!"))
         preferred_format = file_formats[0]
 
-        #J ust take the first file format available.
+        # Just take the first file format available.
         if file_handler is not None:
             writer = file_handler.getWriterByMimeType(cast(str, preferred_format["mime_type"]))
         else:
@@ -552,7 +552,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         configuration.setExtruderConfigurations(extruders)
         print_job.updateConfiguration(configuration)
-
+        print_job.setCompatibleMachineFamilies(data["compatible_machine_families"])
         print_job.stateChanged.connect(self._printJobStateChanged)
         return print_job
 
