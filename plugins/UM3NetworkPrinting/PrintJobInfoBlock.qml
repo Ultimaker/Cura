@@ -80,7 +80,7 @@ Item
 
             Image
             {
-                source: printJob.preview_image_url
+                source: printJob.previewImageUrl
                 anchors.top: ownerName.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: totalTimeLabel.bottom

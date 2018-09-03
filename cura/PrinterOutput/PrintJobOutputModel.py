@@ -53,7 +53,7 @@ class PrintJobOutputModel(QObject):
             self.compatibleMachineFamiliesChanged.emit()
 
     @pyqtProperty(QUrl, notify=previewImageChanged)
-    def preview_image_url(self):
+    def previewImageUrl(self):
         self._preview_image_id += 1
         # There is an image provider that is called "camera". In order to ensure that the image qml object, that
         # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl

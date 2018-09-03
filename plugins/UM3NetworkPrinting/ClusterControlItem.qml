@@ -480,7 +480,7 @@ Component
                                 Image
                                 {
                                     id: printJobPreview
-                                    source: modelData.activePrintJob != null ? modelData.activePrintJob.preview_image_url : ""
+                                    source: modelData.activePrintJob != null ? modelData.activePrintJob.previewImageUrl : ""
                                     anchors.top: ownerName.bottom
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: parent.width / 2
