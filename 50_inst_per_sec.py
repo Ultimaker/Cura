@@ -14,6 +14,7 @@ from typing import Dict, List, Optional, Tuple
 # ====================================
 DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_MS = 50.0 / 1000.0  # The buffer filling rate in #commands/ms
 DEFAULT_BUFFER_SIZE = 15  # The buffer size in #commands
+MINIMUM_PLANNER_SPEED = 0.05
 
 #Setting values for Ultimaker S5.
 MACHINE_MAX_FEEDRATE_X = 300
@@ -85,6 +86,12 @@ def calc_intersection_distance(initial_feedrate: float, final_feedrate: float, a
     if acceleration == 0:
         return 0
     return (2 * acceleration * distance - initial_feedrate * initial_feedrate + final_feedrate * final_feedrate) / (4 * acceleration)
+
+##  Calculates the maximum speed that is allowed at this point when you must be
+#   able to reach target_velocity using the acceleration within the allotted
+#   distance.
+def calc_max_allowable_speed(acceleration: float, target_velocity: float, distance: float) -> float:
+    return math.sqrt(target_velocity * target_velocity - 2 * acceleration * distance)
 
 class Command:
     def __init__(self, cmd_str: str) -> None:
@@ -251,7 +258,28 @@ class Command:
                     vmax_junction = min(vmax_junction, self._nominal_feedrate)
                     safe_speed = vmax_junction
 
-                    #TODO: Compute junction maximum speed factor and apply this to entry speed, set flags and calculate trapezoid.
+                    if buf.previous_nominal_feedrate > 0.0001:
+                        xy_jerk = math.sqrt((current_feedrate[0] - buf.previous_feedrate[0]) ** 2 + (current_feedrate[1] - buf.previous_feedrate[1]) ** 2)
+                        vmax_junction = self._nominal_feedrate
+                        if xy_jerk > MACHINE_MAX_JERK_XY:
+                            vmax_junction_factor = MACHINE_MAX_JERK_XY / xy_jerk
+                        if abs(current_feedrate[2] - buf.previous_feedrate[2]) > MACHINE_MAX_JERK_Z:
+                            vmax_junction_factor = min(vmax_junction_factor, (MACHINE_MAX_JERK_Z / abs(current_feedrate[2] - buf.previous_feedrate[2])))
+                        if abs(current_feedrate[3] - buf.previous_feedrate[3]) > MACHINE_MAX_JERK_E:
+                            vmax_junction_factor = min(vmax_junction_factor, (MACHINE_MAX_JERK_E / abs(current_feedrate[3] - buf.previous_feedrate[3])))
+                        vmax_junction = min(buf.previous_nominal_feedrate, vmax_junction * vmax_junction_factor) #Limit speed to max previous speed.
+
+                    self._max_entry_speed = vmax_junction
+                    v_allowable = calc_max_allowable_speed(-self._acceleration, MINIMUM_PLANNER_SPEED, self._distance)
+                    self._entry_speed = min(vmax_junction, v_allowable)
+                    self._nominal_length = self._nominal_feedrate <= v_allowable
+                    self._recalculate = True
+
+                    buf.previous_feedrate = current_feedrate
+                    buf.previous_nominal_feedrate = self._nominal_feedrate
+                    buf.current_position = new_position
+
+                    self.calculate_trapezoid(self._entry_speed / self._nominal_feedrate, safe_speed / self._nominal_feedrate)
 
             travel_time_in_ms = distance / (self._nominal_feedrate / 60.0) * 1000.0
 
@@ -389,6 +417,10 @@ class CommandBuffer:
 
         self._detection_time_frame = lower_bound_buffer_depletion_time
         self._code_count_limit = self._buffer_size
+
+        self.previous_feedrate = [0, 0, 0, 0]
+        self.previous_nominal_feedrate = 0
+
         print("Time Frame: %s" % self._detection_time_frame)
         print("Code Limit: %s" % self._code_count_limit)
 
