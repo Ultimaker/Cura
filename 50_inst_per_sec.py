@@ -15,6 +15,21 @@ from typing import Dict, List, Optional, Tuple
 DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_MS = 50.0 / 1000.0  # The buffer filling rate in #commands/ms
 DEFAULT_BUFFER_SIZE = 15  # The buffer size in #commands
 
+#Values for Ultimaker S5.
+MACHINE_MAX_FEEDRATE_X = 300
+MACHINE_MAX_FEEDRATE_Y = 300
+MACHINE_MAX_FEEDRATE_Z = 40
+MACHINE_MAX_FEEDRATE_E = 45
+MACHINE_MAX_ACCELERATION_X = 9000
+MACHINE_MAX_ACCELERATION_Y = 9000
+MACHINE_MAX_ACCELERATION_Z = 100
+MACHINE_MAX_ACCELERATION_E = 10000
+MACHINE_MAX_JERK_XY = 20
+MACHINE_MAX_JERK_Z = 0.4
+MACHINE_MAX_JERK_E = 5
+MACHINE_MINIMUM_FEEDRATE = 0
+MACHINE_ACCELERATION = 3000
+
 ##  Gets the code and number from the given g-code line.
 def get_code_and_num(gcode_line: str) -> Tuple[str, str]:
     gcode_line = gcode_line.strip()
@@ -73,7 +88,6 @@ def calc_intersection_distance(initial_feedrate: float, final_feedrate: float, a
 
 
 class State:
-
     def __init__(self, previous_state: Optional["State"]) -> None:
         self.X = 0.0
         self.Y = 0.0
@@ -83,15 +97,19 @@ class State:
         self.speed = {"X": 0.0,
                       "Y": 0.0,
                       "Z": 0.0,
+                      "E": 0.0,
                       }
-        self.accelerations = {"XY": 0.0,
+        self.accelerations = {"X": 0.0,
+                              "Y": 0.0,
                               "Z": 0.0,
+                              "E": 0.0,
                               "S": 0.0,  # printing
                               "T": 0.0,  # travel
                               }
         self.jerks = {"X": 0.0,
                       "Y": 0.0,
                       "Z": 0.0,
+                      "E": 0.0,
                       }
         self.in_relative_positioning_mode = False  # type: bool
         self.in_relative_extrusion_mode = False  # type: bool
@@ -110,7 +128,6 @@ class State:
 
 
 class Command:
-
     def __init__(self, cmd_str: str, previous_state: "State") -> None:
         self._cmd_str = cmd_str  # type: str
         self._previous_state = previous_state  # type: State
@@ -231,6 +248,7 @@ class Command:
                 current_position = {"X": self._previous_state.X,
                                     "Y": self._previous_state.Y,
                                     "Z": self._previous_state.Z,
+                                    "E": self._previous_state.E,
                                     }
                 new_position = copy.deepcopy(current_position)
                 for key in new_position:
@@ -239,6 +257,54 @@ class Command:
 
                 distance = calc_distance(current_position, new_position)
                 self._distance_in_mm = distance
+                self._delta = [
+                    new_position["X"] - current_position["X"],
+                    new_position["Y"] - current_position["Y"],
+                    new_position["Z"] - current_position["Z"],
+                    new_position["E"] - current_position["E"]
+                ]
+                self._abs_delta = [abs(x) for x in self._delta]
+                self._max_travel = max(self._abs_delta)
+                if self._max_travel > 0:
+                    feedrate = self._previous_state.F
+                    if "F" in value_dict:
+                        feedrate = value_dict["F"]
+                    if feedrate < MACHINE_MINIMUM_FEEDRATE:
+                        feedrate = MACHINE_MINIMUM_FEEDRATE
+                    self._nominal_feedrate = feedrate
+                    self._distance = math.sqrt(self._abs_delta[0] ** 2 + self._abs_delta[1] ** 2 + self._abs_delta[2] ** 2)
+                    if self._distance == 0:
+                        self._distance = self._abs_delta[3]
+
+                    current_feedrate = [d * feedrate / self._distance for d in self._delta]
+                    current_abs_feedrate = [abs(f) for f in current_feedrate]
+                    feedrate_factor = min(1.0, MACHINE_MAX_FEEDRATE_X)
+                    feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_Y)
+                    feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_Z)
+                    feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_E)
+                    #TODO: XY_FREQUENCY_LIMIT
+
+                    current_feedrate = [f * feedrate_factor for f in current_feedrate]
+                    current_abs_feedrate = [f * feedrate_factor for f in current_abs_feedrate]
+                    self._nominal_feedrate *= feedrate_factor
+
+                    self._acceleration = MACHINE_ACCELERATION
+                    max_accelerations = [MACHINE_MAX_ACCELERATION_X, MACHINE_MAX_ACCELERATION_Y, MACHINE_MAX_ACCELERATION_Z, MACHINE_MAX_ACCELERATION_E]
+                    for n in range(len(max_accelerations)):
+                        if self._acceleration * self._abs_delta[n] / self._distance > max_accelerations[n]:
+                            self._acceleration = max_accelerations[n]
+
+                    vmax_junction = MACHINE_MAX_JERK_XY / 2
+                    vmax_junction_factor = 1.0
+                    if current_abs_feedrate[2] > MACHINE_MAX_JERK_Z / 2:
+                        vmax_junction = min(vmax_junction, MACHINE_MAX_JERK_Z)
+                    if current_abs_feedrate[3] > MACHINE_MAX_JERK_E / 2:
+                        vmax_junction = min(vmax_junction, MACHINE_MAX_JERK_E)
+                    vmax_junction = min(vmax_junction, self._nominal_feedrate)
+                    safe_speed = vmax_junction
+
+                    #TODO: Compute junction maximum speed factor and apply this to entry speed, set flags and calculate trapezoid.
+
             travel_time_in_ms = distance / (self._after_state.F / 60.0) * 1000.0
 
             estimated_exec_time_in_ms = travel_time_in_ms
