@@ -23,7 +23,6 @@ Component
             name: "cura"
         }
 
-
         Label
         {
             id: manageQueueLabel

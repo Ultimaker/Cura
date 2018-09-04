@@ -192,18 +192,7 @@ Component
                                 Label
                                 {
                                     id: activeJobLabel
-                                    text:
-                                    {
-                                        if(!modelData.enabled)
-                                        {
-                                            return catalog.i18nc("@label:status", "Not available")
-                                        }
-                                        if(modelData.activePrintjob != null)
-                                        {
-                                            return modelData.activePrintJob.name
-                                        }
-                                        return catalog.i18nc("@label:status", "Waiting")
-                                    }
+                                    text: modelData.activePrintJob != null ? modelData.activePrintJob.name : "waiting"
                                     anchors.top: machineNameLabel.bottom
                                     width: parent.width
                                     elide: Text.ElideRight

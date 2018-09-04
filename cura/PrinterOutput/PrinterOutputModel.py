@@ -26,7 +26,6 @@ class PrinterOutputModel(QObject):
     buildplateChanged = pyqtSignal()
     cameraChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
-    enabledChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
         super().__init__(parent)
@@ -44,21 +43,11 @@ class PrinterOutputModel(QObject):
         self._is_preheating = False
         self._printer_type = ""
         self._buildplate_name = None
-        self._enabled = True
 
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
 
         self._camera = None
-
-    @pyqtProperty(bool, notify=enabledChanged)
-    def enabled(self) -> bool:
-        return self._enabled
-
-    def updateEnabled(self, enabled: bool) -> None:
-        if self._enabled != enabled:
-            self._enabled = enabled
-            self.enabledChanged.emit()
 
     @pyqtProperty(str, constant = True)
     def firmwareVersion(self):
