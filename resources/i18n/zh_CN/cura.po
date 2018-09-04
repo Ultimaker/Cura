@@ -3925,8 +3925,8 @@ msgstr "复位所有模型的位置"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "复位所有模型的变动(&T)"
+msgid "Reset All Model Transformations"
+msgstr "复位所有模型的变动"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"

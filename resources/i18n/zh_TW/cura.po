@@ -3926,8 +3926,8 @@ msgstr "重置所有模型位置"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "重置所有模型旋轉（&T）"
+msgid "Reset All Model Transformations"
+msgstr "重置所有模型旋轉"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"

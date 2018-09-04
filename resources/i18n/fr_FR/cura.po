@@ -3894,7 +3894,7 @@ msgstr "Réinitialiser toutes les positions des modèles"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "Réinitialiser tous les modèles et transformations"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396

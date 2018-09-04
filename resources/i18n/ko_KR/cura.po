@@ -3887,7 +3887,7 @@ msgstr "모든 모델의 위치 재설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "모든 모델의 변환 재설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
