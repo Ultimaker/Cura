@@ -3742,8 +3742,8 @@ msgstr "預計剩餘時間"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "切換全螢幕（&F）"
+msgid "Toggle Full Screen"
+msgstr "切換全螢幕"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -4071,7 +4071,7 @@ msgid "&Settings"
 msgstr "設定（&S）"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "印表機（&P）"
 
@@ -4098,7 +4098,7 @@ msgid "Disable Extruder"
 msgstr "關閉擠出機"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "列印參數（&P）"
 

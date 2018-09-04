@@ -3703,7 +3703,7 @@ msgstr "예상 남은 시간"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "전채 화면 전환"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -4032,7 +4032,7 @@ msgid "&Settings"
 msgstr "설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "프린터"
 
@@ -4059,7 +4059,7 @@ msgid "Disable Extruder"
 msgstr "익스트루더 사용하지 않음"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "프로파일"
 

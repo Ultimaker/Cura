@@ -3860,7 +3860,7 @@ msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -4195,7 +4195,7 @@ msgid "&Settings"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr ""
 
@@ -4222,7 +4222,7 @@ msgid "Disable Extruder"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr ""
 

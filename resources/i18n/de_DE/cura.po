@@ -3707,8 +3707,8 @@ msgstr "Geschätzte verbleibende Zeit"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "Umschalten auf Vo&llbild-Modus"
+msgid "Toggle Full Screen"
+msgstr "Umschalten auf Vollbild-Modus"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -3783,7 +3783,7 @@ msgstr "&Aktuelle Änderungen verwerfen"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:196
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "&Profil von aktuellen Einstellungen/Überschreibungen erstellen..."
+msgstr "P&rofil von aktuellen Einstellungen/Überschreibungen erstellen..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
@@ -4039,7 +4039,7 @@ msgid "&Settings"
 msgstr "&Konfiguration"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "Dr&ucker"
 
@@ -4066,7 +4066,7 @@ msgid "Disable Extruder"
 msgstr "Extruder deaktivieren"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profil"
 

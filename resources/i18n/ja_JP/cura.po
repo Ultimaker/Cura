@@ -3711,7 +3711,7 @@ msgstr "残り時間"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "留め金 フルスクリーン"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3854,7 +3854,7 @@ msgstr "モデルを非グループ化"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:314
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "&モデルの合体"
+msgstr "モ&デルの合体"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:324
 msgctxt "@action:inmenu"
@@ -4015,7 +4015,7 @@ msgstr "&ファイル"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:119
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
-msgstr "&ファイルに選択したものを保存"
+msgstr "フ&ァイルに選択したものを保存"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:128
 msgctxt "@title:menu menubar:file"
@@ -4043,7 +4043,7 @@ msgid "&Settings"
 msgstr "&設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&プリンター"
 
@@ -4070,7 +4070,7 @@ msgid "Disable Extruder"
 msgstr "エクストルーダーを無効にする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&プロファイル"
 
