@@ -281,11 +281,7 @@ class Command:
 
                     self.calculate_trapezoid(self._entry_speed / self._nominal_feedrate, safe_speed / self._nominal_feedrate)
 
-            travel_time_in_ms = distance / (self._nominal_feedrate / 60.0) * 1000.0
-
-            estimated_exec_time_in_ms = travel_time_in_ms
-
-            # TODO: take acceleration into account
+            travel_time_in_ms = -1 #Signal that we need to include this in our second pass.
 
         # G4: Dwell, pause the machine for a period of time. TODO
         if cmd_num == 4:
@@ -433,11 +429,21 @@ class CommandBuffer:
         for idx, line in enumerate(self._all_lines):
             cmd = Command(line)
             cmd.parse()
-            self._all_commands.append(cmd)
-
             if not cmd.is_command:
                 continue
+            self._all_commands.append(cmd)
 
+        #Second pass: Reverse kernel.
+        kernel_commands = [None, None, None]
+        for cmd in self._all_commands:
+            if cmd.estimated_exec_time_in_ms >= 0:
+                continue #Not a movement command.
+            kernel_commands[2] = kernel_commands[1]
+            kernel_commands[1] = kernel_commands[0]
+            kernel_commands[0] = cmd
+            self.reverse_pass_kernel(kernel_commands[0], kernel_commands[1], kernel_commands[2])
+
+        for idx, cmd in enumerate(self._all_commands):
             cmd_count += 1
             if idx > cmd0_idx or idx == 0:
                 total_frame_time_in_ms += cmd.estimated_exec_time_in_ms
@@ -468,6 +474,25 @@ class CommandBuffer:
                                                        "end_line": idx,
                                                        "cmd_count": cmd_count,
                                                        "time_in_ms": total_frame_time_in_ms})
+
+    def reverse_pass_kernel(self, previous: Command, current: Command, next: Command):
+        if not previous:
+            return
+
+        #If entry speed is already at the maximum entry speed, no need to
+        #recheck. The command is cruising. If not, the command is in state of
+        #acceleration or deceleration. Reset entry speed to maximum and check
+        #for maximum allowable speed reductions to ensure maximum possible
+        #planned speed.
+        if current._entry_speed != current._max_entry_speed:
+            #If nominal length is true, max junction speed is guaranteed to be
+            #reached. Only compute for max allowable speed if block is
+            #decelerating and nominal length is false.
+            if not current._nominal_length and current._max_entry_speed > next._max_entry_speed:
+                current._entry_speed = min(current._max_entry_speed, calc_max_allowable_speed(-current._acceleration, next._entry_speed, current._distance))
+            else:
+                current._entry_speed = current._max_entry_speed
+            current._recalculate = True
 
     def to_file(self, file_name: str) -> None:
         all_lines = [str(c) for c in self._all_commands]
