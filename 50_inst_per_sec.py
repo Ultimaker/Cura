@@ -228,7 +228,7 @@ class Command:
                     current_abs_feedrate = [abs(f) for f in current_feedrate]
                     feedrate_factor = min(1.0, MACHINE_MAX_FEEDRATE_X)
                     feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_Y)
-                    feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_Z)
+                    feedrate_factor = min(feedrate_factor, buf.max_z_feedrate)
                     feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_E)
                     #TODO: XY_FREQUENCY_LIMIT
 
@@ -337,6 +337,11 @@ class Command:
         if cmd_num == 140:
             estimated_exec_time_in_ms = 0.0
 
+        # M203: Set maximum feedrate. Only Z is supported. Assume 0 execution time.
+        if cmd_num == 203:
+            value_dict = get_value_dict(parts[1:])
+            buf.max_z_feedrate = value_dict.get("Z", buf.max_z_feedrate)
+
         # M204: Set default acceleration. Assume 0 execution time.
         if cmd_num == 204:
             value_dict = get_value_dict(parts[1:])
@@ -377,6 +382,7 @@ class CommandBuffer:
         self.max_xy_jerk = MACHINE_MAX_JERK_XY
         self.max_z_jerk = MACHINE_MAX_JERK_Z
         self.max_e_jerk = MACHINE_MAX_JERK_E
+        self.max_z_feedrate = MACHINE_MAX_FEEDRATE_Z
 
         # If the buffer can depletes less than this amount time, it can be filled up in time.
         lower_bound_buffer_depletion_time = self._buffer_size / self._buffer_filling_rate  # type: float
