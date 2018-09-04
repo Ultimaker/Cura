@@ -3582,7 +3582,7 @@ msgstr "&Posición de la cámara"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:54
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr "&Placa de impresión"
+msgstr "P&laca de impresión"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
@@ -3719,8 +3719,8 @@ msgstr "Tiempo restante estimado"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "A&lternar pantalla completa"
+msgid "Toggle Full Screen"
+msgstr "Alternar pantalla completa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -4023,7 +4023,7 @@ msgstr "&Archivo"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:119
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
-msgstr "Guardar &selección en archivo"
+msgstr "&Guardar selección en archivo"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:128
 msgctxt "@title:menu menubar:file"
@@ -4051,7 +4051,7 @@ msgid "&Settings"
 msgstr "A&justes"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Impresora"
 
@@ -4078,7 +4078,7 @@ msgid "Disable Extruder"
 msgstr "Deshabilitar extrusor"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Perfil"
 

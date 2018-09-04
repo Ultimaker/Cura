@@ -4,9 +4,9 @@ import re
 import unittest
 import pytest
 
-MSGCTXT = "msgctxt" # Scope of the text
-MSGID =  "msgid" # The id of the text, also English version
-MSGTR = "msgstr" # The translation
+MSGCTXT = "msgctxt" # Scope of the text . Like : msgctxt "@action:inmenu menubar:help"
+MSGID =  "msgid" # The id tag, also English text version
+MSGTR = "msgstr" # The translation tag
 
 COLOR_WARNING = '\033[93m'
 COLOR_ENDC = '\033[0m'
@@ -27,11 +27,11 @@ def test_default_shortcut_keys():
     language_file_path = os.path.join(cura_path,"resources","i18n",language_folder, translation_file_name)
 
 
-    not_valid_shortcut_keys = getDublicatedShortcutKeys(language_file_path, False)
+    not_valid_shortcut_keys = getDuplicatedShortcutKeys(language_file_path, False)
 
     if len(not_valid_shortcut_keys) != 0:
         temp='%s' % ', '.join(map(str, not_valid_shortcut_keys))
-        print(COLOR_WARNING + "NOT VALID KEYS: " + temp + COLOR_ENDC)
+        print(COLOR_WARNING + "NOT VALID SHORTCUT KEYS: " + temp + COLOR_ENDC)
 
 
     assert len(not_valid_shortcut_keys) == 0
@@ -39,7 +39,7 @@ def test_default_shortcut_keys():
 
 
 # If the 'findShortcutKeysInTranslation' is False the function will search shortcut keys in message id
-def getDublicatedShortcutKeys(language_file_path, findShortcutKeysInTranslation):
+def getDuplicatedShortcutKeys(language_file_path, findShortcutKeysInTranslation):
     last_translation_scope = ""
 
 
@@ -56,6 +56,7 @@ def getDublicatedShortcutKeys(language_file_path, findShortcutKeysInTranslation)
 
                 # if text has '&'symbol and at least one character (char or digit) after it
                 # ex '&acr mytest' -> this should return '&a'
+                # ex '& acr mytest' -> returns None
                 the_shortcut_key_word = re.search(regex_patter, text)
 
                 if the_shortcut_key_word is not None:
@@ -72,7 +73,7 @@ def getDublicatedShortcutKeys(language_file_path, findShortcutKeysInTranslation)
 
                         shortcut_keys[the_shortcut_key] = scope_translation
                     else:
-                        # check if the shortcut key scope is already added
+                        # check if the shortcut key scope is already added or not
                         if last_translation_scope not in shortcut_keys[the_shortcut_key]:
                             scope_translation = dict()
                             scope_translation[last_translation_scope] = []
@@ -93,13 +94,14 @@ def getDublicatedShortcutKeys(language_file_path, findShortcutKeysInTranslation)
         # check, whether the key exist in the same scope multiple times or not
         for key, items in scopes.items():
 
+            #The shortcut keys should not be more than one time in the same scope
             if len(items) > 1:
                 not_valid_shortcut_keys += items
 
     return not_valid_shortcut_keys
 
 
-@pytest.mark.parametrize("language_type", [("de_DE"),("es_ES"),("fi_FI"),("fr_FR"),("hu_HU"),("it_IT"),("ja_JP"),("ko_KR"),("nl_NL"),("pl_PL"),("pt_BR"),("ru_RU"),("tr_TR")])
+@pytest.mark.parametrize("language_type", [("de_DE"),("es_ES"),("fi_FI"),("fr_FR"),("it_IT"),("ja_JP"),("ko_KR"),("nl_NL"),("pl_PL"),("pt_BR"),("ru_RU"),("tr_TR")])
 def test_shortcut_keys(language_type):
 
     language_folder = language_type
@@ -112,11 +114,11 @@ def test_shortcut_keys(language_type):
     cura_path = os.path.join(*global_path)
     language_file_path = os.path.join(cura_path,"resources","i18n",language_folder, translation_file_name)
 
-    not_valid_shortcut_keys = getDublicatedShortcutKeys(language_file_path, False)
+    not_valid_shortcut_keys = getDuplicatedShortcutKeys(language_file_path, False)
 
     if len(not_valid_shortcut_keys) != 0:
         temp='%s' % ', '.join(map(str, not_valid_shortcut_keys))
-        print(COLOR_WARNING + "NOT VALID KEYS: " + temp + COLOR_ENDC)
+        print(COLOR_WARNING + "NOT VALID SHORTCUT KEYS: " + temp + COLOR_ENDC)
 
 
     assert len(not_valid_shortcut_keys) == 0

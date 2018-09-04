@@ -75,7 +75,7 @@ Item
     Action
     {
         id:toggleFullScreenAction
-        text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
+        text: catalog.i18nc("@action:inmenu","Toggle Full Screen");
         iconName: "view-fullscreen";
     }
 

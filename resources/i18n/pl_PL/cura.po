@@ -3602,7 +3602,7 @@ msgstr "&Pozycja kamery"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:54
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr "&Pole robocze"
+msgstr "P&ole robocze"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
@@ -3741,7 +3741,7 @@ msgstr "Szacowany czas pozostały"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "Przełącz tryb pełnoekranowy"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3884,7 +3884,7 @@ msgstr "Rozgrupuj modele "
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:314
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "&Połącz modele"
+msgstr "Połącz modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:324
 msgctxt "@action:inmenu"
@@ -4045,7 +4045,7 @@ msgstr "&Plik"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:119
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
-msgstr "&Zapisz wybór w pliku"
+msgstr "Z&apisz wybór w pliku"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:128
 msgctxt "@title:menu menubar:file"
@@ -4073,7 +4073,7 @@ msgid "&Settings"
 msgstr "&Ustawienia"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Drukarka"
 
@@ -4100,7 +4100,7 @@ msgid "Disable Extruder"
 msgstr "Wyłącz Ekstruder"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profil"
 
@@ -4122,7 +4122,7 @@ msgstr "Preferencje"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:289
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
-msgstr "&Pomoc"
+msgstr "P&omoc"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:335
 msgctxt "@label"

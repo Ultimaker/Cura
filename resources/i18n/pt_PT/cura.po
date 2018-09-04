@@ -3823,8 +3823,8 @@ msgstr "Tempo restante estimado"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "Alternar para e&crã inteiro"
+msgid "Toggle Full Screen"
+msgstr "Alternar para ecrã inteiro"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -4164,7 +4164,7 @@ msgid "&Settings"
 msgstr "&Definições"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Impressora"
 
@@ -4191,7 +4191,7 @@ msgid "Disable Extruder"
 msgstr "Desativar Extrusor"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Perfil"
 

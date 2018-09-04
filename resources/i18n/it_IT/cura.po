@@ -3568,7 +3568,7 @@ msgstr "&Posizione fotocamera"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:54
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr "&Piano di stampa"
+msgstr "P&iano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
@@ -3705,8 +3705,8 @@ msgstr "Tempo residuo stimato"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "Att&iva/disattiva schermo intero"
+msgid "Toggle Full Screen"
+msgstr "Attiva/disattiva schermo intero"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -3721,7 +3721,7 @@ msgstr "Ri&peti"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:105
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
-msgstr "E&sci"
+msgstr "&Esci"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
@@ -3756,12 +3756,12 @@ msgstr "Configura Cura..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:155
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
-msgstr "A&ggiungi stampante..."
+msgstr "&Aggiungi stampante..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:161
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
-msgstr "&Gestione stampanti..."
+msgstr "Gestione stampanti..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:168
 msgctxt "@action:inmenu"
@@ -3908,7 +3908,7 @@ msgstr "&Nuovo Progetto..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:411
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
-msgstr "M&ostra log motore..."
+msgstr "Mostra &log motore..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:419
 msgctxt "@action:inmenu menubar:help"
@@ -4037,7 +4037,7 @@ msgid "&Settings"
 msgstr "&Impostazioni"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "S&tampante"
 
@@ -4064,7 +4064,7 @@ msgid "Disable Extruder"
 msgstr "Disabilita estrusore"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profilo"
 

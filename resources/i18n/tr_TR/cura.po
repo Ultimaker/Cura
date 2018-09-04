@@ -3705,7 +3705,7 @@ msgstr "Kalan tahmini süre"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "Tam Ekrana Geç"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3781,7 +3781,7 @@ msgstr "&Geçerli değişiklikleri iptal et"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:196
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "&Geçerli ayarlardan/geçersiz kılmalardan profil oluştur..."
+msgstr "G&eçerli ayarlardan/geçersiz kılmalardan profil oluştur..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
@@ -4024,7 +4024,7 @@ msgstr "Kaydet&Projelendir..."
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:162
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
-msgstr "&Düzenle"
+msgstr "Düz&enle"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:179
 msgctxt "@title:menu"
@@ -4037,7 +4037,7 @@ msgid "&Settings"
 msgstr "&Ayarlar"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Yazıcı"
 
@@ -4064,7 +4064,7 @@ msgid "Disable Extruder"
 msgstr "Ekstruderi Devre Dışı Bırak"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profil"
 
