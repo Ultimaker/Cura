@@ -3913,8 +3913,8 @@ msgstr "Määritä kaikkien mallien positiot uudelleen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "Määritä kaikkien mallien &muutokset uudelleen"
+msgid "Reset All Model Transformations"
+msgstr "Määritä kaikkien mallien muutokset uudelleen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"

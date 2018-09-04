@@ -3898,7 +3898,7 @@ msgstr "すべてのモデルのポジションをリセットする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "すべてのモデル＆変更点をリセットする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396

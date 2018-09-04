@@ -3892,7 +3892,7 @@ msgstr "Tüm Model Konumlarını Sıfırla"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "Tüm Model ve Dönüşümleri Sıfırla"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396

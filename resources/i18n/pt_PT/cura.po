@@ -4012,8 +4012,8 @@ msgstr "Repor todas as posições de modelos"
 # Cancelar todas?
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "Repor Todas as &Transformações do Modelo"
+msgid "Reset All Model Transformations"
+msgstr "Repor Todas as Transformações do Modelo"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"
