@@ -15,7 +15,7 @@ from typing import Dict, List, Optional, Tuple
 DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_MS = 50.0 / 1000.0  # The buffer filling rate in #commands/ms
 DEFAULT_BUFFER_SIZE = 15  # The buffer size in #commands
 
-#Values for Ultimaker S5.
+#Setting values for Ultimaker S5.
 MACHINE_MAX_FEEDRATE_X = 300
 MACHINE_MAX_FEEDRATE_Y = 300
 MACHINE_MAX_FEEDRATE_Z = 40
@@ -86,52 +86,9 @@ def calc_intersection_distance(initial_feedrate: float, final_feedrate: float, a
         return 0
     return (2 * acceleration * distance - initial_feedrate * initial_feedrate + final_feedrate * final_feedrate) / (4 * acceleration)
 
-
-class State:
-    def __init__(self, previous_state: Optional["State"]) -> None:
-        self.X = 0.0
-        self.Y = 0.0
-        self.Z = 0.0
-        self.E = 0.0
-        self.F = 0.0
-        self.speed = {"X": 0.0,
-                      "Y": 0.0,
-                      "Z": 0.0,
-                      "E": 0.0,
-                      }
-        self.accelerations = {"X": 0.0,
-                              "Y": 0.0,
-                              "Z": 0.0,
-                              "E": 0.0,
-                              "S": 0.0,  # printing
-                              "T": 0.0,  # travel
-                              }
-        self.jerks = {"X": 0.0,
-                      "Y": 0.0,
-                      "Z": 0.0,
-                      "E": 0.0,
-                      }
-        self.in_relative_positioning_mode = False  # type: bool
-        self.in_relative_extrusion_mode = False  # type: bool
-
-        if previous_state is not None:
-            self.X = previous_state.X
-            self.Y = previous_state.Y
-            self.Z = previous_state.Z
-            self.E = previous_state.E
-            self.F = previous_state.F
-            self.speed = copy.deepcopy(previous_state.speed)
-            self.accelerations = copy.deepcopy(previous_state.accelerations)
-            self.jerks = copy.deepcopy(previous_state.jerks)
-            self.in_relative_positioning_mode = previous_state.in_relative_positioning_mode
-            self.in_relative_extrusion_mode = previous_state.in_relative_extrusion_mode
-
-
 class Command:
-    def __init__(self, cmd_str: str, previous_state: "State") -> None:
+    def __init__(self, cmd_str: str) -> None:
         self._cmd_str = cmd_str  # type: str
-        self._previous_state = previous_state  # type: State
-        self._after_state = State(previous_state)  # type: State
 
         self._distance_in_mm = 0.0  # type float
         self._estimated_exec_time_in_ms = 0.0  # type: float
@@ -188,9 +145,6 @@ class Command:
         self._initial_feedrate = initial_feedrate
         self._final_feedrate = final_feedrate
 
-    def get_after_state(self) -> State:
-        return self._after_state
-
     @property
     def is_command(self) -> bool:
         return not self._is_comment and not self._is_empty
@@ -205,7 +159,7 @@ class Command:
 
         distance_in_mm = round(self._distance_in_mm, 5)
 
-        info = "d=%s f=%s t=%s" % (distance_in_mm, self._after_state.F, self._estimated_exec_time_in_ms)
+        info = "d=%s t=%s" % (distance_in_mm, self._estimated_exec_time_in_ms)
 
         return self._cmd_str.strip() + " ; --- " + info + os.linesep
 
@@ -242,31 +196,25 @@ class Command:
             distance = 0.0
             if len(parts) > 0:
                 value_dict = get_value_dict(parts[1:])
-                for key, value in value_dict.items():
-                    setattr(self._after_state, key, float(value))
 
-                current_position = {"X": self._previous_state.X,
-                                    "Y": self._previous_state.Y,
-                                    "Z": self._previous_state.Z,
-                                    "E": self._previous_state.E,
-                                    }
-                new_position = copy.deepcopy(current_position)
-                for key in new_position:
-                    new_value = float(value_dict.get(key, new_position[key]))
-                    new_position[key] = new_value
+                new_position = copy.deepcopy(buf.current_position)
+                new_position[0] = value_dict.get("X", new_position[0])
+                new_position[1] = value_dict.get("Y", new_position[1])
+                new_position[2] = value_dict.get("Z", new_position[2])
+                new_position[3] = value_dict.get("E", new_position[3])
 
-                distance = calc_distance(current_position, new_position)
+                distance = calc_distance(buf.current_position, new_position)
                 self._distance_in_mm = distance
                 self._delta = [
-                    new_position["X"] - current_position["X"],
-                    new_position["Y"] - current_position["Y"],
-                    new_position["Z"] - current_position["Z"],
-                    new_position["E"] - current_position["E"]
+                    new_position[0] - buf.current_position[0],
+                    new_position[1] - buf.current_position[1],
+                    new_position[2] - buf.current_position[2],
+                    new_position[3] - buf.current_position[3]
                 ]
                 self._abs_delta = [abs(x) for x in self._delta]
                 self._max_travel = max(self._abs_delta)
                 if self._max_travel > 0:
-                    feedrate = self._previous_state.F
+                    feedrate = buf.current_feedrate
                     if "F" in value_dict:
                         feedrate = value_dict["F"]
                     if feedrate < MACHINE_MINIMUM_FEEDRATE:
@@ -296,16 +244,16 @@ class Command:
 
                     vmax_junction = MACHINE_MAX_JERK_XY / 2
                     vmax_junction_factor = 1.0
-                    if current_abs_feedrate[2] > MACHINE_MAX_JERK_Z / 2:
-                        vmax_junction = min(vmax_junction, MACHINE_MAX_JERK_Z)
-                    if current_abs_feedrate[3] > MACHINE_MAX_JERK_E / 2:
-                        vmax_junction = min(vmax_junction, MACHINE_MAX_JERK_E)
+                    if current_abs_feedrate[2] > buf.max_z_jerk / 2:
+                        vmax_junction = min(vmax_junction, buf.max_z_jerk)
+                    if current_abs_feedrate[3] > buf.max_e_jerk / 2:
+                        vmax_junction = min(vmax_junction, buf.max_e_jerk)
                     vmax_junction = min(vmax_junction, self._nominal_feedrate)
                     safe_speed = vmax_junction
 
                     #TODO: Compute junction maximum speed factor and apply this to entry speed, set flags and calculate trapezoid.
 
-            travel_time_in_ms = distance / (self._after_state.F / 60.0) * 1000.0
+            travel_time_in_ms = distance / (self._nominal_feedrate / 60.0) * 1000.0
 
             estimated_exec_time_in_ms = travel_time_in_ms
 
@@ -336,20 +284,15 @@ class Command:
 
         # G90: Set to absolute positioning. Assume 0 seconds.
         if cmd_num == 90:
-            self._after_state.in_relative_positioning_mode = False
             estimated_exec_time_in_ms = 0.0
 
         # G91: Set to relative positioning. Assume 0 seconds.
         if cmd_num == 91:
-            self._after_state.in_relative_positioning_mode = True
             estimated_exec_time_in_ms = 0.0
 
         # G92: Set position. Assume 0 seconds.
         if cmd_num == 92:
-            # TODO: check
-            value_dict = get_value_dict(parts[1:])
-            for key, value in value_dict.items():
-                setattr(self._previous_state, key, value)
+            estimated_exec_time_in_ms = 0.0
 
         # G280: Prime. Assume 10 seconds for using blob and 5 seconds for no blob.
         if cmd_num == 280:
@@ -368,12 +311,10 @@ class Command:
 
         # M82: Set extruder to absolute mode. Assume 0 execution time.
         if cmd_num == 82:
-            self._after_state.in_relative_extrusion_mode = False
             estimated_exec_time_in_ms = 0.0
 
         # M83: Set extruder to relative mode. Assume 0 execution time.
         if cmd_num == 83:
-            self._after_state.in_relative_extrusion_mode = True
             estimated_exec_time_in_ms = 0.0
 
         # M104: Set extruder temperature (no wait). Assume 0 execution time.
@@ -399,15 +340,15 @@ class Command:
         # M204: Set default acceleration. Assume 0 execution time.
         if cmd_num == 204:
             value_dict = get_value_dict(parts[1:])
-            for key, value in value_dict.items():
-                self._after_state.accelerations[key] = float(value)
+            buf.acceleration = value_dict.get("S", buf.acceleration)
             estimated_exec_time_in_ms = 0.0
 
         # M205: Advanced settings, we only set jerks for Griffin. Assume 0 execution time.
         if cmd_num == 205:
             value_dict = get_value_dict(parts[1:])
-            for key, value in value_dict.items():
-                self._after_state.jerks[key] = float(value)
+            buf.max_xy_jerk = value_dict.get("XY", buf.max_xy_jerk)
+            buf.max_z_jerk = value_dict.get("Z", buf.max_z_jerk)
+            buf.max_e_jerk = value_dict.get("E", buf.max_e_jerk)
             estimated_exec_time_in_ms = 0.0
 
         self._estimated_exec_time_in_ms = estimated_exec_time_in_ms
@@ -430,6 +371,13 @@ class CommandBuffer:
         self._buffer_filling_rate = buffer_filling_rate  # type: float
         self._buffer_size = buffer_size  # type: int
 
+        self.acceleration = 3000
+        self.current_position = [0, 0, 0, 0]
+        self.current_feedrate = 0
+        self.max_xy_jerk = MACHINE_MAX_JERK_XY
+        self.max_z_jerk = MACHINE_MAX_JERK_Z
+        self.max_e_jerk = MACHINE_MAX_JERK_E
+
         # If the buffer can depletes less than this amount time, it can be filled up in time.
         lower_bound_buffer_depletion_time = self._buffer_size / self._buffer_filling_rate  # type: float
 
@@ -441,15 +389,13 @@ class CommandBuffer:
         self._bad_frame_ranges = []
 
     def process(self) -> None:
-        previous_state = None
         cmd0_idx = 0
         total_frame_time_in_ms = 0.0
         cmd_count = 0
         for idx, line in enumerate(self._all_lines):
-            cmd = Command(line, previous_state)
+            cmd = Command(line)
             cmd.parse()
             self._all_commands.append(cmd)
-            previous_state = cmd.get_after_state()
 
             if not cmd.is_command:
                 continue
