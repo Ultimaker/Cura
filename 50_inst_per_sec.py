@@ -70,6 +70,15 @@ def calc_acceleration_distance(init_speed: float, target_speed: float, accelerat
         return 0.0
     return (target_speed ** 2 - init_speed ** 2) / (2 * acceleration)
 
+##  Gives the time it needs to accelerate from an initial speed to reach a final
+#   distance.
+def calc_acceleration_time_from_distance(initial_feedrate: float, distance: float, acceleration: float) -> float:
+    discriminant = initial_feedrate ** 2 - 2 * acceleration * -distance
+    #If the discriminant is negative, we're moving in the wrong direction.
+    #Making the discriminant 0 then gives the extremum of the parabola instead of the intersection.
+    discriminant = max(0, discriminant)
+    return (-initial_feedrate + math.sqrt(discriminant)) / acceleration
+
 
 def calc_travel_time(p0, p1, init_speed: float, target_speed: float, acceleration: float) -> float:
     pass
@@ -472,6 +481,15 @@ class CommandBuffer:
         if current is not None:
             current.calculate_trapezoid(current._entry_speed / current._nominal_feedrate, MINIMUM_PLANNER_SPEED / current._nominal_feedrate)
             current._recalculate = False
+
+        #Fifth pass: Compute time for movement commands.
+        for cmd in self._all_commands:
+            if cmd.estimated_exec_time_in_ms >= 0:
+                continue #Not a movement command.
+            plateau_distance = cmd._decelerate_after - cmd._accelerate_until
+            cmd.estimated_exec_time_in_ms = calc_acceleration_time_from_distance(cmd._initial_feedrate, cmd._accelerate_until, cmd._acceleration)
+            cmd.estimated_exec_time_in_ms += plateau_distance / cmd._nominal_feedrate
+            cmd.estimated_exec_time_in_ms += calc_acceleration_time_from_distance(cmd._final_feedrate, (cmd._distancd - cmd._decelerate_after), cmd._acceleration)
 
         for idx, cmd in enumerate(self._all_commands):
             cmd_count += 1
