@@ -221,6 +221,7 @@ class Command:
                 new_position[1] = float(value_dict.get("Y", new_position[1]))
                 new_position[2] = float(value_dict.get("Z", new_position[2]))
                 new_position[3] = float(value_dict.get("E", new_position[3]))
+                buf.current_feedrate = value_dict.get("F", buf.current_feedrate)
 
                 self._delta = [
                     new_position[0] - buf.current_position[0],
