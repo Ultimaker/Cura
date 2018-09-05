@@ -4025,7 +4025,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:102
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
-msgstr "&Tiedosto"
+msgstr "Tie&dosto"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:119
 msgctxt "@action:inmenu menubar:file"
