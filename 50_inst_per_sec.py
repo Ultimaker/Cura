@@ -443,6 +443,17 @@ class CommandBuffer:
             kernel_commands[0] = cmd
             self.reverse_pass_kernel(kernel_commands[0], kernel_commands[1], kernel_commands[2])
 
+        #Third pass: Forward kernel.
+        kernel_commands = [None, None, None]
+        for cmd in self._all_commands:
+            if cmd.estimated_exec_time_in_ms >= 0:
+                continue #Not a movement command.
+            kernel_commands[2] = kernel_commands[1]
+            kernel_commands[1] = kernel_commands[0]
+            kernel_commands[0] = cmd
+            self.forward_pass_kernel(kernel_commands[0], kernel_commands[1], kernel_commands[2])
+        self.forward_pass_kernel(kernel_commands[1], kernel_commands[2], None)
+
         for idx, cmd in enumerate(self._all_commands):
             cmd_count += 1
             if idx > cmd0_idx or idx == 0:
@@ -475,7 +486,7 @@ class CommandBuffer:
                                                        "cmd_count": cmd_count,
                                                        "time_in_ms": total_frame_time_in_ms})
 
-    def reverse_pass_kernel(self, previous: Command, current: Command, next: Command):
+    def reverse_pass_kernel(self, previous: Optional[Command], current: Optional[Command], next: Optional[Command]) -> None:
         if not previous:
             return
 
@@ -493,6 +504,24 @@ class CommandBuffer:
             else:
                 current._entry_speed = current._max_entry_speed
             current._recalculate = True
+
+    def forward_pass_kernel(self, previous: Optional[Command], current: Optional[Command], next: Optional[Command]) -> None:
+        if not previous:
+            return
+
+        #If the previous command is an acceleration command, but it is not long
+        #enough to complete the full speed change within the command, we need to
+        #adjust the entry speed accordingly. Entry speeds have already been
+        #reset, maximised and reverse planned by the reverse planner. If nominal
+        #length is set, max junction speed is guaranteed to be reached. No need
+        #to recheck.
+        if not previous._nominal_length:
+            if previous._entry_speed < current._entry_speed:
+                entry_speed = min(current._entry_speed, calc_max_allowable_speed(-previous._acceleration, previous._entry_speed, previous._distance))
+
+                if current._entry_speed != entry_speed:
+                    current._entry_speed = entry_speed
+                    current._recalculate = True
 
     def to_file(self, file_name: str) -> None:
         all_lines = [str(c) for c in self._all_commands]
