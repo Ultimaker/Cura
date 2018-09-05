@@ -346,6 +346,7 @@ class CommandBuffer:
 
         self._detection_time_frame = lower_bound_buffer_depletion_time
         self._code_count_limit = self._buffer_size
+        self.total_time = 0.0
 
         self.previous_feedrate = [0, 0, 0, 0]
         self.previous_nominal_feedrate = 0
@@ -356,6 +357,7 @@ class CommandBuffer:
         self._bad_frame_ranges = []
 
     def process(self) -> None:
+        buf.total_time = 0.0
         cmd0_idx = 0
         total_frame_time = 0.0
         cmd_count = 0
@@ -419,6 +421,7 @@ class CommandBuffer:
         for idx, cmd in enumerate(self._all_commands):
             cmd_count += 1
             if idx > cmd0_idx or idx == 0:
+                buf.total_time += cmd.estimated_exec_time
                 total_frame_time += cmd.estimated_exec_time
 
                 if total_frame_time > 1:
@@ -489,6 +492,7 @@ class CommandBuffer:
         all_lines = [str(c) for c in self._all_commands]
         with open(file_name, "w", encoding = "utf-8") as f:
             f.writelines(all_lines)
+            f.write(";---TOTAL ESTIMATED TIME:" + str(self.total_time))
 
     def report(self) -> None:
         for item in self._bad_frame_ranges:
