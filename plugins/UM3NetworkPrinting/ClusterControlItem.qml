@@ -197,6 +197,9 @@ Component
                                         if (modelData.state == "disabled")
                                         {
                                             return catalog.i18nc("@label", "Not available")
+                                        } else if (modelData.state == "unreachable")
+                                        {
+                                            return catalog.i18nc("@label", "Unreachable")
                                         }
                                         if (modelData.activePrintJob != null)
                                         {
