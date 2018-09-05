@@ -12,7 +12,7 @@ from typing import Dict, List, Optional, Tuple
 # ====================================
 # Constants and Default Values
 # ====================================
-DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_S = 50.0  # The buffer filling rate in #commands/ms
+DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_S = 50.0  # The buffer filling rate in #commands/s
 DEFAULT_BUFFER_SIZE = 15  # The buffer size in #commands
 MINIMUM_PLANNER_SPEED = 0.05
 
