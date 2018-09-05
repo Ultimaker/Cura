@@ -12,7 +12,7 @@ from typing import Dict, List, Optional, Tuple
 # ====================================
 # Constants and Default Values
 # ====================================
-DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_MS = 50.0 / 1000.0  # The buffer filling rate in #commands/ms
+DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_S = 50.0  # The buffer filling rate in #commands/ms
 DEFAULT_BUFFER_SIZE = 15  # The buffer size in #commands
 MINIMUM_PLANNER_SPEED = 0.05
 
@@ -102,7 +102,7 @@ class Command:
     def __init__(self, cmd_str: str) -> None:
         self._cmd_str = cmd_str  # type: str
 
-        self.estimated_exec_time_in_ms = 0.0  # type: float
+        self.estimated_exec_time = 0.0  # type: float
 
         self._cmd_process_function_map = {
             "G": self._handle_g,
@@ -164,7 +164,7 @@ class Command:
         if self._is_comment or self._is_empty:
             return self._cmd_str
 
-        info = "t=%s" % (self.estimated_exec_time_in_ms)
+        info = "t=%s" % (self.estimated_exec_time)
 
         return self._cmd_str.strip() + " ; --- " + info + os.linesep
 
@@ -193,7 +193,7 @@ class Command:
         func(cmd_num, parts)
 
     def _handle_g(self, cmd_num: int, parts: List[str]) -> None:
-        self.estimated_exec_time_in_ms = 0.0
+        self.estimated_exec_time = 0.0
 
         # G10: Retract. Make this behave as if it's a retraction of 25mm.
         if cmd_num == 10:
@@ -286,7 +286,7 @@ class Command:
 
                     self.calculate_trapezoid(self._entry_speed / self._nominal_feedrate, safe_speed / self._nominal_feedrate)
 
-                    self.estimated_exec_time_in_ms = -1 #Signal that we need to include this in our second pass.
+                    self.estimated_exec_time = -1 #Signal that we need to include this in our second pass.
 
         # G4: Dwell, pause the machine for a period of time.
         elif cmd_num == 4:
@@ -295,10 +295,10 @@ class Command:
             num = float(num)
             if cmd == "P":
                 if num > 0:
-                    self.estimated_exec_time_in_ms = num
+                    self.estimated_exec_time = num
 
     def _handle_m(self, cmd_num: int, parts: List[str]) -> None:
-        self.estimated_exec_time_in_ms = 0.0
+        self.estimated_exec_time = 0.0
 
         # M203: Set maximum feedrate. Only Z is supported. Assume 0 execution time.
         if cmd_num == 203:
@@ -319,12 +319,12 @@ class Command:
 
     def _handle_t(self, cmd_num: int, parts: List[str]) -> None:
         # Tn: Switching extruder. Assume 0 seconds. Actually more like 2.
-        self.estimated_exec_time_in_ms = 0.0
+        self.estimated_exec_time = 0.0
 
 
 class CommandBuffer:
     def __init__(self, all_lines: List[str],
-                 buffer_filling_rate: float = DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_MS,
+                 buffer_filling_rate: float = DEFAULT_BUFFER_FILLING_RATE_IN_C_PER_S,
                  buffer_size: int = DEFAULT_BUFFER_SIZE
                  ) -> None:
         self._all_lines = all_lines
@@ -357,7 +357,7 @@ class CommandBuffer:
 
     def process(self) -> None:
         cmd0_idx = 0
-        total_frame_time_in_ms = 0.0
+        total_frame_time = 0.0
         cmd_count = 0
         for idx, line in enumerate(self._all_lines):
             cmd = Command(line)
@@ -369,7 +369,7 @@ class CommandBuffer:
         #Second pass: Reverse kernel.
         kernel_commands = [None, None, None]
         for cmd in reversed(self._all_commands):
-            if cmd.estimated_exec_time_in_ms >= 0:
+            if cmd.estimated_exec_time >= 0:
                 continue #Not a movement command.
             kernel_commands[2] = kernel_commands[1]
             kernel_commands[1] = kernel_commands[0]
@@ -379,7 +379,7 @@ class CommandBuffer:
         #Third pass: Forward kernel.
         kernel_commands = [None, None, None]
         for cmd in self._all_commands:
-            if cmd.estimated_exec_time_in_ms >= 0:
+            if cmd.estimated_exec_time >= 0:
                 continue #Not a movement command.
             kernel_commands[0] = kernel_commands[1]
             kernel_commands[1] = kernel_commands[2]
@@ -391,7 +391,7 @@ class CommandBuffer:
         previous = None
         current = None
         for current in self._all_commands:
-            if current.estimated_exec_time_in_ms >= 0:
+            if current.estimated_exec_time >= 0:
                 current = None
                 continue #Not a movement command.
 
@@ -403,50 +403,50 @@ class CommandBuffer:
                     previous._recalculate = False
 
             previous = current
-        if current is not None and current.estimated_exec_time_in_ms >= 0:
+        if current is not None and current.estimated_exec_time >= 0:
             current.calculate_trapezoid(current._entry_speed / current._nominal_feedrate, MINIMUM_PLANNER_SPEED / current._nominal_feedrate)
             current._recalculate = False
 
         #Fifth pass: Compute time for movement commands.
         for cmd in self._all_commands:
-            if cmd.estimated_exec_time_in_ms >= 0:
+            if cmd.estimated_exec_time >= 0:
                 continue #Not a movement command.
             plateau_distance = cmd._decelerate_after - cmd._accelerate_until
-            cmd.estimated_exec_time_in_ms = calc_acceleration_time_from_distance(cmd._initial_feedrate, cmd._accelerate_until, cmd._acceleration)
-            cmd.estimated_exec_time_in_ms += plateau_distance / cmd._nominal_feedrate
-            cmd.estimated_exec_time_in_ms += calc_acceleration_time_from_distance(cmd._final_feedrate, (cmd._distance - cmd._decelerate_after), cmd._acceleration)
+            cmd.estimated_exec_time = calc_acceleration_time_from_distance(cmd._initial_feedrate, cmd._accelerate_until, cmd._acceleration)
+            cmd.estimated_exec_time += plateau_distance / cmd._nominal_feedrate
+            cmd.estimated_exec_time += calc_acceleration_time_from_distance(cmd._final_feedrate, (cmd._distance - cmd._decelerate_after), cmd._acceleration)
 
         for idx, cmd in enumerate(self._all_commands):
             cmd_count += 1
             if idx > cmd0_idx or idx == 0:
-                total_frame_time_in_ms += cmd.estimated_exec_time_in_ms
+                total_frame_time += cmd.estimated_exec_time
 
-                if total_frame_time_in_ms > 1000.0:
+                if total_frame_time > 1:
                     # Find the next starting command which makes the total execution time of the frame to be less than
                     # 1 second.
                     cmd0_idx += 1
-                    total_frame_time_in_ms -= self._all_commands[cmd0_idx].estimated_exec_time_in_ms
+                    total_frame_time -= self._all_commands[cmd0_idx].estimated_exec_time
                     cmd_count -= 1
-                    while total_frame_time_in_ms > 1000.0:
+                    while total_frame_time > 1:
                         cmd0_idx += 1
-                        total_frame_time_in_ms -= self._all_commands[cmd0_idx].estimated_exec_time_in_ms
+                        total_frame_time -= self._all_commands[cmd0_idx].estimated_exec_time
                         cmd_count -= 1
 
                 # If within the current time frame the code count exceeds the limit, record that.
-                if total_frame_time_in_ms <= self._detection_time_frame and cmd_count > self._code_count_limit:
+                if total_frame_time <= self._detection_time_frame and cmd_count > self._code_count_limit:
                     need_to_append = True
                     if self._bad_frame_ranges:
                         last_item = self._bad_frame_ranges[-1]
                         if last_item["start_line"] == cmd0_idx:
                             last_item["end_line"] = idx
                             last_item["cmd_count"] = cmd_count
-                            last_item["time_in_ms"] = total_frame_time_in_ms
+                            last_item["time"] = total_frame_time
                             need_to_append = False
                     if need_to_append:
                         self._bad_frame_ranges.append({"start_line": cmd0_idx,
                                                        "end_line": idx,
                                                        "cmd_count": cmd_count,
-                                                       "time_in_ms": total_frame_time_in_ms})
+                                                       "time": total_frame_time})
 
     def reverse_pass_kernel(self, previous: Optional[Command], current: Optional[Command], next: Optional[Command]) -> None:
         if not current or not next:
@@ -492,8 +492,8 @@ class CommandBuffer:
 
     def report(self) -> None:
         for item in self._bad_frame_ranges:
-            print("!!!!!  potential bad frame from line %s to %s, code count = %s, in %s ms" % (
-                item["start_line"], item["end_line"], item["cmd_count"], round(item["time_in_ms"], 4)))
+            print("!!!!!  potential bad frame from line %s to %s, code count = %s, in %s s" % (
+                item["start_line"], item["end_line"], item["cmd_count"], round(item["time"], 4)))
 
 
 if __name__ == "__main__":
