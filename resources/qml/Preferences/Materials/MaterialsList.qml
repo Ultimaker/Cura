@@ -102,7 +102,7 @@ Item
         }
         Rectangle
         {
-            property var expanded: base.collapsed_brands.indexOf("Generic") > -1
+            property var expanded: base.expanded_brands.indexOf("Generic") > -1
 
             id: generic_section
             height: childrenRect.height

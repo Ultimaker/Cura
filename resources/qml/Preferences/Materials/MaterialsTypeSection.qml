@@ -13,13 +13,30 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: material_type_section
-    property var expanded: base.collapsed_types.indexOf(model.brand + "_" + model.name) > -1
+    property var expanded: base.expanded_types.indexOf(model.brand + "_" + model.name) > -1
     property var colors_model: model.colors
     height: childrenRect.height
     width: parent.width
     Rectangle
     {
         id: material_type_header_background
+        color:
+        {
+            if(!expanded && model.brand+"_"+model.name == base.current_type)
+            {
+                return UM.Theme.getColor("favorites_row_selected")
+            }
+            else
+            {
+                return "transparent"
+            }
+        }
+        width: parent.width
+        height: material_type_header.height
+    }
+    Rectangle
+    {
+        id: material_type_header_border
         color: UM.Theme.getColor("lining")
         anchors.bottom: material_type_header.bottom
         anchors.left: material_type_header.left
@@ -42,6 +59,7 @@ Rectangle
             width: parent.width - UM.Theme.getSize("favorites_button").width
             id: material_type_name
             verticalAlignment: Text.AlignVCenter
+            
         }
         Button
         {
@@ -76,19 +94,21 @@ Rectangle
         anchors.fill: material_type_header
         onPressed:
         {
-            const i = base.collapsed_types.indexOf(model.brand + "_" + model.name)
+            const identifier = model.brand + "_" + model.name;
+            const i = base.expanded_types.indexOf(identifier)
             if (i > -1)
             {
                 // Remove it
-                base.collapsed_types.splice(i, 1)
+                base.expanded_types.splice(i, 1)
                 material_type_section.expanded = false
             }
             else
             {
                 // Add it
-                base.collapsed_types.push(model.brand + "_" + model.name)
+                base.expanded_types.push(identifier)
                 material_type_section.expanded = true
             }
+            UM.Preferences.setValue("cura/expanded_types", base.expanded_types.join(";"));
         }
     }
     Column
@@ -104,6 +124,14 @@ Rectangle
             delegate: MaterialsSlot {
                 material: model
             }
+        }
+    }
+
+    Connections {
+        target: UM.Preferences
+        onPreferenceChanged:
+        {
+            expanded = base.expanded_types.indexOf(model.brand + "_" + model.name) > -1
         }
     }
 }

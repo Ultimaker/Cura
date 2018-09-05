@@ -20,6 +20,12 @@ Rectangle
     height: UM.Theme.getSize("favorites_row").height
     width: parent.width
     color: base.currentItem == model ? UM.Theme.getColor("favorites_row_selected") : "transparent"
+
+    Component.onCompleted: {
+        if (material.root_material_id == base.active_root_material_id) {
+            base.currentItem = material
+        }
+    }
     
     Item
     {
@@ -49,7 +55,11 @@ Rectangle
         MouseArea
         {
             anchors.fill: parent
-            onClicked: { base.currentItem = material }
+            onClicked: {
+                base.currentItem = material
+                base.current_brand = material.brand
+                base.current_type = material.brand+"_"+material.material
+            }
             hoverEnabled: true
             onEntered: { material_slot.hovered = true }
             onExited: { material_slot.hovered = false }

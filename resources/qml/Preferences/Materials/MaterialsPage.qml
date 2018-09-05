@@ -17,6 +17,8 @@ Item
     // Keep PreferencesDialog happy
     property var resetEnabled: false
     property var currentItem: null
+    property var current_type: null
+    property var current_brand: null
     property var isCurrentItemActivated:
     {
         const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
@@ -26,49 +28,71 @@ Item
     property string newRootMaterialIdToSwitchTo: ""
     property bool toActivateNewMaterial: false
 
-    // TODO: Save these to preferences
-    property var collapsed_brands: []
-    property var collapsed_types: []
+    property var expanded_brands: UM.Preferences.getValue("cura/expanded_brands").split(";")
+    property var expanded_types: UM.Preferences.getValue("cura/expanded_types").split(";")
+    property var extruder_position: Cura.ExtruderManager.activeExtruderIndex
+    property var active_root_material_id: Cura.MachineManager.currentRootMaterialId[extruder_position]
 
     UM.I18nCatalog
     {
         id: catalog
         name: "cura"
     }
-    Cura.MaterialBrandsModel { id: materialsModel }
 
-    function findModelByRootId( search_root_id )
+    Cura.MaterialBrandsModel { id: materials_model }
+    Cura.GenericMaterialsModel { id: generic_materials_model }
+
+    function expandActiveMaterial( search_root_id )
     {
-        for (var i = 0; i < materialsModel.rowCount(); i++)
+        for (var n = 0; n < generic_materials_model.rowCount(); n++)
         {
-            var types_model = materialsModel.getItem(i).material_types;
+            var material = generic_materials_model.getItem(n);
+            if (material.root_material_id == search_root_id)
+            {
+                if (base.expanded_brands.indexOf("Generic") == -1)
+                {
+                    base.expanded_brands.push("Generic");
+                    base.current_brand = "Generic"
+                }
+            }
+        }
+        for (var i = 0; i < materials_model.rowCount(); i++)
+        {
+            var brand = materials_model.getItem(i);
+            var types_model = brand.material_types;
+
             for (var j = 0; j < types_model.rowCount(); j++)
             {
-                var colors_model = types_model.getItem(j).colors;
+                var type = types_model.getItem(j);
+                var colors_model = type.colors;
                 for (var k = 0; k < colors_model.rowCount(); k++)
                 {
                     var material = colors_model.getItem(k);
                     if (material.root_material_id == search_root_id)
                     {
-                        return material
+                        if (base.expanded_brands.indexOf(brand.name) == -1)
+                        {
+                            base.expanded_brands.push(brand.name);
+                            base.current_brand = brand.name
+                        }
+                        if (base.expanded_types.indexOf(brand.name+"_"+type.name) == -1)
+                        {
+                            base.expanded_types.push(brand.name+"_"+type.name)
+                            base.current_type = brand.name+"_"+type.name
+                        }
                     }
                 }
             }
         }
+        UM.Preferences.setValue("cura/expanded_brands", base.expanded_brands.join(";"));
+        UM.Preferences.setValue("cura/expanded_types", base.expanded_types.join(";"));
     }
-    Component.onCompleted:
-    {
-        // Select the activated material when this page shows up
-        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-        const active_root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-        console.log("goign to search for", active_root_material_id)
-        base.currentItem = findModelByRootId(active_root_material_id)
-    }
+    Component.onCompleted: { expandActiveMaterial(active_root_material_id) }
 
     onCurrentItemChanged: { MaterialsDetailsPanel.currentItem = currentItem }
     Connections
     {
-        target: materialsModel
+        target: materials_model
         onItemsChanged:
         {
             var currentItemId = base.currentItem == null ? "" : base.currentItem.root_material_id;
@@ -80,9 +104,9 @@ Item
                 base.newRootMaterialIdToSwitchTo = currentItemId;
             }
 
-            for (var idx = 0; idx < materialsModel.rowCount(); ++idx)
+            for (var idx = 0; idx < materials_model.rowCount(); ++idx)
             {
-                var item = materialsModel.getItem(idx);
+                var item = materials_model.getItem(idx);
                 if (item.root_material_id == base.newRootMaterialIdToSwitchTo)
                 {
                     // Switch to the newly created profile if needed
@@ -102,7 +126,7 @@ Item
             materialListView.activateDetailsWithIndex(materialListView.currentIndex);
             if (base.toActivateNewMaterial)
             {
-                Cura.MachineManager.setMaterial(position, materialsModel.getItem(0).container_node);
+                Cura.MachineManager.setMaterial(position, materials_model.getItem(0).container_node);
             }
             base.newRootMaterialIdToSwitchTo = "";
             base.toActivateNewMaterial = false;

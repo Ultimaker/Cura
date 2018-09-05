@@ -13,14 +13,24 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: brand_section
-    property var expanded: base.collapsed_brands.indexOf(model.name) > -1
+    property var expanded: base.expanded_brands.indexOf(model.name) > -1
     property var types_model: model.material_types
     height: childrenRect.height
     width: parent.width
     Rectangle
     {
         id: brand_header_background
-        color: UM.Theme.getColor("favorites_header_bar")
+        color:
+        {
+            if(!expanded && model.name == base.current_brand)
+            {
+                return UM.Theme.getColor("favorites_row_selected")
+            }
+            else
+            {
+                return UM.Theme.getColor("favorites_header_bar")
+            }
+        }
         anchors.fill: brand_header
     }
     Row
@@ -69,19 +79,20 @@ Rectangle
         anchors.fill: brand_header
         onPressed:
         {
-            const i = base.collapsed_brands.indexOf(model.name)
+            const i = base.expanded_brands.indexOf(model.name)
             if (i > -1)
             {
                 // Remove it
-                base.collapsed_brands.splice(i, 1)
+                base.expanded_brands.splice(i, 1)
                 brand_section.expanded = false
             }
             else
             {
                 // Add it
-                base.collapsed_brands.push(model.name)
+                base.expanded_brands.push(model.name)
                 brand_section.expanded = true
             }
+            UM.Preferences.setValue("cura/expanded_brands", base.expanded_brands.join(";"));
         }
     }
     Column
@@ -95,6 +106,14 @@ Rectangle
         {
             model: types_model
             delegate: MaterialsTypeSection {}
+        }
+    }
+
+    Connections {
+        target: UM.Preferences
+        onPreferenceChanged:
+        {
+            expanded = base.expanded_brands.indexOf(model.name) > -1
         }
     }
 }
