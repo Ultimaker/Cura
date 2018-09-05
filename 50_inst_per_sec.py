@@ -303,8 +303,8 @@ class Command:
 
             travel_time_in_ms = -1 #Signal that we need to include this in our second pass.
 
-        # G4: Dwell, pause the machine for a period of time. TODO
-        if cmd_num == 4:
+        # G4: Dwell, pause the machine for a period of time.
+        elif cmd_num == 4:
             # Pnnn is time to wait in milliseconds (P0 wait until all previous moves are finished)
             cmd, num = get_code_and_num(parts[1])
             num = float(num)
@@ -313,25 +313,20 @@ class Command:
                     estimated_exec_time_in_ms = num
 
         # G90: Set to absolute positioning. Assume 0 seconds.
-        if cmd_num == 90:
+        elif cmd_num == 90:
             estimated_exec_time_in_ms = 0.0
 
         # G91: Set to relative positioning. Assume 0 seconds.
-        if cmd_num == 91:
+        elif cmd_num == 91:
             estimated_exec_time_in_ms = 0.0
 
         # G92: Set position. Assume 0 seconds.
-        if cmd_num == 92:
+        elif cmd_num == 92:
             estimated_exec_time_in_ms = 0.0
 
-        # G280: Prime. Assume 10 seconds for using blob and 5 seconds for no blob.
-        if cmd_num == 280:
-            use_blob = True
-            if len(parts) > 1:
-                cmd, num = get_code_and_num(parts[1])
-                if cmd == "S" and num == 1:
-                    use_blob = False
-            estimated_exec_time_in_ms = (10.0 if use_blob else 5.0) * 1000
+        # G280: Prime. Assume 0 seconds. Actually more like 10 if using blob and 5 if not.
+        elif cmd_num == 280:
+            estimated_exec_time_in_ms = 0.0
 
         # Update estimated execution time
         self._estimated_exec_time_in_ms = round(estimated_exec_time_in_ms, 5)
@@ -344,33 +339,34 @@ class Command:
             estimated_exec_time_in_ms = 0.0
 
         # M83: Set extruder to relative mode. Assume 0 execution time.
-        if cmd_num == 83:
+        elif cmd_num == 83:
             estimated_exec_time_in_ms = 0.0
 
         # M104: Set extruder temperature (no wait). Assume 0 execution time.
-        if cmd_num == 104:
+        elif cmd_num == 104:
             estimated_exec_time_in_ms = 0.0
 
         # M106: Set fan speed. Assume 0 execution time.
-        if cmd_num == 106:
+        elif cmd_num == 106:
             estimated_exec_time_in_ms = 0.0
 
         # M107: Turn fan off. Assume 0 execution time.
-        if cmd_num == 107:
+        elif cmd_num == 107:
             estimated_exec_time_in_ms = 0.0
 
-        # M109: Set extruder temperature (wait). Uniformly random time between 30 - 90 seconds.
-        if cmd_num == 109:
-            estimated_exec_time_in_ms = random.uniform(30, 90) * 1000  # TODO: Check
+        # M109: Set extruder temperature (wait). Assume 0 execution time. Actually more like a minute.
+        elif cmd_num == 109:
+            estimated_exec_time_in_ms = 0.0
 
         # M140: Set bed temperature (no wait). Assume 0 execution time.
-        if cmd_num == 140:
+        elif cmd_num == 140:
             estimated_exec_time_in_ms = 0.0
 
         # M203: Set maximum feedrate. Only Z is supported. Assume 0 execution time.
-        if cmd_num == 203:
+        elif cmd_num == 203:
             value_dict = get_value_dict(parts[1:])
             buf.max_z_feedrate = value_dict.get("Z", buf.max_z_feedrate)
+            estimated_exec_time_in_ms = 0.0
 
         # M204: Set default acceleration. Assume 0 execution time.
         if cmd_num == 204:
@@ -389,8 +385,8 @@ class Command:
         self._estimated_exec_time_in_ms = estimated_exec_time_in_ms
 
     def _handle_t(self, cmd_num: int, parts: List[str]) -> None:
-        # Tn: Switching extruder. Assume 2 seconds.
-        estimated_exec_time_in_ms = 2.0
+        # Tn: Switching extruder. Assume 0 seconds. Actually more like 2.
+        estimated_exec_time_in_ms = 0.0
 
         self._estimated_exec_time_in_ms = estimated_exec_time_in_ms
 
