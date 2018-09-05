@@ -385,9 +385,9 @@ class CommandBuffer:
         for cmd in self._all_commands:
             if cmd.estimated_exec_time_in_ms >= 0:
                 continue #Not a movement command.
-            kernel_commands[2] = kernel_commands[1]
-            kernel_commands[1] = kernel_commands[0]
-            kernel_commands[0] = cmd
+            kernel_commands[0] = kernel_commands[1]
+            kernel_commands[1] = kernel_commands[2]
+            kernel_commands[2] = cmd
             self.forward_pass_kernel(kernel_commands[0], kernel_commands[1], kernel_commands[2])
         self.forward_pass_kernel(kernel_commands[1], kernel_commands[2], None)
 
@@ -452,7 +452,7 @@ class CommandBuffer:
                                                        "time_in_ms": total_frame_time_in_ms})
 
     def reverse_pass_kernel(self, previous: Optional[Command], current: Optional[Command], next: Optional[Command]) -> None:
-        if not previous:
+        if not current or not next:
             return
 
         #If entry speed is already at the maximum entry speed, no need to
