@@ -102,7 +102,6 @@ class Command:
     def __init__(self, cmd_str: str) -> None:
         self._cmd_str = cmd_str  # type: str
 
-        self._distance_in_mm = 0.0  # type float
         self._estimated_exec_time_in_ms = 0.0  # type: float
 
         self._cmd_process_function_map = {
@@ -169,9 +168,7 @@ class Command:
         if self._is_comment or self._is_empty:
             return self._cmd_str
 
-        distance_in_mm = round(self._distance_in_mm, 5)
-
-        info = "d=%s t=%s" % (distance_in_mm, self._estimated_exec_time_in_ms)
+        info = "t=%s" % (self._estimated_exec_time_in_ms)
 
         return self._cmd_str.strip() + " ; --- " + info + os.linesep
 
@@ -225,8 +222,6 @@ class Command:
                 new_position[2] = value_dict.get("Z", new_position[2])
                 new_position[3] = value_dict.get("E", new_position[3])
 
-                distance = calc_distance(buf.current_position, new_position)
-                self._distance_in_mm = distance
                 self._delta = [
                     new_position[0] - buf.current_position[0],
                     new_position[1] - buf.current_position[1],
