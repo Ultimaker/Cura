@@ -392,6 +392,7 @@ class CommandBuffer:
         current = None
         for current in self._all_commands:
             if current.estimated_exec_time_in_ms >= 0:
+                current = None
                 continue #Not a movement command.
 
             if previous:
@@ -402,7 +403,7 @@ class CommandBuffer:
                     previous._recalculate = False
 
             previous = current
-        if current is not None:
+        if current is not None and current.estimated_exec_time_in_ms >= 0:
             current.calculate_trapezoid(current._entry_speed / current._nominal_feedrate, MINIMUM_PLANNER_SPEED / current._nominal_feedrate)
             current._recalculate = False
 
