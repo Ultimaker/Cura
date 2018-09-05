@@ -435,7 +435,7 @@ class CommandBuffer:
 
         #Second pass: Reverse kernel.
         kernel_commands = [None, None, None]
-        for cmd in self._all_commands:
+        for cmd in reversed(self._all_commands):
             if cmd.estimated_exec_time_in_ms >= 0:
                 continue #Not a movement command.
             kernel_commands[2] = kernel_commands[1]
