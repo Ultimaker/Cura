@@ -495,8 +495,12 @@ class CommandBuffer:
 
     def report(self) -> None:
         for item in self._bad_frame_ranges:
-            print("!!!!!  potential bad frame from line %s to %s, code count = %s, in %s s" % (
-                item["start_line"], item["end_line"], item["cmd_count"], round(item["time"], 4)))
+            print("Potential buffer underrun from line {start_line} to {end_line}, code count = {code_count}, in {time}s ({speed} cmd/s)".format(
+                start_line = item["start_line"],
+                end_line = item["end_line"],
+                code_count = item["cmd_count"],
+                time = round(item["time"], 4),
+                speed = round(item["cmd_count"] / item["time"], 2)))
 
 
 if __name__ == "__main__":
