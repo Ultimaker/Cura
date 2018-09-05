@@ -79,10 +79,6 @@ def calc_acceleration_time_from_distance(initial_feedrate: float, distance: floa
     discriminant = max(0, discriminant)
     return (-initial_feedrate + math.sqrt(discriminant)) / acceleration
 
-
-def calc_travel_time(p0, p1, init_speed: float, target_speed: float, acceleration: float) -> float:
-    pass
-
 ##  Calculates the point at which you must start braking.
 #
 #   This gives the distance from the start of a line at which you must start
