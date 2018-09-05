@@ -454,6 +454,25 @@ class CommandBuffer:
             self.forward_pass_kernel(kernel_commands[0], kernel_commands[1], kernel_commands[2])
         self.forward_pass_kernel(kernel_commands[1], kernel_commands[2], None)
 
+        #Fourth pass: Recalculate the commands that have _recalculate set.
+        previous = None
+        current = None
+        for current in self._all_commands:
+            if current.estimated_exec_time_in_ms >= 0:
+                continue #Not a movement command.
+
+            if previous:
+                #Recalculate if current command entry or exit junction speed has changed.
+                if previous._recalculate or current._recalculate:
+                    #Note: Entry and exit factors always >0 by all previous logic operators.
+                    previous.calculate_trapezoid(previous._entry_speed / previous._nominal_feedrate, current._entry_speed / previous._nominal_feedrate)
+                    previous._recalculate = False
+
+            previous = current
+        if current is not None:
+            current.calculate_trapezoid(current._entry_speed / current._nominal_feedrate, MINIMUM_PLANNER_SPEED / current._nominal_feedrate)
+            current._recalculate = False
+
         for idx, cmd in enumerate(self._all_commands):
             cmd_count += 1
             if idx > cmd0_idx or idx == 0:
