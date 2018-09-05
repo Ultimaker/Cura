@@ -218,7 +218,7 @@ Component
                                         {
                                             return modelData.activePrintJob.name
                                         }
-                                        return catalog.i18nc("@label", "Waiting")
+                                        return catalog.i18nc("@label", "Available")
                                     }
                                     anchors.top: machineNameLabel.bottom
                                     width: parent.width
