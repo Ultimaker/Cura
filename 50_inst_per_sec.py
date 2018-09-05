@@ -28,7 +28,7 @@ MACHINE_MAX_ACCELERATION_E = 10000
 MACHINE_MAX_JERK_XY = 20
 MACHINE_MAX_JERK_Z = 0.4
 MACHINE_MAX_JERK_E = 5
-MACHINE_MINIMUM_FEEDRATE = 0
+MACHINE_MINIMUM_FEEDRATE = 0.001
 MACHINE_ACCELERATION = 3000
 
 ##  Gets the code and number from the given g-code line.
@@ -217,7 +217,9 @@ class Command:
                 new_position[1] = float(value_dict.get("Y", new_position[1]))
                 new_position[2] = float(value_dict.get("Z", new_position[2]))
                 new_position[3] = float(value_dict.get("E", new_position[3]))
-                buf.current_feedrate = value_dict.get("F", buf.current_feedrate)
+                buf.current_feedrate = float(value_dict.get("F", buf.current_feedrate * 60.0)) / 60.0
+                if buf.current_feedrate < MACHINE_MINIMUM_FEEDRATE:
+                    buf.current_feedrate = MACHINE_MINIMUM_FEEDRATE
 
                 self._delta = [
                     new_position[0] - buf.current_position[0],
@@ -228,15 +230,12 @@ class Command:
                 self._abs_delta = [abs(x) for x in self._delta]
                 self._max_travel = max(self._abs_delta)
                 if self._max_travel > 0:
-                    feedrate = float(value_dict.get("F", buf.current_feedrate))
-                    if feedrate < MACHINE_MINIMUM_FEEDRATE:
-                        feedrate = MACHINE_MINIMUM_FEEDRATE
-                    self._nominal_feedrate = feedrate
+                    self._nominal_feedrate = buf.current_feedrate
                     self._distance = math.sqrt(self._abs_delta[0] ** 2 + self._abs_delta[1] ** 2 + self._abs_delta[2] ** 2)
                     if self._distance == 0:
                         self._distance = self._abs_delta[3]
 
-                    current_feedrate = [d * feedrate / self._distance for d in self._delta]
+                    current_feedrate = [d * self._nominal_feedrate / self._distance for d in self._delta]
                     current_abs_feedrate = [abs(f) for f in current_feedrate]
                     feedrate_factor = min(1.0, MACHINE_MAX_FEEDRATE_X)
                     feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_Y)
