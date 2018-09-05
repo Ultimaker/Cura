@@ -69,6 +69,7 @@ Item
             }
             font: UM.Theme.getFont("default_bold")
             elide: Text.ElideRight
+            width: parent.width
         }
 
         Label
@@ -84,7 +85,7 @@ Item
             }
             anchors.top: materialLabel.bottom
             elide: Text.ElideRight
-
+            width: parent.width
             opacity: 0.6
             font: UM.Theme.getFont("default")
         }

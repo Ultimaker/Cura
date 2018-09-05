@@ -351,7 +351,7 @@ Item
                 PrintCoreConfiguration
                 {
                     id: leftExtruderInfo
-                    width: Math.round(parent.width  / 2)
+                    width: Math.round(parent.width / 2)
                     printCoreConfiguration: printJob.configuration.extruderConfigurations[0]
                 }
 
