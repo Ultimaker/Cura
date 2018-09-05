@@ -654,6 +654,7 @@ Component
                                         case "wait_user_action":
                                             return catalog.i18nc("@label:status", "Aborted")
                                         case "pausing":
+                                            return catalog.i18nc("@label:status", "Pausing")
                                         case "paused":
                                             return catalog.i18nc("@label:status", "Paused")
                                         case "resuming":
