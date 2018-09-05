@@ -216,7 +216,7 @@ Item
                             popup.close()
                         }
                         width: parent.width
-                        enabled: OutputDevice.printJobs[0].key != printJob.key
+                        enabled: OutputDevice.queuedPrintJobs[0].key != printJob.key
                         anchors.top: parent.top
                         anchors.topMargin: 10
                         hoverEnabled: true
