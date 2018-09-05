@@ -552,7 +552,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         configuration.setExtruderConfigurations(extruders)
         print_job.updateConfiguration(configuration)
-        print_job.setCompatibleMachineFamilies(data["compatible_machine_families"])
+        print_job.setCompatibleMachineFamilies(data.get("compatible_machine_families", []))
         print_job.stateChanged.connect(self._printJobStateChanged)
         return print_job
 
