@@ -323,7 +323,9 @@ Component
                                     id: printJobName
                                     text: modelData.activePrintJob != null ? modelData.activePrintJob.name : ""
                                     font: UM.Theme.getFont("default_bold")
-                                    width: parent.width
+                                    anchors.left: parent.left
+                                    anchors.right: contextButton.left
+                                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
                                     elide: Text.ElideRight
                                 }
                                 Label
