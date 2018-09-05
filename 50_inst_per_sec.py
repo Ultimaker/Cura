@@ -204,7 +204,7 @@ class Command:
         func(cmd_num, parts)
 
     def _handle_g(self, cmd_num: int, parts: List[str]) -> None:
-        estimated_exec_time_in_ms = 0.0
+        self._estimated_exec_time_in_ms = 0.0
 
         # G10: Retract. Make this behave as if it's a retraction of 25mm.
         if cmd_num == 10:
@@ -213,14 +213,13 @@ class Command:
             parts = ["G1", "E" + str(buf.current_position[3] - 25)]
         # G11: Unretract. Make this behave as if it's an unretraction of 25mm.
         elif cmd_num == 11:
-            #TODO: If already unretracted
+            #TODO: If already unretracted, this shouldn't add anything to the time.
             cmd_num = 1
             parts = ["G1", "E" + str(buf.current_position[3] + 25)]
 
         # G0 and G1: Move
         if cmd_num in (0, 1):
             # Move
-            distance = 0.0
             if len(parts) > 0:
                 value_dict = get_value_dict(parts[1:])
 
@@ -301,7 +300,7 @@ class Command:
 
                     self.calculate_trapezoid(self._entry_speed / self._nominal_feedrate, safe_speed / self._nominal_feedrate)
 
-            travel_time_in_ms = -1 #Signal that we need to include this in our second pass.
+            self._estimated_exec_time_in_ms = -1 #Signal that we need to include this in our second pass.
 
         # G4: Dwell, pause the machine for a period of time.
         elif cmd_num == 4:
@@ -310,69 +309,20 @@ class Command:
             num = float(num)
             if cmd == "P":
                 if num > 0:
-                    estimated_exec_time_in_ms = num
-
-        # G90: Set to absolute positioning. Assume 0 seconds.
-        elif cmd_num == 90:
-            estimated_exec_time_in_ms = 0.0
-
-        # G91: Set to relative positioning. Assume 0 seconds.
-        elif cmd_num == 91:
-            estimated_exec_time_in_ms = 0.0
-
-        # G92: Set position. Assume 0 seconds.
-        elif cmd_num == 92:
-            estimated_exec_time_in_ms = 0.0
-
-        # G280: Prime. Assume 0 seconds. Actually more like 10 if using blob and 5 if not.
-        elif cmd_num == 280:
-            estimated_exec_time_in_ms = 0.0
-
-        # Update estimated execution time
-        self._estimated_exec_time_in_ms = round(estimated_exec_time_in_ms, 5)
+                    self._estimated_exec_time_in_ms = num
 
     def _handle_m(self, cmd_num: int, parts: List[str]) -> None:
-        estimated_exec_time_in_ms = 0.0
-
-        # M82: Set extruder to absolute mode. Assume 0 execution time.
-        if cmd_num == 82:
-            estimated_exec_time_in_ms = 0.0
-
-        # M83: Set extruder to relative mode. Assume 0 execution time.
-        elif cmd_num == 83:
-            estimated_exec_time_in_ms = 0.0
-
-        # M104: Set extruder temperature (no wait). Assume 0 execution time.
-        elif cmd_num == 104:
-            estimated_exec_time_in_ms = 0.0
-
-        # M106: Set fan speed. Assume 0 execution time.
-        elif cmd_num == 106:
-            estimated_exec_time_in_ms = 0.0
-
-        # M107: Turn fan off. Assume 0 execution time.
-        elif cmd_num == 107:
-            estimated_exec_time_in_ms = 0.0
-
-        # M109: Set extruder temperature (wait). Assume 0 execution time. Actually more like a minute.
-        elif cmd_num == 109:
-            estimated_exec_time_in_ms = 0.0
-
-        # M140: Set bed temperature (no wait). Assume 0 execution time.
-        elif cmd_num == 140:
-            estimated_exec_time_in_ms = 0.0
+        self._estimated_exec_time_in_ms = 0.0
 
         # M203: Set maximum feedrate. Only Z is supported. Assume 0 execution time.
-        elif cmd_num == 203:
+        if cmd_num == 203:
             value_dict = get_value_dict(parts[1:])
             buf.max_z_feedrate = value_dict.get("Z", buf.max_z_feedrate)
-            estimated_exec_time_in_ms = 0.0
 
         # M204: Set default acceleration. Assume 0 execution time.
         if cmd_num == 204:
             value_dict = get_value_dict(parts[1:])
             buf.acceleration = value_dict.get("S", buf.acceleration)
-            estimated_exec_time_in_ms = 0.0
 
         # M205: Advanced settings, we only set jerks for Griffin. Assume 0 execution time.
         if cmd_num == 205:
@@ -380,15 +330,10 @@ class Command:
             buf.max_xy_jerk = value_dict.get("XY", buf.max_xy_jerk)
             buf.max_z_jerk = value_dict.get("Z", buf.max_z_jerk)
             buf.max_e_jerk = value_dict.get("E", buf.max_e_jerk)
-            estimated_exec_time_in_ms = 0.0
-
-        self._estimated_exec_time_in_ms = estimated_exec_time_in_ms
 
     def _handle_t(self, cmd_num: int, parts: List[str]) -> None:
         # Tn: Switching extruder. Assume 0 seconds. Actually more like 2.
-        estimated_exec_time_in_ms = 0.0
-
-        self._estimated_exec_time_in_ms = estimated_exec_time_in_ms
+        self._estimated_exec_time_in_ms = 0.0
 
 
 class CommandBuffer:
