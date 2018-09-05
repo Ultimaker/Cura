@@ -178,7 +178,7 @@ class SliceInfo(QObject, Extension):
 
             data["quality_profile"] = global_stack.quality.getMetaData().get("quality_type")
 
-            data["user_modified_setting_keys"] = ",".join(self._getUserModifiedSettingKeys())
+            data["user_modified_setting_keys"] = self._getUserModifiedSettingKeys()
 
             data["models"] = []
             # Listing all files placed on the build plate
