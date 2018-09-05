@@ -646,7 +646,7 @@ Component
                                         case "resuming":
                                             return catalog.i18nc("@label:status", "Resuming")
                                         case "queued":
-                                            return catalog.i18nc("@label:status", "Configuration change")
+                                            return catalog.i18nc("@label:status", "Action required")
                                         default:
                                             OutputDevice.formatDuration(modelData.activePrintJob.timeTotal - modelData.activePrintJob.timeElapsed)
                                     }
