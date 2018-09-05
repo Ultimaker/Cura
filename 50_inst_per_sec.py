@@ -206,6 +206,17 @@ class Command:
     def _handle_g(self, cmd_num: int, parts: List[str]) -> None:
         estimated_exec_time_in_ms = 0.0
 
+        # G10: Retract. Make this behave as if it's a retraction of 25mm.
+        if cmd_num == 10:
+            #TODO: If already retracted, this shouldn't add anything to the time.
+            cmd_num = 1
+            parts = ["G1", "E" + str(buf.current_position[3] - 25)]
+        # G11: Unretract. Make this behave as if it's an unretraction of 25mm.
+        elif cmd_num == 11:
+            #TODO: If already unretracted
+            cmd_num = 1
+            parts = ["G1", "E" + str(buf.current_position[3] + 25)]
+
         # G0 and G1: Move
         if cmd_num in (0, 1):
             # Move
@@ -300,20 +311,6 @@ class Command:
             if cmd == "P":
                 if num > 0:
                     estimated_exec_time_in_ms = num
-
-        # G10: Retract. Assume 0.3 seconds for short retractions and 0.5 seconds for long retractions.
-        if cmd_num == 10:
-            # S0 is short retract (default), S1 is long retract
-            is_short_retract = True
-            if len(parts) > 1:
-                cmd, num = get_code_and_num(parts[1])
-                if cmd == "S" and num == 1:
-                    is_short_retract = False
-            estimated_exec_time_in_ms = (0.3 if is_short_retract else 0.5) * 1000
-
-        # G11: Unretract. Assume 0.5 seconds.
-        if cmd_num == 11:
-            estimated_exec_time_in_ms = 0.5 * 1000
 
         # G90: Set to absolute positioning. Assume 0 seconds.
         if cmd_num == 90:
