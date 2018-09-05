@@ -164,7 +164,20 @@ Component
                                     width: sourceSize.width
                                     height: sourceSize.height
 
-                                    color: modelData.activePrintJob != undefined ? UM.Theme.getColor("primary") : UM.Theme.getColor("setting_control_disabled")
+                                    color:
+                                    {
+                                        if(modelData.state == "disabled")
+                                        {
+                                            return UM.Theme.getColor("setting_control_disabled")
+                                        }
+
+                                        if(modelData.activePrintJob != undefined)
+                                        {
+                                            return UM.Theme.getColor("primary")
+                                        }
+
+                                        return UM.Theme.getColor("setting_control_disabled")
+                                    }
                                 }
                             }
                             Item
