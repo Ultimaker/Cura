@@ -102,7 +102,7 @@ class Command:
     def __init__(self, cmd_str: str) -> None:
         self._cmd_str = cmd_str  # type: str
 
-        self._estimated_exec_time_in_ms = 0.0  # type: float
+        self.estimated_exec_time_in_ms = 0.0  # type: float
 
         self._cmd_process_function_map = {
             "G": self._handle_g,
@@ -160,15 +160,11 @@ class Command:
     def is_command(self) -> bool:
         return not self._is_comment and not self._is_empty
 
-    @property
-    def estimated_exec_time_in_ms(self) -> float:
-        return self._estimated_exec_time_in_ms
-
     def __str__(self) -> str:
         if self._is_comment or self._is_empty:
             return self._cmd_str
 
-        info = "t=%s" % (self._estimated_exec_time_in_ms)
+        info = "t=%s" % (self.estimated_exec_time_in_ms)
 
         return self._cmd_str.strip() + " ; --- " + info + os.linesep
 
@@ -197,7 +193,7 @@ class Command:
         func(cmd_num, parts)
 
     def _handle_g(self, cmd_num: int, parts: List[str]) -> None:
-        self._estimated_exec_time_in_ms = 0.0
+        self.estimated_exec_time_in_ms = 0.0
 
         # G10: Retract. Make this behave as if it's a retraction of 25mm.
         if cmd_num == 10:
@@ -290,7 +286,7 @@ class Command:
 
                     self.calculate_trapezoid(self._entry_speed / self._nominal_feedrate, safe_speed / self._nominal_feedrate)
 
-            self._estimated_exec_time_in_ms = -1 #Signal that we need to include this in our second pass.
+                    self.estimated_exec_time_in_ms = -1 #Signal that we need to include this in our second pass.
 
         # G4: Dwell, pause the machine for a period of time.
         elif cmd_num == 4:
@@ -299,10 +295,10 @@ class Command:
             num = float(num)
             if cmd == "P":
                 if num > 0:
-                    self._estimated_exec_time_in_ms = num
+                    self.estimated_exec_time_in_ms = num
 
     def _handle_m(self, cmd_num: int, parts: List[str]) -> None:
-        self._estimated_exec_time_in_ms = 0.0
+        self.estimated_exec_time_in_ms = 0.0
 
         # M203: Set maximum feedrate. Only Z is supported. Assume 0 execution time.
         if cmd_num == 203:
@@ -323,7 +319,7 @@ class Command:
 
     def _handle_t(self, cmd_num: int, parts: List[str]) -> None:
         # Tn: Switching extruder. Assume 0 seconds. Actually more like 2.
-        self._estimated_exec_time_in_ms = 0.0
+        self.estimated_exec_time_in_ms = 0.0
 
 
 class CommandBuffer:
