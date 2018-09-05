@@ -363,8 +363,19 @@ class QualityManager(QObject):
     @pyqtSlot(QObject)
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup"):
         Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
+        removed_quality_changes_ids = set()
         for node in quality_changes_group.getAllNodes():
-            self._container_registry.removeContainer(node.getMetaDataEntry("id"))
+            container_id = node.getMetaDataEntry("id")
+            self._container_registry.removeContainer(container_id)
+            removed_quality_changes_ids.add(container_id)
+
+        # Reset all machines that have activated this quality changes to empty.
+        for global_stack in self._container_registry.findContainerStacks(type = "machine"):
+            if global_stack.qualityChanges.getId() in removed_quality_changes_ids:
+                global_stack.qualityChanges = self._empty_quality_changes_container
+        for extruder_stack in self._container_registry.findContainerStacks(type = "extruder_train"):
+            if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
+                extruder_stack.qualityChanges = self._empty_quality_changes_container
 
     #
     # Rename a set of quality changes containers. Returns the new name.

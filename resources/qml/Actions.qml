@@ -138,7 +138,7 @@ Item
     Action
     {
         id: viewRightSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Right Side View");
+        text: catalog.i18nc("@action:inmenu menubar:view","&Right Side View");
         onTriggered: UM.Controller.rotateView("x", -90);
     }
 
@@ -236,16 +236,6 @@ Item
         onTriggered: CuraActions.deleteSelection();
     }
 
-    Action //Also add backspace as the same function as delete because on Macintosh keyboards the button called "delete" is actually a backspace, and the user expects it to function as a delete.
-    {
-        id: backspaceSelectionAction
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete Selected Model", "Delete Selected Models", UM.Selection.selectionCount)
-        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
-        iconName: "edit-delete"
-        shortcut: StandardKey.Backspace
-        onTriggered: CuraActions.deleteSelection()
-    }
-
     Action
     {
         id: centerSelectionAction;
@@ -338,7 +328,7 @@ Item
     Action
     {
         id: deleteAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Clear Build Plate");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Clear Build Plate");
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
@@ -348,7 +338,7 @@ Item
     Action
     {
         id: reloadAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
+        text: catalog.i18nc("@action:inmenu menubar:file","Reload All Models");
         iconName: "document-revert";
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll();
@@ -386,7 +376,7 @@ Item
     Action
     {
         id: resetAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Transformations");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model &Transformations");
         onTriggered: CuraApplication.resetAll();
     }
 

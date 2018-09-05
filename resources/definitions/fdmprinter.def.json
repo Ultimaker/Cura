@@ -3875,6 +3875,19 @@
                         }
                     }
                 },
+                "support_infill_angle":
+                {
+                    "label": "Support Infill Line Direction",
+                    "description": "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "-180",
+                    "maximum_value": "180",
+                    "default_value": 0,
+                    "enabled": "support_enable and support_pattern != 'concentric' and support_infill_rate > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
