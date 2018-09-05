@@ -414,7 +414,7 @@ class CommandBuffer:
             plateau_distance = cmd._decelerate_after - cmd._accelerate_until
             cmd.estimated_exec_time_in_ms = calc_acceleration_time_from_distance(cmd._initial_feedrate, cmd._accelerate_until, cmd._acceleration)
             cmd.estimated_exec_time_in_ms += plateau_distance / cmd._nominal_feedrate
-            cmd.estimated_exec_time_in_ms += calc_acceleration_time_from_distance(cmd._final_feedrate, (cmd._distancd - cmd._decelerate_after), cmd._acceleration)
+            cmd.estimated_exec_time_in_ms += calc_acceleration_time_from_distance(cmd._final_feedrate, (cmd._distance - cmd._decelerate_after), cmd._acceleration)
 
         for idx, cmd in enumerate(self._all_commands):
             cmd_count += 1
