@@ -326,7 +326,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 if self._firmware_name is None:
                     self.sendCommand("M115")
 
-            if (b"ok " in line and b"T:" in line) or b"ok T:" in line or line.startswith(b"T:") or b"ok B:" in line or line.startswith(b"B:"):  # Temperature message. 'T:' for extruder and 'B:' for bed
+            if (b"ok " in line and b"T:" in line) or line.startswith(b"T:") or b"ok B:" in line or line.startswith(b"B:"):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
                 # Update all temperature values
                 matched_extruder_nrs = []

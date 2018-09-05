@@ -82,9 +82,16 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
+
             Label
             {
-                text: catalog.i18nc("@label", "Contact") + ":"
+                text: catalog.i18nc("@label", "Website") + ":"
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text_medium")
+            }
+            Label
+            {
+                text: catalog.i18nc("@label", "Email") + ":"
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text_medium")
             }
@@ -100,18 +107,32 @@ Item
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
+
+            Label
+            {
+                text:
+                {
+                    if (details.website)
+                    {
+                        return "<a href=\"" + details.website + "\">" + details.website + "</a>"
+                    }
+                    return ""
+                }
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+
             Label
             {
                 text:
                 {
                     if (details.email)
                     {
-                        return "<a href=\"mailto:"+details.email+"\">"+details.name+"</a>"
+                        return "<a href=\"mailto:" + details.email + "\">" + details.email + "</a>"
                     }
-                    else
-                    {
-                        return "<a href=\""+details.website+"\">"+details.name+"</a>"
-                    }
+                    return ""
                 }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")

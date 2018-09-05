@@ -10,7 +10,7 @@ import Cura 1.0 as Cura
 Menu
 {
     id: menu
-    title: "Material"
+    title: catalog.i18nc("@label:category menu label", "Material")
 
     property int extruderIndex: 0
 
@@ -32,6 +32,12 @@ Menu
         extruderPosition: menu.extruderIndex
     }
 
+    MenuItem
+    {
+        text: catalog.i18nc("@label:category menu label", "Favorites")
+        enabled: false
+        visible: favoriteMaterialsModel.items.length > 0
+    }
     Instantiator
     {
         model: favoriteMaterialsModel
@@ -52,7 +58,7 @@ Menu
     Menu
     {
         id: genericMenu
-        title: "Generic"
+        title: catalog.i18nc("@label:category menu label", "Generic")
 
         Instantiator
         {
