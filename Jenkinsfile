@@ -12,6 +12,19 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
 
         // If any error occurs during building, we want to catch it and continue with the "finale" stage.
         catchError {
+            stage('Pre Checks') {
+                if (isUnix()) {
+                    try {
+                        sh """
+                            echo 'Check for duplicate shortcut keys in all translation files.'
+                            ${env.CURA_ENVIRONMENT_PATH}/master/bin/python3 scripts/check_shortcut_keys.py
+                        """
+                    } catch(e) {
+                        currentBuild.result = "UNSTABLE"
+                    }
+                }
+            }
+
             // Building and testing should happen in a subdirectory.
             dir('build') {
                 // Perform the "build". Since Uranium is Python code, this basically only ensures CMake is setup.
