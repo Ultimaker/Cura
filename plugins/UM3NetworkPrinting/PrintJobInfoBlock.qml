@@ -80,11 +80,26 @@ Item
 
             Image
             {
+                id: printJobPreview
                 source: printJob.previewImageUrl
                 anchors.top: ownerName.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: totalTimeLabel.bottom
                 width: height
+                opacity: printJob.state == "error" ? 0.5 : 1.0
+            }
+
+            UM.RecolorImage
+            {
+                id: statusImage
+                anchors.centerIn: printJobPreview
+                source: printJob.state == "error" ? "aborted-icon.svg" : ""
+                visible: source != ""
+                width: 0.5 * printJobPreview.width
+                height: 0.5 * printJobPreview.height
+                sourceSize.width: width
+                sourceSize.height: height
+                color: "black"
             }
 
             Label
@@ -121,7 +136,11 @@ Item
                 {
                     if(printJob.assignedPrinter == null)
                     {
-                        return catalog.i18nc("@label", "Waiting for: first available")
+                        if(printJob.state == "error")
+                        {
+                            return catalog.i18nc("@label", "Waiting for: Unavailable printer")
+                        }
+                        return catalog.i18nc("@label", "Waiting for: First available")
                     }
                     else
                     {

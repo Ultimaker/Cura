@@ -352,7 +352,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     @pyqtProperty("QVariantList", notify = printJobsChanged)
     def queuedPrintJobs(self) -> List[PrintJobOutputModel]:
-        return [print_job for print_job in self._print_jobs if print_job.state == "queued"]
+        return [print_job for print_job in self._print_jobs if print_job.state == "queued" or print_job.state == "error"]
 
     @pyqtProperty("QVariantList", notify = printJobsChanged)
     def activePrintJobs(self) -> List[PrintJobOutputModel]:
@@ -474,7 +474,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
             self._updatePrintJob(print_job, print_job_data)
 
-            if print_job.state != "queued":  # Print job should be assigned to a printer.
+            if print_job.state != "queued" and print_job.state != "error":  # Print job should be assigned to a printer.
                 if print_job.state in ["failed", "finished", "aborted", "none"]:
                     # Print job was already completed, so don't attach it to a printer.
                     printer = None
@@ -559,8 +559,19 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _updatePrintJob(self, print_job: PrintJobOutputModel, data: Dict[str, Any]) -> None:
         print_job.updateTimeTotal(data["time_total"])
         print_job.updateTimeElapsed(data["time_elapsed"])
-        print_job.updateState(data["status"])
+        impediments_to_printing = data.get("impediments_to_printing", [])
         print_job.updateOwner(data["owner"])
+
+        status_set_by_impediment = False
+        for impediment in impediments_to_printing:
+            if impediment["severity"] == "UNFIXABLE":
+                status_set_by_impediment = True
+                print_job.updateState("error")
+                break
+
+        if not status_set_by_impediment:
+            print_job.updateState(data["status"])
+
 
     def _createMaterialOutputModel(self, material_data) -> MaterialOutputModel:
         containers = ContainerRegistry.getInstance().findInstanceContainers(type="material", GUID=material_data["guid"])
