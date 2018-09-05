@@ -217,10 +217,10 @@ class Command:
                 value_dict = get_value_dict(parts[1:])
 
                 new_position = copy.deepcopy(buf.current_position)
-                new_position[0] = value_dict.get("X", new_position[0])
-                new_position[1] = value_dict.get("Y", new_position[1])
-                new_position[2] = value_dict.get("Z", new_position[2])
-                new_position[3] = value_dict.get("E", new_position[3])
+                new_position[0] = float(value_dict.get("X", new_position[0]))
+                new_position[1] = float(value_dict.get("Y", new_position[1]))
+                new_position[2] = float(value_dict.get("Z", new_position[2]))
+                new_position[3] = float(value_dict.get("E", new_position[3]))
 
                 self._delta = [
                     new_position[0] - buf.current_position[0],
@@ -231,9 +231,7 @@ class Command:
                 self._abs_delta = [abs(x) for x in self._delta]
                 self._max_travel = max(self._abs_delta)
                 if self._max_travel > 0:
-                    feedrate = buf.current_feedrate
-                    if "F" in value_dict:
-                        feedrate = value_dict["F"]
+                    feedrate = float(value_dict.get("F", buf.current_feedrate))
                     if feedrate < MACHINE_MINIMUM_FEEDRATE:
                         feedrate = MACHINE_MINIMUM_FEEDRATE
                     self._nominal_feedrate = feedrate
