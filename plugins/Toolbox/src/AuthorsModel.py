@@ -33,6 +33,9 @@ class AuthorsModel(ListModel):
 
     def _update(self):
         items = []
+        if not self._metadata:
+            self.setItems([])
+            return
 
         for author in self._metadata:
             items.append({
