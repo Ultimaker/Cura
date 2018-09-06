@@ -200,7 +200,9 @@ class QualityManager(QObject):
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
         # This determines if we should only get the global qualities for the global stack and skip the global qualities for the extruder stacks
-        has_variant_materials = parseBool(machine.getMetaDataEntry("has_variant_materials", False))
+        has_variants = machine.getHasVariants()
+        has_materials = machine.getHasMaterials()
+        has_variants_or_materials = has_variants or has_materials
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
@@ -214,7 +216,7 @@ class QualityManager(QObject):
         for node in nodes_to_check:
             if node and node.quality_type_map:
                 # Only include global qualities
-                if has_variant_materials:
+                if has_variants_or_materials:
                     quality_node = list(node.quality_type_map.values())[0]
                     is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
                     if not is_global_quality:
@@ -302,7 +304,7 @@ class QualityManager(QObject):
 
             for node in nodes_to_check:
                 if node and node.quality_type_map:
-                    if has_variant_materials:
+                    if has_variants_or_materials:
                         # Only include variant qualities; skip non global qualities
                         quality_node = list(node.quality_type_map.values())[0]
                         is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
@@ -363,8 +365,19 @@ class QualityManager(QObject):
     @pyqtSlot(QObject)
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup"):
         Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
+        removed_quality_changes_ids = set()
         for node in quality_changes_group.getAllNodes():
-            self._container_registry.removeContainer(node.getMetaDataEntry("id"))
+            container_id = node.getMetaDataEntry("id")
+            self._container_registry.removeContainer(container_id)
+            removed_quality_changes_ids.add(container_id)
+
+        # Reset all machines that have activated this quality changes to empty.
+        for global_stack in self._container_registry.findContainerStacks(type = "machine"):
+            if global_stack.qualityChanges.getId() in removed_quality_changes_ids:
+                global_stack.qualityChanges = self._empty_quality_changes_container
+        for extruder_stack in self._container_registry.findContainerStacks(type = "extruder_train"):
+            if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
+                extruder_stack.qualityChanges = self._empty_quality_changes_container
 
     #
     # Rename a set of quality changes containers. Returns the new name.

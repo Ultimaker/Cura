@@ -17,8 +17,8 @@
 
     "overrides": {
         "machine_name": { "default_value": "BQ Hephestos 2" },
-        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM104 S{material_print_temperature} ; Heat up extruder while leveling\nM800 ; Custom GCODE to fire start print procedure\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
-        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Custom GCODE to fire end print procedure\n; -- end of END GCODE --" },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM104 S{material_print_temperature}\nG28 ; Zero-ing position\nG29 ; Auto bed-leveling\nG0 X4 Y297 Z15 F4000 ; Fast move to BQ's start position\nG90 ; Set to Absolute Positioning\nG92 E0 ; Reset extruder 0\nG1 F1800 ; Set default feedrate\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Marlin G-CODE to fire end print procedure\n; -- end of END GCODE --" },
         "machine_width": { "default_value": 210 },
         "machine_depth": { "default_value": 297 },
         "machine_height": { "default_value": 220 },
