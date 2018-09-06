@@ -501,6 +501,7 @@ class CommandBuffer:
                 code_count = item["cmd_count"],
                 time = round(item["time"], 4),
                 speed = round(item["cmd_count"] / item["time"], 2)))
+        print("Total predicted number of buffer underruns:", len(self._bad_frame_ranges))
 
 
 if __name__ == "__main__":
