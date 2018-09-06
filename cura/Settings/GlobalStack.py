@@ -13,6 +13,8 @@ from UM.Settings.SettingInstance import InstanceState
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Logger import Logger
+from UM.Util import parseBool
+
 import cura.CuraApplication
 
 from . import Exceptions
@@ -187,6 +189,12 @@ class GlobalStack(CuraContainerStack):
 
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
+
+    def getHasMaterials(self) -> bool:
+        return parseBool(self.getMetaDataEntry("has_materials", False))
+
+    def getHasVariants(self) -> bool:
+        return parseBool(self.getMetaDataEntry("has_variants", False))
 
 
 ## private:
