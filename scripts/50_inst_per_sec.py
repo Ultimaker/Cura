@@ -506,16 +506,22 @@ class CommandBuffer:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: <input gcode> <output gcode>")
+    if len(sys.argv) < 2 or 3 < len(sys.argv):
+        print("Usage: <input gcode> [output gcode]")
         sys.exit(1)
     in_filename = sys.argv[1]
-    out_filename = sys.argv[2]
+    out_filename = None
+    if len(sys.argv) == 3:
+        out_filename = sys.argv[2]
 
     with open(in_filename, "r", encoding = "utf-8") as f:
         all_lines = f.readlines()
 
     buf = CommandBuffer(all_lines)
     buf.process()
-    buf.to_file(out_filename)
+
+    # Output annotated gcode is optional
+    if out_filename is not None:
+        buf.to_file(out_filename)
+
     buf.report()
