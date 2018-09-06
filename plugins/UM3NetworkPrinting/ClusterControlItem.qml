@@ -357,7 +357,14 @@ Component
 
                                 function switchPopupState()
                                 {
-                                    popup.visible ? popup.close() : popup.open()
+                                    if (popup.visible)
+                                    {
+                                        popup.close()
+                                    }
+                                    else
+                                    {
+                                        popup.open()
+                                    }
                                 }
 
                                 Controls2.Button

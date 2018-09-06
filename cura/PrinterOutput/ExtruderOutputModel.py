@@ -22,8 +22,8 @@ class ExtruderOutputModel(QObject):
         super().__init__(parent)
         self._printer = printer  # type: PrinterOutputModel
         self._position = position
-        self._target_hotend_temperature = 0  # type: float
-        self._hotend_temperature = 0  # type: float
+        self._target_hotend_temperature = 0.0  # type: float
+        self._hotend_temperature = 0.0  # type: float
 
         self._is_preheating = False
 
@@ -50,7 +50,7 @@ class ExtruderOutputModel(QObject):
     def activeMaterial(self) -> Optional["MaterialOutputModel"]:
         return self._extruder_configuration.activeMaterial
 
-    def updateActiveMaterial(self, material: Optional["MaterialOutputModel"]):
+    def updateActiveMaterial(self, material: Optional["MaterialOutputModel"]) -> None:
         self._extruder_configuration.setMaterial(material)
 
     ##  Update the hotend temperature. This only changes it locally.

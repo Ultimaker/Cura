@@ -22,7 +22,7 @@ Item
         anchors.verticalCenter: printAndMaterialLabel.verticalCenter
         opacity:
         {
-            if(printCoreConfiguration == undefined || printCoreConfiguration.activeMaterial == undefined || printCoreConfiguration.hotendID == undefined)
+            if(printCoreConfiguration == null || printCoreConfiguration.activeMaterial == null || printCoreConfiguration.hotendID == null)
             {
                 return 0.5
             }

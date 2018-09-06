@@ -146,14 +146,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             Logger.log("e", "Missing file or mesh writer!")
             return
         self._sending_job = self._sendPrintJob(writer, preferred_format, nodes)
-        self._sending_job.send(None)  # Start the generator.
+        if self._sending_job is not None:
+            self._sending_job.send(None)  # Start the generator.
 
-        if len(self._printers) > 1:  # We need to ask the user.
-            self._spawnPrinterSelectionDialog()
-            is_job_sent = True
-        else:  # Just immediately continue.
-            self._sending_job.send("")  # No specifically selected printer.
-            is_job_sent = self._sending_job.send(None)
+            if len(self._printers) > 1:  # We need to ask the user.
+                self._spawnPrinterSelectionDialog()
+                is_job_sent = True
+            else:  # Just immediately continue.
+                self._sending_job.send("")  # No specifically selected printer.
+                is_job_sent = self._sending_job.send(None)
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
@@ -171,7 +172,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     #   \param target_printer The name of the printer to target.
     @pyqtSlot(str)
     def selectPrinter(self, target_printer: str = "") -> None:
-        self._sending_job.send(target_printer)
+        if self._sending_job is not None:
+            self._sending_job.send(target_printer)
 
     @pyqtSlot()
     def cancelPrintSelection(self) -> None:

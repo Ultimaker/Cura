@@ -40,7 +40,7 @@ class PrintJobOutputModel(QObject):
         self._compatible_machine_families = []  # type: List[str]
         self._preview_image_id = 0
 
-        self._preview_image = None
+        self._preview_image = None  # type: Optional[QImage]
 
     @pyqtProperty("QStringList", notify=compatibleMachineFamiliesChanged)
     def compatibleMachineFamilies(self):
@@ -61,10 +61,10 @@ class PrintJobOutputModel(QObject):
         temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key
         return QUrl(temp, QUrl.TolerantMode)
 
-    def getPreviewImage(self):
+    def getPreviewImage(self) -> Optional[QImage]:
         return self._preview_image
 
-    def updatePreviewImage(self, preview_image: Optional[QImage]):
+    def updatePreviewImage(self, preview_image: Optional[QImage]) -> None:
         if self._preview_image != preview_image:
             self._preview_image = preview_image
             self.previewImageChanged.emit()
