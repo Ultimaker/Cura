@@ -5,6 +5,7 @@ import json
 import os
 import platform
 import time
+from typing import cast, Optional, Set
 
 from PyQt5.QtCore import pyqtSlot, QObject
 
@@ -16,7 +17,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import DurationFormat
-from typing import cast, Optional
+
 from .SliceInfoJob import SliceInfoJob
 
 
@@ -96,11 +97,12 @@ class SliceInfo(QObject, Extension):
         Application.getInstance().getPreferences().setValue("info/send_slice_info", enabled)
 
     def _getUserModifiedSettingKeys(self) -> list:
-        application = Application.getInstance()
+        from cura.CuraApplication import CuraApplication
+        application = cast(CuraApplication, Application.getInstance())
         machine_manager = application.getMachineManager()
         global_stack = machine_manager.activeMachine
 
-        user_modified_setting_keys = set()
+        user_modified_setting_keys = set()  # type: Set[str]
 
         for stack in [global_stack] + list(global_stack.extruders.values()):
             # Get all settings in user_changes and quality_changes
@@ -115,7 +117,8 @@ class SliceInfo(QObject, Extension):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
                 return  # Do nothing, user does not want to send data
 
-            application = Application.getInstance()
+            from cura.CuraApplication import CuraApplication
+            application = cast(CuraApplication, Application.getInstance())
             machine_manager = application.getMachineManager()
             print_information = application.getPrintInformation()
 
