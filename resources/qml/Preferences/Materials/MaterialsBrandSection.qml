@@ -109,7 +109,8 @@ Rectangle
         }
     }
 
-    Connections {
+    Connections
+    {
         target: UM.Preferences
         onPreferenceChanged:
         {

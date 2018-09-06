@@ -59,7 +59,6 @@ Rectangle
             width: parent.width - UM.Theme.getSize("favorites_button").width
             id: material_type_name
             verticalAlignment: Text.AlignVCenter
-            
         }
         Button
         {
@@ -127,7 +126,8 @@ Rectangle
         }
     }
 
-    Connections {
+    Connections
+    {
         target: UM.Preferences
         onPreferenceChanged:
         {

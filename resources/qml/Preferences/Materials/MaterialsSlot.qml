@@ -21,7 +21,8 @@ Rectangle
     width: parent.width
     color: base.currentItem == model ? UM.Theme.getColor("favorites_row_selected") : "transparent"
 
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         if (material.root_material_id == base.active_root_material_id) {
             base.currentItem = material
         }
@@ -55,7 +56,8 @@ Rectangle
         MouseArea
         {
             anchors.fill: parent
-            onClicked: {
+            onClicked:
+            {
                 base.currentItem = material
                 base.current_brand = material.brand
                 base.current_type = material.brand+"_"+material.material

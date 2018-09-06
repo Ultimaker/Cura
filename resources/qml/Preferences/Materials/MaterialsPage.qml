@@ -42,7 +42,7 @@ Item
     Cura.MaterialBrandsModel { id: materials_model }
     Cura.GenericMaterialsModel { id: generic_materials_model }
 
-    function expandActiveMaterial( search_root_id )
+    function expandActiveMaterial(search_root_id)
     {
         for (var n = 0; n < generic_materials_model.rowCount(); n++)
         {
