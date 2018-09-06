@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
@@ -5,7 +6,6 @@ import copy
 import math
 import os
 import sys
-import random
 from typing import Dict, List, Optional, Tuple
 
 
@@ -97,6 +97,7 @@ def calc_intersection_distance(initial_feedrate: float, final_feedrate: float, a
 #   distance.
 def calc_max_allowable_speed(acceleration: float, target_velocity: float, distance: float) -> float:
     return math.sqrt(target_velocity * target_velocity - 2 * acceleration * distance)
+
 
 class Command:
     def __init__(self, cmd_str: str) -> None:
