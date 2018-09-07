@@ -668,7 +668,12 @@ Component
                                         case "queued":
                                             return catalog.i18nc("@label:status", "Action required")
                                         default:
-                                            OutputDevice.formatDuration(modelData.activePrintJob.timeTotal - modelData.activePrintJob.timeElapsed)
+                                            /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent
+                                                remaining time from ever being less than 0. Negative durations cause
+                                                strange behavior such as displaying "-1h -1m". */
+                                            var activeJob = modelData.activePrintJob
+                                            var remaining = activeJob.timeTotal - activeJob.timeElapsed;
+                                            OutputDevice.formatDuration(Math.max(remaining, 0))
                                     }
                                 }
 
