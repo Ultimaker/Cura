@@ -414,7 +414,7 @@ class MachineManager(QObject):
 
         # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
         machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
-        extruder_stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         count = 1  # we start with the global stack
         for stack in extruder_stacks:
             md = stack.getMetaData()
@@ -437,7 +437,7 @@ class MachineManager(QObject):
         if self._global_container_stack.getTop().findInstances():
             return True
 
-        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         for stack in stacks:
             if stack.getTop().findInstances():
                 return True
@@ -450,7 +450,7 @@ class MachineManager(QObject):
             return 0
         num_user_settings = 0
         num_user_settings += len(self._global_container_stack.getTop().findInstances())
-        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         for stack in stacks:
             num_user_settings += len(stack.getTop().findInstances())
         return num_user_settings
@@ -475,7 +475,7 @@ class MachineManager(QObject):
             stack = ExtruderManager.getInstance().getActiveExtruderStack()
             stacks = [stack]
         else:
-            stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
 
         for stack in stacks:
             if stack is not None:
@@ -640,7 +640,7 @@ class MachineManager(QObject):
         if self._active_container_stack is None or self._global_container_stack is None:
             return
         new_value = self._active_container_stack.getProperty(key, "value")
-        extruder_stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+        extruder_stacks = [stack for stack in ExtruderManager.getInstance().getActiveExtruderStacks()]
 
         # check in which stack the value has to be replaced
         for extruder_stack in extruder_stacks:

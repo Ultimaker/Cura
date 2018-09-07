@@ -343,7 +343,7 @@ class CuraEngineBackend(QObject, Backend):
                 if not self._global_container_stack:
                     Logger.log("w", "Global container stack not assigned to CuraEngineBackend!")
                     return
-                extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
                 error_keys = [] #type: List[str]
                 for extruder in extruders:
                     error_keys.extend(extruder.getErrorKeys())

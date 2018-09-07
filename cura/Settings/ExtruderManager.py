@@ -12,11 +12,10 @@ from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.SettingInstance import SettingInstance
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 
-from typing import Optional, List, TYPE_CHECKING, Union, Dict
+from typing import Optional, List, TYPE_CHECKING, Dict, List
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
@@ -38,9 +37,10 @@ class ExtruderManager(QObject):
 
         self._application = cura.CuraApplication.CuraApplication.getInstance()
 
-        self._extruder_trains = {}  # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
+        # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
+        self._extruder_trains = {}  # type: Dict[str, List[ExtruderStack]]
         self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
-        self._selected_object_extruders = []
+        self._selected_object_extruders = []  # type: List[ExtruderStack]
         self._addCurrentMachineExtruders()
 
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
@@ -68,7 +68,7 @@ class ExtruderManager(QObject):
 
     ##  Return extruder count according to extruder trains.
     @pyqtProperty(int, notify = extrudersChanged)
-    def extruderCount(self):
+    def extruderCount(self) -> int:
         if not self._application.getGlobalContainerStack():
             return 0  # No active machine, so no extruders.
         try:
@@ -83,11 +83,7 @@ class ExtruderManager(QObject):
 
         global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
-            global_stack_id = global_container_stack.getId()
-
-            if global_stack_id in self._extruder_trains:
-                for position in self._extruder_trains[global_stack_id]:
-                    extruder_stack_ids[position] = self._extruder_trains[global_stack_id][position].getId()
+            extruder_stack_ids = {position: extruder.id for position, extruder in global_container_stack.extruders.items()}
 
         return extruder_stack_ids
 
@@ -109,7 +105,7 @@ class ExtruderManager(QObject):
     @pyqtSlot(int, result = str)
     def getExtruderName(self, index):
         try:
-            return list(self.getActiveExtruderStacks())[index].getName()
+            return self.getActiveExtruderStacks()[index].getName()
         except IndexError:
             return ""
 
@@ -318,7 +314,7 @@ class ExtruderManager(QObject):
     ##  Returns extruders for a specific machine.
     #
     #   \param machine_id The machine to get the extruders of.
-    def getMachineExtruders(self, machine_id: str):
+    def getMachineExtruders(self, machine_id: str) -> List["ExtruderStack"]:
         if machine_id not in self._extruder_trains:
             return []
         return [self._extruder_trains[machine_id][name] for name in self._extruder_trains[machine_id]]
@@ -331,11 +327,7 @@ class ExtruderManager(QObject):
         if not global_stack:
             return []
 
-        result = []
-
-        if global_stack.getId() in self._extruder_trains:
-            for extruder in sorted(self._extruder_trains[global_stack.getId()]):
-                result.append(self._extruder_trains[global_stack.getId()][extruder])
+        result = list(global_stack.extruders.values())
 
         machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
 
@@ -404,7 +396,7 @@ class ExtruderManager(QObject):
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
 
         result = []
-        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+        for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
             if not extruder.isEnabled:
                 continue
             # only include values from extruders that are "active" for the current machine instance
@@ -446,7 +438,7 @@ class ExtruderManager(QObject):
         }
 
         result = []
-        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+        for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
             # only include values from extruders that are "active" for the current machine instance
             if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context = context):
                 continue
