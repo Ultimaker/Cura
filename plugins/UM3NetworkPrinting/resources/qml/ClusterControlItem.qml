@@ -16,7 +16,6 @@ Component
         id: base
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
 
-
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
         visible: OutputDevice != null
         anchors.fill: parent
@@ -154,11 +153,11 @@ Component
                                         switch(modelData.type)
                                         {
                                             case "Ultimaker 3":
-                                                return "UM3-icon.svg"
+                                                return "../svg/UM3-icon.svg"
                                             case "Ultimaker 3 Extended":
-                                                return "UM3x-icon.svg"
+                                                return "../svg/UM3x-icon.svg"
                                             case "Ultimaker S5":
-                                                return "UMs5-icon.svg"
+                                                return "../svg/UMs5-icon.svg"
                                         }
                                     }
                                     width: sourceSize.width
@@ -563,15 +562,15 @@ Component
                                         switch(modelData.activePrintJob.state)
                                         {
                                             case "paused":
-                                                return "paused-icon.svg"
+                                                return "../svg/paused-icon.svg"
                                             case "wait_cleanup":
                                                 if(modelData.activePrintJob.timeElapsed < modelData.activePrintJob.timeTotal)
                                                 {
-                                                    return "aborted-icon.svg"
+                                                    return "../svg/aborted-icon.svg"
                                                 }
-                                                return "approved-icon.svg"
+                                                return "../svg/approved-icon.svg"
                                             case "wait_user_action":
-                                                return "aborted-icon.svg"
+                                                return "../svg/aborted-icon.svg"
                                             default:
                                                 return ""
                                         }
@@ -599,7 +598,7 @@ Component
                                         height: width
                                         anchors.right: parent.right
                                         anchors.rightMargin: parent.rightMargin
-                                        source: "camera-icon.svg"
+                                        source: "../svg/camera-icon.svg"
                                     }
                                     MouseArea
                                     {

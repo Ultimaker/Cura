@@ -166,7 +166,7 @@ Rectangle
                     height: width
                     anchors.right: parent.right
                     anchors.rightMargin: parent.rightMargin
-                    source: "camera-icon.svg"
+                    source: "../svg/camera-icon.svg"
                 }
             }
 
@@ -317,7 +317,7 @@ Rectangle
                         source: {
                             if (printer.state == "disabled")
                             {
-                                return "blocked-icon.svg";
+                                return "../svg/blocked-icon.svg";
                             }
 
                             if (printer.state === "unreachable")
@@ -329,11 +329,11 @@ Rectangle
                             {
                                 if(printJob.state === "queued")
                                 {
-                                    return "action-required-icon.svg";
+                                    return "../svg/action-required-icon.svg";
                                 }
                                 else if (printJob.state === "wait_cleanup")
                                 {
-                                    return "checkmark-icon.svg";
+                                    return "../svg/checkmark-icon.svg";
                                 }
                             }
                             return "";  // We're not going to show it, so it will not be resolved as a url.
