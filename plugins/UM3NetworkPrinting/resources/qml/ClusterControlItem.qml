@@ -638,19 +638,24 @@ Component
 
                             style: ProgressBarStyle
                             {
+                                property var remainingTime:
+                                {
+                                    if(modelData.activePrintJob == null)
+                                    {
+                                        return 0
+                                    }
+                                    /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent remaining
+                                        time from ever being less than 0. Negative durations cause strange behavior such
+                                        as displaying "-1h -1m". */
+                                    var activeJob = modelData.activePrintJob
+                                    return Math.max(activeJob.timeTotal - activeJob.timeElapsed, 0);
+                                }
                                 property var progressText:
                                 {
                                     if(modelData.activePrintJob == null)
                                     {
                                         return ""
                                     }
-
-                                    /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent remaining
-                                        time from ever being less than 0. Negative durations cause strange behavior such
-                                        as displaying "-1h -1m". */
-                                    var activeJob = modelData.activePrintJob
-                                    var remainingTime = Math.max(activeJob.timeTotal - activeJob.timeElapsed, 0);
-
                                     switch(modelData.activePrintJob.state)
                                     {
                                         case "wait_cleanup":
@@ -663,6 +668,7 @@ Component
                                         case "sent_to_printer":
                                             return catalog.i18nc("@label:status", "Preparing")
                                         case "aborted":
+                                            return catalog.i18nc("@label:status", "Aborted")
                                         case "wait_user_action":
                                             return catalog.i18nc("@label:status", "Aborted")
                                         case "pausing":
@@ -687,7 +693,24 @@ Component
 
                                 progress: Rectangle
                                 {
-                                    color: UM.Theme.getColor("primary")
+                                    color:
+                                    {
+                                        var state = modelData.activePrintJob.state
+                                        var deactiveStates = [
+                                            "pausing",
+                                            "paused",
+                                            "resuming",
+                                            "wait_cleanup"
+                                        ]
+                                        if(deactiveStates.indexOf(state) > -1 && remainingTime > 0)
+                                        {
+                                            return UM.Theme.getColor("monitor_secondary_text")
+                                        }
+                                        else
+                                        {
+                                            return UM.Theme.getColor("primary")
+                                        }
+                                    }
                                     id: progressItem
                                     function getTextOffset()
                                     {
