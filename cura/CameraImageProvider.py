@@ -19,5 +19,11 @@ class CameraImageProvider(QQuickImageProvider):
 
                 return image, QSize(15, 15)
             except AttributeError:
-                pass
+                try:
+                    image = output_device.activeCamera.getImage()
+
+                    return image, QSize(15, 15)
+                except AttributeError:
+                    pass
+
         return QImage(), QSize(15, 15)

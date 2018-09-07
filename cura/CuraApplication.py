@@ -93,6 +93,7 @@ from . import CuraActions
 from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
+from . import PrintJobPreviewImageProvider
 from . import MachineActionManager
 
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
@@ -502,6 +503,7 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._qml_engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
+        self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self):
