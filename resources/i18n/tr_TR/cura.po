@@ -3785,7 +3785,7 @@ msgstr "G&eçerli ayarlardan/geçersiz kılmalardan profil oluştur..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Profilleri Yönet..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

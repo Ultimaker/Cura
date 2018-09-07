@@ -3799,7 +3799,7 @@ msgstr "&Crear perfil a partir de ajustes o sobrescrituras actuales..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Administrar perfiles..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

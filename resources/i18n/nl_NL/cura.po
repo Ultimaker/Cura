@@ -3785,7 +3785,7 @@ msgstr "Profiel maken op basis van huidige instellingen/overs&chrijvingen..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Profielen Beheren..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209

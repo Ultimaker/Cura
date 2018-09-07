@@ -3787,7 +3787,7 @@ msgstr "P&rofil von aktuellen Einstellungen/Überschreibungen erstellen..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
-msgid "Manage Profiles..."
+msgid "&Manage Profiles..."
 msgstr "Profile verwalten..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209
