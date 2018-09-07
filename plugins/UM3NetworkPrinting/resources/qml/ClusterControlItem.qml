@@ -645,6 +645,12 @@ Component
                                         return ""
                                     }
 
+                                    /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent remaining
+                                        time from ever being less than 0. Negative durations cause strange behavior such
+                                        as displaying "-1h -1m". */
+                                    var activeJob = modelData.activePrintJob
+                                    var remainingTime = Math.max(activeJob.timeTotal - activeJob.timeElapsed, 0);
+
                                     switch(modelData.activePrintJob.state)
                                     {
                                         case "wait_cleanup":
@@ -662,18 +668,13 @@ Component
                                         case "pausing":
                                             return catalog.i18nc("@label:status", "Pausing")
                                         case "paused":
-                                            return catalog.i18nc("@label:status", "Paused")
+                                            return OutputDevice.formatDuration( remainingTime )
                                         case "resuming":
                                             return catalog.i18nc("@label:status", "Resuming")
                                         case "queued":
                                             return catalog.i18nc("@label:status", "Action required")
                                         default:
-                                            /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent
-                                                remaining time from ever being less than 0. Negative durations cause
-                                                strange behavior such as displaying "-1h -1m". */
-                                            var activeJob = modelData.activePrintJob
-                                            var remaining = activeJob.timeTotal - activeJob.timeElapsed;
-                                            OutputDevice.formatDuration(Math.max(remaining, 0))
+                                            return OutputDevice.formatDuration( remainingTime )
                                     }
                                 }
 
