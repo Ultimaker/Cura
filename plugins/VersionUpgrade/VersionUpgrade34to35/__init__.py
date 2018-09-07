@@ -1,9 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from . import VersionUpgrade34to40
+from . import VersionUpgrade34to35
 
-upgrade = VersionUpgrade34to40.VersionUpgrade34to40()
+upgrade = VersionUpgrade34to35.VersionUpgrade34to35()
 
 
 def getMetaData():
