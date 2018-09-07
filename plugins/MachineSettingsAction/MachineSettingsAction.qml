@@ -16,6 +16,8 @@ Cura.MachineAction
     property var extrudersModel: Cura.ExtrudersModel{}
     property int extruderTabsCount: 0
 
+    property var activeMachineId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.id : ""
+
     Connections
     {
         target: base.extrudersModel
@@ -511,7 +513,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "description" ]
@@ -564,7 +566,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "description" ]
@@ -655,7 +657,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "options", "description" ]
@@ -754,7 +756,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "description" ]
@@ -879,7 +881,7 @@ Cura.MachineAction
     {
         id: machineExtruderCountProvider
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: base.activeMachineId
         key: "machine_extruder_count"
         watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
@@ -889,7 +891,7 @@ Cura.MachineAction
     {
         id: machineHeadPolygonProvider
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: base.acthiveMachineId
         key: "machine_head_with_fans_polygon"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
