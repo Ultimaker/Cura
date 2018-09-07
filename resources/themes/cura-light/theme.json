@@ -321,7 +321,9 @@
         "favorites_header_hover": [245, 245, 245, 255],
         "favorites_header_text": [31, 36, 39, 255],
         "favorites_header_text_hover": [31, 36, 39, 255],
-        "favorites_row_selected": [196, 239, 255, 255]
+        "favorites_row_selected": [196, 239, 255, 255],
+
+        "monitor_secondary_text": [153, 153, 153, 255]
     },
 
     "sizes": {

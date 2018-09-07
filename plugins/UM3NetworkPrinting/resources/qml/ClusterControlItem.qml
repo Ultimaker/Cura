@@ -223,7 +223,7 @@ Component
                                     width: parent.width
                                     elide: Text.ElideRight
                                     font: UM.Theme.getFont("default")
-                                    opacity: 0.6
+                                    color: UM.Theme.getColor("monitor_secondary_text")
                                 }
                             }
 
