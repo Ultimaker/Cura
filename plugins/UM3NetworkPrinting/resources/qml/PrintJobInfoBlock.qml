@@ -62,7 +62,7 @@ Item
             {
                 id: printJobName
                 text: printJob.name
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("default")
                 width: parent.width
                 elide: Text.ElideRight
             }
@@ -105,7 +105,6 @@ Item
             Label
             {
                 id: totalTimeLabel
-                opacity: 0.6
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 font: UM.Theme.getFont("default")
