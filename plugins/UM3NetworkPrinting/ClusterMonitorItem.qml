@@ -25,93 +25,83 @@ Component
 
         Label
         {
-            id: activePrintersLabel
-            font: UM.Theme.getFont("large")
-
-            anchors {
-                top: parent.top
-                topMargin: UM.Theme.getSize("default_margin").height * 2 // a bit more spacing to give it some breathing room
-                horizontalCenter: parent.horizontalCenter
-            }
-
-            text: OutputDevice.printers.length == 0 ? catalog.i18nc("@label: arg 1 is group name", "%1 is not set up to host a group of connected Ultimaker 3 printers").arg(Cura.MachineManager.printerOutputDevices[0].name) : ""
-
-            visible: OutputDevice.printers.length == 0
+            id: manageQueueLabel
+            anchors.rightMargin: 4 * UM.Theme.getSize("default_margin").width
+            anchors.right: queuedPrintJobs.right
+            anchors.bottom: queuedLabel.bottom
+            text: catalog.i18nc("@label link to connect manager", "Manage queue")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("primary")
+            linkColor: UM.Theme.getColor("primary")
         }
 
-        Item
+        MouseArea
         {
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.fill: manageQueueLabel
+            hoverEnabled: true
+            onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
+            onEntered: manageQueueLabel.font.underline = true
+            onExited: manageQueueLabel.font.underline = false
+        }
+
+        Label
+        {
+            id: queuedLabel
+            anchors.left: queuedPrintJobs.left
             anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            width: Math.min(800 * screenScaleFactor, maximumWidth)
-            height: children.height
-            visible: OutputDevice.printers.length != 0
-
-            Label
-            {
-                id: addRemovePrintersLabel
-                anchors.right: parent.right
-                text: catalog.i18nc("@label link to connect manager", "Add/Remove printers")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                linkColor: UM.Theme.getColor("text_link")
-            }
-
-            MouseArea
-            {
-                anchors.fill: addRemovePrintersLabel
-                hoverEnabled: true
-                onClicked: Cura.MachineManager.printerOutputDevices[0].openPrinterControlPanel()
-                onEntered: addRemovePrintersLabel.font.underline = true
-                onExited: addRemovePrintersLabel.font.underline = false
-            }
+            anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
+            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "Queued")
+            font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
         }
 
         ScrollView
         {
-            id: printerScrollView
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            anchors.top: activePrintersLabel.bottom
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_lining").width // To ensure border can be drawn.
-            anchors.rightMargin: UM.Theme.getSize("default_lining").width
-            anchors.right: parent.right
+            id: queuedPrintJobs
 
+            anchors
+            {
+                top: queuedLabel.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
+                horizontalCenter: parent.horizontalCenter
+                bottomMargin: 0
+                bottom: parent.bottom
+            }
+            style: UM.Theme.styles.scrollview
+            width: Math.min(800 * screenScaleFactor, maximumWidth)
             ListView
             {
                 anchors.fill: parent
-                spacing: -UM.Theme.getSize("default_lining").height
+                //anchors.margins: UM.Theme.getSize("default_margin").height
+                spacing: UM.Theme.getSize("default_margin").height - 10 // 2x the shadow radius
 
-                model: OutputDevice.printers
+                model: OutputDevice.queuedPrintJobs
 
-                delegate: PrinterInfoBlock
+                delegate: PrintJobInfoBlock
                 {
-                    printer: modelData
-                    width: Math.min(800 * screenScaleFactor, maximumWidth)
-                    height: 125 * screenScaleFactor
-
-                    // Add a 1 pix margin, as the border is sometimes cut off otherwise.
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    printJob: modelData
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").height
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").height
+                    height: 175 * screenScaleFactor
                 }
             }
         }
 
         PrinterVideoStream
         {
-            visible: OutputDevice.activePrinter != null
-            anchors.fill:parent
+            visible: OutputDevice.activeCamera != null
+            anchors.fill: parent
+            camera: OutputDevice.activeCamera
         }
 
         onVisibleChanged:
         {
-            if (!monitorFrame.visible)
+            if (monitorFrame != null && !monitorFrame.visible)
             {
-                // After switching the Tab ensure that active printer is Null, the video stream image
-                // might be active
-                OutputDevice.setActivePrinter(null)
+                OutputDevice.setActiveCamera(null)
             }
         }
     }

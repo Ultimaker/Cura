@@ -274,7 +274,7 @@ Column
                                 elide: Text.ElideRight
                             }
 
-                            // Everthing for the extruder icon
+                            // Everything for the extruder icon
                             Item
                             {
                                 id: extruderIconItem

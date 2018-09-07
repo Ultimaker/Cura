@@ -2,11 +2,15 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
+
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QImage
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 
 
 class PrintJobOutputModel(QObject):
@@ -17,6 +21,9 @@ class PrintJobOutputModel(QObject):
     keyChanged = pyqtSignal()
     assignedPrinterChanged = pyqtSignal()
     ownerChanged = pyqtSignal()
+    configurationChanged = pyqtSignal()
+    previewImageChanged = pyqtSignal()
+    compatibleMachineFamiliesChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -28,6 +35,48 @@ class PrintJobOutputModel(QObject):
         self._key = key  # Unique identifier
         self._assigned_printer = None  # type: Optional[PrinterOutputModel]
         self._owner = ""  # Who started/owns the print job?
+
+        self._configuration = None  # type: Optional[ConfigurationModel]
+        self._compatible_machine_families = []  # type: List[str]
+        self._preview_image_id = 0
+
+        self._preview_image = None  # type: Optional[QImage]
+
+    @pyqtProperty("QStringList", notify=compatibleMachineFamiliesChanged)
+    def compatibleMachineFamilies(self):
+        # Hack; Some versions of cluster will return a family more than once...
+        return set(self._compatible_machine_families)
+
+    def setCompatibleMachineFamilies(self, compatible_machine_families: List[str]) -> None:
+        if self._compatible_machine_families != compatible_machine_families:
+            self._compatible_machine_families = compatible_machine_families
+            self.compatibleMachineFamiliesChanged.emit()
+
+    @pyqtProperty(QUrl, notify=previewImageChanged)
+    def previewImageUrl(self):
+        self._preview_image_id += 1
+        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
+        # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
+        # as new (instead of relying on cached version and thus forces an update.
+        temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key
+        return QUrl(temp, QUrl.TolerantMode)
+
+    def getPreviewImage(self) -> Optional[QImage]:
+        return self._preview_image
+
+    def updatePreviewImage(self, preview_image: Optional[QImage]) -> None:
+        if self._preview_image != preview_image:
+            self._preview_image = preview_image
+            self.previewImageChanged.emit()
+
+    @pyqtProperty(QObject, notify=configurationChanged)
+    def configuration(self) -> Optional["ConfigurationModel"]:
+        return self._configuration
+
+    def updateConfiguration(self, configuration: Optional["ConfigurationModel"]) -> None:
+        if self._configuration != configuration:
+            self._configuration = configuration
+            self.configurationChanged.emit()
 
     @pyqtProperty(str, notify=ownerChanged)
     def owner(self):

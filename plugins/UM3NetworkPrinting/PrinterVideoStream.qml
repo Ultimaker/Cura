@@ -7,6 +7,8 @@ import UM 1.3 as UM
 
 Item
 {
+    property var camera: null
+
     Rectangle
     {
         anchors.fill:parent
@@ -17,7 +19,7 @@ Item
     MouseArea
     {
         anchors.fill: parent
-        onClicked: OutputDevice.setActivePrinter(null)
+        onClicked: OutputDevice.setActiveCamera(null)
         z: 0
     }
 
@@ -32,7 +34,7 @@ Item
         width: 20 * screenScaleFactor
         height: 20 * screenScaleFactor
 
-        onClicked: OutputDevice.setActivePrinter(null)
+        onClicked: OutputDevice.setActiveCamera(null)
 
         style: ButtonStyle
         {
@@ -65,23 +67,24 @@ Item
         {
             if(visible)
             {
-                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                if(camera != null)
                 {
-                    OutputDevice.activePrinter.camera.start()
+                    camera.start()
                 }
             } else
             {
-                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                if(camera != null)
                 {
-                    OutputDevice.activePrinter.camera.stop()
+                    camera.stop()
                 }
             }
         }
+
         source:
         {
-            if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage)
+            if(camera != null && camera.latestImage != null)
             {
-                return OutputDevice.activePrinter.camera.latestImage;
+                return camera.latestImage;
             }
             return "";
         }
@@ -92,7 +95,7 @@ Item
         anchors.fill: cameraImage
         onClicked:
         {
-            OutputDevice.setActivePrinter(null)
+            OutputDevice.setActiveCamera(null)
         }
         z: 1
     }
