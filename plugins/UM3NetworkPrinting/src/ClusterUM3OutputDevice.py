@@ -62,8 +62,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._print_jobs = [] # type: List[PrintJobOutputModel]
 
-        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterMonitorItem.qml")
-        self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterControlItem.qml")
+        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterMonitorItem.qml")
+        self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterControlItem.qml")
 
         # See comments about this hack with the clusterPrintersChanged signal
         self.printersChanged.connect(self.clusterPrintersChanged)
@@ -158,7 +158,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
-            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "PrintWindow.qml")
+            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/PrintWindow.qml")
             self._printer_selection_dialog = CuraApplication.getInstance().createQmlComponent(path, {"OutputDevice": self})
         if self._printer_selection_dialog is not None:
             self._printer_selection_dialog.show()

@@ -93,7 +93,7 @@ Item
             {
                 id: statusImage
                 anchors.centerIn: printJobPreview
-                source: printJob.state == "error" ? "aborted-icon.svg" : ""
+                source: printJob.state == "error" ? "../svg/aborted-icon.svg" : ""
                 visible: source != ""
                 width: 0.5 * printJobPreview.width
                 height: 0.5 * printJobPreview.height
