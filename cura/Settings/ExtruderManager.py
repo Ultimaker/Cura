@@ -91,16 +91,6 @@ class ExtruderManager(QObject):
 
         return extruder_stack_ids
 
-    @pyqtSlot(str, result = str)
-    def getQualityChangesIdByExtruderStackId(self, extruder_stack_id: str) -> str:
-        global_container_stack = self._application.getGlobalContainerStack()
-        if global_container_stack is not None:
-            for position in self._extruder_trains[global_container_stack.getId()]:
-                extruder = self._extruder_trains[global_container_stack.getId()][position]
-                if extruder.getId() == extruder_stack_id:
-                    return extruder.qualityChanges.getId()
-        return ""
-
     ##  Changes the active extruder by index.
     #
     #   \param index The index of the new active extruder.
@@ -213,9 +203,6 @@ class ExtruderManager(QObject):
             changed = True
         if changed:
             self.extrudersChanged.emit(machine_id)
-
-    def getAllExtruderValues(self, setting_key):
-        return self.getAllExtruderSettings(setting_key, "value")
 
     ##  Gets a property of a setting for all extruders.
     #
@@ -336,19 +323,6 @@ class ExtruderManager(QObject):
             return []
         return [self._extruder_trains[machine_id][name] for name in self._extruder_trains[machine_id]]
 
-    ##  Returns a list containing the global stack and active extruder stacks.
-    #
-    #   The first element is the global container stack, followed by any extruder stacks.
-    #   \return \type{List[ContainerStack]}
-    def getActiveGlobalAndExtruderStacks(self) -> Optional[List[Union["ExtruderStack", "GlobalStack"]]]:
-        global_stack = self._application.getGlobalContainerStack()
-        if not global_stack:
-            return None
-
-        result = [global_stack]
-        result.extend(self.getActiveExtruderStacks())
-        return result
-
     ##  Returns the list of active extruder stacks, taking into account the machine extruder count.
     #
     #   \return \type{List[ContainerStack]} a list of
@@ -358,6 +332,7 @@ class ExtruderManager(QObject):
             return []
 
         result = []
+
         if global_stack.getId() in self._extruder_trains:
             for extruder in sorted(self._extruder_trains[global_stack.getId()]):
                 result.append(self._extruder_trains[global_stack.getId()][extruder])
