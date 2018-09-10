@@ -696,13 +696,13 @@ Component
                                     color:
                                     {
                                         var state = modelData.activePrintJob.state
-                                        var deactiveStates = [
+                                        var inactiveStates = [
                                             "pausing",
                                             "paused",
                                             "resuming",
                                             "wait_cleanup"
                                         ]
-                                        if(deactiveStates.indexOf(state) > -1 && remainingTime > 0)
+                                        if(inactiveStates.indexOf(state) > -1 && remainingTime > 0)
                                         {
                                             return UM.Theme.getColor("monitor_secondary_text")
                                         }

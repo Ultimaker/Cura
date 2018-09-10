@@ -10,7 +10,7 @@ Item
 {
     id: base
     property var printJob: null
-    property var shadowRadius: 5
+    property var shadowRadius: 5 * screenScaleFactor
     function getPrettyTime(time)
     {
         return OutputDevice.formatDuration(time)
