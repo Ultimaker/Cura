@@ -19,6 +19,8 @@ Item
     property var currentItem: null
     property var current_type: null
     property var current_brand: null
+
+    property var hasCurrentItem: base.currentItem != null
     property var isCurrentItemActivated:
     {
         const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
@@ -89,47 +91,48 @@ Item
     }
     Component.onCompleted: { expandActiveMaterial(active_root_material_id) }
 
-    onCurrentItemChanged: { MaterialsDetailsPanel.currentItem = currentItem }
+    onCurrentItemChanged: { materialDetailsPanel.currentItem = currentItem }
+
     Connections
     {
         target: materials_model
         onItemsChanged:
         {
-            var currentItemId = base.currentItem == null ? "" : base.currentItem.root_material_id;
-            var position = Cura.ExtruderManager.activeExtruderIndex;
+            var currentItemId = hasCurrentItem ? base.currentItem.root_material_id : ""
+            var position = Cura.ExtruderManager.activeExtruderIndex
 
             // try to pick the currently selected item; it may have been moved
             if (base.newRootMaterialIdToSwitchTo == "")
             {
-                base.newRootMaterialIdToSwitchTo = currentItemId;
+                base.newRootMaterialIdToSwitchTo = currentItemId
             }
 
             for (var idx = 0; idx < materials_model.rowCount(); ++idx)
             {
-                var item = materials_model.getItem(idx);
+                var item = materials_model.getItem(idx)
                 if (item.root_material_id == base.newRootMaterialIdToSwitchTo)
                 {
                     // Switch to the newly created profile if needed
-                    materialListView.currentIndex = idx;
-                    materialListView.activateDetailsWithIndex(materialListView.currentIndex);
+                    materialDetailsPanel.currentIndex = idx
+                    materialDetailsPanel.activateDetailsWithIndex(materialListView.currentIndex)
                     if (base.toActivateNewMaterial)
                     {
-                        Cura.MachineManager.setMaterial(position, item.container_node);
+                        Cura.MachineManager.setMaterial(position, item.container_node)
                     }
-                    base.newRootMaterialIdToSwitchTo = "";
-                    base.toActivateNewMaterial = false;
+                    base.newRootMaterialIdToSwitchTo = ""
+                    base.toActivateNewMaterial = false
                     return
                 }
             }
 
-            materialListView.currentIndex = 0;
-            materialListView.activateDetailsWithIndex(materialListView.currentIndex);
+            materialListView.currentIndex = 0
+            materialListView.activateDetailsWithIndex(materialListView.currentIndex)
             if (base.toActivateNewMaterial)
             {
-                Cura.MachineManager.setMaterial(position, materials_model.getItem(0).container_node);
+                Cura.MachineManager.setMaterial(position, materials_model.getItem(0).container_node)
             }
-            base.newRootMaterialIdToSwitchTo = "";
-            base.toActivateNewMaterial = false;
+            base.newRootMaterialIdToSwitchTo = ""
+            base.toActivateNewMaterial = false
         }
     }
 
@@ -313,11 +316,15 @@ Item
             frameVisible: true
             verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
 
-            MaterialsList {}
+            MaterialsList
+            {
+                id: materialListView
+            }
         }
 
         MaterialsDetailsPanel
         {
+            id: materialDetailsPanel
             anchors
             {
                 left: materialScrollView.right

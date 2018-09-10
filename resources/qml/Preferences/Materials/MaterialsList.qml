@@ -181,10 +181,12 @@ Item
                 anchors.left: parent.left
                 height: generic_section.expanded ? childrenRect.height : 0
                 visible: generic_section.expanded
+
                 Repeater
                 {
                     model: genericMaterialsModel
-                    delegate: MaterialsSlot {
+                    delegate: MaterialsSlot
+                    {
                         material: model
                     }
                 }
