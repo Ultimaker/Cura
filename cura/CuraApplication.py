@@ -116,6 +116,7 @@ if TYPE_CHECKING:
     from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
+    from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 
 numpy.seterr(all = "ignore")
@@ -177,12 +178,12 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = None
 
-        self.empty_container = None
-        self.empty_definition_changes_container = None
-        self.empty_variant_container = None
-        self.empty_material_container = None
-        self.empty_quality_container = None
-        self.empty_quality_changes_container = None
+        self.empty_container = None  # type: EmptyInstanceContainer
+        self.empty_definition_changes_container = None  # type: EmptyInstanceContainer
+        self.empty_variant_container = None  # type: EmptyInstanceContainer
+        self.empty_material_container = None  # type: EmptyInstanceContainer
+        self.empty_quality_container = None  # type: EmptyInstanceContainer
+        self.empty_quality_changes_container = None  # type: EmptyInstanceContainer
 
         self._variant_manager = None
         self._material_manager = None
@@ -370,7 +371,7 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container
+        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container  # type: EmptyInstanceContainer
 
         self._container_registry.addContainer(
             cura.Settings.cura_empty_instance_containers.empty_definition_changes_container)
