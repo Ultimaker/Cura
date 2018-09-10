@@ -158,17 +158,18 @@ Item
                 anchors.fill: generic_header
                 onPressed:
                 {
-                    const i = base.collapsed_brands.indexOf("Generic")
-                    if (i > -1)
+                    const index = base.expanded_brands.indexOf("Generic")
+
+                    if (index > -1)
                     {
                         // Remove it
-                        base.collapsed_brands.splice(i, 1)
+                        base.expanded_brands.splice(index, 1)
                         generic_section.expanded = false
                     }
                     else
                     {
                         // Add it
-                        base.collapsed_brands.push("Generic")
+                        base.expanded_brands.push("Generic")
                         generic_section.expanded = true
                     }
                 }
