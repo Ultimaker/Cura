@@ -15,7 +15,7 @@ Component
     {
         id: base
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
-
+        property var shadowRadius: 5 * screenScaleFactor
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
         visible: OutputDevice != null
         anchors.fill: parent
@@ -82,6 +82,8 @@ Component
 
             ListView
             {
+                id: printer_list
+                property var current_index: -1
                 anchors
                 {
                     top: parent.top
@@ -105,15 +107,21 @@ Component
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
                         id: base
-                        property var shadowRadius: 5
+                        property var shadowRadius: 5 * screenScaleFactor
                         property var collapsed: true
 
                         layer.enabled: true
                         layer.effect: DropShadow
                         {
-                            radius: base.shadowRadius
+                            radius: 5 * screenScaleFactor
                             verticalOffset: 2
                             color: "#3F000000"  // 25% shadow
+                        }
+
+                        Connections
+                        {
+                            target: printer_list
+                            onCurrent_indexChanged: { base.collapsed = printer_list.current_index != model.index }
                         }
 
                         Item
@@ -131,7 +139,17 @@ Component
                             MouseArea
                             {
                                 anchors.fill: parent
-                                onClicked: base.collapsed = !base.collapsed
+                                onClicked:
+                                {
+                                    
+                                    if (base.collapsed) {
+                                        printer_list.current_index = model.index
+                                    }
+                                    else
+                                    {
+                                        printer_list.current_index = -1
+                                    }
+                                }
                             }
 
                             Item
