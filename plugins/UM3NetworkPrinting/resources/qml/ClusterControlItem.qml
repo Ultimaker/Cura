@@ -106,6 +106,17 @@ Component
                         height: childrenRect.height + UM.Theme.getSize("default_margin").height
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
+                        color:
+                        {
+                            if(modelData.state == "disabled")
+                            {
+                                return UM.Theme.getColor("monitor_background_inactive")
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("monitor_background_active") 
+                            }
+                        }
                         id: base
                         property var shadowRadius: 5 * screenScaleFactor
                         property var collapsed: true
@@ -141,7 +152,6 @@ Component
                                 anchors.fill: parent
                                 onClicked:
                                 {
-                                    
                                     if (base.collapsed) {
                                         printer_list.current_index = model.index
                                     }
@@ -185,7 +195,7 @@ Component
                                     {
                                         if(modelData.state == "disabled")
                                         {
-                                            return UM.Theme.getColor("setting_control_disabled")
+                                            return UM.Theme.getColor("monitor_text_inactive")
                                         }
 
                                         if(modelData.activePrintJob != undefined)
@@ -193,7 +203,7 @@ Component
                                             return UM.Theme.getColor("primary")
                                         }
 
-                                        return UM.Theme.getColor("setting_control_disabled")
+                                        return UM.Theme.getColor("monitor_text_inactive")
                                     }
                                 }
                             }
@@ -241,7 +251,7 @@ Component
                                     width: parent.width
                                     elide: Text.ElideRight
                                     font: UM.Theme.getFont("default")
-                                    color: UM.Theme.getColor("monitor_secondary_text")
+                                    color: UM.Theme.getColor("monitor_text_inactive")
                                 }
                             }
 
@@ -274,8 +284,16 @@ Component
                             Rectangle
                             {
                                 id: topSpacer
-                                color: UM.Theme.getColor("viewport_background")
-                                height: 2
+                                color:
+                                {
+                                    if(modelData.state == "disabled")
+                                    {
+                                        return UM.Theme.getColor("monitor_lining_inactive")
+                                    }
+                                    return UM.Theme.getColor("viewport_background")
+                                }
+                                // UM.Theme.getColor("viewport_background")
+                                height: 1
                                 anchors
                                 {
                                     left: parent.left
@@ -288,7 +306,14 @@ Component
                             PrinterFamilyPill
                             {
                                 id: printerFamilyPill
-                                color: UM.Theme.getColor("viewport_background")
+                                color:
+                                {
+                                    if(modelData.state == "disabled")
+                                    {
+                                        return "transparent"
+                                    }
+                                    return UM.Theme.getColor("viewport_background")
+                                }
                                 anchors.top: topSpacer.bottom
                                 anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
                                 text: modelData.type
@@ -722,7 +747,7 @@ Component
                                         ]
                                         if(inactiveStates.indexOf(state) > -1 && remainingTime > 0)
                                         {
-                                            return UM.Theme.getColor("monitor_secondary_text")
+                                            return UM.Theme.getColor("monitor_background_inactive")
                                         }
                                         else
                                         {
@@ -749,7 +774,25 @@ Component
                                         anchors.leftMargin: getTextOffset()
                                         text: progressText
                                         anchors.verticalCenter: parent.verticalCenter
-                                        color: progressItem.width + progressLabel.width < control.width ? "black" : "white"
+                                        // color: progressItem.width + progressLabel.width < control.width ? "black" : "white"
+                                        color:
+                                        {
+                                            var state = modelData.activePrintJob.state
+                                            var inactiveStates = [
+                                                "pausing",
+                                                "paused",
+                                                "resuming",
+                                                "wait_cleanup"
+                                            ]
+                                            if(inactiveStates.indexOf(state) > -1 && remainingTime > 0)
+                                            {
+                                                return "black"
+                                            }
+                                            else
+                                            {
+                                                return progressItem.width + progressLabel.width < control.width ? "black" : "white"
+                                            }
+                                        }
                                         width: contentWidth
                                         font: UM.Theme.getFont("default")
                                     }

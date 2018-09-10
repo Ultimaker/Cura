@@ -323,7 +323,10 @@
         "favorites_header_text_hover": [31, 36, 39, 255],
         "favorites_row_selected": [196, 239, 255, 255],
 
-        "monitor_secondary_text": [153, 153, 153, 255]
+        "monitor_text_inactive": [154, 154, 154, 255],
+        "monitor_background_inactive": [240, 240, 240, 255],
+        "monitor_background_active": [255, 255, 255, 255],
+        "monitor_lining_inactive": [230, 230, 230, 255]
     },
 
     "sizes": {
