@@ -55,9 +55,6 @@
         "jerk_travel": {
             "default_value": 20
         },
-        "layer_height": {
-            "default_value": 0.15
-        },
         "layer_height_0": {
             "default_value": 0.2
         },
