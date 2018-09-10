@@ -892,7 +892,11 @@ class MachineManager(QObject):
                 extruder_nr = node.callDecoration("getActiveExtruderPosition")
 
                 if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
-                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
+                    extruder = extruder_manager.getExtruderStack(extruder_count - 1)
+                    if extruder is not None:
+                        node.callDecoration("setActiveExtruder", extruder.getId())
+                    else:
+                        Logger.log("w", "Could not find extruder to set active.")
 
         # Make sure one of the extruder stacks is active
         extruder_manager.setActiveExtruderIndex(0)

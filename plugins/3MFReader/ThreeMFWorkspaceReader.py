@@ -934,7 +934,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                              root_material_id)
 
             if material_node is not None and material_node.getContainer() is not None:
-                extruder_stack.material = material_node.getContainer()
+                extruder_stack.material = material_node.getContainer()  # type: InstanceContainer
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first

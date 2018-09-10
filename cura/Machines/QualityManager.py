@@ -221,12 +221,12 @@ class QualityManager(QObject):
         for node in nodes_to_check:
             if node and node.quality_type_map:
                 quality_node = list(node.quality_type_map.values())[0]
-                is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
+                is_global_quality = parseBool(quality_node.getMetaDataEntry("global_quality", False))
                 if not is_global_quality:
                     continue
 
                 for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
+                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
                     quality_group.node_for_global = quality_node
                     quality_group_dict[quality_type] = quality_group
                 break
@@ -310,13 +310,13 @@ class QualityManager(QObject):
                     if has_extruder_specific_qualities:
                         # Only include variant qualities; skip non global qualities
                         quality_node = list(node.quality_type_map.values())[0]
-                        is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
+                        is_global_quality = parseBool(quality_node.getMetaDataEntry("global_quality", False))
                         if is_global_quality:
                             continue
 
                     for quality_type, quality_node in node.quality_type_map.items():
                         if quality_type not in quality_group_dict:
-                            quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
+                            quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
                             quality_group_dict[quality_type] = quality_group
 
                         quality_group = quality_group_dict[quality_type]
@@ -350,7 +350,7 @@ class QualityManager(QObject):
         for node in nodes_to_check:
             if node and node.quality_type_map:
                 for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
+                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
                     quality_group.node_for_global = quality_node
                     quality_group_dict[quality_type] = quality_group
                 break

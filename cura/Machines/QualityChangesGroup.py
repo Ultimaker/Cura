@@ -17,7 +17,7 @@ class QualityChangesGroup(QualityGroup):
         super().__init__(name, quality_type, parent)
         self._container_registry = Application.getInstance().getContainerRegistry()
 
-    def addNode(self, node: "QualityNode"):
+    def addNode(self, node: "QualityNode") -> None:
         extruder_position = node.getMetaDataEntry("position")
 
         if extruder_position is None and self.node_for_global is not None or extruder_position in self.nodes_for_extruders: #We would be overwriting another node.

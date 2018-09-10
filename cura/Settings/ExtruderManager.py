@@ -15,7 +15,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 
-from typing import Optional, TYPE_CHECKING, Dict, List, Any
+from typing import Optional, TYPE_CHECKING, Dict, List, Any, Union
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
@@ -39,9 +39,12 @@ class ExtruderManager(QObject):
         self._application = cura.CuraApplication.CuraApplication.getInstance()
 
         # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
-        self._extruder_trains = {}  # type: Dict[str, Dict[str, ExtruderStack]]
+        self._extruder_trains = {}  # type: Dict[str, Dict[str, "ExtruderStack"]]
         self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
-        self._selected_object_extruders = []  # type: List[ExtruderStack]
+
+        # TODO; I have no idea why this is a union of ID's and extruder stacks. This needs to be fixed at some point.
+        self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
+
         self._addCurrentMachineExtruders()
 
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
@@ -80,7 +83,7 @@ class ExtruderManager(QObject):
     ##  Gets a dict with the extruder stack ids with the extruder number as the key.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self) -> Dict[str, str]:
-        extruder_stack_ids = {}
+        extruder_stack_ids = {} # type: Dict[str, str]
 
         global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
@@ -115,7 +118,7 @@ class ExtruderManager(QObject):
 
     ##  Provides a list of extruder IDs used by the current selected objects.
     @pyqtProperty("QVariantList", notify = selectedObjectExtrudersChanged)
-    def selectedObjectExtruders(self) -> List[str]:
+    def selectedObjectExtruders(self) -> List[Union[str, "ExtruderStack"]]:
         if not self._selected_object_extruders:
             object_extruders = set()
 
@@ -140,7 +143,7 @@ class ExtruderManager(QObject):
                 elif current_extruder_trains:
                     object_extruders.add(current_extruder_trains[0].getId())
 
-            self._selected_object_extruders = list(object_extruders)
+            self._selected_object_extruders = list(object_extruders)  # type: List[Union[str, "ExtruderStack"]]
 
         return self._selected_object_extruders
 
@@ -149,7 +152,7 @@ class ExtruderManager(QObject):
     #   This will trigger a recalculation of the extruders used for the
     #   selection.
     def resetSelectedObjectExtruders(self) -> None:
-        self._selected_object_extruders = []
+        self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
         self.selectedObjectExtrudersChanged.emit()
 
     @pyqtSlot(result = QObject)

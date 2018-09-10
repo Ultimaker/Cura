@@ -114,6 +114,8 @@ from UM.FlameProfiler import pyqtSlot
 
 if TYPE_CHECKING:
     from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
+    from cura.Machines.MaterialManager import MaterialManager
+    from cura.Machines.QualityManager import QualityManager
 
 
 numpy.seterr(all = "ignore")
@@ -807,20 +809,20 @@ class CuraApplication(QtApplication):
             self._machine_manager = MachineManager(self)
         return self._machine_manager
 
-    def getExtruderManager(self, *args):
+    def getExtruderManager(self, *args) -> ExtruderManager:
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager()
         return self._extruder_manager
 
-    def getVariantManager(self, *args):
+    def getVariantManager(self, *args) -> VariantManager:
         return self._variant_manager
 
     @pyqtSlot(result = QObject)
-    def getMaterialManager(self, *args):
+    def getMaterialManager(self, *args) -> "MaterialManager":
         return self._material_manager
 
     @pyqtSlot(result = QObject)
-    def getQualityManager(self, *args):
+    def getQualityManager(self, *args) -> "QualityManager":
         return self._quality_manager
 
     def getObjectsModel(self, *args):
@@ -829,23 +831,23 @@ class CuraApplication(QtApplication):
         return self._object_manager
 
     @pyqtSlot(result = QObject)
-    def getMultiBuildPlateModel(self, *args):
+    def getMultiBuildPlateModel(self, *args) -> MultiBuildPlateModel:
         if self._multi_build_plate_model is None:
             self._multi_build_plate_model = MultiBuildPlateModel(self)
         return self._multi_build_plate_model
 
     @pyqtSlot(result = QObject)
-    def getBuildPlateModel(self, *args):
+    def getBuildPlateModel(self, *args) -> BuildPlateModel:
         if self._build_plate_model is None:
             self._build_plate_model = BuildPlateModel(self)
         return self._build_plate_model
 
-    def getCuraSceneController(self, *args):
+    def getCuraSceneController(self, *args) -> CuraSceneController:
         if self._cura_scene_controller is None:
             self._cura_scene_controller = CuraSceneController.createCuraSceneController()
         return self._cura_scene_controller
 
-    def getSettingInheritanceManager(self, *args):
+    def getSettingInheritanceManager(self, *args) -> SettingInheritanceManager:
         if self._setting_inheritance_manager is None:
             self._setting_inheritance_manager = SettingInheritanceManager.createSettingInheritanceManager()
         return self._setting_inheritance_manager
