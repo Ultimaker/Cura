@@ -229,10 +229,12 @@ class Toolbox(QObject, Extension):
         # Make remote requests:
         self._makeRequestByType("packages")
         self._makeRequestByType("authors")
-        self._makeRequestByType("plugins_showcase")
-        self._makeRequestByType("materials_showcase")
-        self._makeRequestByType("materials_available")
-        self._makeRequestByType("materials_generic")
+        # TODO: Uncomment in the future when the tag-filtered api calls work in the cloud server
+        # self._makeRequestByType("plugins_showcase")
+        # self._makeRequestByType("plugins_available")
+        # self._makeRequestByType("materials_showcase")
+        # self._makeRequestByType("materials_available")
+        # self._makeRequestByType("materials_generic")
 
         # Gather installed packages:
         self._updateInstalledModels()
@@ -612,6 +614,7 @@ class Toolbox(QObject, Extension):
         do_not_handle = [
             "materials_available",
             "materials_showcase",
+            "materials_generic",
             "plugins_available",
             "plugins_showcase",
         ]
@@ -830,15 +833,20 @@ class Toolbox(QObject, Extension):
                 if author["author_id"] in processed_authors:
                     continue
 
-                if "showcase" in item["tags"]:
-                    self._metadata["materials_showcase"].append(author)
+                # Generic materials to be in the same section
+                if "generic" in item["tags"]:
+                    self._metadata["materials_generic"].append(item)
                 else:
-                    self._metadata["materials_available"].append(author)
+                    if "showcase" in item["tags"]:
+                        self._metadata["materials_showcase"].append(author)
+                    else:
+                        self._metadata["materials_available"].append(author)
 
-                processed_authors.append(author["author_id"])
+                    processed_authors.append(author["author_id"])
 
         self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
         self._models["materials_available"].setMetadata(self._metadata["materials_available"])
+        self._models["materials_generic"].setMetadata(self._metadata["materials_generic"])
 
     def buildPluginsModels(self) -> None:
 
