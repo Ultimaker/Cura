@@ -429,6 +429,7 @@ class CuraApplication(QtApplication):
             # Readers & Writers:
             "GCodeWriter",
             "STLReader",
+            "3MFWriter",
 
             # Tools:
             "CameraTool",
