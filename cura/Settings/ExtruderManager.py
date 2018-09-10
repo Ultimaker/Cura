@@ -41,7 +41,7 @@ class ExtruderManager(QObject):
         # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
         self._extruder_trains = {}  # type: Dict[str, Dict[str, ExtruderStack]]
         self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
-        self._selected_object_extruders = []  # type: List[ExtruderStack]
+        self._selected_object_extruders = []  # type: List[str]
         self._addCurrentMachineExtruders()
 
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
@@ -80,7 +80,7 @@ class ExtruderManager(QObject):
     ##  Gets a dict with the extruder stack ids with the extruder number as the key.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self) -> Dict[str, str]:
-        extruder_stack_ids = {}
+        extruder_stack_ids = {}  # type: Dict[str, str]
 
         global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
