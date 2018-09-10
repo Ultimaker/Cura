@@ -306,7 +306,7 @@ UM.MainWindow
         {
             id: machineExtruderCount
 
-            containerStackId: Cura.MachineManager.activeMachineId
+            containerStack: Cura.MachineManager.activeMachine
             key: "machine_extruder_count"
             watchedProperties: [ "value" ]
             storeIndex: 0
@@ -1054,7 +1054,7 @@ UM.MainWindow
             {
                 restart();
             }
-            else if(Cura.MachineManager.activeMachineId == null || Cura.MachineManager.activeMachineId == "")
+            else if(Cura.MachineManager.activeMachine == null)
             {
                 addMachineDialog.open();
             }

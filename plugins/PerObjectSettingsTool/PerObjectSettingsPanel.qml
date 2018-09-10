@@ -17,7 +17,6 @@ Item {
 
     width: childrenRect.width;
     height: childrenRect.height;
-
     property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
                                     "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
 
@@ -45,7 +44,7 @@ Item {
             UM.SettingPropertyProvider
             {
                 id: meshTypePropertyProvider
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 watchedProperties: [ "enabled" ]
             }
 
@@ -518,7 +517,7 @@ Item {
     {
         id: machineExtruderCount
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
         watchedProperties: [ "value" ]
         storeIndex: 0
@@ -528,7 +527,7 @@ Item {
     {
         id: printSequencePropertyProvider
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "print_sequence"
         watchedProperties: [ "value" ]
         storeIndex: 0
