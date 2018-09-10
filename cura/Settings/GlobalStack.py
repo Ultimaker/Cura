@@ -196,6 +196,9 @@ class GlobalStack(CuraContainerStack):
     def getHasVariants(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
+    def getHasMachineQuality(self) -> bool:
+        return parseBool(self.getMetaDataEntry("has_machine_quality", False))
+
 
 ## private:
 global_stack_mime = MimeType(
