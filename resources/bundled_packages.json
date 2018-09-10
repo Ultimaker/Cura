@@ -662,12 +662,12 @@
             }
         }
     },
-    "VersionUpgrade34to40": {
+    "VersionUpgrade34to35": {
         "package_info": {
-            "package_id": "VersionUpgrade34to40",
+            "package_id": "VersionUpgrade34to35",
             "package_type": "plugin",
-            "display_name": "Version Upgrade 3.4 to 4.0",
-            "description": "Upgrades configurations from Cura 3.4 to Cura 4.0.",
+            "display_name": "Version Upgrade 3.4 to 3.5",
+            "description": "Upgrades configurations from Cura 3.4 to Cura 3.5.",
             "package_version": "1.0.0",
             "sdk_version": 4,
             "website": "https://ultimaker.com",
