@@ -747,7 +747,7 @@ Component
                                         ]
                                         if(inactiveStates.indexOf(state) > -1 && remainingTime > 0)
                                         {
-                                            return UM.Theme.getColor("monitor_background_inactive")
+                                            return UM.Theme.getColor("monitor_text_inactive")
                                         }
                                         else
                                         {
@@ -757,7 +757,7 @@ Component
                                     id: progressItem
                                     function getTextOffset()
                                     {
-                                        if(progressItem.width + progressLabel.width < control.width)
+                                        if(progressItem.width + progressLabel.width + 16 < control.width)
                                         {
                                             return progressItem.width + UM.Theme.getSize("default_margin").width
                                         }
@@ -774,24 +774,7 @@ Component
                                         anchors.leftMargin: getTextOffset()
                                         text: progressText
                                         anchors.verticalCenter: parent.verticalCenter
-                                        // color: progressItem.width + progressLabel.width < control.width ? "black" : "white"
-                                        color:
-                                        {
-                                            var state = modelData.activePrintJob.state
-                                            var inactiveStates = [
-                                                "pausing",
-                                                "paused",
-                                                "resuming",
-                                                "wait_cleanup"
-                                            ]
-                                            if(inactiveStates.indexOf(state) > -1 && remainingTime > 0)
-                                            {
-                                                return "black"
-                                            }
-                                            else
-                                            {
-                                                return progressItem.width + progressLabel.width < control.width ? "black" : "white"
-                                            }
+                                        color: progressItem.width + progressLabel.width < control.width ? "black" : "white"
                                         }
                                         width: contentWidth
                                         font: UM.Theme.getFont("default")
