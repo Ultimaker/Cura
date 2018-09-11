@@ -775,7 +775,6 @@ Component
                                         text: progressText
                                         anchors.verticalCenter: parent.verticalCenter
                                         color: progressItem.width + progressLabel.width < control.width ? "black" : "white"
-                                        }
                                         width: contentWidth
                                         font: UM.Theme.getFont("default")
                                     }
