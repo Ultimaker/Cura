@@ -16,6 +16,8 @@ Item
         return OutputDevice.formatDuration(time)
     }
 
+    width: parent.width
+
     UM.I18nCatalog
     {
         id: catalog
@@ -54,7 +56,7 @@ Item
                 bottom: parent.bottom
                 left: parent.left
                 right: parent.horizontalCenter
-                margins: 2 * UM.Theme.getSize("default_margin").width
+                margins: UM.Theme.getSize("wide_margin").width
                 rightMargin: UM.Theme.getSize("default_margin").width
             }
 
@@ -124,6 +126,7 @@ Item
                 right: parent.right
                 margins: 2 * UM.Theme.getSize("default_margin").width
                 leftMargin: UM.Theme.getSize("default_margin").width
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             Label
