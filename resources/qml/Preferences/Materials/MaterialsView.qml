@@ -40,7 +40,7 @@ TabView
         {
             return ""
         }
-        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentItem.container_node, true);
+        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode, true);
         if (linkedMaterials.length == 0)
         {
             return ""
