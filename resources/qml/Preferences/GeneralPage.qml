@@ -13,6 +13,7 @@ UM.PreferencesPage
 {
     //: General configuration page title
     title: catalog.i18nc("@title:tab","General")
+    id: generalPreferencesPage
 
     function setDefaultLanguage(languageCode)
     {
@@ -283,9 +284,6 @@ UM.PreferencesPage
                 }
             }
 
-
-
-
             Label
             {
                 id: languageCaption
@@ -308,7 +306,7 @@ UM.PreferencesPage
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                text: catalog.i18nc("@info:tooltip","Slice automatically when changing settings.")
+                text: catalog.i18nc("@info:tooltip", "Slice automatically when changing settings.")
 
                 CheckBox
                 {
@@ -316,7 +314,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("general/auto_slice"))
                     onClicked: UM.Preferences.setValue("general/auto_slice", checked)
 
-                    text: catalog.i18nc("@option:check","Slice automatically");
+                    text: catalog.i18nc("@option:check", "Slice automatically");
                 }
             }
 
@@ -330,7 +328,7 @@ UM.PreferencesPage
             Label
             {
                 font.bold: true
-                text: catalog.i18nc("@label","Viewport behavior")
+                text: catalog.i18nc("@label", "Viewport behavior")
             }
 
             UM.TooltipArea
@@ -338,7 +336,7 @@ UM.PreferencesPage
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                text: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
+                text: catalog.i18nc("@info:tooltip", "Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
 
                 CheckBox
                 {
@@ -347,14 +345,14 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
                     onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
 
-                    text: catalog.i18nc("@option:check","Display overhang");
+                    text: catalog.i18nc("@option:check", "Display overhang");
                 }
             }
 
             UM.TooltipArea {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when a model is selected")
+                text: catalog.i18nc("@info:tooltip", "Moves the camera so the model is in the center of the view when a model is selected")
 
                 CheckBox
                 {
@@ -368,12 +366,12 @@ UM.PreferencesPage
             UM.TooltipArea {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip","Should the default zoom behavior of cura be inverted?")
+                text: catalog.i18nc("@info:tooltip", "Should the default zoom behavior of cura be inverted?")
 
                 CheckBox
                 {
                     id: invertZoomCheckbox
-                    text: catalog.i18nc("@action:button","Invert the direction of camera zoom.");
+                    text: catalog.i18nc("@action:button", "Invert the direction of camera zoom.");
                     checked: boolCheck(UM.Preferences.getValue("view/invert_zoom"))
                     onClicked: UM.Preferences.setValue("view/invert_zoom",  checked)
                 }
