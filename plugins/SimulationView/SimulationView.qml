@@ -666,16 +666,7 @@ Item
             Connections
             {
                 target: UM.SimulationView
-                onMaxLayersChanged:
-                {
-                    playButton.pauseSimulation()
-                    layerSlider.setUpperValue(UM.SimulationView.currentLayer)
-                }
-                onMinimumLayerChanged:
-                {
-                    playButton.pauseSimulation()
-                    layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
-                }
+                onMaxLayersChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
                 onCurrentLayerChanged:
                 {
                     playButton.pauseSimulation()
