@@ -83,7 +83,7 @@ class ExtruderManager(QObject):
     ##  Gets a dict with the extruder stack ids with the extruder number as the key.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self) -> Dict[str, str]:
-        extruder_stack_ids = {} # type: Dict[str, str]
+        extruder_stack_ids = {}  # type: Dict[str, str]
 
         global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
