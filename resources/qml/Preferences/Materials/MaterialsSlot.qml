@@ -59,8 +59,8 @@ Rectangle
             onClicked:
             {
                 base.currentItem = material
-                base.current_brand = material.brand
-                base.current_type = material.brand+"_"+material.material
+                materialList.currentBrand = material.brand
+                materialList.currentType = material.brand + "_" + material.material
             }
             hoverEnabled: true
             onEntered: { material_slot.hovered = true }

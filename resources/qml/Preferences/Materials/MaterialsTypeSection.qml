@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: material_type_section
-    property var expanded: base.expanded_types.indexOf(model.brand + "_" + model.name) > -1
+    property var expanded: materialList.expandedTypes.indexOf(model.brand + "_" + model.name) > -1
     property var colors_model: model.colors
     height: childrenRect.height
     width: parent.width
@@ -22,7 +22,7 @@ Rectangle
         id: material_type_header_background
         color:
         {
-            if(!expanded && model.brand+"_"+model.name == base.current_type)
+            if(!expanded && model.brand + "_" + model.name == materialList.currentType)
             {
                 return UM.Theme.getColor("favorites_row_selected")
             }
@@ -94,20 +94,20 @@ Rectangle
         onPressed:
         {
             const identifier = model.brand + "_" + model.name;
-            const i = base.expanded_types.indexOf(identifier)
+            const i = materialList.expandedTypes.indexOf(identifier)
             if (i > -1)
             {
                 // Remove it
-                base.expanded_types.splice(i, 1)
+                materialList.expandedTypes.splice(i, 1)
                 material_type_section.expanded = false
             }
             else
             {
                 // Add it
-                base.expanded_types.push(identifier)
+                materialList.expandedTypes.push(identifier)
                 material_type_section.expanded = true
             }
-            UM.Preferences.setValue("cura/expanded_types", base.expanded_types.join(";"));
+            UM.Preferences.setValue("cura/expanded_types", materialList.expandedTypes.join(";"));
         }
     }
     Column
@@ -131,7 +131,7 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
-            expanded = base.expanded_types.indexOf(model.brand + "_" + model.name) > -1
+            expanded = materialList.expandedTypes.indexOf(model.brand + "_" + model.name) > -1
         }
     }
 }

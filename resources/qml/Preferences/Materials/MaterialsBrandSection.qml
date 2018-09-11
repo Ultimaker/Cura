@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: brand_section
-    property var expanded: base.expanded_brands.indexOf(model.name) > -1
+    property var expanded: materialList.expandedBrands.indexOf(model.name) > -1
     property var types_model: model.material_types
     height: childrenRect.height
     width: parent.width
@@ -22,7 +22,7 @@ Rectangle
         id: brand_header_background
         color:
         {
-            if(!expanded && model.name == base.current_brand)
+            if(!expanded && model.name == materialList.currentBrand)
             {
                 return UM.Theme.getColor("favorites_row_selected")
             }
@@ -79,20 +79,20 @@ Rectangle
         anchors.fill: brand_header
         onPressed:
         {
-            const i = base.expanded_brands.indexOf(model.name)
+            const i = materialList.expandedBrands.indexOf(model.name)
             if (i > -1)
             {
                 // Remove it
-                base.expanded_brands.splice(i, 1)
+                materialList.expandedBrands.splice(i, 1)
                 brand_section.expanded = false
             }
             else
             {
                 // Add it
-                base.expanded_brands.push(model.name)
+                materialList.expandedBrands.push(model.name)
                 brand_section.expanded = true
             }
-            UM.Preferences.setValue("cura/expanded_brands", base.expanded_brands.join(";"));
+            UM.Preferences.setValue("cura/expanded_brands", materialList.expandedBrands.join(";"));
         }
     }
     Column
@@ -114,7 +114,7 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
-            expanded = base.expanded_brands.indexOf(model.name) > -1
+            expanded = materialList.expandedBrands.indexOf(model.name) > -1
         }
     }
 }
