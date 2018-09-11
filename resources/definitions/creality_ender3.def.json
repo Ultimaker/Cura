@@ -8,7 +8,10 @@
         "manufacturer": "Creality3D",
         "file_formats": "text/x-gcode",
         "platform": "creality_ender3_platform.stl",
-        "preferred_quality_type": "draft"
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains": {
+            "0": "creality_ender3_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": {
@@ -37,9 +40,6 @@
                 [30, 34]
             ]
         },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "acceleration_enabled": {
             "default_value": true
         },
@@ -54,9 +54,6 @@
         },
         "jerk_travel": {
             "default_value": 20
-        },
-        "layer_height": {
-            "default_value": 0.15
         },
         "layer_height_0": {
             "default_value": 0.2
