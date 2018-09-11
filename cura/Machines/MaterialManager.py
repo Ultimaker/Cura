@@ -199,9 +199,14 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
         favorites = self._application.getPreferences().getValue("cura/favorite_materials")
+        favorite_added = False
         for item in favorites.split(";"):
-            self._favorites.add(item)
-        self.favoritesUpdated.emit()
+            if item not in self._favorites:
+                self._favorites.add(item)
+                favorite_added = True
+
+        if favorite_added:
+            self.favoritesUpdated.emit()
 
     def __addMaterialMetadataIntoLookupTree(self, material_metadata: dict) -> None:
         material_id = material_metadata["id"]
