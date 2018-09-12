@@ -84,8 +84,10 @@ Item
             {
                 forceActiveFocus()
 
-                const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-                Cura.MachineManager.setMaterial(extruder_position, base.currentItem.container_node);
+                // Set the current material as the one to be activated (needed to force the UI update)
+                base.newRootMaterialIdToSwitchTo = base.currentItem.root_material_id
+                const extruder_position = Cura.ExtruderManager.activeExtruderIndex
+                Cura.MachineManager.setMaterial(extruder_position, base.currentItem.container_node)
             }
         }
 
@@ -258,6 +260,8 @@ Item
         modality: Qt.ApplicationModal
         onYes:
         {
+            // Set the active material as the fallback. It will be selected when the current material is deleted
+            base.newRootMaterialIdToSwitchTo = base.active_root_material_id
             base.materialManager.removeMaterial(base.currentItem.container_node);
         }
     }
