@@ -1,22 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os
-import os.path
-
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication
 
+from UM.Application import Application
 from UM.Math.Vector import Vector
 from UM.Tool import Tool
-from UM.Application import Application
 from UM.Event import Event, MouseEvent
-
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Scene.Selection import Selection
-from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
-from cura.Scene.CuraSceneNode import CuraSceneNode
 
+from cura.CuraApplication import CuraApplication
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.PickingPass import PickingPass
 
 from UM.Operations.GroupedOperation import GroupedOperation
@@ -26,19 +22,19 @@ from cura.Operations.SetParentOperation import SetParentOperation
 
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from UM.Scene.GroupDecorator import GroupDecorator
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 from UM.Settings.SettingInstance import SettingInstance
+
+import numpy
 
 class SupportEraser(Tool):
     def __init__(self):
         super().__init__()
-        self._shortcut_key = Qt.Key_G
+        self._shortcut_key = Qt.Key_E
         self._controller = self.getController()
 
         self._selection_pass = None
-        Application.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
 
         # Note: if the selection is cleared with this tool active, there is no way to switch to
         # another tool than to reselect an object (by clicking it) because the tool buttons in the
@@ -102,11 +98,10 @@ class SupportEraser(Tool):
 
         node.setName("Eraser")
         node.setSelectable(True)
-        mesh = MeshBuilder()
-        mesh.addCube(10,10,10)
+        mesh = self._createCube(10)
         node.setMeshData(mesh.build())
 
-        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
         node.addDecorator(BuildPlateDecorator(active_build_plate))
         node.addDecorator(SliceableObjectDecorator())
 
@@ -126,7 +121,7 @@ class SupportEraser(Tool):
         op.push()
         node.setPosition(position, CuraSceneNode.TransformSpace.World)
 
-        Application.getInstance().getController().getScene().sceneChanged.emit(node)
+        CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
 
     def _removeEraserMesh(self, node: CuraSceneNode):
         parent = node.getParent()
@@ -139,16 +134,16 @@ class SupportEraser(Tool):
         if parent and not Selection.isSelected(parent):
             Selection.add(parent)
 
-        Application.getInstance().getController().getScene().sceneChanged.emit(node)
+        CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
 
     def _updateEnabled(self):
         plugin_enabled = False
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
             plugin_enabled = global_container_stack.getProperty("anti_overhang_mesh", "enabled")
 
-        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
+        CuraApplication.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
 
     def _onSelectionChanged(self):
         # When selection is passed from one object to another object, first the selection is cleared
@@ -166,3 +161,28 @@ class SupportEraser(Tool):
             self._skip_press = False
 
         self._had_selection = has_selection
+
+    def _createCube(self, size):
+        mesh = MeshBuilder()
+
+        # Can't use MeshBuilder.addCube() because that does not get per-vertex normals
+        # Per-vertex normals require duplication of vertices
+        s = size / 2
+        verts = [ # 6 faces with 4 corners each
+            [-s, -s,  s], [-s,  s,  s], [ s,  s,  s], [ s, -s,  s],
+            [-s,  s, -s], [-s, -s, -s], [ s, -s, -s], [ s,  s, -s],
+            [ s, -s, -s], [-s, -s, -s], [-s, -s,  s], [ s, -s,  s],
+            [-s,  s, -s], [ s,  s, -s], [ s,  s,  s], [-s,  s,  s],
+            [-s, -s,  s], [-s, -s, -s], [-s,  s, -s], [-s,  s,  s],
+            [ s, -s, -s], [ s, -s,  s], [ s,  s,  s], [ s,  s, -s]
+        ]
+        mesh.setVertices(numpy.asarray(verts, dtype=numpy.float32))
+
+        indices = []
+        for i in range(0, 24, 4): # All 6 quads (12 triangles)
+            indices.append([i, i+2, i+1])
+            indices.append([i, i+3, i+2])
+        mesh.setIndices(numpy.asarray(indices, dtype=numpy.int32))
+
+        mesh.calculateNormals()
+        return mesh

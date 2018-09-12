@@ -4,6 +4,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse
+import faulthandler
 import os
 import sys
 
@@ -11,14 +12,14 @@ from UM.Platform import Platform
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
-parser.add_argument('--debug',
-                    action='store_true',
+parser.add_argument("--debug",
+                    action="store_true",
                     default = False,
                     help = "Turn on the debug mode by setting this option."
                     )
-parser.add_argument('--trigger-early-crash',
-                    dest = 'trigger_early_crash',
-                    action = 'store_true',
+parser.add_argument("--trigger-early-crash",
+                    dest = "trigger_early_crash",
+                    action = "store_true",
                     default = False,
                     help = "FOR TESTING ONLY. Trigger an early crash to show the crash dialog."
                     )
@@ -39,13 +40,10 @@ if not known_args["debug"]:
         sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w", encoding = "utf-8")
         sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w", encoding = "utf-8")
 
-import platform
-import faulthandler
 
-#WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
+# WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    linux_distro_name = platform.linux_distribution()[0].lower()
     # The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
     try:
         import ctypes
@@ -78,6 +76,7 @@ if "PYTHONPATH" in os.environ.keys():                       # If PYTHONPATH is u
         if PATH_real in sys.path:                           # This should always work, but keep it to be sure..
             sys.path.remove(PATH_real)
         sys.path.insert(1, PATH_real)                       # Insert it at 1 after os.curdir, which is 0.
+
 
 def exceptHook(hook_type, value, traceback):
     from cura.CrashHandler import CrashHandler
@@ -121,25 +120,19 @@ def exceptHook(hook_type, value, traceback):
         _crash_handler.early_crash_dialog.show()
         sys.exit(application.exec_())
 
-if not known_args["debug"]:
-    sys.excepthook = exceptHook
+
+# Set exception hook to use the crash dialog handler
+sys.excepthook = exceptHook
+# Enable dumping traceback for all threads
+faulthandler.enable(all_threads = True)
 
 # Workaround for a race condition on certain systems where there
 # is a race condition between Arcus and PyQt. Importing Arcus
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
-import cura.CuraApplication
-import cura.Settings.CuraContainerRegistry
+import Savitar #@UnusedImport
+from cura.CuraApplication import CuraApplication
 
-faulthandler.enable()
-
-# Force an instance of CuraContainerRegistry to be created and reused later.
-cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
-
-# This pre-start up check is needed to determine if we should start the application at all.
-if not cura.CuraApplication.CuraApplication.preStartUp(parser = parser, parsed_command_line = known_args):
-    sys.exit(0)
-
-app = cura.CuraApplication.CuraApplication.getInstance(parser = parser, parsed_command_line = known_args)
+app = CuraApplication()
 app.run()

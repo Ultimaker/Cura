@@ -16,7 +16,7 @@ from UM.Signal import Signal
 class CuraSceneController(QObject):
     activeBuildPlateChanged = Signal()
 
-    def __init__(self, objects_model: ObjectsModel, multi_build_plate_model: MultiBuildPlateModel):
+    def __init__(self, objects_model: ObjectsModel, multi_build_plate_model: MultiBuildPlateModel) -> None:
         super().__init__()
 
         self._objects_model = objects_model

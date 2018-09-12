@@ -32,7 +32,7 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
             fillMode: Image.PreserveAspectFit
-            source: details.icon_url || "../images/logobot.svg"
+            source: details === null ? "" : (details.icon_url || "../images/logobot.svg")
             mipmap: true
             anchors
             {
@@ -55,7 +55,7 @@ Item
                 rightMargin: UM.Theme.getSize("wide_margin").width
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
-            text: details.name || ""
+            text: details === null ? "" : (details.name || "")
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
@@ -74,6 +74,7 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
+            height: childrenRect.height
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
@@ -92,6 +93,12 @@ Item
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text_medium")
             }
+            Label
+            {
+                text: catalog.i18nc("@label", "Downloads") + ":"
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text_medium")
+            }
         }
         Column
         {
@@ -104,9 +111,10 @@ Item
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
+            height: childrenRect.height
             Label
             {
-                text: details.version || catalog.i18nc("@label", "Unknown")
+                text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
             }
@@ -114,6 +122,10 @@ Item
             {
                 text:
                 {
+                    if (details === null)
+                    {
+                        return ""
+                    }
                     var date = new Date(details.last_updated)
                     return date.toLocaleString(UM.Preferences.getValue("general/language"))
                 }
@@ -124,6 +136,10 @@ Item
             {
                 text:
                 {
+                    if (details === null)
+                    {
+                        return ""
+                    }
                     if (details.author_email)
                     {
                         return "<a href=\"mailto:" + details.author_email+"?Subject=Cura: " + details.name + "\">" + details.author_name + "</a>"
@@ -137,6 +153,12 @@ Item
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
+            }
+            Label
+            {
+                text: details === null ? "" : (details.download_count || catalog.i18nc("@label", "Unknown"))
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text")
             }
         }
         Rectangle

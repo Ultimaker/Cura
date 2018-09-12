@@ -20,7 +20,6 @@ Item
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
-
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name: "cura" }
@@ -57,7 +56,8 @@ Item
                     interval: 50
                     running: false
                     repeat: false
-                    onTriggered: {
+                    onTriggered:
+                    {
                         var item = Cura.QualityProfilesDropDownMenuModel.getItem(qualitySlider.value);
                         Cura.MachineManager.activeQualityGroup = item.quality_group;
                     }
@@ -77,7 +77,8 @@ Item
                     {
                         // update needs to be called when the widgets are visible, otherwise the step width calculation
                         // will fail because the width of an invisible item is 0.
-                        if (visible) {
+                        if (visible)
+                        {
                             qualityModel.update();
                         }
                     }
@@ -97,24 +98,30 @@ Item
                     property var qualitySliderAvailableMax: 0
                     property var qualitySliderMarginRight: 0
 
-                    function update () {
+                    function update ()
+                    {
                         reset()
 
                         var availableMin = -1
                         var availableMax = -1
 
-                        for (var i = 0; i < Cura.QualityProfilesDropDownMenuModel.rowCount(); i++) {
+                        for (var i = 0; i < Cura.QualityProfilesDropDownMenuModel.rowCount(); i++)
+                        {
                             var qualityItem = Cura.QualityProfilesDropDownMenuModel.getItem(i)
 
                             // Add each quality item to the UI quality model
                             qualityModel.append(qualityItem)
 
                             // Set selected value
-                            if (Cura.MachineManager.activeQualityType == qualityItem.quality_type) {
+                            if (Cura.MachineManager.activeQualityType == qualityItem.quality_type)
+                            {
                                 // set to -1 when switching to user created profile so all ticks are clickable
-                                if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
+                                if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
+                                {
                                     qualityModel.qualitySliderActiveIndex = -1
-                                } else {
+                                }
+                                else
+                                {
                                     qualityModel.qualitySliderActiveIndex = i
                                 }
 
@@ -122,18 +129,21 @@ Item
                             }
 
                             // Set min available
-                            if (qualityItem.available && availableMin == -1) {
+                            if (qualityItem.available && availableMin == -1)
+                            {
                                 availableMin = i
                             }
 
                             // Set max available
-                            if (qualityItem.available) {
+                            if (qualityItem.available)
+                            {
                                 availableMax = i
                             }
                         }
 
                         // Set total available ticks for active slider part
-                        if (availableMin != -1) {
+                        if (availableMin != -1)
+                        {
                             qualityModel.availableTotalTicks = availableMax - availableMin + 1
                         }
 
@@ -145,16 +155,23 @@ Item
                         qualityModel.qualitySliderAvailableMax = availableMax
                     }
 
-                    function calculateSliderStepWidth (totalTicks) {
+                    function calculateSliderStepWidth (totalTicks)
+                    {
                         qualityModel.qualitySliderStepWidth = totalTicks != 0 ? Math.round((base.width * 0.55) / (totalTicks)) : 0
                     }
 
-                    function calculateSliderMargins (availableMin, availableMax, totalTicks) {
-                        if (availableMin == -1 || (availableMin == 0 && availableMax == 0)) {
+                    function calculateSliderMargins (availableMin, availableMax, totalTicks)
+                    {
+                        if (availableMin == -1 || (availableMin == 0 && availableMax == 0))
+                        {
                             qualityModel.qualitySliderMarginRight = Math.round(base.width * 0.55)
-                        } else if (availableMin == availableMax) {
+                        }
+                        else if (availableMin == availableMax)
+                        {
                             qualityModel.qualitySliderMarginRight = Math.round((totalTicks - availableMin) * qualitySliderStepWidth)
-                        } else {
+                        }
+                        else
+                        {
                             qualityModel.qualitySliderMarginRight = Math.round((totalTicks - availableMax) * qualitySliderStepWidth)
                         }
                     }
@@ -215,16 +232,24 @@ Item
                                 return result
                             }
 
-                            x: {
+                            x:
+                            {
                                 // Make sure the text aligns correctly with each tick
-                                if (qualityModel.totalTicks == 0) {
+                                if (qualityModel.totalTicks == 0)
+                                {
                                     // If there is only one tick, align it centrally
                                     return Math.round(((base.width * 0.55) - width) / 2)
-                                } else if (index == 0) {
+                                }
+                                else if (index == 0)
+                                {
                                     return Math.round(base.width * 0.55 / qualityModel.totalTicks) * index
-                                } else if (index == qualityModel.totalTicks) {
+                                }
+                                else if (index == qualityModel.totalTicks)
+                                {
                                     return Math.round(base.width * 0.55 / qualityModel.totalTicks) * index - width
-                                } else {
+                                }
+                                else
+                                {
                                     return Math.round((base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2))
                                 }
                             }
@@ -291,7 +316,8 @@ Item
                         Rectangle
                         {
                             id: rightArea
-                            width: {
+                            width:
+                            {
                                 if(qualityModel.availableTotalTicks == 0)
                                     return 0
 
@@ -299,8 +325,10 @@ Item
                             }
                             height: parent.height
                             color: "transparent"
-                            x: {
-                                if (qualityModel.availableTotalTicks == 0) {
+                            x:
+                            {
+                                if (qualityModel.availableTotalTicks == 0)
+                                {
                                     return 0
                                 }
 
@@ -310,7 +338,8 @@ Item
                                 return totalGap
                             }
 
-                            MouseArea {
+                            MouseArea
+                            {
                                 anchors.fill: parent
                                 hoverEnabled: true
                                 enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
@@ -373,13 +402,16 @@ Item
                         style: SliderStyle
                         {
                             //Draw Available line
-                            groove: Rectangle {
+                            groove: Rectangle
+                            {
                                 implicitHeight: 2 * screenScaleFactor
                                 color: UM.Theme.getColor("quality_slider_available")
                                 radius: Math.round(height / 2)
                             }
-                            handle: Item {
-                                Rectangle {
+                            handle: Item
+                            {
+                                Rectangle
+                                {
                                     id: qualityhandleButton
                                     anchors.centerIn: parent
                                     color: UM.Theme.getColor("quality_slider_available")
@@ -391,11 +423,14 @@ Item
                             }
                         }
 
-                        onValueChanged: {
+                        onValueChanged:
+                        {
                             // only change if an active machine is set and the slider is visible at all.
-                            if (Cura.MachineManager.activeMachine != null && visible) {
+                            if (Cura.MachineManager.activeMachine != null && visible)
+                            {
                                 // prevent updating during view initializing. Trigger only if the value changed by user
-                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex && qualityModel.qualitySliderActiveIndex != -1) {
+                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex && qualityModel.qualitySliderActiveIndex != -1)
+                                {
                                     // start updating with short delay
                                     qualitySliderChangeTimer.start()
                                 }
@@ -587,8 +622,10 @@ Item
                         // same operation
                         var active_mode = UM.Preferences.getValue("cura/active_mode")
 
-                        if (active_mode == 0 || active_mode == "simple") {
+                        if (active_mode == 0 || active_mode == "simple")
+                        {
                             Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
+                            Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
                         }
                     }
 
@@ -1078,7 +1115,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: platformAdhesionType
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "adhesion_type"
                 watchedProperties: [ "value", "enabled" ]
                 storeIndex: 0
@@ -1087,7 +1124,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportEnabled
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "support_enable"
                 watchedProperties: [ "value", "enabled", "description" ]
                 storeIndex: 0
@@ -1096,7 +1133,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: extrudersEnabledCount
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "extruders_enabled_count"
                 watchedProperties: [ "value" ]
                 storeIndex: 0
@@ -1105,7 +1142,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportExtruderNr
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "support_extruder_nr"
                 watchedProperties: [ "value" ]
                 storeIndex: 0

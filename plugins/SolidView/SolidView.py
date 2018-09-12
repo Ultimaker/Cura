@@ -6,7 +6,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
 from UM.Application import Application
-from UM.Preferences import Preferences
 from UM.View.RenderBatch import RenderBatch
 from UM.Settings.Validator import ValidatorState
 from UM.Math.Color import Color
@@ -23,7 +22,7 @@ class SolidView(View):
     def __init__(self):
         super().__init__()
 
-        Preferences.getInstance().addPreference("view/show_overhang", True)
+        Application.getInstance().getPreferences().addPreference("view/show_overhang", True)
 
         self._enabled_shader = None
         self._disabled_shader = None
@@ -65,7 +64,7 @@ class SolidView(View):
             support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
             support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
 
-            if support_angle_stack is not None and Preferences.getInstance().getValue("view/show_overhang"):
+            if support_angle_stack is not None and Application.getInstance().getPreferences().getValue("view/show_overhang"):
                 angle = support_angle_stack.getProperty("support_angle", "value")
                 # Make sure the overhang angle is valid before passing it to the shader
                 # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)

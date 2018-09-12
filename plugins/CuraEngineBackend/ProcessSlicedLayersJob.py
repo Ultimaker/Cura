@@ -6,7 +6,6 @@ import gc
 from UM.Job import Job
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
-from UM.Preferences import Preferences
 from UM.View.GL.OpenGLContext import OpenGLContext
 
 from UM.Message import Message
@@ -179,7 +178,7 @@ class ProcessSlicedLayersJob(Job):
         # Find out colors per extruder
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         manager = ExtruderManager.getInstance()
-        extruders = list(manager.getMachineExtruders(global_container_stack.getId()))
+        extruders = manager.getActiveExtruderStacks()
         if extruders:
             material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:
@@ -199,7 +198,7 @@ class ProcessSlicedLayersJob(Job):
             material_color_map[0, :] = color
 
         # We have to scale the colors for compatibility mode
-        if OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode")):
+        if OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode")):
             line_type_brightness = 0.5  # for compatibility mode
         else:
             line_type_brightness = 1.0

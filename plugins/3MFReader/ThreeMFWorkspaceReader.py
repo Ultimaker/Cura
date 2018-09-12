@@ -4,8 +4,7 @@
 from configparser import ConfigParser
 import zipfile
 import os
-from typing import List, Tuple
-
+from typing import Dict, List, Tuple, cast
 
 import xml.etree.ElementTree as ET
 
@@ -13,6 +12,7 @@ from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Signal import postponeSignals, CompressTechnique
 from UM.Settings.ContainerFormatError import ContainerFormatError
@@ -24,6 +24,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
 
+from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
@@ -37,7 +38,7 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class ContainerInfo:
-    def __init__(self, file_name: str, serialized: str, parser: ConfigParser):
+    def __init__(self, file_name: str, serialized: str, parser: ConfigParser) -> None:
         self.file_name = file_name
         self.serialized = serialized
         self.parser = parser
@@ -46,14 +47,14 @@ class ContainerInfo:
 
 
 class QualityChangesInfo:
-    def __init__(self):
+    def __init__(self) -> None:
         self.name = None
         self.global_info = None
-        self.extruder_info_dict = {}
+        self.extruder_info_dict = {} # type: Dict[str, ContainerInfo]
 
 
 class MachineInfo:
-    def __init__(self):
+    def __init__(self) -> None:
         self.container_id = None
         self.name = None
         self.definition_id = None
@@ -65,11 +66,11 @@ class MachineInfo:
         self.definition_changes_info = None
         self.user_changes_info = None
 
-        self.extruder_info_dict = {}
+        self.extruder_info_dict = {} # type: Dict[str, ExtruderInfo]
 
 
 class ExtruderInfo:
-    def __init__(self):
+    def __init__(self) -> None:
         self.position = None
         self.enabled = True
         self.variant_info = None
@@ -81,29 +82,21 @@ class ExtruderInfo:
 
 ##    Base implementation for reading 3MF workspace files.
 class ThreeMFWorkspaceReader(WorkspaceReader):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name="application/x-curaproject+xml",
-                comment="Cura Project File",
-                suffixes=["curaproject.3mf"]
-            )
-        )
 
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
         self._container_registry = ContainerRegistry.getInstance()
 
-        # suffixes registered with the MineTypes don't start with a dot '.'
-        self._definition_container_suffix = "." + ContainerRegistry.getMimeTypeForContainer(DefinitionContainer).preferredSuffix
+        # suffixes registered with the MimeTypes don't start with a dot '.'
+        self._definition_container_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(DefinitionContainer)).preferredSuffix
         self._material_container_suffix = None # We have to wait until all other plugins are loaded before we can set it
-        self._instance_container_suffix = "." + ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix
-        self._container_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(ContainerStack).preferredSuffix
-        self._extruder_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(ExtruderStack).preferredSuffix
-        self._global_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(GlobalStack).preferredSuffix
+        self._instance_container_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(InstanceContainer)).preferredSuffix
+        self._container_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(ContainerStack)).preferredSuffix
+        self._extruder_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(ExtruderStack)).preferredSuffix
+        self._global_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(GlobalStack)).preferredSuffix
 
         # Certain instance container types are ignored because we make the assumption that only we make those types
         # of containers. They are:
@@ -111,28 +104,26 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - variant
         self._ignored_instance_container_types = {"quality", "variant"}
 
-        self._resolve_strategies = {}
+        self._resolve_strategies = {} # type: Dict[str, str]
 
-        self._id_mapping = {}
+        self._id_mapping = {} # type: Dict[str, str]
 
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
         self._is_same_machine_type = False
-        self._old_new_materials = {}
-        self._materials_to_select = {}
+        self._old_new_materials = {} # type: Dict[str, str]
         self._machine_info = None
 
     def _clearState(self):
         self._is_same_machine_type = False
         self._id_mapping = {}
         self._old_new_materials = {}
-        self._materials_to_select = {}
         self._machine_info = None
 
     ##  Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
     #   This has nothing to do with speed, but with getting consistent new naming for instances & objects.
-    def getNewId(self, old_id):
+    def getNewId(self, old_id: str):
         if old_id not in self._id_mapping:
             self._id_mapping[old_id] = self._container_registry.uniqueName(old_id)
         return self._id_mapping[old_id]
@@ -464,10 +455,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 num_visible_settings = len(visible_settings_string.split(";"))
             active_mode = temp_preferences.getValue("cura/active_mode")
             if not active_mode:
-                active_mode = Preferences.getInstance().getValue("cura/active_mode")
+                active_mode = Application.getInstance().getPreferences().getValue("cura/active_mode")
         except KeyError:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
+            return WorkspaceReader.PreReadResult.failed
+
+        # Check if the machine definition exists. If not, indicate failure because we do not import definition files.
+        def_results = self._container_registry.findDefinitionContainersMetadata(id = machine_definition_id)
+        if not def_results:
+            message = Message(i18n_catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> contains an unknown machine type"
+                                                 " <message>{1}</message>. Cannot import the machine."
+                                                 " Models will be imported instead.", file_name, machine_definition_id),
+                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"))
+            message.show()
+
+            Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
+                       self._machine_info.definition_id, file_name)
             return WorkspaceReader.PreReadResult.failed
 
         # In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
@@ -583,7 +588,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
-        global_preferences = Preferences.getInstance()
+        global_preferences = application.getInstance().getPreferences()
 
         visible_settings = temp_preferences.getValue("general/visible_settings")
         if visible_settings is None:
@@ -616,6 +621,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             extruder_stacks = self._container_registry.findContainerStacks(machine = global_stack.getId(),
                                                                            type = "extruder_train")
             extruder_stack_dict = {stack.getMetaDataEntry("position"): stack for stack in extruder_stacks}
+
+            # Make sure that those extruders have the global stack as the next stack or later some value evaluation
+            # will fail.
+            for stack in extruder_stacks:
+                stack.setNextStack(global_stack, connect_signals = False)
 
         Logger.log("d", "Workspace loading is checking definitions...")
         # Get all the definition files & check if they exist. If not, add them.
@@ -656,7 +666,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 else:
                     material_container = materials[0]
                     old_material_root_id = material_container.getMetaDataEntry("base_file")
-                    if not self._container_registry.isReadOnly(old_material_root_id):  # Only create new materials if they are not read only.
+                    if old_material_root_id is not None and not self._container_registry.isReadOnly(old_material_root_id):  # Only create new materials if they are not read only.
                         to_deserialize_material = True
 
                         if self._resolve_strategies["material"] == "override":
@@ -708,8 +718,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             nodes = []
 
         base_file_name = os.path.basename(file_name)
-        if base_file_name.endswith(".curaproject.3mf"):
-            base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
 
@@ -877,7 +885,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = self._machine_info.variant_info.parser
             variant_name = parser["general"]["name"]
 
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.BUILD_PLATE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
@@ -893,7 +900,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             parser = extruder_info.variant_info.parser
 
             variant_name = parser["general"]["name"]
-            from cura.Machines.VariantManager import VariantType
             variant_type = VariantType.NOZZLE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
@@ -917,12 +923,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = extruder_info.root_material_id
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
+            build_plate_id = global_stack.variant.getId()
+
             # get material diameter of this extruder
             machine_material_diameter = extruder_stack.materialDiameter
             material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
                                                              extruder_stack.variant.getName(),
+                                                             build_plate_id,
                                                              machine_material_diameter,
                                                              root_material_id)
+
             if material_node is not None and material_node.getContainer() is not None:
                 extruder_stack.material = material_node.getContainer()
 
@@ -951,7 +961,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not extruder_info:
                 continue
             if "enabled" not in extruder_stack.getMetaData():
-                extruder_stack.addMetaDataEntry("enabled", "True")
+                extruder_stack.setMetaDataEntry("enabled", "True")
             extruder_stack.setMetaDataEntry("enabled", str(extruder_info.enabled))
 
     def _updateActiveMachine(self, global_stack):

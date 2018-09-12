@@ -229,7 +229,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
     def _getHeadAndFans(self):
-        return Polygon(numpy.array(self._global_stack.getProperty("machine_head_with_fans_polygon", "value"), numpy.float32))
+        return Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
 
     def _compute2DConvexHeadFull(self):
         return self._compute2DConvexHull().getMinkowskiHull(self._getHeadAndFans())
@@ -304,7 +304,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._global_stack:
             self._global_stack.propertyChanged.disconnect(self._onSettingValueChanged)
             self._global_stack.containersChanged.disconnect(self._onChanged)
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingValueChanged)
 
@@ -314,7 +314,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._global_stack.propertyChanged.connect(self._onSettingValueChanged)
             self._global_stack.containersChanged.connect(self._onChanged)
 
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingValueChanged)
 

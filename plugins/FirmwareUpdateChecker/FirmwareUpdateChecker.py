@@ -5,7 +5,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from UM.Extension import Extension
-from UM.Preferences import Preferences
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -28,12 +28,12 @@ class FirmwareUpdateChecker(Extension):
 
         # Initialize the Preference called `latest_checked_firmware` that stores the last version
         # checked for the UM3. In the future if we need to check other printers' firmware
-        Preferences.getInstance().addPreference("info/latest_checked_firmware", "")
+        Application.getInstance().getPreferences().addPreference("info/latest_checked_firmware", "")
 
         # Listen to a Signal that indicates a change in the list of printers, just if the user has enabled the
         # 'check for updates' option
-        Preferences.getInstance().addPreference("info/automatic_update_check", True)
-        if Preferences.getInstance().getValue("info/automatic_update_check"):
+        Application.getInstance().getPreferences().addPreference("info/automatic_update_check", True)
+        if Application.getInstance().getPreferences().getValue("info/automatic_update_check"):
             ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
         self._download_url = None

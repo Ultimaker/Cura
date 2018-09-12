@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import List
 
 from PyQt5.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -13,6 +14,7 @@ from UM.Logger import Logger
 #     speed settings. If all the children of print_speed have a single value override, changing the speed won't
 #     actually do anything, as only the 'leaf' settings are used by the engine.
 from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.SettingInstance import InstanceState
 
@@ -157,7 +159,7 @@ class SettingInheritanceManager(QObject):
             stack = self._active_container_stack
         if not stack: #No active container stack yet!
             return False
-        containers = []
+        containers = [] # type: List[ContainerInterface]
 
         ## Check if the setting has a user state. If not, it is never overwritten.
         has_user_state = stack.getProperty(key, "state") == InstanceState.User
@@ -169,7 +171,8 @@ class SettingInheritanceManager(QObject):
             return False
 
         ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        if isinstance(stack.getTop().getProperty(key, "value"), SettingFunction):
+        user_container = stack.getTop()
+        if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
 
         ##  Mash all containers for all the stacks together.

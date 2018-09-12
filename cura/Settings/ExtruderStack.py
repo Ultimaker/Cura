@@ -1,17 +1,18 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, TYPE_CHECKING, Optional
+from typing import Any, Dict, TYPE_CHECKING, Optional
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
-from UM.Application import Application
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
 from UM.Util import parseBool
+
+import cura.CuraApplication
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
@@ -25,10 +26,10 @@ if TYPE_CHECKING:
 #
 #
 class ExtruderStack(CuraContainerStack):
-    def __init__(self, container_id: str):
+    def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
-        self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
+        self.setMetaDataEntry("type", "extruder_train") # For backward compatibility
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
 
@@ -41,7 +42,7 @@ class ExtruderStack(CuraContainerStack):
     def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
-        self.addMetaDataEntry("machine", stack.id)
+        self.setMetaDataEntry("machine", stack.id)
 
         # For backward compatibility: Register the extruder with the Extruder Manager
         ExtruderManager.getInstance().registerExtruder(self, stack.id)
@@ -50,14 +51,14 @@ class ExtruderStack(CuraContainerStack):
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
 
-    def setEnabled(self, enabled):
+    def setEnabled(self, enabled: bool) -> None:
         if "enabled" not in self._metadata:
-            self.addMetaDataEntry("enabled", "True")
+            self.setMetaDataEntry("enabled", "True")
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
     @pyqtProperty(bool, notify = enabledChanged)
-    def isEnabled(self):
+    def isEnabled(self) -> bool:
         return parseBool(self.getMetaDataEntry("enabled", "True"))
 
     @classmethod
@@ -113,7 +114,7 @@ class ExtruderStack(CuraContainerStack):
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
         if limit_to_extruder is not None:
             if limit_to_extruder == -1:
-                limit_to_extruder = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
+                limit_to_extruder = int(cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition)
             limit_to_extruder = str(limit_to_extruder)
         if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
             if str(limit_to_extruder) in self.getNextStack().extruders:
@@ -137,12 +138,9 @@ class ExtruderStack(CuraContainerStack):
     def deserialize(self, contents: str, file_name: Optional[str] = None) -> None:
         super().deserialize(contents, file_name)
         if "enabled" not in self.getMetaData():
-            self.addMetaDataEntry("enabled", "True")
-        stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
-        if stacks:
-            self.setNextStack(stacks[0])
+            self.setMetaDataEntry("enabled", "True")
 
-    def _onPropertiesChanged(self, key, properties):
+    def _onPropertiesChanged(self, key: str, properties: Dict[str, Any]) -> None:
         # When there is a setting that is not settable per extruder that depends on a value from a setting that is,
         # we do not always get properly informed that we should re-evaluate the setting. So make sure to indicate
         # something changed for those settings.

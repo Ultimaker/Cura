@@ -34,7 +34,7 @@ Item
             }
         }
 
-        /* Hide for 3.4
+        /*  // NOTE: Remember to re-enable for v3.6!
         ToolboxTabButton
         {
             text: catalog.i18nc("@title:tab", "Materials")

@@ -6,9 +6,9 @@ from PyQt5.QtCore import Qt
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+from UM.Settings.SettingFunction import SettingFunction
 
 from cura.Machines.QualityManager import QualityGroup
-
 
 #
 # QML Model for all built-in quality profiles. This model is used for the drop-down quality menu.
@@ -83,7 +83,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         self.setItems(item_list)
 
-    def _fetchLayerHeight(self, quality_group: "QualityGroup"):
+    def _fetchLayerHeight(self, quality_group: "QualityGroup") -> float:
         global_stack = self._machine_manager.activeMachine
         if not self._layer_height_unit:
             unit = global_stack.definition.getProperty("layer_height", "unit")
@@ -94,14 +94,20 @@ class QualityProfilesDropDownMenuModel(ListModel):
         default_layer_height = global_stack.definition.getProperty("layer_height", "value")
 
         # Get layer_height from the quality profile for the GlobalStack
+        if quality_group.node_for_global is None:
+            return float(default_layer_height)
         container = quality_group.node_for_global.getContainer()
 
         layer_height = default_layer_height
-        if container.hasProperty("layer_height", "value"):
+        if container and container.hasProperty("layer_height", "value"):
             layer_height = container.getProperty("layer_height", "value")
         else:
             # Look for layer_height in the GlobalStack from material -> definition
             container = global_stack.definition
-            if container.hasProperty("layer_height", "value"):
+            if container and container.hasProperty("layer_height", "value"):
                 layer_height = container.getProperty("layer_height", "value")
+
+        if isinstance(layer_height, SettingFunction):
+            layer_height = layer_height(global_stack)
+
         return float(layer_height)

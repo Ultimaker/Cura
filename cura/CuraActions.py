@@ -1,20 +1,20 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from UM.FlameProfiler import pyqtSlot
+from typing import List, TYPE_CHECKING
 
 from UM.Event import CallFunctionEvent
-from UM.Application import Application
+from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
-from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
+import cura.CuraApplication
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
@@ -24,32 +24,36 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 
 from UM.Logger import Logger
 
+if TYPE_CHECKING:
+    from UM.Scene.SceneNode import SceneNode
 
 class CuraActions(QObject):
-    def __init__(self, parent = None):
+    def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
 
     @pyqtSlot()
-    def openDocumentation(self):
+    def openDocumentation(self) -> None:
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
         # So instead, defer the call to the next run of the event loop, since that does work.
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
         event = CallFunctionEvent(self._openUrl, [QUrl("http://ultimaker.com/en/support/software")], {})
-        Application.getInstance().functionEvent(event)
+        cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
-    def openBugReportPage(self):
+    def openBugReportPage(self) -> None:
         event = CallFunctionEvent(self._openUrl, [QUrl("http://github.com/Ultimaker/Cura/issues")], {})
-        Application.getInstance().functionEvent(event)
+        cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     ##  Reset camera position and direction to default
     @pyqtSlot()
     def homeCamera(self) -> None:
-        scene = Application.getInstance().getController().getScene()
+        scene = cura.CuraApplication.CuraApplication.getInstance().getController().getScene()
         camera = scene.getActiveCamera()
-        camera.setPosition(Vector(-80, 250, 700))
-        camera.setPerspective(True)
-        camera.lookAt(Vector(0, 0, 0))
+        if camera:
+            diagonal_size = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getDiagonalSize()
+            camera.setPosition(Vector(-80, 250, 700) * diagonal_size / 375)
+            camera.setPerspective(True)
+            camera.lookAt(Vector(0, 0, 0))
 
     ##  Center all objects in the selection
     @pyqtSlot()
@@ -73,17 +77,17 @@ class CuraActions(QObject):
     #   \param count The number of times to multiply the selection.
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
-        min_offset = Application.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
         job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
         job.start()
 
     ##  Delete all selected objects.
     @pyqtSlot()
     def deleteSelection(self) -> None:
-        if not Application.getInstance().getController().getToolsEnabled():
+        if not cura.CuraApplication.CuraApplication.getInstance().getController().getToolsEnabled():
             return
 
-        removed_group_nodes = []
+        removed_group_nodes = [] #type: List[SceneNode]
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
@@ -97,7 +101,7 @@ class CuraActions(QObject):
                     op.addOperation(RemoveSceneNodeOperation(group_node))
 
             # Reset the print information
-            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            cura.CuraApplication.CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
 
         op.push()
 
@@ -112,7 +116,7 @@ class CuraActions(QObject):
         for node in Selection.getAllSelectedObjects():
             # If the node is a group, apply the active extruder to all children of the group.
             if node.callDecoration("isGroup"):
-                for grouped_node in BreadthFirstIterator(node):
+                for grouped_node in BreadthFirstIterator(node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                     if grouped_node.callDecoration("getActiveExtruder") == extruder_id:
                         continue
 
@@ -144,7 +148,7 @@ class CuraActions(QObject):
         Logger.log("d", "Setting build plate number... %d" % build_plate_nr)
         operation = GroupedOperation()
 
-        root = Application.getInstance().getController().getScene().getRoot()
+        root = cura.CuraApplication.CuraApplication.getInstance().getController().getScene().getRoot()
 
         nodes_to_change = []
         for node in Selection.getAllSelectedObjects():
@@ -152,7 +156,7 @@ class CuraActions(QObject):
             while parent_node.getParent() != root:
                 parent_node = parent_node.getParent()
 
-            for single_node in BreadthFirstIterator(parent_node):
+            for single_node in BreadthFirstIterator(parent_node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                 nodes_to_change.append(single_node)
 
         if not nodes_to_change:
@@ -165,5 +169,5 @@ class CuraActions(QObject):
 
         Selection.clear()
 
-    def _openUrl(self, url):
+    def _openUrl(self, url: QUrl) -> None:
         QDesktopServices.openUrl(url)

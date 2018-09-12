@@ -139,7 +139,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;
@@ -264,7 +264,7 @@ Item {
                     {
                         // Another special case. The setting that is overriden is only 1 instance container deeper,
                         // so we can remove it.
-                        propertyProvider.removeFromContainer(0)
+                        propertyProvider.removeFromContainer(last_entry - 1)
                     }
                     else
                     {
@@ -281,7 +281,7 @@ Item {
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
-                iconSource: UM.Theme.getIcon("notice");
+                iconSource: UM.Theme.getIcon("formula");
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(base.tooltipText);

@@ -9,7 +9,11 @@
         "manufacturer": "Nophead",
         "file_formats": "text/x-gcode",
         "platform": "mendel90_platform.stl",
-        "platform_offset": [0, -23.6, 0]
+        "platform_offset": [0, -23.6, 0],
+        "machine_extruder_trains":
+        {
+            "0": "mendel90_extruder_0"
+        }
     },
 
     "pages": [
@@ -65,12 +69,6 @@
         },
         "gantry_height": {
             "default_value": 55
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
-        "material_diameter": { 
-            "default_value": 1.75 
         },
         "machine_head_with_fans_polygon":
         {

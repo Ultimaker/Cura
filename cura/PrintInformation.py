@@ -1,24 +1,24 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict
-import math
-import os.path
-import unicodedata
 import json
+import math
+import os
+import unicodedata
 import re  # To create abbreviations for printer names.
+from typing import Dict
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
-from UM.Application import Application
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration
-from UM.Preferences import Preferences
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from UM.MimeTypeDatabase import MimeTypeDatabase
 
 catalog = i18nCatalog("cura")
+
 
 ##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
 #
@@ -48,8 +48,9 @@ class PrintInformation(QObject):
         ActiveMachineChanged = 3
         Other = 4
 
-    def __init__(self, parent = None):
+    def __init__(self, application, parent = None):
         super().__init__(parent)
+        self._application = application
 
         self.initializeCuraMessagePrintTimeProperties()
 
@@ -60,10 +61,10 @@ class PrintInformation(QObject):
 
         self._pre_sliced = False
 
-        self._backend = Application.getInstance().getBackend()
+        self._backend = self._application.getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
+        self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
         self._is_user_specified_job_name = False
         self._base_name = ""
@@ -73,7 +74,6 @@ class PrintInformation(QObject):
         self._active_build_plate = 0
         self._initVariablesWithBuildPlate(self._active_build_plate)
 
-        self._application = Application.getInstance()
         self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
 
         self._application.globalContainerStackChanged.connect(self._updateJobName)
@@ -82,7 +82,7 @@ class PrintInformation(QObject):
         self._application.workspaceLoaded.connect(self.setProjectName)
         self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
 
-        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+        self._application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._application.getMachineManager().rootMaterialChanged.connect(self._onActiveMaterialsChanged)
         self._onActiveMaterialsChanged()
@@ -201,7 +201,7 @@ class PrintInformation(QObject):
         self._current_print_time[build_plate_number].setDuration(total_estimated_time)
 
     def _calculateInformation(self, build_plate_number):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return
 
@@ -210,7 +210,7 @@ class PrintInformation(QObject):
         self._material_costs[build_plate_number] = []
         self._material_names[build_plate_number] = []
 
-        material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
+        material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
 
         extruder_stacks = global_stack.extruders
         for position, extruder_stack in extruder_stacks.items():
@@ -267,6 +267,7 @@ class PrintInformation(QObject):
         new_active_build_plate = self._multi_build_plate_model.activeBuildPlate
         if new_active_build_plate != self._active_build_plate:
             self._active_build_plate = new_active_build_plate
+            self._updateJobName()
 
             self._initVariablesWithBuildPlate(self._active_build_plate)
 
@@ -299,7 +300,7 @@ class PrintInformation(QObject):
 
     def _updateJobName(self):
         if self._base_name == "":
-            self._job_name = "unnamed"
+            self._job_name = "Untitled"
             self._is_user_specified_job_name = False
             self.jobNameChanged.emit()
             return
@@ -311,7 +312,7 @@ class PrintInformation(QObject):
         if not self._is_user_specified_job_name:
             if self._pre_sliced:
                 self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
-            elif Preferences.getInstance().getValue("cura/jobname_prefix"):
+            elif self._application.getInstance().getPreferences().getValue("cura/jobname_prefix"):
                 # Don't add abbreviation if it already has the exact same abbreviation.
                 if base_name.startswith(self._abbr_machine + "_"):
                     self._job_name = base_name
@@ -319,6 +320,15 @@ class PrintInformation(QObject):
                     self._job_name = self._abbr_machine + "_" + base_name
             else:
                 self._job_name = base_name
+
+        # In case there are several buildplates, a suffix is attached
+        if self._multi_build_plate_model.maxBuildPlate > 0:
+            connector = "_#"
+            suffix = connector + str(self._active_build_plate + 1)
+            if connector in self._job_name:
+                self._job_name = self._job_name.split(connector)[0] # get the real name
+            if self._active_build_plate != 0:
+                self._job_name += suffix
 
         self.jobNameChanged.emit()
 
@@ -369,10 +379,11 @@ class PrintInformation(QObject):
     def baseName(self):
         return self._base_name
 
-    ##  Created an acronymn-like abbreviated machine name from the currently active machine name
-    #   Called each time the global stack is switched
+    ##  Created an acronym-like abbreviated machine name from the currently
+    #   active machine name.
+    #   Called each time the global stack is switched.
     def _setAbbreviatedMachineName(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             self._abbr_machine = ""
             return

@@ -1,10 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import List
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
+from UM.Scene.SceneNode import SceneNode
 from cura.Arranging.ShapeArray import ShapeArray
 from cura.Scene import ZOffsetDecorator
 
@@ -85,8 +87,7 @@ class Arrange:
     #   \param node
     #   \param offset_shape_arr ShapeArray with offset, for placing the shape
     #   \param hull_shape_arr ShapeArray without offset, used to find location
-    def findNodePlacement(self, node, offset_shape_arr, hull_shape_arr, step = 1):
-        new_node = copy.deepcopy(node)
+    def findNodePlacement(self, node: SceneNode, offset_shape_arr: ShapeArray, hull_shape_arr: ShapeArray, step = 1):
         best_spot = self.bestSpot(
             hull_shape_arr, start_prio = self._last_priority, step = step)
         x, y = best_spot.x, best_spot.y
@@ -95,21 +96,22 @@ class Arrange:
         self._last_priority = best_spot.priority
 
         # Ensure that the object is above the build platform
-        new_node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-        if new_node.getBoundingBox():
-            center_y = new_node.getWorldPosition().y - new_node.getBoundingBox().bottom
+        node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+        bbox = node.getBoundingBox()
+        if bbox:
+            center_y = node.getWorldPosition().y - bbox.bottom
         else:
             center_y = 0
 
         if x is not None:  # We could find a place
-            new_node.setPosition(Vector(x, center_y, y))
+            node.setPosition(Vector(x, center_y, y))
             found_spot = True
             self.place(x, y, offset_shape_arr)  # place the object in arranger
         else:
             Logger.log("d", "Could not find spot!"),
             found_spot = False
-            new_node.setPosition(Vector(200, center_y, 100))
-        return new_node, found_spot
+            node.setPosition(Vector(200, center_y, 100))
+        return found_spot
 
     ##  Fill priority, center is best. Lower value is better
     #   This is a strategy for the arranger.

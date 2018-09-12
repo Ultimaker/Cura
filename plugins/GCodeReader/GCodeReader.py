@@ -4,7 +4,7 @@
 from UM.FileHandler.FileReader import FileReader
 from UM.Mesh.MeshReader import MeshReader
 from UM.i18n import i18nCatalog
-from UM.Preferences import Preferences
+from UM.Application import Application
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 catalog = i18nCatalog("cura")
@@ -19,20 +19,20 @@ MimeTypeDatabase.addMimeType(
     )
 )
 
+
 # Class for loading and parsing G-code files
 class GCodeReader(MeshReader):
-
     _flavor_default = "Marlin"
     _flavor_keyword = ";FLAVOR:"
     _flavor_readers_dict = {"RepRap" : RepRapFlavorParser.RepRapFlavorParser(),
                             "Marlin" : MarlinFlavorParser.MarlinFlavorParser()}
 
-    def __init__(self):
-        super(GCodeReader, self).__init__()
+    def __init__(self) -> None:
+        super().__init__()
         self._supported_extensions = [".gcode", ".g"]
         self._flavor_reader = None
 
-        Preferences.getInstance().addPreference("gcodereader/show_caution", True)
+        Application.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
     def preReadFromStream(self, stream, *args, **kwargs):
         for line in stream.split("\n"):
@@ -57,7 +57,7 @@ class GCodeReader(MeshReader):
     def readFromStream(self, stream):
         return self._flavor_reader.processGCodeStream(stream)
 
-    def read(self, file_name):
+    def _read(self, file_name):
         with open(file_name, "r", encoding = "utf-8") as file:
             file_data = file.read()
         return self.readFromStream(file_data)

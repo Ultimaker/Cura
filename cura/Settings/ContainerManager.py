@@ -1,31 +1,25 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
+import os
 import urllib.parse
 import uuid
-from typing import Dict, Union
+from typing import Any
+from typing import Dict, Union, Optional
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
-from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 
-from UM.PluginRegistry import PluginRegistry
-from UM.SaveFile import SaveFile
-from UM.Platform import Platform
-from UM.MimeTypeDatabase import MimeTypeDatabase
-
+from UM.i18n import i18nCatalog
+from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
-from UM.Application import Application
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
+from UM.Platform import Platform
+from UM.SaveFile import SaveFile
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
-
-from UM.MimeTypeDatabase import MimeTypeNotFoundError
-from UM.Settings.ContainerFormatError import ContainerFormatError
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from cura.Settings.ExtruderManager import ExtruderManager
-from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
@@ -36,24 +30,37 @@ catalog = i18nCatalog("cura")
 #   from within QML. We want to be able to trigger things like removing a container
 #   when a certain action happens. This can be done through this class.
 class ContainerManager(QObject):
-    def __init__(self, parent = None):
-        super().__init__(parent)
 
-        self._application = Application.getInstance()
-        self._container_registry = ContainerRegistry.getInstance()
+    def __init__(self, application):
+        if ContainerManager.__instance is not None:
+            raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
+        ContainerManager.__instance = self
+
+        super().__init__(parent = application)
+
+        self._application = application
+        self._plugin_registry = self._application.getPluginRegistry()
+        self._container_registry = self._application.getContainerRegistry()
         self._machine_manager = self._application.getMachineManager()
         self._material_manager = self._application.getMaterialManager()
         self._quality_manager = self._application.getQualityManager()
-        self._container_name_filters = {}
+        self._container_name_filters = {}   # type: Dict[str, Dict[str, Any]]
 
     @pyqtSlot(str, str, result=str)
-    def getContainerMetaDataEntry(self, container_id, entry_name):
+    def getContainerMetaDataEntry(self, container_id: str, entry_names: str) -> str:
         metadatas = self._container_registry.findContainersMetadata(id = container_id)
         if not metadatas:
             Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
             return ""
 
-        return str(metadatas[0].get(entry_name, ""))
+        entries = entry_names.split("/")
+        result = metadatas[0]
+        while entries:
+            entry = entries.pop(0)
+            result = result.get(entry, {})
+        if not result:
+            return ""
+        return str(result)
 
     ##  Set a metadata entry of the specified container.
     #
@@ -68,6 +75,7 @@ class ContainerManager(QObject):
     #
     #   \return True if successful, False if not.
     #  TODO: This is ONLY used by MaterialView for material containers. Maybe refactor this.
+    #  Update: In order for QML to use objects and sub objects, those (sub) objects must all be QObject. Is that what we want?
     @pyqtSlot("QVariant", str, str)
     def setContainerMetaDataEntry(self, container_node, entry_name, entry_value):
         root_material_id = container_node.metadata["base_file"]
@@ -101,63 +109,6 @@ class ContainerManager(QObject):
             container.setMetaDataEntry(entry_name, entry_value)
             if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
                 container.metaDataChanged.emit(container)
-
-    ##  Set a setting property of the specified container.
-    #
-    #   This will set the specified property of the specified setting of the container
-    #   and all containers that share the same base_file (if any). The latter only
-    #   happens for material containers.
-    #
-    #   \param container_id \type{str} The ID of the container to change.
-    #   \param setting_key \type{str} The key of the setting.
-    #   \param property_name \type{str} The name of the property, eg "value".
-    #   \param property_value \type{str} The new value of the property.
-    #
-    #   \return True if successful, False if not.
-    @pyqtSlot(str, str, str, str, result = bool)
-    def setContainerProperty(self, container_id, setting_key, property_name, property_value):
-        if self._container_registry.isReadOnly(container_id):
-            Logger.log("w", "Cannot set properties of read-only container %s.", container_id)
-            return False
-
-        containers = self._container_registry.findContainers(id = container_id)
-        if not containers:
-            Logger.log("w", "Could not set properties of container %s because it was not found.", container_id)
-            return False
-
-        container = containers[0]
-
-        container.setProperty(setting_key, property_name, property_value)
-
-        basefile = container.getMetaDataEntry("base_file", container_id)
-        for sibbling_container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            if sibbling_container != container:
-                sibbling_container.setProperty(setting_key, property_name, property_value)
-
-        return True
-
-    ##  Get a setting property of the specified container.
-    #
-    #   This will get the specified property of the specified setting of the
-    #   specified container.
-    #
-    #   \param container_id The ID of the container to get the setting property
-    #   of.
-    #   \param setting_key The key of the setting to get the property of.
-    #   \param property_name The property to obtain.
-    #   \return The value of the specified property. The type of this property
-    #   value depends on the type of the property. For instance, the "value"
-    #   property of an integer setting will be a Python int, but the "value"
-    #   property of an enum setting will be a Python str.
-    @pyqtSlot(str, str, str, result = QVariant)
-    def getContainerProperty(self, container_id: str, setting_key: str, property_name: str):
-        containers = self._container_registry.findContainers(id = container_id)
-        if not containers:
-            Logger.log("w", "Could not get properties of container %s because it was not found.", container_id)
-            return ""
-        container = containers[0]
-
-        return container.getProperty(setting_key, property_name)
 
     @pyqtSlot(str, result = str)
     def makeUniqueName(self, original_name):
@@ -208,7 +159,6 @@ class ContainerManager(QObject):
         if not file_url:
             return {"status": "error", "message": "Invalid path"}
 
-        mime_type = None
         if file_type not in self._container_name_filters:
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(file_url)
@@ -345,13 +295,15 @@ class ContainerManager(QObject):
         send_emits_containers = []
 
         # Go through global and extruder stacks and clear their topmost container (the user settings).
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        global_stack = self._machine_manager.activeMachine
+        extruder_stacks = list(global_stack.extruders.values())
+        for stack in [global_stack] + extruder_stacks:
             container = stack.userChanges
             container.clear()
             send_emits_containers.append(container)
 
         # user changes are possibly added to make the current setup match the current enabled extruders
-        Application.getInstance().getMachineManager().correctExtruderSettings()
+        self._machine_manager.correctExtruderSettings()
 
         for container in send_emits_containers:
             container.sendPostponedEmits()
@@ -392,21 +344,6 @@ class ContainerManager(QObject):
         if container is not None:
             container.setMetaDataEntry("GUID", new_guid)
 
-    ##  Get the singleton instance for this class.
-    @classmethod
-    def getInstance(cls) -> "ContainerManager":
-        # Note: Explicit use of class name to prevent issues with inheritance.
-        if ContainerManager.__instance is None:
-            ContainerManager.__instance = cls()
-        return ContainerManager.__instance
-
-    __instance = None   # type: "ContainerManager"
-
-    # Factory function, used by QML
-    @staticmethod
-    def createContainerManager(engine, js_engine):
-        return ContainerManager.getInstance()
-
     def _performMerge(self, merge_into, merge, clear_settings = True):
         if merge == merge_into:
             return
@@ -426,7 +363,7 @@ class ContainerManager(QObject):
 
             serialize_type = ""
             try:
-                plugin_metadata = PluginRegistry.getInstance().getMetaData(plugin_id)
+                plugin_metadata = self._plugin_registry.getMetaData(plugin_id)
                 if plugin_metadata:
                     serialize_type = plugin_metadata["settings_container"]["type"]
                 else:
@@ -481,3 +418,9 @@ class ContainerManager(QObject):
 
         container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
         self._container_registry.exportQualityProfile(container_list, path, file_type)
+
+    __instance = None   # type: ContainerManager
+
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "ContainerManager":
+        return cls.__instance

@@ -94,7 +94,7 @@ class VersionUpgrade22to24(VersionUpgrade):
         if variant_path.endswith("_variant.inst.cfg"):
             variant_path = variant_path[:-len("_variant.inst.cfg")] + "_settings.inst.cfg"
 
-        with open(os.path.join(machine_instances_dir, os.path.basename(variant_path)), "w") as fp:
+        with open(os.path.join(machine_instances_dir, os.path.basename(variant_path)), "w", encoding = "utf-8") as fp:
             variant_config.write(fp)
 
         return config_name
@@ -105,9 +105,9 @@ class VersionUpgrade22to24(VersionUpgrade):
 
         result = []
         for entry in os.scandir(variants_dir):
-            if entry.name.endswith('.inst.cfg') and entry.is_file():
+            if entry.name.endswith(".inst.cfg") and entry.is_file():
                 config = configparser.ConfigParser(interpolation = None)
-                with open(entry.path, "r") as fhandle:
+                with open(entry.path, "r", encoding = "utf-8") as fhandle:
                     config.read_file(fhandle)
                 if config.has_section("general") and config.has_option("general", "name"):
                     result.append( { "path": entry.path, "name": config.get("general", "name") } )

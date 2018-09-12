@@ -24,7 +24,7 @@ class ConvexHullNode(SceneNode):
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        if Application.getInstance().hasGui():
+        if not Application.getInstance().getIsHeadLess():
             self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
         else:
             self._color = Color(0, 0, 0)

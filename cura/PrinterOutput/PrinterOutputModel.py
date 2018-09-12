@@ -27,7 +27,7 @@ class PrinterOutputModel(QObject):
     cameraChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = ""):
+    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
         super().__init__(parent)
         self._bed_temperature = -1  # Use -1 for no heated bed.
         self._target_bed_temperature = 0
@@ -35,7 +35,7 @@ class PrinterOutputModel(QObject):
         self._key = ""  # Unique identifier
         self._controller = output_controller
         self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
-        self._printer_configuration = ConfigurationModel()    # Indicates the current configuration setup in this printer
+        self._printer_configuration = ConfigurationModel()  # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version
@@ -43,9 +43,9 @@ class PrinterOutputModel(QObject):
         self._is_preheating = False
         self._printer_type = ""
         self._buildplate_name = None
-        # Update the printer configuration every time any of the extruders changes its configuration
-        for extruder in self._extruders:
-            extruder.extruderConfigurationChanged.connect(self._updateExtruderConfiguration)
+
+        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
+                                                              self._extruders]
 
         self._camera = None
 
@@ -120,7 +120,7 @@ class PrinterOutputModel(QObject):
 
     @pyqtProperty(QVariant, notify = headPositionChanged)
     def headPosition(self):
-        return {"x": self._head_position.x, "y": self._head_position.y, "z": self.head_position_z}
+        return {"x": self._head_position.x, "y": self._head_position.y, "z": self.head_position.z}
 
     def updateHeadPosition(self, x, y, z):
         if self._head_position.x != x or self._head_position.y != y or self._head_position.z != z:
@@ -283,7 +283,3 @@ class PrinterOutputModel(QObject):
         if self._printer_configuration.isValid():
             return self._printer_configuration
         return None
-
-    def _updateExtruderConfiguration(self):
-        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in self._extruders]
-        self.configurationChanged.emit()

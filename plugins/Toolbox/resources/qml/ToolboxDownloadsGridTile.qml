@@ -9,6 +9,8 @@ import UM 1.1 as UM
 
 Item
 {
+    property int packageCount: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getTotalNumberOfMaterialPackagesByAuthor(model.id) : 1
+    property int installedPackages: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
     height: childrenRect.height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
     Rectangle
@@ -39,6 +41,21 @@ Item
                 fillMode: Image.PreserveAspectFit
                 source: model.icon_url || "../images/logobot.svg"
                 mipmap: true
+            }
+            UM.RecolorImage
+            {
+                width: (parent.width * 0.4) | 0
+                height: (parent.height * 0.4) | 0
+                anchors
+                {
+                    bottom: parent.bottom
+                    right: parent.right
+                }
+                sourceSize.width: width
+                sourceSize.height: height
+                visible: installedPackages != 0
+                color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
+                source: "../images/installed_check.svg"
             }
         }
         Column
@@ -87,8 +104,21 @@ Item
             switch(toolbox.viewCategory)
             {
                 case "material":
-                    toolbox.viewPage = "author"
-                    toolbox.filterModelByProp("packages", "author_id", model.id)
+
+                    // If model has a type, it must be a package
+                    if (model.type !== undefined)
+                    {
+                        toolbox.viewPage = "detail"
+                        toolbox.filterModelByProp("packages", "id", model.id)
+                    }
+                    else
+                    {
+                        toolbox.viewPage = "author"
+                        toolbox.setFilters("packages", {
+                            "author_id": model.id,
+                            "type": "material"
+                        })
+                    }
                     break
                 default:
                     toolbox.viewPage = "detail"

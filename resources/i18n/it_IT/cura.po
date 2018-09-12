@@ -3568,7 +3568,7 @@ msgstr "&Posizione fotocamera"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:54
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr "&Piano di stampa"
+msgstr "P&iano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
@@ -3705,8 +3705,8 @@ msgstr "Tempo residuo stimato"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "Att&iva/disattiva schermo intero"
+msgid "Toggle Full Screen"
+msgstr "Attiva/disattiva schermo intero"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -3721,32 +3721,32 @@ msgstr "Ri&peti"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:105
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
-msgstr "E&sci"
+msgstr "&Esci"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "&Visualizzazione 3D"
+msgid "3D View"
+msgstr "Visualizzazione 3D"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "&Visualizzazione frontale"
+msgid "Front View"
+msgstr "Visualizzazione frontale"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "&Visualizzazione superiore"
+msgid "Top View"
+msgstr "Visualizzazione superiore"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "&Visualizzazione lato sinistro"
+msgid "Left Side View"
+msgstr "Visualizzazione lato sinistro"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "&Visualizzazione lato destro"
+msgid "Right Side View"
+msgstr "Visualizzazione lato destro"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3756,12 +3756,12 @@ msgstr "Configura Cura..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:155
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
-msgstr "A&ggiungi stampante..."
+msgstr "&Aggiungi stampante..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:161
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
-msgstr "&Gestione stampanti..."
+msgstr "Gestione stampanti..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:168
 msgctxt "@action:inmenu"
@@ -3806,10 +3806,10 @@ msgstr "I&nformazioni..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "Cancella &modello selezionato"
-msgstr[1] "Cancella modelli &selezionati"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Cancella modello selezionato"
+msgstr[1] "Cancella modelli selezionati"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3857,18 +3857,18 @@ msgstr "Mo&ltiplica modello"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "Sel&eziona tutti i modelli"
+msgid "Select All Models"
+msgstr "Seleziona tutti i modelli"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "&Cancellare piano di stampa"
+msgid "Clear Build Plate"
+msgstr "Cancellare piano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
-msgstr "R&icarica tutti i modelli"
+msgid "Reload All Models"
+msgstr "Ricarica tutti i modelli"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
@@ -3892,8 +3892,8 @@ msgstr "Reimposta tutte le posizioni dei modelli"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "Reimposta tutte le &trasformazioni dei modelli"
+msgid "Reset All Model Transformations"
+msgstr "Reimposta tutte le trasformazioni dei modelli"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"
@@ -3908,7 +3908,7 @@ msgstr "&Nuovo Progetto..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:411
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
-msgstr "M&ostra log motore..."
+msgstr "Mostra &log motore..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:419
 msgctxt "@action:inmenu menubar:help"
@@ -4037,7 +4037,7 @@ msgid "&Settings"
 msgstr "&Impostazioni"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "S&tampante"
 
@@ -4064,7 +4064,7 @@ msgid "Disable Extruder"
 msgstr "Disabilita estrusore"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profilo"
 

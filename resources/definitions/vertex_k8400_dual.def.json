@@ -43,12 +43,6 @@
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true
         },
-        "machine_nozzle_size": {
-            "default_value": 0.35
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "machine_head_polygon": {
             "default_value": [
                 [-60, -18],

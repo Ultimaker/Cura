@@ -20,14 +20,14 @@ from typing import List
 
 ##  Do arrangements on multiple build plates (aka builtiplexer)
 class ArrangeArray:
-    def __init__(self, x: int, y: int, fixed_nodes: List[SceneNode]):
+    def __init__(self, x: int, y: int, fixed_nodes: List[SceneNode]) -> None:
         self._x = x
         self._y = y
         self._fixed_nodes = fixed_nodes
         self._count = 0
         self._first_empty = None
         self._has_empty = False
-        self._arrange = []
+        self._arrange = []  # type: List[Arrange]
 
     def _update_first_empty(self):
         for i, a in enumerate(self._arrange):
@@ -48,16 +48,17 @@ class ArrangeArray:
         return self._count
 
     def get(self, index):
+        print(self._arrange)
         return self._arrange[index]
 
     def getFirstEmpty(self):
-        if not self._is_empty:
+        if not self._has_empty:
             self.add()
         return self._arrange[self._first_empty]
 
 
 class ArrangeObjectsAllBuildPlatesJob(Job):
-    def __init__(self, nodes: List[SceneNode], min_offset = 8):
+    def __init__(self, nodes: List[SceneNode], min_offset = 8) -> None:
         super().__init__()
         self._nodes = nodes
         self._min_offset = min_offset

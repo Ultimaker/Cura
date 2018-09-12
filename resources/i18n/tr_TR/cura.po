@@ -3705,7 +3705,7 @@ msgstr "Kalan tahmini süre"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "Tam Ekrana Geç"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3725,28 +3725,28 @@ msgstr "&Çıkış"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "&3 Boyutlu Görünüm"
+msgid "3D View"
+msgstr "3 Boyutlu Görünüm"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "&Önden Görünüm"
+msgid "Front View"
+msgstr "Önden Görünüm"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "&Yukarıdan Görünüm"
+msgid "Top View"
+msgstr "Yukarıdan Görünüm"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "&Sol Taraftan Görünüm"
+msgid "Left Side View"
+msgstr "Sol Taraftan Görünüm"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "&Sağ Taraftan Görünüm"
+msgid "Right Side View"
+msgstr "Sağ Taraftan Görünüm"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3781,7 +3781,7 @@ msgstr "&Geçerli değişiklikleri iptal et"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:196
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "&Geçerli ayarlardan/geçersiz kılmalardan profil oluştur..."
+msgstr "G&eçerli ayarlardan/geçersiz kılmalardan profil oluştur..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
@@ -3806,10 +3806,10 @@ msgstr "&Hakkında..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "&Seçili Modeli Sil"
-msgstr[1] "&Seçili Modelleri Sil"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Seçili Modeli Sil"
+msgstr[1] "Seçili Modelleri Sil"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3857,17 +3857,17 @@ msgstr "&Modeli Çoğalt..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "&Tüm modelleri Seç"
+msgid "Select All Models"
+msgstr "Tüm modelleri Seç"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "&Yapı Levhasını Temizle"
+msgid "Clear Build Plate"
+msgstr "Yapı Levhasını Temizle"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
+msgid "Reload All Models"
 msgstr "Tüm Modelleri Yeniden Yükle"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
@@ -3892,7 +3892,7 @@ msgstr "Tüm Model Konumlarını Sıfırla"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "Tüm Model ve Dönüşümleri Sıfırla"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
@@ -4024,7 +4024,7 @@ msgstr "Kaydet&Projelendir..."
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:162
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
-msgstr "&Düzenle"
+msgstr "Düz&enle"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:179
 msgctxt "@title:menu"
@@ -4037,7 +4037,7 @@ msgid "&Settings"
 msgstr "&Ayarlar"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Yazıcı"
 
@@ -4064,7 +4064,7 @@ msgid "Disable Extruder"
 msgstr "Ekstruderi Devre Dışı Bırak"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profil"
 

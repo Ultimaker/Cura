@@ -3703,7 +3703,7 @@ msgstr "예상 남은 시간"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "전채 화면 전환"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3723,28 +3723,28 @@ msgstr "종료(&Q)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "3D 보기(&3)"
+msgid "3D View"
+msgstr "3D 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "앞에서 보기(&F)"
+msgid "Front View"
+msgstr "앞에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "위에서 보기(&T)"
+msgid "Top View"
+msgstr "위에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "왼쪽에서 보기(&L)"
+msgid "Left Side View"
+msgstr "왼쪽에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "오른쪽에서 보기(&R)"
+msgid "Right Side View"
+msgstr "오른쪽에서 보기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3804,8 +3804,8 @@ msgstr "소개..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
 msgstr[0] "선택한 모델 삭제"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
@@ -3852,17 +3852,17 @@ msgstr "모델 복제..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
+msgid "Select All Models"
 msgstr "모든 모델 선택"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
+msgid "Clear Build Plate"
 msgstr "빌드 플레이트 지우기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
+msgid "Reload All Models"
 msgstr "모든 모델 다시 로드"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
@@ -3887,7 +3887,7 @@ msgstr "모든 모델의 위치 재설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "모든 모델의 변환 재설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
@@ -4032,7 +4032,7 @@ msgid "&Settings"
 msgstr "설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "프린터"
 
@@ -4059,7 +4059,7 @@ msgid "Disable Extruder"
 msgstr "익스트루더 사용하지 않음"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "프로파일"
 

@@ -1,17 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Application import Application
+from UM.FileHandler.FileHandler import FileHandler #For typing.
 from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode #For typing.
+from cura.CuraApplication import CuraApplication
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, pyqtSignal, QUrl, QCoreApplication
+from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
 from time import time
-from typing import Callable, Any, Optional, Dict, Tuple
+from typing import Any, Callable, Dict, List, Optional
 from enum import IntEnum
-from typing import List
 
 import os  # To get the username
 import gzip
@@ -27,20 +28,20 @@ class AuthState(IntEnum):
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
 
-    def __init__(self, device_id, address: str, properties, parent = None) -> None:
+    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent)
-        self._manager = None    # type: QNetworkAccessManager
-        self._last_manager_create_time = None       # type: float
+        self._manager = None    # type: Optional[QNetworkAccessManager]
+        self._last_manager_create_time = None       # type: Optional[float]
         self._recreate_network_manager_time = 30
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
 
-        self._last_response_time = None     # type: float
-        self._last_request_time = None      # type: float
+        self._last_response_time = None     # type: Optional[float]
+        self._last_request_time = None      # type: Optional[float]
 
         self._api_prefix = ""
         self._address = address
         self._properties = properties
-        self._user_agent = "%s/%s " % (Application.getInstance().getApplicationName(), Application.getInstance().getVersion())
+        self._user_agent = "%s/%s " % (CuraApplication.getInstance().getApplicationName(), CuraApplication.getInstance().getVersion())
 
         self._onFinishedCallbacks = {}      # type: Dict[str, Callable[[QNetworkReply], None]]
         self._authentication_state = AuthState.NotAuthenticated
@@ -67,16 +68,16 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                 self._printer_type = value
                 break
 
-    def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs) -> None:
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
-    def setAuthenticationState(self, authentication_state) -> None:
+    def setAuthenticationState(self, authentication_state: AuthState) -> None:
         if self._authentication_state != authentication_state:
             self._authentication_state = authentication_state
             self.authenticationStateChanged.emit()
 
-    @pyqtProperty(int, notify=authenticationStateChanged)
-    def authenticationState(self) -> int:
+    @pyqtProperty(int, notify = authenticationStateChanged)
+    def authenticationState(self) -> AuthState:
         return self._authentication_state
 
     def _compressDataAndNotifyQt(self, data_to_append: str) -> bytes:
@@ -121,7 +122,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._compressing_gcode = False
         return b"".join(file_data_bytes_list)
 
-    def _update(self) -> bool:
+    def _update(self) -> None:
         if self._last_response_time:
             time_since_last_response = time() - self._last_response_time
         else:
@@ -144,16 +145,16 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             if time_since_last_response > self._recreate_network_manager_time:
                 if self._last_manager_create_time is None:
                     self._createNetworkManager()
-                if time() - self._last_manager_create_time > self._recreate_network_manager_time:
+                elif time() - self._last_manager_create_time > self._recreate_network_manager_time:
                     self._createNetworkManager()
+                assert(self._manager is not None)
         elif self._connection_state == ConnectionState.closed:
             # Go out of timeout.
-            self.setConnectionState(self._connection_state_before_timeout)
-            self._connection_state_before_timeout = None
+            if self._connection_state_before_timeout is not None:   # sanity check, but it should never be None here
+                self.setConnectionState(self._connection_state_before_timeout)
+                self._connection_state_before_timeout = None
 
-        return True
-
-    def _createEmptyRequest(self, target, content_type: Optional[str] = "application/json") -> QNetworkRequest:
+    def _createEmptyRequest(self, target: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         url = QUrl("http://" + self._address + self._api_prefix + target)
         request = QNetworkRequest(url)
         if content_type is not None:
@@ -161,7 +162,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
-    def _createFormPart(self, content_header, data, content_type = None) -> QHttpPart:
+    def _createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
         part = QHttpPart()
 
         if not content_header.startswith("form-data;"):
@@ -187,35 +188,55 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if reply in self._kept_alive_multiparts:
             del self._kept_alive_multiparts[reply]
 
-    def put(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
+    def _validateManager(self) -> None:
         if self._manager is None:
             self._createNetworkManager()
+        assert (self._manager is not None)
+
+    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.put(request, data.encode())
-        self._registerOnFinishedCallback(reply, onFinished)
+        if self._manager is not None:
+            reply = self._manager.put(request, data.encode())
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
-    def get(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
+    def delete(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.get(request)
-        self._registerOnFinishedCallback(reply, onFinished)
+        if self._manager is not None:
+            reply = self._manager.deleteResource(request)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
-    def post(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
+    def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.post(request, data)
-        if onProgress is not None:
-            reply.uploadProgress.connect(onProgress)
-        self._registerOnFinishedCallback(reply, onFinished)
+        if self._manager is not None:
+            reply = self._manager.get(request)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
-    def postFormWithParts(self, target:str, parts: List[QHttpPart], onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
+    def post(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
+        self._validateManager()
+        request = self._createEmptyRequest(target)
+        self._last_request_time = time()
+        if self._manager is not None:
+            reply = self._manager.post(request, data)
+            if on_progress is not None:
+                reply.uploadProgress.connect(on_progress)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
+
+    def postFormWithParts(self, target: str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
+        self._validateManager()
         request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
         for part in parts:
@@ -223,24 +244,27 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_request_time = time()
 
-        reply = self._manager.post(request, multi_post_part)
+        if self._manager is not None:
+            reply = self._manager.post(request, multi_post_part)
 
-        self._kept_alive_multiparts[reply] = multi_post_part
+            self._kept_alive_multiparts[reply] = multi_post_part
 
-        if onProgress is not None:
-            reply.uploadProgress.connect(onProgress)
-        self._registerOnFinishedCallback(reply, onFinished)
+            if on_progress is not None:
+                reply.uploadProgress.connect(on_progress)
+            self._registerOnFinishedCallback(reply, on_finished)
 
-        return reply
+            return reply
+        else:
+            Logger.log("e", "Could not find manager.")
 
-    def postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None) -> None:
+    def postForm(self, target: str, header_data: str, body_data: bytes, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
         post_part = QHttpPart()
         post_part.setHeader(QNetworkRequest.ContentDispositionHeader, header_data)
         post_part.setBody(body_data)
 
-        self.postFormWithParts(target, [post_part], onFinished, onProgress)
+        self.postFormWithParts(target, [post_part], on_finished, on_progress)
 
-    def _onAuthenticationRequired(self, reply, authenticator) -> None:
+    def _onAuthenticationRequired(self, reply: QNetworkReply, authenticator: QAuthenticator) -> None:
         Logger.log("w", "Request to {url} required authentication, which was not implemented".format(url = reply.url().toString()))
 
     def _createNetworkManager(self) -> None:
@@ -254,12 +278,12 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
-        if b'temporary' not in self._properties:
-            Application.getInstance().getMachineManager().checkCorrectGroupName(self.getId(), self.name)
+        if self._properties.get(b"temporary", b"false") != b"true":
+            CuraApplication.getInstance().getMachineManager().checkCorrectGroupName(self.getId(), self.name)
 
-    def _registerOnFinishedCallback(self, reply: QNetworkReply, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
-        if onFinished is not None:
-            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+    def _registerOnFinishedCallback(self, reply: QNetworkReply, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        if on_finished is not None:
+            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = on_finished
 
     def __handleOnFinished(self, reply: QNetworkReply) -> None:
         # Due to garbage collection, we need to cache certain bits of post operations.
@@ -296,30 +320,30 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
-    @pyqtProperty(str, constant=True)
+    @pyqtProperty(str, constant = True)
     def key(self) -> str:
         return self._id
 
     ##  The IP address of the printer.
-    @pyqtProperty(str, constant=True)
+    @pyqtProperty(str, constant = True)
     def address(self) -> str:
         return self._properties.get(b"address", b"").decode("utf-8")
 
     ##  Name of the printer (as returned from the ZeroConf properties)
-    @pyqtProperty(str, constant=True)
+    @pyqtProperty(str, constant = True)
     def name(self) -> str:
         return self._properties.get(b"name", b"").decode("utf-8")
 
     ##  Firmware version (as returned from the ZeroConf properties)
-    @pyqtProperty(str, constant=True)
+    @pyqtProperty(str, constant = True)
     def firmwareVersion(self) -> str:
         return self._properties.get(b"firmware_version", b"").decode("utf-8")
 
-    @pyqtProperty(str, constant=True)
+    @pyqtProperty(str, constant = True)
     def printerType(self) -> str:
         return self._printer_type
 
-    ## IPadress of this printer
-    @pyqtProperty(str, constant=True)
+    ## IP adress of this printer
+    @pyqtProperty(str, constant = True)
     def ipAddress(self) -> str:
         return self._address

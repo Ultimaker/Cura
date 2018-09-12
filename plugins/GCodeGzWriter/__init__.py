@@ -16,7 +16,8 @@ def getMetaData():
                 "extension": file_extension,
                 "description": catalog.i18nc("@item:inlistbox", "Compressed G-code File"),
                 "mime_type": "application/gzip",
-                "mode": GCodeGzWriter.GCodeGzWriter.OutputMode.BinaryMode
+                "mode": GCodeGzWriter.GCodeGzWriter.OutputMode.BinaryMode,
+                "hide_in_file_dialog": True,
             }]
         }
     }

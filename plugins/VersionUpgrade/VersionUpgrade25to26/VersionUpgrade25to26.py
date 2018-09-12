@@ -249,11 +249,11 @@ class VersionUpgrade25to26(VersionUpgrade):
         definition_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
         user_settings_dir = Resources.getPath(CuraApplication.ResourceTypes.UserInstanceContainer)
 
-        with open(os.path.join(definition_changes_dir, definition_changes_filename), "w") as f:
+        with open(os.path.join(definition_changes_dir, definition_changes_filename), "w", encoding = "utf-8") as f:
             f.write(definition_changes_output.getvalue())
-        with open(os.path.join(user_settings_dir, user_settings_filename), "w") as f:
+        with open(os.path.join(user_settings_dir, user_settings_filename), "w", encoding = "utf-8") as f:
             f.write(user_settings_output.getvalue())
-        with open(os.path.join(extruder_stack_dir, extruder_filename), "w") as f:
+        with open(os.path.join(extruder_stack_dir, extruder_filename), "w", encoding = "utf-8") as f:
             f.write(extruder_output.getvalue())
 
     ##  Creates a definition changes container which doesn't contain anything for the Custom FDM Printers.
