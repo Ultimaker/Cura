@@ -626,7 +626,7 @@ class Toolbox(QObject, Extension):
 
                 # HACK: Do nothing because we'll handle these from the "packages" call
                 if type in do_not_handle:
-                    return
+                    continue
 
                 if reply.url() == url:
                     if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
