@@ -191,6 +191,7 @@ TabView
                     ReadOnlyTextField
                     {
                         id: colorLabel;
+                        width: parent.width - colorSelector.width - parent.spacing
                         text: properties.color_name;
                         readOnly: !base.editingEnabled
                         onEditingFinished: base.setMetaDataEntry("color_name", properties.color_name, text)
