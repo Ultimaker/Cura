@@ -13,8 +13,12 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: brand_section
-    property var expanded: materialList.expandedBrands.indexOf(model.name) > -1
-    property var types_model: model.material_types
+    
+    property var sectionName: ""
+    property var elements   // This can be a MaterialTypesModel or GenericMaterialsModel
+    property var hasMaterialTypes: true  // It indicates wheather it has material types or not
+    property var expanded: materialList.expandedBrands.indexOf(sectionName) > -1
+
     height: childrenRect.height
     width: parent.width
     Rectangle
@@ -22,7 +26,7 @@ Rectangle
         id: brand_header_background
         color:
         {
-            if(!expanded && model.name == materialList.currentBrand)
+            if(!expanded && sectionName == materialList.currentBrand)
             {
                 return UM.Theme.getColor("favorites_row_selected")
             }
@@ -40,7 +44,7 @@ Rectangle
         Label
         {
             id: brand_name
-            text: model.name
+            text: sectionName
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - UM.Theme.getSize("favorites_button").width
             verticalAlignment: Text.AlignVCenter
@@ -79,7 +83,7 @@ Rectangle
         anchors.fill: brand_header
         onPressed:
         {
-            const i = materialList.expandedBrands.indexOf(model.name)
+            const i = materialList.expandedBrands.indexOf(sectionName)
             if (i > -1)
             {
                 // Remove it
@@ -89,7 +93,7 @@ Rectangle
             else
             {
                 // Add it
-                materialList.expandedBrands.push(model.name)
+                materialList.expandedBrands.push(sectionName)
                 brand_section.expanded = true
             }
             UM.Preferences.setValue("cura/expanded_brands", materialList.expandedBrands.join(";"));
@@ -102,10 +106,25 @@ Rectangle
         anchors.left: parent.left
         height: brand_section.expanded ? childrenRect.height : 0
         visible: brand_section.expanded
+
         Repeater
         {
-            model: types_model
-            delegate: MaterialsTypeSection {}
+            model: elements
+            delegate: MaterialsTypeSection
+            {
+                visible: hasMaterialTypes
+                materialType: model
+            }
+        }
+        // In case there are no types, we create a material slot
+        Repeater
+        {
+            model: elements
+            delegate: MaterialsSlot
+            {
+                visible: !hasMaterialTypes
+                material: model
+            }
         }
     }
 
@@ -114,7 +133,7 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
-            expanded = materialList.expandedBrands.indexOf(model.name) > -1
+            expanded = materialList.expandedBrands.indexOf(sectionName) > -1
         }
     }
 }

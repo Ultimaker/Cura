@@ -26,12 +26,20 @@ Item
     property var currentBrand: null
     property var expandedBrands: UM.Preferences.getValue("cura/expanded_brands").split(";")
     property var expandedTypes: UM.Preferences.getValue("cura/expanded_types").split(";")
-    
+
+    // Store information about which parts of the tree are expanded
+    function persistExpandedCategories()
+    {
+        UM.Preferences.setValue("cura/expanded_brands", materialList.expandedBrands.join(";"))
+        UM.Preferences.setValue("cura/expanded_types", materialList.expandedTypes.join(";"))
+    }
+
+    // Expand the list of materials in order to select the current material
     function expandActiveMaterial(search_root_id)
     {
-        for (var n = 0; n < genericMaterialsModel.rowCount(); n++)
+        for (var material_idx = 0; material_idx < genericMaterialsModel.rowCount(); material_idx++)
         {
-            var material = genericMaterialsModel.getItem(n);
+            var material = genericMaterialsModel.getItem(material_idx)
             if (material.root_material_id == search_root_id)
             {
                 if (materialList.expandedBrands.indexOf("Generic") == -1)
@@ -39,20 +47,22 @@ Item
                     materialList.expandedBrands.push("Generic");
                     materialList.currentBrand = "Generic"
                 }
+                base.currentItem = material
+                persistExpandedCategories()
+                return true
             }
         }
-        for (var i = 0; i < materialsModel.rowCount(); i++)
+        for (var brand_idx = 0; brand_idx < materialsModel.rowCount(); brand_idx++)
         {
-            var brand = materialsModel.getItem(i);
-            var types_model = brand.material_types;
-
-            for (var j = 0; j < types_model.rowCount(); j++)
+            var brand = materialsModel.getItem(brand_idx)
+            var types_model = brand.material_types
+            for (var type_idx = 0; type_idx < types_model.rowCount(); type_idx++)
             {
-                var type = types_model.getItem(j);
-                var colors_model = type.colors;
-                for (var k = 0; k < colors_model.rowCount(); k++)
+                var type = types_model.getItem(type_idx)
+                var colors_model = type.colors
+                for (var material_idx = 0; material_idx < colors_model.rowCount(); material_idx++)
                 {
-                    var material = colors_model.getItem(k);
+                    var material = colors_model.getItem(material_idx)
                     if (material.root_material_id == search_root_id)
                     {
                         if (materialList.expandedBrands.indexOf(brand.name) == -1)
@@ -65,66 +75,30 @@ Item
                             materialList.expandedTypes.push(brand.name + "_" + type.name)
                             materialList.currentType = brand.name + "_" + type.name
                         }
+                        base.currentItem = material
+                        persistExpandedCategories()
+                        return true
                     }
                 }
             }
+            return false
         }
-        UM.Preferences.setValue("cura/expanded_brands", materialList.expandedBrands.join(";"));
-        UM.Preferences.setValue("cura/expanded_types", materialList.expandedTypes.join(";"));
     }
 
-//    Connections
-//    {
-//        target: materialsModel
-//        onItemsChanged:
-//        {
-//            var currentItemId = base.hasCurrentItem ? base.currentItem.root_material_id : ""
-//            var position = Cura.ExtruderManager.activeExtruderIndex
-//            console.log("!!!!!!!!!!!!!!!!!!! on items changed:", base.newRootMaterialIdToSwitchTo)
-//
-//            // try to pick the currently selected item; it may have been moved
-//            if (base.newRootMaterialIdToSwitchTo == "")
-//            {
-//                console.log("material id is empty, setting to ", currentItemId)
-//                base.newRootMaterialIdToSwitchTo = currentItemId
-//            }
-//
-//            console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", materialsModel.rowCount())
-//            for (var brand_idx = 0; brand_idx < materialsModel.rowCount(); ++brand_idx)
-//            {
-//                var brand = materialsModel.getItem(brand_idx)
-//                console.log(item.root_material_id, "=", base.newRootMaterialIdToSwitchTo)
-//
-//                for (var type_idx = 0; type_idx < brand.material_types.rowCount(); ++type_idx)
-//                {
-//                    var type = brand.material_types.getItem(type_idx)
-//                    if (type.root_material_id == base.newRootMaterialIdToSwitchTo)
-//                    {
-//                        // Switch to the newly created profile if needed
-//                        base.currentItem = item
-//    //                    materialDetailsPanel.activateDetailsWithIndex(materialListView.currentIndex)
-//    //                    if (base.toActivateNewMaterial)
-//    //                    {
-//    //                        Cura.MachineManager.setMaterial(position, item.container_node)
-//    //                    }
-//                        base.newRootMaterialIdToSwitchTo = ""
-//                        base.toActivateNewMaterial = false
-//                        return
-//                    }
-//                }
-//            }
-//
-//            // If the new id can't be found, then do nothing
-////            materialListView.currentIndex = 0
-////            materialListView.activateDetailsWithIndex(materialListView.currentIndex)
-////            if (base.toActivateNewMaterial)
-////            {
-////                Cura.MachineManager.setMaterial(position, materialsModel.getItem(0).container_node)
-////            }
-//            base.newRootMaterialIdToSwitchTo = ""
-//            base.toActivateNewMaterial = false
-//        }
-//    }
+    Connections
+    {
+        target: materialsModel
+        onItemsChanged:
+        {
+            var correctlyExpanded = materialList.expandActiveMaterial(base.newRootMaterialIdToSwitchTo)
+//          if (base.toActivateNewMaterial)
+//          {
+//              Cura.MachineManager.setMaterial(position, material.container_node)
+//          }
+            base.newRootMaterialIdToSwitchTo = ""
+            base.toActivateNewMaterial = false
+        }
+    }
     
     Column
     {
@@ -199,97 +173,6 @@ Item
                 Repeater
                 {
                     model: favoriteMaterialsModel
-                    delegate: MaterialsSlot {
-                        material: model
-                    }
-                }
-            }
-        }
-        Rectangle
-        {
-            property var expanded: materialList.expandedBrands.indexOf("Generic") > -1
-
-            id: generic_section
-            height: childrenRect.height
-            width: materialList.width
-            Rectangle
-            {
-                id: generic_header_background
-                color: UM.Theme.getColor("favorites_header_bar")
-                anchors.fill: generic_header
-            }
-            Row
-            {
-                id: generic_header
-                Label
-                {
-                    id: generic_name
-                    text: "Generic"
-                    height: UM.Theme.getSize("favorites_row").height
-                    width: materialList.width - UM.Theme.getSize("favorites_button").width
-                    verticalAlignment: Text.AlignVCenter
-                    leftPadding: 4
-                }
-                Button
-                {
-                    text: ""
-                    implicitWidth: UM.Theme.getSize("favorites_button").width
-                    implicitHeight: UM.Theme.getSize("favorites_button").height
-                    UM.RecolorImage {
-                        anchors
-                        {
-                            verticalCenter: parent.verticalCenter
-                            horizontalCenter: parent.horizontalCenter
-                        }
-                        width: UM.Theme.getSize("standard_arrow").width
-                        height: UM.Theme.getSize("standard_arrow").height
-                        sourceSize.width: width
-                        sourceSize.height: height
-                        color: "black"
-                        source: generic_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
-                    }
-                    style: ButtonStyle
-                    {
-                        background: Rectangle
-                        {
-                            anchors.fill: parent
-                            color: "transparent"
-                        }
-                    }
-                }
-            }
-            MouseArea
-            {
-                anchors.fill: generic_header
-                onPressed:
-                {
-                    const index = materialList.expandedBrands.indexOf("Generic")
-
-                    if (index > -1)
-                    {
-                        // Remove it
-                        materialList.expandedBrands.splice(index, 1)
-                        generic_section.expanded = false
-                    }
-                    else
-                    {
-                        // Add it
-                        materialList.expandedBrands.push("Generic")
-                        generic_section.expanded = true
-                    }
-                }
-            }
-            Column
-            {
-                anchors.top: generic_header.bottom
-                width: materialList.width
-                anchors.left: parent.left
-                height: generic_section.expanded ? childrenRect.height : 0
-                visible: generic_section.expanded
-
-                Repeater
-                {
-                    model: genericMaterialsModel
                     delegate: MaterialsSlot
                     {
                         material: model
@@ -297,11 +180,25 @@ Item
                 }
             }
         }
+
+        MaterialsBrandSection
+        {
+            id: genericSection
+            sectionName: "Generic"
+            elements: genericMaterialsModel
+            hasMaterialTypes: false
+        }
         Repeater
         {
             id: brand_list
             model: materialsModel
-            delegate: MaterialsBrandSection {}
+            delegate: MaterialsBrandSection
+            {
+                id: brandSection
+                sectionName: model.name
+                elements: model.material_types
+                hasMaterialTypes: true
+            }
         }
     }
 }

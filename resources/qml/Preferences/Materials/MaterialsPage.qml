@@ -21,9 +21,13 @@ Item
     property var hasCurrentItem: base.currentItem != null
     property var isCurrentItemActivated:
     {
-        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-        const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-        return base.currentItem.root_material_id == root_material_id;
+        if (!hasCurrentItem)
+        {
+            return false
+        }
+        const extruder_position = Cura.ExtruderManager.activeExtruderIndex
+        const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position]
+        return base.currentItem.root_material_id == root_material_id
     }
     property string newRootMaterialIdToSwitchTo: ""
     property bool toActivateNewMaterial: false
@@ -37,9 +41,11 @@ Item
         name: "cura"
     }
 
-    Component.onCompleted: { materialListView.expandActiveMaterial(active_root_material_id) }
+    // When loaded, try to select the active material in the tree
+    Component.onCompleted: materialListView.expandActiveMaterial(active_root_material_id)
 
-    onCurrentItemChanged: { materialDetailsPanel.currentItem = currentItem }
+    // Every time the selected item has changed, notify to the details panel
+    onCurrentItemChanged: materialDetailsPanel.currentItem = currentItem
 
     // Main layout
     Label

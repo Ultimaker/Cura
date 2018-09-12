@@ -15,7 +15,7 @@ Item
 
     property var currentItem: base.currentItem
 
-    onCurrentItemChanged: { updateMaterialPropertiesObject() }
+    onCurrentItemChanged: updateMaterialPropertiesObject()
 
     function updateMaterialPropertiesObject()
     {

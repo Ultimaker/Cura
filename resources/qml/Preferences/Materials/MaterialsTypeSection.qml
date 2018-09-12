@@ -13,6 +13,7 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: material_type_section
+    property var materialType
     property var expanded: materialList.expandedTypes.indexOf(model.brand + "_" + model.name) > -1
     property var colors_model: model.colors
     height: childrenRect.height
@@ -120,7 +121,8 @@ Rectangle
         Repeater
         {
             model: colors_model
-            delegate: MaterialsSlot {
+            delegate: MaterialsSlot
+            {
                 material: model
             }
         }
