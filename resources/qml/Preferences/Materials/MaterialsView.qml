@@ -567,7 +567,7 @@ TabView
         // don't change when new name is the same
         if (old_name == new_name)
         {
-            return;
+            return
         }
 
         // update the values
@@ -576,14 +576,14 @@ TabView
     }
 
     // update the type of the material
-    function updateMaterialType (old_type, new_type)
+    function updateMaterialType(old_type, new_type)
     {
         base.setMetaDataEntry("material", old_type, new_type);
-        materialProperties.material= new_type;
+        materialProperties.material = new_type;
     }
 
     // update the brand of the material
-    function updateMaterialBrand (old_brand, new_brand)
+    function updateMaterialBrand(old_brand, new_brand)
     {
         base.setMetaDataEntry("brand", old_brand, new_brand);
         materialProperties.brand = new_brand;
