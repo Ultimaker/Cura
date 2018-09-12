@@ -91,10 +91,11 @@ Item
         onItemsChanged:
         {
             var correctlyExpanded = materialList.expandActiveMaterial(base.newRootMaterialIdToSwitchTo)
-//          if (base.toActivateNewMaterial)
-//          {
-//              Cura.MachineManager.setMaterial(position, material.container_node)
-//          }
+            if (base.toActivateNewMaterial)
+            {
+                var position = Cura.ExtruderManager.activeExtruderIndex
+                Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
+            }
             base.newRootMaterialIdToSwitchTo = ""
             base.toActivateNewMaterial = false
         }
