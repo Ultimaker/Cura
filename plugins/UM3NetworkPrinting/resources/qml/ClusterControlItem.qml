@@ -628,24 +628,28 @@ Component
 
                                 Rectangle
                                 {
-                                    id: showCameraIcon
-                                    width: 35 * screenScaleFactor
+                                    id: showCameraButton
+                                    width: 36 * screenScaleFactor
                                     height: width
                                     radius: 0.5 * width
                                     anchors.left: parent.left
                                     anchors.bottom: printJobPreview.bottom
-                                    color: UM.Theme.getColor("setting_control_border_highlight")
-                                    Image
+                                    color: showCameraMouseArea.containsMouse ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
+                                    UM.RecolorImage
                                     {
-                                        width: parent.width
+                                        id: showCameraIcon
+                                        width: parent.width - 1
                                         height: width
-                                        anchors.right: parent.right
-                                        anchors.rightMargin: parent.rightMargin
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        color: UM.Theme.getColor("primary_text")
                                         source: "../svg/camera-icon.svg"
                                     }
                                     MouseArea
                                     {
+                                        id: showCameraMouseArea
                                         anchors.fill:parent
+                                        hoverEnabled: true
                                         onClicked:
                                         {
                                             OutputDevice.setActiveCamera(modelData.camera)
