@@ -36,6 +36,7 @@ Item
             }
         }
 
+        /*  // NOTE: Remember to re-enable for v3.6!
         ToolboxTabButton
         {
             id: materialsTabButton
@@ -49,6 +50,7 @@ Item
                 toolbox.viewPage = "overview"
             }
         }
+        */
     }
     ToolboxTabButton
     {
