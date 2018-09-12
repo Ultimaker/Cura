@@ -1,7 +1,7 @@
 {
     "name": "BlackBelt plugin",
     "author": "fieldOfView",
-    "version": "3.4.2",
+    "version": "3.5",
     "description": "Adds support for BlackBelt printers with slanted gantries.",
-    "api": 4
+    "api": 5
 }
