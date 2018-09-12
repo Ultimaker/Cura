@@ -23,37 +23,49 @@ Item
         z: 0
     }
 
-    Button
+    CameraButton
     {
-        id: backButton
-        anchors.bottom: cameraImage.top
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").width
-        anchors.right: cameraImage.right
-
-        // TODO: Hardcoded sizes
-        width: 20 * screenScaleFactor
-        height: 20 * screenScaleFactor
-
-        onClicked: OutputDevice.setActiveCamera(null)
-
-        style: ButtonStyle
+        id: closeCameraButton
+        iconSource: UM.Theme.getIcon("cross1")
+        anchors
         {
-            label: Item
-            {
-                UM.RecolorImage
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: control.width
-                    height: control.height
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    source: UM.Theme.getIcon("cross1")
-                }
-            }
-            background: Item {}
+            top: cameraImage.top
+            topMargin: UM.Theme.getSize("default_margin").height
+            right: cameraImage.right
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
+        z: 999
     }
+
+    // Button
+    // {
+    //     id: backButton
+        
+
+    //     // TODO: Hardcoded sizes
+    //     width: 20 * screenScaleFactor
+    //     height: 20 * screenScaleFactor
+
+    //     onClicked: OutputDevice.setActiveCamera(null)
+
+    //     style: ButtonStyle
+    //     {
+    //         label: Item
+    //         {
+    //             UM.RecolorImage
+    //             {
+    //                 anchors.verticalCenter: parent.verticalCenter
+    //                 anchors.horizontalCenter: parent.horizontalCenter
+    //                 width: control.width
+    //                 height: control.height
+    //                 sourceSize.width: width
+    //                 sourceSize.height: width
+    //                 source: UM.Theme.getIcon("cross1")
+    //             }
+    //         }
+    //         background: Item {}
+    //     }
+    // }
 
     Image
     {

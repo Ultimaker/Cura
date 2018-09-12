@@ -19,7 +19,7 @@ Rectangle
     UM.RecolorImage
     {
         id: icon
-        width: parent.width - 1
+        width: parent.width / 2
         height: width
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter

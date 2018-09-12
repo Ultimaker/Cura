@@ -626,7 +626,7 @@ Component
                                     color: "black"
                                 }
 
-                                DotButton
+                                CameraButton
                                 {
                                     id: showCameraButton
                                     iconSource: "../svg/camera-icon.svg"
