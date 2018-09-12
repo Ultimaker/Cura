@@ -255,7 +255,7 @@ class ProcessSlicedLayersJob(Job):
             material_color_map[0, :] = color
 
         # We have to scale the colors for compatibility mode
-        if OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode")):
+        if OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode")):
             line_type_brightness = 0.5  # for compatibility mode
         else:
             line_type_brightness = 1.0

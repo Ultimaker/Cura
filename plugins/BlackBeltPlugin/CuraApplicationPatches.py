@@ -1,5 +1,3 @@
-from UM.Preferences import Preferences
-
 from UM.Math.Vector import Vector
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
@@ -62,6 +60,8 @@ class CuraApplicationPatches():
         if not global_container_stack:
             return
 
+        preferences = self._application.getPreferences()
+
         definition_container = global_container_stack.getBottom()
         is_blackbelt_printer = definition_container.getId() == "blackbelt"
         ### END PATCH
@@ -71,9 +71,10 @@ class CuraApplicationPatches():
         self._application._currently_loading_files.remove(filename)
 
         self._application.fileLoaded.emit(filename)
+
         arrange_objects_on_load = (
-            not Preferences.getInstance().getValue("cura/use_multi_build_plate") or
-            not Preferences.getInstance().getValue("cura/not_arrange_objects_on_load"))
+            not preferences.getValue("cura/use_multi_build_plate") or
+            not preferences.getValue("cura/not_arrange_objects_on_load"))
         target_build_plate = self._application.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         root = self._application.getController().getScene().getRoot()
@@ -89,7 +90,7 @@ class CuraApplicationPatches():
         default_extruder_position = self._application.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._application._global_container_stack.extruders[default_extruder_position].getId()
 
-        select_models_on_load = Preferences.getInstance().getValue("cura/select_models_on_load")
+        select_models_on_load = preferences.getValue("cura/select_models_on_load")
 
         for original_node in nodes:
 

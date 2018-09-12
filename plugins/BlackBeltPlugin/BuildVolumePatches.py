@@ -20,7 +20,7 @@ class BuildVolumePatches():
         if not self._build_volume._width or not self._build_volume._height or not self._build_volume._depth:
             return
 
-        if not Application.getInstance()._engine:
+        if not self._build_volume._engine_ready:
             return
 
         if not self._build_volume._volume_outline_color:

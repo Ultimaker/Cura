@@ -3,7 +3,6 @@
 
 from UM.Extension import Extension
 from UM.Application import Application
-from UM.Preferences import Preferences
 from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
@@ -70,7 +69,7 @@ class BlackBeltPlugin(Extension):
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
 
         # Handle default setting visibility
-        preferences = Preferences.getInstance()
+        preferences = self._application.getPreferences()
         preferences.preferenceChanged.connect(self._onPreferencesChanged)
         if self._configurationNeedsUpdates():
             Logger.log("d", "BlackBelt-specific updates to configuration are needed")
@@ -81,10 +80,10 @@ class BlackBeltPlugin(Extension):
             preferences.setValue("cura/active_setting_visibility_preset", "blackbelt")
 
         # Disable USB printing output device
-        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+        self._application.getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
     def _configurationNeedsUpdates(self):
-        preferences = Preferences.getInstance()
+        preferences = self._application.getPreferences()
         preferences.addPreference("blackbelt/setting_version", "0.0.0")
 
         # Get version information from plugin.json
@@ -110,11 +109,11 @@ class BlackBeltPlugin(Extension):
         self._application.getMachineManager().activeQualityChanged.connect(self._onActiveQualityChanged)
 
         # Set window title
-        self._application._engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
+        self._application._qml_engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
 
         # Substitute our own sidebar
         sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "PrepareSidebar.qml")
-        prepare_stage = Application.getInstance().getController().getStage("PrepareStage")
+        prepare_stage = self._application.getController().getStage("PrepareStage")
         prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
 
         # Apply patches
@@ -143,7 +142,7 @@ class BlackBeltPlugin(Extension):
 
         # HACK: Remove USB output device for blackbelt printers
         devices_to_remove = []
-        output_device_manager = Application.getInstance().getOutputDeviceManager()
+        output_device_manager = self._application.getOutputDeviceManager()
         for output_device in output_device_manager.getOutputDevices():
             if "USBPrinterOutputDevice" in str(output_device):
                 self._output_device_patches[output_device] = USBPrinterOutputDevicePatches.USBPrinterOutputDevicePatches(output_device)
@@ -248,7 +247,7 @@ class BlackBeltPlugin(Extension):
 
     def _fixVisibilityPreferences(self, forced = False):
         # Fix setting visibility preferences
-        preferences = Preferences.getInstance()
+        preferences = self._application.getPreferences()
         visible_settings = preferences.getValue("general/visible_settings")
         if not visible_settings:
             # Wait until the default visible settings have been set
@@ -277,7 +276,7 @@ class BlackBeltPlugin(Extension):
         self._adjustLayerViewNozzle()
 
     def _adjustLayerViewNozzle(self):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if not global_stack:
             return
 
@@ -291,13 +290,13 @@ class BlackBeltPlugin(Extension):
 
 
     def _filterGcode(self, output_device):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
 
         definition_container = self._global_container_stack.getBottom()
         if definition_container.getId() != "blackbelt":
             return
 
-        scene = Application.getInstance().getController().getScene()
+        scene = self._application.getController().getScene()
         gcode_dict = getattr(scene, "gcode_dict", {})
         if not gcode_dict: # this also checks for an empty dict
             Logger.log("w", "Scene has no gcode to process")
