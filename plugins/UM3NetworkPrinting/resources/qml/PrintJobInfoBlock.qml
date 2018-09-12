@@ -64,7 +64,7 @@ Item
             {
                 id: printJobName
                 text: printJob.name
-                font: UM.Theme.getFont("default")
+                font: UM.Theme.getFont("default_bold")
                 width: parent.width
                 elide: Text.ElideRight
             }
