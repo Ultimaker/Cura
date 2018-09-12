@@ -3711,7 +3711,7 @@ msgstr "残り時間"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "留め金 フルスクリーン"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3731,28 +3731,28 @@ msgstr "&やめる"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "3Dビュー (&3)"
+msgid "3D View"
+msgstr "3Dビュー "
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "フロントビュー (&F)"
+msgid "Front View"
+msgstr "フロントビュー"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "トップビュー (&T)"
+msgid "Top View"
+msgstr "トップビュー"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "左サイドビュー (&L)"
+msgid "Left Side View"
+msgstr "左サイドビュー"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "右サイドビュー (&R)"
+msgid "Right Side View"
+msgstr "右サイドビュー"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3813,8 +3813,8 @@ msgstr "アバウト..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
 msgstr[0] "&選択したモデルを削除"
 
 # can’t enter japanese text
@@ -3854,7 +3854,7 @@ msgstr "モデルを非グループ化"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:314
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "&モデルの合体"
+msgstr "モ&デルの合体"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:324
 msgctxt "@action:inmenu"
@@ -3863,17 +3863,17 @@ msgstr "&モデルを増倍する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "&すべてのモデル選択"
+msgid "Select All Models"
+msgstr "すべてのモデル選択"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "&ビルドプレート上のクリア"
+msgid "Clear Build Plate"
+msgstr "ビルドプレート上のクリア"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
+msgid "Reload All Models"
 msgstr "すべてのモデルを読み込む"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
@@ -3898,7 +3898,7 @@ msgstr "すべてのモデルのポジションをリセットする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "すべてのモデル＆変更点をリセットする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
@@ -4015,7 +4015,7 @@ msgstr "&ファイル"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:119
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
-msgstr "&ファイルに選択したものを保存"
+msgstr "フ&ァイルに選択したものを保存"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:128
 msgctxt "@title:menu menubar:file"
@@ -4043,7 +4043,7 @@ msgid "&Settings"
 msgstr "&設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&プリンター"
 
@@ -4070,7 +4070,7 @@ msgid "Disable Extruder"
 msgstr "エクストルーダーを無効にする"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&プロファイル"
 

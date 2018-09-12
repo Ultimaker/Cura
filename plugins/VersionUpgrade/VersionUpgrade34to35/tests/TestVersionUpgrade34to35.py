@@ -4,12 +4,12 @@
 import configparser #To parse the resulting config files.
 import pytest #To register tests with.
 
-import VersionUpgrade34to40 #The module we're testing.
+import VersionUpgrade34to35 #The module we're testing.
 
 ##  Creates an instance of the upgrader to test with.
 @pytest.fixture
 def upgrader():
-    return VersionUpgrade34to40.VersionUpgrade34to40()
+    return VersionUpgrade34to35.VersionUpgrade34to35()
 
 test_upgrade_version_nr_data = [
     ("Empty config file",

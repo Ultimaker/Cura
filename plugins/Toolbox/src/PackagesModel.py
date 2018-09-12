@@ -76,7 +76,6 @@ class PackagesModel(ListModel):
             if "author_id" not in package["author"] or "display_name" not in package["author"]:
                 package["author"]["author_id"] = ""
                 package["author"]["display_name"] = ""
-                # raise Exception("Detected a package with malformed author data.")
 
             items.append({
                 "id":                   package["package_id"],

@@ -108,6 +108,6 @@ class QualityProfilesDropDownMenuModel(ListModel):
                 layer_height = container.getProperty("layer_height", "value")
 
         if isinstance(layer_height, SettingFunction):
-            layer_height = layer_height()
+            layer_height = layer_height(global_stack)
 
         return float(layer_height)

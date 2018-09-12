@@ -23,7 +23,7 @@ Item
         watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
         storeIndex: 0
 
-        property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? properties.resolve : "None"
+        property var resolve: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine ? properties.resolve : "None"
     }
 
     Rectangle

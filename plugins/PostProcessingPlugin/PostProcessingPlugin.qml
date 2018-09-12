@@ -384,7 +384,7 @@ UM.Dialog
                         UM.SettingPropertyProvider
                         {
                             id: inheritStackProvider
-                            containerStackId: Cura.MachineManager.activeMachineId
+                            containerStack: Cura.MachineManager.activeMachine
                             key: model.key ? model.key : "None"
                             watchedProperties: [ "limit_to_extruder" ]
                         }

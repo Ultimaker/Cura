@@ -3602,7 +3602,7 @@ msgstr "&Pozycja kamery"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:54
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr "&Pole robocze"
+msgstr "P&ole robocze"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
@@ -3741,7 +3741,7 @@ msgstr "Szacowany czas pozostały"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "Przełącz tryb pełnoekranowy"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3761,28 +3761,28 @@ msgstr "&Zamknij"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "&Widok 3D"
+msgid "3D View"
+msgstr "Widok 3D"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "&Widok z przodu"
+msgid "Front View"
+msgstr "Widok z przodu"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "&Widok z góry"
+msgid "Top View"
+msgstr "Widok z góry"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "&Widok z lewej strony"
+msgid "Left Side View"
+msgstr "Widok z lewej strony"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "&Widok z prawej strony"
+msgid "Right Side View"
+msgstr "Widok z prawej strony"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3842,10 +3842,10 @@ msgstr "&O..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "Usuń &wybrany model"
-msgstr[1] "Usuń &wybrane modele"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Usuń wybrany model"
+msgstr[1] "Usuń wybrane modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3884,7 +3884,7 @@ msgstr "Rozgrupuj modele "
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:314
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "&Połącz modele"
+msgstr "Połącz modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:324
 msgctxt "@action:inmenu"
@@ -3893,17 +3893,17 @@ msgstr "&Powiel model..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "&Wybierz wszystkie modele"
+msgid "Select All Models"
+msgstr "Wybierz wszystkie modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "&Wyczyść stół"
+msgid "Clear Build Plate"
+msgstr "Wyczyść stół"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
+msgid "Reload All Models"
 msgstr "Przeładuj wszystkie modele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
@@ -3928,7 +3928,7 @@ msgstr "Zresetuj wszystkie pozycje modelu"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "Zresetuj wszystkie przekształcenia modelu"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
@@ -4045,7 +4045,7 @@ msgstr "&Plik"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:119
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
-msgstr "&Zapisz wybór w pliku"
+msgstr "Z&apisz wybór w pliku"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:128
 msgctxt "@title:menu menubar:file"
@@ -4073,7 +4073,7 @@ msgid "&Settings"
 msgstr "&Ustawienia"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Drukarka"
 
@@ -4100,7 +4100,7 @@ msgid "Disable Extruder"
 msgstr "Wyłącz Ekstruder"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profil"
 
@@ -4122,7 +4122,7 @@ msgstr "Preferencje"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:289
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
-msgstr "&Pomoc"
+msgstr "P&omoc"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:335
 msgctxt "@label"

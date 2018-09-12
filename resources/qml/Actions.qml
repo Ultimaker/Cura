@@ -75,7 +75,7 @@ Item
     Action
     {
         id:toggleFullScreenAction
-        text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
+        text: catalog.i18nc("@action:inmenu","Toggle Full Screen");
         iconName: "view-fullscreen";
     }
 
@@ -138,7 +138,7 @@ Item
     Action
     {
         id: viewRightSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Right Side View");
+        text: catalog.i18nc("@action:inmenu menubar:view","Right Side View");
         onTriggered: UM.Controller.rotateView("x", -90);
     }
 
@@ -376,7 +376,7 @@ Item
     Action
     {
         id: resetAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model &Transformations");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Transformations");
         onTriggered: CuraApplication.resetAll();
     }
 

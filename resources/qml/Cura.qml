@@ -189,7 +189,7 @@ UM.MainWindow
                 id: settingsMenu
                 title: catalog.i18nc("@title:menu", "&Settings")
 
-                PrinterMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&Printer") }
+                PrinterMenu { title: catalog.i18nc("@title:menu menubar:settings", "&Printer") }
 
                 Instantiator
                 {
@@ -233,7 +233,7 @@ UM.MainWindow
 
                 // TODO Only show in dev mode. Remove check when feature ready
                 BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: CuraSDKVersion == "dev" ? Cura.MachineManager.hasVariantBuildplates : false }
-                ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
+                ProfileMenu { title: catalog.i18nc("@title:settings", "&Profile"); }
 
                 MenuSeparator { }
 
@@ -306,7 +306,7 @@ UM.MainWindow
         {
             id: machineExtruderCount
 
-            containerStackId: Cura.MachineManager.activeMachineId
+            containerStack: Cura.MachineManager.activeMachine
             key: "machine_extruder_count"
             watchedProperties: [ "value" ]
             storeIndex: 0
@@ -1054,7 +1054,7 @@ UM.MainWindow
             {
                 restart();
             }
-            else if(Cura.MachineManager.activeMachineId == null || Cura.MachineManager.activeMachineId == "")
+            else if(Cura.MachineManager.activeMachine == null)
             {
                 addMachineDialog.open();
             }

@@ -3744,8 +3744,8 @@ msgstr "Tempo restante estimado"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "A&lternar Tela Cheia"
+msgid "Toggle Full Screen"
+msgstr "Alternar Tela Cheia"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -3764,28 +3764,28 @@ msgstr "Sair (&Q)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
+msgid "3D View"
 msgstr "Visão &3D"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "Visão &Frontal"
+msgid "Front View"
+msgstr "Visão Frontal"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "Visão Superior (&T)"
+msgid "Top View"
+msgstr "Visão Superior"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "Visão do Lado Esquerdo (&L)"
+msgid "Left Side View"
+msgstr "Visão do Lado Esquerdo"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "Visão do Lado Direito (&R)"
+msgid "Right Side View"
+msgstr "Visão do Lado Direito"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3845,10 +3845,10 @@ msgstr "Sobre (&A)..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "Remover Modelo &Selecionado"
-msgstr[1] "Remover Modelos &Selecionados"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Remover Modelo Selecionado"
+msgstr[1] "Remover Modelos Selecionados"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3896,18 +3896,18 @@ msgstr "&Multiplicar Modelo..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "&Selecionar Todos Os Modelos"
+msgid "Select All Models"
+msgstr "Selecionar Todos Os Modelos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "Esvaziar a Mesa de Impressão (&C)"
+msgid "Clear Build Plate"
+msgstr "Esvaziar a Mesa de Impressão"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
-msgstr "Recarregar Todos Os Mode&los"
+msgid "Reload All Models"
+msgstr "Recarregar Todos Os Modelos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
@@ -3931,8 +3931,8 @@ msgstr "Reestabelecer as Posições de Todos Os Modelos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "Remover as &Transformações de Todos Os Modelos"
+msgid "Reset All Model Transformations"
+msgstr "Remover as Transformações de Todos Os Modelos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"
@@ -4076,7 +4076,7 @@ msgid "&Settings"
 msgstr "Aju&stes"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "Im&pressora"
 
@@ -4103,7 +4103,7 @@ msgid "Disable Extruder"
 msgstr "Desabilitar Extrusor"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Perfil"
 

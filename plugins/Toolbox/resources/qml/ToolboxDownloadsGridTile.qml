@@ -9,7 +9,7 @@ import UM 1.1 as UM
 
 Item
 {
-    property int packageCount: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getTotalNumberOfPackagesByAuthor(model.id) : 1
+    property int packageCount: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getTotalNumberOfMaterialPackagesByAuthor(model.id) : 1
     property int installedPackages: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
     height: childrenRect.height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft

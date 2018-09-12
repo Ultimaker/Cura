@@ -188,40 +188,55 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if reply in self._kept_alive_multiparts:
             del self._kept_alive_multiparts[reply]
 
-    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+    def _validateManager(self) -> None:
         if self._manager is None:
             self._createNetworkManager()
         assert (self._manager is not None)
+
+    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.put(request, data.encode())
-        self._registerOnFinishedCallback(reply, on_finished)
+        if self._manager is not None:
+            reply = self._manager.put(request, data.encode())
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
+
+    def delete(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
+        request = self._createEmptyRequest(target)
+        self._last_request_time = time()
+        if self._manager is not None:
+            reply = self._manager.deleteResource(request)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
-        assert (self._manager is not None)
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.get(request)
-        self._registerOnFinishedCallback(reply, on_finished)
+        if self._manager is not None:
+            reply = self._manager.get(request)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def post(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
-        assert (self._manager is not None)
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.post(request, data)
-        if on_progress is not None:
-            reply.uploadProgress.connect(on_progress)
-        self._registerOnFinishedCallback(reply, on_finished)
+        if self._manager is not None:
+            reply = self._manager.post(request, data)
+            if on_progress is not None:
+                reply.uploadProgress.connect(on_progress)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def postFormWithParts(self, target: str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
-
-        if self._manager is None:
-            self._createNetworkManager()
-        assert (self._manager is not None)
+        self._validateManager()
         request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
         for part in parts:
@@ -229,15 +244,18 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_request_time = time()
 
-        reply = self._manager.post(request, multi_post_part)
+        if self._manager is not None:
+            reply = self._manager.post(request, multi_post_part)
 
-        self._kept_alive_multiparts[reply] = multi_post_part
+            self._kept_alive_multiparts[reply] = multi_post_part
 
-        if on_progress is not None:
-            reply.uploadProgress.connect(on_progress)
-        self._registerOnFinishedCallback(reply, on_finished)
+            if on_progress is not None:
+                reply.uploadProgress.connect(on_progress)
+            self._registerOnFinishedCallback(reply, on_finished)
 
-        return reply
+            return reply
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def postForm(self, target: str, header_data: str, body_data: bytes, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
         post_part = QHttpPart()

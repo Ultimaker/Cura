@@ -200,12 +200,19 @@ class QualityManager(QObject):
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
         # This determines if we should only get the global qualities for the global stack and skip the global qualities for the extruder stacks
-        has_variant_materials = parseBool(machine.getMetaDataEntry("has_variant_materials", False))
+        has_machine_specific_qualities = machine.getHasMachineQuality()
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
         #   (2) the generic node
         machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(machine_definition_id)
+        # Check if this machine has specific quality profiles for its extruders, if so, when looking up extruder
+        # qualities, we should not fall back to use the global qualities.
+        has_extruder_specific_qualities = False
+        if machine_node:
+            if machine_node.children_map:
+                has_extruder_specific_qualities = True
+
         default_machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(self._default_machine_definition_id)
         nodes_to_check = [machine_node, default_machine_node]
 
@@ -213,12 +220,10 @@ class QualityManager(QObject):
         quality_group_dict = {}
         for node in nodes_to_check:
             if node and node.quality_type_map:
-                # Only include global qualities
-                if has_variant_materials:
-                    quality_node = list(node.quality_type_map.values())[0]
-                    is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
-                    if not is_global_quality:
-                        continue
+                quality_node = list(node.quality_type_map.values())[0]
+                is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
+                if not is_global_quality:
+                    continue
 
                 for quality_type, quality_node in node.quality_type_map.items():
                     quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
@@ -300,9 +305,9 @@ class QualityManager(QObject):
             else:
                 nodes_to_check += [default_machine_node]
 
-            for node in nodes_to_check:
+            for node_idx, node in enumerate(nodes_to_check):
                 if node and node.quality_type_map:
-                    if has_variant_materials:
+                    if has_extruder_specific_qualities:
                         # Only include variant qualities; skip non global qualities
                         quality_node = list(node.quality_type_map.values())[0]
                         is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
@@ -317,6 +322,12 @@ class QualityManager(QObject):
                         quality_group = quality_group_dict[quality_type]
                         if position not in quality_group.nodes_for_extruders:
                             quality_group.nodes_for_extruders[position] = quality_node
+
+                # If the machine has its own specific qualities, for extruders, it should skip the global qualities
+                # and use the material/variant specific qualities.
+                if has_extruder_specific_qualities:
+                    if node_idx == len(nodes_to_check) - 1:
+                        break
 
         # Update availabilities for each quality group
         self._updateQualityGroupsAvailability(machine, quality_group_dict.values())
