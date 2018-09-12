@@ -16,6 +16,10 @@
                 "maximum": 320
             }
         },
+        "machine_extruder_trains":
+        {
+            "0": "blackbelt_extruder_0"
+        },
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "has_machine_materials": true,
