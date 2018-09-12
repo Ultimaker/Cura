@@ -13,7 +13,7 @@
         "has_materials": true,
         "machine_extruder_trains":
         {
-            "0": "dagoma_magis_extruder_0"
+            "0": "dagoma_neva_magis_extruder_0"
         }
     },
     "overrides": {
