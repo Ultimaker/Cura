@@ -652,7 +652,14 @@ Component
                                         hoverEnabled: true
                                         onClicked:
                                         {
-                                            OutputDevice.setActiveCamera(modelData.camera)
+                                            if (OutputDevice.activeCamera !== null)
+                                            {
+                                                OutputDevice.setActiveCamera(null)
+                                            }
+                                            else
+                                            {
+                                                OutputDevice.setActiveCamera(modelData.camera)
+                                            }
                                         }
                                     }
                                 }
