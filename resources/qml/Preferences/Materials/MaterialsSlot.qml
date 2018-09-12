@@ -19,114 +19,102 @@ Rectangle
 
     height: UM.Theme.getSize("favorites_row").height
     width: parent.width
-    color: base.currentItem == model ? UM.Theme.getColor("favorites_row_selected") : "transparent"
+    color: base.currentItem.root_material_id == material.root_material_id ? UM.Theme.getColor("favorites_row_selected") : "transparent"
 
-    Component.onCompleted:
+    Rectangle
     {
-        if (material.root_material_id == base.active_root_material_id) {
+        id: swatch
+        color: material.color_code
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: "black"
+        width: UM.Theme.getSize("favorites_button_icon").width
+        height: UM.Theme.getSize("favorites_button_icon").height
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+    }
+    Label
+    {
+        text: material.brand + " " + material.name
+        verticalAlignment: Text.AlignVCenter
+        height: parent.height
+        anchors.left: swatch.right
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+    }
+    MouseArea
+    {
+        anchors.fill: parent
+        onClicked:
+        {
+            materialList.currentBrand = material.brand
+            materialList.currentType = material.brand + "_" + material.material
             base.currentItem = material
         }
+        hoverEnabled: true
+        onEntered: { material_slot.hovered = true }
+        onExited: { material_slot.hovered = false }
     }
-    
-    Item
+    Button
     {
-        height: parent.height
-        width: parent.width
-        Rectangle
+        id: favorite_button
+        text: ""
+        implicitWidth: UM.Theme.getSize("favorites_button").width
+        implicitHeight: UM.Theme.getSize("favorites_button").height
+        visible: material_slot.hovered || material_slot.is_favorite || favorite_button.hovered
+        anchors
         {
-            id: swatch
-            color: material.color_code
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: "black"
-            width: UM.Theme.getSize("favorites_button_icon").width
-            height: UM.Theme.getSize("favorites_button_icon").height
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            verticalCenter: parent.verticalCenter
         }
-        Label
+        onClicked:
         {
-            text: material.brand + " " + material.name
-            verticalAlignment: Text.AlignVCenter
-            height: parent.height
-            anchors.left: swatch.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
-        }
-        MouseArea
-        {
-            anchors.fill: parent
-            onClicked:
-            {
-                base.currentItem = material
-                materialList.currentBrand = material.brand
-                materialList.currentType = material.brand + "_" + material.material
-            }
-            hoverEnabled: true
-            onEntered: { material_slot.hovered = true }
-            onExited: { material_slot.hovered = false }
-        }
-        Button
-        {
-            id: favorite_button
-            text: ""
-            implicitWidth: UM.Theme.getSize("favorites_button").width
-            implicitHeight: UM.Theme.getSize("favorites_button").height
-            visible: material_slot.hovered || material_slot.is_favorite || favorite_button.hovered
-            anchors
-            {
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-            }
-            onClicked:
-            {
-                if (material_slot.is_favorite) {
-                    base.materialManager.removeFavorite(material.root_material_id)
-                    material_slot.is_favorite = false
-                    return
-                }
-                base.materialManager.addFavorite(material.root_material_id)
-                material_slot.is_favorite = true
+            if (material_slot.is_favorite) {
+                base.materialManager.removeFavorite(material.root_material_id)
+                material_slot.is_favorite = false
                 return
             }
-            style: ButtonStyle
+            base.materialManager.addFavorite(material.root_material_id)
+            material_slot.is_favorite = true
+            return
+        }
+        style: ButtonStyle
+        {
+            background: Rectangle
             {
-                background: Rectangle
-                {
-                    anchors.fill: parent
-                    color: "transparent"
-                }
+                anchors.fill: parent
+                color: "transparent"
             }
-            UM.RecolorImage {
-                anchors
+        }
+        UM.RecolorImage {
+            anchors
+            {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            }
+            width: UM.Theme.getSize("favorites_button_icon").width
+            height: UM.Theme.getSize("favorites_button_icon").height
+            sourceSize.width: width
+            sourceSize.height: height
+            color:
+            {
+                if (favorite_button.hovered)
                 {
-                    verticalCenter: parent.verticalCenter
-                    horizontalCenter: parent.horizontalCenter
+                    return UM.Theme.getColor("primary_hover")
                 }
-                width: UM.Theme.getSize("favorites_button_icon").width
-                height: UM.Theme.getSize("favorites_button_icon").height
-                sourceSize.width: width
-                sourceSize.height: height
-                color:
+                else
                 {
-                    if (favorite_button.hovered)
+                    if (material_slot.is_favorite)
                     {
-                        return UM.Theme.getColor("primary_hover")
+                        return UM.Theme.getColor("primary")
                     }
                     else
                     {
-                        if (material_slot.is_favorite)
-                        {
-                            return UM.Theme.getColor("primary")
-                        }
-                        else
-                        {
-                            UM.Theme.getColor("text_inactive")
-                        }
+                        UM.Theme.getColor("text_inactive")
                     }
                 }
-                source: material_slot.is_favorite ? UM.Theme.getIcon("favorites_star_full") : UM.Theme.getIcon("favorites_star_empty")
             }
+            source: material_slot.is_favorite ? UM.Theme.getIcon("favorites_star_full") : UM.Theme.getIcon("favorites_star_empty")
         }
     }
 }
