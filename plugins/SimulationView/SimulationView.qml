@@ -667,8 +667,11 @@ Item
             {
                 target: UM.SimulationView
                 onMaxLayersChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
-                onMinimumLayerChanged: layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
-                onCurrentLayerChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+                onCurrentLayerChanged:
+                {
+                    playButton.pauseSimulation()
+                    layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+                }
             }
 
             // make sure the slider handlers show the correct value after switching views
@@ -723,6 +726,7 @@ Item
                 UM.SimulationView.setSimulationRunning(true)
                 iconSource = "./resources/simulation_pause.svg"
                 simulationTimer.start()
+                status = 1
             }
         }
 
@@ -766,6 +770,7 @@ Item
                         {
                             UM.SimulationView.setCurrentLayer(currentLayer+1)
                             UM.SimulationView.setCurrentPath(0)
+                            playButton.resumeSimulation()
                         }
                     }
                     else

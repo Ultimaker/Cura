@@ -304,7 +304,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._global_stack:
             self._global_stack.propertyChanged.disconnect(self._onSettingValueChanged)
             self._global_stack.containersChanged.disconnect(self._onChanged)
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingValueChanged)
 
@@ -314,7 +314,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._global_stack.propertyChanged.connect(self._onSettingValueChanged)
             self._global_stack.containersChanged.connect(self._onChanged)
 
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingValueChanged)
 

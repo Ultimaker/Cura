@@ -43,7 +43,9 @@ class UserChangesModel(ListModel):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return
-        stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+
+        stacks = [global_stack]
+        stacks.extend(global_stack.extruders.values())
 
         # Check if the definition container has a translation file and ensure it's loaded.
         definition = global_stack.getBottom()

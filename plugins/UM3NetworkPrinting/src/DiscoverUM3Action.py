@@ -24,7 +24,7 @@ class DiscoverUM3Action(MachineAction):
 
     def __init__(self) -> None:
         super().__init__("DiscoverUM3Action", catalog.i18nc("@action","Connect via Network"))
-        self._qml_url = "DiscoverUM3Action.qml"
+        self._qml_url = "resources/qml/DiscoverUM3Action.qml"
 
         self._network_plugin = None #type: Optional[UM3OutputDevicePlugin]
 
@@ -174,7 +174,7 @@ class DiscoverUM3Action(MachineAction):
         plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
         if not plugin_path:
             return
-        path = os.path.join(plugin_path, "UM3InfoComponents.qml")
+        path = os.path.join(plugin_path, "resources/qml/UM3InfoComponents.qml")
         self.__additional_components_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         if not self.__additional_components_view:
             Logger.log("w", "Could not create ui components for UM3.")

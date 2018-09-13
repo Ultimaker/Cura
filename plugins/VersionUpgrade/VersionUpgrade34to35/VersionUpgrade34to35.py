@@ -60,8 +60,8 @@ _RENAMED_MATERIAL_PROFILES = {
 }
 
 ##  Upgrades configurations from the state they were in at version 3.4 to the
-#   state they should be in at version 4.0.
-class VersionUpgrade34to40(VersionUpgrade):
+#   state they should be in at version 3.5.
+class VersionUpgrade34to35(VersionUpgrade):
 
     ##  Gets the version number from a CFG file in Uranium's 3.3 format.
     #

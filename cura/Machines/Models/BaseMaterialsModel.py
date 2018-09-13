@@ -113,7 +113,7 @@ class BaseMaterialsModel(ListModel):
     ## This is another convenience function which is shared by all material
     #  models so it's put here to avoid having so much duplicated code.
     def _createMaterialItem(self, root_material_id, container_node):
-        metadata = container_node.metadata
+        metadata = container_node.getMetadata()
         item = {
             "root_material_id":     root_material_id,
             "id":                   metadata["id"],
@@ -124,7 +124,7 @@ class BaseMaterialsModel(ListModel):
             "description":          metadata["description"],
             "material":             metadata["material"],
             "color_name":           metadata["color_name"],
-            "color_code":           metadata["color_code"],
+            "color_code":           metadata.get("color_code", ""),
             "density":              metadata.get("properties", {}).get("density", ""),
             "diameter":             metadata.get("properties", {}).get("diameter", ""),
             "approximate_diameter": metadata["approximate_diameter"],

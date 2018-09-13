@@ -85,14 +85,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self) -> None:
         super().__init__()
 
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name="application/x-curaproject+xml",
-                comment="Cura Project File",
-                suffixes=["curaproject.3mf"]
-            )
-        )
-
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
@@ -726,8 +718,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             nodes = []
 
         base_file_name = os.path.basename(file_name)
-        if base_file_name.endswith(".curaproject.3mf"):
-            base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
 
@@ -944,7 +934,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                              root_material_id)
 
             if material_node is not None and material_node.getContainer() is not None:
-                extruder_stack.material = material_node.getContainer()
+                extruder_stack.material = material_node.getContainer()  # type: InstanceContainer
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first

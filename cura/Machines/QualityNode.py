@@ -16,6 +16,9 @@ class QualityNode(ContainerNode):
         super().__init__(metadata = metadata)
         self.quality_type_map = {}  # type: Dict[str, QualityNode] # quality_type -> QualityNode for InstanceContainer
 
+    def getChildNode(self, child_key: str) -> Optional["QualityNode"]:
+        return self.children_map.get(child_key)
+
     def addQualityMetadata(self, quality_type: str, metadata: dict):
         if quality_type not in self.quality_type_map:
             self.quality_type_map[quality_type] = QualityNode(metadata)

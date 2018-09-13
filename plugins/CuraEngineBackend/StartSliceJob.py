@@ -333,7 +333,7 @@ class StartSliceJob(Job):
                 "-1": self._buildReplacementTokens(global_stack)
             }
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
                 self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
 

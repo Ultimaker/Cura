@@ -3741,8 +3741,8 @@ msgstr "预计剩余时间"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "切换完整界面（&F）"
+msgid "Toggle Full Screen"
+msgstr "切换完整界面"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -3761,28 +3761,28 @@ msgstr "退出(&Q)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
-msgstr "3D 视图(&3)"
+msgid "3D View"
+msgstr "3D 视图"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
-msgstr "正视图(&F)"
+msgid "Front View"
+msgstr "正视图"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
-msgstr "顶视图(&T)"
+msgid "Top View"
+msgstr "顶视图"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
-msgstr "左视图(&L)"
+msgid "Left Side View"
+msgstr "左视图"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
-msgstr "右视图(&R)"
+msgid "Right Side View"
+msgstr "右视图"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu"
@@ -3842,9 +3842,9 @@ msgstr "关于(&A)…"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "删除所选模型(&S)"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "删除所选模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3890,18 +3890,18 @@ msgstr "复制模型…（&M）"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "选择所有模型（&S）"
+msgid "Select All Models"
+msgstr "选择所有模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "清空打印平台（&C）"
+msgid "Clear Build Plate"
+msgstr "清空打印平台"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
-msgstr "重新载入所有模型（&L）"
+msgid "Reload All Models"
+msgstr "重新载入所有模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
@@ -3925,8 +3925,8 @@ msgstr "复位所有模型的位置"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "复位所有模型的变动(&T)"
+msgid "Reset All Model Transformations"
+msgstr "复位所有模型的变动"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"
@@ -4070,7 +4070,7 @@ msgid "&Settings"
 msgstr "设置(&S)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "打印机（&P）"
 
@@ -4097,7 +4097,7 @@ msgid "Disable Extruder"
 msgstr "禁用挤出机"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "配置文件（&P）"
 

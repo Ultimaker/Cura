@@ -385,7 +385,9 @@ class MachineManager(QObject):
     #   \param definition_id \type{str} definition id that needs to look for
     #   \param metadata_filter \type{dict} list of metadata keys and values used for filtering
     @staticmethod
-    def getMachine(definition_id: str, metadata_filter: Dict[str, str] = None) -> Optional["GlobalStack"]:
+    def getMachine(definition_id: str, metadata_filter: Optional[Dict[str, str]] = None) -> Optional["GlobalStack"]:
+        if metadata_filter is None:
+            metadata_filter = {}
         machines = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
         for machine in machines:
             if machine.definition.getId() == definition_id:
@@ -412,7 +414,7 @@ class MachineManager(QObject):
 
         # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
         machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
-        extruder_stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         count = 1  # we start with the global stack
         for stack in extruder_stacks:
             md = stack.getMetaData()
@@ -435,7 +437,7 @@ class MachineManager(QObject):
         if self._global_container_stack.getTop().findInstances():
             return True
 
-        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         for stack in stacks:
             if stack.getTop().findInstances():
                 return True
@@ -448,7 +450,7 @@ class MachineManager(QObject):
             return 0
         num_user_settings = 0
         num_user_settings += len(self._global_container_stack.getTop().findInstances())
-        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         for stack in stacks:
             num_user_settings += len(stack.getTop().findInstances())
         return num_user_settings
@@ -473,7 +475,7 @@ class MachineManager(QObject):
             stack = ExtruderManager.getInstance().getActiveExtruderStack()
             stacks = [stack]
         else:
-            stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
 
         for stack in stacks:
             if stack is not None:
@@ -638,7 +640,7 @@ class MachineManager(QObject):
         if self._active_container_stack is None or self._global_container_stack is None:
             return
         new_value = self._active_container_stack.getProperty(key, "value")
-        extruder_stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+        extruder_stacks = [stack for stack in ExtruderManager.getInstance().getActiveExtruderStacks()]
 
         # check in which stack the value has to be replaced
         for extruder_stack in extruder_stacks:
@@ -890,7 +892,11 @@ class MachineManager(QObject):
                 extruder_nr = node.callDecoration("getActiveExtruderPosition")
 
                 if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
-                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
+                    extruder = extruder_manager.getExtruderStack(extruder_count - 1)
+                    if extruder is not None:
+                        node.callDecoration("setActiveExtruder", extruder.getId())
+                    else:
+                        Logger.log("w", "Could not find extruder to set active.")
 
         # Make sure one of the extruder stacks is active
         extruder_manager.setActiveExtruderIndex(0)

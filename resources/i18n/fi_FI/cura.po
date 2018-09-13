@@ -3726,8 +3726,8 @@ msgstr "Aikaa jäljellä arviolta"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "Vaihda &koko näyttöön"
+msgid "Toggle Full Screen"
+msgstr "Vaihda koko näyttöön"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu menubar:edit"
@@ -3746,27 +3746,27 @@ msgstr "&Lopeta"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
+msgid "3D View"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
+msgid "Front View"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
+msgid "Top View"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
+msgid "Left Side View"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
+msgid "Right Side View"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
@@ -3827,10 +3827,10 @@ msgstr "Ti&etoja..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
-msgstr[0] "Poista &valittu malli"
-msgstr[1] "Poista &valitut mallit"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
+msgstr[0] "Poista valittu malli"
+msgstr[1] "Poista valitut mallit"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
@@ -3878,18 +3878,18 @@ msgstr "&Kerro malli..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
-msgstr "&Valitse kaikki mallit"
+msgid "Select All Models"
+msgstr "Valitse kaikki mallit"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
-msgstr "&Tyhjennä tulostusalusta"
+msgid "Clear Build Plate"
+msgstr "Tyhjennä tulostusalusta"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
-msgstr "&Lataa kaikki mallit uudelleen"
+msgid "Reload All Models"
+msgstr "Lataa kaikki mallit uudelleen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
@@ -3913,8 +3913,8 @@ msgstr "Määritä kaikkien mallien positiot uudelleen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
-msgstr "Määritä kaikkien mallien &muutokset uudelleen"
+msgid "Reset All Model Transformations"
+msgstr "Määritä kaikkien mallien muutokset uudelleen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
 msgctxt "@action:inmenu menubar:file"
@@ -4025,7 +4025,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:102
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
-msgstr "&Tiedosto"
+msgstr "Tie&dosto"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:119
 msgctxt "@action:inmenu menubar:file"
@@ -4058,7 +4058,7 @@ msgid "&Settings"
 msgstr "&Asetukset"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Tulostin"
 
@@ -4085,7 +4085,7 @@ msgid "Disable Extruder"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profiili"
 

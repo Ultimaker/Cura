@@ -139,7 +139,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;

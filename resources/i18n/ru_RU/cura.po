@@ -3711,7 +3711,7 @@ msgstr "Осталось примерно"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
+msgid "Toggle Full Screen"
 msgstr "Полный экран"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
@@ -3731,27 +3731,27 @@ msgstr "Выход"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:view"
-msgid "&3D View"
+msgid "3D View"
 msgstr "Трехмерный вид"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
 msgctxt "@action:inmenu menubar:view"
-msgid "&Front View"
+msgid "Front View"
 msgstr "Вид спереди"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
 msgctxt "@action:inmenu menubar:view"
-msgid "&Top View"
+msgid "Top View"
 msgstr "Вид сверху"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
 msgctxt "@action:inmenu menubar:view"
-msgid "&Left Side View"
+msgid "Left Side View"
 msgstr "Вид слева"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
-msgid "&Right Side View"
+msgid "Right Side View"
 msgstr "Вид справа"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
@@ -3812,8 +3812,8 @@ msgstr "О Cura..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:edit"
-msgid "Delete &Selected Model"
-msgid_plural "Delete &Selected Models"
+msgid "Delete Selected Model"
+msgid_plural "Delete Selected Models"
 msgstr[0] "Удалить выбранную модель"
 msgstr[1] "Удалить выбранные модели"
 msgstr[2] "Удалить выбранные модели"
@@ -3866,17 +3866,17 @@ msgstr "Дублировать модель..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Select All Models"
+msgid "Select All Models"
 msgstr "Выбрать все модели"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
 msgctxt "@action:inmenu menubar:edit"
-msgid "&Clear Build Plate"
+msgid "Clear Build Plate"
 msgstr "Очистить стол"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:file"
-msgid "Re&load All Models"
+msgid "Reload All Models"
 msgstr "Перезагрузить все модели"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:360
@@ -3901,7 +3901,7 @@ msgstr "Сбросить позиции всех моделей"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
 msgctxt "@action:inmenu menubar:edit"
-msgid "Reset All Model &Transformations"
+msgid "Reset All Model Transformations"
 msgstr "Сбросить преобразования всех моделей"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
@@ -4046,7 +4046,7 @@ msgid "&Settings"
 msgstr "Параметры"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:186
-msgctxt "@title:menu menubar:toplevel"
+msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "Принтер"
 
@@ -4073,7 +4073,7 @@ msgid "Disable Extruder"
 msgstr "Отключить экструдер"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:230
-msgctxt "@title:menu"
+msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "Профиль"
 

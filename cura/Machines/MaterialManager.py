@@ -4,8 +4,7 @@
 from collections import defaultdict, OrderedDict
 import copy
 import uuid
-import json
-from typing import Dict, Optional, TYPE_CHECKING
+from typing import Dict, Optional, TYPE_CHECKING, Any, Set, List, cast, Tuple
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
@@ -39,26 +38,35 @@ if TYPE_CHECKING:
 #
 class MaterialManager(QObject):
 
-    materialsUpdated = pyqtSignal() # Emitted whenever the material lookup tables are updated.
-    favoritesUpdated = pyqtSignal() # Emitted whenever the favorites are changed
+    materialsUpdated = pyqtSignal()  # Emitted whenever the material lookup tables are updated.
+    favoritesUpdated = pyqtSignal()  # Emitted whenever the favorites are changed
 
     def __init__(self, container_registry, parent = None):
         super().__init__(parent)
         self._application = Application.getInstance()
         self._container_registry = container_registry  # type: ContainerRegistry
 
-        self._fallback_materials_map = dict()  # material_type -> generic material metadata
-        self._material_group_map = dict()  # root_material_id -> MaterialGroup
-        self._diameter_machine_nozzle_buildplate_material_map = dict()  # approximate diameter str -> dict(machine_definition_id -> MaterialNode)
+        # Material_type -> generic material metadata
+        self._fallback_materials_map = dict()  # type: Dict[str, Dict[str, Any]]
+
+        # Root_material_id -> MaterialGroup
+        self._material_group_map = dict()  # type: Dict[str, MaterialGroup]
+
+        # Approximate diameter str
+        self._diameter_machine_nozzle_buildplate_material_map = dict()  # type: Dict[str, Dict[str, MaterialNode]]
 
         # We're using these two maps to convert between the specific diameter material id and the generic material id
         # because the generic material ids are used in qualities and definitions, while the specific diameter material is meant
         # i.e. generic_pla -> generic_pla_175
-        self._material_diameter_map = defaultdict(dict)  # root_material_id -> approximate diameter str -> root_material_id for that diameter
-        self._diameter_material_map = dict()  # material id including diameter (generic_pla_175) -> material root id (generic_pla)
+        # root_material_id -> approximate diameter str -> root_material_id for that diameter
+        self._material_diameter_map = defaultdict(dict)  # type: Dict[str, Dict[str, str]]
+
+        # Material id including diameter (generic_pla_175) -> material root id (generic_pla)
+        self._diameter_material_map = dict()  # type: Dict[str, str]
 
         # This is used in Legacy UM3 send material function and the material management page.
-        self._guid_material_groups_map = defaultdict(list)  # GUID -> a list of material_groups
+        # GUID -> a list of material_groups
+        self._guid_material_groups_map = defaultdict(list)  # type: Dict[str, List[MaterialGroup]]
 
         # The machine definition ID for the non-machine-specific materials.
         # This is used as the last fallback option if the given machine-specific material(s) cannot be found.
@@ -77,15 +85,15 @@ class MaterialManager(QObject):
         self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
         self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
 
-        self._favorites = set()
+        self._favorites = set()  # type: Set[str]
 
-    def initialize(self):
+    def initialize(self) -> None:
         # Find all materials and put them in a matrix for quick search.
         material_metadatas = {metadata["id"]: metadata for metadata in
                               self._container_registry.findContainersMetadata(type = "material") if
-                              metadata.get("GUID")}
+                              metadata.get("GUID")} # type: Dict[str, Dict[str, Any]]
 
-        self._material_group_map = dict()
+        self._material_group_map = dict()  # type: Dict[str, MaterialGroup]
                 
         # Map #1
         #    root_material_id -> MaterialGroup
@@ -94,7 +102,7 @@ class MaterialManager(QObject):
             if material_id == "empty_material":
                 continue
 
-            root_material_id = material_metadata.get("base_file")
+            root_material_id = material_metadata.get("base_file", "")
             if root_material_id not in self._material_group_map:
                 self._material_group_map[root_material_id] = MaterialGroup(root_material_id, MaterialNode(material_metadatas[root_material_id]))
                 self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
@@ -110,26 +118,26 @@ class MaterialManager(QObject):
 
         # Map #1.5
         #    GUID -> material group list
-        self._guid_material_groups_map = defaultdict(list)
+        self._guid_material_groups_map = defaultdict(list)  # type: Dict[str, List[MaterialGroup]]
         for root_material_id, material_group in self._material_group_map.items():
-            guid = material_group.root_material_node.metadata["GUID"]
+            guid = material_group.root_material_node.getMetaDataEntry("GUID", "")
             self._guid_material_groups_map[guid].append(material_group)
 
         # Map #2
         # Lookup table for material type -> fallback material metadata, only for read-only materials
-        grouped_by_type_dict = dict()
+        grouped_by_type_dict = dict()  # type: Dict[str, Any]
         material_types_without_fallback = set()
         for root_material_id, material_node in self._material_group_map.items():
-            material_type = material_node.root_material_node.metadata["material"]
+            material_type = material_node.root_material_node.getMetaDataEntry("material", "")
             if material_type not in grouped_by_type_dict:
                 grouped_by_type_dict[material_type] = {"generic": None,
                                                        "others": []}
                 material_types_without_fallback.add(material_type)
-            brand = material_node.root_material_node.metadata["brand"]
+            brand = material_node.root_material_node.getMetaDataEntry("brand", "")
             if brand.lower() == "generic":
                 to_add = True
                 if material_type in grouped_by_type_dict:
-                    diameter = material_node.root_material_node.metadata.get("approximate_diameter")
+                    diameter = material_node.root_material_node.getMetaDataEntry("approximate_diameter", "")
                     if diameter != self._default_approximate_diameter_for_quality_search:
                         to_add = False  # don't add if it's not the default diameter
 
@@ -138,7 +146,7 @@ class MaterialManager(QObject):
                     #  - if it's in the list, it means that is a new material without fallback
                     #  - if it is not, then it is a custom material with a fallback material (parent)
                     if material_type in material_types_without_fallback:
-                        grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
+                        grouped_by_type_dict[material_type] = material_node.root_material_node._metadata
                         material_types_without_fallback.remove(material_type)
 
         # Remove the materials that have no fallback materials
@@ -155,15 +163,15 @@ class MaterialManager(QObject):
         self._diameter_material_map = dict()
 
         # Group the material IDs by the same name, material, brand, and color but with different diameters.
-        material_group_dict = dict()
+        material_group_dict = dict()  # type: Dict[Tuple[Any], Dict[str, str]]
         keys_to_fetch = ("name", "material", "brand", "color")
         for root_material_id, machine_node in self._material_group_map.items():
-            root_material_metadata = machine_node.root_material_node.metadata
+            root_material_metadata = machine_node.root_material_node._metadata
 
-            key_data = []
+            key_data_list = []  # type: List[Any]
             for key in keys_to_fetch:
-                key_data.append(root_material_metadata.get(key))
-            key_data = tuple(key_data)
+                key_data_list.append(machine_node.root_material_node.getMetaDataEntry(key))
+            key_data = cast(Tuple[Any], tuple(key_data_list))  # type: Tuple[Any]
 
             # If the key_data doesn't exist, it doesn't matter if the material is read only...
             if key_data not in material_group_dict:
@@ -172,8 +180,8 @@ class MaterialManager(QObject):
                 # ...but if key_data exists, we just overwrite it if the material is read only, otherwise we skip it
                 if not machine_node.is_read_only:
                     continue
-            approximate_diameter = root_material_metadata.get("approximate_diameter")
-            material_group_dict[key_data][approximate_diameter] = root_material_metadata["id"]
+            approximate_diameter = machine_node.root_material_node.getMetaDataEntry("approximate_diameter", "")
+            material_group_dict[key_data][approximate_diameter] = machine_node.root_material_node.getMetaDataEntry("id", "")
 
         # Map [root_material_id][diameter] -> root_material_id for this diameter
         for data_dict in material_group_dict.values():
@@ -192,7 +200,7 @@ class MaterialManager(QObject):
 
         # Map #4
         # "machine" -> "nozzle name" -> "buildplate name" -> "root material ID" -> specific material InstanceContainer
-        self._diameter_machine_nozzle_buildplate_material_map = dict()
+        self._diameter_machine_nozzle_buildplate_material_map = dict()  # type: Dict[str, Dict[str, MaterialNode]]
         for material_metadata in material_metadatas.values():
             self.__addMaterialMetadataIntoLookupTree(material_metadata)
 
@@ -203,7 +211,7 @@ class MaterialManager(QObject):
             self._favorites.add(item)
         self.favoritesUpdated.emit()
 
-    def __addMaterialMetadataIntoLookupTree(self, material_metadata: dict) -> None:
+    def __addMaterialMetadataIntoLookupTree(self, material_metadata: Dict[str, Any]) -> None:
         material_id = material_metadata["id"]
 
         # We don't store empty material in the lookup tables
@@ -290,7 +298,7 @@ class MaterialManager(QObject):
         return self._material_diameter_map.get(root_material_id, {}).get(approximate_diameter, root_material_id)
 
     def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
-        return self._diameter_material_map.get(root_material_id)
+        return self._diameter_material_map.get(root_material_id, "")
 
     def getMaterialGroupListByGUID(self, guid: str) -> Optional[list]:
         return self._guid_material_groups_map.get(guid)
@@ -351,7 +359,7 @@ class MaterialManager(QObject):
     # A convenience function to get available materials for the given machine with the extruder position.
     #
     def getAvailableMaterialsForMachineExtruder(self, machine: "GlobalStack",
-                                                extruder_stack: "ExtruderStack") -> Optional[dict]:
+                                                extruder_stack: "ExtruderStack") -> Optional[Dict[str, MaterialNode]]:
         buildplate_name = machine.getBuildplateName()
         nozzle_name = None
         if extruder_stack.variant.getId() != "empty_variant":
@@ -368,7 +376,7 @@ class MaterialManager(QObject):
     #  2. cannot find any material InstanceContainers with the given settings.
     #
     def getMaterialNode(self, machine_definition_id: str, nozzle_name: Optional[str],
-                        buildplate_name: Optional[str], diameter: float, root_material_id: str) -> Optional["InstanceContainer"]:
+                        buildplate_name: Optional[str], diameter: float, root_material_id: str) -> Optional["MaterialNode"]:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
@@ -377,7 +385,7 @@ class MaterialManager(QObject):
             return None
 
         # If there are nozzle materials, get the nozzle-specific material
-        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[rounded_diameter]
+        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[rounded_diameter]  # type: Dict[str, MaterialNode]
         machine_node = machine_nozzle_buildplate_material_map.get(machine_definition_id)
         nozzle_node = None
         buildplate_node = None
@@ -426,7 +434,7 @@ class MaterialManager(QObject):
             # Look at the guid to material dictionary
             root_material_id = None
             for material_group in self._guid_material_groups_map[material_guid]:
-                root_material_id = material_group.root_material_node.metadata["id"]
+                root_material_id = cast(str, material_group.root_material_node.getMetaDataEntry("id", ""))
                 break
 
             if not root_material_id:
@@ -502,7 +510,7 @@ class MaterialManager(QObject):
     # Sets the new name for the given material.
     #
     @pyqtSlot("QVariant", str)
-    def setMaterialName(self, material_node: "MaterialNode", name: str):
+    def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
         root_material_id = material_node.getMetaDataEntry("base_file")
         if root_material_id is None:
             return
@@ -520,7 +528,7 @@ class MaterialManager(QObject):
     # Removes the given material.
     #
     @pyqtSlot("QVariant")
-    def removeMaterial(self, material_node: "MaterialNode"):
+    def removeMaterial(self, material_node: "MaterialNode") -> None:
         root_material_id = material_node.getMetaDataEntry("base_file")
         if root_material_id is not None:
             self.removeMaterialByRootId(root_material_id)
@@ -530,8 +538,8 @@ class MaterialManager(QObject):
     # Returns the root material ID of the duplicated material if successful.
     #
     @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node, new_base_id = None, new_metadata = None) -> Optional[str]:
-        root_material_id = material_node.metadata["base_file"]
+    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+        root_material_id = cast(str, material_node.getMetaDataEntry("base_file", ""))
 
         material_group = self.getMaterialGroup(root_material_id)
         if not material_group:
@@ -586,7 +594,7 @@ class MaterialManager(QObject):
 
     #
     # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
-    #
+    # Returns the ID of the newly created material.
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
         from UM.i18n import i18nCatalog
@@ -619,7 +627,7 @@ class MaterialManager(QObject):
         return new_id
 
     @pyqtSlot(str)
-    def addFavorite(self, root_material_id: str):
+    def addFavorite(self, root_material_id: str) -> None:
         self._favorites.add(root_material_id)
         self.favoritesUpdated.emit()
 
@@ -628,7 +636,7 @@ class MaterialManager(QObject):
         self._application.saveSettings()
 
     @pyqtSlot(str)
-    def removeFavorite(self, root_material_id: str):
+    def removeFavorite(self, root_material_id: str) -> None:
         self._favorites.remove(root_material_id)
         self.favoritesUpdated.emit()
 

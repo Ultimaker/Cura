@@ -41,21 +41,19 @@ class MaterialBrandsModel(BaseMaterialsModel):
 
         # Part 1: Generate the entire tree of brands -> material types -> spcific materials
         for root_material_id, container_node in self._available_materials.items():
-            metadata = container_node.metadata
-
             # Do not include the materials from a to-be-removed package
-            if bool(metadata.get("removed", False)):
+            if bool(container_node.getMetaDataEntry("removed", False)):
                 continue
 
             # Add brands we haven't seen yet to the dict, skipping generics
-            brand = metadata["brand"]
+            brand = container_node.getMetaDataEntry("brand", "")
             if brand.lower() == "generic":
                 continue
             if brand not in brand_group_dict:
                 brand_group_dict[brand] = {}
 
             # Add material types we haven't seen yet to the dict
-            material_type = metadata["material"]
+            material_type = container_node.getMetaDataEntry("material", "")
             if material_type not in brand_group_dict[brand]:
                 brand_group_dict[brand][material_type] = []
 
