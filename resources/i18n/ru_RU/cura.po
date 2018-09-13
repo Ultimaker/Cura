@@ -3806,7 +3806,7 @@ msgstr "Отправить отчёт об ошибке"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:help"
-msgid "&About..."
+msgid "About..."
 msgstr "О Cura..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232

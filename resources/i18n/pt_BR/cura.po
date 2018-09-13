@@ -3839,8 +3839,8 @@ msgstr "Relatar um &Bug"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:help"
-msgid "&About..."
-msgstr "Sobre (&A)..."
+msgid "About..."
+msgstr "Sobre..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
