@@ -485,7 +485,7 @@ Component
                                             }
                                             contentItem: Label
                                             {
-                                                text: sendToTopButton.text
+                                                text: pauseButton.text
                                                 horizontalAlignment: Text.AlignLeft
                                                 verticalAlignment: Text.AlignVCenter
                                             }

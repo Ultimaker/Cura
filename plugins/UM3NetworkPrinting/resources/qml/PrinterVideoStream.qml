@@ -37,36 +37,6 @@ Item
         z: 999
     }
 
-    // Button
-    // {
-    //     id: backButton
-        
-
-    //     // TODO: Hardcoded sizes
-    //     width: 20 * screenScaleFactor
-    //     height: 20 * screenScaleFactor
-
-    //     onClicked: OutputDevice.setActiveCamera(null)
-
-    //     style: ButtonStyle
-    //     {
-    //         label: Item
-    //         {
-    //             UM.RecolorImage
-    //             {
-    //                 anchors.verticalCenter: parent.verticalCenter
-    //                 anchors.horizontalCenter: parent.horizontalCenter
-    //                 width: control.width
-    //                 height: control.height
-    //                 sourceSize.width: width
-    //                 sourceSize.height: width
-    //                 source: UM.Theme.getIcon("cross1")
-    //             }
-    //         }
-    //         background: Item {}
-    //     }
-    // }
-
     Image
     {
         id: cameraImage
