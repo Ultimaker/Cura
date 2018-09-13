@@ -399,21 +399,13 @@ Component
 
                                 function switchPopupState()
                                 {
-                                    if (popup.visible)
-                                    {
-                                        popup.close()
-                                    }
-                                    else
-                                    {
-                                        popup.open()
-                                    }
+                                    popup.visible ? popup.close() : popup.open()
                                 }
 
                                 Controls2.Button
                                 {
                                     id: contextButton
                                     text: "\u22EE" //Unicode; Three stacked points.
-                                    font.pixelSize: 25
                                     width: 35
                                     height: width
                                     anchors
@@ -431,6 +423,14 @@ Component
                                         radius: 0.5 * width
                                         color: UM.Theme.getColor("viewport_background")
                                     }
+                                    contentItem: Label
+                                    {
+                                        text: contextButton.text
+                                        color: UM.Theme.getColor("monitor_text_inactive")
+                                        font.pixelSize: 25
+                                        verticalAlignment: Text.AlignVCenter
+                                        horizontalAlignment: Text.AlignHCenter
+                                    }
 
                                     onClicked: parent.switchPopupState()
                                 }
@@ -440,18 +440,21 @@ Component
                                     // TODO Change once updating to Qt5.10 - The 'opened' property is in 5.10 but the behavior is now implemented with the visible property
                                     id: popup
                                     clip: true
-                                    closePolicy: Controls2.Popup.CloseOnPressOutsideParent
-                                    x: parent.width - width
-                                    y: contextButton.height
-                                    width: 160
+                                    closePolicy: Popup.CloseOnPressOutside
+                                    x: (parent.width - width) + 26 * screenScaleFactor
+                                    y: contextButton.height - 5 * screenScaleFactor // Because shadow
+                                    width: 182 * screenScaleFactor
                                     height: contentItem.height + 2 * padding
                                     visible: false
+                                    padding: 5 * screenScaleFactor // Because shadow
 
-                                    transformOrigin: Controls2.Popup.Top
+                                    transformOrigin: Popup.Top
                                     contentItem: Item
                                     {
-                                        width: popup.width - 2 * popup.padding
-                                        height: childrenRect.height + 15
+                                        width: popup.width
+                                        height: childrenRect.height + 36 * screenScaleFactor
+                                        anchors.topMargin: 10 * screenScaleFactor
+                                        anchors.bottomMargin: 10 * screenScaleFactor
                                         Controls2.Button
                                         {
                                             id: pauseButton
@@ -470,13 +473,21 @@ Component
                                             }
                                             width: parent.width
                                             enabled: modelData.activePrintJob != null && ["paused", "printing"].indexOf(modelData.activePrintJob.state) >= 0
+                                            visible: enabled
                                             anchors.top: parent.top
-                                            anchors.topMargin: 10
+                                            anchors.topMargin: 18 * screenScaleFactor
+                                            height: visible ? 39 * screenScaleFactor : 0 * screenScaleFactor
                                             hoverEnabled: true
-                                            background:  Rectangle
+                                            background: Rectangle
                                             {
                                                 opacity: pauseButton.down || pauseButton.hovered ? 1 : 0
                                                 color: UM.Theme.getColor("viewport_background")
+                                            }
+                                            contentItem: Label
+                                            {
+                                                text: sendToTopButton.text
+                                                horizontalAlignment: Text.AlignLeft
+                                                verticalAlignment: Text.AlignVCenter
                                             }
                                         }
 
@@ -490,6 +501,7 @@ Component
                                                 popup.close()
                                             }
                                             width: parent.width
+                                            height: 39 * screenScaleFactor
                                             anchors.top: pauseButton.bottom
                                             hoverEnabled: true
                                             enabled: modelData.activePrintJob != null && ["paused", "printing", "pre_print"].indexOf(modelData.activePrintJob.state) >= 0
@@ -497,6 +509,12 @@ Component
                                             {
                                                 opacity: abortButton.down || abortButton.hovered ? 1 : 0
                                                 color: UM.Theme.getColor("viewport_background")
+                                            }
+                                            contentItem: Label
+                                            {
+                                                text: abortButton.text
+                                                horizontalAlignment: Text.AlignLeft
+                                                verticalAlignment: Text.AlignVCenter
                                             }
                                         }
                                     }
@@ -519,19 +537,20 @@ Component
                                         Item
                                         {
                                             id: pointedRectangle
-                                            width: parent.width -10
-                                            height: parent.height -10
+                                            width: parent.width - 10 * screenScaleFactor // Because of the shadow
+                                            height: parent.height - 10 * screenScaleFactor // Because of the shadow
                                             anchors.horizontalCenter: parent.horizontalCenter
                                             anchors.verticalCenter: parent.verticalCenter
 
                                             Rectangle
                                             {
                                                 id: point
-                                                height: 13
-                                                width: 13
+                                                height: 14 * screenScaleFactor
+                                                width: 14 * screenScaleFactor
                                                 color: UM.Theme.getColor("setting_control")
                                                 transform: Rotation { angle: 45}
                                                 anchors.right: bloop.right
+                                                anchors.rightMargin: 24
                                                 y: 1
                                             }
 
@@ -541,9 +560,9 @@ Component
                                                 color: UM.Theme.getColor("setting_control")
                                                 width: parent.width
                                                 anchors.top: parent.top
-                                                anchors.topMargin: 10
+                                                anchors.topMargin: 8 * screenScaleFactor // Because of the shadow + point
                                                 anchors.bottom: parent.bottom
-                                                anchors.bottomMargin: 5
+                                                anchors.bottomMargin: 8 * screenScaleFactor // Because of the shadow
                                             }
                                         }
                                     }

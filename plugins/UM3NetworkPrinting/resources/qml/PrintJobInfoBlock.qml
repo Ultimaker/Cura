@@ -30,7 +30,7 @@ Item
         anchors
         {
             top: parent.top
-            topMargin: 3
+            topMargin: 3 * screenScaleFactor
             left: parent.left
             leftMargin: base.shadowRadius
             rightMargin: base.shadowRadius
@@ -43,7 +43,7 @@ Item
         layer.effect: DropShadow
         {
             radius: base.shadowRadius
-            verticalOffset: 2
+            verticalOffset: 2 * screenScaleFactor
             color: "#3F000000"  // 25% shadow
         }
 
@@ -126,7 +126,7 @@ Item
                 right: parent.right
                 margins: 2 * UM.Theme.getSize("default_margin").width
                 leftMargin: UM.Theme.getSize("default_margin").width
-                rightMargin: UM.Theme.getSize("default_margin").width
+                rightMargin: UM.Theme.getSize("default_margin").width / 2
             }
 
             Label
@@ -169,7 +169,6 @@ Item
             {
                 id: contextButton
                 text: "\u22EE" //Unicode; Three stacked points.
-                font.pixelSize: 25
                 width: 35
                 height: width
                 anchors
@@ -187,6 +186,14 @@ Item
                     radius: 0.5 * width
                     color: UM.Theme.getColor("viewport_background")
                 }
+                contentItem: Label
+                {
+                    text: contextButton.text
+                    color: UM.Theme.getColor("monitor_text_inactive")
+                    font.pixelSize: 25
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                }
 
                 onClicked: parent.switchPopupState()
             }
@@ -196,18 +203,21 @@ Item
                 // TODO Change once updating to Qt5.10 - The 'opened' property is in 5.10 but the behavior is now implemented with the visible property
                 id: popup
                 clip: true
-                closePolicy: Popup.CloseOnPressOutsideParent
-                x: parent.width - width
-                y: contextButton.height
-                width: 160
+                closePolicy: Popup.CloseOnPressOutside
+                x: (parent.width - width) + 26 * screenScaleFactor
+                y: contextButton.height - 5 * screenScaleFactor // Because shadow
+                width: 182 * screenScaleFactor
                 height: contentItem.height + 2 * padding
                 visible: false
+                padding: 5 * screenScaleFactor // Because shadow
 
                 transformOrigin: Popup.Top
                 contentItem: Item
                 {
-                    width: popup.width - 2 * popup.padding
-                    height: childrenRect.height + 15
+                    width: popup.width
+                    height: childrenRect.height + 36 * screenScaleFactor
+                    anchors.topMargin: 10 * screenScaleFactor
+                    anchors.bottomMargin: 10 * screenScaleFactor
                     Button
                     {
                         id: sendToTopButton
@@ -219,13 +229,21 @@ Item
                         }
                         width: parent.width
                         enabled: OutputDevice.queuedPrintJobs[0].key != printJob.key
+                        visible: enabled
                         anchors.top: parent.top
-                        anchors.topMargin: 10
+                        anchors.topMargin: 18 * screenScaleFactor
+                        height: visible ? 39 * screenScaleFactor : 0 * screenScaleFactor
                         hoverEnabled: true
-                        background:  Rectangle
+                        background: Rectangle
                         {
                             opacity: sendToTopButton.down || sendToTopButton.hovered ? 1 : 0
                             color: UM.Theme.getColor("viewport_background")
+                        }
+                        contentItem: Label
+                        {
+                            text: sendToTopButton.text
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignVCenter
                         }
                     }
 
@@ -239,12 +257,19 @@ Item
                             popup.close()
                         }
                         width: parent.width
+                        height: 39 * screenScaleFactor
                         anchors.top: sendToTopButton.bottom
                         hoverEnabled: true
                         background: Rectangle
                         {
                             opacity: deleteButton.down || deleteButton.hovered ? 1 : 0
                             color: UM.Theme.getColor("viewport_background")
+                        }
+                        contentItem: Label
+                        {
+                            text: deleteButton.text
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignVCenter
                         }
                     }
                 }
@@ -267,19 +292,20 @@ Item
                     Item
                     {
                         id: pointedRectangle
-                        width: parent.width -10
-                        height: parent.height -10
+                        width: parent.width - 10 * screenScaleFactor // Because of the shadow
+                        height: parent.height - 10 * screenScaleFactor // Because of the shadow
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
 
                         Rectangle
                         {
                             id: point
-                            height: 13
-                            width: 13
+                            height: 14 * screenScaleFactor
+                            width: 14 * screenScaleFactor
                             color: UM.Theme.getColor("setting_control")
                             transform: Rotation { angle: 45}
                             anchors.right: bloop.right
+                            anchors.rightMargin: 24
                             y: 1
                         }
 
@@ -289,9 +315,9 @@ Item
                             color: UM.Theme.getColor("setting_control")
                             width: parent.width
                             anchors.top: parent.top
-                            anchors.topMargin: 10
+                            anchors.topMargin: 8 * screenScaleFactor // Because of the shadow + point
                             anchors.bottom: parent.bottom
-                            anchors.bottomMargin: 5
+                            anchors.bottomMargin: 8 * screenScaleFactor // Because of the shadow
                         }
                     }
                 }
@@ -331,7 +357,7 @@ Item
                     {
                         text: modelData
                         color: UM.Theme.getColor("viewport_background")
-                        padding: 3
+                        padding: 3 * screenScaleFactor
                     }
                 }
             }
@@ -353,14 +379,14 @@ Item
                 PrintCoreConfiguration
                 {
                     id: leftExtruderInfo
-                    width: Math.round(parent.width / 2)
+                    width: Math.round(parent.width / 2) * screenScaleFactor
                     printCoreConfiguration: printJob.configuration.extruderConfigurations[0]
                 }
 
                 PrintCoreConfiguration
                 {
                     id: rightExtruderInfo
-                    width: Math.round(parent.width / 2)
+                    width: Math.round(parent.width / 2) * screenScaleFactor
                     printCoreConfiguration: printJob.configuration.extruderConfigurations[1]
                 }
             }
@@ -370,7 +396,7 @@ Item
         Rectangle
         {
             color: UM.Theme.getColor("viewport_background")
-            width: 2
+            width: 2 * screenScaleFactor
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.margins: UM.Theme.getSize("default_margin").height
