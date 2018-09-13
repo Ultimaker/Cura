@@ -1664,8 +1664,8 @@
                     "description": "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time.",
                     "type": "bool",
                     "default_value": true,
-                    "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0",
-                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0",
+                    "value": "(infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0) and infill_wall_line_count > 0",
+                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric' or infill_multiplier % 2 == 0 or infill_wall_line_count > 1",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
