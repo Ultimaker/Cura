@@ -4538,6 +4538,17 @@
                         }
                     }
                 },
+                "brim_replaces_support":
+                {
+                    "label": "Brim Replaces Support",
+                    "description": "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions fo the first layer of supprot by brim regions.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim' and support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "adhesion_extruder_nr"
+                },
                 "brim_outside_only":
                 {
                     "label": "Brim Only on Outside",
