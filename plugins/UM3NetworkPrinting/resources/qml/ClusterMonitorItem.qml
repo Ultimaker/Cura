@@ -50,7 +50,7 @@ Component
             anchors.left: queuedPrintJobs.left
             anchors.top: parent.top
             anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
-            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width + 5
             text: catalog.i18nc("@label", "Queued")
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
