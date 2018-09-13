@@ -590,6 +590,12 @@ class MaterialManager(QObject):
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
             self._container_registry.addContainer(container_to_add)
+
+
+        #if duplicated material was favorite then new material should also be added to favorite.
+        if root_material_id in self.getFavorites():
+            self.addFavorite(new_base_id)
+
         return new_base_id
 
     #
