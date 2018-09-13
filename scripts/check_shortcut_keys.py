@@ -85,10 +85,12 @@ class ShortcutKeysChecker:
         msg_section = data_dict[self.MSGCTXT]
         keys_dict = shortcut_dict[msg_section]
         if shortcut_key not in keys_dict:
-            keys_dict[shortcut_key] = dict()
-        existing_data_dict = keys_dict[shortcut_key]
+            keys_dict[shortcut_key] = {"shortcut_key": shortcut_key,
+                                       "section": msg_section,
+                                       "existing_lines": dict(),
+                                       }
+        existing_data_dict = keys_dict[shortcut_key]["existing_lines"]
         existing_data_dict[start_line] = {"message": msg,
-                                          "shortcut_key": shortcut_key,
                                           }
 
     def _get_shortcut_key(self, text: str) -> Optional[str]:
@@ -105,16 +107,18 @@ class ShortcutKeysChecker:
         has_duplicates = False
         for keys_dict in shortcut_dict.values():
             for shortcut_key, data_dict in keys_dict.items():
-                if len(data_dict) == 1:
+                if len(data_dict["existing_lines"]) == 1:
                     continue
 
                 has_duplicates = True
 
                 print("")
                 print("The following messages have the same shortcut key '%s':" % shortcut_key)
-                for line, msg in data_dict.items():
+                print("  shortcut: '%s'" % data_dict["shortcut_key"])
+                print("  section : '%s'" % data_dict["section"])
+                for line, msg in data_dict["existing_lines"].items():
                     relative_filename = (filename.rsplit("..", 1)[-1])[1:]
-                    print(" - [%s] L%7d : [%s]" % (relative_filename, line, msg))
+                    print(" - [%s] L%7d : '%s'" % (relative_filename, line, msg["message"]))
 
         return has_duplicates
 

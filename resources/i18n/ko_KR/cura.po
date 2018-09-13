@@ -3798,7 +3798,7 @@ msgstr "버그 리포트"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:help"
-msgid "&About..."
+msgid "About..."
 msgstr "소개..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232

@@ -3806,7 +3806,7 @@ msgstr "報告＆バグ"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:help"
-msgid "&About..."
+msgid "About..."
 msgstr "アバウト..."
 
 # can’t enter japanese text
