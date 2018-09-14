@@ -488,7 +488,17 @@ class Toolbox(QObject, Extension):
 
         local_version = Version(local_package["package_version"])
         remote_version = Version(remote_package["package_version"])
-        return remote_version > local_version
+
+        can_upgrade = False
+        if remote_version > local_version:
+            can_upgrade = True
+        # A package with the same version can be built to have different SDK versions. So, for a package with the same
+        # version, we also need to check if the current one has a lower SDK version. If so, this package should also
+        # be upgradable.
+        elif remote_version == local_version and local_package.get("sdk_version", 0) < int(self._getSDKVersion()):
+            can_upgrade = True
+
+        return can_upgrade
 
     @pyqtSlot(str, result = bool)
     def canDowngrade(self, package_id: str) -> bool:
@@ -626,7 +636,7 @@ class Toolbox(QObject, Extension):
 
                 # HACK: Do nothing because we'll handle these from the "packages" call
                 if type in do_not_handle:
-                    return
+                    continue
 
                 if reply.url() == url:
                     if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
