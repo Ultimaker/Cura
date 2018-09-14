@@ -1436,8 +1436,7 @@
                 "skin_no_small_gaps_heuristic":
                 {
                     "label": "Ignore Small Z Gaps",
-                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
-                    "type": "bool",
+                    "description": "If this setting is enabled, it will skip over small vertical gaps. This will save about 5% computation time when generating top / bottom skin, at the cost of possibly exposing infill to the outside.",
                     "default_value": true,
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
