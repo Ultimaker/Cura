@@ -670,7 +670,6 @@ Item
                 onCurrentLayerChanged:
                 {
                     playButton.pauseSimulation()
-                    pathSlider.setHandleValue(0) // After updating the layer set Path slider to 0
                     layerSlider.setUpperValue(UM.SimulationView.currentLayer)
                 }
             }
