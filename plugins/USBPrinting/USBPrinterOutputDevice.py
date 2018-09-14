@@ -313,7 +313,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         while self._connection_state == ConnectionState.connected and self._serial is not None:
             try:
                 line = self._serial.readline()
-                print(line)
             except:
                 continue
 
