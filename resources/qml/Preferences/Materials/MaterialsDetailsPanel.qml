@@ -13,16 +13,17 @@ Item
 {
     id: detailsPanel
 
-    property var currentItem: base.currentItem
+    property var currentItem: null
 
-    onCurrentItemChanged: updateMaterialPropertiesObject()
+    onCurrentItemChanged:
+    {
+        // When the current item changes, the detail view needs to be updated
+        updateMaterialPropertiesObject()
+        materialDetailsView.currentMaterialNode = currentItem.container_node
+    }
 
     function updateMaterialPropertiesObject()
     {
-        if (currentItem === null)
-        {
-            return
-        }
         materialProperties.name = currentItem.name || "Unknown"
         materialProperties.guid = currentItem.GUID
         materialProperties.container_id = currentItem.id
@@ -71,8 +72,6 @@ Item
             properties: materialProperties
             containerId: currentItem != null ? currentItem.id : ""
             currentMaterialNode: currentItem.container_node
-
-    
         }
 
         QtObject

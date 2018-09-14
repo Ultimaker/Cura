@@ -37,6 +37,13 @@ Item
     // Expand the list of materials in order to select the current material
     function expandActiveMaterial(search_root_id)
     {
+        if (search_root_id == "")
+        {
+            // When this happens it means that the information of one of the materials has changed, so the model
+            // was updated and the list has to highlight the current item.
+            var currentItemId = base.currentItem == null ? "" : base.currentItem.root_material_id
+            search_root_id = currentItemId
+        }
         for (var material_idx = 0; material_idx < genericMaterialsModel.rowCount(); material_idx++)
         {
             var material = genericMaterialsModel.getItem(material_idx)
@@ -44,9 +51,9 @@ Item
             {
                 if (materialList.expandedBrands.indexOf("Generic") == -1)
                 {
-                    materialList.expandedBrands.push("Generic");
-                    materialList.currentBrand = "Generic"
+                    materialList.expandedBrands.push("Generic")
                 }
+                materialList.currentBrand = "Generic"
                 base.currentItem = material
                 persistExpandedCategories()
                 return true
@@ -67,22 +74,22 @@ Item
                     {
                         if (materialList.expandedBrands.indexOf(brand.name) == -1)
                         {
-                            materialList.expandedBrands.push(brand.name);
-                            materialList.currentBrand = brand.name
+                            materialList.expandedBrands.push(brand.name)
                         }
+                        materialList.currentBrand = brand.name
                         if (materialList.expandedTypes.indexOf(brand.name + "_" + type.name) == -1)
                         {
                             materialList.expandedTypes.push(brand.name + "_" + type.name)
-                            materialList.currentType = brand.name + "_" + type.name
                         }
+                        materialList.currentType = brand.name + "_" + type.name
                         base.currentItem = material
                         persistExpandedCategories()
                         return true
                     }
                 }
             }
-            return false
         }
+        return false
     }
 
     Connections
@@ -91,13 +98,35 @@ Item
         onItemsChanged:
         {
             var correctlyExpanded = materialList.expandActiveMaterial(base.newRootMaterialIdToSwitchTo)
-            if (base.toActivateNewMaterial)
+            if (correctlyExpanded)
             {
-                var position = Cura.ExtruderManager.activeExtruderIndex
-                Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
+                if (base.toActivateNewMaterial)
+                {
+                    var position = Cura.ExtruderManager.activeExtruderIndex
+                    Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
+                }
+                base.newRootMaterialIdToSwitchTo = ""
+                base.toActivateNewMaterial = false
             }
-            base.newRootMaterialIdToSwitchTo = ""
-            base.toActivateNewMaterial = false
+        }
+    }
+
+    Connections
+    {
+        target: genericMaterialsModel
+        onItemsChanged:
+        {
+            var correctlyExpanded = materialList.expandActiveMaterial(base.newRootMaterialIdToSwitchTo)
+            if (correctlyExpanded)
+            {
+                if (base.toActivateNewMaterial)
+                {
+                    var position = Cura.ExtruderManager.activeExtruderIndex
+                    Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
+                }
+                base.newRootMaterialIdToSwitchTo = ""
+                base.toActivateNewMaterial = false
+            }
         }
     }
     

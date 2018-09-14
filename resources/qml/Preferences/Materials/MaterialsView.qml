@@ -572,21 +572,21 @@ TabView
         }
 
         // update the values
-        base.materialManager.setMaterialName(base.currentMaterialNode, new_name);
-        materialProperties.name = new_name;
+        base.materialManager.setMaterialName(base.currentMaterialNode, new_name)
+        properties.name = new_name
     }
 
     // update the type of the material
     function updateMaterialType(old_type, new_type)
     {
-        base.setMetaDataEntry("material", old_type, new_type);
-        materialProperties.material = new_type;
+        base.setMetaDataEntry("material", old_type, new_type)
+        properties.material = new_type
     }
 
     // update the brand of the material
     function updateMaterialBrand(old_brand, new_brand)
     {
-        base.setMetaDataEntry("brand", old_brand, new_brand);
-        materialProperties.brand = new_brand;
+        base.setMetaDataEntry("brand", old_brand, new_brand)
+        properties.brand = new_brand
     }
 }
