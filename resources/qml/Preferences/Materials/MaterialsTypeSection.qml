@@ -14,8 +14,8 @@ Rectangle
 {
     id: material_type_section
     property var materialType
-    property var expanded: materialList.expandedTypes.indexOf(model.brand + "_" + model.name) > -1
-    property var colors_model: model.colors
+    property var expanded: materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
+    property var colorsModel: materialType.colors
     height: childrenRect.height
     width: parent.width
     Rectangle
@@ -23,7 +23,7 @@ Rectangle
         id: material_type_header_background
         color:
         {
-            if(!expanded && model.brand + "_" + model.name == materialList.currentType)
+            if(!expanded && materialType.brand + "_" + materialType.name == materialList.currentType)
             {
                 return UM.Theme.getColor("favorites_row_selected")
             }
@@ -55,7 +55,7 @@ Rectangle
         }
         Label
         {
-            text: model.name
+            text: materialType.name
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - UM.Theme.getSize("favorites_button").width
             id: material_type_name
@@ -94,7 +94,7 @@ Rectangle
         anchors.fill: material_type_header
         onPressed:
         {
-            const identifier = model.brand + "_" + model.name;
+            const identifier = materialType.brand + "_" + materialType.name;
             const i = materialList.expandedTypes.indexOf(identifier)
             if (i > -1)
             {
@@ -120,7 +120,7 @@ Rectangle
         anchors.left: parent.left
         Repeater
         {
-            model: colors_model
+            model: colorsModel
             delegate: MaterialsSlot
             {
                 material: model
@@ -133,7 +133,7 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
-            expanded = materialList.expandedTypes.indexOf(model.brand + "_" + model.name) > -1
+            expanded = materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
         }
     }
 }

@@ -15,7 +15,7 @@ Rectangle
     id: brand_section
     
     property var sectionName: ""
-    property var elements   // This can be a MaterialTypesModel or GenericMaterialsModel
+    property var elementsModel   // This can be a MaterialTypesModel or GenericMaterialsModel or FavoriteMaterialsModel
     property var hasMaterialTypes: true  // It indicates wheather it has material types or not
     property var expanded: materialList.expandedBrands.indexOf(sectionName) > -1
 
@@ -109,22 +109,44 @@ Rectangle
 
         Repeater
         {
-            model: elements
-            delegate: MaterialsTypeSection
+            model: elementsModel
+            delegate: Item
             {
-                visible: hasMaterialTypes
-                materialType: model
+                Loader
+                {
+                    id: loader
+                    property var element: model
+                    sourceComponent: hasMaterialTypes ? materialsTypeSection : materialSlot
+                }
             }
         }
         // In case there are no types, we create a material slot
-        Repeater
+//        Repeater
+//        {
+//            model: elementsModel
+//            delegate: MaterialsSlot
+//            {
+//                visible: !hasMaterialTypes
+//                material: model
+//            }
+//        }
+    }
+
+    Component
+    {
+        id: materialsTypeSection
+        MaterialsTypeSection
         {
-            model: elements
-            delegate: MaterialsSlot
-            {
-                visible: !hasMaterialTypes
-                material: model
-            }
+            materialType: element
+        }
+    }
+
+    Component
+    {
+        id: materialSlot
+        MaterialsSlot
+        {
+            material: element
         }
     }
 

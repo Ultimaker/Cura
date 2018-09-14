@@ -92,143 +92,142 @@ Item
         return false
     }
 
+    function updateAfterModelChanges()
+    {
+        var correctlyExpanded = materialList.expandActiveMaterial(base.newRootMaterialIdToSwitchTo)
+        if (correctlyExpanded)
+        {
+            if (base.toActivateNewMaterial)
+            {
+                var position = Cura.ExtruderManager.activeExtruderIndex
+                Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
+            }
+            base.newRootMaterialIdToSwitchTo = ""
+            base.toActivateNewMaterial = false
+        }
+    }
+
     Connections
     {
         target: materialsModel
-        onItemsChanged:
-        {
-            var correctlyExpanded = materialList.expandActiveMaterial(base.newRootMaterialIdToSwitchTo)
-            if (correctlyExpanded)
-            {
-                if (base.toActivateNewMaterial)
-                {
-                    var position = Cura.ExtruderManager.activeExtruderIndex
-                    Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
-                }
-                base.newRootMaterialIdToSwitchTo = ""
-                base.toActivateNewMaterial = false
-            }
-        }
+        onItemsChanged: updateAfterModelChanges()
     }
 
     Connections
     {
         target: genericMaterialsModel
-        onItemsChanged:
-        {
-            var correctlyExpanded = materialList.expandActiveMaterial(base.newRootMaterialIdToSwitchTo)
-            if (correctlyExpanded)
-            {
-                if (base.toActivateNewMaterial)
-                {
-                    var position = Cura.ExtruderManager.activeExtruderIndex
-                    Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
-                }
-                base.newRootMaterialIdToSwitchTo = ""
-                base.toActivateNewMaterial = false
-            }
-        }
+        onItemsChanged: updateAfterModelChanges()
     }
     
     Column
     {
-        Rectangle
-        {
-            property var expanded: true
+//        Rectangle
+//        {
+//            property var expanded: true
+//
+//            id: favorites_section
+//            height: childrenRect.height
+//            width: materialList.width
+//            Rectangle
+//            {
+//                id: favorites_header_background
+//                color: UM.Theme.getColor("favorites_header_bar")
+//                anchors.fill: favorites_header
+//            }
+//            Row
+//            {
+//                id: favorites_header
+//                Label
+//                {
+//                    id: favorites_name
+//                    text: "Favorites"
+//                    height: UM.Theme.getSize("favorites_row").height
+//                    width: materialList.width - UM.Theme.getSize("favorites_button").width
+//                    verticalAlignment: Text.AlignVCenter
+//                    leftPadding: 4
+//                }
+//                Button
+//                {
+//                    text: ""
+//                    implicitWidth: UM.Theme.getSize("favorites_button").width
+//                    implicitHeight: UM.Theme.getSize("favorites_button").height
+//                    UM.RecolorImage {
+//                        anchors
+//                        {
+//                            verticalCenter: parent.verticalCenter
+//                            horizontalCenter: parent.horizontalCenter
+//                        }
+//                        width: UM.Theme.getSize("standard_arrow").width
+//                        height: UM.Theme.getSize("standard_arrow").height
+//                        sourceSize.width: width
+//                        sourceSize.height: height
+//                        color: "black"
+//                        source: favorites_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+//                    }
+//                    style: ButtonStyle
+//                    {
+//                        background: Rectangle
+//                        {
+//                            anchors.fill: parent
+//                            color: "transparent"
+//                        }
+//                    }
+//                }
+//            }
+//            MouseArea
+//            {
+//                anchors.fill: favorites_header
+//                onPressed:
+//                {
+//                    favorites_section.expanded = !favorites_section.expanded
+//                }
+//            }
+//            Column
+//            {
+//                anchors.top: favorites_header.bottom
+//                anchors.left: parent.left
+//                width: materialList.width
+//                height: favorites_section.expanded ? childrenRect.height : 0
+//                visible: favorites_section.expanded
+//                Repeater
+//                {
+//                    model: favoriteMaterialsModel
+//                    delegate: MaterialsSlot
+//                    {
+//                        material: model
+//                    }
+//                }
+//            }
+//        }
 
-            id: favorites_section
-            height: childrenRect.height
-            width: materialList.width
-            Rectangle
-            {
-                id: favorites_header_background
-                color: UM.Theme.getColor("favorites_header_bar")
-                anchors.fill: favorites_header
-            }
-            Row
-            {
-                id: favorites_header
-                Label
-                {
-                    id: favorites_name
-                    text: "Favorites"
-                    height: UM.Theme.getSize("favorites_row").height
-                    width: materialList.width - UM.Theme.getSize("favorites_button").width
-                    verticalAlignment: Text.AlignVCenter
-                    leftPadding: 4
-                }
-                Button
-                {
-                    text: ""
-                    implicitWidth: UM.Theme.getSize("favorites_button").width
-                    implicitHeight: UM.Theme.getSize("favorites_button").height
-                    UM.RecolorImage {
-                        anchors
-                        {
-                            verticalCenter: parent.verticalCenter
-                            horizontalCenter: parent.horizontalCenter
-                        }
-                        width: UM.Theme.getSize("standard_arrow").width
-                        height: UM.Theme.getSize("standard_arrow").height
-                        sourceSize.width: width
-                        sourceSize.height: height
-                        color: "black"
-                        source: favorites_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
-                    }
-                    style: ButtonStyle
-                    {
-                        background: Rectangle
-                        {
-                            anchors.fill: parent
-                            color: "transparent"
-                        }
-                    }
-                }
-            }
-            MouseArea
-            {
-                anchors.fill: favorites_header
-                onPressed:
-                {
-                    favorites_section.expanded = !favorites_section.expanded
-                }
-            }
-            Column
-            {
-                anchors.top: favorites_header.bottom
-                anchors.left: parent.left
-                width: materialList.width
-                height: favorites_section.expanded ? childrenRect.height : 0
-                visible: favorites_section.expanded
-                Repeater
-                {
-                    model: favoriteMaterialsModel
-                    delegate: MaterialsSlot
-                    {
-                        material: model
-                    }
-                }
-            }
-        }
+//        MaterialsBrandSection
+//        {
+//            id: favoriteSection
+//            sectionName: "Favorites"
+//            elementsModel: favoriteMaterialsModel
+//            hasMaterialTypes: false
+//            expanded: true
+//        }
 
         MaterialsBrandSection
         {
             id: genericSection
             sectionName: "Generic"
-            elements: genericMaterialsModel
+            elementsModel: genericMaterialsModel
             hasMaterialTypes: false
         }
-        Repeater
-        {
-            id: brand_list
-            model: materialsModel
-            delegate: MaterialsBrandSection
-            {
-                id: brandSection
-                sectionName: model.name
-                elements: model.material_types
-                hasMaterialTypes: true
-            }
-        }
+//
+//        Repeater
+//        {
+//            id: brand_list
+//            model: materialsModel
+//            delegate: MaterialsBrandSection
+//            {
+//                id: brandSection
+//                sectionName: model.name
+//                elementsModel: model.material_types
+//                hasMaterialTypes: true
+//            }
+//        }
     }
 }
