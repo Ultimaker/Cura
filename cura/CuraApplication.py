@@ -482,7 +482,9 @@ class CuraApplication(QtApplication):
         preferences.addPreference("view/filter_current_build_plate", False)
         preferences.addPreference("cura/sidebar_collapsed", False)
 
-        preferences.addPreference("cura/favorite_materials", ";".join([]))
+        preferences.addPreference("cura/favorite_materials", "")
+        preferences.addPreference("cura/expanded_brands", "")
+        preferences.addPreference("cura/expanded_types", "")
 
         self._need_to_show_user_agreement = not preferences.getValue("general/accepted_user_agreement")
 

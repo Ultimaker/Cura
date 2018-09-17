@@ -13,14 +13,32 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: material_type_section
-    property var expanded: base.collapsed_types.indexOf(model.brand + "_" + model.name) > -1
-    property var colors_model: model.colors
+    property var materialType
+    property var expanded: materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
+    property var colorsModel: materialType.colors
     height: childrenRect.height
     width: parent.width
     Rectangle
     {
         id: material_type_header_background
-        color: UM.Theme.getColor("lining")
+        color:
+        {
+            if(!expanded && materialType.brand + "_" + materialType.name == materialList.currentType)
+            {
+                return UM.Theme.getColor("favorites_row_selected")
+            }
+            else
+            {
+                return "transparent"
+            }
+        }
+        width: parent.width
+        height: material_type_header.height
+    }
+    Rectangle
+    {
+        id: material_type_header_border
+        color: UM.Theme.getColor("favorites_header_bar")
         anchors.bottom: material_type_header.bottom
         anchors.left: material_type_header.left
         height: UM.Theme.getSize("default_lining").height
@@ -29,17 +47,17 @@ Rectangle
     Row
     {
         id: material_type_header
-        width: parent.width - 8
+        width: parent.width
+        leftPadding: UM.Theme.getSize("default_margin").width
         anchors
         {
             left: parent.left
-            leftMargin: 8
         }
         Label
         {
-            text: model.name
+            text: materialType.name
             height: UM.Theme.getSize("favorites_row").height
-            width: parent.width - UM.Theme.getSize("favorites_button").width
+            width: parent.width - parent.leftPadding - UM.Theme.getSize("favorites_button").width
             id: material_type_name
             verticalAlignment: Text.AlignVCenter
         }
@@ -76,19 +94,21 @@ Rectangle
         anchors.fill: material_type_header
         onPressed:
         {
-            const i = base.collapsed_types.indexOf(model.brand + "_" + model.name)
+            const identifier = materialType.brand + "_" + materialType.name;
+            const i = materialList.expandedTypes.indexOf(identifier)
             if (i > -1)
             {
                 // Remove it
-                base.collapsed_types.splice(i, 1)
+                materialList.expandedTypes.splice(i, 1)
                 material_type_section.expanded = false
             }
             else
             {
                 // Add it
-                base.collapsed_types.push(model.brand + "_" + model.name)
+                materialList.expandedTypes.push(identifier)
                 material_type_section.expanded = true
             }
+            UM.Preferences.setValue("cura/expanded_types", materialList.expandedTypes.join(";"));
         }
     }
     Column
@@ -97,13 +117,22 @@ Rectangle
         visible: material_type_section.expanded
         width: parent.width
         anchors.top: material_type_header.bottom
-        anchors.left: parent.left
         Repeater
         {
-            model: colors_model
-            delegate: MaterialsSlot {
+            model: colorsModel
+            delegate: MaterialsSlot
+            {
                 material: model
             }
+        }
+    }
+
+    Connections
+    {
+        target: UM.Preferences
+        onPreferenceChanged:
+        {
+            expanded = materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
         }
     }
 }

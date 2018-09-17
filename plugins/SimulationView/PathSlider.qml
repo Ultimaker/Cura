@@ -34,6 +34,7 @@ Item {
     property real handleValue: maximumValue
 
     property bool pathsVisible: true
+    property bool manuallyChanged: true     // Indicates whether the value was changed manually or during simulation
 
     function getHandleValueFromSliderHandle () {
         return handle.getValue()
@@ -97,6 +98,7 @@ Item {
         visible: sliderRoot.pathsVisible
 
         function onHandleDragged () {
+            sliderRoot.manuallyChanged = true
 
             // update the range handle
             sliderRoot.updateRangeHandle()
@@ -128,8 +130,16 @@ Item {
             sliderRoot.updateRangeHandle()
         }
 
-        Keys.onRightPressed: handleLabel.setValue(handleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        Keys.onLeftPressed: handleLabel.setValue(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onRightPressed:
+        {
+            sliderRoot.manuallyChanged = true
+            handleLabel.setValue(handleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        }
+        Keys.onLeftPressed:
+        {
+            sliderRoot.manuallyChanged = true
+            handleLabel.setValue(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        }
 
         // dragging
         MouseArea {

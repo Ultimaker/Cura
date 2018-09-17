@@ -39,6 +39,7 @@ Item {
     property real lowerValue: minimumValue
 
     property bool layersVisible: true
+    property bool manuallyChanged: true     // Indicates whether the value was changed manually or during simulation
 
     function getUpperValueFromSliderHandle() {
         return upperHandle.getValue()
@@ -96,7 +97,8 @@ Item {
         visible: sliderRoot.layersVisible
 
         // set the new value when dragging
-        function onHandleDragged () {
+        function onHandleDragged() {
+            sliderRoot.manuallyChanged = true
 
             upperHandle.y = y - upperHandle.height
             lowerHandle.y = y + height
@@ -109,7 +111,7 @@ Item {
             UM.SimulationView.setMinimumLayer(lowerValue)
         }
 
-        function setValue (value) {
+        function setValue(value) {
             var range = sliderRoot.upperValue - sliderRoot.lowerValue
             value = Math.min(value, sliderRoot.maximumValue)
             value = Math.max(value, sliderRoot.minimumValue + range)
@@ -168,7 +170,8 @@ Item {
         color: upperHandleLabel.activeFocus ? sliderRoot.handleActiveColor : sliderRoot.upperHandleColor
         visible: sliderRoot.layersVisible
 
-        function onHandleDragged () {
+        function onHandleDragged() {
+            sliderRoot.manuallyChanged = true
 
             // don't allow the lower handle to be heigher than the upper handle
             if (lowerHandle.y - (y + height) < sliderRoot.minimumRangeHandleSize) {
@@ -183,7 +186,7 @@ Item {
         }
 
         // get the upper value based on the slider position
-        function getValue () {
+        function getValue() {
             var result = y / (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize))
             result = sliderRoot.maximumValue + result * (sliderRoot.minimumValue - (sliderRoot.maximumValue - sliderRoot.minimumValue))
             result = sliderRoot.roundValues ? Math.round(result) : result
@@ -191,7 +194,7 @@ Item {
         }
 
         // set the slider position based on the upper value
-        function setValue (value) {
+        function setValue(value) {
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
@@ -205,8 +208,16 @@ Item {
             sliderRoot.updateRangeHandle()
         }
 
-        Keys.onUpPressed: upperHandleLabel.setValue(upperHandleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        Keys.onDownPressed: upperHandleLabel.setValue(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onUpPressed:
+        {
+            sliderRoot.manuallyChanged = true
+            upperHandleLabel.setValue(upperHandleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        }
+        Keys.onDownPressed:
+        {
+            sliderRoot.manuallyChanged = true
+            upperHandleLabel.setValue(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        }
 
         // dragging
         MouseArea {
@@ -256,7 +267,8 @@ Item {
 
         visible: sliderRoot.layersVisible
 
-        function onHandleDragged () {
+        function onHandleDragged() {
+            sliderRoot.manuallyChanged = true
 
             // don't allow the upper handle to be lower than the lower handle
             if (y - (upperHandle.y + upperHandle.height) < sliderRoot.minimumRangeHandleSize) {
@@ -271,7 +283,7 @@ Item {
         }
 
         // get the lower value from the current slider position
-        function getValue () {
+        function getValue() {
             var result = (y - (sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)) / (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize));
             result = sliderRoot.maximumValue - sliderRoot.minimumRange + result * (sliderRoot.minimumValue - (sliderRoot.maximumValue - sliderRoot.minimumRange))
             result = sliderRoot.roundValues ? Math.round(result) : result
@@ -279,7 +291,7 @@ Item {
         }
 
         // set the slider position based on the lower value
-        function setValue (value) {
+        function setValue(value) {
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 

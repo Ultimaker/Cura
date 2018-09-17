@@ -13,14 +13,28 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: brand_section
-    property var expanded: base.collapsed_brands.indexOf(model.name) > -1
-    property var types_model: model.material_types
+    
+    property var sectionName: ""
+    property var elementsModel   // This can be a MaterialTypesModel or GenericMaterialsModel or FavoriteMaterialsModel
+    property var hasMaterialTypes: true  // It indicates wheather it has material types or not
+    property var expanded: materialList.expandedBrands.indexOf(sectionName) > -1
+
     height: childrenRect.height
     width: parent.width
     Rectangle
     {
         id: brand_header_background
-        color: UM.Theme.getColor("favorites_header_bar")
+        color:
+        {
+            if(!expanded && sectionName == materialList.currentBrand)
+            {
+                return UM.Theme.getColor("favorites_row_selected")
+            }
+            else
+            {
+                return UM.Theme.getColor("favorites_header_bar")
+            }
+        }
         anchors.fill: brand_header
     }
     Row
@@ -30,11 +44,11 @@ Rectangle
         Label
         {
             id: brand_name
-            text: model.name
+            text: sectionName
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - UM.Theme.getSize("favorites_button").width
             verticalAlignment: Text.AlignVCenter
-            leftPadding: 4
+            leftPadding: (UM.Theme.getSize("default_margin").width / 2) | 0
         }
         Button
         {
@@ -69,32 +83,68 @@ Rectangle
         anchors.fill: brand_header
         onPressed:
         {
-            const i = base.collapsed_brands.indexOf(model.name)
+            const i = materialList.expandedBrands.indexOf(sectionName)
             if (i > -1)
             {
                 // Remove it
-                base.collapsed_brands.splice(i, 1)
+                materialList.expandedBrands.splice(i, 1)
                 brand_section.expanded = false
             }
             else
             {
                 // Add it
-                base.collapsed_brands.push(model.name)
+                materialList.expandedBrands.push(sectionName)
                 brand_section.expanded = true
             }
+            UM.Preferences.setValue("cura/expanded_brands", materialList.expandedBrands.join(";"));
         }
     }
     Column
     {
+        id: brandMaterialList
         anchors.top: brand_header.bottom
         width: parent.width
         anchors.left: parent.left
         height: brand_section.expanded ? childrenRect.height : 0
         visible: brand_section.expanded
+
         Repeater
         {
-            model: types_model
-            delegate: MaterialsTypeSection {}
+            model: elementsModel
+            delegate: Loader
+            {
+                id: loader
+                width: parent.width
+                property var element: model
+                sourceComponent: hasMaterialTypes ? materialsTypeSection : materialSlot
+            }
+        }
+    }
+
+    Component
+    {
+        id: materialsTypeSection
+        MaterialsTypeSection
+        {
+            materialType: element
+        }
+    }
+
+    Component
+    {
+        id: materialSlot
+        MaterialsSlot
+        {
+            material: element
+        }
+    }
+
+    Connections
+    {
+        target: UM.Preferences
+        onPreferenceChanged:
+        {
+            expanded = materialList.expandedBrands.indexOf(sectionName) > -1
         }
     }
 }
