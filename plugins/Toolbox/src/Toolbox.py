@@ -527,7 +527,11 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
-        return self._package_manager.isPackageInstalled(package_id)
+        result = self._package_manager.isPackageInstalled(package_id)
+        # Also check the old plugins list if it's not found in the package manager.
+        if not result:
+            result = self.isOldPlugin(package_id)
+        return result
 
     @pyqtSlot(str, result = int)
     def getNumberOfInstalledPackagesByAuthor(self, author_id: str) -> int:
