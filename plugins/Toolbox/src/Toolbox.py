@@ -5,7 +5,7 @@ import json
 import os
 import tempfile
 import platform
-from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional
+from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, Union
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -498,10 +498,6 @@ class Toolbox(QObject, Extension):
 
         local_version = Version(local_package["package_version"])
         remote_version = Version(remote_package["package_version"])
-        if self._getSDKVersion() == "dev":
-            sdk_version = self._plugin_registry.APIVersion
-        else:
-            sdk_version = self._getSDKVersion()
         can_upgrade = False
         if remote_version > local_version:
             can_upgrade = True
@@ -531,7 +527,11 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, result = bool)
     def isInstalled(self, package_id: str) -> bool:
-        return self._package_manager.isPackageInstalled(package_id)
+        result = self._package_manager.isPackageInstalled(package_id)
+        # Also check the old plugins list if it's not found in the package manager.
+        if not result:
+            result = self.isOldPlugin(package_id)
+        return result
 
     @pyqtSlot(str, result = int)
     def getNumberOfInstalledPackagesByAuthor(self, author_id: str) -> int:
