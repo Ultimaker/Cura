@@ -5,7 +5,7 @@ import json
 import os
 import tempfile
 import platform
-from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional
+from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, Union
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
