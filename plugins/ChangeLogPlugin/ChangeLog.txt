@@ -47,7 +47,8 @@ The support infill lines can now be rotated to increase the supporting capabilit
 *Minimum polygon circumference
 Polygons in sliced layers that have a circumference smaller than the setting value will be filtered out. Lower values lead to higher resolution meshes at the cost of increased slicing time. This setting is ideal for very tiny prints with a lot of detail, or for SLA printers. Contributed by cubiq.
 
-*Initial layer support line distance. This setting enables the user to reduce or increase the density of the support initial layer in order to increase or reduce adhesion to the build plate and the overall strength.
+*Initial layer support line distance
+This setting enables the user to reduce or increase the density of the support initial layer in order to increase or reduce adhesion to the build plate and the overall strength.
 
 *Extra infill wall line count
 Adds extra walls around infill. Contributed by BagelOrb.
