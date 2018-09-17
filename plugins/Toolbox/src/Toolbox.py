@@ -40,7 +40,7 @@ class Toolbox(QObject, Extension):
 
         self._application = application  # type: CuraApplication
 
-        self._sdk_version = None  # type: Optional[int]
+        self._sdk_version = None  # type: Optional[Union[str, int]]
         self._cloud_api_version = None  # type: Optional[int]
         self._cloud_api_root = None  # type: Optional[str]
         self._api_url = None  # type: Optional[str]
@@ -207,14 +207,14 @@ class Toolbox(QObject, Extension):
         return cura.CuraVersion.CuraCloudAPIVersion # type: ignore
 
     # Get the packages version depending on Cura version settings.
-    def _getSDKVersion(self) -> int:
+    def _getSDKVersion(self) -> Union[int, str]:
         if not hasattr(cura, "CuraVersion"):
             return self._plugin_registry.APIVersion
-        if not hasattr(cura.CuraVersion, "CuraSDKVersion"): # type: ignore
+        if not hasattr(cura.CuraVersion, "CuraSDKVersion"):  # type: ignore
             return self._plugin_registry.APIVersion
-        if not cura.CuraVersion.CuraSDKVersion: # type: ignore
+        if not cura.CuraVersion.CuraSDKVersion:  # type: ignore
             return self._plugin_registry.APIVersion
-        return cura.CuraVersion.CuraSDKVersion # type: ignore
+        return cura.CuraVersion.CuraSDKVersion  # type: ignore
 
     @pyqtSlot()
     def browsePackages(self) -> None:
@@ -489,17 +489,17 @@ class Toolbox(QObject, Extension):
         local_version = Version(local_package["package_version"])
         remote_version = Version(remote_package["package_version"])
         if self._getSDKVersion() == "dev":
-            sdk_version = int(self._plugin_registry.APIVersion)
+            sdk_version = self._plugin_registry.APIVersion
         else:
-            sdk_version = int(self._getSDKVersion())
+            sdk_version = self._getSDKVersion()
         can_upgrade = False
         if remote_version > local_version:
             can_upgrade = True
         # A package with the same version can be built to have different SDK versions. So, for a package with the same
         # version, we also need to check if the current one has a lower SDK version. If so, this package should also
         # be upgradable.
-        elif remote_version == local_version and local_package.get("sdk_version", 0) < sdk_version:
-            can_upgrade = True
+        elif remote_version == local_version:
+            can_upgrade = local_package.get("sdk_version", 0) < remote_package.get("sdk_version", 0)
 
         return can_upgrade
 
