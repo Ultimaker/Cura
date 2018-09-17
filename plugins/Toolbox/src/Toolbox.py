@@ -498,10 +498,6 @@ class Toolbox(QObject, Extension):
 
         local_version = Version(local_package["package_version"])
         remote_version = Version(remote_package["package_version"])
-        if self._getSDKVersion() == "dev":
-            sdk_version = self._plugin_registry.APIVersion
-        else:
-            sdk_version = self._getSDKVersion()
         can_upgrade = False
         if remote_version > local_version:
             can_upgrade = True
