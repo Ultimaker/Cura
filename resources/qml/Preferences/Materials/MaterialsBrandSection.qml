@@ -48,7 +48,7 @@ Rectangle
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - UM.Theme.getSize("favorites_button").width
             verticalAlignment: Text.AlignVCenter
-            leftPadding: 4
+            leftPadding: (UM.Theme.getSize("default_margin").width / 2) | 0
         }
         Button
         {
@@ -101,6 +101,7 @@ Rectangle
     }
     Column
     {
+        id: brandMaterialList
         anchors.top: brand_header.bottom
         width: parent.width
         anchors.left: parent.left
@@ -110,26 +111,14 @@ Rectangle
         Repeater
         {
             model: elementsModel
-            delegate: Item
+            delegate: Loader
             {
-                Loader
-                {
-                    id: loader
-                    property var element: model
-                    sourceComponent: hasMaterialTypes ? materialsTypeSection : materialSlot
-                }
+                id: loader
+                width: parent.width
+                property var element: model
+                sourceComponent: hasMaterialTypes ? materialsTypeSection : materialSlot
             }
         }
-        // In case there are no types, we create a material slot
-//        Repeater
-//        {
-//            model: elementsModel
-//            delegate: MaterialsSlot
-//            {
-//                visible: !hasMaterialTypes
-//                material: model
-//            }
-//        }
     }
 
     Component

@@ -38,7 +38,7 @@ Rectangle
     Rectangle
     {
         id: material_type_header_border
-        color: UM.Theme.getColor("lining")
+        color: UM.Theme.getColor("favorites_header_bar")
         anchors.bottom: material_type_header.bottom
         anchors.left: material_type_header.left
         height: UM.Theme.getSize("default_lining").height
@@ -47,17 +47,17 @@ Rectangle
     Row
     {
         id: material_type_header
-        width: parent.width - 8
+        width: parent.width
+        leftPadding: UM.Theme.getSize("default_margin").width
         anchors
         {
             left: parent.left
-            leftMargin: 8
         }
         Label
         {
             text: materialType.name
             height: UM.Theme.getSize("favorites_row").height
-            width: parent.width - UM.Theme.getSize("favorites_button").width
+            width: parent.width - parent.leftPadding - UM.Theme.getSize("favorites_button").width
             id: material_type_name
             verticalAlignment: Text.AlignVCenter
         }
@@ -117,7 +117,6 @@ Rectangle
         visible: material_type_section.expanded
         width: parent.width
         anchors.top: material_type_header.bottom
-        anchors.left: parent.left
         Repeater
         {
             model: colorsModel

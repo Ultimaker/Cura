@@ -18,8 +18,11 @@ Item
     onCurrentItemChanged:
     {
         // When the current item changes, the detail view needs to be updated
-        updateMaterialPropertiesObject()
-        materialDetailsView.currentMaterialNode = currentItem.container_node
+        if (currentItem != null)
+        {
+            updateMaterialPropertiesObject()
+            materialDetailsView.currentMaterialNode = currentItem.container_node
+        }
     }
 
     function updateMaterialPropertiesObject()

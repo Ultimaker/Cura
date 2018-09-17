@@ -225,13 +225,14 @@ Item
                 color: palette.light
             }
 
-            width: true ? (parent.width * 0.4) | 0 : parent.width
+            width: (parent.width * 0.4) | 0
             frameVisible: true
-            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
             MaterialsList
             {
                 id: materialListView
+                width: materialScrollView.viewport.width
             }
         }
 
