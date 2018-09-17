@@ -483,12 +483,14 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     @pyqtSlot(str, result = bool)
     def canUpdate(self, package_id: str) -> bool:
-        if self.isOldPlugin(package_id):
-            return True
-
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
         if local_package is None:
-            return False
+            Logger.log("i", "Could not find package [%s] as installed in the package manager, fall back to check the old plugins",
+                       package_id)
+            local_package = self.getOldPluginPackageMetadata(package_id)
+            if local_package is None:
+                Logger.log("i", "Could not find package [%s] in the old plugins", package_id)
+                return False
 
         remote_package = self.getRemotePackage(package_id)
         if remote_package is None:
@@ -556,11 +558,13 @@ class Toolbox(QObject, Extension):
         return False
 
     # Check for plugins that were installed with the old plugin browser
-    @pyqtSlot(str, result = bool)
     def isOldPlugin(self, plugin_id: str) -> bool:
         if plugin_id in self._old_plugin_ids:
             return True
         return False
+
+    def getOldPluginPackageMetadata(self, plugin_id: str) -> Optional[Dict[str, Any]]:
+        return self._old_plugin_metadata.get(plugin_id)
 
     def loadingComplete(self) -> bool:
         populated = 0
