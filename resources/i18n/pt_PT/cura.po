@@ -3918,8 +3918,8 @@ msgstr "Reportar um &erro"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:help"
-msgid "&About..."
-msgstr "&Sobre..."
+msgid "About..."
+msgstr "Sobre..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242

@@ -3955,7 +3955,7 @@ msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:help"
-msgid "&About..."
+msgid "About..."
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232

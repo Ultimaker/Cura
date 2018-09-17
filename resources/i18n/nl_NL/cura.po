@@ -3800,8 +3800,8 @@ msgstr "Een &Bug Rapporteren"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:help"
-msgid "&About..."
-msgstr "&Over..."
+msgid "About..."
+msgstr "Over..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
