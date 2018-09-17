@@ -1,12 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict, Optional, Union, Any, cast
 import json
 import os
 import tempfile
 import platform
-from typing import cast, List, TYPE_CHECKING, Tuple, Optional
+from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -64,7 +63,8 @@ class Toolbox(QObject, Extension):
         ]
         self._request_urls = {}  # type: Dict[str, QUrl]
         self._to_update = []  # type: List[str] # Package_ids that are waiting to be updated
-        self._old_plugin_ids = []  # type: List[str]
+        self._old_plugin_ids = set()  # type: Set[str]
+        self._old_plugin_metadata = dict()  # type: Dict[str, Dict[str, Any]]
 
         # Data:
         self._metadata = {
@@ -289,8 +289,8 @@ class Toolbox(QObject, Extension):
         installed_package_ids = self._package_manager.getAllInstalledPackageIDs()
         scheduled_to_remove_package_ids = self._package_manager.getToRemovePackageIDs()
 
-        self._old_plugin_ids = []
-        self._old_plugin_metadata = [] # type: List[Dict[str, Any]]
+        self._old_plugin_ids = set()
+        self._old_plugin_metadata = dict()
 
         for plugin_id in old_plugin_ids:
             # Neither the installed packages nor the packages that are scheduled to remove are old plugins
@@ -300,12 +300,20 @@ class Toolbox(QObject, Extension):
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)
                 new_metadata = self._convertPluginMetadata(old_metadata)
 
-                self._old_plugin_ids.append(plugin_id)
-                self._old_plugin_metadata.append(new_metadata)
+                self._old_plugin_ids.add(plugin_id)
+                self._old_plugin_metadata[new_metadata["package_id"]] = new_metadata
 
         all_packages = self._package_manager.getAllInstalledPackagesInfo()
         if "plugin" in all_packages:
-            self._metadata["plugins_installed"] = all_packages["plugin"] + self._old_plugin_metadata
+            # For old plugins, we only want to include the old custom plugin that were installed via the old toolbox.
+            # The bundled plugins will be included in the "bundled_packages.json", so the bundled plugins should be
+            # excluded from the old plugins list/dict.
+            all_plugin_package_ids = set(package["package_id"] for package in all_packages["plugin"])
+            self._old_plugin_ids = set(plugin_id for plugin_id in self._old_plugin_ids
+                                    if plugin_id not in all_plugin_package_ids)
+            self._old_plugin_metadata = {k: v for k, v in self._old_plugin_metadata.items() if k in self._old_plugin_ids}
+
+            self._metadata["plugins_installed"] = all_packages["plugin"] + list(self._old_plugin_metadata.values())
             self._models["plugins_installed"].setMetadata(self._metadata["plugins_installed"])
             self.metadataChanged.emit()
         if "material" in all_packages:
@@ -475,12 +483,14 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     @pyqtSlot(str, result = bool)
     def canUpdate(self, package_id: str) -> bool:
-        if self.isOldPlugin(package_id):
-            return True
-
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
         if local_package is None:
-            return False
+            Logger.log("i", "Could not find package [%s] as installed in the package manager, fall back to check the old plugins",
+                       package_id)
+            local_package = self.getOldPluginPackageMetadata(package_id)
+            if local_package is None:
+                Logger.log("i", "Could not find package [%s] in the old plugins", package_id)
+                return False
 
         remote_package = self.getRemotePackage(package_id)
         if remote_package is None:
@@ -548,11 +558,13 @@ class Toolbox(QObject, Extension):
         return False
 
     # Check for plugins that were installed with the old plugin browser
-    @pyqtSlot(str, result = bool)
     def isOldPlugin(self, plugin_id: str) -> bool:
         if plugin_id in self._old_plugin_ids:
             return True
         return False
+
+    def getOldPluginPackageMetadata(self, plugin_id: str) -> Optional[Dict[str, Any]]:
+        return self._old_plugin_metadata.get(plugin_id)
 
     def loadingComplete(self) -> bool:
         populated = 0
