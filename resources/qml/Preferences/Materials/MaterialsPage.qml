@@ -45,7 +45,11 @@ Item
     Component.onCompleted: materialListView.expandActiveMaterial(active_root_material_id)
 
     // Every time the selected item has changed, notify to the details panel
-    onCurrentItemChanged: materialDetailsPanel.currentItem = currentItem
+    onCurrentItemChanged:
+    {
+        forceActiveFocus()
+        materialDetailsPanel.currentItem = currentItem
+    }
 
     // Main layout
     Label
