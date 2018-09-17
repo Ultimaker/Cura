@@ -40,7 +40,6 @@ if TYPE_CHECKING:
 class MaterialManager(QObject):
 
     materialsUpdated = pyqtSignal() # Emitted whenever the material lookup tables are updated.
-    favoritesUpdated = pyqtSignal() # Emitted whenever the favorites are changed
 
     def __init__(self, container_registry, parent = None):
         super().__init__(parent)
@@ -196,12 +195,11 @@ class MaterialManager(QObject):
         for material_metadata in material_metadatas.values():
             self.__addMaterialMetadataIntoLookupTree(material_metadata)
 
-        self.materialsUpdated.emit()
-
         favorites = self._application.getPreferences().getValue("cura/favorite_materials")
         for item in favorites.split(";"):
             self._favorites.add(item)
-        self.favoritesUpdated.emit()
+
+        self.materialsUpdated.emit()
 
     def __addMaterialMetadataIntoLookupTree(self, material_metadata: dict) -> None:
         material_id = material_metadata["id"]
@@ -621,7 +619,7 @@ class MaterialManager(QObject):
     @pyqtSlot(str)
     def addFavorite(self, root_material_id: str):
         self._favorites.add(root_material_id)
-        self.favoritesUpdated.emit()
+        self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
         self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
@@ -630,7 +628,7 @@ class MaterialManager(QObject):
     @pyqtSlot(str)
     def removeFavorite(self, root_material_id: str):
         self._favorites.remove(root_material_id)
-        self.favoritesUpdated.emit()
+        self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
         self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
