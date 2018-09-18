@@ -42,8 +42,8 @@ Item
         return handle.getValue()
     }
 
-    function setHandleValue(value
-     {
+    function setHandleValue(value)
+    {
         handle.setValue(value)
         updateRangeHandle()
     }
