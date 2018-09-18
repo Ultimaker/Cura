@@ -136,6 +136,50 @@ class CuraStackBuilder:
 
         return new_global_stack
 
+    @classmethod
+    def createExtruderStackWithDefaultSetup(cls, global_stack: "GlobalStack", extruder_position: int) -> None:
+        from cura.CuraApplication import CuraApplication
+        application = CuraApplication.getInstance()
+        variant_manager = application.getVariantManager()
+        material_manager = application.getMaterialManager()
+        registry = application.getContainerRegistry()
+
+        # get variant container for extruders
+        extruder_variant_container = application.empty_variant_container
+        extruder_variant_node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE)
+        extruder_variant_name = None
+        if extruder_variant_node:
+            extruder_variant_container = extruder_variant_node.getContainer()
+            if not extruder_variant_container:
+                extruder_variant_container = application.empty_variant_container
+            extruder_variant_name = extruder_variant_container.getName()
+
+        extruder_definition_dict = global_stack.getMetaDataEntry("machine_extruder_trains")
+        extruder_definition_id = extruder_definition_dict[str(extruder_position)]
+        extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
+
+        # get material container for extruders
+        material_container = application.empty_material_container
+        material_node = material_manager.getDefaultMaterial(global_stack, extruder_position, extruder_variant_name,
+                                                            extruder_definition = extruder_definition)
+        if material_node and material_node.getContainer():
+            material_container = material_node.getContainer()
+
+        new_extruder_id = registry.uniqueName(extruder_definition_id)
+        new_extruder = cls.createExtruderStack(
+            new_extruder_id,
+            extruder_definition = extruder_definition,
+            machine_definition_id = global_stack.definition.getId(),
+            position = extruder_position,
+            variant_container = extruder_variant_container,
+            material_container = material_container,
+            quality_container = application.empty_quality_container
+        )
+        new_extruder.setNextStack(global_stack)
+        global_stack.addExtruder(new_extruder)
+
+        registry.addContainer(new_extruder)
+
     ##  Create a new Extruder stack
     #
     #   \param new_stack_id The ID of the new stack.
@@ -157,7 +201,7 @@ class CuraStackBuilder:
         stack.setName(extruder_definition.getName())
         stack.setDefinition(extruder_definition)
 
-        stack.setMetaDataEntry("position", position)
+        stack.setMetaDataEntry("position", str(position))
 
         user_container = cls.createUserChangesContainer(new_stack_id + "_user", machine_definition_id, new_stack_id,
                                                         is_global_stack = False)
