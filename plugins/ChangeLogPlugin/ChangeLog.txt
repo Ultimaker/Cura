@@ -63,7 +63,7 @@ Creates multiple infill lines on the same pattern for sturdier infill. Contribut
 Connecting infill lines now also works with concentric and cross infill patterns. The benefit would be stronger infill and more consistent material flow/saving retractions. Contributed by BagelOrb.
 
 *Fan speed override
-New setting to modify the fan speed of bridged areas. This setting can be found in Support settings > Fan Speed Override when support is enabled. Contributed by smartavionics.
+New setting to modify the fan speed of supported areas. This setting can be found in Support settings > Fan Speed Override when support is enabled. Contributed by smartavionics.
 
 *Minimum wall flow
 New setting to define a minimum flow for thin printed walls. Contributed by smartavionics.
