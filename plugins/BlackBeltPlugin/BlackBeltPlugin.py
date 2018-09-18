@@ -181,10 +181,8 @@ class BlackBeltPlugin(Extension):
 
                     # Make sure approximate diameters are in check
                     approximate_diameter = str(round(material_diameter))
-                    if extruder_stack.getMetaDataEntry("approximate_diameter") != approximate_diameter:
-                        extruder_stack.addMetaDataEntry("approximate_diameter", approximate_diameter)
-                    if self._global_container_stack.getMetaDataEntry("approximate_diameter") != approximate_diameter:
-                        self._global_container_stack.addMetaDataEntry("approximate_diameter", approximate_diameter)
+                    extruder_stack.setMetaDataEntry("approximate_diameter", approximate_diameter)
+                    self._global_container_stack.setMetaDataEntry("approximate_diameter", approximate_diameter)
 
                     # Make sure the extruder quality is a blackbelt quality profile
                     if extruder_stack.quality != self._application.empty_quality_container and extruder_stack.quality.getDefinition().getId() != "blackbelt":

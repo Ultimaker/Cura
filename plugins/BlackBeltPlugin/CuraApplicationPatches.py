@@ -60,22 +60,18 @@ class CuraApplicationPatches():
         if not global_container_stack:
             return
 
-        preferences = self._application.getPreferences()
-
         definition_container = global_container_stack.getBottom()
         is_blackbelt_printer = definition_container.getId() == "blackbelt"
         ### END PATCH
 
         nodes = job.getResult()
-        filename = job.getFileName()
-        self._application._currently_loading_files.remove(filename)
+        file_name = job.getFileName()
+        file_name_lower = file_name.lower()
+        file_extension = file_name_lower.split(".")[-1]
+        self._application._currently_loading_files.remove(file_name)
 
-        self._application.fileLoaded.emit(filename)
-
-        arrange_objects_on_load = (
-            not preferences.getValue("cura/use_multi_build_plate") or
-            not preferences.getValue("cura/not_arrange_objects_on_load"))
-        target_build_plate = self._application.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
+        self._application.fileLoaded.emit(file_name)
+        target_build_plate = self._application.getMultiBuildPlateModel().activeBuildPlate
 
         root = self._application.getController().getScene().getRoot()
         fixed_nodes = []
@@ -90,7 +86,7 @@ class CuraApplicationPatches():
         default_extruder_position = self._application.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._application._global_container_stack.extruders[default_extruder_position].getId()
 
-        select_models_on_load = preferences.getValue("cura/select_models_on_load")
+        select_models_on_load = self._application.getPreferences().getValue("cura/select_models_on_load")
 
         for original_node in nodes:
 
@@ -106,15 +102,11 @@ class CuraApplicationPatches():
                     node.scale(original_node.getScale())
 
             node.setSelectable(True)
-            node.setName(os.path.basename(filename))
+            node.setName(os.path.basename(file_name))
             self._application.getBuildVolume().checkBoundsAndUpdate(node)
 
-            is_non_sliceable = False
-            filename_lower = filename.lower()
-            for extension in self._application._non_sliceable_extensions:
-                if filename_lower.endswith(extension):
-                    is_non_sliceable = True
-                    break
+            is_non_sliceable = "." + file_extension in self._application._non_sliceable_extensions
+
             if is_non_sliceable:
                 self._application.callLater(lambda: self._application.getController().setActiveView("SimulationView"))
 
@@ -155,7 +147,7 @@ class CuraApplicationPatches():
                     node.setPosition(Vector(0, 0, leading_edge - half_node_depth - self._margin_between_models))
 
             ### END PATCH
-            elif arrange_objects_on_load:
+            if file_extension != "3mf":
                 if node.callDecoration("isSliceable"):
                     # Only check position if it's not already blatantly obvious that it won't fit.
                     if node.getBoundingBox() is None or self._application._volume.getBoundingBox() is None or node.getBoundingBox().width < self._application._volume.getBoundingBox().width or node.getBoundingBox().depth < self._application._volume.getBoundingBox().depth:
@@ -169,7 +161,7 @@ class CuraApplicationPatches():
                             return
 
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                        node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
+                        arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
             # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
@@ -189,4 +181,4 @@ class CuraApplicationPatches():
             if select_models_on_load:
                 Selection.add(node)
 
-        self._application.fileCompleted.emit(filename)
+        self._application.fileCompleted.emit(file_name)

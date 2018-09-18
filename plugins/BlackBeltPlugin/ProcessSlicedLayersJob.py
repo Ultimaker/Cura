@@ -8,7 +8,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
-from UM.Preferences import Preferences
 from UM.View.GL.OpenGLContext import OpenGLContext
 
 from UM.Message import Message
@@ -145,6 +144,7 @@ class ProcessSlicedLayersJob(Job):
                 line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype="f4")  # Convert bytearray to numpy array
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
+                ### START PATCH
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
                 half_outer_wall_thickness = global_container_stack.getProperty("wall_line_width_0", "value") / 2
 
@@ -197,6 +197,7 @@ class ProcessSlicedLayersJob(Job):
                     line_widths = line_widths.reshape((-1,1))
                     line_thicknesses = line_thicknesses.reshape((-1,1))
                     line_feedrates = line_feedrates.reshape((-1,1))
+                ### END PATCH
 
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
@@ -235,7 +236,7 @@ class ProcessSlicedLayersJob(Job):
         # Find out colors per extruder
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         manager = ExtruderManager.getInstance()
-        extruders = list(manager.getMachineExtruders(global_container_stack.getId()))
+        extruders = manager.getActiveExtruderStacks()
         if extruders:
             material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:
@@ -281,6 +282,7 @@ class ProcessSlicedLayersJob(Job):
         if not settings.getProperty("machine_center_is_zero", "value"):
             new_node.setPosition(Vector(-settings.getProperty("machine_width", "value") / 2, 0.0, settings.getProperty("machine_depth", "value") / 2))
 
+        ### START PATCH
         transform = self._scene.getRoot().callDecoration("getTransformMatrix")
         if transform and transform != Matrix():
             transform_matrix = new_node.getLocalTransformation().preMultiply(transform.getInverse())
@@ -290,6 +292,7 @@ class ProcessSlicedLayersJob(Job):
                     front_offset = front_offset - global_container_stack.getProperty("blackbelt_raft_margin", "value") \
                                                 - global_container_stack.getProperty("blackbelt_raft_thickness", "value")
             new_node.translate(Vector(0, 0, front_offset), SceneNode.TransformSpace.World)
+        ### END PATCH
 
         if self._progress_message:
             self._progress_message.setProgress(100)

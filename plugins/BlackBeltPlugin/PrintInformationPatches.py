@@ -1,5 +1,3 @@
-from UM.Application import Application
-
 import re
 
 class PrintInformationPatches():
@@ -11,7 +9,7 @@ class PrintInformationPatches():
     #   Called each time the global stack is switched
     #   Copied verbatim from PrintInformation._setAbbreviatedMachineName, with a minor patch to set the abbreviation from settings
     def _setAbbreviatedMachineName(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = self._print_information._application.getGlobalContainerStack()
         if not global_container_stack:
             self._print_information._abbr_machine = ""
             return
@@ -19,7 +17,7 @@ class PrintInformationPatches():
         ### START PATCH: construct prefix from variant & material
         definition_container = global_container_stack.getBottom()
         if definition_container.getId() == "blackbelt":
-            extruder_stack = Application.getInstance().getMachineManager()._active_container_stack
+            extruder_stack = self._print_information._application.getMachineManager()._active_container_stack
             if not extruder_stack:
                 return
 
