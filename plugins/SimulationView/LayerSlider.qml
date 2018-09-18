@@ -195,6 +195,8 @@ Item {
 
         // set the slider position based on the upper value
         function setValue(value) {
+            sliderRoot.manuallyChanged = true
+
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
@@ -292,6 +294,8 @@ Item {
 
         // set the slider position based on the lower value
         function setValue(value) {
+            sliderRoot.manuallyChanged = true
+
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
