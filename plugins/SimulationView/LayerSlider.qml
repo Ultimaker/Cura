@@ -241,8 +241,8 @@ Item
             sliderRoot.updateRangeHandle()
         }
 
-        Keys.onUpPressed: upperHandleLabel.setValueManually(upperHandleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        Keys.onDownPressed: upperHandleLabel.setValueManually(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onUpPressed: upperHandleLabel.setValue(upperHandleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onDownPressed: upperHandleLabel.setValue(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         // dragging
         MouseArea

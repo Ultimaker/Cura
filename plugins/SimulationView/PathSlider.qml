@@ -148,8 +148,8 @@ Item
             sliderRoot.updateRangeHandle()
         }
 
-        Keys.onRightPressed: handleLabel.setValueManually(handleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        Keys.onLeftPressed: handleLabel.setValueManually(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onRightPressed: handleLabel.setValue(handleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onLeftPressed: handleLabel.setValue(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         // dragging
         MouseArea
