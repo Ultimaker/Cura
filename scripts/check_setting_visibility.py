@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# This script check correctness of settings visibility list
+# This script checks the correctness of the list of visibility settings
 #
 from typing import Dict
 import os
@@ -168,12 +168,12 @@ if __name__ == "__main__":
 
     setting_visibility_items = {}
     for file_path in all_setting_visibility_files:
-        temp = inspector.getSettingsFromSettingVisibilityFile(file_path)
+        all_settings_from_visibility_type = inspector.getSettingsFromSettingVisibilityFile(file_path)
 
         base_name = os.path.basename(file_path)
-        visibility_type = base_name.split('.')[0]
+        visibility_type = base_name.split(".")[0]
 
-        setting_visibility_items[visibility_type] = temp
+        setting_visibility_items[visibility_type] = all_settings_from_visibility_type
 
     has_invalid_settings = inspector.validateSettingsVisibility(setting_visibility_items)
 
