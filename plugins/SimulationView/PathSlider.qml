@@ -9,7 +9,8 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.0 as UM
 import Cura 1.0 as Cura
 
-Item {
+Item
+{
     id: sliderRoot
 
     // handle properties
@@ -36,25 +37,30 @@ Item {
     property bool pathsVisible: true
     property bool manuallyChanged: true     // Indicates whether the value was changed manually or during simulation
 
-    function getHandleValueFromSliderHandle() {
+    function getHandleValueFromSliderHandle()
+    {
         return handle.getValue()
     }
 
-    function setHandleValue(value) {
+    function setHandleValue(value
+     {
         handle.setValue(value)
         updateRangeHandle()
     }
 
-    function updateRangeHandle() {
+    function updateRangeHandle()
+    {
         rangeHandle.width = handle.x - sliderRoot.handleSize
     }
 
-    function normalizeValue(value) {
+    function normalizeValue(value)
+    {
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
     // slider track
-    Rectangle {
+    Rectangle
+    {
         id: track
 
         width: sliderRoot.width - sliderRoot.handleSize
@@ -68,7 +74,8 @@ Item {
     }
 
     // Progress indicator
-    Item {
+    Item
+    {
         id: rangeHandle
 
         x: handle.width
@@ -77,7 +84,8 @@ Item {
         anchors.verticalCenter: sliderRoot.verticalCenter
         visible: sliderRoot.pathsVisible
 
-        Rectangle {
+        Rectangle
+        {
             height: sliderRoot.trackThickness - 2 * sliderRoot.trackBorderWidth
             width: parent.width + sliderRoot.handleSize
             anchors.centerIn: parent
@@ -86,7 +94,8 @@ Item {
     }
 
     // Handle
-    Rectangle {
+    Rectangle
+    {
         id: handle
 
         x: sliderRoot.handleSize
@@ -97,7 +106,8 @@ Item {
         color: handleLabel.activeFocus ? sliderRoot.handleActiveColor : sliderRoot.handleColor
         visible: sliderRoot.pathsVisible
 
-        function onHandleDragged() {
+        function onHandleDragged()
+        {
             sliderRoot.manuallyChanged = true
 
             // update the range handle
@@ -108,7 +118,8 @@ Item {
         }
 
         // get the value based on the slider position
-        function getValue() {
+        function getValue()
+        {
             var result = x / (sliderRoot.width - sliderRoot.handleSize)
             result = result * sliderRoot.maximumValue
             result = sliderRoot.roundValues ? Math.round(result) : result
@@ -122,7 +133,8 @@ Item {
         }
 
         // set the slider position based on the value
-        function setValue(value) {
+        function setValue(value)
+        {
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
@@ -136,27 +148,27 @@ Item {
             sliderRoot.updateRangeHandle()
         }
 
-        Keys.onRightPressed: handleLabel.setValue(handleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        Keys.onLeftPressed: handleLabel.setValue(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onRightPressed: handleLabel.setValueManually(handleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onLeftPressed: handleLabel.setValueManually(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         // dragging
-        MouseArea {
+        MouseArea
+        {
             anchors.fill: parent
 
-            drag {
+            drag
+            {
                 target: parent
                 axis: Drag.XAxis
                 minimumX: 0
                 maximumX: sliderRoot.width - sliderRoot.handleSize
             }
-            onPressed: {
-                handleLabel.forceActiveFocus()
-            }
-
+            onPressed: handleLabel.forceActiveFocus()
             onPositionChanged: parent.onHandleDragged()
         }
 
-        SimulationSliderLabel {
+        SimulationSliderLabel
+        {
             id: handleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
