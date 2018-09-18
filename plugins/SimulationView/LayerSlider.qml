@@ -111,6 +111,12 @@ Item {
             UM.SimulationView.setMinimumLayer(lowerValue)
         }
 
+        function setValueManually(value)
+        {
+            sliderRoot.manuallyChanged = true
+            upperHandle.setValue(value)
+        }
+
         function setValue(value) {
             var range = sliderRoot.upperValue - sliderRoot.lowerValue
             value = Math.min(value, sliderRoot.maximumValue)
@@ -154,7 +160,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.upperValue
             busy: UM.SimulationView.busy
-            setValue: rangeHandle.setValue // connect callback functions
+            setValue: rangeHandle.setValueManually // connect callback functions
         }
     }
 
@@ -193,7 +199,7 @@ Item {
             return result
         }
 
-        function setValueAndStopSimulation(value)
+        function setValueManually(value)
         {
             sliderRoot.manuallyChanged = true
             upperHandle.setValue(value)
@@ -214,16 +220,8 @@ Item {
             sliderRoot.updateRangeHandle()
         }
 
-        Keys.onUpPressed:
-        {
-            sliderRoot.manuallyChanged = true
-            upperHandleLabel.setValue(upperHandleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        }
-        Keys.onDownPressed:
-        {
-            sliderRoot.manuallyChanged = true
-            upperHandleLabel.setValue(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        }
+        Keys.onUpPressed: upperHandleLabel.setValue(upperHandleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onDownPressed: upperHandleLabel.setValue(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         // dragging
         MouseArea {
@@ -256,7 +254,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.upperValue
             busy: UM.SimulationView.busy
-            setValue: upperHandle.setValueAndStopSimulation // connect callback functions
+            setValue: upperHandle.setValueManually // connect callback functions
         }
     }
 
@@ -296,7 +294,7 @@ Item {
             return result
         }
 
-        function setValueAndStopSimulation(value)
+        function setValueManually(value)
         {
             sliderRoot.manuallyChanged = true
             lowerHandle.setValue(value)
@@ -352,7 +350,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.lowerValue
             busy: UM.SimulationView.busy
-            setValue: lowerHandle.setValueAndStopSimulation // connect callback functions
+            setValue: lowerHandle.setValueManually // connect callback functions
         }
     }
 }
