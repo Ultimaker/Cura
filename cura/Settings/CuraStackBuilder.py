@@ -74,34 +74,8 @@ class CuraStackBuilder:
 
         # Create ExtruderStacks
         extruder_dict = machine_definition.getMetaDataEntry("machine_extruder_trains")
-
-        for position, extruder_definition_id in extruder_dict.items():
-            # Sanity check: make sure that the positions in the extruder definitions are same as in the machine
-            # definition
-            extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
-            position_in_extruder_def = extruder_definition.getMetaDataEntry("position")
-            if position_in_extruder_def != position:
-                ConfigurationErrorMessage.getInstance().addFaultyContainers(extruder_definition_id)
-                return None #Don't return any container stack then, not the rest of the extruders either.
-
-            # get material container for extruders
-            material_container = application.empty_material_container
-            material_node = material_manager.getDefaultMaterial(new_global_stack, position, extruder_variant_name, extruder_definition = extruder_definition)
-            if material_node and material_node.getContainer():
-                material_container = material_node.getContainer()
-
-            new_extruder_id = registry.uniqueName(extruder_definition_id)
-            new_extruder = cls.createExtruderStack(
-                new_extruder_id,
-                extruder_definition = extruder_definition,
-                machine_definition_id = definition_id,
-                position = position,
-                variant_container = extruder_variant_container,
-                material_container = material_container,
-                quality_container = application.empty_quality_container
-            )
-            new_extruder.setNextStack(new_global_stack)
-            new_global_stack.addExtruder(new_extruder)
+        for position in extruder_dict:
+            cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
 
         for new_extruder in new_global_stack.extruders.values(): #Only register the extruders if we're sure that all of them are correct.
             registry.addContainer(new_extruder)
