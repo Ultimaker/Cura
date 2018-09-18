@@ -323,10 +323,10 @@ Item
             return result
         }
 
-        function setValueManually(handle, value)
+        function setValueManually(value)
         {
             sliderRoot.manuallyChanged = true
-            handle.setValue(value)
+            lowerHandle.setValue(value)
         }
 
         // set the slider position based on the lower value
