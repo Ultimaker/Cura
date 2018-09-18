@@ -245,8 +245,8 @@ Item
                         text: catalog.i18nc("@label", "Delete")
                         onClicked:
                         {
-                            OutputDevice.deleteJobFromQueue(printJob.key)
-                            popup.close()
+                            deleteConfirmationDialog.visible = true;
+                            popup.close();
                         }
                         width: parent.width
                         anchors.top: sendToTopButton.bottom
@@ -256,6 +256,17 @@ Item
                             opacity: deleteButton.down || deleteButton.hovered ? 1 : 0
                             color: UM.Theme.getColor("viewport_background")
                         }
+                    }
+
+                    MessageDialog
+                    {
+                        id: deleteConfirmationDialog
+                        title: catalog.i18nc("@window:title", "Delete print job")
+                        icon: StandardIcon.Warning
+                        text: catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to delete %1?").arg(printJob.name)
+                        standardButtons: StandardButton.Yes | StandardButton.No
+                        Component.onCompleted: visible = false
+                        onYes: OutputDevice.deleteJobFromQueue(printJob.key)
                     }
                 }
 
