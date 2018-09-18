@@ -193,10 +193,14 @@ Item {
             return result
         }
 
+        function setValueAndStopSimulation(value)
+        {
+            sliderRoot.manuallyChanged = true
+            upperHandle.setValue(value)
+        }
+
         // set the slider position based on the upper value
         function setValue(value) {
-            sliderRoot.manuallyChanged = true
-
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
@@ -252,7 +256,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.upperValue
             busy: UM.SimulationView.busy
-            setValue: upperHandle.setValue // connect callback functions
+            setValue: upperHandle.setValueAndStopSimulation // connect callback functions
         }
     }
 
@@ -292,9 +296,14 @@ Item {
             return result
         }
 
+        function setValueAndStopSimulation(value)
+        {
+            sliderRoot.manuallyChanged = true
+            lowerHandle.setValue(value)
+        }
+
         // set the slider position based on the lower value
         function setValue(value) {
-            sliderRoot.manuallyChanged = true
 
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
@@ -343,7 +352,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.lowerValue
             busy: UM.SimulationView.busy
-            setValue: lowerHandle.setValue // connect callback functions
+            setValue: lowerHandle.setValueAndStopSimulation // connect callback functions
         }
     }
 }
