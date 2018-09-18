@@ -2,6 +2,8 @@ import QtQuick 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
+import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.1
 
 import UM 1.3 as UM
 
@@ -9,6 +11,110 @@ import UM 1.3 as UM
 Item
 {
     id: base
+
+    function haveAlert() {
+        return printJob.configurationChanges.length !== 0;
+    }
+
+    function alertHeight() {
+        return haveAlert() ? 230 : 0;
+    }
+
+    function alertText() {
+        if (printJob.configurationChanges.length === 0) {
+            return "";
+        }
+
+        var topLine;
+        if (materialsAreKnown(printJob)) {
+            topLine = catalog.i18nc("@label", "The assigned printer, %1, requires the following configuration change(s):").arg(printJob.assignedPrinter.name);
+        } else {
+            topLine = catalog.i18nc("@label", "The printer %1 is assigned, but the job contains an unknown material configuration.").arg(printJob.assignedPrinter.name);
+        }
+        var result = "<p>" + topLine +"</p>";
+
+        for (var i=0; i<printJob.configurationChanges.length; i++) {
+            var change = printJob.configurationChanges[i];
+            var text = "";
+            if (change.typeOfChange === 'material_change') {
+                text = catalog.i18nc("@label", "Change material %1 from %2 to %3.").arg(change.index + 1).arg(change.originName).arg(change.targetName);
+            } else if (change.typeOfChange === 'material_insert') {
+                text = catalog.i18nc("@label", "Load %3 as material %1 (This cannot be overridden).").arg(change.index + 1).arg(change.targetName);
+            } else if (change.typeOfChange === 'print_core_change') {
+                text = catalog.i18nc("@label", "Change print core %1 from %2 to %3.").arg(change.index + 1).arg(change.originName).arg(change.targetName);
+            } else if (change.typeOfChange === 'buildplate_change') {
+                var target_name = formatBuildPlateType(change.target_name);
+                text = catalog.i18nc("@label", "Change build plate to %1 (This cannot be overridden).").arg(target_name);
+            }
+            result += "<p><b>" + text + "</b></p>"; 
+        }
+        return result;
+    }
+
+    function materialsAreKnown(printJob) {
+        var conf0 = printJob.configuration[0];
+        if (conf0 && !conf0.material.material) {
+            return false;
+        }
+
+        var conf1 = printJob.configuration[1];
+        if (conf1 && !conf1.material.material) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function formatBuildPlateType(buildPlateType) {
+        var translationText = "";
+
+        switch (buildPlateType) {
+            case 'glass':
+                translationText = catalog.i18nc("@label", "Glass");
+                break;
+            case 'aluminum':
+                translationText = catalog.i18nc("@label", "Aluminum");
+                break;
+            default:
+                translationText = null;
+        }
+        return translationText;
+    }
+
+    function formatPrintJobName(name) {
+        var extensionsToRemove = [
+            '.gz',
+            '.gcode',
+            '.ufp'
+        ];
+
+        for (var i = 0; i < extensionsToRemove.length; i++) {
+            var extension = extensionsToRemove[i];
+
+            if (name.slice(-extension.length) === extension) {
+                name = name.substring(0, name.length - extension.length);
+            }
+        }
+
+        return name;
+    }
+
+    function isPrintJobForcable(printJob) {
+        var forcable = true;
+
+        for (var i = 0; i < printJob.configurationChanges.length; i++) {
+            var typeOfChange = printJob.configurationChanges[i].typeOfChange;
+            if (typeOfChange === 'material_insert' || typeOfChange === 'buildplate_change') {
+                forcable = false;
+            }
+        }
+
+        return forcable;
+    }
+
+    property var cardHeight: 175
+
+    height: (cardHeight + alertHeight()) * screenScaleFactor
     property var printJob: null
     property var shadowRadius: 5 * screenScaleFactor
     function getPrettyTime(time)
@@ -27,6 +133,9 @@ Item
     Rectangle
     {
         id: background
+
+        height: (cardHeight + alertHeight()) * screenScaleFactor
+
         anchors
         {
             top: parent.top
@@ -35,7 +144,7 @@ Item
             leftMargin: base.shadowRadius
             rightMargin: base.shadowRadius
             right: parent.right
-            bottom: parent.bottom
+            //bottom: parent.bottom - alertHeight() * screenScaleFactor
             bottomMargin: base.shadowRadius
         }
 
@@ -45,6 +154,18 @@ Item
             radius: base.shadowRadius
             verticalOffset: 2 * screenScaleFactor
             color: "#3F000000"  // 25% shadow
+        }
+
+    Rectangle
+    {
+        height: cardHeight * screenScaleFactor
+
+        anchors
+        {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            // bottom: parent.bottom
         }
 
         Item
@@ -392,15 +513,128 @@ Item
             }
 
         }
-
+        }
         Rectangle
         {
+            height: cardHeight * screenScaleFactor
             color: UM.Theme.getColor("viewport_background")
             width: 2 * screenScaleFactor
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
             anchors.margins: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
         }
+
+        // Alert / Configuration change box
+        Rectangle
+        {
+            height: alertHeight() * screenScaleFactor
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+color: "#ff00ff"
+            ColumnLayout
+            {
+                anchors.fill: parent
+                RowLayout
+                {
+                    Item
+                    {
+                        Layout.fillWidth: true
+                    }
+
+                    Label
+                    {
+                        font: UM.Theme.getFont("default_bold")
+                        text: "Configuration change"
+                    }
+
+                    UM.RecolorImage
+                    {
+                        id: collapseIcon
+                        width: 15
+                        height: 15
+                        sourceSize.width: width
+                        sourceSize.height: height
+
+                        // FIXME
+                        source: base.collapsed ?  UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+                        color: "black"
+                    }
+
+                    Item
+                    {
+                        Layout.fillWidth: true
+                    }
+
+                }
+
+                Rectangle
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+color: "red"
+
+                    Rectangle
+                    {
+color: "green"
+                        width: childrenRect.width
+
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+
+                        ColumnLayout
+                        {
+                            width: childrenRect.width
+
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+
+                            Text
+                            {
+                                Layout.alignment: Qt.AlignTop
+
+                                textFormat: Text.StyledText
+                                font: UM.Theme.getFont("default_bold")
+                                text: alertText()
+                            }
+
+                            Button
+                            {
+                                visible: isPrintJobForcable(printJob)
+                                text: catalog.i18nc("@label", "Override")
+                                onClicked: {
+                                    overrideConfirmationDialog.visible = true;
+                                }
+                            }
+
+                            // Spacer
+                            Item
+                            {
+                                Layout.fillHeight: true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        MessageDialog
+        {
+            id: overrideConfirmationDialog
+            title: catalog.i18nc("@window:title", "Override configuration")
+            icon: StandardIcon.Warning
+            text: {
+                var printJobName = formatPrintJobName(printJob.name);
+                var confirmText = catalog.i18nc("@label", "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?").arg(printJobName);
+                return confirmText;
+            }
+
+            standardButtons: StandardButton.Yes | StandardButton.No
+            Component.onCompleted: visible = false
+            onYes: OutputDevice.forceSendJob(printJob.key)
+        }        
     }
 }
