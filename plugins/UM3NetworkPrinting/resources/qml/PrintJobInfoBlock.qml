@@ -1,4 +1,5 @@
 import QtQuick 2.2
+import QtQuick.Dialogs 1.1
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
@@ -212,8 +213,8 @@ Item
                         text: catalog.i18nc("@label", "Move to top")
                         onClicked:
                         {
-                            OutputDevice.sendJobToTop(printJob.key)
-                            popup.close()
+                            sendToTopConfirmationDialog.visible = true;
+                            popup.close();
                         }
                         width: parent.width
                         enabled: OutputDevice.queuedPrintJobs[0].key != printJob.key
@@ -225,6 +226,17 @@ Item
                             opacity: sendToTopButton.down || sendToTopButton.hovered ? 1 : 0
                             color: UM.Theme.getColor("viewport_background")
                         }
+                    }
+
+                    MessageDialog
+                    {
+                        id: sendToTopConfirmationDialog
+                        title: catalog.i18nc("@window:title", "Move print job to top")
+                        icon: StandardIcon.Warning
+                        text: catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to move %1 to the top of the queue?").arg(printJob.name)
+                        standardButtons: StandardButton.Yes | StandardButton.No
+                        Component.onCompleted: visible = false
+                        onYes: OutputDevice.sendJobToTop(printJob.key)
                     }
 
                     Button
