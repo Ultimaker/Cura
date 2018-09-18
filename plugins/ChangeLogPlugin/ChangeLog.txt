@@ -35,6 +35,9 @@ Improved and updated Chinese translations. Contributed by MarmaladeForMeat.
 *Save project
 Saving the project no longer triggers the project to reslice.
 
+*File menu
+The Save option in the file menu now saves project files. The export option now saves other types of files, such as STL.
+
 *Improved processing of overhang walls
 Overhang walls are detected and printed with different speeds. It will not start a perimeter on an overhanging wall. The quality of overhanging walls may be improved by printing those at a different speed. Contributed by smartavionics.
 
@@ -47,7 +50,8 @@ The support infill lines can now be rotated to increase the supporting capabilit
 *Minimum polygon circumference
 Polygons in sliced layers that have a circumference smaller than the setting value will be filtered out. Lower values lead to higher resolution meshes at the cost of increased slicing time. This setting is ideal for very tiny prints with a lot of detail, or for SLA printers. Contributed by cubiq.
 
-*Initial layer support line distance. This setting enables the user to reduce or increase the density of the support initial layer in order to increase or reduce adhesion to the build plate and the overall strength.
+*Initial layer support line distance
+This setting enables the user to reduce or increase the density of the support initial layer in order to increase or reduce adhesion to the build plate and the overall strength.
 
 *Extra infill wall line count
 Adds extra walls around infill. Contributed by BagelOrb.
@@ -64,8 +68,8 @@ New setting to modify the fan speed of bridged areas. This setting can be found 
 *Minimum wall flow
 New setting to define a minimum flow for thin printed walls. Contributed by smartavionics.
 
-*Custom support
-A tool similar to the support blocker that adds cubes of support to the model manually by clicking parts of it. Contributed by Lokster.
+*Custom support plugin
+A tool downloadable from the toolbox, similar to the support blocker, that adds cubes of support to the model manually by clicking parts of it. Contributed by Lokster.
 
 *Quickly toggle autoslicing
 Adds a pause/play button to the progress bar to quickly toggle autoslicing. Contributed by fieldOfview.

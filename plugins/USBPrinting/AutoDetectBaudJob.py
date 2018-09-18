@@ -77,6 +77,7 @@ class AutoDetectBaudJob(Job):
                             self.setResult(baud_rate)
                             Logger.log("d", "Detected baud rate {baud_rate} on serial {serial} on retry {retry} with after {time_elapsed:0.2f} seconds.".format(
                                 serial = self._serial_port, baud_rate = baud_rate, retry = retry, time_elapsed = time() - start_timeout_time))
+                            serial.close() # close serial port so it can be opened by the USBPrinterOutputDevice
                             return
 
                     serial.write(b"M105\n")
