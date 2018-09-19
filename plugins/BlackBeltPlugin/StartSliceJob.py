@@ -164,9 +164,12 @@ class StartSliceJob(Job):
                     node.getParent().removeChild(node)
                     break
 
+            global_enable_support = stack.getProperty("support_enable", "value")
+
             # Get the objects in their groups to print.
             object_groups = []
             if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                # note that one_at_a_time printing is disabled on belt printers due to collission risk
                 for node in OneAtATimeIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                     temp_list = []
 
@@ -209,6 +212,9 @@ class StartSliceJob(Job):
                             continue
                         if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                             continue
+
+                        node_enable_support = per_object_stack.getProperty("support_enable", "value")
+                        add_support_mesh = node_enable_support if node_enable_support is not None else global_enable_support
 
                         temp_list.append(node)
                         if not is_non_printing_mesh:
@@ -280,7 +286,7 @@ class StartSliceJob(Job):
                 # but CuraEngine support structures don't work for slanted gantry
                 stack.setProperty("support_enable", "value", False)
                 # Make sure CuraEngine does not create a raft (we create one manually)
-                # Adhsion type is used in the frontend to show the raft in the viewport
+                # Adhesion type is used in the frontend to show the raft in the viewport
                 stack.setProperty("adhesion_type", "value", "none")
 
                 for key in ["layer_height", "layer_height_0"]:
@@ -312,8 +318,8 @@ class StartSliceJob(Job):
 
             bottom_cutting_meshes = []
             raft_meshes = []
+            support_meshes = []
             if gantry_angle: # not 0 or None
-                # Add a modifier mesh to all printable meshes touching the belt
                 for group in filtered_object_groups:
                     added_meshes = []
                     for object in group:
@@ -434,6 +440,12 @@ class StartSliceJob(Job):
                             "speed_wall_0": raft_speed,
                             "speed_wall_x": raft_speed,
                             "material_flow": raft_flow
+                        })
+
+                    elif object.getName() in support_meshes:
+                        self._addSettingsMessage(obj, {
+                            "support_mesh": "True",
+                            "support_mesh_drop_down": "False"
                         })
 
                     elif object.getName() in bottom_cutting_meshes:
@@ -618,6 +630,13 @@ class StartSliceJob(Job):
         # Check all settings for relations, so we can also calculate the correct values for dependent settings.
         top_of_stack = stack.getTop()  # Cache for efficiency.
         changed_setting_keys = top_of_stack.getAllKeys()
+
+        # Remove support_enable for belt-printers
+        if self._scene.getRoot().callDecoration("getGantryAngle"):
+            try:
+                changed_setting_keys.remove("support_enable")
+            except ValueError:
+                pass
 
         # Add all relations to changed settings as well.
         for key in top_of_stack.getAllKeys():

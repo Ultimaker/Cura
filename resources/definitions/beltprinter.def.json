@@ -196,9 +196,8 @@
     "overrides": {
 
         "support_enable": {
-            "enabled": false,
-            "default_value": true,
-            "settable_per_mesh": false
+            "default_value": false,
+            "settable_per_mesh": true
         },
         "support_angle": {
             "enabled": false,
