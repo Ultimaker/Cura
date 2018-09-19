@@ -4739,26 +4739,6 @@ msgctxt "name"
 msgid "UserAgreement"
 msgstr ""
 
-#: X3GWriter/build/plugin.json
-msgctxt "description"
-msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr ""
-
-#: X3GWriter/build/plugin.json
-msgctxt "name"
-msgid "X3GWriter"
-msgstr ""
-
-#: X3GWriter/build/install/X3GWriter/plugin.json
-msgctxt "description"
-msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr ""
-
-#: X3GWriter/build/install/X3GWriter/plugin.json
-msgctxt "name"
-msgid "X3GWriter"
-msgstr ""
-
 #: X3GWriter/plugin.json
 msgctxt "description"
 msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
