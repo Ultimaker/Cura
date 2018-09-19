@@ -624,7 +624,7 @@ color: "green"
         MessageDialog
         {
             id: overrideConfirmationDialog
-            title: catalog.i18nc("@window:title", "Override configuration")
+            title: catalog.i18nc("@window:title", "Override configuration configuration and start print")
             icon: StandardIcon.Warning
             text: {
                 var printJobName = formatPrintJobName(printJob.name);
