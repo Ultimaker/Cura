@@ -35,6 +35,7 @@ from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
+from .SupportMeshCreator import SupportMeshCreator
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
 
@@ -213,9 +214,6 @@ class StartSliceJob(Job):
                         if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                             continue
 
-                        node_enable_support = per_object_stack.getProperty("support_enable", "value")
-                        add_support_mesh = node_enable_support if node_enable_support is not None else global_enable_support
-
                         temp_list.append(node)
                         if not is_non_printing_mesh:
                             has_printing_mesh = True
@@ -326,8 +324,6 @@ class StartSliceJob(Job):
 
                         is_non_printing_mesh = False
                         per_object_stack = object.callDecoration("getStack")
-                        if per_object_stack:
-                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                         # ConvexHullNodes get none of the usual decorators. If it made it here, it is meant to be printed
                         if type(object) is ConvexHullNode:
@@ -340,16 +336,28 @@ class StartSliceJob(Job):
                                 hull_polygon = hull_polygon.getMinkowskiHull(Polygon.approximatedCircle(raft_margin))
                             mb.addConvexPolygonExtrusion(hull_polygon.getPoints()[::-1], 0, raft_thickness)
 
-                            new_node = self._addMesh(mb, "raftMesh")
+                            new_node = self._addMeshFromBuilder(mb, "raftMesh")
                             added_meshes.append(new_node)
                             raft_meshes.append(new_node.getName())
 
                         elif not is_non_printing_mesh:
-                            extruder_stack_index = object.callDecoration("getActiveExtruderPosition")
-                            if not extruder_stack_index:
-                                extruder_stack_index = 0
-                            extruder_stack = ExtruderManager.getInstance().getMachineExtruders(CuraApplication.getInstance().getGlobalContainerStack().getId())[int(extruder_stack_index)]
+                            # add support mesh if needed
+                            if per_object_stack:
+                                is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
+                                node_enable_support = per_object_stack.getProperty("support_enable", "value")
+                                add_support_mesh = node_enable_support if node_enable_support is not None else global_enable_support
+                            else:
+                                add_support_mesh = global_enable_support
+
+                            if add_support_mesh:
+                                support_mesh_data = SupportMeshCreator().createSupportMeshForNode(object)
+                                if support_mesh_data:
+                                    new_node = self._addMeshFromData(support_mesh_data, "generatedSupportMesh")
+                                    added_meshes.append(new_node)
+                                    support_meshes.append(new_node.getName())
+
+                            # check if the bottom needs to be cut off
                             aabb = object.getBoundingBox()
 
                             if aabb.bottom < 0:
@@ -365,7 +373,7 @@ class StartSliceJob(Job):
                                     center = center
                                 )
 
-                                new_node = self._addMesh(mb, "bottomCuttingMesh")
+                                new_node = self._addMeshFromBuilder(mb, "bottomCuttingMesh")
                                 added_meshes.append(new_node)
                                 bottom_cutting_meshes.append(new_node.getName())
 
@@ -468,9 +476,12 @@ class StartSliceJob(Job):
 
         self.setResult(StartJobResult.Finished)
 
-    def _addMesh(self, mesh_builder, base_name = "") -> SceneNode:
+    def _addMeshFromBuilder(self, mesh_builder, base_name = "") -> SceneNode:
+        return self._addMeshFromData(mesh_builder.build(), base_name)
+
+    def _addMeshFromData(self, mesh_data, base_name = "") -> SceneNode:
         new_node = SceneNode()
-        new_node.setMeshData(mesh_builder.build())
+        new_node.setMeshData(mesh_data)
         node_name = base_name + hex(id(new_node))
         new_node.setName(node_name)
 
@@ -635,7 +646,7 @@ class StartSliceJob(Job):
         if self._scene.getRoot().callDecoration("getGantryAngle"):
             try:
                 changed_setting_keys.remove("support_enable")
-            except ValueError:
+            except KeyError:
                 pass
 
         # Add all relations to changed settings as well.
