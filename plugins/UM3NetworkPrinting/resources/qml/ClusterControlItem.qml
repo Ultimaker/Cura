@@ -1,4 +1,5 @@
 import QtQuick 2.3
+import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
@@ -443,8 +444,8 @@ Component
                                             text: catalog.i18nc("@label", "Abort")
                                             onClicked:
                                             {
-                                                modelData.activePrintJob.setState("abort")
-                                                popup.close()
+                                                abortConfirmationDialog.visible = true;
+                                                popup.close();
                                             }
                                             width: parent.width
                                             anchors.top: pauseButton.bottom
@@ -455,6 +456,17 @@ Component
                                                 opacity: abortButton.down || abortButton.hovered ? 1 : 0
                                                 color: UM.Theme.getColor("viewport_background")
                                             }
+                                        }
+
+                                        MessageDialog
+                                        {
+                                            id: abortConfirmationDialog
+                                            title: catalog.i18nc("@window:title", "Abort print")
+                                            icon: StandardIcon.Warning
+                                            text: catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to abort %1?").arg(modelData.activePrintJob.name)
+                                            standardButtons: StandardButton.Yes | StandardButton.No
+                                            Component.onCompleted: visible = false
+                                            onYes: modelData.activePrintJob.setState("abort")
                                         }
                                     }
 
