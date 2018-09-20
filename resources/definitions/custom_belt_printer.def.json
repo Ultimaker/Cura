@@ -1,0 +1,46 @@
+{
+    "version": 2,
+    "name": "Custom Belt-style printer",
+    "inherits": "beltprinter",
+    "metadata": {
+        "visible": true,
+        "author": "fieldOfView",
+        "manufacturer": "Custom",
+        "category": "Custom",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "first_start_actions": ["MachineSettingsAction"],
+        "limit_buildvolume":
+        {
+            "depth":
+            {
+                "maximum": 200
+            }
+        }
+    },
+
+    "settings": {
+        "blackbelt_settings":
+        {
+            "children":
+            {
+                "blackbelt_gantry_angle":
+                {
+                    "label": "Gantry Angle",
+                    "description": "The angle of the gantry relative to the build plate. Match this setting with the current printer configuration.",
+                    "unit": "°",
+                    "type": "float",
+                    "default_value": "45",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                }
+            }
+        }
+    },
+
+    "overrides": {
+        "machine_depth": {
+            "default_value": 99999
+        }
+    }
+}
