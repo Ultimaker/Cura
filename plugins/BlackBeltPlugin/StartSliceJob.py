@@ -270,13 +270,11 @@ class StartSliceJob(Job):
             if gantry_angle: # not 0 or None
                 # Act on a copy of the stack, so these changes don't cause a reslice
                 _stack = CuraContainerStack(stack_id + "_temp")
-                index = 0
-                for container in stack.getContainers():
+                for index, container in enumerate(stack.getContainers()):
                     if container_registry.isReadOnly(container.getId()):
                         _stack.replaceContainer(index, container)
                     else:
                         _stack.replaceContainer(index, copy.deepcopy(container))
-                    index = index + 1
                 stack = _stack
 
                 # Make sure CuraEngine does not create any supports
@@ -295,17 +293,15 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            for position, extruder_stack in enumerate(ExtruderManager.getInstance().getMachineExtruders(stack.getId())):
+            for position, extruder_stack in enumerate(ExtruderManager.getInstance().getActiveExtruderStacks()):
                 if gantry_angle: # not 0 or None
                     # Act on a copy of the stack, so these changes don't cause a reslice
                     _extruder_stack = CuraContainerStack(extruder_stack.getId() + "_temp")
-                    index = 0
-                    for container in extruder_stack.getContainers():
+                    for index, container in enumerate(extruder_stack.getContainers()):
                         if container_registry.isReadOnly(container.getId()):
                             _extruder_stack.replaceContainer(index, container)
                         else:
                             _extruder_stack.replaceContainer(index, copy.deepcopy(container))
-                        index = index + 1
                     extruder_stack = _extruder_stack
                     extruder_stack.setNextStack(stack)
                     for key in ["material_flow", "prime_tower_flow", "spaghetti_flow"]:
