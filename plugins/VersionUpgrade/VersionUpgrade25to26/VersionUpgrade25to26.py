@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To parse the files we need to upgrade and write the new files.
@@ -8,8 +8,6 @@ from urllib.parse import quote_plus
 
 from UM.Resources import Resources
 from UM.VersionUpgrade import VersionUpgrade
-
-from cura.CuraApplication import CuraApplication
 
 _removed_settings = { #Settings that were removed in 2.5.
     "start_layers_at_same_position",
@@ -152,7 +150,7 @@ class VersionUpgrade25to26(VersionUpgrade):
 
     ##  Acquires the next unique extruder stack index number for the Custom FDM Printer.
     def _acquireNextUniqueCustomFdmPrinterExtruderStackIdIndex(self):
-        extruder_stack_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
+        extruder_stack_dir = os.path.join(Resources.getDataStoragePath(), "extruders")
         file_name_list = os.listdir(extruder_stack_dir)
         file_name_list = [os.path.basename(file_name) for file_name in file_name_list]
         while True:
@@ -173,7 +171,7 @@ class VersionUpgrade25to26(VersionUpgrade):
 
     def _checkCustomFdmPrinterHasExtruderStack(self, machine_id):
         # go through all extruders and make sure that this custom FDM printer has extruder stacks.
-        extruder_stack_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
+        extruder_stack_dir = os.path.join(Resources.getDataStoragePath(), "extruders")
         has_extruders = False
         for item in os.listdir(extruder_stack_dir):
             file_path = os.path.join(extruder_stack_dir, item)
@@ -245,9 +243,9 @@ class VersionUpgrade25to26(VersionUpgrade):
         parser.write(extruder_output)
         extruder_filename = quote_plus(stack_id) + ".extruder.cfg"
 
-        extruder_stack_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
-        definition_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
-        user_settings_dir = Resources.getPath(CuraApplication.ResourceTypes.UserInstanceContainer)
+        extruder_stack_dir = os.path.join(Resources.getDataStoragePath(), "extruders")
+        definition_changes_dir = os.path.join(Resources.getDataStoragePath(), "definition_changes")
+        user_settings_dir = os.path.join(Resources.getDataStoragePath(), "user")
 
         with open(os.path.join(definition_changes_dir, definition_changes_filename), "w", encoding = "utf-8") as f:
             f.write(definition_changes_output.getvalue())

@@ -269,7 +269,7 @@ class XmlMaterialProfile(InstanceContainer):
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
             buildplate_dict = {} # type: Dict[str, Any]
             for variant_name, variant_dict in machine_variant_map[definition_id].items():
-                variant_type = variant_dict["variant_node"].metadata["hardware_type"]
+                variant_type = variant_dict["variant_node"].getMetaDataEntry("hardware_type", str(VariantType.NOZZLE))
                 variant_type = VariantType(variant_type)
                 if variant_type == VariantType.NOZZLE:
                     # The hotend identifier is not the containers name, but its "name".

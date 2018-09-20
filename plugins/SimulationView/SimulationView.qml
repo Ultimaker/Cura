@@ -623,7 +623,15 @@ Item
             {
                 target: UM.SimulationView
                 onMaxPathsChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
-                onCurrentPathChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
+                onCurrentPathChanged:
+                {
+                    // Only pause the simulation when the layer was changed manually, not when the simulation is running
+                    if (pathSlider.manuallyChanged)
+                    {
+                        playButton.pauseSimulation()
+                    }
+                    pathSlider.setHandleValue(UM.SimulationView.currentPath)
+                }
             }
 
             // make sure the slider handlers show the correct value after switching views
@@ -668,7 +676,15 @@ Item
                 target: UM.SimulationView
                 onMaxLayersChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
                 onMinimumLayerChanged: layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
-                onCurrentLayerChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+                onCurrentLayerChanged:
+                {
+                    // Only pause the simulation when the layer was changed manually, not when the simulation is running
+                    if (layerSlider.manuallyChanged)
+                    {
+                        playButton.pauseSimulation()
+                    }
+                    layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+                }
             }
 
             // make sure the slider handlers show the correct value after switching views
@@ -716,6 +732,8 @@ Item
                 iconSource = "./resources/simulation_resume.svg"
                 simulationTimer.stop()
                 status = 0
+                layerSlider.manuallyChanged = true
+                pathSlider.manuallyChanged = true
             }
 
             function resumeSimulation()
@@ -723,6 +741,8 @@ Item
                 UM.SimulationView.setSimulationRunning(true)
                 iconSource = "./resources/simulation_pause.svg"
                 simulationTimer.start()
+                layerSlider.manuallyChanged = false
+                pathSlider.manuallyChanged = false
             }
         }
 
@@ -773,6 +793,8 @@ Item
                         UM.SimulationView.setCurrentPath(currentPath+1)
                     }
                 }
+                // The status must be set here instead of in the resumeSimulation function otherwise it won't work
+                // correctly, because part of the logic is in this trigger function.
                 playButton.status = 1
             }
         }
