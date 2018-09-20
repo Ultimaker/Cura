@@ -1139,7 +1139,7 @@ Item
                     }
                     else if (enableSupportCheckBox.visible)
                     {
-                        return supportExtruderCombobox.bottom;
+                        return enableSupportCheckBox.bottom;
                     }
                     return infillCellRight.bottom
                 }
