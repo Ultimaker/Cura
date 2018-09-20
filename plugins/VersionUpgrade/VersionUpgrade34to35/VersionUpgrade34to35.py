@@ -86,16 +86,17 @@ class VersionUpgrade34to35(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
+        # Need to show the data collection agreement again because the data Cura collects has been changed.
+        if parser.has_option("info", "asked_send_slice_info"):
+            parser.remove_option("info", "asked_send_slice_info")
+        if parser.has_option("info", "send_slice_info"):
+            parser.remove_option("info", "send_slice_info")
+
         # Update version number.
         parser["general"]["version"] = "6"
         if "metadata" not in parser:
             parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "5"
-
-        # Need to show the data collection agreement again because the data Cura collects has been changed.
-        if parser.has_option("info", "asked_send_slice_info"):
-            parser.remove_option("info", "asked_send_slice_info")
-            parser.remove_option("info", "send_slice_info")
 
         result = io.StringIO()
         parser.write(result)
