@@ -4207,7 +4207,7 @@ msgstr "Désactiver l'extrudeuse"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:235
 msgctxt "@title:menu"
 msgid "&Build plate"
-msgstr "&Plateau"
+msgstr "Plateau"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:236
 msgctxt "@title:settings"
