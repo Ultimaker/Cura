@@ -16,6 +16,12 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 class SupportMeshCreator():
+    def __init__(self):
+        self._down_vector = numpy.array([0, -1, 0])
+
+    def setDownVector(self, vector):
+        self._down_vector = vector.getData()
+
     def createSupportMeshForNode(self, node):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
@@ -25,7 +31,6 @@ class SupportMeshCreator():
         support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
 
         cos_support_angle = math.cos(math.radians(90 - support_angle_stack.getProperty("support_angle", "value")))
-        down_vector = numpy.array([0,-1, 0])
 
         node_name = node.getName()
         mesh_data = node.getMeshData().getTransformed(node.getWorldTransformation())
@@ -40,7 +45,7 @@ class SupportMeshCreator():
         tri_mesh.fix_normals()
 
         # get indices of faces that face down more than support_angle
-        cos_angle_between_normal_down = numpy.dot(tri_mesh.face_normals, down_vector)
+        cos_angle_between_normal_down = numpy.dot(tri_mesh.face_normals, self._down_vector)
         faces_facing_down = numpy.argwhere(cos_angle_between_normal_down > cos_support_angle).flatten()
         if len(faces_facing_down) == 0:
             Logger.log("d", "Node %s doesn't need support" % node_name)

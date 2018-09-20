@@ -347,7 +347,10 @@ class StartSliceJob(Job):
                                 add_support_mesh = global_enable_support
 
                             if add_support_mesh:
-                                support_mesh_data = SupportMeshCreator().createSupportMeshForNode(object)
+                                support_mesh_creator = SupportMeshCreator()
+                                slanted_down_vector = Vector(0, -math.cos(gantry_angle), -math.sin(gantry_angle))
+                                support_mesh_creator.setDownVector(slanted_down_vector)
+                                support_mesh_data = support_mesh_creator.createSupportMeshForNode(object)
                                 if support_mesh_data:
                                     new_node = self._addMeshFromData(support_mesh_data, "generatedSupportMesh")
                                     added_meshes.append(new_node)
