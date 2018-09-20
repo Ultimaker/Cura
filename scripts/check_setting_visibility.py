@@ -2,179 +2,239 @@
 #
 # This script checks the correctness of the list of visibility settings
 #
-from typing import Dict
+import collections
+import configparser
+import json
 import os
 import sys
-import json
-import configparser
-import glob
+from typing import Any, Dict, List
 
 # Directory where this python file resides
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-# The order of settings type. If the setting is in basic list then it also should be in expert
-setting_visibility = ["basic", "advanced", "expert"]
-
-
+#
+# This class
+#
 class SettingVisibilityInspection:
 
-
     def __init__(self) -> None:
-        self.all_settings_keys = {}
+        # The order of settings type. If the setting is in basic list then it also should be in expert
+        self._setting_visibility_order = ["basic", "advanced", "expert"]
 
-    def defineAllCuraSettings(self, fdmprinter_json_path: str) -> None:
+        # This is dictionary with categories as keys and all setting keys as values.
+        self.all_settings_keys = {}  # type: Dict[str, List[str]]
 
-        with open(fdmprinter_json_path) as f:
+    # Load all Cura setting keys from the given fdmprinter.json file
+    def loadAllCuraSettingKeys(self, fdmprinter_json_path: str) -> None:
+        with open(fdmprinter_json_path, "r", encoding = "utf-8") as f:
             json_data = json.load(f)
-            self._flattenAllSettings(json_data)
 
-
-    def _flattenAllSettings(self, json_file: Dict[str, str]) -> None:
-        for key, data in json_file["settings"].items():  # top level settings are categories
-
+        # Get all settings keys in each category
+        for key, data in json_data["settings"].items():  # top level settings are categories
             if "type" in data and data["type"] == "category":
-
                 self.all_settings_keys[key] = []
                 self._flattenSettings(data["children"], key)  # actual settings are children of top level category-settings
 
-    def _flattenSettings(self, settings: Dict[str, str], category) -> None:
+    def _flattenSettings(self, settings: Dict[str, str], category: str) -> None:
         for key, setting in settings.items():
-
             if "type" in setting and setting["type"] != "category":
                 self.all_settings_keys[category].append(key)
 
             if "children" in setting:
                 self._flattenSettings(setting["children"], category)
 
+    # Loads the given setting visibility file and returns a dict with categories as keys and a list of setting keys as
+    # values.
+    def _loadSettingVisibilityConfigFile(self, file_name: str) -> Dict[str, List[str]]:
+        with open(file_name, "r", encoding = "utf-8") as f:
+            parser = configparser.ConfigParser(allow_no_value = True)
+            parser.read_file(f)
 
-    def getSettingsFromSettingVisibilityFile(self, file_path: str):
-        parser = configparser.ConfigParser(allow_no_value = True)
-        parser.read([file_path])
-
-        if not parser.has_option("general", "name") or not parser.has_option("general", "weight"):
-            raise NotImplementedError("Visibility setting file missing general data")
-
-        settings = {}
-        for section in parser.sections():
-            if section == 'general':
+        data_dict = {}
+        for category, option_dict in parser.items():
+            if category in (parser.default_section, "general"):
                 continue
 
-            if section not in settings:
-                settings[section] = []
+            data_dict[category] = []
+            for key in option_dict:
+                data_dict[category].append(key)
 
-            for option in parser[section].keys():
-                settings[section].append(option)
+        return data_dict
 
-        return settings
+    def validateSettingsVisibility(self, setting_visibility_files: Dict[str, str]) -> Dict[str, Dict[str, Any]]:
+        # First load all setting visibility files into the dict "setting_visibility_dict" in the following structure:
+        #  <visibility_name>  ->   <category>  ->  <list-fo-setting-keys>
+        #     "basic"        ->     "info"
+        setting_visibility_dict = {}  # type: Dict[str, Dict[str, List[str]]]
+        for visibility_name, file_path in setting_visibility_files.items():
+            setting_visibility_dict[visibility_name] = self._loadSettingVisibilityConfigFile(file_path)
 
-    def validateSettingsVisibility(self, setting_visibility_items: Dict):
+        # The result is in the format:
+        #   <visibility_name> -> dict
+        #     "basic"    ->    "file_name":  "basic.cfg"
+        #                      "is_valid":   True / False
+        #                      "invalid_categories": List[str]
+        #                      "invalid_settings":   Dict[category -> List[str]]
+        #                      "missing_categories_from_previous": List[str]
+        #                      "missing_settings_from_previous":   Dict[category -> List[str]]
+        all_result_dict = dict()  # type: Dict[str, Dict[str, Any]]
 
-        not_valid_categories = {}
-        not_valid_setting_by_category = {}
-        not_valid_setting_by_order = {}
+        previous_result = None
+        previous_visibility_dict = None
+        is_all_valid = True
+        for visibility_name in self._setting_visibility_order:
+            invalid_categories = []
+            invalid_settings = collections.defaultdict(list)
 
-        visible_settings_order = [] # This list is used to make sure that the settings are in the correct order.
-        # basic.cfg -> advanced.cfg -> expert.cfg. Like: if the setting 'layer_height' in 'basic.cfg' then the same setting
-        # also should be in 'advanced.cfg'
+            this_visibility_dict = setting_visibility_dict[visibility_name]
+            # Check if categories and keys exist at all
+            for category, key_list in this_visibility_dict.items():
+                if category not in self.all_settings_keys:
+                    invalid_categories.append(category)
+                    continue  # If this category doesn't exist at all, not need to check for details
 
-        all_settings_categories = list(self.all_settings_keys.keys())
+                for key in key_list:
+                    if key not in self.all_settings_keys[category]:
+                        invalid_settings[category].append(key)
 
-        # visibility_type = basic, advanced, expert
-        for visibility_type in setting_visibility:
-            item = setting_visibility_items[visibility_type]
+            is_settings_valid = len(invalid_categories) == 0 and len(invalid_settings) == 0
+            file_path = setting_visibility_files[visibility_name]
+            result_dict = {"file_name": os.path.basename(file_path),
+                           "is_valid": is_settings_valid,
+                           "invalid_categories": invalid_categories,
+                           "invalid_settings": invalid_settings,
+                           "missing_categories_from_previous": list(),
+                           "missing_settings_from_previous": dict(),
+                           }
 
-            not_valid_setting_by_category[visibility_type] = [] # this list is for keeping invalid settings.
-            not_valid_categories[visibility_type] = []
+            # If this is not the first item in the list, check if the settings are defined in the previous
+            # visibility file.
+            # A visibility with more details SHOULD add more settings. It SHOULD NOT remove any settings defined
+            # in the less detailed visibility.
+            if previous_visibility_dict is not None:
+                missing_categories_from_previous = []
+                missing_settings_from_previous = collections.defaultdict(list)
 
-            for category, category_settings in item.items():
+                for prev_category, prev_key_list in previous_visibility_dict.items():
+                    # Skip the categories that are invalid
+                    if prev_category in previous_result["invalid_categories"]:
+                        continue
+                    if prev_category not in this_visibility_dict:
+                        missing_categories_from_previous.append(prev_category)
+                        continue
 
-                # Validate Category, If category is not defined then the test will fail
-                if category not in all_settings_categories:
-                    not_valid_categories[visibility_type].append(category)
+                    this_key_list = this_visibility_dict[prev_category]
+                    for key in prev_key_list:
+                        # Skip the settings that are invalid
+                        if key in previous_result["invalid_settings"][prev_category]:
+                            continue
 
-                for setting in category_settings:
+                        if key not in this_key_list:
+                            missing_settings_from_previous[prev_category].append(key)
 
-                    # Check whether the setting exist in fdmprinter.def.json or not.
-                    # If the setting is defined in the wrong category or does not exist there then the test will fail
-                    if setting not in self.all_settings_keys[category]:
-                        not_valid_setting_by_category[visibility_type].append(setting)
+                result_dict["missing_categories_from_previous"] = missing_categories_from_previous
+                result_dict["missing_settings_from_previous"] = missing_settings_from_previous
+                is_settings_valid = len(missing_categories_from_previous) == 0 and len(missing_settings_from_previous) == 0
+                result_dict["is_valid"] = result_dict["is_valid"] and is_settings_valid
 
-                    # Add the 'basic' settings to the list
-                    if visibility_type == "basic":
-                        visible_settings_order.append(setting)
+            # Update the complete result dict
+            all_result_dict[visibility_name] = result_dict
+            previous_result = result_dict
+            previous_visibility_dict = this_visibility_dict
 
+            is_all_valid = is_all_valid and result_dict["is_valid"]
 
-        # Check whether the settings are added in right order or not.
-        # The basic settings should be in advanced, and advanced in expert
-        for visibility_type in setting_visibility:
+        all_result_dict["all_results"] = {"is_valid": is_all_valid}
 
-            # Skip the basic because it cannot be compared to previous list
-            if visibility_type == 'basic':
+        return all_result_dict
+
+    def printResults(self, all_result_dict: Dict[str, Dict[str, Any]]) -> None:
+        print("")
+        print("Setting Visibility Check Results:")
+
+        prev_visibility_name = None
+        for visibility_name in self._setting_visibility_order:
+            if visibility_name not in all_result_dict:
                 continue
 
-            all_settings_in_this_type = []
-            not_valid_setting_by_order[visibility_type] = []
+            result_dict = all_result_dict[visibility_name]
+            print("=============================")
+            result_str = "OK" if result_dict["is_valid"] else "INVALID"
+            print("[%s] : [%s] : %s" % (visibility_name, result_dict["file_name"], result_str))
 
-            item = setting_visibility_items[visibility_type]
-            for category, category_settings in item.items():
-                all_settings_in_this_type.extend(category_settings)
+            if result_dict["is_valid"]:
+                continue
+
+            # Print details of invalid settings
+            if result_dict["invalid_categories"]:
+                print("It has the following non-existing CATEGORIES:")
+                for category in result_dict["invalid_categories"]:
+                    print(" - [%s]" % category)
+
+            if result_dict["invalid_settings"]:
+                print("")
+                print("It has the following non-existing SETTINGS:")
+                for category, key_list in result_dict["invalid_settings"].items():
+                    for key in key_list:
+                        print(" - [%s / %s]" % (category, key))
+
+            if prev_visibility_name is not None:
+                if result_dict["missing_categories_from_previous"]:
+                    print("")
+                    print("The following CATEGORIES are defined in the previous visibility [%s] but not here:" % prev_visibility_name)
+                    for category in result_dict["missing_categories_from_previous"]:
+                        print(" - [%s]" % category)
+
+                if result_dict["missing_settings_from_previous"]:
+                    print("")
+                    print("The following SETTINGS are defined in the previous visibility [%s] but not here:" % prev_visibility_name)
+                    for category, key_list in result_dict["missing_settings_from_previous"].items():
+                        for key in key_list:
+                            print(" - [%s / %s]" % (category, key))
+
+            print("")
+            prev_visibility_name = visibility_name
 
 
-            for setting in visible_settings_order:
-                if setting not in all_settings_in_this_type:
-                    not_valid_setting_by_order[visibility_type].append(setting)
+#
+# Returns a dictionary of setting visibility .CFG files in the given search directory.
+# The dict has the name of the visibility type as the key (such as "basic", "advanced", "expert"), and
+# the actual file path (absolute path).
+#
+def getAllSettingVisiblityFiles(search_dir: str) -> Dict[str, str]:
+    visibility_file_dict = dict()
+    extension = ".cfg"
+    for file_name in os.listdir(search_dir):
+        file_path = os.path.join(search_dir, file_name)
+
+        # Only check files that has the .cfg extension
+        if not os.path.isfile(file_path):
+            continue
+        if not file_path.endswith(extension):
+            continue
+
+        base_filename = os.path.basename(file_name)[:-len(extension)]
+        visibility_file_dict[base_filename] = file_path
+    return visibility_file_dict
 
 
-        # If any of the settings is defined not correctly then the test is failed
-        has_invalid_settings = False
+def main() -> None:
+    setting_visibility_files_dir = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "resources", "setting_visibility"))
+    fdmprinter_def_path = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "resources", "definitions", "fdmprinter.def.json"))
 
-        for type, settings in not_valid_categories.items():
-            if len(settings) > 0:
-                has_invalid_settings = True
-                print("The following categories are defined incorrectly")
-                print("  Visibility type : '%s'" % (type))
-                print("  Incorrect categories : '%s'" % (settings))
-                print()
+    setting_visibility_files_dict = getAllSettingVisiblityFiles(setting_visibility_files_dir)
+    print("--- ", setting_visibility_files_dict)
 
+    inspector = SettingVisibilityInspection()
+    inspector.loadAllCuraSettingKeys(fdmprinter_def_path)
 
+    check_result = inspector.validateSettingsVisibility(setting_visibility_files_dict)
+    is_result_valid = not check_result["all_results"]["is_valid"]
+    inspector.printResults(check_result)
 
-        for type, settings in not_valid_setting_by_category.items():
-            if len(settings) > 0:
-                has_invalid_settings = True
-                print("The following settings do not exist anymore in fdmprinter definition or in wrong category")
-                print("  Visibility type : '%s'" % (type))
-                print("  Incorrect settings : '%s'" % (settings))
-                print()
-
-
-        for type, settings in not_valid_setting_by_order.items():
-            if len(settings) > 0:
-                has_invalid_settings = True
-                print("The following settings are defined in the incorrect order in setting visibility definitions")
-                print("  Visibility type : '%s'" % (type))
-                print("  Incorrect settings : '%s'" % (settings))
-
-        return has_invalid_settings
+    sys.exit(0 if is_result_valid else 1)
 
 
 if __name__ == "__main__":
-
-    all_setting_visibility_files = glob.glob(os.path.join(os.path.join(SCRIPT_DIR, "..", "resources", "setting_visibility"), '*.cfg'))
-    fdmprinter_def_path = os.path.join(SCRIPT_DIR, "..", "resources", "definitions", "fdmprinter.def.json")
-
-    inspector = SettingVisibilityInspection()
-    inspector.defineAllCuraSettings(fdmprinter_def_path)
-
-    setting_visibility_items = {}
-    for file_path in all_setting_visibility_files:
-        all_settings_from_visibility_type = inspector.getSettingsFromSettingVisibilityFile(file_path)
-
-        base_name = os.path.basename(file_path)
-        visibility_type = base_name.split(".")[0]
-
-        setting_visibility_items[visibility_type] = all_settings_from_visibility_type
-
-    has_invalid_settings = inspector.validateSettingsVisibility(setting_visibility_items)
-
-    sys.exit(0 if not has_invalid_settings else 1)
+    main()
