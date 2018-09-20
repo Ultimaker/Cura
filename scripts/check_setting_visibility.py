@@ -224,7 +224,6 @@ def main() -> None:
     fdmprinter_def_path = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "resources", "definitions", "fdmprinter.def.json"))
 
     setting_visibility_files_dict = getAllSettingVisiblityFiles(setting_visibility_files_dir)
-    print("--- ", setting_visibility_files_dict)
 
     inspector = SettingVisibilityInspection()
     inspector.loadAllCuraSettingKeys(fdmprinter_def_path)
