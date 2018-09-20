@@ -1,5 +1,6 @@
 from UM.Math.Vector import Vector
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.Selection import Selection
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
