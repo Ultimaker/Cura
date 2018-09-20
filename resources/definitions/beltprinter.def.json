@@ -199,10 +199,6 @@
             "default_value": false,
             "settable_per_mesh": true
         },
-        "support_angle": {
-            "enabled": false,
-            "default_value": 90
-        },
         "support_type": {
             "enabled": false
         },
