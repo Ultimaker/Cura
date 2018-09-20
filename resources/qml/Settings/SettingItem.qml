@@ -115,6 +115,7 @@ Item {
             text: definition.label
             elide: Text.ElideMiddle;
             renderType: Text.NativeRendering
+            textFormat: Text.PlainText
 
             color: UM.Theme.getColor("setting_control_text");
             opacity: (definition.visible) ? 1 : 0.5
