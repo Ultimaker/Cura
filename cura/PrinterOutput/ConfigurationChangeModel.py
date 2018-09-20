@@ -1,6 +1,7 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
-
 
 class ConfigurationChangeModel(QObject):
     def __init__(self, type_of_change: str, index: int, target_name: str, origin_name: str) -> None:
@@ -11,20 +12,20 @@ class ConfigurationChangeModel(QObject):
         self._target_name = target_name
         self._origin_name = origin_name
 
-    @pyqtProperty(int)
+    @pyqtProperty(int, constant = True)
     def index(self) -> int:
         return self._index
     # "target_id": fields.String(required=True, description="Target material guid or hotend id"),
     # "origin_id": fields.String(required=True, description="Original/current material guid or hotend id"),
 
-    @pyqtProperty(str)
+    @pyqtProperty(str, constant = True)
     def typeOfChange(self) -> str:
         return self._type_of_change
 
-    @pyqtProperty(str)
+    @pyqtProperty(str, constant = True)
     def targetName(self) -> str:
         return self._target_name
 
-    @pyqtProperty(str)
+    @pyqtProperty(str, constant = True)
     def originName(self) -> str:
         return self._origin_name
