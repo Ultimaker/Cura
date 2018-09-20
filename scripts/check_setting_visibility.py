@@ -229,7 +229,7 @@ def main() -> None:
     inspector.loadAllCuraSettingKeys(fdmprinter_def_path)
 
     check_result = inspector.validateSettingsVisibility(setting_visibility_files_dict)
-    is_result_valid = not check_result["all_results"]["is_valid"]
+    is_result_valid = check_result["all_results"]["is_valid"]
     inspector.printResults(check_result)
 
     sys.exit(0 if is_result_valid else 1)
