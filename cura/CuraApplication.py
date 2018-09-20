@@ -82,6 +82,7 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
+from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -110,10 +111,6 @@ import cura.Settings.cura_empty_instance_containers
 from cura.ObjectsModel import ObjectsModel
 
 from UM.FlameProfiler import pyqtSlot
-
-
-if TYPE_CHECKING:
-    from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 
 numpy.seterr(all = "ignore")
