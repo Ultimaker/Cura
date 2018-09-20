@@ -16,7 +16,8 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 class SupportMeshCreator():
-    def __init__(self, down_vector = numpy.array([0, -1, 0]), bottom_cut_off = 0):
+    def __init__(self, filter_upwards_facing_faces = True, down_vector = numpy.array([0, -1, 0]), bottom_cut_off = 0):
+        self._filter_upwards_facing_faces = filter_upwards_facing_faces
         self._down_vector = down_vector
         self._bottom_cut_off = bottom_cut_off
 
@@ -30,6 +31,7 @@ class SupportMeshCreator():
 
         cos_support_angle = math.cos(math.radians(90 - support_angle_stack.getProperty("support_angle", "value")))
 
+        # convert node meshdata to trimesh
         node_name = node.getName()
         mesh_data = node.getMeshData().getTransformed(node.getWorldTransformation())
 
@@ -44,11 +46,15 @@ class SupportMeshCreator():
 
         # get indices of faces that face down more than support_angle
         cos_angle_between_normal_down = numpy.dot(tri_mesh.face_normals, self._down_vector)
-        faces_facing_down = numpy.argwhere(cos_angle_between_normal_down >= cos_support_angle).flatten()
-        if len(faces_facing_down) == 0:
+        faces_needing_support = numpy.argwhere(cos_angle_between_normal_down >= cos_support_angle).flatten()
+        # filter out faces that point upwards
+        if len(faces_needing_support) == 0 and self._filter_upwards_facing_faces:
+            faces_facing_down = numpy.argwhere(tri_mesh.face_normals[:,1] < 0)
+            faces_needing_support = numpy.intersect1d(faces_facing_down, faces_needing_support)
+        if len(faces_needing_support) == 0:
             Logger.log("d", "Node %s doesn't need support" % node_name)
             return None
-        roof_indices = node_indices[faces_facing_down]
+        roof_indices = node_indices[faces_needing_support]
 
         # filter out faces that are coplanar with the bottom
         non_bottom_indices = numpy.where(numpy.any(node_vertices[roof_indices].take(1, axis=2) > self._bottom_cut_off, axis=1))[0].flatten()
@@ -83,6 +89,7 @@ class SupportMeshCreator():
         support_mesh = trimesh.base.Trimesh(vertices=support_vertices, faces=support_faces)
         support_mesh.fix_normals()
 
+        # convert resulting trimesh into meshdata
         mesh_data = self._toMeshData(support_mesh)
         return mesh_data
 
