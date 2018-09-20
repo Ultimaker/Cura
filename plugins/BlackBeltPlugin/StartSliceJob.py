@@ -265,9 +265,15 @@ class StartSliceJob(Job):
             container_registry = ContainerRegistry.getInstance()
             stack_id = stack.getId()
 
+            global_blackbelt_support_gantry_angle_bias = 0
+
             # Adapt layer_height and material_flow for a slanted gantry
             gantry_angle = self._scene.getRoot().callDecoration("getGantryAngle")
             if gantry_angle: # not 0 or None
+                global_blackbelt_support_gantry_angle_bias = stack.getProperty("blackbelt_support_gantry_angle_bias", "value")
+                if global_blackbelt_support_gantry_angle_bias is None:
+                    global_blackbelt_support_gantry_angle_bias = 0
+
                 # Act on a copy of the stack, so these changes don't cause a reslice
                 _stack = CuraContainerStack(stack_id + "_temp")
                 for index, container in enumerate(stack.getContainers()):
@@ -338,17 +344,22 @@ class StartSliceJob(Job):
 
                         elif not is_non_printing_mesh:
                             # add support mesh if needed
+                            blackbelt_support_gantry_angle_bias = None
                             if per_object_stack:
                                 is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                                 node_enable_support = per_object_stack.getProperty("support_enable", "value")
                                 add_support_mesh = node_enable_support if node_enable_support is not None else global_enable_support
+                                blackbelt_support_gantry_angle_bias = per_object_stack.getProperty("blackbelt_support_gantry_angle_bias", "value")
                             else:
                                 add_support_mesh = global_enable_support
 
                             if add_support_mesh:
+                                if blackbelt_support_gantry_angle_bias is None:
+                                    blackbelt_support_gantry_angle_bias = global_blackbelt_support_gantry_angle_bias
+                                biased_down_angle = math.radians(blackbelt_support_gantry_angle_bias)
                                 support_mesh_data = SupportMeshCreator(
-                                    down_vector=numpy.array([0, -math.cos(gantry_angle), -math.sin(gantry_angle)]),
+                                    down_vector=numpy.array([0, -math.cos(math.radians(biased_down_angle)), -math.sin(biased_down_angle)]),
                                     bottom_cut_off=stack.getProperty("wall_line_width_0", "value") / 2
                                 ).createSupportMeshForNode(object)
                                 if support_mesh_data:

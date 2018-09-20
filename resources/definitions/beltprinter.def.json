@@ -158,6 +158,25 @@
                 }
             }
         },
+        "support":
+        {
+            "children":
+            {
+                "blackbelt_support_gantry_angle_bias":
+                {
+                    "label": "Support Gantry Angle Bias",
+                    "description": "Favor placement of support structures towards the front of the print, for use with belt-style printers.",
+                    "type": "int",
+                    "unit": "°",
+                    "default_value": 45,
+                    "value": "int(blackbelt_gantry_angle)",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                }
+            }
+        },
         "machine_settings": {
             "children":
             {
