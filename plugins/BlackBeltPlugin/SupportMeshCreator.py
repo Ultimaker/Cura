@@ -16,11 +16,9 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 class SupportMeshCreator():
-    def __init__(self):
-        self._down_vector = numpy.array([0, -1, 0])
-
-    def setDownVector(self, vector):
-        self._down_vector = vector.getData()
+    def __init__(self, down_vector = numpy.array([0, -1, 0]), bottom_cut_off = 0):
+        self._down_vector = down_vector
+        self._bottom_cut_off = bottom_cut_off
 
     def createSupportMeshForNode(self, node):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -46,14 +44,14 @@ class SupportMeshCreator():
 
         # get indices of faces that face down more than support_angle
         cos_angle_between_normal_down = numpy.dot(tri_mesh.face_normals, self._down_vector)
-        faces_facing_down = numpy.argwhere(cos_angle_between_normal_down > cos_support_angle).flatten()
+        faces_facing_down = numpy.argwhere(cos_angle_between_normal_down >= cos_support_angle).flatten()
         if len(faces_facing_down) == 0:
             Logger.log("d", "Node %s doesn't need support" % node_name)
             return None
         roof_indices = node_indices[faces_facing_down]
 
         # filter out faces that are coplanar with the bottom
-        non_bottom_indices = numpy.where(numpy.any(node_vertices[roof_indices].take(1, axis=2) > 0, axis=1))[0].flatten()
+        non_bottom_indices = numpy.where(numpy.any(node_vertices[roof_indices].take(1, axis=2) > self._bottom_cut_off, axis=1))[0].flatten()
         roof_indices = roof_indices[non_bottom_indices]
         if len(roof_indices) == 0:
             Logger.log("d", "Node %s doesn't need support" % node_name)
