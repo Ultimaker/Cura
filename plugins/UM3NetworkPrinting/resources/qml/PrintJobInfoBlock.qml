@@ -7,6 +7,155 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
+Item {
+    
+    id: root
+
+    property var shadowRadius: 5;
+    property var shadowOffset: 2;
+    property var debug: true;
+    property var printJob: null;
+    property var hasChanges: {
+        if (printJob) {
+            return printJob.configurationChanges.length !== 0;
+        }
+        return false;
+    }
+
+    width: parent.width; // Bubbles downward
+    height: childrenRect.height + shadowRadius * 2; // Bubbles upward
+
+    // The actual card (white block)
+    Rectangle {
+
+        color: "white";
+        height: childrenRect.height;
+        width: parent.width - shadowRadius * 2;
+
+        // 5px margin, but shifted 2px vertically because of the shadow
+        anchors {
+            topMargin: shadowRadius - shadowOffset;
+            bottomMargin: shadowRadius + shadowOffset;
+            leftMargin: shadowRadius;
+            rightMargin: shadowRadius;
+        }
+
+        Column {
+
+            width: parent.width;
+            height: childrenRect.height
+
+            // Main content
+            Rectangle {
+
+                color: root.debug ? "red" : "transparent";
+                width: parent.width;
+                height: 200;
+
+                // Left content
+                Rectangle {
+                    color: root.debug ? "lightblue" : "transparent";
+                    anchors {
+                        left: parent.left;
+                        right: parent.horizontalCenter;
+                        top: parent.top;
+                        bottom: parent.bottom;
+                        margins: UM.Theme.getSize("wide_margin").width
+                    }
+                }
+
+                Rectangle {
+                    height: parent.height - 2 * UM.Theme.getSize("default_margin").height;
+                    width: 1
+                    color: "black";
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter;
+                        verticalCenter: parent.verticalCenter;
+                    }
+                }
+
+                // Right content
+                Rectangle {
+                    color: root.debug ? "blue" : "transparent";
+                    anchors {
+                        left: parent.horizontalCenter;
+                        right: parent.right;
+                        top: parent.top;
+                        bottom: parent.bottom;
+                        margins: UM.Theme.getSize("wide_margin").width
+                    }
+                }
+            }
+
+            // Config change toggle
+            Rectangle {
+                color: root.debug ? "orange" : "transparent";
+                width: parent.width;
+                visible: root.hasChanges;
+                height: visible ? 40 : 0;
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: {
+                        configChangeDetails.visible = !configChangeDetails.visible;
+                    }
+                }
+                Label {
+                    id: configChangeToggleLabel;
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter;
+                        verticalCenter: parent.verticalCenter;
+                    }
+                    text: "Configuration change";
+                }
+                UM.RecolorImage {
+                    width: 15;
+                    height: 15;
+                    anchors {
+                        left: configChangeToggleLabel.right;
+                        leftMargin: UM.Theme.getSize("default_margin").width;
+                        verticalCenter: parent.verticalCenter;
+                    }
+                    sourceSize.width: width;
+                    sourceSize.height: height;
+                    source: {
+                        if (configChangeDetails.visible) {
+                            return UM.Theme.getIcon("arrow_top");
+                        } else {
+                            return UM.Theme.getIcon("arrow_bottom");
+                        }
+                    }
+                    color: "black";
+                }
+            }
+
+            // Config change details
+            Rectangle {
+                id: configChangeDetails
+                color: root.debug ? "yellow" : "transparent";
+                width: parent.width;
+                visible: false;
+                height: visible ? 150 : 0;
+                Behavior on height { NumberAnimation { duration: 100 } }
+
+                Rectangle {
+                    color: root.debug ? "lime" : "transparent";
+                    anchors {
+                        fill: parent;
+                        topMargin: UM.Theme.getSize("wide_margin").height;
+                        bottomMargin: UM.Theme.getSize("wide_margin").height;
+                        leftMargin: UM.Theme.getSize("wide_margin").height * 4;
+                        rightMargin: UM.Theme.getSize("wide_margin").height * 4;
+                    }
+                    Label {
+                        wrapMode: Text.WordWrap;
+                        text: "The assigned printer, UltiSandra, requires the following configuration change(s): Change material 1 from PLA to ABS.";
+                    }
+                }
+            }
+        }
+    }
+}
+
 // Item
 // {
 //     id: base
