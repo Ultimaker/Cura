@@ -49,6 +49,7 @@ class AuthorizationService:
         if not self._user_profile:
             # If there is still no user profile from the JWT, we have to log in again.
             return None
+
         return self._user_profile
 
     def _parseJWT(self) -> Optional["UserProfile"]:

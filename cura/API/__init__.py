@@ -3,6 +3,8 @@
 from UM.PluginRegistry import PluginRegistry
 from cura.API.Backups import Backups
 from cura.API.Interface import Interface
+from cura.API.Account import Account
+
 
 ##  The official Cura API that plug-ins can use to interact with Cura.
 #
@@ -10,7 +12,6 @@ from cura.API.Interface import Interface
 #   this API provides a version-safe interface with proper deprecation warnings
 #   etc. Usage of any other methods than the ones provided in this API can cause
 #   plug-ins to be unstable.
-
 class CuraAPI:
 
     # For now we use the same API version to be consistent.
@@ -21,3 +22,5 @@ class CuraAPI:
 
     # Interface API
     interface = Interface()
+
+    account = Account()
