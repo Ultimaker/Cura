@@ -16,21 +16,22 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 class SupportMeshCreator():
-    def __init__(self, filter_upwards_facing_faces = True, down_vector = numpy.array([0, -1, 0]), bottom_cut_off = 0):
+    def __init__(self, support_angle = None, filter_upwards_facing_faces = True, down_vector = numpy.array([0, -1, 0]), bottom_cut_off = 0):
+        self._support_angle = support_angle
+        if self._support_angle is None:
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            if global_container_stack:
+                support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
+                support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
+                self._support_angle = support_angle_stack.getProperty("support_angle", "value")
+            else:
+                self._support_angle = 50
+
         self._filter_upwards_facing_faces = filter_upwards_facing_faces
         self._down_vector = down_vector
         self._bottom_cut_off = bottom_cut_off
 
     def createSupportMeshForNode(self, node):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
-            return None
-
-        support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
-        support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
-
-        cos_support_angle = math.cos(math.radians(90 - support_angle_stack.getProperty("support_angle", "value")))
-
         # convert node meshdata to trimesh
         node_name = node.getName()
         mesh_data = node.getMeshData().getTransformed(node.getWorldTransformation())
@@ -41,8 +42,18 @@ class SupportMeshCreator():
             # some file formats (eg 3mf) don't supply indices, but have unique vertices per face
             node_indices = numpy.arange(len(node_vertices)).reshape(-1, 3)
 
+        support_mesh = self.createSupportMesh(node_name, node_vertices, node_indices)
+        if support_mesh is not None:
+            # convert resulting trimesh into meshdata
+            mesh_data = self._toMeshData(support_mesh)
+            return mesh_data
+
+    def createSupportMesh(self, node_name, node_vertices, node_indices):
         tri_mesh = trimesh.base.Trimesh(vertices=node_vertices, faces=node_indices)
+        # make sure normals are sane
         tri_mesh.fix_normals()
+
+        cos_support_angle = math.cos(math.radians(90 - self._support_angle))
 
         # get indices of faces that face down more than support_angle
         cos_angle_between_normal_down = numpy.dot(tri_mesh.face_normals, self._down_vector)
@@ -89,9 +100,7 @@ class SupportMeshCreator():
         support_mesh = trimesh.base.Trimesh(vertices=support_vertices, faces=support_faces)
         support_mesh.fix_normals()
 
-        # convert resulting trimesh into meshdata
-        mesh_data = self._toMeshData(support_mesh)
-        return mesh_data
+        return support_mesh
 
     def _toMeshData(self, tri_node: trimesh.base.Trimesh) -> MeshData:
         tri_faces = tri_node.faces
