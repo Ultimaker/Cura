@@ -261,12 +261,6 @@ Item {
                         // entry (user container) are set, we can simply remove the container.
                         propertyProvider.removeFromContainer(0)
                     }
-                    else if(last_entry - 1 == base.stackLevel)
-                    {
-                        // Another special case. The setting that is overriden is only 1 instance container deeper,
-                        // so we can remove it.
-                        propertyProvider.removeFromContainer(last_entry - 1)
-                    }
                     else
                     {
                         // Put that entry into the "top" instance container.
