@@ -2,17 +2,18 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import webbrowser
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
 
-# As this module is specific for Cura plugins, we can rely on these imports.
 from UM.Logger import Logger
 from UM.Signal import Signal
 
-# Plugin imports need to be relative to work in final builds.
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
-from cura.OAuth2.Models import OAuth2Settings, AuthenticationResponse, UserProfile
+from cura.OAuth2.Models import AuthenticationResponse
+
+if TYPE_CHECKING:
+    from cura.OAuth2.Models import UserProfile, OAuth2Settings
 
 
 class AuthorizationService:
@@ -32,7 +33,7 @@ class AuthorizationService:
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
         self._auth_data = None  # type: Optional[AuthenticationResponse]
-        self._user_profile = None  # type: Optional[UserProfile]
+        self._user_profile = None  # type: Optional["UserProfile"]
         self._cura_preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
         self._loadAuthData()
@@ -75,7 +76,6 @@ class AuthorizationService:
     def getAccessToken(self) -> Optional[str]:
         """
         Get the access token response data.
-        :return: Dict containing token data.
         """
         if not self.getUserProfile():
             # We check if we can get the user profile.
@@ -130,7 +130,7 @@ class AuthorizationService:
         # Start a local web server to receive the callback URL on.
         self._server.start(verification_code)
 
-    def _onAuthStateChanged(self, auth_response: "AuthenticationResponse") -> None:
+    def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:
         """Callback method for an authentication flow."""
         if auth_response.success:
             self._storeAuthData(auth_response)
@@ -150,7 +150,7 @@ class AuthorizationService:
         except ValueError as err:
             Logger.log("w", "Could not load auth data from preferences: %s", err)
 
-    def _storeAuthData(self, auth_data: Optional["AuthenticationResponse"] = None) -> None:
+    def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
         """Store authentication data in preferences and locally."""
         self._auth_data = auth_data
         if auth_data:

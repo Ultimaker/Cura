@@ -1,22 +1,21 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import threading
-from http.server import HTTPServer
-from typing import Optional, Callable, Any
+from typing import Optional, Callable, Any, TYPE_CHECKING
 
-# As this module is specific for Cura plugins, we can rely on these imports.
 from UM.Logger import Logger
 
-# Plugin imports need to be relative to work in final builds.
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 from cura.OAuth2.AuthorizationRequestServer import AuthorizationRequestServer
 from cura.OAuth2.AuthorizationRequestHandler import AuthorizationRequestHandler
-from cura.OAuth2.Models import AuthenticationResponse
+
+if TYPE_CHECKING:
+    from cura.OAuth2.Models import AuthenticationResponse
 
 
 class LocalAuthorizationServer:
     def __init__(self, auth_helpers: "AuthorizationHelpers",
-                 auth_state_changed_callback: "Callable[[AuthenticationResponse], Any]",
+                 auth_state_changed_callback: Callable[["AuthenticationResponse"], Any],
                  daemon: bool) -> None:
         """
         :param auth_helpers: An instance of the authorization helpers class.
@@ -62,7 +61,7 @@ class LocalAuthorizationServer:
     def stop(self) -> None:
         """ Stops the web server if it was running. Also deletes the objects. """
 
-        Logger.log("d", "Stopping local web server...")
+        Logger.log("d", "Stopping local oauth2 web server...")
 
         if self._web_server:
             self._web_server.server_close()

@@ -1,12 +1,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Callable, Tuple, Dict, Any, List
+from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
-from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS, ResponseStatus
+from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS
+
+if TYPE_CHECKING:
+    from cura.OAuth2.Models import ResponseStatus
 
 
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):
@@ -15,15 +18,15 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     It also requests the access token for the 2nd stage of the OAuth flow.
     """
 
-    def __init__(self, request, client_address, server):
+    def __init__(self, request, client_address, server) -> None:
         super().__init__(request, client_address, server)
 
         # These values will be injected by the HTTPServer that this handler belongs to.
-        self.authorization_helpers = None  # type: AuthorizationHelpers
-        self.authorization_callback = None  # type: Callable[[AuthenticationResponse], None]
-        self.verification_code = None  # type: str
+        self.authorization_helpers = None  # type: Optional[AuthorizationHelpers]
+        self.authorization_callback = None  # type: Optional[Callable[[AuthenticationResponse], None]]
+        self.verification_code = None  # type: Optional[str]
 
-    def do_GET(self):
+    def do_GET(self) -> None:
         """Entry point for GET requests"""
 
         # Extract values from the query string.
@@ -44,7 +47,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # If there is data in the response, we send it.
             self._sendData(server_response.data_stream)
 
-        if token_response:
+        if token_response and self.authorization_callback is not None:
             # Trigger the callback if we got a response.
             # This will cause the server to shut down, so we do it at the very end of the request handling.
             self.authorization_callback(token_response)
@@ -56,7 +59,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         :return: HTTP ResponseData containing a success page to show to the user.
         """
         code = self._queryGet(query, "code")
-        if code:
+        if code and self.authorization_helpers is not None and self.verification_code is not None:
             # If the code was returned we get the access token.
             token_response = self.authorization_helpers.getAccessTokenUsingAuthorizationCode(
                 code, self.verification_code)
@@ -74,6 +77,8 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
                 success=False,
                 error_message="Something unexpected happened when trying to log in, please try again."
             )
+        if self.authorization_helpers is None:
+            return ResponseData(), token_response
 
         return ResponseData(
             status=HTTP_STATUS["REDIRECT"],
@@ -83,7 +88,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         ), token_response
 
     @staticmethod
-    def _handleNotFound() -> "ResponseData":
+    def _handleNotFound() -> ResponseData:
         """Handle all other non-existing server calls."""
         return ResponseData(status=HTTP_STATUS["NOT_FOUND"], content_type="text/html", data_stream=b"Not found.")
 
@@ -100,6 +105,6 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     @staticmethod
-    def _queryGet(query_data: Dict[Any, List], key: str, default=None) -> Optional[str]:
+    def _queryGet(query_data: Dict[Any, List], key: str, default: Optional[str]=None) -> Optional[str]:
         """Helper for getting values from a pre-parsed query string"""
         return query_data.get(key, [default])[0]

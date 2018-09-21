@@ -46,7 +46,7 @@ class ResponseStatus(BaseModel):
 
 # Response data template.
 class ResponseData(BaseModel):
-    status = None  # type: Optional[ResponseStatus]
+    status = None  # type: ResponseStatus
     data_stream = None  # type: Optional[bytes]
     redirect_uri = None  # type: Optional[str]
     content_type = "text/html"  # type: str
