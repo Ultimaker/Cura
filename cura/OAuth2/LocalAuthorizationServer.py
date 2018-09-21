@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import threading
 from http.server import HTTPServer
-from typing import Optional, Callable
+from typing import Optional, Callable, Any
 
 # As this module is specific for Cura plugins, we can rely on these imports.
 from UM.Logger import Logger
@@ -16,22 +16,22 @@ from cura.OAuth2.Models import AuthenticationResponse
 
 class LocalAuthorizationServer:
     def __init__(self, auth_helpers: "AuthorizationHelpers",
-                 auth_state_changed_callback: "Callable[[AuthenticationResponse], any]",
-                 daemon: bool):
+                 auth_state_changed_callback: "Callable[[AuthenticationResponse], Any]",
+                 daemon: bool) -> None:
         """
         :param auth_helpers: An instance of the authorization helpers class.
         :param auth_state_changed_callback: A callback function to be called when the authorization state changes.
         :param daemon: Whether the server thread should be run in daemon mode. Note: Daemon threads are abruptly stopped
             at shutdown. Their resources (e.g. open files) may never be released.
         """
-        self._web_server = None  # type: Optional[HTTPServer]
+        self._web_server = None  # type: Optional[AuthorizationRequestServer]
         self._web_server_thread = None  # type: Optional[threading.Thread]
         self._web_server_port = auth_helpers.settings.CALLBACK_PORT
         self._auth_helpers = auth_helpers
         self._auth_state_changed_callback = auth_state_changed_callback
         self._daemon = daemon
 
-    def start(self, verification_code: "str") -> None:
+    def start(self, verification_code: str) -> None:
         """
         Starts the local web server to handle the authorization callback.
         :param verification_code: The verification code part of the OAuth2 client identification.
@@ -41,6 +41,9 @@ class LocalAuthorizationServer:
             # We still inject the new verification code though.
             self._web_server.setVerificationCode(verification_code)
             return
+
+        if self._web_server_port is None:
+            raise Exception("Unable to start server without specifying the port.")
 
         Logger.log("d", "Starting local web server to handle authorization callback on port %s",
                    self._web_server_port)

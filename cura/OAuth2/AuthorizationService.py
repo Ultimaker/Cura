@@ -27,7 +27,7 @@ class AuthorizationService:
     # Emit signal when authentication failed.
     onAuthenticationError = Signal()
 
-    def __init__(self, preferences, settings: "OAuth2Settings"):
+    def __init__(self, preferences, settings: "OAuth2Settings") -> None:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
@@ -55,7 +55,7 @@ class AuthorizationService:
         Tries to parse the JWT if all the needed data exists.
         :return: UserProfile if found, otherwise None.
         """
-        if not self._auth_data:
+        if not self._auth_data or self._auth_data.access_token is None:
             # If no auth data exists, we should always log in again.
             return None
         user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
@@ -63,10 +63,13 @@ class AuthorizationService:
             # If the profile was found, we return it immediately.
             return user_data
         # The JWT was expired or invalid and we should request a new one.
+        if self._auth_data.refresh_token is None:
+            return None
         self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
-        if not self._auth_data:
+        if not self._auth_data or self._auth_data.access_token is None:
             # The token could not be refreshed using the refresh token. We should login again.
             return None
+
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     def getAccessToken(self) -> Optional[str]:
@@ -78,16 +81,23 @@ class AuthorizationService:
             # We check if we can get the user profile.
             # If we can't get it, that means the access token (JWT) was invalid or expired.
             return None
+
+        if self._auth_data is None:
+            return None
+
         return self._auth_data.access_token
 
     def refreshAccessToken(self) -> None:
         """
         Refresh the access token when it expired.
         """
+        if self._auth_data is None or self._auth_data.refresh_token is None:
+            Logger.log("w", "Unable to refresh acces token, since there is no refresh token.")
+            return
         self._storeAuthData(self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token))
         self.onAuthStateChanged.emit(logged_in=True)
 
-    def deleteAuthData(self):
+    def deleteAuthData(self) -> None:
         """Delete authentication data from preferences and locally."""
         self._storeAuthData()
         self.onAuthStateChanged.emit(logged_in=False)

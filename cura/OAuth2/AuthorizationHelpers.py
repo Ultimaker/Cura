@@ -16,7 +16,7 @@ from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settin
 class AuthorizationHelpers:
     """Class containing several helpers to deal with the authorization flow."""
 
-    def __init__(self, settings: "OAuth2Settings"):
+    def __init__(self, settings: "OAuth2Settings") -> None:
         self._settings = settings
         self._token_url = "{}/token".format(self._settings.OAUTH_SERVER_URL)
 
@@ -25,8 +25,7 @@ class AuthorizationHelpers:
         """Get the OAuth2 settings object."""
         return self._settings
 
-    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str)->\
-            Optional["AuthenticationResponse"]:
+    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str)-> "AuthenticationResponse":
         """
         Request the access token from the authorization server.
         :param authorization_code: The authorization code from the 1st step.
@@ -42,7 +41,7 @@ class AuthorizationHelpers:
             "scope": self._settings.CLIENT_SCOPES
         }))
 
-    def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> Optional["AuthenticationResponse"]:
+    def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> AuthenticationResponse:
         """
         Request the access token from the authorization server using a refresh token.
         :param refresh_token:
@@ -57,7 +56,7 @@ class AuthorizationHelpers:
         }))
 
     @staticmethod
-    def parseTokenResponse(token_response: "requests.request") -> Optional["AuthenticationResponse"]:
+    def parseTokenResponse(token_response: requests.models.Response) -> AuthenticationResponse:
         """
         Parse the token response from the authorization server into an AuthenticationResponse object.
         :param token_response: The JSON string data response from the authorization server.

@@ -9,7 +9,7 @@ class BaseModel:
 
 # OAuth OAuth2Settings data template.
 class OAuth2Settings(BaseModel):
-    CALLBACK_PORT = None  # type: Optional[str]
+    CALLBACK_PORT = None  # type: Optional[int]
     OAUTH_SERVER_URL = None  # type: Optional[str]
     CLIENT_ID = None  # type: Optional[str]
     CLIENT_SCOPES = None  # type: Optional[str]

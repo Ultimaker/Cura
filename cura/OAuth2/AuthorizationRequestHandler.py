@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Callable
+from typing import Optional, Callable, Tuple, Dict, Any, List
 
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
@@ -49,16 +49,17 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # This will cause the server to shut down, so we do it at the very end of the request handling.
             self.authorization_callback(token_response)
 
-    def _handleCallback(self, query: dict) -> ("ResponseData", Optional["AuthenticationResponse"]):
+    def _handleCallback(self, query: Dict[Any, List]) -> Tuple["ResponseData", Optional["AuthenticationResponse"]]:
         """
         Handler for the callback URL redirect.
         :param query: Dict containing the HTTP query parameters.
         :return: HTTP ResponseData containing a success page to show to the user.
         """
-        if self._queryGet(query, "code"):
+        code = self._queryGet(query, "code")
+        if code:
             # If the code was returned we get the access token.
             token_response = self.authorization_helpers.getAccessTokenUsingAuthorizationCode(
-                self._queryGet(query, "code"), self.verification_code)
+                code, self.verification_code)
 
         elif self._queryGet(query, "error_code") == "user_denied":
             # Otherwise we show an error message (probably the user clicked "Deny" in the auth dialog).
@@ -99,6 +100,6 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     @staticmethod
-    def _queryGet(query_data: dict, key: str, default=None) -> Optional[str]:
+    def _queryGet(query_data: Dict[Any, List], key: str, default=None) -> Optional[str]:
         """Helper for getting values from a pre-parsed query string"""
         return query_data.get(key, [default])[0]
