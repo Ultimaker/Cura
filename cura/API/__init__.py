@@ -1,5 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from PyQt5.QtCore import QObject, pyqtProperty
+
 from UM.PluginRegistry import PluginRegistry
 from cura.API.Backups import Backups
 from cura.API.Interface import Interface
@@ -12,7 +14,7 @@ from cura.API.Account import Account
 #   this API provides a version-safe interface with proper deprecation warnings
 #   etc. Usage of any other methods than the ones provided in this API can cause
 #   plug-ins to be unstable.
-class CuraAPI:
+class CuraAPI(QObject):
 
     # For now we use the same API version to be consistent.
     VERSION = PluginRegistry.APIVersion
@@ -23,4 +25,8 @@ class CuraAPI:
     # Interface API
     interface = Interface()
 
-    account = Account()
+    _account = Account()
+
+    @pyqtProperty(QObject, constant = True)
+    def account(self) -> Account:
+        return CuraAPI._account

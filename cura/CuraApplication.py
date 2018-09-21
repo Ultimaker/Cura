@@ -204,6 +204,7 @@ class CuraApplication(QtApplication):
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
+        self._cura_API = None
 
         self._physics = None
         self._volume = None
@@ -894,6 +895,12 @@ class CuraApplication(QtApplication):
             self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(self)
         return self._custom_quality_profile_drop_down_menu_model
 
+    def getCuraAPI(self, *args, **kwargs):
+        if self._cura_API is None:
+            from cura.API import CuraAPI
+            self._cura_API = CuraAPI()
+        return self._cura_API
+
     ##  Registers objects for the QML engine to use.
     #
     #   \param engine The QML engine.
@@ -941,6 +948,9 @@ class CuraApplication(QtApplication):
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)
         qmlRegisterType(SidebarCustomMenuItemsModel, "Cura", 1, 0, "SidebarCustomMenuItemsModel")
+
+        from cura.API import CuraAPI
+        qmlRegisterSingletonType(CuraAPI, "Cura", 1, 1, "API", self.getCuraAPI)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))

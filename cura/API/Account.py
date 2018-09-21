@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Tuple, Optional, Dict
 
-from PyQt5.QtCore.QObject import QObject, pyqtSignal, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
 from UM.Message import Message
 from cura.OAuth2.AuthorizationService import AuthorizationService
@@ -66,11 +66,26 @@ class Account(QObject):
             self._logged_in = logged_in
             self.loginStateChanged.emit()
 
+    @pyqtSlot()
     def login(self) -> None:
         if self._logged_in:
             # Nothing to do, user already logged in.
             return
         self._authorization_service.startAuthorizationFlow()
+
+    @pyqtProperty(str, notify=loginStateChanged)
+    def userName(self):
+        user_profile = self._authorization_service.getUserProfile()
+        if not user_profile:
+            return None
+        return user_profile.username
+
+    @pyqtProperty(str, notify = loginStateChanged)
+    def profileImageUrl(self):
+        user_profile = self._authorization_service.getUserProfile()
+        if not user_profile:
+            return None
+        return user_profile.profile_image_url
 
     #   Get the profile of the logged in user
     #   @returns None if no user is logged in, a dict containing user_id, username and profile_image_url
@@ -81,6 +96,7 @@ class Account(QObject):
             return None
         return user_profile.__dict__
 
+    @pyqtSlot()
     def logout(self) -> None:
         if not self._logged_in:
             return  # Nothing to do, user isn't logged in.
