@@ -5,9 +5,8 @@ from typing import Optional, Callable
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 
-# Plugin imports need to be relative to work in final builds.
-from .AuthorizationHelpers import AuthorizationHelpers
-from .models import AuthenticationResponse, ResponseData, HTTP_STATUS, ResponseStatus
+from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
+from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS, ResponseStatus
 
 
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):

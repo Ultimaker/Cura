@@ -10,9 +10,9 @@ from UM.Logger import Logger
 from UM.Signal import Signal
 
 # Plugin imports need to be relative to work in final builds.
-from .LocalAuthorizationServer import LocalAuthorizationServer
-from .AuthorizationHelpers import AuthorizationHelpers
-from .models import OAuth2Settings, AuthenticationResponse, UserProfile
+from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
+from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
+from cura.OAuth2.Models import OAuth2Settings, AuthenticationResponse, UserProfile
 
 
 class AuthorizationService:

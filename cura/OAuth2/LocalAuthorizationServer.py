@@ -8,10 +8,10 @@ from typing import Optional, Callable
 from UM.Logger import Logger
 
 # Plugin imports need to be relative to work in final builds.
-from .AuthorizationHelpers import AuthorizationHelpers
-from .AuthorizationRequestServer import AuthorizationRequestServer
-from .AuthorizationRequestHandler import AuthorizationRequestHandler
-from .models import AuthenticationResponse
+from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
+from cura.OAuth2.AuthorizationRequestServer import AuthorizationRequestServer
+from cura.OAuth2.AuthorizationRequestHandler import AuthorizationRequestHandler
+from cura.OAuth2.Models import AuthenticationResponse
 
 
 class LocalAuthorizationServer:

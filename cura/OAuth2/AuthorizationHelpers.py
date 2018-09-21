@@ -8,11 +8,9 @@ from typing import Optional
 
 import requests
 
-# As this module is specific for Cura plugins, we can rely on these imports.
 from UM.Logger import Logger
 
-# Plugin imports need to be relative to work in final builds.
-from .models import AuthenticationResponse, UserProfile, OAuth2Settings
+from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 
 
 class AuthorizationHelpers:

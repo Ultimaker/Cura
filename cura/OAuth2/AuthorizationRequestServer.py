@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from http.server import HTTPServer
 
-from .AuthorizationHelpers import AuthorizationHelpers
+from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
 
 class AuthorizationRequestServer(HTTPServer):
