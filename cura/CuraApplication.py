@@ -83,7 +83,6 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
-from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -1712,7 +1711,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def showMoreInformationDialogForAnonymousDataCollection(self):
         try:
-            slice_info = cast(SliceInfo, self._plugin_registry.getPluginObject("SliceInfoPlugin"))
+            slice_info = self._plugin_registry.getPluginObject("SliceInfoPlugin")
             slice_info.showMoreInfoDialog()
         except PluginNotFoundError:
             Logger.log("w", "Plugin SliceInfo was not found, so not able to show the info dialog.")
