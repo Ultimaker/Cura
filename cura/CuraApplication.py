@@ -112,8 +112,7 @@ from cura.ObjectsModel import ObjectsModel
 from UM.FlameProfiler import pyqtSlot
 
 
-if TYPE_CHECKING:
-    from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
+from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 
 numpy.seterr(all = "ignore")
