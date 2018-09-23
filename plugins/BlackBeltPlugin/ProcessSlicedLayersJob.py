@@ -29,6 +29,7 @@ from time import time
 from cura.Settings.ExtrudersModel import ExtrudersModel
 catalog = i18nCatalog("cura")
 
+EPSILON = 1e-5 # used for float comparison
 
 ##  Return a 4-tuple with floats 0-1 representing the html color code
 #
@@ -109,6 +110,11 @@ class ProcessSlicedLayersJob(Job):
             if layer.id < 0:
                 negative_layers += 1
 
+        ### START PATCH
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        half_outer_wall_thickness = global_container_stack.getProperty("wall_line_width_0", "value") / 2
+        ### END PATCH
+
         current_layer = 0
 
         for layer in self._layers:
@@ -145,9 +151,6 @@ class ProcessSlicedLayersJob(Job):
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
                 ### START PATCH
-                global_container_stack = Application.getInstance().getGlobalContainerStack()
-                half_outer_wall_thickness = global_container_stack.getProperty("wall_line_width_0", "value") / 2
-
                 # Adjust layer data to show Raft line type, if it is enabled
                 if global_container_stack.getProperty("blackbelt_raft", "value"):
                     raft_thickness = global_container_stack.getProperty("blackbelt_raft_thickness", "value")
@@ -167,7 +170,7 @@ class ProcessSlicedLayersJob(Job):
 
                     belt_wall_indices = []
                     for index,point in enumerate(points):
-                        if point[1] <= half_outer_wall_thickness:
+                        if point[1] <= half_outer_wall_thickness + EPSILON:
                             if last_point_hit_wall and line_feedrates[index - 1] > belt_wall_feedrate:
                                 belt_wall_indices.append(index)
                             last_point_hit_wall = True
