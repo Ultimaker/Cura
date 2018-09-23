@@ -17,6 +17,7 @@ from . import BlackBeltDecorator
 from . import BlackBeltSingleton
 
 from . import CuraApplicationPatches
+from . import PatchedCuraActions
 from . import BuildVolumePatches
 from . import CuraEngineBackendPatches
 from . import PrintInformationPatches
@@ -122,6 +123,9 @@ class BlackBeltPlugin(Extension):
         self._cura_engine_backend_patches = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
         self._print_information_patches = PrintInformationPatches.PrintInformationPatches(self._application.getPrintInformation())
         self._output_device_patches = {}
+
+        self._application._cura_actions = PatchedCuraActions.PatchedCuraActions()
+        self._application._qml_engine.rootContext().setContextProperty("CuraActions", self._application._cura_actions)
 
         container_registry = ContainerRegistry.getInstance()
         self._application._material_manager = PatchedMaterialManager.PatchedMaterialManager(container_registry, self._application)

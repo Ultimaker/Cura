@@ -39,7 +39,7 @@ class CuraApplicationPatches():
             leading_edge = self._application.getBuildVolume().getBoundingBox().front
 
             for fixed_node in fixed_nodes:
-                leading_edge = min(leading_edge, existing_node.getBoundingBox().back)
+                leading_edge = min(leading_edge, fixed_node.getBoundingBox().back)
 
             for node in nodes:
                 half_node_depth = node.getBoundingBox().depth / 2
