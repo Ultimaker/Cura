@@ -18,10 +18,13 @@ from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+
 from UM.Scene.Selection import Selection
 from UM.Signal import Signal
 from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.OpenGLContext import OpenGLContext
+
+
 from UM.View.View import View
 from UM.i18n import i18nCatalog
 from cura.Scene.ConvexHullNode import ConvexHullNode
@@ -30,11 +33,20 @@ from cura.CuraApplication import CuraApplication
 from .NozzleNode import NozzleNode
 from .SimulationPass import SimulationPass
 from .SimulationViewProxy import SimulationViewProxy
+import numpy
+import os.path
+
+from typing import Optional, TYPE_CHECKING, List
+
+if TYPE_CHECKING:
+    from UM.Scene.SceneNode import SceneNode
+    from UM.Scene.Scene import Scene
+    from UM.View.GL.ShaderProgram import ShaderProgram
+    from UM.View.RenderPass import RenderPass
+    from UM.Settings.ContainerStack import ContainerStack
 
 catalog = i18nCatalog("cura")
 
-import numpy
-import os.path
 
 ## View used to display g-code paths.
 class SimulationView(View):
@@ -44,7 +56,7 @@ class SimulationView(View):
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self._max_layers = 0
@@ -64,21 +76,21 @@ class SimulationView(View):
         self._busy = False
         self._simulation_running = False
 
-        self._ghost_shader = None
-        self._layer_pass = None
-        self._composite_pass = None
+        self._ghost_shader = None  # type: Optional["ShaderProgram"]
+        self._layer_pass = None  # type: Optional[SimulationPass]
+        self._composite_pass = None  # type: Optional[RenderPass]
         self._old_layer_bindings = None
-        self._simulationview_composite_shader = None
+        self._simulationview_composite_shader = None  # type: Optional["ShaderProgram"]
         self._old_composite_shader = None
 
-        self._global_container_stack = None
+        self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = SimulationViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
         self._resetSettings()
         self._legend_items = None
         self._show_travel_moves = False
-        self._nozzle_node = None
+        self._nozzle_node = None  # type: Optional[NozzleNode]
 
         Application.getInstance().getPreferences().addPreference("view/top_layer_count", 5)
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
@@ -102,29 +114,29 @@ class SimulationView(View):
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
 
-    def _evaluateCompatibilityMode(self):
+    def _evaluateCompatibilityMode(self) -> bool:
         return OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode"))
 
-    def _resetSettings(self):
-        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
+    def _resetSettings(self) -> None:
+        self._layer_view_type = 0  # type: int # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
-        self._show_travel_moves = 0
-        self._show_helpers = 1
-        self._show_skin = 1
-        self._show_infill = 1
+        self._show_travel_moves = False
+        self._show_helpers = True
+        self._show_skin = True
+        self._show_infill = True
         self.resetLayerData()
 
-    def getActivity(self):
+    def getActivity(self) -> bool:
         return self._activity
 
-    def setActivity(self, activity):
+    def setActivity(self, activity: bool) -> None:
         if self._activity == activity:
             return
         self._activity = activity
         self.activityChanged.emit()
 
-    def getSimulationPass(self):
+    def getSimulationPass(self) -> SimulationPass:
         if not self._layer_pass:
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
@@ -133,30 +145,30 @@ class SimulationView(View):
             self._layer_pass.setSimulationView(self)
         return self._layer_pass
 
-    def getCurrentLayer(self):
+    def getCurrentLayer(self) -> int:
         return self._current_layer_num
 
-    def getMinimumLayer(self):
+    def getMinimumLayer(self) -> int:
         return self._minimum_layer_num
 
-    def getMaxLayers(self):
+    def getMaxLayers(self) -> int:
         return self._max_layers
 
-    def getCurrentPath(self):
+    def getCurrentPath(self) -> int:
         return self._current_path_num
 
-    def getMinimumPath(self):
+    def getMinimumPath(self) -> int:
         return self._minimum_path_num
 
-    def getMaxPaths(self):
+    def getMaxPaths(self) -> int:
         return self._max_paths
 
-    def getNozzleNode(self):
+    def getNozzleNode(self) -> NozzleNode:
         if not self._nozzle_node:
             self._nozzle_node = NozzleNode()
         return self._nozzle_node
 
-    def _onSceneChanged(self, node):
+    def _onSceneChanged(self, node: "SceneNode") -> None:
         if node.getMeshData() is None:
             self.resetLayerData()
 
@@ -164,21 +176,21 @@ class SimulationView(View):
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
 
-    def isBusy(self):
+    def isBusy(self) -> bool:
         return self._busy
 
-    def setBusy(self, busy):
+    def setBusy(self, busy: bool) -> None:
         if busy != self._busy:
             self._busy = busy
             self.busyChanged.emit()
 
-    def isSimulationRunning(self):
+    def isSimulationRunning(self) -> bool:
         return self._simulation_running
 
-    def setSimulationRunning(self, running):
+    def setSimulationRunning(self, running: bool) -> None:
         self._simulation_running = running
 
-    def resetLayerData(self):
+    def resetLayerData(self) -> None:
         self._current_layer_mesh = None
         self._current_layer_jumps = None
         self._max_feedrate = sys.float_info.min
@@ -186,7 +198,7 @@ class SimulationView(View):
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
 
-    def beginRendering(self):
+    def beginRendering(self) -> None:
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
@@ -204,7 +216,7 @@ class SimulationView(View):
                 if (node.getMeshData()) and node.isVisible():
                     renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
 
-    def setLayer(self, value):
+    def setLayer(self, value: int) -> None:
         if self._current_layer_num != value:
             self._current_layer_num = value
             if self._current_layer_num < 0:
@@ -218,7 +230,7 @@ class SimulationView(View):
 
             self.currentLayerNumChanged.emit()
 
-    def setMinimumLayer(self, value):
+    def setMinimumLayer(self, value: int) -> None:
         if self._minimum_layer_num != value:
             self._minimum_layer_num = value
             if self._minimum_layer_num < 0:
@@ -232,7 +244,7 @@ class SimulationView(View):
 
             self.currentLayerNumChanged.emit()
 
-    def setPath(self, value):
+    def setPath(self, value: int) -> None:
         if self._current_path_num != value:
             self._current_path_num = value
             if self._current_path_num < 0:
@@ -246,7 +258,7 @@ class SimulationView(View):
 
             self.currentPathNumChanged.emit()
 
-    def setMinimumPath(self, value):
+    def setMinimumPath(self, value: int) -> None:
         if self._minimum_path_num != value:
             self._minimum_path_num = value
             if self._minimum_path_num < 0:
@@ -263,24 +275,24 @@ class SimulationView(View):
     ##  Set the layer view type
     #
     #   \param layer_view_type integer as in SimulationView.qml and this class
-    def setSimulationViewType(self, layer_view_type):
+    def setSimulationViewType(self, layer_view_type: int) -> None:
         self._layer_view_type = layer_view_type
         self.currentLayerNumChanged.emit()
 
     ##  Return the layer view type, integer as in SimulationView.qml and this class
-    def getSimulationViewType(self):
+    def getSimulationViewType(self) -> int:
         return self._layer_view_type
 
     ##  Set the extruder opacity
     #
     #   \param extruder_nr 0..3
     #   \param opacity 0.0 .. 1.0
-    def setExtruderOpacity(self, extruder_nr, opacity):
+    def setExtruderOpacity(self, extruder_nr: int, opacity: float) -> None:
         if 0 <= extruder_nr <= 3:
             self._extruder_opacity[extruder_nr] = opacity
             self.currentLayerNumChanged.emit()
 
-    def getExtruderOpacities(self):
+    def getExtruderOpacities(self)-> List[float]:
         return self._extruder_opacity
 
     def setShowTravelMoves(self, show):
@@ -290,46 +302,46 @@ class SimulationView(View):
     def getShowTravelMoves(self):
         return self._show_travel_moves
 
-    def setShowHelpers(self, show):
+    def setShowHelpers(self, show: bool) -> None:
         self._show_helpers = show
         self.currentLayerNumChanged.emit()
 
-    def getShowHelpers(self):
+    def getShowHelpers(self) -> bool:
         return self._show_helpers
 
-    def setShowSkin(self, show):
+    def setShowSkin(self, show: bool) -> None:
         self._show_skin = show
         self.currentLayerNumChanged.emit()
 
-    def getShowSkin(self):
+    def getShowSkin(self) -> bool:
         return self._show_skin
 
-    def setShowInfill(self, show):
+    def setShowInfill(self, show: bool) -> None:
         self._show_infill = show
         self.currentLayerNumChanged.emit()
 
-    def getShowInfill(self):
+    def getShowInfill(self) -> bool:
         return self._show_infill
 
-    def getCompatibilityMode(self):
+    def getCompatibilityMode(self) -> bool:
         return self._compatibility_mode
 
-    def getExtruderCount(self):
+    def getExtruderCount(self) -> int:
         return self._extruder_count
 
-    def getMinFeedrate(self):
+    def getMinFeedrate(self) -> float:
         return self._min_feedrate
 
-    def getMaxFeedrate(self):
+    def getMaxFeedrate(self) -> float:
         return self._max_feedrate
 
-    def getMinThickness(self):
+    def getMinThickness(self) -> float:
         return self._min_thickness
 
-    def getMaxThickness(self):
+    def getMaxThickness(self) -> float:
         return self._max_thickness
 
-    def calculateMaxLayers(self):
+    def calculateMaxLayers(self) -> None:
         scene = self.getController().getScene()
 
         self._old_max_layers = self._max_layers
@@ -383,7 +395,7 @@ class SimulationView(View):
                 self.maxLayersChanged.emit()
         self._startUpdateTopLayers()
 
-    def calculateMaxPathsOnLayer(self, layer_num):
+    def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
         # Update the currentPath
         scene = self.getController().getScene()
         for node in DepthFirstIterator(scene.getRoot()):
@@ -415,10 +427,10 @@ class SimulationView(View):
     def getProxy(self, engine, script_engine):
         return self._proxy
 
-    def endRendering(self):
+    def endRendering(self) -> None:
         pass
 
-    def event(self, event):
+    def event(self, event) -> bool:
         modifiers = QApplication.keyboardModifiers()
         ctrl_is_active = modifiers & Qt.ControlModifier
         shift_is_active = modifiers & Qt.ShiftModifier
@@ -447,7 +459,7 @@ class SimulationView(View):
                 if QOpenGLContext.currentContext() is None:
                     Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
                     CuraApplication.getInstance().callLater(lambda e=event: self.event(e))
-                    return
+                    return False
 
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
@@ -480,11 +492,14 @@ class SimulationView(View):
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
-
-            self._nozzle_node.setParent(None)
+            if self._nozzle_node:
+                self._nozzle_node.setParent(None)
             self.getRenderer().removeRenderPass(self._layer_pass)
-            self._composite_pass.setLayerBindings(self._old_layer_bindings)
-            self._composite_pass.setCompositeShader(self._old_composite_shader)
+            if self._composite_pass:
+                self._composite_pass.setLayerBindings(self._old_layer_bindings)
+                self._composite_pass.setCompositeShader(self._old_composite_shader)
+
+        return False
 
     def getCurrentLayerMesh(self):
         return self._current_layer_mesh
@@ -492,7 +507,7 @@ class SimulationView(View):
     def getCurrentLayerJumps(self):
         return self._current_layer_jumps
 
-    def _onGlobalStackChanged(self):
+    def _onGlobalStackChanged(self) -> None:
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -504,17 +519,17 @@ class SimulationView(View):
         else:
             self._wireprint_warning_message.hide()
 
-    def _onPropertyChanged(self, key, property_name):
+    def _onPropertyChanged(self, key: str, property_name: str) -> None:
         if key == "wireframe_enabled" and property_name == "value":
-            if self._global_container_stack.getProperty("wireframe_enabled", "value"):
+            if self._global_container_stack and self._global_container_stack.getProperty("wireframe_enabled", "value"):
                 self._wireprint_warning_message.show()
             else:
                 self._wireprint_warning_message.hide()
 
-    def _onCurrentLayerNumChanged(self):
+    def _onCurrentLayerNumChanged(self) -> None:
         self.calculateMaxPathsOnLayer(self._current_layer_num)
 
-    def _startUpdateTopLayers(self):
+    def _startUpdateTopLayers(self) -> None:
         if not self._compatibility_mode:
             return
 
@@ -525,10 +540,10 @@ class SimulationView(View):
         self.setBusy(True)
 
         self._top_layers_job = _CreateTopLayersJob(self._controller.getScene(), self._current_layer_num, self._solid_layers)
-        self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)
-        self._top_layers_job.start()
+        self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)  # type: ignore  # mypy doesn't understand the whole private class thing that's going on here.
+        self._top_layers_job.start()  # type: ignore
 
-    def _updateCurrentLayerMesh(self, job):
+    def _updateCurrentLayerMesh(self, job: "_CreateTopLayersJob") -> None:
         self.setBusy(False)
 
         if not job.getResult():
@@ -539,9 +554,9 @@ class SimulationView(View):
             self._current_layer_jumps = job.getResult().get("jumps")
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
 
-        self._top_layers_job = None
+        self._top_layers_job = None  # type: Optional["_CreateTopLayersJob"]
 
-    def _updateWithPreferences(self):
+    def _updateWithPreferences(self) -> None:
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
@@ -563,7 +578,7 @@ class SimulationView(View):
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()
 
-    def _onPreferencesChanged(self, preference):
+    def _onPreferencesChanged(self, preference: str) -> None:
         if preference not in {
             "view/top_layer_count",
             "view/only_show_top_layers",
@@ -581,7 +596,7 @@ class SimulationView(View):
 
 
 class _CreateTopLayersJob(Job):
-    def __init__(self, scene, layer_number, solid_layers):
+    def __init__(self, scene: "Scene", layer_number: int, solid_layers: int) -> None:
         super().__init__()
 
         self._scene = scene
@@ -589,7 +604,7 @@ class _CreateTopLayersJob(Job):
         self._solid_layers = solid_layers
         self._cancel = False
 
-    def run(self):
+    def run(self) -> None:
         layer_data = None
         for node in DepthFirstIterator(self._scene.getRoot()):
             layer_data = node.callDecoration("getLayerData")
@@ -638,6 +653,6 @@ class _CreateTopLayersJob(Job):
 
         self.setResult({"layers": layer_mesh.build(), "jumps": jump_mesh})
 
-    def cancel(self):
+    def cancel(self) -> None:
         self._cancel = True
         super().cancel()

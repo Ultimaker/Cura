@@ -28,7 +28,7 @@ import copy
 
 from typing import List, Optional
 
-# Setting for clearance around the prime
+# Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
 
 

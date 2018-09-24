@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.4\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2018-03-29 08:36+0200\n"
+"Project-Id-Version: Cura 3.5\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com"
+"POT-Creation-Date: 2018-09-19 17:07+0000\n"
 "PO-Revision-Date: 2018-04-19 13:26+0900\n"
 "Last-Translator: Jinbuhm Kim <Jinbuhm.Kim@gmail.com>\n"
 "Language-Team: Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
@@ -58,7 +58,9 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "시작과 동시에형실행될 G 코드 명령어 \n."
+msgstr ""
+"시작과 동시에형실행될 G 코드 명령어 \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,7 +72,9 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "맨 마지막에 실행될 G 코드 명령 \n."
+msgstr ""
+"맨 마지막에 실행될 G 코드 명령 \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -81,6 +85,16 @@ msgstr "재료 GUID"
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
 msgstr "재료의 GUID. 자동으로 설정됩니다. "
+
+#: fdmprinter.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "직경"
+
+#: fdmprinter.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용될 필라멘트의 직경과 일치시킵니다."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -1058,6 +1072,16 @@ msgid "Zig Zag"
 msgstr "지그재그"
 
 #: fdmprinter.def.json
+msgctxt "connect_skin_polygons label"
+msgid "Connect Top/Bottom Polygons"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons description"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr "상단/하단 라인 길 방향"
@@ -1136,6 +1160,26 @@ msgstr "내부 벽 겹침 보정"
 msgctxt "travel_compensate_overlapping_walls_x_enabled description"
 msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
 msgstr "이미 벽이있는 곳에 프린팅되는 내부 벽 부분에 대한 흐름을 보정하십시오."
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow label"
+msgid "Minimum Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow description"
+msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract label"
+msgid "Prefer Retract"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract description"
+msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps label"
@@ -1503,11 +1547,6 @@ msgid "Concentric"
 msgstr "동심원"
 
 #: fdmprinter.def.json
-msgctxt "infill_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "동심원 3D"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "지그재그"
@@ -1531,6 +1570,16 @@ msgstr "내부채움 선 연결"
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
 msgstr "내벽의 형태를 따라가는 선을 사용하여 내부채움 패턴과 내벽이 만나는 끝을 연결합니다. 이 설정을 사용하면 내부채움이 벽에 더 잘 붙게되어 내부채움이 수직면의 품질에 미치는 영향을 줄일 수 있습니다. 이 설정을 해제하면 사용되는 재료의 양이 줄어듭니다."
+
+#: fdmprinter.def.json
+msgctxt "connect_infill_polygons label"
+msgid "Connect Infill Polygons"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_infill_polygons description"
+msgid "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1561,6 +1610,28 @@ msgstr "내부채움 Y 오프셋"
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is moved this distance along the Y axis."
 msgstr "내부채움 패턴이 Y축을 따라 이 거리만큼 이동합니다."
+
+#: fdmprinter.def.json
+msgctxt "infill_multiplier label"
+msgid "Infill Line Multiplier"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_multiplier description"
+msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_wall_line_count label"
+msgid "Extra Infill Wall Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_wall_line_count description"
+msgid ""
+"Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
+"This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1871,16 +1942,6 @@ msgstr "초기 레이어의 빌드 플레이트 온도"
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer."
 msgstr "첫 번째 레이어에서 가열 된 빌드 플레이트에 사용되는 온도."
-
-#: fdmprinter.def.json
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr "직경"
-
-#: fdmprinter.def.json
-msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용될 필라멘트의 직경과 일치시킵니다."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2719,8 +2780,8 @@ msgstr "Combing 모드"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
-msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
-msgstr "빗질은 여행 할 때 이미 인쇄 된 영역 내에 노즐을 유지합니다. 이로 인해 여행 이동이 약간 더 길어 지지만 수축의 필요성은 줄어 듭니다. 빗질이 꺼져 있으면 재료가 후퇴하고 노즐이 직선으로 다음 점으로 이동합니다. 또한 infill 내에서만 빗질하여 상 / 하 피부 영역을 빗질하는 것을 피할 수 있습니다."
+msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2736,6 +2797,11 @@ msgstr "모두"
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
 msgstr "스킨에 없음"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option infill"
+msgid "Within Infill"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
@@ -3118,11 +3184,6 @@ msgid "Concentric"
 msgstr "동심원의"
 
 #: fdmprinter.def.json
-msgctxt "support_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "동심원 3D"
-
-#: fdmprinter.def.json
 msgctxt "support_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "지그재그"
@@ -3181,6 +3242,26 @@ msgstr "서포트 선 거리"
 msgctxt "support_line_distance description"
 msgid "Distance between the printed support structure lines. This setting is calculated by the support density."
 msgstr "프린팅 된 서포트 구조 선 사이의 거리. 이 설정은 서포트 밀도로 계산됩니다."
+
+#: fdmprinter.def.json
+msgctxt "support_initial_layer_line_distance label"
+msgid "Initial Layer Support Line Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_initial_layer_line_distance description"
+msgid "Distance between the printed initial layer support structure lines. This setting is calculated by the support density."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_angle label"
+msgid "Support Infill Line Direction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_angle description"
+msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3473,11 +3554,6 @@ msgid "Concentric"
 msgstr "동심원의"
 
 #: fdmprinter.def.json
-msgctxt "support_interface_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "동심원 3D"
-
-#: fdmprinter.def.json
 msgctxt "support_interface_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "지그재그"
@@ -3511,11 +3587,6 @@ msgstr "삼각형"
 msgctxt "support_roof_pattern option concentric"
 msgid "Concentric"
 msgstr "동심원의"
-
-#: fdmprinter.def.json
-msgctxt "support_roof_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "동심원의 3D"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option zigzag"
@@ -3553,14 +3624,29 @@ msgid "Concentric"
 msgstr "동심원의"
 
 #: fdmprinter.def.json
-msgctxt "support_bottom_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "동심원 3D"
-
-#: fdmprinter.def.json
 msgctxt "support_bottom_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "지그재그"
+
+#: fdmprinter.def.json
+msgctxt "support_fan_enable label"
+msgid "Fan Speed Override"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_fan_enable description"
+msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_supported_skin_fan_speed label"
+msgid "Supported Skin Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_supported_skin_fan_speed description"
+msgid "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
@@ -3712,7 +3798,9 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
+msgstr ""
+"프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
+"이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3886,8 +3974,8 @@ msgstr "기본 래프트 층에있는 선의 너비. 이것은 빌드 플레이�
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
-msgid "Raft Line Spacing"
-msgstr "래프트 선 간격"
+msgid "Raft Base Line Spacing"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing description"
@@ -4105,16 +4193,6 @@ msgid "The minimum volume for each layer of the prime tower in order to purge en
 msgstr "충분한 재료를 퍼지하기 위해 프라임 타워 각 층의 최소 부피."
 
 #: fdmprinter.def.json
-msgctxt "prime_tower_wall_thickness label"
-msgid "Prime Tower Thickness"
-msgstr "프라임 타워 두께"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_wall_thickness description"
-msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
-msgstr "속이 빈 프라임 타워의 두께. 프라임 타워의 최소 볼륨의 절반보다 큰 두께는 조밀 한 소수 타워가 됩니다."
-
-#: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
 msgstr "프라임 타워 X 위치"
@@ -4153,26 +4231,6 @@ msgstr "프라임 타워에서 비활성 노즐 닦기"
 msgctxt "prime_tower_wipe_enabled description"
 msgid "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower."
 msgstr "하나의 노즐로 프라임 타워를 프린팅 한 후, 다른 타워의 이물질을 프라임 타워에서 닦아냅니다."
-
-#: fdmprinter.def.json
-msgctxt "dual_pre_wipe label"
-msgid "Wipe Nozzle After Switch"
-msgstr "전환 후 노즐 닦기"
-
-#: fdmprinter.def.json
-msgctxt "dual_pre_wipe description"
-msgid "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print."
-msgstr "익스트루더를 전환한 후, 프린팅을 한 노즐에서 흐르는 재료를 닦아냅니다. 이렇게 하면 흘러 나온 물질이 출력물의 표면 품질에 영향을 주지 않는 위치에서 천천히 닦아줍니다."
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_purge_volume label"
-msgid "Prime Tower Purge Volume"
-msgstr "프라임 타워 퍼지 볼륨"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_purge_volume description"
-msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
-msgstr "프라임 타워에서 닦을 때 제거 할 필라멘트의 양. 퍼지는 노즐이 작동하지 않을 때 새어 나온 필라멘트를 보정하는 데 유용합니다."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4658,6 +4716,16 @@ msgstr "재료 공급 온도 그래프"
 msgctxt "material_flow_temp_graph description"
 msgid "Data linking material flow (in mm3 per second) to temperature (degrees Celsius)."
 msgstr "재료 공급 데이터 (mm3 / 초) - 온도 (섭씨)."
+
+#: fdmprinter.def.json
+msgctxt "minimum_polygon_circumference label"
+msgid "Minimum Polygon Circumference"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_polygon_circumference description"
+msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
@@ -5317,6 +5385,26 @@ msgid "Threshold whether to use a smaller layer or not. This number is compared 
 msgstr "더 작은 레이어를 사용할지 여부에 대한 임계 값. 이 숫자는 레이어의 가장 급한 경사의 탄젠트와 비교됩니다."
 
 #: fdmprinter.def.json
+msgctxt "wall_overhang_angle label"
+msgid "Overhanging Wall Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_speed_factor label"
+msgid "Overhanging Wall Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_speed_factor description"
+msgid "Overhanging walls will be printed at this percentage of their normal print speed."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled label"
 msgid "Enable Bridge Settings"
 msgstr "브릿지 설정 사용"
@@ -5345,16 +5433,6 @@ msgstr "브릿지 스킨 서포트 임계값"
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "스킨 영역이 해당 영역의 비율 미만으로 생성되면 브릿지 설정을 사용하여 인쇄하십시오. 그렇지 않으면 일반 스킨 설정을 사용하여 인쇄됩니다."
-
-#: fdmprinter.def.json
-msgctxt "bridge_wall_max_overhang label"
-msgid "Bridge Wall Max Overhang"
-msgstr "브리지 벽 최대 오버행"
-
-#: fdmprinter.def.json
-msgctxt "bridge_wall_max_overhang description"
-msgid "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings."
-msgstr "브릿지 설정을 사용하여 벽을 인쇄하기 전에 벽 선 아래의 에어영역의 최대 허용 폭. 벽 선 너비의 백분율로 표시됩니다. 에어 갭이 이보다 넓은 경우 브리지 설정을 사용하여 벽 선이 인쇄됩니다. 그렇지 않으면 벽 선이 일반 설정을 사용하여 인쇄됩니다. 값이 낮을수록 브릿지 설정을 사용하여 오버행 된 벽 선이 인쇄 될 가능성이 높아집니다."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -5575,6 +5653,66 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+#~ msgctxt "infill_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "동심원 3D"
+
+#~ msgctxt "retraction_combing description"
+#~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
+#~ msgstr "빗질은 여행 할 때 이미 인쇄 된 영역 내에 노즐을 유지합니다. 이로 인해 여행 이동이 약간 더 길어 지지만 수축의 필요성은 줄어 듭니다. 빗질이 꺼져 있으면 재료가 후퇴하고 노즐이 직선으로 다음 점으로 이동합니다. 또한 infill 내에서만 빗질하여 상 / 하 피부 영역을 빗질하는 것을 피할 수 있습니다."
+
+#~ msgctxt "support_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "동심원 3D"
+
+#~ msgctxt "support_interface_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "동심원 3D"
+
+#~ msgctxt "support_roof_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "동심원의 3D"
+
+#~ msgctxt "support_bottom_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "동심원 3D"
+
+#~ msgctxt "raft_base_line_spacing label"
+#~ msgid "Raft Line Spacing"
+#~ msgstr "래프트 선 간격"
+
+#~ msgctxt "prime_tower_wall_thickness label"
+#~ msgid "Prime Tower Thickness"
+#~ msgstr "프라임 타워 두께"
+
+#~ msgctxt "prime_tower_wall_thickness description"
+#~ msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
+#~ msgstr "속이 빈 프라임 타워의 두께. 프라임 타워의 최소 볼륨의 절반보다 큰 두께는 조밀 한 소수 타워가 됩니다."
+
+#~ msgctxt "dual_pre_wipe label"
+#~ msgid "Wipe Nozzle After Switch"
+#~ msgstr "전환 후 노즐 닦기"
+
+#~ msgctxt "dual_pre_wipe description"
+#~ msgid "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print."
+#~ msgstr "익스트루더를 전환한 후, 프린팅을 한 노즐에서 흐르는 재료를 닦아냅니다. 이렇게 하면 흘러 나온 물질이 출력물의 표면 품질에 영향을 주지 않는 위치에서 천천히 닦아줍니다."
+
+#~ msgctxt "prime_tower_purge_volume label"
+#~ msgid "Prime Tower Purge Volume"
+#~ msgstr "프라임 타워 퍼지 볼륨"
+
+#~ msgctxt "prime_tower_purge_volume description"
+#~ msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
+#~ msgstr "프라임 타워에서 닦을 때 제거 할 필라멘트의 양. 퍼지는 노즐이 작동하지 않을 때 새어 나온 필라멘트를 보정하는 데 유용합니다."
+
+#~ msgctxt "bridge_wall_max_overhang label"
+#~ msgid "Bridge Wall Max Overhang"
+#~ msgstr "브리지 벽 최대 오버행"
+
+#~ msgctxt "bridge_wall_max_overhang description"
+#~ msgid "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings."
+#~ msgstr "브릿지 설정을 사용하여 벽을 인쇄하기 전에 벽 선 아래의 에어영역의 최대 허용 폭. 벽 선 너비의 백분율로 표시됩니다. 에어 갭이 이보다 넓은 경우 브리지 설정을 사용하여 벽 선이 인쇄됩니다. 그렇지 않으면 벽 선이 일반 설정을 사용하여 인쇄됩니다. 값이 낮을수록 브릿지 설정을 사용하여 오버행 된 벽 선이 인쇄 될 가능성이 높아집니다."
 
 #~ msgctxt "optimize_wall_printing_order description"
 #~ msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."

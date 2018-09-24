@@ -21,8 +21,10 @@ Item
             left: parent.left
             leftMargin: UM.Theme.getSize("default_margin").width
         }
+
         ToolboxTabButton
         {
+            id: pluginsTabButton
             text: catalog.i18nc("@title:tab", "Plugins")
             active: toolbox.viewCategory == "plugin" && enabled
             enabled: toolbox.viewPage != "loading" && toolbox.viewPage != "errored"
@@ -36,6 +38,7 @@ Item
 
         ToolboxTabButton
         {
+            id: materialsTabButton
             text: catalog.i18nc("@title:tab", "Materials")
             active: toolbox.viewCategory == "material" && enabled
             enabled: toolbox.viewPage != "loading" && toolbox.viewPage != "errored"
@@ -49,6 +52,7 @@ Item
     }
     ToolboxTabButton
     {
+        id: installedTabButton
         text: catalog.i18nc("@title:tab", "Installed")
         active: toolbox.viewCategory == "installed"
         anchors

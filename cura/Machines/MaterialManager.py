@@ -204,12 +204,11 @@ class MaterialManager(QObject):
         for material_metadata in material_metadatas.values():
             self.__addMaterialMetadataIntoLookupTree(material_metadata)
 
-        self.materialsUpdated.emit()
-
         favorites = self._application.getPreferences().getValue("cura/favorite_materials")
         for item in favorites.split(";"):
             self._favorites.add(item)
-        self.favoritesUpdated.emit()
+
+        self.materialsUpdated.emit()
 
     def __addMaterialMetadataIntoLookupTree(self, material_metadata: Dict[str, Any]) -> None:
         material_id = material_metadata["id"]
@@ -338,6 +337,7 @@ class MaterialManager(QObject):
         machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
 
         material_id_metadata_dict = dict()  # type: Dict[str, MaterialNode]
+        excluded_materials = set()
         for current_node in nodes_to_check:
             if current_node is None:
                 continue
@@ -346,12 +346,14 @@ class MaterialManager(QObject):
             # Do not exclude other materials that are of the same type.
             for material_id, node in current_node.material_map.items():
                 if material_id in machine_exclude_materials:
-                    Logger.log("d", "Exclude material [%s] for machine [%s]",
-                               material_id, machine_definition.getId())
+                    excluded_materials.add(material_id)
                     continue
 
                 if material_id not in material_id_metadata_dict:
                     material_id_metadata_dict[material_id] = node
+
+        if excluded_materials:
+            Logger.log("d", "Exclude materials {excluded_materials} for machine {machine_definition_id}".format(excluded_materials = ", ".join(excluded_materials), machine_definition_id = machine_definition_id))
 
         return material_id_metadata_dict
 
@@ -590,6 +592,12 @@ class MaterialManager(QObject):
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
             self._container_registry.addContainer(container_to_add)
+
+
+        # if the duplicated material was favorite then the new material should also be added to favorite.
+        if root_material_id in self.getFavorites():
+            self.addFavorite(new_base_id)
+
         return new_base_id
 
     #
@@ -629,7 +637,7 @@ class MaterialManager(QObject):
     @pyqtSlot(str)
     def addFavorite(self, root_material_id: str) -> None:
         self._favorites.add(root_material_id)
-        self.favoritesUpdated.emit()
+        self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
         self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
@@ -638,7 +646,7 @@ class MaterialManager(QObject):
     @pyqtSlot(str)
     def removeFavorite(self, root_material_id: str) -> None:
         self._favorites.remove(root_material_id)
-        self.favoritesUpdated.emit()
+        self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
         self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))

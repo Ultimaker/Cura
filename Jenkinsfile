@@ -14,10 +14,21 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
         catchError {
             stage('Pre Checks') {
                 if (isUnix()) {
+                    // Check shortcut keys
                     try {
                         sh """
                             echo 'Check for duplicate shortcut keys in all translation files.'
                             ${env.CURA_ENVIRONMENT_PATH}/master/bin/python3 scripts/check_shortcut_keys.py
+                        """
+                    } catch(e) {
+                        currentBuild.result = "UNSTABLE"
+                    }
+
+                    // Check setting visibilities
+                    try {
+                        sh """
+                            echo 'Check for duplicate shortcut keys in all translation files.'
+                            ${env.CURA_ENVIRONMENT_PATH}/master/bin/python3 scripts/check_setting_visibility.py
                         """
                     } catch(e) {
                         currentBuild.result = "UNSTABLE"

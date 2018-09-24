@@ -12,7 +12,8 @@ class MaterialTypesModel(ListModel):
         super().__init__(parent)
 
         self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "colors")
+        self.addRoleName(Qt.UserRole + 2, "brand")
+        self.addRoleName(Qt.UserRole + 3, "colors")
 
 class MaterialBrandsModel(BaseMaterialsModel):
 
@@ -84,6 +85,7 @@ class MaterialBrandsModel(BaseMaterialsModel):
             for material_type, material_list in material_dict.items():
                 material_type_item = {
                     "name": material_type,
+                    "brand": brand,
                     "colors": BaseMaterialsModel(self)
                 }
                 material_type_item["colors"].clear()
