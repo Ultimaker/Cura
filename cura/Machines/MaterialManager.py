@@ -352,7 +352,8 @@ class MaterialManager(QObject):
                 if material_id not in material_id_metadata_dict:
                     material_id_metadata_dict[material_id] = node
 
-        Logger.log("d", "Exclude materials {excluded_materials} for machine {machine_definition_id}".format(excluded_materials = ", ".join(excluded_materials), machine_definition_id = machine_definition_id))
+        if excluded_materials:
+            Logger.log("d", "Exclude materials {excluded_materials} for machine {machine_definition_id}".format(excluded_materials = ", ".join(excluded_materials), machine_definition_id = machine_definition_id))
 
         return material_id_metadata_dict
 
