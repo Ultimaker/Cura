@@ -147,8 +147,8 @@ class CuraApplicationPatches():
                 if not build_plate_empty or leading_edge < half_node_depth:
                     node.setPosition(Vector(0, 0, leading_edge - half_node_depth - self._margin_between_models))
 
-            ### END PATCH
-            if file_extension != "3mf":
+            if file_extension != "3mf" and not is_blackbelt_printer:
+                ### END PATCH
                 if node.callDecoration("isSliceable"):
                     # Only check position if it's not already blatantly obvious that it won't fit.
                     if node.getBoundingBox() is None or self._application._volume.getBoundingBox() is None or node.getBoundingBox().width < self._application._volume.getBoundingBox().width or node.getBoundingBox().depth < self._application._volume.getBoundingBox().depth:
