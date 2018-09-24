@@ -1,8 +1,10 @@
+import webbrowser
 from unittest.mock import MagicMock, patch
 
 from UM.Preferences import Preferences
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 from cura.OAuth2.AuthorizationService import AuthorizationService
+from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import OAuth2Settings, AuthenticationResponse, UserProfile
 
 CALLBACK_PORT = 32118
@@ -51,6 +53,24 @@ def test_failedLogin():
     # Validate that there is no user profile or token
     assert authorization_service.getUserProfile() is None
     assert authorization_service.getAccessToken() is None
+
+
+def test_localAuthServer():
+    preferences = Preferences()
+    authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
+    with patch.object(webbrowser, "open_new") as webrowser_open:
+        with patch.object(LocalAuthorizationServer, "start") as start_auth_server:
+            with patch.object(LocalAuthorizationServer, "stop") as stop_auth_server:
+                authorization_service.startAuthorizationFlow()
+                assert webrowser_open.call_count == 1
+
+                # Ensure that the Authorization service tried to start the server.
+                assert start_auth_server.call_count == 1
+                assert stop_auth_server.call_count == 0
+                authorization_service._onAuthStateChanged(FAILED_AUTH_RESPONSE)
+
+                # Ensure that it stopped the server.
+                assert stop_auth_server.call_count == 1
 
 
 def test_loginAndLogout():
