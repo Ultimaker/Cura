@@ -173,20 +173,21 @@ class BlackBeltPlugin(Extension):
 
                 if extruder_stack:
                     # Make sure the extruder material diameter matches the global material diameter
-                    material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
-                    definition_changes_container = extruder_stack.definitionChanges
-                    if "material_diameter" not in definition_changes_container.getAllKeys():
-                        # Make sure there is a definition_changes container to store the machine settings
-                        if definition_changes_container == ContainerRegistry.getInstance().getEmptyInstanceContainer():
-                            definition_changes_container = CuraStackBuilder.createDefinitionChangesContainer(
-                                extruder_stack, extruder_stack.getId() + "_settings")
+                    material_diameter = extruder_stack.getProperty("material_diameter", "value")
+                    if material_diameter:
+                        definition_changes_container = extruder_stack.definitionChanges
+                        if "material_diameter" not in definition_changes_container.getAllKeys():
+                            # Make sure there is a definition_changes container to store the machine settings
+                            if definition_changes_container == ContainerRegistry.getInstance().getEmptyInstanceContainer():
+                                definition_changes_container = CuraStackBuilder.createDefinitionChangesContainer(
+                                    extruder_stack, extruder_stack.getId() + "_settings")
 
-                        definition_changes_container.setProperty("material_diameter", "value", material_diameter)
+                            definition_changes_container.setProperty("material_diameter", "value", material_diameter)
 
-                    # Make sure approximate diameters are in check
-                    approximate_diameter = str(round(material_diameter))
-                    extruder_stack.setMetaDataEntry("approximate_diameter", approximate_diameter)
-                    self._global_container_stack.setMetaDataEntry("approximate_diameter", approximate_diameter)
+                        # Make sure approximate diameters are in check
+                        approximate_diameter = str(round(material_diameter))
+                        extruder_stack.setMetaDataEntry("approximate_diameter", approximate_diameter)
+                        self._global_container_stack.setMetaDataEntry("approximate_diameter", approximate_diameter)
 
                     # Make sure the extruder quality is a blackbelt quality profile
                     if extruder_stack.quality != self._application.empty_quality_container and extruder_stack.quality.getDefinition().getId() != "blackbelt":
