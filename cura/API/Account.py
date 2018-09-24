@@ -36,11 +36,11 @@ class Account(QObject):
             OAUTH_SERVER_URL= self._oauth_root,
             CALLBACK_PORT=self._callback_port,
             CALLBACK_URL="http://localhost:{}/callback".format(self._callback_port),
-            CLIENT_ID="um---------------ultimaker_cura_drive_plugin",
-            CLIENT_SCOPES="user.read drive.backups.read drive.backups.write",
-            AUTH_DATA_PREFERENCE_KEY="cura_drive/auth_data",
-            AUTH_SUCCESS_REDIRECT="{}/cura-drive/v1/auth-success".format(self._cloud_api_root),
-            AUTH_FAILED_REDIRECT="{}/cura-drive/v1/auth-error".format(self._cloud_api_root)
+            CLIENT_ID="um---------------ultimaker_cura",
+            CLIENT_SCOPES="user.read drive.backups.read drive.backups.write.client.package.download",
+            AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
+            AUTH_SUCCESS_REDIRECT="{}/auth-success".format(self._cloud_api_root),
+            AUTH_FAILED_REDIRECT="{}//auth-error".format(self._cloud_api_root)
         )
 
         self._authorization_service = AuthorizationService(Application.getInstance().getPreferences(), self._oauth_settings)
