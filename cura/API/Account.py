@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Tuple, Optional, Dict
+from typing import Optional, Dict
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
@@ -48,7 +48,7 @@ class Account(QObject):
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
 
-        self._error_message = None
+        self._error_message = None  # type: Optional[Message]
         self._logged_in = False
 
     @pyqtProperty(bool, notify=loginStateChanged)

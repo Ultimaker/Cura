@@ -5,11 +5,11 @@ from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 
-from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import ResponseStatus
+    from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
 
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):
@@ -22,7 +22,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         super().__init__(request, client_address, server)
 
         # These values will be injected by the HTTPServer that this handler belongs to.
-        self.authorization_helpers = None  # type: Optional[AuthorizationHelpers]
+        self.authorization_helpers = None  # type: Optional["AuthorizationHelpers"]
         self.authorization_callback = None  # type: Optional[Callable[[AuthenticationResponse], None]]
         self.verification_code = None  # type: Optional[str]
 
@@ -52,7 +52,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # This will cause the server to shut down, so we do it at the very end of the request handling.
             self.authorization_callback(token_response)
 
-    def _handleCallback(self, query: Dict[Any, List]) -> Tuple["ResponseData", Optional["AuthenticationResponse"]]:
+    def _handleCallback(self, query: Dict[Any, List]) -> Tuple[ResponseData, Optional[AuthenticationResponse]]:
         """
         Handler for the callback URL redirect.
         :param query: Dict containing the HTTP query parameters.

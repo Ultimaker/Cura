@@ -5,13 +5,12 @@ from typing import Optional, Callable, Any, TYPE_CHECKING
 
 from UM.Logger import Logger
 
-from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 from cura.OAuth2.AuthorizationRequestServer import AuthorizationRequestServer
 from cura.OAuth2.AuthorizationRequestHandler import AuthorizationRequestHandler
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import AuthenticationResponse
-
+    from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
 class LocalAuthorizationServer:
     def __init__(self, auth_helpers: "AuthorizationHelpers",

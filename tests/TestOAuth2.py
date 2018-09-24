@@ -29,14 +29,14 @@ SUCCESFULL_AUTH_RESPONSE = AuthenticationResponse(access_token = "beep", refresh
 MALFORMED_AUTH_RESPONSE = AuthenticationResponse()
 
 
-def test_cleanAuthService():
+def test_cleanAuthService() -> None:
     # Ensure that when setting up an AuthorizationService, no data is set.
     authorization_service = AuthorizationService(Preferences(), OAUTH_SETTINGS)
     assert authorization_service.getUserProfile() is None
     assert authorization_service.getAccessToken() is None
 
 
-def test_failedLogin():
+def test_failedLogin() -> None:
     authorization_service = AuthorizationService(Preferences(), OAUTH_SETTINGS)
     authorization_service.onAuthenticationError.emit = MagicMock()
     authorization_service.onAuthStateChanged.emit = MagicMock()
@@ -55,7 +55,7 @@ def test_failedLogin():
     assert authorization_service.getAccessToken() is None
 
 
-def test_localAuthServer():
+def test_localAuthServer() -> None:
     preferences = Preferences()
     authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
     with patch.object(webbrowser, "open_new") as webrowser_open:
@@ -73,7 +73,7 @@ def test_localAuthServer():
                 assert stop_auth_server.call_count == 1
 
 
-def test_loginAndLogout():
+def test_loginAndLogout() -> None:
     preferences = Preferences()
     authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
     authorization_service.onAuthenticationError.emit = MagicMock()
@@ -103,7 +103,7 @@ def test_loginAndLogout():
     assert preferences.getValue("test/auth_data") == "{}"
 
 
-def test_wrongServerResponses():
+def test_wrongServerResponses() -> None:
     authorization_service = AuthorizationService(Preferences(), OAUTH_SETTINGS)
     with patch.object(AuthorizationHelpers, "parseJWT", return_value=UserProfile()):
         authorization_service._onAuthStateChanged(MALFORMED_AUTH_RESPONSE)
