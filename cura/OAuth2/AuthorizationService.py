@@ -93,7 +93,7 @@ class AuthorizationService:
         Refresh the access token when it expired.
         """
         if self._auth_data is None or self._auth_data.refresh_token is None:
-            Logger.log("w", "Unable to refresh acces token, since there is no refresh token.")
+            Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
         self._storeAuthData(self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token))
         self.onAuthStateChanged.emit(logged_in=True)
@@ -148,8 +148,8 @@ class AuthorizationService:
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
                 self.onAuthStateChanged.emit(logged_in=True)
-        except ValueError as err:
-            Logger.log("w", "Could not load auth data from preferences: %s", err)
+        except ValueError:
+            Logger.logException("w", "Could not load auth data from preferences")
 
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
         """Store authentication data in preferences and locally."""
