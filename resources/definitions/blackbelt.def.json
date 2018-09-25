@@ -182,7 +182,7 @@
             "value": "0"
         },
         "retraction_extra_prime_amount": {
-            "value": "0 if machine_nozzle_size <= 0.4 else 1"
+            "value": "0"
         },
         "retraction_extrusion_window": {
             "value": "3"
@@ -222,7 +222,7 @@
             "value": "40"
         },
         "speed_support": {
-            "value": "speed_print * 0.5"
+            "value": "speed_print * 0.75"
         },
         "speed_infill": {
             "value": "speed_print * 0.75"
@@ -234,7 +234,7 @@
             "value": "speed_print"
         },
         "speed_wall_0": {
-            "value": "5 * speed_wall/8"
+            "value": "speed_wall * 0.75"
         },
         "speed_topbottom": {
             "value": "speed_print"
