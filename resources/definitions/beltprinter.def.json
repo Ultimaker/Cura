@@ -166,6 +166,7 @@
                 {
                     "label": "Support Gantry Angle Bias",
                     "description": "Favor placement of support structures towards the front of the print, for use with belt-style printers.",
+                    "enabled": "support_enable",
                     "type": "int",
                     "unit": "°",
                     "default_value": 45,
@@ -222,18 +223,6 @@
             "enabled": false
         },
         "gradual_support_infill_steps": {
-            "enabled": false
-        },
-        "support_interface_enable": {
-            "enabled": false
-        },
-        "support_roof_enable": {
-            "enabled": false
-        },
-        "support_bottom_enable": {
-            "enabled": false
-        },
-        "support_use_towers": {
             "enabled": false
         },
         "support_tree_enable": {
@@ -482,6 +471,9 @@
             "enabled": false
         },
         "initial_layer_line_width_factor": {
+            "enabled": false
+        },
+        "adaptive_layer_height_enabled": {
             "enabled": false
         }
     }
