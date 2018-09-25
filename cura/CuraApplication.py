@@ -13,6 +13,7 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from UM.PluginError import PluginNotFoundError
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -110,10 +111,6 @@ import cura.Settings.cura_empty_instance_containers
 from cura.ObjectsModel import ObjectsModel
 
 from UM.FlameProfiler import pyqtSlot
-
-
-if TYPE_CHECKING:
-    from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 
 numpy.seterr(all = "ignore")
@@ -482,7 +479,9 @@ class CuraApplication(QtApplication):
         preferences.addPreference("view/filter_current_build_plate", False)
         preferences.addPreference("cura/sidebar_collapsed", False)
 
-        preferences.addPreference("cura/favorite_materials", ";".join([]))
+        preferences.addPreference("cura/favorite_materials", "")
+        preferences.addPreference("cura/expanded_brands", "")
+        preferences.addPreference("cura/expanded_types", "")
 
         self._need_to_show_user_agreement = not preferences.getValue("general/accepted_user_agreement")
 
@@ -1705,7 +1704,11 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot()
     def showMoreInformationDialogForAnonymousDataCollection(self):
-        cast(SliceInfo, self._plugin_registry.getPluginObject("SliceInfoPlugin")).showMoreInfoDialog()
+        try:
+            slice_info = self._plugin_registry.getPluginObject("SliceInfoPlugin")
+            slice_info.showMoreInfoDialog()
+        except PluginNotFoundError:
+            Logger.log("w", "Plugin SliceInfo was not found, so not able to show the info dialog.")
 
     def addSidebarCustomMenuItem(self, menu_item: dict) -> None:
         self._sidebar_custom_menu_items.append(menu_item)

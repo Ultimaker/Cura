@@ -891,7 +891,7 @@ Cura.MachineAction
     {
         id: machineHeadPolygonProvider
 
-        containerStackId: base.acthiveMachineId
+        containerStackId: base.activeMachineId
         key: "machine_head_with_fans_polygon"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex

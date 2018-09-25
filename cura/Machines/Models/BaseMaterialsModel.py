@@ -34,9 +34,6 @@ class BaseMaterialsModel(ListModel):
         # Update this model when list of materials changes
         self._material_manager.materialsUpdated.connect(self._update)
 
-        # Update this model when list of favorites changes
-        self._material_manager.favoritesUpdated.connect(self._update)
-
         self.addRoleName(Qt.UserRole + 1, "root_material_id")
         self.addRoleName(Qt.UserRole + 2, "id")
         self.addRoleName(Qt.UserRole + 3, "GUID")

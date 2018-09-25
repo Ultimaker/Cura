@@ -222,7 +222,7 @@ Item
     Action
     {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","&About...");
+        text: catalog.i18nc("@action:inmenu menubar:help","About...");
         iconName: "help-about";
     }
 

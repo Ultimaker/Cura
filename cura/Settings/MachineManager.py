@@ -367,6 +367,7 @@ class MachineManager(QObject):
             return
 
         global_stack = containers[0]
+        ExtruderManager.getInstance()._fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
@@ -375,7 +376,7 @@ class MachineManager(QObject):
         self._global_container_stack = global_stack
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance()._globalContainerStackChanged()
-        self._initMachineState(containers[0])
+        self._initMachineState(global_stack)
         self._onGlobalContainerChanged()
 
         self.__emitChangedSignals()
