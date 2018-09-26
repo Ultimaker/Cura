@@ -55,22 +55,22 @@ def test_failedLogin() -> None:
     assert authorization_service.getAccessToken() is None
 
 
-def test_localAuthServer() -> None:
+@patch.object(LocalAuthorizationServer, "stop")
+@patch.object(LocalAuthorizationServer, "start")
+@patch.object(webbrowser, "open_new")
+def test_localAuthServer(webbrowser_open, start_auth_server, stop_auth_server) -> None:
     preferences = Preferences()
     authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
-    with patch.object(webbrowser, "open_new") as webrowser_open:
-        with patch.object(LocalAuthorizationServer, "start") as start_auth_server:
-            with patch.object(LocalAuthorizationServer, "stop") as stop_auth_server:
-                authorization_service.startAuthorizationFlow()
-                assert webrowser_open.call_count == 1
+    authorization_service.startAuthorizationFlow()
+    assert webbrowser_open.call_count == 1
 
-                # Ensure that the Authorization service tried to start the server.
-                assert start_auth_server.call_count == 1
-                assert stop_auth_server.call_count == 0
-                authorization_service._onAuthStateChanged(FAILED_AUTH_RESPONSE)
+    # Ensure that the Authorization service tried to start the server.
+    assert start_auth_server.call_count == 1
+    assert stop_auth_server.call_count == 0
+    authorization_service._onAuthStateChanged(FAILED_AUTH_RESPONSE)
 
-                # Ensure that it stopped the server.
-                assert stop_auth_server.call_count == 1
+    # Ensure that it stopped the server.
+    assert stop_auth_server.call_count == 1
 
 
 def test_loginAndLogout() -> None:
