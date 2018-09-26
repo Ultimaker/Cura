@@ -75,7 +75,7 @@ class TimeLapse(Script):
         y_park = self.getSettingValueByKey("head_park_y")
         trigger_cmd = self.getSettingValueByKey("trigger_cmd")
         pause_length = self.getSettingValueByKey("pause_length")
-        gcode_to_append = ""
+        gcode_to_append = ";TimeLapse Begin"
 
         if park_print_head:
             gcode_to_append += self.putValue(G = 90) + ";Absolute positioning\n"
@@ -83,6 +83,7 @@ class TimeLapse(Script):
         gcode_to_append += self.putValue(M = 400) + ";Wait for moves to finish\n"
         gcode_to_append += trigger_cmd + ";Snap Photo\n"
         gcode_to_append += self.putValue(G = 4, P = pause_length) + ";Wait for camera\n"
+        gcode_to_append += ";TimeLapse End"
         for layer in data:
             # Check that a layer is being printed
             lines = layer.split("\n")
