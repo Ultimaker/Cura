@@ -24,7 +24,7 @@ i18n_catalog = i18nCatalog("cura")
 #
 class Account(QObject):
     # Signal emitted when user logged in or out.
-    loginStateChanged = pyqtSignal()
+    loginStateChanged = pyqtSignal(bool)
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -64,7 +64,7 @@ class Account(QObject):
 
         if self._logged_in != logged_in:
             self._logged_in = logged_in
-            self.loginStateChanged.emit()
+            self.loginStateChanged.emit(logged_in)
 
     @pyqtSlot()
     def login(self) -> None:
