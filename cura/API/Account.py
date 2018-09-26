@@ -87,6 +87,10 @@ class Account(QObject):
             return None
         return user_profile.profile_image_url
 
+    @pyqtProperty(str, notify=loginStateChanged)
+    def accessToken(self) -> Optional[str]:
+        return self._authorization_service.getAccessToken()
+
     #   Get the profile of the logged in user
     #   @returns None if no user is logged in, a dict containing user_id, username and profile_image_url
     @pyqtProperty("QVariantMap", notify = loginStateChanged)
