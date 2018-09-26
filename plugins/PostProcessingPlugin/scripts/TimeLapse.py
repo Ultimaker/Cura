@@ -32,10 +32,10 @@ class TimeLapse(Script):
                 },
                 "park_print_head":
                 {
-                	"label": "Park Print Head",
-                	"description": "Park the print head out of the way",
-                	"type": "bool",
-                	"default_value": true
+                    "label": "Park Print Head",
+                    "description": "Park the print head out of the way",
+                    "type": "bool",
+                    "default_value": true
                 },
                 "head_park_x":
                 {
@@ -78,8 +78,8 @@ class TimeLapse(Script):
 
         gcode_to_append = self.putValue(M = 400) + ";Wait for moves to finish\n"
         if park_print_head:
-	        gcode_to_append = self.putValue(G = 90) + ";Absolute positioning\n"
-        	gcode_to_append += self.putValue(G = 1, F = feed_rate, X = x_park, Y = y_park) + ";Park print head\n"
+            gcode_to_append = self.putValue(G = 90) + ";Absolute positioning\n"
+            gcode_to_append += self.putValue(G = 1, F = feed_rate, X = x_park, Y = y_park) + ";Park print head\n"
         gcode_to_append += trigger_cmd + ";Snap Photo\n"
         gcode_to_append += self.putValue(G = 4, P = pause_length) + ";Wait for camera\n"
         for layer in data:
