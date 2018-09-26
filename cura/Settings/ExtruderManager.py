@@ -67,16 +67,6 @@ class ExtruderManager(QObject):
         except KeyError:  # Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
-    ##  Return extruder count according to extruder trains.
-    @pyqtProperty(int, notify = extrudersChanged)
-    def extruderCount(self) -> int:
-        if not self._application.getGlobalContainerStack():
-            return 0  # No active machine, so no extruders.
-        try:
-            return len(self._extruder_trains[self._application.getGlobalContainerStack().getId()])
-        except KeyError:
-            return 0
-
     ##  Gets a dict with the extruder stack ids with the extruder number as the key.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self) -> Dict[str, str]:
