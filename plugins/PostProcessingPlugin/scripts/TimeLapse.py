@@ -75,11 +75,12 @@ class TimeLapse(Script):
         y_park = self.getSettingValueByKey("head_park_y")
         trigger_cmd = self.getSettingValueByKey("trigger_cmd")
         pause_length = self.getSettingValueByKey("pause_length")
+        gcode_to_append = ""
 
-        gcode_to_append = self.putValue(M = 400) + ";Wait for moves to finish\n"
         if park_print_head:
-            gcode_to_append = self.putValue(G = 90) + ";Absolute positioning\n"
+            gcode_to_append += self.putValue(G = 90) + ";Absolute positioning\n"
             gcode_to_append += self.putValue(G = 1, F = feed_rate, X = x_park, Y = y_park) + ";Park print head\n"
+        gcode_to_append += self.putValue(M = 400) + ";Wait for moves to finish\n"
         gcode_to_append += trigger_cmd + ";Snap Photo\n"
         gcode_to_append += self.putValue(G = 4, P = pause_length) + ";Wait for camera\n"
         for layer in data:
