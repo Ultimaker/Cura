@@ -53,20 +53,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._sending_gcode = False
         self._compressing_gcode = False
         self._gcode = []                    # type: List[str]
-
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
-
-        printer_type = self._properties.get(b"machine", b"").decode("utf-8")
-        printer_type_identifiers = {
-            "9066": "ultimaker3",
-            "9511": "ultimaker3_extended",
-            "9051": "ultimaker_s5"
-        }
-        self._printer_type = "Unknown"
-        for key, value in printer_type_identifiers.items():
-            if printer_type.startswith(key):
-                self._printer_type = value
-                break
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -341,7 +328,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtProperty(str, constant = True)
     def printerType(self) -> str:
-        return self._printer_type
+        return self._properties.get(b"printer_type", b"Unknown").decode("utf-8")
 
     ## IP adress of this printer
     @pyqtProperty(str, constant = True)
