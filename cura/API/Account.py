@@ -28,6 +28,10 @@ class Account(QObject):
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
+
+        self._error_message = None  # type: Optional[Message]
+        self._logged_in = False
+
         self._callback_port = 32118
         self._oauth_root = "https://account.ultimaker.com"
         self._cloud_api_root = "https://api.ultimaker.com"
@@ -42,8 +46,6 @@ class Account(QObject):
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
         )
-        self._error_message = None  # type: Optional[Message]
-        self._logged_in = False
 
         self._authorization_service = AuthorizationService(Application.getInstance().getPreferences(), self._oauth_settings)
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
