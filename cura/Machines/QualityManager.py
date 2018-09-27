@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Optional, cast, Dict, List
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
+
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Util import parseBool
@@ -40,7 +41,8 @@ class QualityManager(QObject):
 
     def __init__(self, container_registry: "ContainerRegistry", parent = None) -> None:
         super().__init__(parent)
-        self._application = Application.getInstance()  # type: CuraApplication
+        from cura.CuraApplication import CuraApplication
+        self._application = CuraApplication.getInstance()  # type: CuraApplication
         self._material_manager = self._application.getMaterialManager()
         self._container_registry = container_registry
 
@@ -458,7 +460,7 @@ class QualityManager(QObject):
     #   stack and clear the user settings.
     @pyqtSlot(str)
     def createQualityChanges(self, base_name: str) -> None:
-        machine_manager = Application.getInstance().getMachineManager()
+        machine_manager = CuraApplication.getInstance().getMachineManager()
 
         global_stack = machine_manager.activeMachine
         if not global_stack:

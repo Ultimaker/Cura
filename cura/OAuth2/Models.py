@@ -14,7 +14,7 @@ class OAuth2Settings(BaseModel):
     CLIENT_ID = None  # type: Optional[str]
     CLIENT_SCOPES = None  # type: Optional[str]
     CALLBACK_URL = None  # type: Optional[str]
-    AUTH_DATA_PREFERENCE_KEY = None  # type: Optional[str]
+    AUTH_DATA_PREFERENCE_KEY = ""  # type: str
     AUTH_SUCCESS_REDIRECT = "https://ultimaker.com"  # type: str
     AUTH_FAILED_REDIRECT = "https://ultimaker.com"  # type: str
 

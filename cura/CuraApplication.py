@@ -61,6 +61,7 @@ from cura.Scene.CuraSceneController import CuraSceneController
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.MachineNameValidator import MachineNameValidator
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
@@ -242,6 +243,8 @@ class CuraApplication(QtApplication):
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
+        # Redefined here in order to please the typing.
+        self._container_registry = None # type: CuraContainerRegistry
         from cura.CuraPackageManager import CuraPackageManager
         self._package_manager_class = CuraPackageManager
 
@@ -265,6 +268,9 @@ class CuraApplication(QtApplication):
                                       default = False,
                                       help = "FOR TESTING ONLY. Trigger an early crash to show the crash dialog.")
         self._cli_parser.add_argument("file", nargs = "*", help = "Files to load after starting the application.")
+
+    def getContainerRegistry(self) -> "CuraContainerRegistry":
+        return self._container_registry
 
     def parseCliOptions(self):
         super().parseCliOptions()

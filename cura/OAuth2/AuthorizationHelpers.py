@@ -36,7 +36,7 @@ class AuthorizationHelpers:
             "code": authorization_code,
             "code_verifier": verification_code,
             "scope": self._settings.CLIENT_SCOPES
-        }))
+        }))  # type: ignore
 
     #   Request the access token from the authorization server using a refresh token.
     #   \param refresh_token:
@@ -48,7 +48,7 @@ class AuthorizationHelpers:
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,
             "scope": self._settings.CLIENT_SCOPES
-        }))
+        }))  # type: ignore
 
     @staticmethod
     #   Parse the token response from the authorization server into an AuthenticationResponse object.
