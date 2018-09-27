@@ -479,8 +479,6 @@ class BuildVolume(SceneNode):
             maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
-        self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds
-
         self.updateNodeBoundaryCheck()
 
     def getBoundingBox(self) -> AxisAlignedBox:
