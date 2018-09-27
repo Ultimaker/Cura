@@ -21,7 +21,7 @@ Item {
 
         // Loading skeleton
         Rectangle {
-            visible: !extruderInfo.printCoreConfiguration;
+            visible: !printCoreConfiguration;
             anchors.fill: parent;
             radius: Math.round(width / 2);
             color: UM.Theme.getColor("viewport_background");
@@ -29,7 +29,7 @@ Item {
 
         // Actual content
         Rectangle {
-            visible: extruderInfo.printCoreConfiguration;
+            visible: printCoreConfiguration;
             anchors.fill: parent;
             radius: Math.round(width / 2);
             border.width: UM.Theme.getSize("monitor_tab_thick_lining").width;
@@ -44,7 +44,7 @@ Item {
             Label {
                 anchors.centerIn: parent;
                 font: UM.Theme.getFont("default_bold");
-                text: printCoreConfiguration.position + 1;
+                text: printCoreConfiguration ? printCoreConfiguration.position + 1 : 0;
             }
         }
     }
