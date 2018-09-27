@@ -28,6 +28,10 @@ class Account(QObject):
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
+
+        self._error_message = None  # type: Optional[Message]
+        self._logged_in = False
+
         self._callback_port = 32118
         self._oauth_root = "https://account.ultimaker.com"
         self._cloud_api_root = "https://api.ultimaker.com"
@@ -47,9 +51,6 @@ class Account(QObject):
         self._authorization_service.loadAuthDataFromPreferences()
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
-
-        self._error_message = None  # type: Optional[Message]
-        self._logged_in = False
 
     @pyqtProperty(bool, notify=loginStateChanged)
     def isLoggedIn(self) -> bool:
