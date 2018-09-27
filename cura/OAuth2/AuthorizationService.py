@@ -36,7 +36,6 @@ class AuthorizationService:
         self._user_profile = None  # type: Optional["UserProfile"]
         self._cura_preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
-        self._loadAuthData()
 
     #   Get the user profile as obtained from the JWT (JSON Web Token).
     #   If the JWT is not yet parsed, calling this will take care of that.
@@ -135,7 +134,7 @@ class AuthorizationService:
         self._server.stop()  # Stop the web server at all times.
 
     #   Load authentication data from preferences.
-    def _loadAuthData(self) -> None:
+    def loadAuthDataFromPreferences(self) -> None:
         self._cura_preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
         try:
             preferences_data = json.loads(self._cura_preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))

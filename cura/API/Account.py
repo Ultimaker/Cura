@@ -44,7 +44,7 @@ class Account(QObject):
         )
 
         self._authorization_service = AuthorizationService(Application.getInstance().getPreferences(), self._oauth_settings)
-
+        self._authorization_service.loadAuthDataFromPreferences()
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
 
