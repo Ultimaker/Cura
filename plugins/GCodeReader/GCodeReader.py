@@ -1,4 +1,5 @@
 # Copyright (c) 2017 Aleph Objects, Inc.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.FileHandler.FileReader import FileReader
@@ -15,7 +16,7 @@ MimeTypeDatabase.addMimeType(
     MimeType(
         name = "application/x-cura-gcode-file",
         comment = "Cura GCode File",
-        suffixes = ["gcode", "gcode.gz"]
+        suffixes = ["gcode"]
     )
 )
 
