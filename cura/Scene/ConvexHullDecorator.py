@@ -78,7 +78,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         hull = self._compute2DConvexHull()
 
-        if self._global_stack and self._node:
+        if self._global_stack and self._node and hull is not None:
             # Parent can be None if node is just loaded.
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
@@ -240,17 +240,22 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
         return Polygon()
 
-    def _compute2DConvexHeadFull(self) -> Polygon:
-        return self._compute2DConvexHull().getMinkowskiHull(self._getHeadAndFans())
+    def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
+        convex_hull = self._compute2DConvexHeadFull()
+        if convex_hull:
+            return convex_hull.getMinkowskiHull(self._getHeadAndFans())
+        return None
 
-    def _compute2DConvexHeadMin(self) -> Polygon:
-        headAndFans = self._getHeadAndFans()
-        mirrored = headAndFans.mirror([0, 0], [0, 1]).mirror([0, 0], [1, 0])  # Mirror horizontally & vertically.
+    def _compute2DConvexHeadMin(self) -> Optional[Polygon]:
+        head_and_fans = self._getHeadAndFans()
+        mirrored = head_and_fans.mirror([0, 0], [0, 1]).mirror([0, 0], [1, 0])  # Mirror horizontally & vertically.
         head_and_fans = self._getHeadAndFans().intersectionConvexHulls(mirrored)
 
         # Min head hull is used for the push free
-        min_head_hull = self._compute2DConvexHull().getMinkowskiHull(head_and_fans)
-        return min_head_hull
+        convex_hull = self._compute2DConvexHeadFull()
+        if convex_hull:
+            return convex_hull.getMinkowskiHull(head_and_fans)
+        return None
 
     ##  Compensate given 2D polygon with adhesion margin
     #   \return 2D polygon with added margin
