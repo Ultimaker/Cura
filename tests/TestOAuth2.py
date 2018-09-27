@@ -55,6 +55,23 @@ def test_failedLogin() -> None:
     assert authorization_service.getAccessToken() is None
 
 
+@patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile())
+def test_storeAuthData(get_user_profile) -> None:
+    preferences = Preferences()
+    authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
+
+    # Write stuff to the preferences.
+    authorization_service._storeAuthData(SUCCESFULL_AUTH_RESPONSE)
+    preference_value = preferences.getValue(OAUTH_SETTINGS.AUTH_DATA_PREFERENCE_KEY)
+    # Check that something was actually put in the preferences
+    assert preference_value is not None and preference_value != {}
+
+    # Create a second auth service, so we can load the data.
+    second_auth_service = AuthorizationService(preferences, OAUTH_SETTINGS)
+    second_auth_service.loadAuthDataFromPreferences()
+    assert second_auth_service.getAccessToken() == SUCCESFULL_AUTH_RESPONSE.access_token
+
+
 @patch.object(LocalAuthorizationServer, "stop")
 @patch.object(LocalAuthorizationServer, "start")
 @patch.object(webbrowser, "open_new")
