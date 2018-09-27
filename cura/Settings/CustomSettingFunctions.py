@@ -40,13 +40,9 @@ class CustomSettingFunctions:
         global_stack = machine_manager.activeMachine
         extruder_stack = global_stack.extruders[str(extruder_position)]
 
-        if extruder_stack:
-            value = extruder_stack.getRawProperty(property_key, "value", context = context)
-            if isinstance(value, SettingFunction):
-                value = value(extruder_stack, context = context)
-        else:
-            # Just a value from global.
-            value = global_stack.getProperty(property_key, "value", context = context)
+        value = extruder_stack.getRawProperty(property_key, "value", context = context)
+        if isinstance(value, SettingFunction):
+            value = value(extruder_stack, context = context)
 
         return value
 
