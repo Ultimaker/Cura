@@ -260,6 +260,19 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # or "Legacy" UM3 device.
         cluster_size = int(properties.get(b"cluster_size", -1))
 
+        printer_type = properties.get(b"machine", b"").decode("utf-8")
+        printer_type_identifiers = {
+            "9066": "ultimaker3",
+            "9511": "ultimaker3_extended",
+            "9051": "ultimaker_s5"
+        }
+
+        for key, value in printer_type_identifiers.items():
+            if printer_type.startswith(key):
+                properties[b"printer_type"] = bytes(value, encoding="utf8")
+                break
+        else:
+            properties[b"printer_type"] = b"Unknown"
         if cluster_size >= 0:
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
