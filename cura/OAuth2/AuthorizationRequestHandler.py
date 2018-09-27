@@ -12,12 +12,9 @@ if TYPE_CHECKING:
     from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
 
+#   This handler handles all HTTP requests on the local web server.
+#     It also requests the access token for the 2nd stage of the OAuth flow.
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):
-    """
-    This handler handles all HTTP requests on the local web server.
-    It also requests the access token for the 2nd stage of the OAuth flow.
-    """
-
     def __init__(self, request, client_address, server) -> None:
         super().__init__(request, client_address, server)
 
@@ -27,8 +24,6 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.verification_code = None  # type: Optional[str]
 
     def do_GET(self) -> None:
-        """Entry point for GET requests"""
-
         # Extract values from the query string.
         parsed_url = urlparse(self.path)
         query = parse_qs(parsed_url.query)
@@ -52,12 +47,10 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # This will cause the server to shut down, so we do it at the very end of the request handling.
             self.authorization_callback(token_response)
 
+    #   Handler for the callback URL redirect.
+    #   \param query: Dict containing the HTTP query parameters.
+    #   \return: HTTP ResponseData containing a success page to show to the user.
     def _handleCallback(self, query: Dict[Any, List]) -> Tuple[ResponseData, Optional[AuthenticationResponse]]:
-        """
-        Handler for the callback URL redirect.
-        :param query: Dict containing the HTTP query parameters.
-        :return: HTTP ResponseData containing a success page to show to the user.
-        """
         code = self._queryGet(query, "code")
         if code and self.authorization_helpers is not None and self.verification_code is not None:
             # If the code was returned we get the access token.
@@ -88,12 +81,11 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         ), token_response
 
     @staticmethod
+    #   Handle all other non-existing server calls.
     def _handleNotFound() -> ResponseData:
-        """Handle all other non-existing server calls."""
         return ResponseData(status=HTTP_STATUS["NOT_FOUND"], content_type="text/html", data_stream=b"Not found.")
 
     def _sendHeaders(self, status: "ResponseStatus", content_type: str, redirect_uri: str = None) -> None:
-        """Send out the headers"""
         self.send_response(status.code, status.message)
         self.send_header("Content-type", content_type)
         if redirect_uri:
@@ -101,10 +93,9 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def _sendData(self, data: bytes) -> None:
-        """Send out the data"""
         self.wfile.write(data)
 
     @staticmethod
+    #   Convenience Helper for getting values from a pre-parsed query string
     def _queryGet(query_data: Dict[Any, List], key: str, default: Optional[str]=None) -> Optional[str]:
-        """Helper for getting values from a pre-parsed query string"""
         return query_data.get(key, [default])[0]
