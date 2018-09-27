@@ -68,7 +68,7 @@ class CustomSettingFunctions:
                 continue
 
             if isinstance(value, SettingFunction):
-                value = value(extruder, context= context)
+                value = value(extruder, context = context)
 
             result.append(value)
 
