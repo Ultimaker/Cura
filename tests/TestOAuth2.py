@@ -18,8 +18,8 @@ OAUTH_SETTINGS = OAuth2Settings(
             CLIENT_ID="",
             CLIENT_SCOPES="",
             AUTH_DATA_PREFERENCE_KEY="test/auth_data",
-            AUTH_SUCCESS_REDIRECT="{}/auth-success".format(CLOUD_API_ROOT),
-            AUTH_FAILED_REDIRECT="{}/auth-error".format(CLOUD_API_ROOT)
+            AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(OAUTH_ROOT),
+            AUTH_FAILED_REDIRECT="{}/app/auth-error".format(OAUTH_ROOT)
         )
 
 FAILED_AUTH_RESPONSE = AuthenticationResponse(success = False, err_message = "FAILURE!")

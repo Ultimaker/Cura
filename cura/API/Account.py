@@ -39,8 +39,8 @@ class Account(QObject):
             CLIENT_ID="um---------------ultimaker_cura_drive_plugin",
             CLIENT_SCOPES="user.read drive.backups.read drive.backups.write",
             AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
-            AUTH_SUCCESS_REDIRECT="{}/auth-success".format(self._cloud_api_root),
-            AUTH_FAILED_REDIRECT="{}/auth-error".format(self._cloud_api_root)
+            AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
+            AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
         )
 
         self._authorization_service = AuthorizationService(Application.getInstance().getPreferences(), self._oauth_settings)
