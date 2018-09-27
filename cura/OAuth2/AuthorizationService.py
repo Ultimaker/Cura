@@ -14,6 +14,7 @@ from cura.OAuth2.Models import AuthenticationResponse
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
+    from UM.Preferences import Preferences
 
 
 class AuthorizationService:
@@ -28,14 +29,17 @@ class AuthorizationService:
     # Emit signal when authentication failed.
     onAuthenticationError = Signal()
 
-    def __init__(self, preferences, settings: "OAuth2Settings") -> None:
+    def __init__(self, preferences: Optional["Preferences"], settings: "OAuth2Settings") -> None:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
         self._auth_data = None  # type: Optional[AuthenticationResponse]
         self._user_profile = None  # type: Optional["UserProfile"]
-        self._cura_preferences = preferences
+        self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
+
+        if self._preferences:
+            self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
     #   Get the user profile as obtained from the JWT (JSON Web Token).
     #   If the JWT is not yet parsed, calling this will take care of that.
@@ -135,9 +139,11 @@ class AuthorizationService:
 
     #   Load authentication data from preferences.
     def loadAuthDataFromPreferences(self) -> None:
-        self._cura_preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
+        if self._preferences is None:
+            Logger.logException("e", "Unable to load authentication data, since no preference has been set!")
+            return
         try:
-            preferences_data = json.loads(self._cura_preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
+            preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
                 self.onAuthStateChanged.emit(logged_in=True)
@@ -149,7 +155,7 @@ class AuthorizationService:
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()
-            self._cura_preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
+            self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
         else:
             self._user_profile = None
-            self._cura_preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
+            self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
