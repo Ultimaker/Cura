@@ -140,7 +140,7 @@ class AuthorizationService:
     #   Load authentication data from preferences.
     def loadAuthDataFromPreferences(self) -> None:
         if self._preferences is None:
-            Logger.logException("e", "Unable to load authentication data, since no preference has been set!")
+            Logger.log("e", "Unable to load authentication data, since no preference has been set!")
             return
         try:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
@@ -152,6 +152,10 @@ class AuthorizationService:
 
     #   Store authentication data in preferences.
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
+        if self._preferences is None:
+            Logger.log("e", "Unable to save authentication data, since no preference has been set!")
+            return
+        
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()
