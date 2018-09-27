@@ -1231,6 +1231,19 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "skin_speckle_density":
+                {
+                    "label": "Top/Bottom Speckle Density",
+                    "description": "Introducing speckles in the top/bottom skin combined with concentric infill makes horizontal pieces have a surface finish which looks somewhat like wood or ripples in a pond. The speckles are scattered randomly over the surface. This setting controls the average density of speckles per square centimeter.",
+                    "unit": "1/cm^2",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "enabled": "top_bottom_pattern == 'concentric' or roofing_pattern == 'concentric'",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100 * 0.5 / machine_nozzle_size",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "wall_0_inset":
                 {
                     "label": "Outer Wall Inset",
