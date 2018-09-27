@@ -26,7 +26,7 @@ class ConfigurationModel(QObject):
     def printerType(self) -> str:
         return self._printer_type
 
-    def setExtruderConfigurations(self, extruder_configurations: List[ExtruderConfigurationModel]):
+    def setExtruderConfigurations(self, extruder_configurations: List["ExtruderConfigurationModel"]):
         if self._extruder_configurations != extruder_configurations:
             self._extruder_configurations = extruder_configurations
 
