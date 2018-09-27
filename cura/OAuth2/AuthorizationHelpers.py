@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import random
-from _sha512 import sha512
+from hashlib import sha512
 from base64 import b64encode
 from typing import Optional
 
