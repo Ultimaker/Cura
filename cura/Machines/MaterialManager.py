@@ -337,6 +337,7 @@ class MaterialManager(QObject):
         machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
 
         material_id_metadata_dict = dict()  # type: Dict[str, MaterialNode]
+        excluded_materials = set()
         for current_node in nodes_to_check:
             if current_node is None:
                 continue
@@ -345,12 +346,14 @@ class MaterialManager(QObject):
             # Do not exclude other materials that are of the same type.
             for material_id, node in current_node.material_map.items():
                 if material_id in machine_exclude_materials:
-                    Logger.log("d", "Exclude material [%s] for machine [%s]",
-                               material_id, machine_definition.getId())
+                    excluded_materials.add(material_id)
                     continue
 
                 if material_id not in material_id_metadata_dict:
                     material_id_metadata_dict[material_id] = node
+
+        if excluded_materials:
+            Logger.log("d", "Exclude materials {excluded_materials} for machine {machine_definition_id}".format(excluded_materials = ", ".join(excluded_materials), machine_definition_id = machine_definition_id))
 
         return material_id_metadata_dict
 
