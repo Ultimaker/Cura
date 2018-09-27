@@ -14,7 +14,7 @@ Column
 {
     id: base;
 
-    property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
+    property int currentExtruderIndex: Cura.MachineManager.activeExtruderPosition;
     property bool currentExtruderVisible: extrudersList.visible;
     property bool printerConnected: Cura.MachineManager.printerConnected
     property bool hasManyPrinterTypes:
@@ -168,7 +168,7 @@ Column
                                 if (extruder_enabled)
                                 {
                                     forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                                    Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                    Cura.MachineManager.setActiveExtruderPosition(index);
                                 }
                                 break;
                             case Qt.RightButton:

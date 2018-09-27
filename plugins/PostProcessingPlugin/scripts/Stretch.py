@@ -452,6 +452,8 @@ class Stretch(Script):
     def __init__(self):
         super().__init__()
 
+        self._application = Application.getInstance()
+
     def getSettingDataString(self):
         return """{
             "name":"Post stretch script",
@@ -491,8 +493,11 @@ class Stretch(Script):
         data is the list of original g-code instructions,
         the returned string is the list of modified g-code instructions
         """
+        machine_manager = self._application.getMachineManager()
+        active_extruder_stack = machine_manager.activeStack
+
         stretcher = Stretcher(
-            ExtruderManager.getInstance().getActiveExtruderStack().getProperty("machine_nozzle_size", "value")
+            active_extruder_stack.getProperty("machine_nozzle_size", "value")
             , self.getSettingValueByKey("wc_stretch"), self.getSettingValueByKey("pw_stretch"))
         return stretcher.execute(data)
 

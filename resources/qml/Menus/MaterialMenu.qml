@@ -105,7 +105,7 @@ Menu
                         {
                             text: model.name
                             checkable: true
-                            checked: model.id == Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
+                            checked: model.id == Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.getExtruder(extruderIndex).id]
                             exclusiveGroup: group
                             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
                         }

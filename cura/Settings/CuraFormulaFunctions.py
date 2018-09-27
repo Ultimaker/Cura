@@ -50,12 +50,11 @@ class CuraFormulaFunctions:
     def getValuesInAllExtruders(self, property_key: str,
                                 context: Optional["PropertyEvaluationContext"] = None) -> List[Any]:
         machine_manager = self._application.getMachineManager()
-        extruder_manager = self._application.getExtruderManager()
 
         global_stack = machine_manager.activeMachine
 
         result = []
-        for extruder in extruder_manager.getActiveExtruderStacks():
+        for extruder in global_stack.getMachineExtruderStacks():
             if not extruder.isEnabled:
                 continue
             # only include values from extruders that are "active" for the current machine instance

@@ -1,6 +1,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+
+import copy
+import math
+from typing import List, Optional
+
+import numpy
+
+from PyQt5.QtCore import QTimer
+
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Application import Application #To modify the maximum zoom level.
@@ -17,16 +26,9 @@ from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
 from UM.Message import Message
 from UM.Signal import Signal
-from PyQt5.QtCore import QTimer
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 catalog = i18nCatalog("cura")
-
-import numpy
-import math
-import copy
-
-from typing import List, Optional
 
 # Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
@@ -40,6 +42,7 @@ class BuildVolume(SceneNode):
         super().__init__(parent)
         self._application = application
         self._machine_manager = self._application.getMachineManager()
+        self._custom_setting_functions = self._application.getCustomSettingFunctions()
 
         self._volume_outline_color = None
         self._x_axis_color = None
@@ -528,7 +531,7 @@ class BuildVolume(SceneNode):
     def _onStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
-            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
+            extruders = self._global_container_stack.getMachineExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingPropertyChanged)
 
@@ -536,7 +539,7 @@ class BuildVolume(SceneNode):
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
-            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
+            extruders = self._global_container_stack.getMachineExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingPropertyChanged)
 
@@ -665,16 +668,12 @@ class BuildVolume(SceneNode):
 
         self._error_areas = []
 
-        extruder_manager = ExtruderManager.getInstance()
-        used_extruders = extruder_manager.getUsedExtruderStacks()
+        active_extruder_stack = self._machine_manager.activeStack
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         disallowed_border_size = self.getEdgeDisallowedSize()
 
         if not used_extruders:
-            # If no extruder is used, assume that the active extruder is used (else nothing is drawn)
-            if extruder_manager.getActiveExtruderStack():
-                used_extruders = [extruder_manager.getActiveExtruderStack()]
-            else:
-                used_extruders = [self._global_container_stack]
+            used_extruders = [active_extruder_stack]
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
         prime_areas = self._computeDisallowedAreasPrimeBlob(disallowed_border_size, used_extruders)
@@ -759,7 +758,7 @@ class BuildVolume(SceneNode):
             result[extruder.getId()] = []
 
         #Currently, the only normally printed object is the prime tower.
-        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable"):
+        if self._custom_setting_functions.getResolveOrValue("prime_tower_enable"):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
@@ -873,7 +872,7 @@ class BuildVolume(SceneNode):
             # Only do nozzle offsetting if needed
             if nozzle_offsetting_for_disallowed_areas:
                 #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
-                for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
+                for other_extruder in self._global_container_stack.getMachineExtruderStacks():
                     other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
                     if other_offset_x is None:
                         other_offset_x = 0
@@ -970,8 +969,8 @@ class BuildVolume(SceneNode):
     #
     #   \return A sequence of setting values, one for each extruder.
     def _getSettingFromAllExtruders(self, setting_key):
-        all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "value")
-        all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
+        all_values = self._global_container_stack.getValuesInAllExtruders(setting_key, "value")
+        all_types = self._global_container_stack.getValuesInAllExtruders(setting_key, "type")
         for i in range(len(all_values)):
             if not all_values[i] and (all_types[i] == "int" or all_types[i] == "float"):
                 all_values[i] = 0

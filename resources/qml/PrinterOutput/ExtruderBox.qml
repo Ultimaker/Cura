@@ -12,18 +12,19 @@ Item
     property alias color: background.color
     property var extruderModel
     property var position: index
+    property var extruder_stack: Cura.MachineManager.getExtruder(position)
     implicitWidth: parent.width
     implicitHeight: UM.Theme.getSize("sidebar_extruder_box").height
 
     UM.SettingPropertyProvider
     {
         id: extruderTemperature
-        containerStackId: Cura.ExtruderManager.extruderIds[position]
+        containerStackId: extruder_stack.id
         key: "material_print_temperature"
         watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
         storeIndex: 0
 
-        property var resolve: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine ? properties.resolve : "None"
+        property var resolve: properties.resolve
     }
 
     Rectangle
@@ -33,7 +34,7 @@ Item
 
         Label //Extruder name.
         {
-            text: Cura.ExtruderManager.getExtruderName(position) != "" ? Cura.ExtruderManager.getExtruderName(position) : catalog.i18nc("@label", "Extruder")
+            text: extruder_stack.name != "" ? extruder_stack.name : catalog.i18nc("@label", "Extruder")
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             anchors.left: parent.left

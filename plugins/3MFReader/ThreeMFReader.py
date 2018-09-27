@@ -18,7 +18,6 @@ from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
-from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
@@ -120,13 +119,16 @@ class ThreeMFReader(MeshReader):
 
         settings = savitar_node.getSettings()
 
+        application = Application.getInstance()
+        machine_manager = application.getMachineManager()
+
         # Add the setting override decorator, so we can add settings to this node.
         if settings:
-            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            global_container_stack = machine_manager.activeMachine
 
             # Ensure the correct next container for the SettingOverride decorator is set.
             if global_container_stack:
-                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
+                default_stack = global_container_stack.extruders["0"]
 
                 if default_stack:
                     um_node.callDecoration("setActiveExtruder", default_stack.getId())
@@ -142,7 +144,7 @@ class ThreeMFReader(MeshReader):
 
                 # Extruder_nr is a special case.
                 if key == "extruder_nr":
-                    extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
+                    extruder_stack = global_container_stack.extruders[str(setting_value)]
                     if extruder_stack:
                         um_node.callDecoration("setActiveExtruder", extruder_stack.getId())
                     else:

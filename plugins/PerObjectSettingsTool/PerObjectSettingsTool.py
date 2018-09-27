@@ -5,10 +5,10 @@ from UM.Tool import Tool
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Application import Application
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Event import Event
+
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 
 ##  This tool allows the user to add & change settings per node in the scene.
@@ -115,7 +115,7 @@ class PerObjectSettingsTool(Tool):
             # used for enabling or disabling per extruder settings per object
             self._multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
-            extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
+            extruder_stack = global_container_stack.extruders["0"]
 
             if extruder_stack:
                 root_node = Application.getInstance().getController().getScene().getRoot()
@@ -125,7 +125,7 @@ class PerObjectSettingsTool(Tool):
                     old_extruder_pos = node.callDecoration("getActiveExtruderPosition")
                     if old_extruder_pos is not None:
                         # Fetch current (new) extruder stack at position
-                        new_stack = ExtruderManager.getInstance().getExtruderStack(old_extruder_pos)
+                        new_stack = global_container_stack.extruders[str(old_extruder_pos)]
                         if new_stack:
                             new_stack_id = new_stack.getId()
                     node.callDecoration("setActiveExtruder", new_stack_id)

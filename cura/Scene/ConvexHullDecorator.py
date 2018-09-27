@@ -304,7 +304,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._global_stack:
             self._global_stack.propertyChanged.disconnect(self._onSettingValueChanged)
             self._global_stack.containersChanged.disconnect(self._onChanged)
-            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
+            extruders = self._global_stack.getMachineExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingValueChanged)
 
@@ -314,7 +314,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._global_stack.propertyChanged.connect(self._onSettingValueChanged)
             self._global_stack.containersChanged.connect(self._onChanged)
 
-            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
+            extruders = self._global_stack.getMachineExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingValueChanged)
 
@@ -329,11 +329,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
         extruder_index = self._global_stack.getProperty(setting_key, "limit_to_extruder")
         if extruder_index == "-1":
             # No limit_to_extruder
-            extruder_stack_id = self._node.callDecoration("getActiveExtruder")
-            if not extruder_stack_id:
+            extruder_stack = self._node.callDecoration("getActiveExtruder")
+            if not extruder_stack:
                 # Decoration doesn't exist
-                extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
-            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+                extruder_stack = self._global_stack.extruders[extruder_index]
             return extruder_stack.getProperty(setting_key, prop)
         else:
             # Limit_to_extruder is set. The global stack handles this then

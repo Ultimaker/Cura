@@ -1,6 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import os
+
 from UM.Math.Color import Color
 from UM.Math.Vector import Vector
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -13,11 +15,6 @@ from UM.PluginRegistry import PluginRegistry
 from UM.View.RenderPass import RenderPass
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
-
-from cura.Settings.ExtruderManager import ExtruderManager
-
-
-import os.path
 
 ## RenderPass used to display g-code paths.
 from .NozzleNode import NozzleNode
@@ -37,7 +34,8 @@ class SimulationPass(RenderPass):
         self._switching_layers = True # It tracks when the user is moving the layers' slider
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = Application.getInstance().getController().getScene()
-        self._extruder_manager = ExtruderManager.getInstance()
+
+        self._application = Application.getInstance()
 
         self._layer_view = None
         self._compatibility_mode = None
@@ -47,6 +45,8 @@ class SimulationPass(RenderPass):
         self._compatibility_mode = layerview.getCompatibilityMode()
 
     def render(self):
+        machine_manager = self._application.getMachineManager()
+
         if not self._layer_shader:
             if self._compatibility_mode:
                 shader_filename = "layers.shader"
@@ -58,7 +58,7 @@ class SimulationPass(RenderPass):
             self._layer_shadow_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shadow_shader_filename))
             self._current_shader = self._layer_shader
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
-        self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+        self._layer_shader.setUniformValue("u_active_extruder", float(max(0, machine_manager.getActiveExtruderPosition())))
         if self._layer_view:
             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())

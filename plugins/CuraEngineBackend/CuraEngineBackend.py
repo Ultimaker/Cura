@@ -22,7 +22,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
 from UM.Tool import Tool #For typing.
-from UM.Mesh.MeshData import MeshData #For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -343,7 +342,7 @@ class CuraEngineBackend(QObject, Backend):
                 if not self._global_container_stack:
                     Logger.log("w", "Global container stack not assigned to CuraEngineBackend!")
                     return
-                extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
+                extruders = self._global_container_stack.getMachineExtruderStacks()
                 error_keys = [] #type: List[str]
                 for extruder in extruders:
                     error_keys.extend(extruder.getErrorKeys())

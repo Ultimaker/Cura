@@ -3,9 +3,14 @@
 from typing import List
 
 from PyQt5.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
+
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.Interfaces import ContainerInterface
+from UM.Settings.SettingFunction import SettingFunction
+from UM.Settings.SettingInstance import InstanceState
 
 
 ##    The settingInheritance manager is responsible for checking each setting in order to see if one of the "deeper"
@@ -13,23 +18,20 @@ from UM.Logger import Logger
 #     because some profiles tend to have 'hardcoded' values that break our inheritance. A good example of that are the
 #     speed settings. If all the children of print_speed have a single value override, changing the speed won't
 #     actually do anything, as only the 'leaf' settings are used by the engine.
-from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.Interfaces import ContainerInterface
-from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.SettingInstance import InstanceState
-
-from cura.Settings.ExtruderManager import ExtruderManager
-
 class SettingInheritanceManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+
+        self._application = Application.getInstance()
+        self._machine_manager = self._application.getMachineManager()
+
+        self._machine_manager.globalContainerChanged.connect(self._onGlobalContainerChanged)
         self._global_container_stack = None
         self._settings_with_inheritance_warning = []
         self._active_container_stack = None
         self._onGlobalContainerChanged()
 
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        self._machine_manager.activeStackChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
         self._update_timer = QTimer()
@@ -53,10 +55,10 @@ class SettingInheritanceManager(QObject):
         return result
 
     @pyqtSlot(str, str, result = "QStringList")
-    def getOverridesForExtruder(self, key, extruder_index):
-        result = []
+    def getOverridesForExtruder(self, key: str, extruder_index: str) -> List[str]:
+        result = []  # type: List[str]
 
-        extruder_stack = ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        extruder_stack = self._global_container_stack.extruders[extruder_index]
         if not extruder_stack:
             Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
             return result
@@ -83,7 +85,7 @@ class SettingInheritanceManager(QObject):
         self._update()
 
     def _onActiveExtruderChanged(self):
-        new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        new_active_stack = self._machine_manager.activeStack
         if not new_active_stack:
             self._active_container_stack = None
             return
@@ -230,7 +232,7 @@ class SettingInheritanceManager(QObject):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             self._global_container_stack.containersChanged.disconnect(self._onContainersChanged)
-        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        self._global_container_stack = self._machine_manager.activeMachine
         if self._global_container_stack:
             self._global_container_stack.containersChanged.connect(self._onContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)

@@ -320,7 +320,7 @@ class CuraContainerStack(ContainerStack):
         return cls._findInstanceContainerDefinitionId(definitions[0])
 
     ##  getProperty for extruder positions, with translation from -1 to default extruder number
-    def getExtruderPositionValueWithDefault(self, key):
+    def getExtruderPositionValueWithDefault(self, key: str) -> int:
         value = self.getProperty(key, "value")
         if value == -1:
             value = int(Application.getInstance().getMachineManager().defaultExtruderPosition)

@@ -11,7 +11,6 @@ from UM.Settings.Validator import ValidatorState
 from UM.Math.Color import Color
 from UM.View.GL.OpenGL import OpenGL
 
-from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtrudersModel import ExtrudersModel
 
 import math
@@ -59,16 +58,19 @@ class SolidView(View):
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
-            support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
+        application = Application.getInstance()
+        machine_manager = application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        if global_stack:
+            support_extruder_nr = global_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
+            support_angle_stack = global_stack.extruders[str(support_extruder_nr)]
 
             if support_angle_stack is not None and Application.getInstance().getPreferences().getValue("view/show_overhang"):
                 angle = support_angle_stack.getProperty("support_angle", "value")
                 # Make sure the overhang angle is valid before passing it to the shader
                 # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)
-                if angle is not None and global_container_stack.getProperty("support_angle", "validationState") in [None, ValidatorState.Valid]:
+                if angle is not None and global_stack.getProperty("support_angle", "validationState") in [None, ValidatorState.Valid]:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
@@ -91,14 +93,14 @@ class SolidView(View):
                     # Use the support extruder instead of the active extruder if this is a support_mesh
                     if per_mesh_stack:
                         if per_mesh_stack.getProperty("support_mesh", "value"):
-                            extruder_index = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
+                            extruder_index = int(global_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
 
                     try:
                         material_color = self._extruders_model.getItem(extruder_index)["color"]
                     except KeyError:
                         material_color = self._extruders_model.defaultColors[0]
 
-                    if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
+                    if extruder_index != machine_manager.getActiveExtruderPosition():
                         # Shade objects that are printed with the non-active extruder 25% darker
                         shade_factor = 0.6
 

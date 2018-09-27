@@ -274,8 +274,11 @@ class FlavorParser:
 
     ##  For showing correct x, y offsets for each extruder
     def _extruderOffsets(self) -> Dict[int, List[float]]:
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        global_stack = machine_manager.activeMachine
+
         result = {}
-        for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
+        for extruder in global_stack.getMachineExtruderStacks():
             result[int(extruder.getMetaData().get("position", "0"))] = [
                 extruder.getProperty("machine_nozzle_offset_x", "value"),
                 extruder.getProperty("machine_nozzle_offset_y", "value")]

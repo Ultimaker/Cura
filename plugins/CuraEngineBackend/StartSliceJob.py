@@ -5,7 +5,7 @@ import numpy
 from string import Formatter
 from enum import IntEnum
 import time
-from typing import Any, cast, Dict, List, Optional, Set
+from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
 import re
 import Arcus #For typing.
 
@@ -23,6 +23,10 @@ from cura.CuraApplication import CuraApplication
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
+
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
+
 
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
@@ -247,13 +251,13 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            for extruder_stack in global_stack.extruders.values():
                 self._buildExtruderMessage(extruder_stack)
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
-                    self._handlePerObjectSettings(group[0].getParent(), group_message)
+                    self._handlePerObjectSettings(global_stack, group[0].getParent(), group_message)
                 for object in group:
                     mesh_data = object.getMeshData()
                     rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
@@ -279,7 +283,7 @@ class StartSliceJob(Job):
 
                     obj.vertices = flat_verts
 
-                    self._handlePerObjectSettings(object, obj)
+                    self._handlePerObjectSettings(global_stack, object, obj)
 
                     Job.yieldThread()
 
@@ -333,7 +337,7 @@ class StartSliceJob(Job):
                 "-1": self._buildReplacementTokens(global_stack)
             }
 
-            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+            for extruder_stack in global_stack.getMachineExtruderStacks():
                 extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
                 self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
 
@@ -422,7 +426,7 @@ class StartSliceJob(Job):
     ##  Check if a node has per object settings and ensure that they are set correctly in the message
     #   \param node Node to check.
     #   \param message object_lists message to put the per object settings in
-    def _handlePerObjectSettings(self, node: CuraSceneNode, message: Arcus.PythonMessage):
+    def _handlePerObjectSettings(self, global_stack: "GlobalStack", node: CuraSceneNode, message: Arcus.PythonMessage):
         stack = node.callDecoration("getStack")
 
         # Check if the node has a stack attached to it and the stack has any settings in the top container.
@@ -447,11 +451,11 @@ class StartSliceJob(Job):
         for key in changed_setting_keys:
             setting = message.addRepeatedMessage("settings")
             setting.name = key
-            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
+            extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
 
             # Check if limited to a specific extruder, but not overridden by per-object settings.
-            if extruder >= 0 and key not in changed_setting_keys:
-                limited_stack = ExtruderManager.getInstance().getActiveExtruderStacks()[extruder]
+            if extruder_position >= 0 and key not in changed_setting_keys:
+                limited_stack = global_stack.extruders[str(extruder_position)]
             else:
                 limited_stack = stack
 

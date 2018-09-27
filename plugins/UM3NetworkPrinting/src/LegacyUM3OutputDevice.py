@@ -1,3 +1,6 @@
+import json
+import os
+from time import time
 from typing import List, Optional
 
 from UM.FileHandler.FileHandler import FileHandler
@@ -10,7 +13,6 @@ from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from cura.Settings.ContainerManager import ContainerManager
-from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -22,11 +24,6 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMessageBox
 
 from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
-
-from time import time
-
-import json
-import os
 
 
 i18n_catalog = i18nCatalog("cura")
@@ -333,13 +330,14 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkForWarnings(self):
         warnings = []
-        print_information = CuraApplication.getInstance().getPrintInformation()
+        application = CuraApplication.getInstance()
+        machine_manager = application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+        print_information = application.getPrintInformation()
 
         if not print_information.materialLengths:
             Logger.log("w", "There is no material length information. Unable to check for warnings.")
             return warnings
-
-        extruder_manager = ExtruderManager.getInstance()
 
         for index, extruder in enumerate(self.activePrinter.extruders):
             if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
@@ -348,7 +346,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # TODO: material length check
 
                 # Check if the right Printcore is active.
-                variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
+                variant = global_stack.extruders[str(index)].findContainer({"type": "variant"})
                 if variant:
                     if variant.getName() != extruder.hotendID:
                         warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}".format(cura_printcore_name = variant.getName(), remote_printcore_name = extruder.hotendID, extruder_id = index + 1)))
@@ -356,7 +354,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                     Logger.log("w", "Unable to find variant.")
 
                 # Check if the right material is loaded.
-                local_material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
+                local_material = global_stack.extruders[str(index)].findContainer({"type": "material"})
                 if local_material:
                     if extruder.activeMaterial.guid != local_material.getMetaDataEntry("GUID"):
                         Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1, extruder.activeMaterial.guid, local_material.getMetaDataEntry("GUID"))

@@ -117,7 +117,7 @@ class CuraActions(QObject):
             # If the node is a group, apply the active extruder to all children of the group.
             if node.callDecoration("isGroup"):
                 for grouped_node in BreadthFirstIterator(node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
-                    if grouped_node.callDecoration("getActiveExtruder") == extruder_id:
+                    if grouped_node.callDecoration("getActiveExtruder").getId() == extruder_id:
                         continue
 
                     if grouped_node.callDecoration("isGroup"):
@@ -127,7 +127,7 @@ class CuraActions(QObject):
                 continue
 
             # Do not change any nodes that already have the right extruder set.
-            if node.callDecoration("getActiveExtruder") == extruder_id:
+            if node.callDecoration("getActiveExtruder").getId() == extruder_id:
                 continue
 
             nodes_to_change.append(node)

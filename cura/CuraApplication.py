@@ -685,6 +685,8 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self)
 
+        self._extruder_manager = ExtruderManager(self)
+
         Logger.log("i", "Initializing container manager")
         self._container_manager = ContainerManager(self)
 

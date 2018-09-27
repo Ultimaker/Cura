@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
 from typing import Iterable
 
 from UM.i18n import i18nCatalog
@@ -78,11 +78,17 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._active_machine_extruders = []  # type: Iterable[ExtruderStack]
         self._add_optional_extruder = False
 
+        self._application = Application.getInstance()
+
+        self._application.initializationFinished.connect(self._initialize)
+
+    def _initialize(self) -> None:
         # Listen to changes
-        Application.getInstance().globalContainerStackChanged.connect(self._extrudersChanged)  # When the machine is swapped we must update the active machine extruders
-        Application.getInstance().getExtruderManager().extrudersChanged.connect(self._extrudersChanged)  # When the extruders change we must link to the stack-changed signal of the new extruder
-        Application.getInstance().getContainerRegistry().containerMetaDataChanged.connect(self._onExtruderStackContainersChanged)  # When meta data from a material container changes we must update
-        self._extrudersChanged()  # Also calls _updateExtruders
+        self._application.globalContainerStackChanged.connect(self._extrudersChanged)  # When the machine is swapped we must update the active machine extruders
+        self._application.getExtruderManager().extrudersChanged.connect(self._extrudersChanged)  # When the extruders change we must link to the stack-changed signal of the new extruder
+        self._application.getContainerRegistry().containerMetaDataChanged.connect(self._onExtruderStackContainersChanged)  # When meta data from a material container changes we must update
+
+        self._extrudersChanged()
 
     addOptionalExtruderChanged = pyqtSignal()
 
@@ -119,13 +125,15 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   that signal. Application.globalContainerStackChanged doesn't fill this
     #   signal; it's assumed to be the current printer in that case.
     def _extrudersChanged(self, machine_id = None):
-        if machine_id is not None:
-            if Application.getInstance().getGlobalContainerStack() is None:
-                # No machine, don't need to update the current machine's extruders
-                return
-            if machine_id != Application.getInstance().getGlobalContainerStack().getId():
-                # Not the current machine
-                return
+        machine_manager = self._application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        if global_stack is None:
+            # No machine, don't need to update the current machine's extruders
+            return
+        if machine_id != global_stack.getId():
+            # Not the current machine
+            return
 
         # Unlink from old extruders
         for extruder in self._active_machine_extruders:
@@ -133,8 +141,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         # Link to new extruders
         self._active_machine_extruders = []
-        extruder_manager = Application.getInstance().getExtruderManager()
-        for extruder in extruder_manager.getActiveExtruderStacks():
+        for extruder in global_stack.getMachineExtruderStacks():
             if extruder is None: #This extruder wasn't loaded yet. This happens asynchronously while this model is constructed from QML.
                 continue
             extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
@@ -158,6 +165,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   This should be called whenever the list of extruders changes.
     @UM.FlameProfiler.profile
     def __updateExtruders(self):
+        machine_manager = self._application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
         extruders_changed = False
 
         if self.rowCount() != 0:
@@ -165,21 +175,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         items = []
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-
-            # get machine extruder count for verification
-            machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
-
-            for extruder in Application.getInstance().getExtruderManager().getActiveExtruderStacks():
-                position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
-                try:
-                    position = int(position)
-                except ValueError:
-                    # Not a proper int.
-                    position = -1
-                if position >= machine_extruder_count:
-                    continue
+        if global_stack:
+            for extruder in global_stack.getMachineExtruderStacks():
+                position = int(extruder.getMetaDataEntry("position"))
 
                 default_color = self.defaultColors[position] if 0 <= position < len(self.defaultColors) else self.defaultColors[0]
                 color = extruder.material.getMetaDataEntry("color_code", default = default_color) if extruder.material else default_color

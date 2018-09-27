@@ -509,7 +509,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
+                            return Cura.MachineManager.activeMachine[String(settingsTabs.currentIndex - 1)].id;
                         }
                         return "";
                     }
@@ -562,7 +562,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
+                            return Cura.MachineManager.activeMachine[String(settingsTabs.currentIndex - 1)].id;
                         }
                         return "";
                     }
@@ -653,7 +653,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
+                            return Cura.MachineManager.activeMachine[String(settingsTabs.currentIndex - 1)].id;
                         }
                         return "";
                     }
@@ -752,7 +752,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
+                            return Cura.MachineManager.getExtruder(settingsTabs.currentIndex - 1).id;
                         }
                         return "";
                     }

@@ -51,22 +51,8 @@ class CuraSceneNode(SceneNode):
                 return extruders[int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))]
 
         # It's only set if you explicitly choose an extruder
-        extruder_id = self.callDecoration("getActiveExtruder")
-
-        for extruder in extruders:
-            # Find out the extruder if we know the id.
-            if extruder_id is not None:
-                if extruder_id == extruder.getId():
-                    return extruder
-            else: # If the id is unknown, then return the extruder in the position 0
-                try:
-                    if extruder.getMetaDataEntry("position", default = "0") == "0":  # Check if the position is zero
-                        return extruder
-                except ValueError:
-                    continue
-
-        # This point should never be reached
-        return None
+        extruder_stack = self.callDecoration("getActiveExtruder")
+        return extruder_stack
 
     ##  Return the color of the material used to print this model
     def getDiffuseColor(self) -> List[float]:

@@ -16,7 +16,6 @@ from UM.Math.Vector import Vector
 
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.Settings.ExtruderManager import ExtruderManager
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura import LayerPolygon
@@ -177,8 +176,7 @@ class ProcessSlicedLayersJob(Job):
 
         # Find out colors per extruder
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        manager = ExtruderManager.getInstance()
-        extruders = manager.getActiveExtruderStacks()
+        extruders = global_container_stack.getMachineExtruderStacks()
         if extruders:
             material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:

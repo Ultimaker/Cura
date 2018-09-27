@@ -25,14 +25,14 @@ Item
         {
             return false
         }
-        const extruder_position = Cura.ExtruderManager.activeExtruderIndex
+        const extruder_position = Cura.MachineManager.activeExtruderPosition
         const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position]
         return base.currentItem.root_material_id == root_material_id
     }
     property string newRootMaterialIdToSwitchTo: ""
     property bool toActivateNewMaterial: false
 
-    property var extruder_position: Cura.ExtruderManager.activeExtruderIndex
+    property var extruder_position: Cura.MachineManager.activeExtruderPosition
     property var active_root_material_id: Cura.MachineManager.currentRootMaterialId[extruder_position]
 
     UM.I18nCatalog
@@ -90,7 +90,7 @@ Item
 
                 // Set the current material as the one to be activated (needed to force the UI update)
                 base.newRootMaterialIdToSwitchTo = base.currentItem.root_material_id
-                const extruder_position = Cura.ExtruderManager.activeExtruderIndex
+                const extruder_position = Cura.MachineManager.activeExtruderPosition
                 Cura.MachineManager.setMaterial(extruder_position, base.currentItem.container_node)
             }
         }

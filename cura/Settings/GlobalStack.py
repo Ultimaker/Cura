@@ -3,7 +3,8 @@
 
 from collections import defaultdict
 import threading
-from typing import Any, Dict, Optional, Set, TYPE_CHECKING
+from typing import Any, Dict, List, Optional, Set, TYPE_CHECKING
+
 from PyQt5.QtCore import pyqtProperty
 
 from UM.Decorators import override
@@ -198,6 +199,22 @@ class GlobalStack(CuraContainerStack):
 
     def getHasMachineQuality(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_machine_quality", False))
+
+    # Returns the ExtruderStacks that can be used on this machine, i.e. the number of extruders specified for this
+    # machine.
+    def getMachineExtruderStacks(self) -> List["ExtruderStack"]:
+        machine_extruder_count = self.getProperty("machine_extruder_count", "value")
+        result_list = []
+        for extruder_position in range(machine_extruder_count):
+            result_list.append(self.extruders[str(extruder_position)])
+        return result_list
+
+    # Gets values of a setting for all extruders.
+    def getValuesInAllExtruders(self, setting_key: str, property_name: str) -> List[Any]:
+        result = []
+        for extruder_stack in self.getMachineExtruderStacks():
+            result.append(extruder_stack.getProperty(setting_key, property_name))
+        return result
 
 
 ## private:
