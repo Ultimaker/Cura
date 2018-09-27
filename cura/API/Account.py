@@ -42,14 +42,13 @@ class Account(QObject):
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
         )
-
-        self._authorization_service = AuthorizationService(Application.getInstance().getPreferences(), self._oauth_settings)
-        self._authorization_service.loadAuthDataFromPreferences()
-        self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
-        self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
-
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
+
+        self._authorization_service = AuthorizationService(Application.getInstance().getPreferences(), self._oauth_settings)
+        self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
+        self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
+        self._authorization_service.loadAuthDataFromPreferences()
 
     @pyqtProperty(bool, notify=loginStateChanged)
     def isLoggedIn(self) -> bool:
