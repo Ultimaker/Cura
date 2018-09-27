@@ -56,35 +56,69 @@ Component
             color: UM.Theme.getColor("text")
         }
 
-        ScrollView
+        Column
         {
-            id: queuedPrintJobs
-
+            id: skeletonLoader
+            visible: printJobList.count === 0;
+            width: Math.min(800 * screenScaleFactor, maximumWidth)
             anchors
             {
                 top: queuedLabel.bottom
                 topMargin: UM.Theme.getSize("default_margin").height
                 horizontalCenter: parent.horizontalCenter
-                bottomMargin: 0
+                bottomMargin: UM.Theme.getSize("default_margin").height
+                bottom: parent.bottom
+            }
+            PrintJobInfoBlock
+            {
+                printJob: null // Use as skeleton
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+            }
+            PrintJobInfoBlock
+            {
+                printJob: null // Use as skeleton
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+            }
+        }
+
+        ScrollView
+        {
+            id: queuedPrintJobs
+            anchors {
+                top: queuedLabel.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
+                horizontalCenter: parent.horizontalCenter
+                bottomMargin: UM.Theme.getSize("default_margin").height
                 bottom: parent.bottom
             }
             style: UM.Theme.styles.scrollview
             width: Math.min(800 * screenScaleFactor, maximumWidth)
+
             ListView
             {
+                id: printJobList;
                 anchors.fill: parent
-                //anchors.margins: UM.Theme.getSize("default_margin").height
                 spacing: UM.Theme.getSize("default_margin").height - 10 // 2x the shadow radius
-
                 model: OutputDevice.queuedPrintJobs
-
                 delegate: PrintJobInfoBlock
                 {
                     printJob: modelData
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").height
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").height
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 }
             }
         }

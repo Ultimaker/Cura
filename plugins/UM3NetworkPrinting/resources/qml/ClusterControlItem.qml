@@ -111,11 +111,11 @@ Component
                         {
                             if(modelData.state == "disabled")
                             {
-                                return UM.Theme.getColor("monitor_background_inactive")
+                                return UM.Theme.getColor("monitor_tab_background_inactive")
                             }
                             else
                             {
-                                return UM.Theme.getColor("monitor_background_active") 
+                                return UM.Theme.getColor("monitor_tab_background_active") 
                             }
                         }
                         id: base
@@ -196,7 +196,7 @@ Component
                                     {
                                         if(modelData.state == "disabled")
                                         {
-                                            return UM.Theme.getColor("monitor_text_inactive")
+                                            return UM.Theme.getColor("monitor_tab_text_inactive")
                                         }
 
                                         if(modelData.activePrintJob != undefined)
@@ -204,7 +204,7 @@ Component
                                             return UM.Theme.getColor("primary")
                                         }
 
-                                        return UM.Theme.getColor("monitor_text_inactive")
+                                        return UM.Theme.getColor("monitor_tab_text_inactive")
                                     }
                                 }
                             }
@@ -252,7 +252,7 @@ Component
                                     width: parent.width
                                     elide: Text.ElideRight
                                     font: UM.Theme.getFont("default")
-                                    color: UM.Theme.getColor("monitor_text_inactive")
+                                    color: UM.Theme.getColor("monitor_tab_text_inactive")
                                 }
                             }
 
@@ -427,7 +427,7 @@ Component
                                     contentItem: Label
                                     {
                                         text: contextButton.text
-                                        color: UM.Theme.getColor("monitor_text_inactive")
+                                        color: UM.Theme.getColor("monitor_tab_text_inactive")
                                         font.pixelSize: 25
                                         verticalAlignment: Text.AlignVCenter
                                         horizontalAlignment: Text.AlignHCenter
@@ -762,7 +762,7 @@ Component
                                         ]
                                         if(inactiveStates.indexOf(state) > -1 && remainingTime > 0)
                                         {
-                                            return UM.Theme.getColor("monitor_text_inactive")
+                                            return UM.Theme.getColor("monitor_tab_text_inactive")
                                         }
                                         else
                                         {

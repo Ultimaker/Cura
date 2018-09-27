@@ -323,10 +323,12 @@
         "favorites_header_text_hover": [31, 36, 39, 255],
         "favorites_row_selected": [196, 239, 255, 255],
 
-        "monitor_text_inactive": [154, 154, 154, 255],
-        "monitor_background_inactive": [240, 240, 240, 255],
-        "monitor_background_active": [255, 255, 255, 255],
-        "monitor_lining_inactive": [230, 230, 230, 255]
+        "monitor_tab_background_active": [255, 255, 255, 255],
+        "monitor_tab_background_inactive": [240, 240, 240, 255],
+        "monitor_tab_lining_active": [0, 0, 0, 255],
+        "monitor_tab_lining_inactive": [230, 230, 230, 255],
+        "monitor_tab_placeholder_image": [230, 230, 230, 255],
+        "monitor_tab_text_inactive": [154, 154, 154, 255]
     },
 
     "sizes": {
@@ -476,6 +478,9 @@
         "toolbox_action_button": [8.0, 2.5],
         "toolbox_loader": [2.0, 2.0],
 
-        "drop_shadow_radius": [1.0, 1.0]
+        "monitor_tab_config_override_box": [1.0, 14.0],
+        "monitor_tab_extruder_circle": [2.75, 2.75],
+        "monitor_tab_text_line": [1.16, 1.16],
+        "monitor_tab_thick_lining": [0.16, 0.16]
     }
 }
