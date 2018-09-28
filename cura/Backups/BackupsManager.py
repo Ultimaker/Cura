@@ -41,7 +41,7 @@ class BackupsManager:
 
         self._disableAutoSave()
 
-        backup = Backup(zip_file = zip_file, meta_data = meta_data)
+        backup = Backup(self._application, zip_file = zip_file, meta_data = meta_data)
         restored = backup.restore()
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
