@@ -9,7 +9,6 @@ from UM.Math.Polygon import Polygon
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Scene import ConvexHullNode
 
