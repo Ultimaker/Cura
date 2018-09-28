@@ -4,13 +4,13 @@
 import collections
 import time
 from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
-import platform
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
+from UM.Platform import Platform
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
@@ -1543,17 +1543,16 @@ class MachineManager(QObject):
 
     ##  Get default firmware file name if one is specified in the firmware
     @pyqtSlot(result = str)
-    def getDefaultFirmwareName(self):
+    def getDefaultFirmwareName(self) -> str:
         # Check if there is a valid global container stack
         if not self._global_container_stack:
             return ""
 
         # The bottom of the containerstack is the machine definition
-        machine_id = self._global_container_stack.getBottom().id
         machine_has_heated_bed = self._global_container_stack.getProperty("machine_heated_bed", "value")
 
         baudrate = 250000
-        if platform.system() == "Linux":
+        if Platform.isLinux():
             # Linux prefers a baudrate of 115200 here because older versions of
             # pySerial did not support a baudrate of 250000
             baudrate = 115200
@@ -1570,5 +1569,5 @@ class MachineManager(QObject):
                 Logger.log("w", "Firmware file %s not found.", hex_file)
                 return ""
         else:
-            Logger.log("w", "There is no firmware for machine %s.", machine_id)
+            Logger.log("w", "There is no firmware for machine %s.", self._global_container_stack.getBottom().id)
             return ""
