@@ -1,4 +1,5 @@
 import QtQuick 2.3
+import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
@@ -15,7 +16,7 @@ Component
     {
         id: base
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
-
+        property var shadowRadius: 5 * screenScaleFactor
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
         visible: OutputDevice != null
         anchors.fill: parent
@@ -82,6 +83,8 @@ Component
 
             ListView
             {
+                id: printer_list
+                property var current_index: -1
                 anchors
                 {
                     top: parent.top
@@ -104,16 +107,33 @@ Component
                         height: childrenRect.height + UM.Theme.getSize("default_margin").height
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
+                        color:
+                        {
+                            if(modelData.state == "disabled")
+                            {
+                                return UM.Theme.getColor("monitor_background_inactive")
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("monitor_background_active") 
+                            }
+                        }
                         id: base
-                        property var shadowRadius: 5
+                        property var shadowRadius: 5 * screenScaleFactor
                         property var collapsed: true
 
                         layer.enabled: true
                         layer.effect: DropShadow
                         {
-                            radius: base.shadowRadius
+                            radius: 5 * screenScaleFactor
                             verticalOffset: 2
                             color: "#3F000000"  // 25% shadow
+                        }
+
+                        Connections
+                        {
+                            target: printer_list
+                            onCurrent_indexChanged: { base.collapsed = printer_list.current_index != model.index }
                         }
 
                         Item
@@ -131,7 +151,16 @@ Component
                             MouseArea
                             {
                                 anchors.fill: parent
-                                onClicked: base.collapsed = !base.collapsed
+                                onClicked:
+                                {
+                                    if (base.collapsed) {
+                                        printer_list.current_index = model.index
+                                    }
+                                    else
+                                    {
+                                        printer_list.current_index = -1
+                                    }
+                                }
                             }
 
                             Item
@@ -167,7 +196,7 @@ Component
                                     {
                                         if(modelData.state == "disabled")
                                         {
-                                            return UM.Theme.getColor("setting_control_disabled")
+                                            return UM.Theme.getColor("monitor_text_inactive")
                                         }
 
                                         if(modelData.activePrintJob != undefined)
@@ -175,7 +204,7 @@ Component
                                             return UM.Theme.getColor("primary")
                                         }
 
-                                        return UM.Theme.getColor("setting_control_disabled")
+                                        return UM.Theme.getColor("monitor_text_inactive")
                                     }
                                 }
                             }
@@ -223,7 +252,7 @@ Component
                                     width: parent.width
                                     elide: Text.ElideRight
                                     font: UM.Theme.getFont("default")
-                                    opacity: 0.6
+                                    color: UM.Theme.getColor("monitor_text_inactive")
                                 }
                             }
 
@@ -256,8 +285,16 @@ Component
                             Rectangle
                             {
                                 id: topSpacer
-                                color: UM.Theme.getColor("viewport_background")
-                                height: 2
+                                color:
+                                {
+                                    if(modelData.state == "disabled")
+                                    {
+                                        return UM.Theme.getColor("monitor_lining_inactive")
+                                    }
+                                    return UM.Theme.getColor("viewport_background")
+                                }
+                                // UM.Theme.getColor("viewport_background")
+                                height: 1
                                 anchors
                                 {
                                     left: parent.left
@@ -270,7 +307,14 @@ Component
                             PrinterFamilyPill
                             {
                                 id: printerFamilyPill
-                                color: UM.Theme.getColor("viewport_background")
+                                color:
+                                {
+                                    if(modelData.state == "disabled")
+                                    {
+                                        return "transparent"
+                                    }
+                                    return UM.Theme.getColor("viewport_background")
+                                }
                                 anchors.top: topSpacer.bottom
                                 anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
                                 text: modelData.type
@@ -356,21 +400,13 @@ Component
 
                                 function switchPopupState()
                                 {
-                                    if (popup.visible)
-                                    {
-                                        popup.close()
-                                    }
-                                    else
-                                    {
-                                        popup.open()
-                                    }
+                                    popup.visible ? popup.close() : popup.open()
                                 }
 
                                 Controls2.Button
                                 {
                                     id: contextButton
                                     text: "\u22EE" //Unicode; Three stacked points.
-                                    font.pixelSize: 25
                                     width: 35
                                     height: width
                                     anchors
@@ -388,6 +424,14 @@ Component
                                         radius: 0.5 * width
                                         color: UM.Theme.getColor("viewport_background")
                                     }
+                                    contentItem: Label
+                                    {
+                                        text: contextButton.text
+                                        color: UM.Theme.getColor("monitor_text_inactive")
+                                        font.pixelSize: 25
+                                        verticalAlignment: Text.AlignVCenter
+                                        horizontalAlignment: Text.AlignHCenter
+                                    }
 
                                     onClicked: parent.switchPopupState()
                                 }
@@ -397,18 +441,21 @@ Component
                                     // TODO Change once updating to Qt5.10 - The 'opened' property is in 5.10 but the behavior is now implemented with the visible property
                                     id: popup
                                     clip: true
-                                    closePolicy: Controls2.Popup.CloseOnPressOutsideParent
-                                    x: parent.width - width
-                                    y: contextButton.height
-                                    width: 160
+                                    closePolicy: Popup.CloseOnPressOutside
+                                    x: (parent.width - width) + 26 * screenScaleFactor
+                                    y: contextButton.height - 5 * screenScaleFactor // Because shadow
+                                    width: 182 * screenScaleFactor
                                     height: contentItem.height + 2 * padding
                                     visible: false
+                                    padding: 5 * screenScaleFactor // Because shadow
 
-                                    transformOrigin: Controls2.Popup.Top
+                                    transformOrigin: Popup.Top
                                     contentItem: Item
                                     {
-                                        width: popup.width - 2 * popup.padding
-                                        height: childrenRect.height + 15
+                                        width: popup.width
+                                        height: childrenRect.height + 36 * screenScaleFactor
+                                        anchors.topMargin: 10 * screenScaleFactor
+                                        anchors.bottomMargin: 10 * screenScaleFactor
                                         Controls2.Button
                                         {
                                             id: pauseButton
@@ -427,13 +474,21 @@ Component
                                             }
                                             width: parent.width
                                             enabled: modelData.activePrintJob != null && ["paused", "printing"].indexOf(modelData.activePrintJob.state) >= 0
+                                            visible: enabled
                                             anchors.top: parent.top
-                                            anchors.topMargin: 10
+                                            anchors.topMargin: 18 * screenScaleFactor
+                                            height: visible ? 39 * screenScaleFactor : 0 * screenScaleFactor
                                             hoverEnabled: true
-                                            background:  Rectangle
+                                            background: Rectangle
                                             {
                                                 opacity: pauseButton.down || pauseButton.hovered ? 1 : 0
                                                 color: UM.Theme.getColor("viewport_background")
+                                            }
+                                            contentItem: Label
+                                            {
+                                                text: pauseButton.text
+                                                horizontalAlignment: Text.AlignLeft
+                                                verticalAlignment: Text.AlignVCenter
                                             }
                                         }
 
@@ -443,10 +498,11 @@ Component
                                             text: catalog.i18nc("@label", "Abort")
                                             onClicked:
                                             {
-                                                modelData.activePrintJob.setState("abort")
-                                                popup.close()
+                                                abortConfirmationDialog.visible = true;
+                                                popup.close();
                                             }
                                             width: parent.width
+                                            height: 39 * screenScaleFactor
                                             anchors.top: pauseButton.bottom
                                             hoverEnabled: true
                                             enabled: modelData.activePrintJob != null && ["paused", "printing", "pre_print"].indexOf(modelData.activePrintJob.state) >= 0
@@ -455,6 +511,23 @@ Component
                                                 opacity: abortButton.down || abortButton.hovered ? 1 : 0
                                                 color: UM.Theme.getColor("viewport_background")
                                             }
+                                            contentItem: Label
+                                            {
+                                                text: abortButton.text
+                                                horizontalAlignment: Text.AlignLeft
+                                                verticalAlignment: Text.AlignVCenter
+                                            }
+                                        }
+
+                                        MessageDialog
+                                        {
+                                            id: abortConfirmationDialog
+                                            title: catalog.i18nc("@window:title", "Abort print")
+                                            icon: StandardIcon.Warning
+                                            text: catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to abort %1?").arg(modelData.activePrintJob.name)
+                                            standardButtons: StandardButton.Yes | StandardButton.No
+                                            Component.onCompleted: visible = false
+                                            onYes: modelData.activePrintJob.setState("abort")
                                         }
                                     }
 
@@ -476,19 +549,20 @@ Component
                                         Item
                                         {
                                             id: pointedRectangle
-                                            width: parent.width -10
-                                            height: parent.height -10
+                                            width: parent.width - 10 * screenScaleFactor // Because of the shadow
+                                            height: parent.height - 10 * screenScaleFactor // Because of the shadow
                                             anchors.horizontalCenter: parent.horizontalCenter
                                             anchors.verticalCenter: parent.verticalCenter
 
                                             Rectangle
                                             {
                                                 id: point
-                                                height: 13
-                                                width: 13
+                                                height: 14 * screenScaleFactor
+                                                width: 14 * screenScaleFactor
                                                 color: UM.Theme.getColor("setting_control")
                                                 transform: Rotation { angle: 45}
                                                 anchors.right: bloop.right
+                                                anchors.rightMargin: 24
                                                 y: 1
                                             }
 
@@ -498,9 +572,9 @@ Component
                                                 color: UM.Theme.getColor("setting_control")
                                                 width: parent.width
                                                 anchors.top: parent.top
-                                                anchors.topMargin: 10
+                                                anchors.topMargin: 8 * screenScaleFactor // Because of the shadow + point
                                                 anchors.bottom: parent.bottom
-                                                anchors.bottomMargin: 5
+                                                anchors.bottomMargin: 8 * screenScaleFactor // Because of the shadow
                                             }
                                         }
                                     }
@@ -583,30 +657,14 @@ Component
                                     color: "black"
                                 }
 
-                                Rectangle
+                                CameraButton
                                 {
-                                    id: showCameraIcon
-                                    width: 35 * screenScaleFactor
-                                    height: width
-                                    radius: 0.5 * width
-                                    anchors.left: parent.left
-                                    anchors.bottom: printJobPreview.bottom
-                                    color: UM.Theme.getColor("setting_control_border_highlight")
-                                    Image
+                                    id: showCameraButton
+                                    iconSource: "../svg/camera-icon.svg"
+                                    anchors
                                     {
-                                        width: parent.width
-                                        height: width
-                                        anchors.right: parent.right
-                                        anchors.rightMargin: parent.rightMargin
-                                        source: "../svg/camera-icon.svg"
-                                    }
-                                    MouseArea
-                                    {
-                                        anchors.fill:parent
-                                        onClicked:
-                                        {
-                                            OutputDevice.setActiveCamera(modelData.camera)
-                                        }
+                                        left: parent.left
+                                        bottom: printJobPreview.bottom
                                     }
                                 }
                             }
@@ -638,13 +696,24 @@ Component
 
                             style: ProgressBarStyle
                             {
+                                property var remainingTime:
+                                {
+                                    if(modelData.activePrintJob == null)
+                                    {
+                                        return 0
+                                    }
+                                    /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent remaining
+                                        time from ever being less than 0. Negative durations cause strange behavior such
+                                        as displaying "-1h -1m". */
+                                    var activeJob = modelData.activePrintJob
+                                    return Math.max(activeJob.timeTotal - activeJob.timeElapsed, 0);
+                                }
                                 property var progressText:
                                 {
                                     if(modelData.activePrintJob == null)
                                     {
                                         return ""
                                     }
-
                                     switch(modelData.activePrintJob.state)
                                     {
                                         case "wait_cleanup":
@@ -657,18 +726,19 @@ Component
                                         case "sent_to_printer":
                                             return catalog.i18nc("@label:status", "Preparing")
                                         case "aborted":
+                                            return catalog.i18nc("@label:status", "Aborted")
                                         case "wait_user_action":
                                             return catalog.i18nc("@label:status", "Aborted")
                                         case "pausing":
                                             return catalog.i18nc("@label:status", "Pausing")
                                         case "paused":
-                                            return catalog.i18nc("@label:status", "Paused")
+                                            return OutputDevice.formatDuration( remainingTime )
                                         case "resuming":
                                             return catalog.i18nc("@label:status", "Resuming")
                                         case "queued":
                                             return catalog.i18nc("@label:status", "Action required")
                                         default:
-                                            OutputDevice.formatDuration(modelData.activePrintJob.timeTotal - modelData.activePrintJob.timeElapsed)
+                                            return OutputDevice.formatDuration( remainingTime )
                                     }
                                 }
 
@@ -681,11 +751,28 @@ Component
 
                                 progress: Rectangle
                                 {
-                                    color: UM.Theme.getColor("primary")
+                                    color:
+                                    {
+                                        var state = modelData.activePrintJob.state
+                                        var inactiveStates = [
+                                            "pausing",
+                                            "paused",
+                                            "resuming",
+                                            "wait_cleanup"
+                                        ]
+                                        if(inactiveStates.indexOf(state) > -1 && remainingTime > 0)
+                                        {
+                                            return UM.Theme.getColor("monitor_text_inactive")
+                                        }
+                                        else
+                                        {
+                                            return UM.Theme.getColor("primary")
+                                        }
+                                    }
                                     id: progressItem
                                     function getTextOffset()
                                     {
-                                        if(progressItem.width + progressLabel.width < control.width)
+                                        if(progressItem.width + progressLabel.width + 16 < control.width)
                                         {
                                             return progressItem.width + UM.Theme.getSize("default_margin").width
                                         }

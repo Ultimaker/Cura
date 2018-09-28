@@ -306,8 +306,8 @@ class Toolbox(QObject, Extension):
         all_packages = self._package_manager.getAllInstalledPackagesInfo()
         if "plugin" in all_packages:
             # For old plugins, we only want to include the old custom plugin that were installed via the old toolbox.
-            # The bundled plugins will be included in the "bundled_packages.json", so the bundled plugins should be
-            # excluded from the old plugins list/dict.
+            # The bundled plugins will be included in JSON files in the "bundled_packages" folder, so the bundled
+            # plugins should be excluded from the old plugins list/dict.
             all_plugin_package_ids = set(package["package_id"] for package in all_packages["plugin"])
             self._old_plugin_ids = set(plugin_id for plugin_id in self._old_plugin_ids
                                     if plugin_id not in all_plugin_package_ids)

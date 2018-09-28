@@ -357,12 +357,29 @@ class ExtruderManager(QObject):
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
     def _fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
+        container_registry = ContainerRegistry.getInstance()
         expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
-        extruder_stack_0 = global_stack.extruders["0"]
-        if extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
+        extruder_stack_0 = global_stack.extruders.get("0")
+        # At this point, extruder stacks for this machine may not have been loaded yet. In this case, need to look in
+        # the container registry as well.
+        if not global_stack.extruders:
+            extruder_trains = container_registry.findContainerStacks(type = "extruder_train",
+                                                                     machine = global_stack.getId())
+            if extruder_trains:
+                for extruder in extruder_trains:
+                    if extruder.getMetaDataEntry("position") == "0":
+                        extruder_stack_0 = extruder
+                        break
+
+        if extruder_stack_0 is None:
+            Logger.log("i", "No extruder stack for global stack [%s], create one", global_stack.getId())
+            # Single extrusion machine without an ExtruderStack, create it
+            from cura.Settings.CuraStackBuilder import CuraStackBuilder
+            CuraStackBuilder.createExtruderStackWithDefaultSetup(global_stack, 0)
+
+        elif extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
             Logger.log("e", "Single extruder printer [{printer}] expected extruder [{expected}], but got [{got}]. I'm making it [{expected}].".format(
                 printer = global_stack.getId(), expected = expected_extruder_definition_0_id, got = extruder_stack_0.definition.getId()))
-            container_registry = ContainerRegistry.getInstance()
             extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
             extruder_stack_0.definition = extruder_definition
 
