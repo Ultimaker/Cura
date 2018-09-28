@@ -15,7 +15,7 @@ from cura.PrinterOutput.GenericOutputController import GenericOutputController
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty, QUrl
 
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event

@@ -1,10 +1,16 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Logger import Logger
+
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater, FirmwareUpdateState
 
 from .avr_isp import stk500v2, intelHex
+from serial import SerialException
+
+from time import sleep
 
 class AvrFirmwareUpdater(FirmwareUpdater):
     def __init__(self, output_device: PrinterOutputDevice) -> None:
@@ -37,10 +43,12 @@ class AvrFirmwareUpdater(FirmwareUpdater):
             self.setFirmwareUpdateState(FirmwareUpdateState.communication_error)
         try:
             programmer.programChip(hex_file)
-        except SerialException:
+        except SerialException as e:
+            Logger.log("e", "A serial port exception occured during firmware update: %s" % e)
             self.setFirmwareUpdateState(FirmwareUpdateState.io_error)
             return
-        except:
+        except Exception as e:
+            Logger.log("e", "An unknown exception occured during firmware update: %s" % e)
             self.setFirmwareUpdateState(FirmwareUpdateState.unknown_error)
             return
 
