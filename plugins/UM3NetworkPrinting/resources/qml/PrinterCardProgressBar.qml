@@ -15,6 +15,7 @@ ProgressBar {
         return result;
     }
     value: progress;
+    width: parent.width;
 
     style: ProgressBarStyle {
         property var remainingTime:

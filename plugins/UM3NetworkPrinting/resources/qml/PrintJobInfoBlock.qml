@@ -218,49 +218,10 @@ Item {
                         }
                     }
 
-                    // Printer family pills
-                    Row {
-                        id: printerFamilyPills;
-                        visible: printJob;
-                        spacing: Math.round(0.5 * UM.Theme.getSize("default_margin").width);
-                        anchors {
-                            left: parent.left;
-                            right: parent.right;
-                            bottom: extrudersInfo.top;
-                            bottomMargin: UM.Theme.getSize("default_margin").height;
-                        }
-                        height: childrenRect.height;
-                        Repeater {
-                            model: printJob ? printJob.compatibleMachineFamilies : [];
-                            delegate: PrinterFamilyPill {
-                                text: modelData;
-                                color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
-                                padding: 3 * screenScaleFactor; // TODO: Theme!
-                            }
-                        }
-                    }
-
-                    // Print core & material config
-                    Row {
-                        id: extrudersInfo;
-                        anchors {
-                            bottom: parent.bottom;
-                            left: parent.left;
-                            right: parent.right;
-                            rightMargin: UM.Theme.getSize("default_margin").width;
-                        }
-                        height: childrenRect.height;
-                        spacing: UM.Theme.getSize("default_margin").width;
-                        PrintCoreConfiguration {
-                            id: leftExtruderInfo;
-                            width: Math.round(parent.width / 2) * screenScaleFactor;
-                            printCoreConfiguration: printJob !== null ? printJob.configuration.extruderConfigurations[0] : null;
-                        }
-                        PrintCoreConfiguration {
-                            id: rightExtruderInfo;
-                            width: Math.round(parent.width / 2) * screenScaleFactor;
-                            printCoreConfiguration: printJob !== null ? printJob.configuration.extruderConfigurations[1] : null;
-                        }
+                    PrinterInfoBlock {
+                        printer: root.printJob.assignedPrinter;
+                        printJob: root.printJob;
+                        anchors.bottom: parent.bottom;
                     }
                 }
 
