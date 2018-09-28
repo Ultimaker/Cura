@@ -72,12 +72,12 @@ msgstr "Wijzigingenlogboek Weergeven"
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
 msgctxt "@item:inmenu"
 msgid "Flatten active settings"
-msgstr "Actieve instellingen vlakken"
+msgstr "Actieve instellingen platmaken"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:35
 msgctxt "@info:status"
 msgid "Profile has been flattened & activated."
-msgstr "Profiel is gevlakt en geactiveerd."
+msgstr "Profiel is platgemaakt en geactiveerd."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:40
 msgctxt "@item:inmenu"
@@ -129,7 +129,7 @@ msgstr "Gecomprimeerd G-code-bestand"
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/GCodeGzWriter.py:38
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
-msgstr "GCodeWriter ondersteunt geen tekstmodus."
+msgstr "GCodeGzWriter ondersteunt geen tekstmodus."
 
 #: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:38
 msgctxt "@item:inlistbox"
@@ -144,7 +144,7 @@ msgstr "Voorbereiden"
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
-msgstr "Opslaan op verwisselbaar station"
+msgstr "Op te slaan op verwisselbaar station"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:24
 #, python-brace-format
@@ -1492,7 +1492,7 @@ msgstr "Terug"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall "
-msgstr "De-installeren bevestigen "
+msgstr "Bevestig de-installeren "
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
@@ -1797,7 +1797,7 @@ msgstr "Wachten op: Niet-beschikbare printer"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:144
 msgctxt "@label"
 msgid "Waiting for: First available"
-msgstr "Wachten op: Eerst beschikbaar"
+msgstr "Wachten op: Eerst beschikbare"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:148
 msgctxt "@label"
@@ -1807,12 +1807,12 @@ msgstr "Wachten op: "
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:213
 msgctxt "@label"
 msgid "Move to top"
-msgstr "Naar boven verplaatsen"
+msgstr "Plaats bovenaan"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:234
 msgctxt "@window:title"
 msgid "Move print job to top"
-msgstr "Printtaak naar boven verplaatsen"
+msgstr "Plaats printtaak bovenaan"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:236
 msgctxt "@label %1 is the name of a print job."
@@ -2667,7 +2667,7 @@ msgstr "Aangepast"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:639
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
-msgstr "Altijd vragen"
+msgstr "Dit altijd vragen"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:158
 msgctxt "@option:discardOrKeep"
