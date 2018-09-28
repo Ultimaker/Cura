@@ -99,12 +99,12 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             application.triggerNextExitCheck()
 
     @pyqtSlot(str)
-    def updateFirmware(self, file):
+    def updateFirmware(self, file: Any[str, QUrl]) -> None:
         self._firmware_updater.updateFirmware(file)
 
     ## Reset USB device settings
     #
-    def resetDeviceSettings(self):
+    def resetDeviceSettings(self) -> None:
         self._firmware_name = None
 
     ##  Request the current scene to be sent to a USB-connected printer.

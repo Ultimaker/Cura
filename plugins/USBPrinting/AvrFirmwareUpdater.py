@@ -10,7 +10,7 @@ class AvrFirmwareUpdater(FirmwareUpdater):
     def __init__(self, output_device: PrinterOutputDevice) -> None:
         super().__init__(output_device)
 
-    def _updateFirmware(self):
+    def _updateFirmware(self) -> None:
         try:
             hex_file = intelHex.readHex(self._firmware_location)
             assert len(hex_file) > 0
