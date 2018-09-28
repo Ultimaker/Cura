@@ -10,7 +10,6 @@ from typing import Dict
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
-from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration
 from UM.Scene.SceneNode import SceneNode
@@ -52,6 +51,8 @@ class PrintInformation(QObject):
         super().__init__(parent)
         self._application = application
 
+        self.UNTITLED_JOB_NAME = "Untitled"
+
         self.initializeCuraMessagePrintTimeProperties()
 
         self._material_lengths = {}  # indexed by build plate number
@@ -70,11 +71,12 @@ class PrintInformation(QObject):
         self._base_name = ""
         self._abbr_machine = ""
         self._job_name = ""
-        self._project_name = ""
         self._active_build_plate = 0
         self._initVariablesWithBuildPlate(self._active_build_plate)
 
         self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
+
+        ss = self._multi_build_plate_model.maxBuildPlate
 
         self._application.globalContainerStackChanged.connect(self._updateJobName)
         self._application.globalContainerStackChanged.connect(self.setToZeroPrintInformation)
@@ -300,13 +302,13 @@ class PrintInformation(QObject):
 
     def _updateJobName(self):
         if self._base_name == "":
-            self._job_name = "Untitled"
+            self._job_name = self.UNTITLED_JOB_NAME
             self._is_user_specified_job_name = False
             self.jobNameChanged.emit()
             return
 
         base_name = self._stripAccents(self._base_name)
-        self._setAbbreviatedMachineName()
+        self._defineAbbreviatedMachineName()
 
         # Only update the job name when it's not user-specified.
         if not self._is_user_specified_job_name:
@@ -382,7 +384,7 @@ class PrintInformation(QObject):
     ##  Created an acronym-like abbreviated machine name from the currently
     #   active machine name.
     #   Called each time the global stack is switched.
-    def _setAbbreviatedMachineName(self):
+    def _defineAbbreviatedMachineName(self):
         global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             self._abbr_machine = ""
