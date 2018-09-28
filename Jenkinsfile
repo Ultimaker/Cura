@@ -72,7 +72,12 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
                     }
                     else {
                         // For Windows
-                        make('test')
+                        try {
+                            // This also does code style checks.
+                            bat 'ctest -V'
+                        } catch(e) {
+                            currentBuild.result = "UNSTABLE"
+                        }
                     }
                 }
 
