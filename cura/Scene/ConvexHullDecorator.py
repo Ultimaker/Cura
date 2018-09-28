@@ -241,7 +241,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return Polygon()
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
-        convex_hull = self._compute2DConvexHeadFull()
+        convex_hull = self._compute2DConvexHull()
         if convex_hull:
             return convex_hull.getMinkowskiHull(self._getHeadAndFans())
         return None
