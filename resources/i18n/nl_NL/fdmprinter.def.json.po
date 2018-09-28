@@ -1158,12 +1158,12 @@ msgstr "Hiermee wordt de doorvoer gecompenseerd voor delen van binnenwanden die 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow label"
 msgid "Minimum Wall Flow"
-msgstr "Minimale Wanddoorvoer"
+msgstr "Minimale Wand-doorvoer"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow description"
 msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr "Minimaal toegestane doorvoerpercentage voor een wandlijn. Compensatie van de overlapping van wanden zorgt voor een kortere doorvoer van een wand als deze dicht bij een bestaande wand ligt. Wanden waarbij de doorvoerwaarde lager is dan deze waarde, worden vervangen door een beweging. Wanneer u deze instelling gebruikt, moet u compensatie van overlapping van wanden inschakelen en de buitenwand printen voordat u de binnenwanden print."
+msgstr "Minimaal toegestane doorvoerpercentage voor een wandlijn. Compensatie van de overlapping van wanden zorgt voor een kleinere doorvoer tijdens het printen van een wand als deze dicht bij een bestaande wand ligt. Wanden waarbij de doorvoerwaarde lager is dan deze waarde, worden vervangen door een beweging. Wanneer u deze instelling gebruikt, moet u compensatie van overlapping van wanden inschakelen en de buitenwand printen voordat u de binnenwanden print."
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow_retract label"
