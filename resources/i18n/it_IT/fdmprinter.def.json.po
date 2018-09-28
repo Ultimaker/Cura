@@ -6,15 +6,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.5\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com"
-"POT-Creation-Date: 2018-09-19 17:07+0000\n"
-"PO-Revision-Date: 2018-09-28 14:25+0100\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.comPOT-Creation-Date: 2018-09-19 17:07+0000\n"
+"PO-Revision-Date: 2018-09-28 15:02+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -56,7 +57,9 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "I comandi codice G da eseguire all’avvio, separati da \n."
+msgstr ""
+"I comandi codice G da eseguire all’avvio, separati da \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -68,7 +71,9 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "I comandi codice G da eseguire alla fine, separati da \n."
+msgstr ""
+"I comandi codice G da eseguire alla fine, separati da \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -543,7 +548,7 @@ msgstr "Accelerazione massima X"
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
-msgstr "Indica l’accelerazione massima del motore per la direzione X."
+msgstr "Indica l’accelerazione massima del motore per la direzione X"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y label"
@@ -863,7 +868,7 @@ msgstr "Larghezza linea strato iniziale"
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
-msgstr "Moltiplicatore della larghezza della linea del primo strato Il suo aumento potrebbe migliorare l'adesione al piano"
+msgstr "Moltiplicatore della larghezza della linea del primo strato Il suo aumento potrebbe migliorare l'adesione al piano."
 
 #: fdmprinter.def.json
 msgctxt "shell label"
@@ -1423,7 +1428,7 @@ msgstr "Velocità di stiratura"
 #: fdmprinter.def.json
 msgctxt "speed_ironing description"
 msgid "The speed at which to pass over the top surface."
-msgstr "Velocità alla quale passare sopra la superficie superiore"
+msgstr "Velocità alla quale passare sopra la superficie superiore."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_ironing label"
@@ -1625,7 +1630,9 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Aggiunge pareti supplementari intorno alla zona di riempimento. Queste pareti possono ridurre l’abbassamento delle linee del rivestimento esterno superiore/inferiore, pertanto saranno necessari meno strati di rivestimento esterno superiore/inferiore per ottenere la stessa qualità al costo del materiale supplementare.\nQuesta funzione può essere abbinata a Collega poligoni riempimento per collegare tutto il riempimento in un unico percorso di estrusione senza necessità di avanzamenti o arretramenti, se configurata correttamente."
+msgstr ""
+"Aggiunge pareti supplementari intorno alla zona di riempimento. Queste pareti possono ridurre l’abbassamento delle linee del rivestimento esterno superiore/inferiore, pertanto saranno necessari meno strati di rivestimento esterno superiore/inferiore per ottenere la stessa qualità al costo del materiale supplementare.\n"
+"Questa funzione può essere abbinata a Collega poligoni riempimento per collegare tutto il riempimento in un unico percorso di estrusione senza necessità di avanzamenti o arretramenti, se configurata correttamente."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1855,7 +1862,7 @@ msgstr "Temperatura di stampa preimpostata"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr "La temperatura preimpostata utilizzata per la stampa. Deve essere la temperatura “base” di un materiale. Tutte le altre temperature di stampa devono usare scostamenti basati su questo valore."
+msgstr "La temperatura preimpostata utilizzata per la stampa. Deve essere la temperatura “base” di un materiale. Tutte le altre temperature di stampa devono usare scostamenti basati su questo valore"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1915,7 +1922,7 @@ msgstr "Temperatura piano di stampa preimpostata"
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
-msgstr "La temperatura preimpostata utilizzata per il piano di stampa. Deve essere la temperatura “base” di un piano di stampa. Tutte le altre temperature di stampa devono usare scostamenti basati su questo valore."
+msgstr "La temperatura preimpostata utilizzata per il piano di stampa. Deve essere la temperatura “base” di un piano di stampa. Tutte le altre temperature di stampa devono usare scostamenti basati su questo valore"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -2005,7 +2012,7 @@ msgstr "Retrazione al cambio strato"
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change description"
 msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "Ritrae il filamento quando l'ugello si sta muovendo allo strato successivo. "
+msgstr "Ritrae il filamento quando l'ugello si sta muovendo allo strato successivo."
 
 #: fdmprinter.def.json
 msgctxt "retraction_amount label"
@@ -3792,7 +3799,9 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa.\nQuesta è la distanza minima. Più linee di skirt aumenteranno tale distanza."
+msgstr ""
+"Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa.\n"
+"Questa è la distanza minima. Più linee di skirt aumenteranno tale distanza."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4642,7 +4651,7 @@ msgstr "Larghezza linea rivestimento superficie superiore"
 #: fdmprinter.def.json
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
-msgstr "Larghezza di un singola linea delle aree nella parte superiore della stampa"
+msgstr "Larghezza di un singola linea delle aree nella parte superiore della stampa."
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern label"
@@ -5229,7 +5238,9 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "Indica la distanza di uno spostamento verso l'alto con estrusione a velocità dimezzata.\nCiò può garantire una migliore adesione agli strati precedenti, senza eccessivo riscaldamento del materiale su questi strati. Applicabile solo alla funzione Wire Printing."
+msgstr ""
+"Indica la distanza di uno spostamento verso l'alto con estrusione a velocità dimezzata.\n"
+"Ciò può garantire una migliore adesione agli strati precedenti, senza eccessivo riscaldamento del materiale su questi strati. Applicabile solo alla funzione Wire Printing."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"

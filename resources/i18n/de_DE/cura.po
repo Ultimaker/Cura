@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-09-19 17:07+0200\n"
-"PO-Revision-Date: 2018-09-28 14:25+0100\n"
+"PO-Revision-Date: 2018-09-28 14:42+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -64,7 +64,11 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Ein oder mehrere 3D-Modelle können möglicherweise aufgrund der Modellgröße und Materialkonfiguration nicht optimal gedruckt werden:</p>\n<p>{model_names}</p>\n<p>Erfahren Sie, wie Sie die bestmögliche Druckqualität und Zuverlässigkeit sicherstellen.</p>\n<p><a href=“https://ultimaker.com/3D-model-assistant“>Leitfaden zu Druckqualität anzeigen</a></p>"
+msgstr ""
+"<p>Ein oder mehrere 3D-Modelle können möglicherweise aufgrund der Modellgröße und Materialkonfiguration nicht optimal gedruckt werden:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Erfahren Sie, wie Sie die bestmögliche Druckqualität und Zuverlässigkeit sicherstellen.</p>\n"
+"<p><a href=“https://ultimaker.com/3D-model-assistant“>Leitfaden zu Druckqualität anzeigen</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.py:32
 msgctxt "@item:inmenu"
@@ -437,7 +441,7 @@ msgstr "Die PrintCores und/oder Materialien auf Ihrem Drucker unterscheiden sich
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:89
 msgctxt "@info:status"
 msgid "Connected over the network"
-msgstr "Über Netzwerk verbunden."
+msgstr "Über Netzwerk verbunden"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:310
 msgctxt "@info:status"
@@ -511,7 +515,7 @@ msgstr "Schichtenansicht"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:102
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled"
-msgstr "Cura zeigt die Schichten nicht akkurat an, wenn Wire Printing aktiviert ist."
+msgstr "Cura zeigt die Schichten nicht akkurat an, wenn Wire Printing aktiviert ist"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:103
 msgctxt "@info:title"
@@ -884,7 +888,7 @@ msgstr "Export des Profils nach <filename>{0}</filename> fehlgeschlagen: <messag
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
-msgstr "Export des Profils nach <filename>{0}</filename> fehlgeschlagen: Fehlermeldung von Writer-Plugin"
+msgstr "Export des Profils nach <filename>{0}</filename> fehlgeschlagen: Fehlermeldung von Writer-Plugin."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
@@ -1074,7 +1078,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>Hoppla, bei Ultimaker Cura ist ein Problem aufgetreten.</p></b>\n                    <p>Beim Start ist ein nicht behebbarer Fehler aufgetreten. Er wurde möglicherweise durch einige falsche Konfigurationsdateien verursacht. Wir empfehlen ein Backup und Reset Ihrer Konfiguration.</p>\n                    <p>Backups sind im Konfigurationsordner abgelegt.</p>\n                    <p>Senden Sie uns diesen Absturzbericht bitte, um das Problem zu beheben.</p>\n                "
+msgstr ""
+"<p><b>Hoppla, bei Ultimaker Cura ist ein Problem aufgetreten.</p></b>\n"
+"                    <p>Beim Start ist ein nicht behebbarer Fehler aufgetreten. Er wurde möglicherweise durch einige falsche Konfigurationsdateien verursacht. Wir empfehlen ein Backup und Reset Ihrer Konfiguration.</p>\n"
+"                    <p>Backups sind im Konfigurationsordner abgelegt.</p>\n"
+"                    <p>Senden Sie uns diesen Absturzbericht bitte, um das Problem zu beheben.</p>\n"
+"                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
@@ -1107,7 +1116,10 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>Ein schwerer Fehler ist in Cura aufgetreten. Senden Sie uns diesen Absturzbericht, um das Problem zu beheben</p></b>\n            <p>Verwenden Sie bitte die Schaltfläche „Bericht senden“, um den Fehlerbericht automatisch an unsere Server zu senden</p>\n        "
+msgstr ""
+"<p><b>Ein schwerer Fehler ist in Cura aufgetreten. Senden Sie uns diesen Absturzbericht, um das Problem zu beheben</p></b>\n"
+"            <p>Verwenden Sie bitte die Schaltfläche „Bericht senden“, um den Fehlerbericht automatisch an unsere Server zu senden</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
@@ -1572,7 +1584,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "Dieses Plugin enthält eine Lizenz.\nSie müssen diese Lizenz akzeptieren, um das Plugin zu installieren.\nStimmen Sie den nachfolgenden Bedingungen zu?"
+msgstr ""
+"Dieses Plugin enthält eine Lizenz.\n"
+"Sie müssen diese Lizenz akzeptieren, um das Plugin zu installieren.\n"
+"Stimmen Sie den nachfolgenden Bedingungen zu?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
 msgctxt "@action:button"
@@ -1679,7 +1694,7 @@ msgstr "Vorhandene Verbindung"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:45
 msgctxt "@message:text"
 msgid "This printer/group is already added to Cura. Please select another printer/group."
-msgstr "Diese/r Drucker/Gruppe wurde bereits zu Cura hinzugefügt. Wählen Sie bitte eine/n andere/n Drucker/Gruppe"
+msgstr "Diese/r Drucker/Gruppe wurde bereits zu Cura hinzugefügt. Wählen Sie bitte eine/n andere/n Drucker/Gruppe."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:62
 msgctxt "@title:window"
@@ -1692,7 +1707,10 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr "Um über das Netzwerk direkt auf Ihrem Drucker zu drucken, stellen Sie bitte sicher, dass der Drucker mit dem Netzwerkkabel verbunden ist oder verbinden Sie Ihren Drucker mit Ihrem WLAN-Netzwerk. Wenn Sie Cura nicht mit Ihrem Drucker verbinden, können Sie dennoch ein USB-Laufwerk für die Übertragung von G-Code-Dateien auf Ihren Drucker verwenden.\n\nWählen Sie Ihren Drucker aus der folgenden Liste:"
+msgstr ""
+"Um über das Netzwerk direkt auf Ihrem Drucker zu drucken, stellen Sie bitte sicher, dass der Drucker mit dem Netzwerkkabel verbunden ist oder verbinden Sie Ihren Drucker mit Ihrem WLAN-Netzwerk. Wenn Sie Cura nicht mit Ihrem Drucker verbinden, können Sie dennoch ein USB-Laufwerk für die Übertragung von G-Code-Dateien auf Ihren Drucker verwenden.\n"
+"\n"
+"Wählen Sie Ihren Drucker aus der folgenden Liste:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:82
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:42
@@ -1919,7 +1937,7 @@ msgstr "Vorbereitung"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:675
 msgctxt "@label:status"
 msgid "Pausing"
-msgstr "Wird pausiert..."
+msgstr "Wird pausiert"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:677
 msgctxt "@label:status"
@@ -1929,7 +1947,7 @@ msgstr "Pausiert"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:679
 msgctxt "@label:status"
 msgid "Resuming"
-msgstr "Wird fortgesetzt ..."
+msgstr "Wird fortgesetzt"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:681
 msgctxt "@label:status"
@@ -2069,7 +2087,7 @@ msgstr "Cura sendet anonyme Daten an Ultimaker, um die Druckqualität und Benutz
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:101
 msgctxt "@text:window"
 msgid "I don't want to send these data"
-msgstr "Ich möchte diese Daten nicht senden."
+msgstr "Ich möchte diese Daten nicht senden"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:111
 msgctxt "@text:window"
@@ -2114,7 +2132,7 @@ msgstr "Breite (mm)"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:103
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr "Die Tiefe der Druckplatte in Millimetern."
+msgstr "Die Tiefe der Druckplatte in Millimetern"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:108
 msgctxt "@action:label"
@@ -2484,7 +2502,7 @@ msgstr "Benutzerdefinierte Firmware wählen"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:37
 msgctxt "@label"
 msgid "Please select any upgrades made to this Ultimaker Original"
-msgstr "Wählen Sie bitte alle Upgrades für dieses Ultimaker-Original."
+msgstr "Wählen Sie bitte alle Upgrades für dieses Ultimaker-Original"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:45
 msgctxt "@label"
@@ -2499,7 +2517,7 @@ msgstr "Drucker prüfen"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
 msgctxt "@label"
 msgid "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
-msgstr "Sie sollten einige Sanity Checks bei Ihrem Ultimaker durchführen. Sie können diesen Schritt überspringen, wenn Sie wissen, dass Ihr Gerät funktionsfähig ist."
+msgstr "Sie sollten einige Sanity Checks bei Ihrem Ultimaker durchführen. Sie können diesen Schritt überspringen, wenn Sie wissen, dass Ihr Gerät funktionsfähig ist"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
 msgctxt "@action:button"
@@ -2648,7 +2666,9 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr "Sie haben einige Profileinstellungen angepasst.\nMöchten Sie diese Einstellungen übernehmen oder verwerfen?"
+msgstr ""
+"Sie haben einige Profileinstellungen angepasst.\n"
+"Möchten Sie diese Einstellungen übernehmen oder verwerfen?"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -2769,7 +2789,7 @@ msgstr "Kosten pro Meter"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:321
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
-msgstr "Dieses Material ist mit %1 verknüpft und teilt sich damit einige seiner Eigenschaften"
+msgstr "Dieses Material ist mit %1 verknüpft und teilt sich damit einige seiner Eigenschaften."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:328
 msgctxt "@label"
@@ -3067,7 +3087,7 @@ msgstr "Soll ein Präfix anhand des Druckernamens automatisch zum Namen des Druc
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:527
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
-msgstr "Geräte-Präfix zu Auftragsnamen hinzufügen."
+msgstr "Geräte-Präfix zu Auftragsnamen hinzufügen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
 msgctxt "@info:tooltip"
@@ -3344,7 +3364,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Cura wurde von Ultimaker B.V. in Zusammenarbeit mit der Community entwickelt.\nCura verwendet mit Stolz die folgenden Open Source-Projekte:"
+msgstr ""
+"Cura wurde von Ultimaker B.V. in Zusammenarbeit mit der Community entwickelt.\n"
+"Cura verwendet mit Stolz die folgenden Open Source-Projekte:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -3457,7 +3479,10 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Einige Einstellungs-/Überschreibungswerte unterscheiden sich von den im Profil gespeicherten Werten.\n\nKlicken Sie, um den Profilmanager zu öffnen."
+msgstr ""
+"Einige Einstellungs-/Überschreibungswerte unterscheiden sich von den im Profil gespeicherten Werten.\n"
+"\n"
+"Klicken Sie, um den Profilmanager zu öffnen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:199
 msgctxt "@label:textbox"
@@ -3511,7 +3536,10 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "Einige ausgeblendete Einstellungen verwenden Werte, die von ihren normalen, berechneten Werten abweichen.\n\nKlicken Sie, um diese Einstellungen sichtbar zu machen."
+msgstr ""
+"Einige ausgeblendete Einstellungen verwenden Werte, die von ihren normalen, berechneten Werten abweichen.\n"
+"\n"
+"Klicken Sie, um diese Einstellungen sichtbar zu machen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3539,7 +3567,10 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "Diese Einstellung hat einen vom Profil abweichenden Wert.\n\nKlicken Sie, um den Wert des Profils wiederherzustellen."
+msgstr ""
+"Diese Einstellung hat einen vom Profil abweichenden Wert.\n"
+"\n"
+"Klicken Sie, um den Wert des Profils wiederherzustellen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:286
 msgctxt "@label"
@@ -3547,7 +3578,10 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "Diese Einstellung wird normalerweise berechnet; aktuell ist jedoch ein Absolutwert eingestellt.\n\nKlicken Sie, um den berechneten Wert wiederherzustellen."
+msgstr ""
+"Diese Einstellung wird normalerweise berechnet; aktuell ist jedoch ein Absolutwert eingestellt.\n"
+"\n"
+"Klicken Sie, um den berechneten Wert wiederherzustellen."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:129
 msgctxt "@label"
@@ -3772,7 +3806,9 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr "Druckeinrichtung deaktiviert\nG-Code-Dateien können nicht geändert werden"
+msgstr ""
+"Druckeinrichtung deaktiviert\n"
+"G-Code-Dateien können nicht geändert werden"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:359
 msgctxt "@tooltip"
@@ -3958,7 +3994,7 @@ msgstr "Modelle &zusammenführen"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:314
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr "Modell &multiplizieren"
+msgstr "Modell &multiplizieren..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:321
 msgctxt "@action:inmenu menubar:edit"
@@ -4114,7 +4150,7 @@ msgstr "&Datei"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:120
 msgctxt "@title:menu menubar:file"
 msgid "&Save..."
-msgstr "&Speichern"
+msgstr "&Speichern..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:141
 msgctxt "@title:menu menubar:file"
@@ -4292,12 +4328,12 @@ msgstr "Schichtdicke"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:277
 msgctxt "@tooltip"
 msgid "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile"
-msgstr "Dieses Qualitätsprofil ist für Ihr aktuelles Material und Ihre derzeitige Düsenkonfiguration nicht verfügbar. Bitte ändern Sie diese, um dieses Qualitätsprofil zu aktivieren."
+msgstr "Dieses Qualitätsprofil ist für Ihr aktuelles Material und Ihre derzeitige Düsenkonfiguration nicht verfügbar. Bitte ändern Sie diese, um dieses Qualitätsprofil zu aktivieren"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:450
 msgctxt "@tooltip"
 msgid "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab"
-msgstr "Ein benutzerdefiniertes Profil ist derzeit aktiv. Wählen Sie ein voreingestelltes Qualitätsprofil aus der Registerkarte „Benutzerdefiniert“, um den Schieberegler für Qualität zu aktivieren."
+msgstr "Ein benutzerdefiniertes Profil ist derzeit aktiv. Wählen Sie ein voreingestelltes Qualitätsprofil aus der Registerkarte „Benutzerdefiniert“, um den Schieberegler für Qualität zu aktivieren"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:467
 msgctxt "@label"
@@ -4357,7 +4393,7 @@ msgstr "Druckplattenhaftung"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1040
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
-msgstr "Drucken eines Brim- oder Raft-Elements aktivieren. Es wird ein flacher Bereich rund um oder unter Ihrem Objekt hinzugefügt, das im Anschluss leicht abgeschnitten werden kann. "
+msgstr "Drucken eines Brim- oder Raft-Elements aktivieren. Es wird ein flacher Bereich rund um oder unter Ihrem Objekt hinzugefügt, das im Anschluss leicht abgeschnitten werden kann."
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1080
 msgctxt "@label"
@@ -4604,7 +4640,7 @@ msgstr "Ausgabegerät-Plugin für Wechseldatenträger"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr "Verwaltet Netzwerkverbindungen zu Ultimaker 3-Druckern"
+msgstr "Verwaltet Netzwerkverbindungen zu Ultimaker 3-Druckern."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -4664,7 +4700,7 @@ msgstr "Nachbearbeitung"
 #: SupportEraser/plugin.json
 msgctxt "description"
 msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Erstellt ein Radierernetz, um den Druck von Stützstrukturen in bestimmten Positionen zu blockieren."
+msgstr "Erstellt ein Radierernetz, um den Druck von Stützstrukturen in bestimmten Positionen zu blockieren"
 
 #: SupportEraser/plugin.json
 msgctxt "name"

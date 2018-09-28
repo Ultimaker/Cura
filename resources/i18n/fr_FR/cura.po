@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-09-19 17:07+0200\n"
-"PO-Revision-Date: 2018-09-28 14:25+0100\n"
+"PO-Revision-Date: 2018-09-28 14:59+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -64,7 +64,11 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle :</p>\n<p>{model_names}</p>\n<p>Découvrez comment optimiser la qualité et la fiabilité de l'impression.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant »>Consultez le guide de qualité d'impression</a></p>"
+msgstr ""
+"<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle :</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Découvrez comment optimiser la qualité et la fiabilité de l'impression.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant »>Consultez le guide de qualité d'impression</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.py:32
 msgctxt "@item:inmenu"
@@ -169,7 +173,7 @@ msgstr "Enregistrement sur le lecteur amovible <filename>{0}</filename>"
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:94
 msgctxt "@info:title"
 msgid "Saving"
-msgstr "Enregistrement..."
+msgstr "Enregistrement"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:104
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:107
@@ -378,7 +382,7 @@ msgstr "Envoi des données à l'imprimante"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:233
 msgctxt "@info:title"
 msgid "Sending Data"
-msgstr "Envoi des données..."
+msgstr "Envoi des données"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:262
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:234
@@ -437,7 +441,7 @@ msgstr "Les PrintCores et / ou matériaux sur votre imprimante diffèrent de c
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:89
 msgctxt "@info:status"
 msgid "Connected over the network"
-msgstr "Connecté sur le réseau."
+msgstr "Connecté sur le réseau"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:310
 msgctxt "@info:status"
@@ -540,7 +544,7 @@ msgstr "Cura recueille des statistiques d'utilisation anonymes."
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:46
 msgctxt "@info:title"
 msgid "Collecting Data"
-msgstr "Collecte des données..."
+msgstr "Collecte des données"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:48
 msgctxt "@action:button"
@@ -1034,7 +1038,7 @@ msgstr "Multiplication et placement d'objets"
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:100
 msgctxt "@info:title"
 msgid "Placing Object"
-msgstr "Placement de l'objet..."
+msgstr "Placement de l'objet"
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:100
 #: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:96
@@ -1053,7 +1057,7 @@ msgstr "Recherche d'un nouvel emplacement pour les objets"
 #: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
 msgctxt "@info:title"
 msgid "Finding Location"
-msgstr "Recherche d'emplacement..."
+msgstr "Recherche d'emplacement"
 
 #: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:97
 #: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
@@ -1074,7 +1078,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>Oups, un problème est survenu dans Ultimaker Cura.</p></b>\n                    <p>Une erreur irrécupérable est survenue lors du démarrage. Elle peut avoir été causée par des fichiers de configuration incorrects. Nous vous suggérons de sauvegarder et de réinitialiser votre configuration.</p>\n                    <p>Les sauvegardes se trouvent dans le dossier de configuration.</p>\n                    <p>Veuillez nous envoyer ce rapport d'incident pour que nous puissions résoudre le problème.</p>\n                "
+msgstr ""
+"<p><b>Oups, un problème est survenu dans Ultimaker Cura.</p></b>\n"
+"                    <p>Une erreur irrécupérable est survenue lors du démarrage. Elle peut avoir été causée par des fichiers de configuration incorrects. Nous vous suggérons de sauvegarder et de réinitialiser votre configuration.</p>\n"
+"                    <p>Les sauvegardes se trouvent dans le dossier de configuration.</p>\n"
+"                    <p>Veuillez nous envoyer ce rapport d'incident pour que nous puissions résoudre le problème.</p>\n"
+"                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
@@ -1107,7 +1116,10 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>Une erreur fatale est survenue dans Cura. Veuillez nous envoyer ce rapport d'incident pour résoudre le problème</p></b>\n            <p>Veuillez utiliser le bouton « Envoyer rapport » pour publier automatiquement un rapport d'erreur sur nos serveurs</p>\n        "
+msgstr ""
+"<p><b>Une erreur fatale est survenue dans Cura. Veuillez nous envoyer ce rapport d'incident pour résoudre le problème</p></b>\n"
+"            <p>Veuillez utiliser le bouton « Envoyer rapport » pour publier automatiquement un rapport d'erreur sur nos serveurs</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
@@ -1572,7 +1584,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "Ce plug-in contient une licence.\nVous devez approuver cette licence pour installer ce plug-in.\nAcceptez-vous les clauses ci-dessous ?"
+msgstr ""
+"Ce plug-in contient une licence.\n"
+"Vous devez approuver cette licence pour installer ce plug-in.\n"
+"Acceptez-vous les clauses ci-dessous ?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
 msgctxt "@action:button"
@@ -1692,7 +1707,10 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr "Pour imprimer directement sur votre imprimante sur le réseau, assurez-vous que votre imprimante est connectée au réseau via un câble réseau ou en connectant votre imprimante à votre réseau Wi-Fi. Si vous ne connectez pas Cura avec votre imprimante, vous pouvez utiliser une clé USB pour transférer les fichiers g-code sur votre imprimante.\n\nSélectionnez votre imprimante dans la liste ci-dessous :"
+msgstr ""
+"Pour imprimer directement sur votre imprimante sur le réseau, assurez-vous que votre imprimante est connectée au réseau via un câble réseau ou en connectant votre imprimante à votre réseau Wi-Fi. Si vous ne connectez pas Cura avec votre imprimante, vous pouvez utiliser une clé USB pour transférer les fichiers g-code sur votre imprimante.\n"
+"\n"
+"Sélectionnez votre imprimante dans la liste ci-dessous :"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:82
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:42
@@ -1849,7 +1867,7 @@ msgstr "Mis en file d'attente"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:44
 msgctxt "@label"
 msgid "Printing"
-msgstr "Impression..."
+msgstr "Impression"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:54
 msgctxt "@label link to connect manager"
@@ -1914,7 +1932,7 @@ msgstr "Terminé"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:670
 msgctxt "@label:status"
 msgid "Preparing"
-msgstr "Préparation..."
+msgstr "Préparation"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:675
 msgctxt "@label:status"
@@ -2648,7 +2666,9 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr "Vous avez personnalisé certains paramètres du profil.\nSouhaitez-vous conserver ces changements, ou les annuler ?"
+msgstr ""
+"Vous avez personnalisé certains paramètres du profil.\n"
+"Souhaitez-vous conserver ces changements, ou les annuler ?"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -2957,7 +2977,7 @@ msgstr "Mettre en surbrillance les porte-à-faux"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
-msgstr "Déplace la caméra afin que le modèle sélectionné se trouve au centre de la vue."
+msgstr "Déplace la caméra afin que le modèle sélectionné se trouve au centre de la vue"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:362
 msgctxt "@action:button"
@@ -3344,7 +3364,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker.\nCura est fier d'utiliser les projets open source suivants :"
+msgstr ""
+"Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker.\n"
+"Cura est fier d'utiliser les projets open source suivants :"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -3457,7 +3479,10 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Certaines valeurs de paramètre / forçage sont différentes des valeurs enregistrées dans le profil. \n\nCliquez pour ouvrir le gestionnaire de profils."
+msgstr ""
+"Certaines valeurs de paramètre / forçage sont différentes des valeurs enregistrées dans le profil. \n"
+"\n"
+"Cliquez pour ouvrir le gestionnaire de profils."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:199
 msgctxt "@label:textbox"
@@ -3511,7 +3536,10 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "Certains paramètres masqués utilisent des valeurs différentes de leur valeur normalement calculée.\n\nCliquez pour rendre ces paramètres visibles."
+msgstr ""
+"Certains paramètres masqués utilisent des valeurs différentes de leur valeur normalement calculée.\n"
+"\n"
+"Cliquez pour rendre ces paramètres visibles."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3539,7 +3567,10 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "Ce paramètre possède une valeur qui est différente du profil.\n\nCliquez pour restaurer la valeur du profil."
+msgstr ""
+"Ce paramètre possède une valeur qui est différente du profil.\n"
+"\n"
+"Cliquez pour restaurer la valeur du profil."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:286
 msgctxt "@label"
@@ -3547,7 +3578,10 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "Ce paramètre est normalement calculé mais il possède actuellement une valeur absolue définie.\n\nCliquez pour restaurer la valeur calculée."
+msgstr ""
+"Ce paramètre est normalement calculé mais il possède actuellement une valeur absolue définie.\n"
+"\n"
+"Cliquez pour restaurer la valeur calculée."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:129
 msgctxt "@label"
@@ -3716,7 +3750,7 @@ msgstr "Afficher tous les paramètres"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:54
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
-msgstr "Gérer la visibilité des paramètres"
+msgstr "Gérer la visibilité des paramètres..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -3740,7 +3774,7 @@ msgstr "Nombre de copies"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:33
 msgctxt "@label:header configurations"
 msgid "Available configurations"
-msgstr "Configurations disponibles :"
+msgstr "Configurations disponibles"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/PrintCoreConfiguration.qml:28
 msgctxt "@label:extruder label"
@@ -3772,7 +3806,9 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr "Configuration de l'impression désactivée\nLes fichiers G-Code ne peuvent pas être modifiés"
+msgstr ""
+"Configuration de l'impression désactivée\n"
+"Les fichiers G-Code ne peuvent pas être modifiés"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:359
 msgctxt "@tooltip"
@@ -4292,7 +4328,7 @@ msgstr "Hauteur de la couche"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:277
 msgctxt "@tooltip"
 msgid "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile"
-msgstr "Ce profil de qualité n'est pas disponible pour votre matériau et configuration des buses actuels. Veuillez modifier ces derniers pour activer ce profil de qualité."
+msgstr "Ce profil de qualité n'est pas disponible pour votre matériau et configuration des buses actuels. Veuillez modifier ces derniers pour activer ce profil de qualité"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:450
 msgctxt "@tooltip"
@@ -4544,7 +4580,7 @@ msgstr "Impression par USB"
 #: UserAgreement/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license."
-msgstr "Demander à l'utilisateur une fois s'il appose son accord à notre licence"
+msgstr "Demander à l'utilisateur une fois s'il appose son accord à notre licence."
 
 #: UserAgreement/plugin.json
 msgctxt "name"
@@ -4604,7 +4640,7 @@ msgstr "Plugin de périphérique de sortie sur disque amovible"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr "Gère les connexions réseau vers les imprimantes Ultimaker 3"
+msgstr "Gère les connexions réseau vers les imprimantes Ultimaker 3."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -4884,7 +4920,7 @@ msgstr "Assistant de profil d'impression"
 #: 3MFWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing 3MF files."
-msgstr "Permet l'écriture de fichiers 3MF"
+msgstr "Permet l'écriture de fichiers 3MF."
 
 #: 3MFWriter/plugin.json
 msgctxt "name"
