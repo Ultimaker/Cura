@@ -66,7 +66,7 @@ class GenericOutputController(PrinterOutputController):
         self._output_device.sendCommand("G28 Z")
 
     def sendRawCommand(self, printer: "PrinterOutputModel", command: str):
-        self._output_device.sendCommand(command)
+        self._output_device.sendCommand(command.upper()) #Most printers only understand uppercase g-code commands.
 
     def setJobState(self, job: "PrintJobOutputModel", state: str):
         if state == "pause":
