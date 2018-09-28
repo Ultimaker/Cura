@@ -11,6 +11,11 @@ from cura.MultiplyObjectsJob import MultiplyObjectsJob
 
 import copy
 
+from typing import List
+MYPY = False
+if MYPY:
+    from cura.Scene.CuraSceneNode import CuraSceneNode
+
 class PatchedCuraActions(CuraActions):
     ##  Multiply all objects in the selection
     #
@@ -24,7 +29,7 @@ class PatchedCuraActions(CuraActions):
             return
 
         definition_container = global_container_stack.getBottom()
-        if definition_container.getId() != "blackbelt":
+        if definition_container and definition_container.getId() != "blackbelt":
             # for all other printers do the normal multiply/arrange
             super().multiplySelection(count)
             return
@@ -32,12 +37,12 @@ class PatchedCuraActions(CuraActions):
         scene_root = application.getController().getScene().getRoot()
 
         current_nodes = []
-        for node in DepthFirstIterator(scene_root):
+        for node in DepthFirstIterator(scene_root): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
                 current_nodes.append(node)
 
-        new_nodes = []
-        processed_nodes = []
+        new_nodes = [] # type: List[CuraSceneNode]
+        processed_nodes = [] # type: List[CuraSceneNode]
 
         active_build_plate = application.getMultiBuildPlateModel().activeBuildPlate
 

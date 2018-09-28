@@ -101,6 +101,8 @@ class PatchedMaterialManager(MaterialManager):
         ### END PATCH
         root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
         material_group = self.getMaterialGroup(root_material_id)
+        if not material_group:
+            return ""
 
         # Create a new ID & container to hold the data.
         new_id = self._container_registry.uniqueName("custom_material")

@@ -199,7 +199,7 @@ class StartSliceJob(Job):
                 has_printing_mesh = False
                 # print convex hull nodes as "faux-raft"
                 print_convex_hulls = stack.getProperty("blackbelt_raft", "value")
-                for node in DepthFirstIterator(self._scene.getRoot()):
+                for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                     slice_node = (print_convex_hulls and type(node) is ConvexHullNode) or node.callDecoration("isSliceable")
                     if slice_node and node.getMeshData() and node.getMeshData().getVertices() is not None:
                         per_object_stack = node.callDecoration("getStack")
