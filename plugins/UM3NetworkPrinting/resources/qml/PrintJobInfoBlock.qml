@@ -40,7 +40,7 @@ Item {
         layer.effect: DropShadow {
             radius: root.shadowRadius
             verticalOffset: 2 * screenScaleFactor
-            color: "#3F000000"  // 25% shadow
+            color: "#3F000000" // 25% shadow
         }
 
         Column {
