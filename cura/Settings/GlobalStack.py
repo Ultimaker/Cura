@@ -218,14 +218,14 @@ class GlobalStack(CuraContainerStack):
         if machine_has_heated_bed:
             hex_file = self.getMetaDataEntry("firmware_hbk_file", hex_file)
 
-        if hex_file:
-            try:
-                return Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
-            except FileNotFoundError:
-                Logger.log("w", "Firmware file %s not found.", hex_file)
-                return ""
-        else:
+        if not hex_file:
             Logger.log("w", "There is no firmware for machine %s.", self.getBottom().id)
+            return ""
+
+        try:
+            return Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
+        except FileNotFoundError:
+            Logger.log("w", "Firmware file %s not found.", hex_file)
             return ""
 
 ## private:
