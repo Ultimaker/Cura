@@ -9,7 +9,7 @@ from cura.CuraApplication import CuraApplication
 
 from enum import IntEnum
 from threading import Thread
-from typing import Any
+from typing import Union
 
 class FirmwareUpdater(QObject):
     firmwareProgressChanged = pyqtSignal()
@@ -25,7 +25,7 @@ class FirmwareUpdater(QObject):
         self._firmware_progress = 0
         self._firmware_update_state = FirmwareUpdateState.idle
 
-    def updateFirmware(self, file: Any[str, QUrl]) -> None:
+    def updateFirmware(self, file: Union[str, QUrl]) -> None:
         # the file path could be url-encoded.
         if file.startswith("file://"):
             self._firmware_location = QUrl(file).toLocalFile()
@@ -60,7 +60,7 @@ class FirmwareUpdater(QObject):
         return self._firmware_progress
 
     @pyqtProperty(int, notify=firmwareUpdateStateChanged)
-    def firmwareUpdateState(self) -> FirmwareUpdateState:
+    def firmwareUpdateState(self) -> "FirmwareUpdateState":
         return self._firmware_update_state
 
     def setFirmwareUpdateState(self, state) -> None:

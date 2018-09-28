@@ -172,7 +172,7 @@ class PrinterOutputModel(QObject):
     def cancelPreheatBed(self) -> None:
         self._controller.cancelPreheatBed(self)
 
-    def getController(self) -> PrinterOutputController:
+    def getController(self) -> "PrinterOutputController":
         return self._controller
 
     @pyqtProperty(str, notify=nameChanged)
@@ -205,7 +205,7 @@ class PrinterOutputModel(QObject):
         self._controller.setTargetBedTemperature(self, temperature)
         self.updateTargetBedTemperature(temperature)
 
-    def updateActivePrintJob(self, print_job: Optional[PrintJobOutputModel]) -> None:
+    def updateActivePrintJob(self, print_job: Optional["PrintJobOutputModel"]) -> None:
         if self._active_print_job != print_job:
             old_print_job = self._active_print_job
 
@@ -223,14 +223,14 @@ class PrinterOutputModel(QObject):
             self.stateChanged.emit()
 
     @pyqtProperty(QObject, notify = activePrintJobChanged)
-    def activePrintJob(self) -> Optional[PrintJobOutputModel]:
+    def activePrintJob(self) -> Optional["PrintJobOutputModel"]:
         return self._active_print_job
 
     @pyqtProperty(str, notify=stateChanged)
     def state(self) -> str:
         return self._printer_state
 
-    @pyqtProperty(int, notify = bedTemperatureChanged)
+    @pyqtProperty(int, notify=bedTemperatureChanged)
     def bedTemperature(self) -> int:
         return self._bed_temperature
 

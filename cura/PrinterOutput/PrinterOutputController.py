@@ -4,7 +4,7 @@
 from UM.Logger import Logger
 from UM.Signal import Signal
 
-from typing import Any
+from typing import Union
 
 MYPY = False
 if MYPY:
@@ -15,7 +15,7 @@ if MYPY:
 
 
 class PrinterOutputController:
-    def __init__(self, output_device: PrinterOutputDevice) -> None:
+    def __init__(self, output_device: "PrinterOutputDevice") -> None:
         self.can_pause = True
         self.can_abort = True
         self.can_pre_heat_bed = True
@@ -25,7 +25,7 @@ class PrinterOutputController:
         self.can_update_firmware = False
         self._output_device = output_device
 
-    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", extruder: "ExtruderOutputModel", temperature: Any[int, float]) -> None:
+    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", position: int, temperature: Union[int, float]) -> None:
         Logger.log("w", "Set target hotend temperature not implemented in controller")
 
     def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int) -> None:

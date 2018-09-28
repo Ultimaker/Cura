@@ -21,7 +21,7 @@ from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
 from time import time, sleep
 from queue import Queue
-from typing import Union, Optional, List, cast, Any
+from typing import Union, Optional, List, cast
 
 import re
 import functools  # Used for reduce
@@ -99,7 +99,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             application.triggerNextExitCheck()
 
     @pyqtSlot(str)
-    def updateFirmware(self, file: Any[str, QUrl]) -> None:
+    def updateFirmware(self, file: Union[str, QUrl]) -> None:
         self._firmware_updater.updateFirmware(file)
 
     ## Reset USB device settings

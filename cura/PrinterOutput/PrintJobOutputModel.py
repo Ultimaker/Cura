@@ -91,7 +91,7 @@ class PrintJobOutputModel(QObject):
     def assignedPrinter(self):
         return self._assigned_printer
 
-    def updateAssignedPrinter(self, assigned_printer: Optional[PrinterOutputModel]):
+    def updateAssignedPrinter(self, assigned_printer: Optional["PrinterOutputModel"]):
         if self._assigned_printer != assigned_printer:
             old_printer = self._assigned_printer
             self._assigned_printer = assigned_printer

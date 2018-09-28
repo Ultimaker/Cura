@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from PyQt5.QtCore import QTimer
@@ -109,7 +109,7 @@ class GenericOutputController(PrinterOutputController):
         self.setTargetBedTemperature(self._preheat_printer, 0)
         self._preheat_printer.updateIsPreheating(False)
 
-    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", position: int, temperature: int):
+    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", position: int, temperature: Union[int, float]) -> None:
         self._output_device.sendCommand("M104 S%s T%s" % (temperature, position))
 
     def _onTargetHotendTemperatureChanged(self):
