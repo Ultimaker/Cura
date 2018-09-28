@@ -21,7 +21,7 @@ from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
 from time import time, sleep
 from queue import Queue
-from typing import Union, Optional, List, cast
+from typing import Union, Optional, List, cast, Any
 
 import re
 import functools  # Used for reduce
