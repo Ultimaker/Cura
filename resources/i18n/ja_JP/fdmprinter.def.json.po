@@ -61,9 +61,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"最初に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最初に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -75,9 +73,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"最後に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最後に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1118,12 +1114,12 @@ msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons label"
 msgid "Connect Top/Bottom Polygons"
-msgstr ""
+msgstr "上層/底層ポリゴンに接合"
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "互いに次に実行する上層/底層スキンパスに接合します。同心円のパターンの場合、この設定を有効にすることにより、移動時間が短縮されますが、インフィルまでの途中で接合があるため、この機能で上層面の品質が損なわれることがあります。"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1208,22 +1204,22 @@ msgstr "すでに壁が設置されている場所にプリントされている
 #: fdmprinter.def.json
 msgctxt "wall_min_flow label"
 msgid "Minimum Wall Flow"
-msgstr ""
+msgstr "最小壁フロー"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow description"
 msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr ""
+msgstr "ウォールラインに対する流れを最小割合にします。既存の壁に近い場合に、壁補正により壁の流れが減少します。壁の流れがこの値より低い場合は、移動に置き換えられます。この設定を使用する場合は、壁補正を有効にして、内装の前に外装を印刷する必要があります。"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow_retract label"
 msgid "Prefer Retract"
-msgstr ""
+msgstr "引き戻し優先"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow_retract description"
 msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr ""
+msgstr "有効にすると、フローが最小フローしきい値を下回っている壁を置き換える移動量より多い場合は、引き戻しを使用します。"
 
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps label"
@@ -1326,9 +1322,7 @@ msgstr "ZシームX"
 #: fdmprinter.def.json
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr ""
-"レイヤー内の各印刷を開始するX座\n"
-"標の位置。"
+msgstr "レイヤー内の各印刷を開始するX座\n標の位置。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
@@ -1648,12 +1642,12 @@ msgstr "内壁の形状に沿ったラインを使用してインフィルパタ
 #: fdmprinter.def.json
 msgctxt "connect_infill_polygons label"
 msgid "Connect Infill Polygons"
-msgstr ""
+msgstr "インフィルポリゴン接合"
 
 #: fdmprinter.def.json
 msgctxt "connect_infill_polygons description"
 msgid "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time."
-msgstr ""
+msgstr "互いに次に実行するインフィルパスに接合します。いくつかの閉じられたポリゴンを含むインフィルパターンの場合、この設定を有効にすることにより、移動時間が大幅に短縮されます。"
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1689,24 +1683,24 @@ msgstr "インフィルパターンはY軸に沿ってこの距離を移動し�
 #: fdmprinter.def.json
 msgctxt "infill_multiplier label"
 msgid "Infill Line Multiplier"
-msgstr ""
+msgstr "インフィルライン乗算"
 
 #: fdmprinter.def.json
 msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
-msgstr ""
+msgstr "各インフィルラインをこの多重ラインに変換します。余分なラインが互いに交差せず、互いを避け合います。これによりインフィルが硬くなり、印刷時間と材料使用量が増えます。"
 
 #: fdmprinter.def.json
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
-msgstr ""
+msgstr "外側インフィル壁の数"
 
 #: fdmprinter.def.json
 msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
+msgstr "インフィルエリア周辺に外壁を追加します。このような壁は、上層/底層ラインにたるみを作ります。つまり、一部の外壁材料の費用で同じ品質を実現するためには、必要な上層/底層スキンが少ないことを意味します。\nこの機能は、インフィルポリゴン接合と組み合わせて、構成が正しい場合、移動または引き戻しが必要なく、すべてのインフィルを1つの押出経路に接続することができます。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1809,9 +1803,7 @@ msgstr "インフィル優先"
 #: fdmprinter.def.json
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
-msgstr ""
-"壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\n"
-"はじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
+msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\nはじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2878,7 +2870,7 @@ msgstr "コーミングモード"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
-msgstr ""
+msgstr "コーミングは、移動時に印刷済みエリア内にノズルを保持します。この結果、移動距離が長くなりますが、引き戻しの必要性が軽減されます。コーミングがオフの場合は、材料を引き戻して、ノズルを次のポイントまで直線に移動します。コーミングが上層/底層スキンエリアを超えずに、インフィル内のみコーミングするようにできます。「インフィル内」オプションは、Cura の旧版の「スキン内にない」オプションと全く同じ動作をします。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2898,7 +2890,7 @@ msgstr "スキン内にない"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
-msgstr ""
+msgstr "インフィル内"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
@@ -3350,22 +3342,22 @@ msgstr "印刷されたサポート材の間隔。この設定は、サポート
 #: fdmprinter.def.json
 msgctxt "support_initial_layer_line_distance label"
 msgid "Initial Layer Support Line Distance"
-msgstr ""
+msgstr "初期層サポートラインの距離"
 
 #: fdmprinter.def.json
 msgctxt "support_initial_layer_line_distance description"
 msgid "Distance between the printed initial layer support structure lines. This setting is calculated by the support density."
-msgstr ""
+msgstr "印刷した初期層間の距離が構造ライをサポートします。この設定は、対応濃度で算出されます。"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_angle label"
 msgid "Support Infill Line Direction"
-msgstr ""
+msgstr "サポートインフィルラインの向き"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_angle description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
-msgstr ""
+msgstr "対応するインフィルラインの向きです。サポートインフィルパターンは平面で回転します。"
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3756,22 +3748,22 @@ msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
-msgstr ""
+msgstr "ファン速度上書き"
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable description"
 msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
-msgstr ""
+msgstr "有効にすると、サポートを超えた直後に印刷冷却ファンの速度がスキン領域に対して変更されます。"
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
-msgstr ""
+msgstr "サポート対象スキンファン速度"
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed description"
 msgid "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove."
-msgstr ""
+msgstr "サポートを超えた直後にスキン領域に印字するときに使用するファン速度を割合で示します。高速ファンを使用すると、サポートが取り外しやすくなります。"
 
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
@@ -3930,9 +3922,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"スカートと印刷の最初の層の間の水平距離。\n"
-"これは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
+msgstr "スカートと印刷の最初の層の間の水平距離。\nこれは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4107,7 +4097,7 @@ msgstr "ベースラフト層の線幅。ビルドプレートの接着のため
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Base Line Spacing"
-msgstr ""
+msgstr "ラフトベースラインスペース"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing description"
@@ -4864,12 +4854,12 @@ msgstr "マテリアルフロー(毎秒 3mm) と温度 (° c) をリンクしま
 #: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference label"
 msgid "Minimum Polygon Circumference"
-msgstr ""
+msgstr "最小ポリゴン円周"
 
 #: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
-msgstr ""
+msgstr "この量よりも小さい円周を持つスライスレイヤーのポリゴンは、除外されます。値を小さくすると、スライス時間のコストで、メッシュの解像度が高くなります。つまり、ほとんどが高解像 SLA プリンター、極小多機能 3D モデルです。"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
@@ -5542,22 +5532,22 @@ msgstr "小さいレイヤーを使用するかどうかの閾値。この値が
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
 msgid "Overhanging Wall Angle"
-msgstr ""
+msgstr "張り出し壁アングル"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
-msgstr ""
+msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用して印刷されます。値が 90 の場合は、オーバーハング壁として処理されません。"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
 msgid "Overhanging Wall Speed"
-msgstr ""
+msgstr "張り出し壁速度"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor description"
 msgid "Overhanging walls will be printed at this percentage of their normal print speed."
-msgstr ""
+msgstr "張り出し壁は、この割合で通常の印刷速度で印刷されます。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled label"

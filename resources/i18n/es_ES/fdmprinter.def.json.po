@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Los comandos de GCode que se ejecutarán justo al inicio separados por - \n"
-"."
+msgstr "Los comandos de GCode que se ejecutarán justo al inicio separados por - \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Los comandos de GCode que se ejecutarán justo al final separados por -\n"
-"."
+msgstr "Los comandos de GCode que se ejecutarán justo al final separados por -\n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1073,12 +1069,12 @@ msgstr "Zigzag"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons label"
 msgid "Connect Top/Bottom Polygons"
-msgstr ""
+msgstr "Conectar polígonos superiores/inferiores"
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Conectar las trayectorias de forro superior/inferior cuando están próximas entre sí. Al habilitar este ajuste, en el patrón concéntrico se reduce considerablemente el tiempo de desplazamiento, pero las conexiones pueden producirse en mitad del relleno, con lo que la bajaría la calidad de la superficie superior."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1163,22 +1159,22 @@ msgstr "Compensa el flujo en partes de una pared interior que se están imprimie
 #: fdmprinter.def.json
 msgctxt "wall_min_flow label"
 msgid "Minimum Wall Flow"
-msgstr ""
+msgstr "Flujo de pared mínimo"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow description"
 msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr ""
+msgstr "Porcentaje mínimo de flujo permitido en una línea de pared. La compensación de superposición reduce el flujo de pared cuando se coloca cerca de otra pared. Las paredes con flujos inferiores a este valor se sustituirán con un movimiento de desplazamiento. Al utilizar este ajuste debe habilitar la compensación de superposición de pared e imprimir la pared exterior antes que las interiores."
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow_retract label"
 msgid "Prefer Retract"
-msgstr ""
+msgstr "Preferencia de retracción"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow_retract description"
 msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr ""
+msgstr "Si se habilita esta opción, se utilizará retracción en lugar de peinada para los movimientos de desplazamiento que sustituyen las paredes cuyo flujo está por debajo de los límites mínimos de flujo."
 
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps label"
@@ -1573,12 +1569,12 @@ msgstr "Conectar los extremos donde los patrones de relleno se juntan con la par
 #: fdmprinter.def.json
 msgctxt "connect_infill_polygons label"
 msgid "Connect Infill Polygons"
-msgstr ""
+msgstr "Conectar polígonos de relleno"
 
 #: fdmprinter.def.json
 msgctxt "connect_infill_polygons description"
 msgid "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time."
-msgstr ""
+msgstr "Conectar las trayectorias de polígonos cuando están próximas entre sí. Habilitar esta opción reduce considerablemente el tiempo de desplazamiento en los patrones de relleno que constan de varios polígonos cerrados."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1613,24 +1609,24 @@ msgstr "El patrón de relleno se mueve esta distancia a lo largo del eje Y."
 #: fdmprinter.def.json
 msgctxt "infill_multiplier label"
 msgid "Infill Line Multiplier"
-msgstr ""
+msgstr "Multiplicador de línea de relleno"
 
 #: fdmprinter.def.json
 msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
-msgstr ""
+msgstr "Multiplicar cada línea de relleno. Las líneas adicionales no se cruzan entre sí, sino que se evitan entre ellas. Esto consigue un relleno más rígido, pero incrementa el tiempo de impresión y el uso de material."
 
 #: fdmprinter.def.json
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
-msgstr ""
+msgstr "Recuento de líneas de pared adicional"
 
 #: fdmprinter.def.json
 msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
+msgstr "Agregar paredes adicionales alrededor del área de relleno. Estas paredes pueden hacer que las líneas del forro superior/inferior se aflojen menos, lo que significa que necesitaría menos capas de forro superior/inferior para obtener la misma calidad utilizando algo más de material.\nPuede utilizar esta función junto a la de Conectar polígonos de relleno para conectar todo el relleno en una única trayectoria de extrusión sin necesidad de desplazamientos ni retracciones si se configura correctamente."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -2780,7 +2776,7 @@ msgstr "Modo Peinada"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
-msgstr ""
+msgstr "La opción de peinada mantiene la tobera dentro de las áreas ya impresas al desplazarse. Esto ocasiona movimientos de desplazamiento ligeramente más largos, pero reduce la necesidad de realizar retracciones. Si se desactiva la opción de peinada, el material se retraerá y la tobera se moverá en línea recta hasta el siguiente punto. Otra posibilidad es evitar la peinada en áreas de forro superiores/inferiores y además peinar solo en el relleno. La opción de «Sobre el relleno» actúa exactamente igual que la «No está en el forro» de las versiones de Cura anteriores."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2800,7 +2796,7 @@ msgstr "No en el forro"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
-msgstr ""
+msgstr "Sobre el relleno"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
@@ -3245,22 +3241,22 @@ msgstr "Distancia entre las líneas de estructuras del soporte impresas. Este aj
 #: fdmprinter.def.json
 msgctxt "support_initial_layer_line_distance label"
 msgid "Initial Layer Support Line Distance"
-msgstr ""
+msgstr "Distancia de línea del soporte de la capa inicial"
 
 #: fdmprinter.def.json
 msgctxt "support_initial_layer_line_distance description"
 msgid "Distance between the printed initial layer support structure lines. This setting is calculated by the support density."
-msgstr ""
+msgstr "Distancia entre las líneas de estructuras del soporte de la capa inicial impresas. Este ajuste se calcula por la densidad del soporte."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_angle label"
 msgid "Support Infill Line Direction"
-msgstr ""
+msgstr "Dirección de línea de relleno de soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_angle description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
-msgstr ""
+msgstr "Orientación del patrón de relleno para soportes. El patrón de relleno de soporte se gira en el plano horizontal."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3630,22 +3626,22 @@ msgstr "Zigzag"
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
-msgstr ""
+msgstr "Alteración de velocidad del ventilador"
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable description"
 msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
-msgstr ""
+msgstr "Al habilitar esta opción, la velocidad del ventilador de enfriamiento de impresión cambia para las áreas de forro que se encuentran inmediatamente encima del soporte."
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
-msgstr ""
+msgstr "Velocidad del ventilador para forro con soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed description"
 msgid "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove."
-msgstr ""
+msgstr "Porcentaje para la velocidad de ventilador que se utiliza al imprimir las áreas del forro que se encuentran inmediatamente encima del soporte. Si utiliza una velocidad alta para el ventilador, será más fácil retirar el soporte."
 
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
@@ -3797,9 +3793,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"La distancia horizontal entre la falda y la primera capa de la impresión.\n"
-"Se trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
+msgstr "La distancia horizontal entre la falda y la primera capa de la impresión.\nSe trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3974,7 +3968,7 @@ msgstr "Ancho de las líneas de la capa base de la balsa. Estas deben ser línea
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Base Line Spacing"
-msgstr ""
+msgstr "Espacio de la línea base de la balsa"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing description"
@@ -4719,12 +4713,12 @@ msgstr "Datos que vinculan el flujo de materiales (en 3 mm por segundo) a la tem
 #: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference label"
 msgid "Minimum Polygon Circumference"
-msgstr ""
+msgstr "Circunferencia mínima de polígono"
 
 #: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
-msgstr ""
+msgstr "Se filtran los polígonos en capas segmentadas que tienen una circunferencia más pequeña que esta. Los valores más pequeños suponen una resolución de malla mayor a costa de un tiempo de segmentación. Está indicado, sobre todo, para impresoras SLA y modelos 3D muy pequeños con muchos detalles."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
@@ -5236,9 +5230,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Distancia de un movimiento ascendente que se extrude a media velocidad.\n"
-"Esto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
+msgstr "Distancia de un movimiento ascendente que se extrude a media velocidad.\nEsto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5388,22 +5380,22 @@ msgstr "Umbral para usar o no una capa más pequeña. Este número se compara co
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
 msgid "Overhanging Wall Angle"
-msgstr ""
+msgstr "Ángulo de voladizo de pared"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
-msgstr ""
+msgstr "Las paredes con un ángulo de voladizo mayor que este se imprimirán con los ajustes de voladizo de pared. Cuando el valor sea 90, no se aplicará la condición de voladizo a la pared."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
 msgid "Overhanging Wall Speed"
-msgstr ""
+msgstr "Velocidad de voladizo de pared"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor description"
 msgid "Overhanging walls will be printed at this percentage of their normal print speed."
-msgstr ""
+msgstr "Los voladizos de pared se imprimirán a este porcentaje de su velocidad de impresión normal."
 
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled label"

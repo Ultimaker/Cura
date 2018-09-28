@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-" \n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları."
+msgstr " \n ile ayrılan, başlangıçta yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-" \n"
-" ile ayrılan, bitişte yürütülecek G-code komutları."
+msgstr " \n ile ayrılan, bitişte yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1072,12 +1068,12 @@ msgstr "Zikzak"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons label"
 msgid "Connect Top/Bottom Polygons"
-msgstr ""
+msgstr "Üst/Alt Poligonları Bağla"
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Üst/alt yüzey yollarını yan yana ise bağla. Eş merkezli şekil için bu ayarı etkinleştirmek hareket süresini önemli ölçüde kısaltır; ancak bağlantılar dolgunun üzerinde meydana gelebileceğinden bu özellik üst yüzeyin kalitesini düşürebilir."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1162,22 +1158,22 @@ msgstr "Halihazırda duvarın olduğu bir yere yazdırılan bir iç duvarın par
 #: fdmprinter.def.json
 msgctxt "wall_min_flow label"
 msgid "Minimum Wall Flow"
-msgstr ""
+msgstr "Minimum Duvar Akışı"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow description"
 msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr ""
+msgstr "Bir duvar hattı için izin verilen en düşük yüzde akımdır. Duvar çakışması, mevcut bir duvara yakın duruyorsa bir duvarın akışını azaltır. Akışları bu değerden düşük olan duvarların yerine hareket hamlesi konacaktır. Bu ayarı kullanırken duvar çakışma telafisini açmanız ve iç duvardan önce dış duvarı yazdırmanız gerekir."
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow_retract label"
 msgid "Prefer Retract"
-msgstr ""
+msgstr "Geri Çekmeyi Tercih Et"
 
 #: fdmprinter.def.json
 msgctxt "wall_min_flow_retract description"
 msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr ""
+msgstr "Geri çekme etkinleştirildiğinde, akışları minimum akış eşiğinin altındaki duvarların yerini alacak hareketleri taramak yerine geri çekme kullanılır."
 
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps label"
@@ -1572,12 +1568,12 @@ msgstr "İç duvarın şeklini takip eden bir hattı kullanarak dolgu şeklinin 
 #: fdmprinter.def.json
 msgctxt "connect_infill_polygons label"
 msgid "Connect Infill Polygons"
-msgstr ""
+msgstr "Dolgu Poligonlarını Bağla"
 
 #: fdmprinter.def.json
 msgctxt "connect_infill_polygons description"
 msgid "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time."
-msgstr ""
+msgstr "Yan yana giden dolgu yollarını bağla. Birkaç kapalı poligondan oluşan dolgu şekilleri için bu ayarı etkinleştirmek hareket süresini büyük ölçüde kısaltır."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1612,24 +1608,24 @@ msgstr "Dolgu şekli Y ekseni boyunca bu mesafe kadar kaydırılır."
 #: fdmprinter.def.json
 msgctxt "infill_multiplier label"
 msgid "Infill Line Multiplier"
-msgstr ""
+msgstr "Dolgu Hattı Çoğaltıcı"
 
 #: fdmprinter.def.json
 msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
-msgstr ""
+msgstr "Her bir dolgu hattını bu sayıda hatta dönüştür. Ekstra hatlar birbirlerini kesmez, birbirlerinden bağımsız kalırlar. Bu dolguyu sertleştirir, ancak yazdırma süresini uzatırken materyal kullanımını artırır."
 
 #: fdmprinter.def.json
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
-msgstr ""
+msgstr "Ekstra Dolgu Duvar Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
+msgstr "Dolgu alanının etrafına ekstra duvar ekle. Bu duvarlar üst/alt yüzey hatlarının daha az aşağı düşmesini sağlar. Yani biraz fazla materyal kullanarak, daha az üst/alt yüzey katmanı ile aynı kaliteyi yakalayabilirsiniz.\nBu özellik, doğru konfigüre edildiğinde, harekete veya geri çekmeye gerek kalmadan Dolgu Poligonlarını Bağlama ile birlikte tüm dolguyu tek bir ekstrüzyon yoluna bağlayabilir."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -2779,7 +2775,7 @@ msgstr "Tarama Modu"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
-msgstr ""
+msgstr "Tarama, hareket sırasında nozülü daha önce yazdırılmış alanlarda tutar. Bu durum hareketleri biraz uzatır ancak geri çekme ihtiyacını azaltır. Tarama kapalıysa materyal geri çekilecektir, nozül de bir sonraki noktaya düz bir çizgi üzerinden gider. Üst/alt yüzey alanlarının üzerinde tarama yapmayarak sadece dolgu içerisinde tarama yapılabilir. “Dolgu İçinde” seçeneğinin daha önceki Cura sürümlerinde bulunan “Yüzey Alanında Değil” seçeneğiyle tamamen aynı davranışı gösterdiğini unutmayın."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2799,7 +2795,7 @@ msgstr "Yüzey Alanında Değil"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
-msgstr ""
+msgstr "Dolgu İçinde"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
@@ -3244,22 +3240,22 @@ msgstr "Yazdırılan destek yapısı hatları arasındaki mesafe. Bu ayar, deste
 #: fdmprinter.def.json
 msgctxt "support_initial_layer_line_distance label"
 msgid "Initial Layer Support Line Distance"
-msgstr ""
+msgstr "İlk Katman Destek Hattı Mesafesi"
 
 #: fdmprinter.def.json
 msgctxt "support_initial_layer_line_distance description"
 msgid "Distance between the printed initial layer support structure lines. This setting is calculated by the support density."
-msgstr ""
+msgstr "Yazdırılan ilk katman destek yapı hatları arasındaki mesafedir. Bu ayar destek yoğunluğuna göre hesaplanır."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_angle label"
 msgid "Support Infill Line Direction"
-msgstr ""
+msgstr "Destek Dolgu Hattı Yönü"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_angle description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
-msgstr ""
+msgstr "Destekler için dolgu şeklinin döndürülmesi. Destek dolgu şekli yatay düzlemde döndürülür."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3629,22 +3625,22 @@ msgstr "Zikzak"
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
-msgstr ""
+msgstr "Fan Hızı Geçersiz Kılma"
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable description"
 msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
-msgstr ""
+msgstr "Bu ayar etkinleştirildiğinde, yazıcı soğutma fanının hızı desteğin hemen üzerindeki yüzey bölgeleri için değiştirilir."
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
-msgstr ""
+msgstr "Desteklenen Yüzey Fan Hızı"
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed description"
 msgid "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove."
-msgstr ""
+msgstr "Desteğin hemen üzerindeki yüzey bölgeleri yazdırılırken kullanılacak yüzdelik fan hızıdır. Yüksek fan hızı kullanmak desteğin daha kolay kaldırılmasını sağlayabilir."
 
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
@@ -3796,9 +3792,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Baskının eteği ve ilk katmanı arasındaki yatay mesafe.\n"
-"Minimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
+msgstr "Baskının eteği ve ilk katmanı arasındaki yatay mesafe.\nMinimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3973,7 +3967,7 @@ msgstr "Radyenin taban katmanındaki hatların genişliği. Bunlar, yapı levhas
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Base Line Spacing"
-msgstr ""
+msgstr "Radye Taban Hat Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing description"
@@ -4718,12 +4712,12 @@ msgstr "Malzeme akışını (saniye başına mm3 bazında) sıcaklığa (santigr
 #: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference label"
 msgid "Minimum Polygon Circumference"
-msgstr ""
+msgstr "Minimum Poligon Çevre Uzunluğu"
 
 #: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
-msgstr ""
+msgstr "Bu miktardan daha kısa çevre uzunluğuna sahip dilimlenmiş katmanlardaki poligonlar filtre ile elenecektir. Daha düşük değerler dilimleme süresini uzatacak ancak daha yüksek çözünürlükte bir ağ oluşturacaktır. Genellikle yüksek çözünürlüklü SLA yazıcılarına yöneliktir ve çok fazla detay içeren çok küçük 3D modellerinde kullanılır."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
@@ -5235,9 +5229,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
-"Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+msgstr "Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\nBu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5387,22 +5379,22 @@ msgstr "Daha küçük bir katmanın kullanılıp kullanılmayacağını belirley
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
 msgid "Overhanging Wall Angle"
-msgstr ""
+msgstr "Çıkıntılı Duvar Açısı"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
-msgstr ""
+msgstr "Bu açıdan daha fazla çıkıntı yapan duvarlar çıkıntılı duvar ayarları kullanılarak yazdırılacaktır. Değer 90 ise hiçbir duvar çıkıntılı kabul edilmeyecektir."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
 msgid "Overhanging Wall Speed"
-msgstr ""
+msgstr "Çıkıntılı Duvar Hızı"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor description"
 msgid "Overhanging walls will be printed at this percentage of their normal print speed."
-msgstr ""
+msgstr "Çıkıntılı duvarlar, normal yazdırma hızına göre bu yüzdeye denk bir hızda yazdırılacaktır."
 
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled label"
