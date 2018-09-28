@@ -23,7 +23,7 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
         item_list = []
 
         for root_material_id, container_node in self._available_materials.items():
-            metadata = container_node.metadata
+            metadata = container_node.getMetadata()
 
             # Do not include the materials from a to-be-removed package
             if bool(metadata.get("removed", False)):

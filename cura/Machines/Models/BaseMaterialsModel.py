@@ -34,9 +34,6 @@ class BaseMaterialsModel(ListModel):
         # Update this model when list of materials changes
         self._material_manager.materialsUpdated.connect(self._update)
 
-        # Update this model when list of favorites changes
-        self._material_manager.favoritesUpdated.connect(self._update)
-
         self.addRoleName(Qt.UserRole + 1, "root_material_id")
         self.addRoleName(Qt.UserRole + 2, "id")
         self.addRoleName(Qt.UserRole + 3, "GUID")
@@ -113,7 +110,7 @@ class BaseMaterialsModel(ListModel):
     ## This is another convenience function which is shared by all material
     #  models so it's put here to avoid having so much duplicated code.
     def _createMaterialItem(self, root_material_id, container_node):
-        metadata = container_node.metadata
+        metadata = container_node.getMetadata()
         item = {
             "root_material_id":     root_material_id,
             "id":                   metadata["id"],

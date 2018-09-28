@@ -275,7 +275,7 @@ class FlavorParser:
     ##  For showing correct x, y offsets for each extruder
     def _extruderOffsets(self) -> Dict[int, List[float]]:
         result = {}
-        for extruder in ExtruderManager.getInstance().getExtruderStacks():
+        for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
             result[int(extruder.getMetaData().get("position", "0"))] = [
                 extruder.getProperty("machine_nozzle_offset_x", "value"),
                 extruder.getProperty("machine_nozzle_offset_y", "value")]

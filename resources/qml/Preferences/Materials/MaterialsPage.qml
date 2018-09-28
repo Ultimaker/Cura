@@ -17,96 +17,38 @@ Item
     // Keep PreferencesDialog happy
     property var resetEnabled: false
     property var currentItem: null
+
+    property var hasCurrentItem: base.currentItem != null
     property var isCurrentItemActivated:
     {
-        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-        const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-        return base.currentItem.root_material_id == root_material_id;
+        if (!hasCurrentItem)
+        {
+            return false
+        }
+        const extruder_position = Cura.ExtruderManager.activeExtruderIndex
+        const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position]
+        return base.currentItem.root_material_id == root_material_id
     }
     property string newRootMaterialIdToSwitchTo: ""
     property bool toActivateNewMaterial: false
 
-    // TODO: Save these to preferences
-    property var collapsed_brands: []
-    property var collapsed_types: []
+    property var extruder_position: Cura.ExtruderManager.activeExtruderIndex
+    property var active_root_material_id: Cura.MachineManager.currentRootMaterialId[extruder_position]
 
     UM.I18nCatalog
     {
         id: catalog
         name: "cura"
     }
-    Cura.MaterialBrandsModel { id: materialsModel }
 
-    function findModelByRootId( search_root_id )
+    // When loaded, try to select the active material in the tree
+    Component.onCompleted: materialListView.expandActiveMaterial(active_root_material_id)
+
+    // Every time the selected item has changed, notify to the details panel
+    onCurrentItemChanged:
     {
-        for (var i = 0; i < materialsModel.rowCount(); i++)
-        {
-            var types_model = materialsModel.getItem(i).material_types;
-            for (var j = 0; j < types_model.rowCount(); j++)
-            {
-                var colors_model = types_model.getItem(j).colors;
-                for (var k = 0; k < colors_model.rowCount(); k++)
-                {
-                    var material = colors_model.getItem(k);
-                    if (material.root_material_id == search_root_id)
-                    {
-                        return material
-                    }
-                }
-            }
-        }
-    }
-    Component.onCompleted:
-    {
-        // Select the activated material when this page shows up
-        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-        const active_root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-        console.log("goign to search for", active_root_material_id)
-        base.currentItem = findModelByRootId(active_root_material_id)
-    }
-
-    onCurrentItemChanged: { MaterialsDetailsPanel.currentItem = currentItem }
-    Connections
-    {
-        target: materialsModel
-        onItemsChanged:
-        {
-            var currentItemId = base.currentItem == null ? "" : base.currentItem.root_material_id;
-            var position = Cura.ExtruderManager.activeExtruderIndex;
-
-            // try to pick the currently selected item; it may have been moved
-            if (base.newRootMaterialIdToSwitchTo == "")
-            {
-                base.newRootMaterialIdToSwitchTo = currentItemId;
-            }
-
-            for (var idx = 0; idx < materialsModel.rowCount(); ++idx)
-            {
-                var item = materialsModel.getItem(idx);
-                if (item.root_material_id == base.newRootMaterialIdToSwitchTo)
-                {
-                    // Switch to the newly created profile if needed
-                    materialListView.currentIndex = idx;
-                    materialListView.activateDetailsWithIndex(materialListView.currentIndex);
-                    if (base.toActivateNewMaterial)
-                    {
-                        Cura.MachineManager.setMaterial(position, item.container_node);
-                    }
-                    base.newRootMaterialIdToSwitchTo = "";
-                    base.toActivateNewMaterial = false;
-                    return
-                }
-            }
-
-            materialListView.currentIndex = 0;
-            materialListView.activateDetailsWithIndex(materialListView.currentIndex);
-            if (base.toActivateNewMaterial)
-            {
-                Cura.MachineManager.setMaterial(position, materialsModel.getItem(0).container_node);
-            }
-            base.newRootMaterialIdToSwitchTo = "";
-            base.toActivateNewMaterial = false;
-        }
+        forceActiveFocus()
+        materialDetailsPanel.currentItem = currentItem
     }
 
     // Main layout
@@ -146,8 +88,10 @@ Item
             {
                 forceActiveFocus()
 
-                const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-                Cura.MachineManager.setMaterial(extruder_position, base.currentItem.container_node);
+                // Set the current material as the one to be activated (needed to force the UI update)
+                base.newRootMaterialIdToSwitchTo = base.currentItem.root_material_id
+                const extruder_position = Cura.ExtruderManager.activeExtruderIndex
+                Cura.MachineManager.setMaterial(extruder_position, base.currentItem.container_node)
             }
         }
 
@@ -214,7 +158,7 @@ Item
                 forceActiveFocus();
                 exportMaterialDialog.open();
             }
-            enabled: currentItem != null
+            enabled: base.hasCurrentItem
         }
     }
 
@@ -285,15 +229,20 @@ Item
                 color: palette.light
             }
 
-            width: true ? (parent.width * 0.4) | 0 : parent.width
+            width: (parent.width * 0.4) | 0
             frameVisible: true
-            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-            MaterialsList {}
+            MaterialsList
+            {
+                id: materialListView
+                width: materialScrollView.viewport.width
+            }
         }
 
         MaterialsDetailsPanel
         {
+            id: materialDetailsPanel
             anchors
             {
                 left: materialScrollView.right
@@ -316,6 +265,8 @@ Item
         modality: Qt.ApplicationModal
         onYes:
         {
+            // Set the active material as the fallback. It will be selected when the current material is deleted
+            base.newRootMaterialIdToSwitchTo = base.active_root_material_id
             base.materialManager.removeMaterial(base.currentItem.container_node);
         }
     }

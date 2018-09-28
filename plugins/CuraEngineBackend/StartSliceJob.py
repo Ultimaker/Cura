@@ -333,7 +333,7 @@ class StartSliceJob(Job):
                 "-1": self._buildReplacementTokens(global_stack)
             }
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
                 self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
 
@@ -440,8 +440,7 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         # Ensure that the engine is aware what the build extruder is.
-        if stack.getProperty("machine_extruder_count", "value") > 1:
-            changed_setting_keys.add("extruder_nr")
+        changed_setting_keys.add("extruder_nr")
 
         # Get values for all changed settings
         for key in changed_setting_keys:

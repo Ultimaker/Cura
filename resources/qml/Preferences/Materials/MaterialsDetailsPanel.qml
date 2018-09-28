@@ -13,21 +13,40 @@ Item
 {
     id: detailsPanel
 
-    property var currentItem: base.currentItem
+    property var currentItem: null
 
-    onCurrentItemChanged: { updateMaterialPropertiesObject(currentItem) }
-
-    function updateMaterialPropertiesObject( currentItem )
+    onCurrentItemChanged:
     {
-        materialProperties.name = currentItem.name || "Unknown"
-        materialProperties.guid = currentItem.GUID;
+        // When the current item changes, the detail view needs to be updated
+        if (currentItem != null)
+        {
+            updateMaterialPropertiesObject()
+            materialDetailsView.currentMaterialNode = currentItem.container_node
+        }
+    }
+
+    function updateMaterialPropertiesObject()
+    {
+        // DRAGON WARNING!!! DO NOT TOUCH THIS IF YOU DON'T KNOW.
+        // TL;DR: Always update "container_id" first!
+        //
+        // Other widgets such as MaterialsView have bindings towards "materialProperties" and its properties. Here the
+        // properties are updated one by one, and each change can trigger a reaction on those widgets that have
+        // connections to the property gets changed, and some reactions will use functions such as
+        // ContainerManager.getContainerMetaDataEntry() to fetch data using the "container_id" as the reference.
+        // We need to change "container_id" first so any underlying triggers will use the correct "container_id" to
+        // fetch data. Or, for example, if we change GUID first, which triggered the weight widget to fetch weight
+        // before we can update "container_id", so it will fetch weight with the wrong (old) "container_id".
         materialProperties.container_id = currentItem.id
+
+        materialProperties.name = currentItem.name || "Unknown"
+        materialProperties.guid = currentItem.GUID
         materialProperties.brand = currentItem.brand || "Unknown"
         materialProperties.material = currentItem.material || "Unknown"
         materialProperties.color_name = currentItem.color_name || "Yellow"
         materialProperties.color_code = currentItem.color_code || "yellow"
         materialProperties.description = currentItem.description || ""
-        materialProperties.adhesion_info = currentItem.adhesion_info || "";
+        materialProperties.adhesion_info = currentItem.adhesion_info || ""
         materialProperties.density = currentItem.density || 0.0
         materialProperties.diameter = currentItem.diameter || 0.0
         materialProperties.approximate_diameter = currentItem.approximate_diameter || "0"
@@ -62,13 +81,11 @@ Item
                 bottom: parent.bottom
             }
 
-            editingEnabled: base.currentItem != null && !base.currentItem.is_read_only
+            editingEnabled: currentItem != null && !currentItem.is_read_only
 
             properties: materialProperties
-            containerId: base.currentItem != null ? base.currentItem.id : ""
-            currentMaterialNode: base.currentItem.container_node
-
-    
+            containerId: currentItem != null ? currentItem.id : ""
+            currentMaterialNode: currentItem.container_node
         }
 
         QtObject

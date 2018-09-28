@@ -20,7 +20,6 @@ Item
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
-
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name: "cura" }
@@ -1116,7 +1115,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: platformAdhesionType
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "adhesion_type"
                 watchedProperties: [ "value", "enabled" ]
                 storeIndex: 0
@@ -1125,7 +1124,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportEnabled
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "support_enable"
                 watchedProperties: [ "value", "enabled", "description" ]
                 storeIndex: 0
@@ -1134,7 +1133,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: extrudersEnabledCount
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "extruders_enabled_count"
                 watchedProperties: [ "value" ]
                 storeIndex: 0
@@ -1143,7 +1142,7 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportExtruderNr
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 key: "support_extruder_nr"
                 watchedProperties: [ "value" ]
                 storeIndex: 0

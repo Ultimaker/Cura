@@ -77,6 +77,20 @@
                     "type": "str",
                     "enabled": false
                 },
+                "material_diameter":
+                {
+                    "label": "Diameter",
+                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.85,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "0.4",
+                    "maximum_value_warning": "3.5",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_bed_temp_wait":
                 {
                     "label": "Wait for Build Plate Heatup",
@@ -216,6 +230,7 @@
                     "label": "Number of Extruders that are enabled",
                     "description": "Number of extruder trains that are enabled; automatically set in software",
                     "value": "machine_extruder_count",
+                    "default_value": 1,
                     "minimum_value": "1",
                     "maximum_value": "16",
                     "type": "int",
@@ -1297,8 +1312,8 @@
                     "default_value": 0,
                     "type": "float",
                     "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "wall_min_flow_retract":
                 {
@@ -1307,8 +1322,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "fill_perimeter_gaps":
                 {
@@ -1438,7 +1453,7 @@
                     "label": "Ignore Small Z Gaps",
                     "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1716,7 +1731,7 @@
                 "infill_wall_line_count":
                 {
                     "label": "Extra Infill Wall Count",
-                    "description": "Add extra wals around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
+                    "description": "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
@@ -3802,7 +3817,8 @@
                     "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "zig_zaggify_support":
                 {
@@ -3874,6 +3890,19 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "support_infill_angle":
+                {
+                    "label": "Support Infill Line Direction",
+                    "description": "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "-180",
+                    "maximum_value": "180",
+                    "default_value": 0,
+                    "enabled": "support_enable and support_pattern != 'concentric' and support_infill_rate > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "support_z_distance":
                 {
@@ -6483,6 +6512,30 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "wall_overhang_angle":
+                {
+                    "label": "Overhanging Wall Angle",
+                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 90,
+                    "settable_per_mesh": true
+                },
+                "wall_overhang_speed_factor":
+                {
+                    "label": "Overhanging Wall Speed",
+                    "description": "Overhanging walls will be printed at this percentage of their normal print speed.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "10",
+                    "minimum_value_warning": "25",
+                    "maximum_value": "100",
+                    "settable_per_mesh": true
+                },
                 "bridge_settings_enabled":
                 {
                     "label": "Enable Bridge Settings",
@@ -6502,8 +6555,8 @@
                     "minimum_value": "0",
                     "default_value": 5,
                     "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "bridge_skin_support_threshold":
                 {
@@ -6511,18 +6564,6 @@
                     "description": "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings.",
                     "unit": "%",
                     "default_value": 50,
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_wall_max_overhang":
-                {
-                    "label": "Bridge Wall Max Overhang",
-                    "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
-                    "unit": "%",
-                    "default_value": 100,
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
@@ -6539,7 +6580,7 @@
                     "minimum_value": "0",
                     "maximum_value": "500",
                     "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "bridge_wall_speed":
                 {

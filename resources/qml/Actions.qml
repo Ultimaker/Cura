@@ -76,7 +76,7 @@ Item
     {
         id:toggleFullScreenAction
         shortcut: StandardKey.FullScreen;
-        text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
+        text: catalog.i18nc("@action:inmenu","Toggle Full Screen");
         iconName: "view-fullscreen";
     }
 
@@ -223,7 +223,7 @@ Item
     Action
     {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","&About...");
+        text: catalog.i18nc("@action:inmenu menubar:help","About...");
         iconName: "help-about";
     }
 
@@ -235,16 +235,6 @@ Item
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
         onTriggered: CuraActions.deleteSelection();
-    }
-
-    Action //Also add backspace as the same function as delete because on Macintosh keyboards the button called "delete" is actually a backspace, and the user expects it to function as a delete.
-    {
-        id: backspaceSelectionAction
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete Selected Model", "Delete Selected Models", UM.Selection.selectionCount)
-        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
-        iconName: "edit-delete"
-        shortcut: StandardKey.Backspace
-        onTriggered: CuraActions.deleteSelection()
     }
 
     Action
@@ -339,7 +329,7 @@ Item
     Action
     {
         id: deleteAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Clear Build Plate");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Clear Build Plate");
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
@@ -349,7 +339,7 @@ Item
     Action
     {
         id: reloadAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
+        text: catalog.i18nc("@action:inmenu menubar:file","Reload All Models");
         iconName: "document-revert";
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll();
