@@ -21,7 +21,6 @@ from .VariantType import VariantType
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
-    from UM.Settings.InstanceContainer import InstanceContainer
     from cura.Settings.GlobalStack import GlobalStack
     from cura.Settings.ExtruderStack import ExtruderStack
 

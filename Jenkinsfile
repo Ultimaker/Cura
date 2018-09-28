@@ -52,10 +52,53 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
 
                 // Try and run the unit tests. If this stage fails, we consider the build to be "unstable".
                 stage('Unit Test') {
-                    try {
-                        make('test')
-                    } catch(e) {
-                        currentBuild.result = "UNSTABLE"
+                    if (isUnix()) {
+                        // For Linux to show everything
+                        def branch = env.BRANCH_NAME
+                        if(!fileExists("${env.CURA_ENVIRONMENT_PATH}/${branch}")) {
+                            branch = "master"
+                        }
+                        def uranium_dir = get_workspace_dir("Ultimaker/Uranium/${branch}")
+
+                        try {
+                            sh """
+                                cd ..
+                                export PYTHONPATH=.:"${uranium_dir}"
+                                ${env.CURA_ENVIRONMENT_PATH}/${branch}/bin/pytest -x --verbose --full-trace --capture=no ./tests
+                            """
+                        } catch(e) {
+                            currentBuild.result = "UNSTABLE"
+                        }
+                    }
+                    else {
+                        // For Windows
+                        try {
+                            // This also does code style checks.
+                            bat 'ctest -V'
+                        } catch(e) {
+                            currentBuild.result = "UNSTABLE"
+                        }
+                    }
+                }
+
+                stage('Code Style') {
+                    if (isUnix()) {
+                        // For Linux to show everything
+                        def branch = env.BRANCH_NAME
+                        if(!fileExists("${env.CURA_ENVIRONMENT_PATH}/${branch}")) {
+                            branch = "master"
+                        }
+                        def uranium_dir = get_workspace_dir("Ultimaker/Uranium/${branch}")
+
+                        try {
+                            sh """
+                                cd ..
+                                export PYTHONPATH=.:"${uranium_dir}"
+                                ${env.CURA_ENVIRONMENT_PATH}/${branch}/bin/python3 run_mypy.py
+                            """
+                        } catch(e) {
+                            currentBuild.result = "UNSTABLE"
+                        }
                     }
                 }
             }

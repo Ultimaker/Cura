@@ -24,9 +24,9 @@ class QualityChangesGroup(QualityGroup):
             ConfigurationErrorMessage.getInstance().addFaultyContainers(node.getMetaDataEntry("id"))
             return
 
-        if extruder_position is None: #Then we're a global quality changes profile.
+        if extruder_position is None:  # Then we're a global quality changes profile.
             self.node_for_global = node
-        else: #This is an extruder's quality changes profile.
+        else:  # This is an extruder's quality changes profile.
             self.nodes_for_extruders[extruder_position] = node
 
     def __str__(self) -> str:
