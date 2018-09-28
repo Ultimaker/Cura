@@ -51,7 +51,7 @@ Cura.MachineAction
             anchors.horizontalCenter: parent.horizontalCenter
             width: childrenRect.width
             spacing: UM.Theme.getSize("default_margin").width
-            property var firmwareName: Cura.MachineManager.getDefaultFirmwareName()
+            property var firmwareName: Cura.MachineManager.activeMachine.getDefaultFirmwareName()
             Button
             {
                 id: autoUpgradeButton
