@@ -23,7 +23,7 @@ class BackupsManager:
     #   containing some metadata (like version).
     def createBackup(self) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
         self._disableAutoSave()
-        backup = Backup()
+        backup = Backup(self._application)
         backup.makeFromCurrent()
         self._enableAutoSave()
         # We don't return a Backup here because we want plugins only to interact with our API and not full objects.

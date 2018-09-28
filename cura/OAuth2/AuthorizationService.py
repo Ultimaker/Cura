@@ -39,7 +39,8 @@ class AuthorizationService:
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
 
     def initialize(self, preferences: Optional["Preferences"] = None) -> None:
-        self._preferences = preferences
+        if preferences is not None:
+            self._preferences = preferences
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
