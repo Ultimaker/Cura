@@ -37,19 +37,27 @@ class AuthorizationHelpers:
     #   \param verification_code: The verification code needed for the PKCE extension.
     #   \return: An AuthenticationResponse object.
     def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str) -> "AuthenticationResponse":
-        data = self.getCommonRequestDataDict()
-        data["grant_type"] = "authorization_code"
-        data["code"] = authorization_code
-        data["code_verifier"] = verification_code
+        data = {
+            "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
+            "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
+            "grant_type": "authorization_code",
+            "code": authorization_code,
+            "code_verifier": verification_code,
+            "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
+            }
         return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
 
     #   Request the access token from the authorization server using a refresh token.
     #   \param refresh_token:
     #   \return: An AuthenticationResponse object.
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
-        data = self.getCommonRequestDataDict()
-        data["grant_type"] = "refresh_token"
-        data["refresh_token"] = refresh_token
+        data = {
+            "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
+            "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+            "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
+        }
         return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
 
     @staticmethod
