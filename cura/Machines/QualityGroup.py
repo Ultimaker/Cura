@@ -6,6 +6,7 @@ from typing import Dict, Optional, List, Set
 from PyQt5.QtCore import QObject, pyqtSlot
 from cura.Machines.ContainerNode import ContainerNode
 
+
 #
 # A QualityGroup represents a group of containers that must be applied to each ContainerStack when it's used.
 # Some concrete examples are Quality and QualityChanges: when we select quality type "normal", this quality type
@@ -34,7 +35,7 @@ class QualityGroup(QObject):
         return self.name
 
     def getAllKeys(self) -> Set[str]:
-        result = set() #type: Set[str]
+        result = set()  # type: Set[str]
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
             if node is None:
                 continue

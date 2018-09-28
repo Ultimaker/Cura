@@ -220,8 +220,10 @@ class StartSliceJob(Job):
                 stack = global_stack
                 skip_group = False
                 for node in group:
+                    # Only check if the printing extruder is enabled for printing meshes
+                    is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
-                    if not extruders_enabled[extruder_position]:
+                    if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
                         skip_group = True
                         has_model_with_disabled_extruders = True
                         associated_disabled_extruders.add(extruder_position)
@@ -331,7 +333,7 @@ class StartSliceJob(Job):
                 "-1": self._buildReplacementTokens(global_stack)
             }
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
                 self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
 
@@ -438,8 +440,7 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         # Ensure that the engine is aware what the build extruder is.
-        if stack.getProperty("machine_extruder_count", "value") > 1:
-            changed_setting_keys.add("extruder_nr")
+        changed_setting_keys.add("extruder_nr")
 
         # Get values for all changed settings
         for key in changed_setting_keys:

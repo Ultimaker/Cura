@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.4
@@ -12,30 +12,43 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
-    width: {
-        if (UM.SimulationView.compatibilityMode) {
+    width:
+    {
+        if (UM.SimulationView.compatibilityMode)
+        {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
-        } else {
+        }
+        else
+        {
             return UM.Theme.getSize("layerview_menu_size").width;
         }
     }
     height: {
-        if (viewSettings.collapsed) {
-            if (UM.SimulationView.compatibilityMode) {
+        if (viewSettings.collapsed)
+        {
+            if (UM.SimulationView.compatibilityMode)
+            {
                 return UM.Theme.getSize("layerview_menu_size_compatibility_collapsed").height;
             }
             return UM.Theme.getSize("layerview_menu_size_collapsed").height;
-        } else if (UM.SimulationView.compatibilityMode) {
+        }
+        else if (UM.SimulationView.compatibilityMode)
+        {
             return UM.Theme.getSize("layerview_menu_size_compatibility").height;
-        } else if (UM.Preferences.getValue("layerview/layer_view_type") == 0) {
+        }
+        else if (UM.Preferences.getValue("layerview/layer_view_type") == 0)
+        {
             return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.SimulationView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
-        } else {
+        }
+        else
+        {
             return UM.Theme.getSize("layerview_menu_size").height + UM.SimulationView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
     }
     Behavior on height { NumberAnimation { duration: 100 } }
 
-    property var buttonTarget: {
+    property var buttonTarget:
+    {
         if(parent != null)
         {
             var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
@@ -44,7 +57,8 @@ Item
         return Qt.point(0,0)
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: layerViewMenu
         anchors.right: parent.right
         anchors.top: parent.top
@@ -83,7 +97,8 @@ Item
             }
         }
 
-        ColumnLayout {
+        ColumnLayout
+        {
             id: viewSettings
 
             property bool collapsed: false
@@ -195,7 +210,8 @@ Item
                 width: width
             }
 
-            Connections {
+            Connections
+            {
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
@@ -212,18 +228,22 @@ Item
                 }
             }
 
-            Repeater {
+            Repeater
+            {
                 model: Cura.ExtrudersModel{}
-                CheckBox {
+                CheckBox
+                {
                     id: extrudersModelCheckBox
                     checked: viewSettings.extruder_opacities[index] > 0.5 || viewSettings.extruder_opacities[index] == undefined || viewSettings.extruder_opacities[index] == ""
-                    onClicked: {
+                    onClicked:
+                    {
                         viewSettings.extruder_opacities[index] = checked ? 1.0 : 0.0
                         UM.Preferences.setValue("layerview/extruder_opacities", viewSettings.extruder_opacities.join("|"));
                     }
                     visible: !UM.SimulationView.compatibilityMode
                     enabled: index + 1 <= 4
-                    Rectangle {
+                    Rectangle
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: extrudersModelCheckBox.right
                         width: UM.Theme.getSize("layerview_legend_size").width
@@ -253,8 +273,10 @@ Item
                 }
             }
 
-            Repeater {
-                model: ListModel {
+            Repeater
+            {
+                model: ListModel
+                {
                     id: typesLegendModel
                     Component.onCompleted:
                     {
@@ -285,13 +307,16 @@ Item
                     }
                 }
 
-                CheckBox {
+                CheckBox
+                {
                     id: legendModelCheckBox
                     checked: model.initialValue
-                    onClicked: {
+                    onClicked:
+                    {
                         UM.Preferences.setValue(model.preference, checked);
                     }
-                    Rectangle {
+                    Rectangle
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: legendModelCheckBox.right
                         width: UM.Theme.getSize("layerview_legend_size").width
@@ -320,18 +345,22 @@ Item
                 }
             }
 
-            CheckBox {
+            CheckBox
+            {
                 checked: viewSettings.only_show_top_layers
-                onClicked: {
+                onClicked:
+                {
                     UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0);
                 }
                 text: catalog.i18nc("@label", "Only Show Top Layers")
                 visible: UM.SimulationView.compatibilityMode
                 style: UM.Theme.styles.checkbox
             }
-            CheckBox {
+            CheckBox
+            {
                 checked: viewSettings.top_layer_count == 5
-                onClicked: {
+                onClicked:
+                {
                     UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1);
                 }
                 text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
@@ -339,8 +368,10 @@ Item
                 style: UM.Theme.styles.checkbox
             }
 
-            Repeater {
-                model: ListModel {
+            Repeater
+            {
+                model: ListModel
+                {
                     id: typesLegendModelNoCheck
                     Component.onCompleted:
                     {
@@ -355,11 +386,13 @@ Item
                     }
                 }
 
-                Label {
+                Label
+                {
                     text: label
                     visible: viewSettings.show_legend
                     id: typesLegendModelLabel
-                    Rectangle {
+                    Rectangle
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: typesLegendModelLabel.right
                         width: UM.Theme.getSize("layerview_legend_size").width
@@ -378,30 +411,37 @@ Item
             }
 
             // Text for the minimum, maximum and units for the feedrates and layer thickness
-            Item {
+            Item
+            {
                 id: gradientLegend
                 visible: viewSettings.show_gradient
                 width: parent.width
                 height: UM.Theme.getSize("layerview_row").height
-                anchors {
+                anchors
+                {
                     topMargin: UM.Theme.getSize("slider_layerview_margin").height
                     horizontalCenter: parent.horizontalCenter
                 }
 
-                Label {
+                Label
+                {
                     text: minText()
                     anchors.left: parent.left
                     color: UM.Theme.getColor("setting_control_text")
                     font: UM.Theme.getFont("default")
 
-                    function minText() {
-                        if (UM.SimulationView.layerActivity && CuraApplication.platformActivity) {
+                    function minText()
+                    {
+                        if (UM.SimulationView.layerActivity && CuraApplication.platformActivity)
+                        {
                             // Feedrate selected
-                            if (UM.Preferences.getValue("layerview/layer_view_type") == 2) {
+                            if (UM.Preferences.getValue("layerview/layer_view_type") == 2)
+                            {
                                 return parseFloat(UM.SimulationView.getMinFeedrate()).toFixed(2)
                             }
                             // Layer thickness selected
-                            if (UM.Preferences.getValue("layerview/layer_view_type") == 3) {
+                            if (UM.Preferences.getValue("layerview/layer_view_type") == 3)
+                            {
                                 return parseFloat(UM.SimulationView.getMinThickness()).toFixed(2)
                             }
                         }
@@ -409,20 +449,25 @@ Item
                     }
                 }
 
-                Label {
+                Label
+                {
                     text: unitsText()
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: UM.Theme.getColor("setting_control_text")
                     font: UM.Theme.getFont("default")
 
-                    function unitsText() {
-                        if (UM.SimulationView.layerActivity && CuraApplication.platformActivity) {
+                    function unitsText()
+                    {
+                        if (UM.SimulationView.layerActivity && CuraApplication.platformActivity)
+                        {
                             // Feedrate selected
-                            if (UM.Preferences.getValue("layerview/layer_view_type") == 2) {
+                            if (UM.Preferences.getValue("layerview/layer_view_type") == 2)
+                            {
                                 return "mm/s"
                             }
                             // Layer thickness selected
-                            if (UM.Preferences.getValue("layerview/layer_view_type") == 3) {
+                            if (UM.Preferences.getValue("layerview/layer_view_type") == 3)
+                            {
                                 return "mm"
                             }
                         }
@@ -430,20 +475,25 @@ Item
                     }
                 }
 
-                Label {
+                Label
+                {
                     text: maxText()
                     anchors.right: parent.right
                     color: UM.Theme.getColor("setting_control_text")
                     font: UM.Theme.getFont("default")
 
-                    function maxText() {
-                        if (UM.SimulationView.layerActivity && CuraApplication.platformActivity) {
+                    function maxText()
+                    {
+                        if (UM.SimulationView.layerActivity && CuraApplication.platformActivity)
+                        {
                             // Feedrate selected
-                            if (UM.Preferences.getValue("layerview/layer_view_type") == 2) {
+                            if (UM.Preferences.getValue("layerview/layer_view_type") == 2)
+                            {
                                 return parseFloat(UM.SimulationView.getMaxFeedrate()).toFixed(2)
                             }
                             // Layer thickness selected
-                            if (UM.Preferences.getValue("layerview/layer_view_type") == 3) {
+                            if (UM.Preferences.getValue("layerview/layer_view_type") == 3)
+                            {
                                 return parseFloat(UM.SimulationView.getMaxThickness()).toFixed(2)
                             }
                         }
@@ -453,7 +503,8 @@ Item
             }
 
             // Gradient colors for feedrate
-            Rectangle { // In QML 5.9 can be changed by LinearGradient
+            Rectangle
+            { // In QML 5.9 can be changed by LinearGradient
                 // Invert values because then the bar is rotated 90 degrees
                 id: feedrateGradient
                 visible: viewSettings.show_feedrate_gradient
@@ -463,20 +514,25 @@ Item
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
                 transform: Rotation {origin.x: 0; origin.y: 0; angle: 90}
-                gradient: Gradient {
-                    GradientStop {
+                gradient: Gradient
+                {
+                    GradientStop
+                    {
                         position: 0.000
                         color: Qt.rgba(1, 0.5, 0, 1)
                     }
-                    GradientStop {
+                    GradientStop
+                    {
                         position: 0.625
                         color: Qt.rgba(0.375, 0.5, 0, 1)
                     }
-                    GradientStop {
+                    GradientStop
+                    {
                         position: 0.75
                         color: Qt.rgba(0.25, 1, 0, 1)
                     }
-                    GradientStop {
+                    GradientStop
+                    {
                         position: 1.0
                         color: Qt.rgba(0, 0, 1, 1)
                     }
@@ -484,7 +540,8 @@ Item
             }
 
             // Gradient colors for layer thickness (similar to parula colormap)
-            Rectangle { // In QML 5.9 can be changed by LinearGradient
+            Rectangle // In QML 5.9 can be changed by LinearGradient
+            {
                 // Invert values because then the bar is rotated 90 degrees
                 id: thicknessGradient
                 visible: viewSettings.show_thickness_gradient
@@ -494,24 +551,30 @@ Item
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
                 transform: Rotation {origin.x: 0; origin.y: 0; angle: 90}
-                gradient: Gradient {
-                    GradientStop {
+                gradient: Gradient
+                {
+                    GradientStop
+                    {
                         position: 0.000
                         color: Qt.rgba(1, 1, 0, 1)
                     }
-                    GradientStop {
+                    GradientStop
+                    {
                         position: 0.25
                         color: Qt.rgba(1, 0.75, 0.25, 1)
                     }
-                    GradientStop {
+                    GradientStop
+                    {
                         position: 0.5
                         color: Qt.rgba(0, 0.75, 0.5, 1)
                     }
-                    GradientStop {
+                    GradientStop
+                    {
                         position: 0.75
                         color: Qt.rgba(0, 0.375, 0.75, 1)
                     }
-                    GradientStop {
+                    GradientStop
+                    {
                         position: 1.0
                         color: Qt.rgba(0, 0, 0.5, 1)
                     }
@@ -520,19 +583,22 @@ Item
         }
     }
 
-    Item {
+    Item
+    {
         id: slidersBox
 
         width: parent.width
         visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
-        anchors {
+        anchors
+        {
             top: parent.bottom
             topMargin: UM.Theme.getSize("slider_layerview_margin").height
             left: parent.left
         }
 
-        PathSlider {
+        PathSlider
+        {
             id: pathSlider
 
             height: UM.Theme.getSize("slider_handle").width
@@ -553,25 +619,37 @@ Item
             rangeColor: UM.Theme.getColor("slider_groove_fill")
 
             // update values when layer data changes
-            Connections {
+            Connections
+            {
                 target: UM.SimulationView
                 onMaxPathsChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
-                onCurrentPathChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
+                onCurrentPathChanged:
+                {
+                    // Only pause the simulation when the layer was changed manually, not when the simulation is running
+                    if (pathSlider.manuallyChanged)
+                    {
+                        playButton.pauseSimulation()
+                    }
+                    pathSlider.setHandleValue(UM.SimulationView.currentPath)
+                }
             }
 
             // make sure the slider handlers show the correct value after switching views
-            Component.onCompleted: {
+            Component.onCompleted:
+            {
                 pathSlider.setHandleValue(UM.SimulationView.currentPath)
             }
         }
 
-        LayerSlider {
+        LayerSlider
+        {
             id: layerSlider
 
             width: UM.Theme.getSize("slider_handle").width
             height: UM.Theme.getSize("layerview_menu_size").height
 
-            anchors {
+            anchors
+            {
                 top: !UM.SimulationView.compatibilityMode ? pathSlider.bottom : parent.top
                 topMargin: !UM.SimulationView.compatibilityMode ? UM.Theme.getSize("default_margin").height : 0
                 right: parent.right
@@ -593,56 +671,78 @@ Item
             handleLabelWidth: UM.Theme.getSize("slider_layerview_background").width
 
             // update values when layer data changes
-            Connections {
+            Connections
+            {
                 target: UM.SimulationView
                 onMaxLayersChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
                 onMinimumLayerChanged: layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
-                onCurrentLayerChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+                onCurrentLayerChanged:
+                {
+                    // Only pause the simulation when the layer was changed manually, not when the simulation is running
+                    if (layerSlider.manuallyChanged)
+                    {
+                        playButton.pauseSimulation()
+                    }
+                    layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+                }
             }
 
             // make sure the slider handlers show the correct value after switching views
-            Component.onCompleted: {
+            Component.onCompleted:
+            {
                 layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
                 layerSlider.setUpperValue(UM.SimulationView.currentLayer)
             }
         }
 
         // Play simulation button
-        Button {
+        Button
+        {
             id: playButton
             iconSource: "./resources/simulation_resume.svg"
             style: UM.Theme.styles.small_tool_button
             visible: !UM.SimulationView.compatibilityMode
-            anchors {
+            anchors
+            {
                 verticalCenter: pathSlider.verticalCenter
             }
 
             property var status: 0  // indicates if it's stopped (0) or playing (1)
 
-            onClicked: {
-                switch(status) {
-                    case 0: {
+            onClicked:
+            {
+                switch(status)
+                {
+                    case 0:
+                    {
                         resumeSimulation()
                         break
                     }
-                    case 1: {
+                    case 1:
+                    {
                         pauseSimulation()
                         break
                     }
                 }
             }
 
-            function pauseSimulation() {
+            function pauseSimulation()
+            {
                 UM.SimulationView.setSimulationRunning(false)
                 iconSource = "./resources/simulation_resume.svg"
                 simulationTimer.stop()
                 status = 0
+                layerSlider.manuallyChanged = true
+                pathSlider.manuallyChanged = true
             }
 
-            function resumeSimulation() {
+            function resumeSimulation()
+            {
                 UM.SimulationView.setSimulationRunning(true)
                 iconSource = "./resources/simulation_pause.svg"
                 simulationTimer.start()
+                layerSlider.manuallyChanged = false
+                pathSlider.manuallyChanged = false
             }
         }
 
@@ -652,7 +752,8 @@ Item
             interval: 100
             running: false
             repeat: true
-            onTriggered: {
+            onTriggered:
+            {
                 var currentPath = UM.SimulationView.currentPath
                 var numPaths = UM.SimulationView.numPaths
                 var currentLayer = UM.SimulationView.currentLayer
@@ -692,12 +793,15 @@ Item
                         UM.SimulationView.setCurrentPath(currentPath+1)
                     }
                 }
+                // The status must be set here instead of in the resumeSimulation function otherwise it won't work
+                // correctly, because part of the logic is in this trigger function.
                 playButton.status = 1
             }
         }
     }
 
-    FontMetrics {
+    FontMetrics
+    {
         id: fontMetrics
         font: UM.Theme.getFont("default")
     }

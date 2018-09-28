@@ -15,6 +15,7 @@ LC_MESSAGES
 .cache
 *.qmlc
 .mypy_cache
+.pytest_cache
 
 #MacOS
 .DS_Store
@@ -25,6 +26,7 @@ LC_MESSAGES
 *.lprof
 *~
 *.qm
+.directory
 .idea
 cura.desktop
 

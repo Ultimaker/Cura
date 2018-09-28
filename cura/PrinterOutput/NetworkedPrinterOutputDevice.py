@@ -53,20 +53,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._sending_gcode = False
         self._compressing_gcode = False
         self._gcode = []                    # type: List[str]
-
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
-
-        printer_type = self._properties.get(b"machine", b"").decode("utf-8")
-        printer_type_identifiers = {
-            "9066": "ultimaker3",
-            "9511": "ultimaker3_extended",
-            "9051": "ultimaker_s5"
-        }
-        self._printer_type = "Unknown"
-        for key, value in printer_type_identifiers.items():
-            if printer_type.startswith(key):
-                self._printer_type = value
-                break
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -188,40 +175,55 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if reply in self._kept_alive_multiparts:
             del self._kept_alive_multiparts[reply]
 
-    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+    def _validateManager(self) -> None:
         if self._manager is None:
             self._createNetworkManager()
         assert (self._manager is not None)
+
+    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.put(request, data.encode())
-        self._registerOnFinishedCallback(reply, on_finished)
+        if self._manager is not None:
+            reply = self._manager.put(request, data.encode())
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
+
+    def delete(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        self._validateManager()
+        request = self._createEmptyRequest(target)
+        self._last_request_time = time()
+        if self._manager is not None:
+            reply = self._manager.deleteResource(request)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
-        assert (self._manager is not None)
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.get(request)
-        self._registerOnFinishedCallback(reply, on_finished)
+        if self._manager is not None:
+            reply = self._manager.get(request)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def post(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
-        assert (self._manager is not None)
+        self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        reply = self._manager.post(request, data)
-        if on_progress is not None:
-            reply.uploadProgress.connect(on_progress)
-        self._registerOnFinishedCallback(reply, on_finished)
+        if self._manager is not None:
+            reply = self._manager.post(request, data)
+            if on_progress is not None:
+                reply.uploadProgress.connect(on_progress)
+            self._registerOnFinishedCallback(reply, on_finished)
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def postFormWithParts(self, target: str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
-
-        if self._manager is None:
-            self._createNetworkManager()
-        assert (self._manager is not None)
+        self._validateManager()
         request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
         for part in parts:
@@ -229,15 +231,18 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_request_time = time()
 
-        reply = self._manager.post(request, multi_post_part)
+        if self._manager is not None:
+            reply = self._manager.post(request, multi_post_part)
 
-        self._kept_alive_multiparts[reply] = multi_post_part
+            self._kept_alive_multiparts[reply] = multi_post_part
 
-        if on_progress is not None:
-            reply.uploadProgress.connect(on_progress)
-        self._registerOnFinishedCallback(reply, on_finished)
+            if on_progress is not None:
+                reply.uploadProgress.connect(on_progress)
+            self._registerOnFinishedCallback(reply, on_finished)
 
-        return reply
+            return reply
+        else:
+            Logger.log("e", "Could not find manager.")
 
     def postForm(self, target: str, header_data: str, body_data: bytes, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
         post_part = QHttpPart()
@@ -323,7 +328,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtProperty(str, constant = True)
     def printerType(self) -> str:
-        return self._printer_type
+        return self._properties.get(b"printer_type", b"Unknown").decode("utf-8")
 
     ## IP adress of this printer
     @pyqtProperty(str, constant = True)

@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+
 import UM 1.1 as UM
 
 ScrollView
@@ -16,6 +17,7 @@ ScrollView
     height: parent.height
     style: UM.Theme.styles.scrollview
     flickableItem.flickableDirection: Flickable.VerticalFlick
+
     Column
     {
         spacing: UM.Theme.getSize("default_margin").height

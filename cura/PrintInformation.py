@@ -300,7 +300,7 @@ class PrintInformation(QObject):
 
     def _updateJobName(self):
         if self._base_name == "":
-            self._job_name = "unnamed"
+            self._job_name = "Untitled"
             self._is_user_specified_job_name = False
             self.jobNameChanged.emit()
             return
