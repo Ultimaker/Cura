@@ -24,14 +24,6 @@ class AuthorizationHelpers:
     def settings(self) -> "OAuth2Settings":
         return self._settings
 
-    # Gets a dictionary with data that need to be used for any HTTP authorization request.
-    def getCommonRequestDataDict(self) -> Dict[str, str]:
-        data_dict = {"client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
-                     "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
-                     "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
-                     }
-        return data_dict
-
     #   Request the access token from the authorization server.
     #   \param authorization_code: The authorization code from the 1st step.
     #   \param verification_code: The verification code needed for the PKCE extension.
