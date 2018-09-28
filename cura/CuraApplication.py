@@ -682,7 +682,7 @@ class CuraApplication(QtApplication):
 
         Logger.log("i", "Initializing quality manager")
         from cura.Machines.QualityManager import QualityManager
-        self._quality_manager = QualityManager(container_registry, parent = self)
+        self._quality_manager = QualityManager(self, parent = self)
         self._quality_manager.initialize()
 
         Logger.log("i", "Initializing machine manager")
