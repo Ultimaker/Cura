@@ -20,7 +20,7 @@
             "0": "ultimaker_original_extruder_0"
         },
         "firmware_file": "MarlinUltimaker-{baudrate}.hex",
-        "firmware_hbk_file": "MarlinUltimaker-HKB-{baudrate}.hex"
+        "firmware_hbk_file": "MarlinUltimaker-HBK-{baudrate}.hex"
     },
 
     "overrides": {
