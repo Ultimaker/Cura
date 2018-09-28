@@ -1,11 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, TYPE_CHECKING
 
 from UM.Logger import Logger
 from cura.Backups.Backup import Backup
-from cura.CuraApplication import CuraApplication
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
 
 
 ##  The BackupsManager is responsible for managing the creating and restoring of
@@ -13,8 +15,8 @@ from cura.CuraApplication import CuraApplication
 #
 #   Back-ups themselves are represented in a different class.
 class BackupsManager:
-    def __init__(self):
-        self._application = CuraApplication.getInstance()
+    def __init__(self, application: "CuraApplication") -> None:
+        self._application = application
 
     ##  Get a back-up of the current configuration.
     #   \return A tuple containing a ZipFile (the actual back-up) and a dict

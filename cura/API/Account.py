@@ -1,15 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Dict
+from typing import Optional, Dict, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
+from UM.i18n import i18nCatalog
 from UM.Message import Message
+
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.Models import OAuth2Settings
-from UM.Application import Application
 
-from UM.i18n import i18nCatalog
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
+
 i18n_catalog = i18nCatalog("cura")
 
 
@@ -26,8 +29,9 @@ class Account(QObject):
     # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
+        self._application = application
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
@@ -47,7 +51,11 @@ class Account(QObject):
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
         )
 
-        self._authorization_service = AuthorizationService(Application.getInstance().getPreferences(), self._oauth_settings)
+        self._authorization_service = AuthorizationService(self._oauth_settings)
+
+    def initialize(self) -> None:
+        self._authorization_service.initialize(self._application.getPreferences())
+
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.loadAuthDataFromPreferences()
