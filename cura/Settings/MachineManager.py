@@ -16,7 +16,6 @@ from UM.FlameProfiler import pyqtSlot
 from UM import Util
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Resources import Resources
 
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
