@@ -30,7 +30,7 @@ class Backup:
     catalog = i18nCatalog("cura")
 
     def __init__(self, application: "CuraApplication", zip_file: bytes = None, meta_data: Dict[str, str] = None) -> None:
-        self.application = application
+        self._application = application
         self.zip_file = zip_file  # type: Optional[bytes]
         self.meta_data = meta_data  # type: Optional[Dict[str, str]]
 
@@ -42,12 +42,12 @@ class Backup:
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
 
         # Ensure all current settings are saved.
-        self.application.saveSettings()
+        self._application.saveSettings()
 
         # We copy the preferences file to the user data directory in Linux as it's in a different location there.
         # When restoring a backup on Linux, we move it back.
         if Platform.isLinux():
-            preferences_file_name = self.application.getApplicationName()
+            preferences_file_name = self._application.getApplicationName()
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
@@ -113,7 +113,7 @@ class Backup:
                                    "Tried to restore a Cura backup without having proper data or meta data."))
             return False
 
-        current_version = self.application.getVersion()
+        current_version = self._application.getVersion()
         version_to_restore = self.meta_data.get("cura_release", "master")
         if current_version != version_to_restore:
             # Cannot restore version older or newer than current because settings might have changed.
@@ -129,7 +129,7 @@ class Backup:
 
         # Under Linux, preferences are stored elsewhere, so we copy the file to there.
         if Platform.isLinux():
-            preferences_file_name = self.application.getApplicationName()
+            preferences_file_name = self._application.getApplicationName()
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
