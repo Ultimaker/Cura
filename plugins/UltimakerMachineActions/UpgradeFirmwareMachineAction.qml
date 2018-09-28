@@ -16,7 +16,7 @@ Cura.MachineAction
     anchors.fill: parent;
     property bool printerConnected: Cura.MachineManager.printerConnected
     property var activeOutputDevice: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
-    property var canUpdateFirmware: activeOutputDevice ? activeOutputDevice.activePrinter.canUpdateFirmware : False
+    property var canUpdateFirmware: activeOutputDevice ? activeOutputDevice.activePrinter.canUpdateFirmware : false
 
     Column
     {
