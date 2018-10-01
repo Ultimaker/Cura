@@ -24,8 +24,7 @@ Item {
         anchors {
             left: parent.left;
             right: parent.right;
-            bottom: extrudersInfo.top;
-            bottomMargin: UM.Theme.getSize("default_margin").height;
+            
         }
         height: childrenRect.height;
         spacing: Math.round(0.5 * UM.Theme.getSize("default_margin").width);
@@ -52,6 +51,8 @@ Item {
             left: parent.left;
             right: parent.right;
             rightMargin: UM.Theme.getSize("default_margin").width;
+            top: printerFamilyPills.bottom;
+            topMargin: UM.Theme.getSize("default_margin").height;
         }
         height: childrenRect.height;
         spacing: UM.Theme.getSize("default_margin").width;

@@ -49,8 +49,8 @@ Item {
             // Main card
             Item {
                 id: mainCard;
-                // color: "pink";
-                height: childrenRect.height;
+                // I don't know why the extra height is needed but it is in order to look proportional.
+                height: childrenRect.height + 2;
                 width: parent.width;
 
                 // Machine icon
@@ -201,8 +201,7 @@ Item {
                     anchors.fill: parent;
                     enabled: printer;
                     onClicked: {
-                        console.log(model.index)
-                        if (root.collapsed && model) {
+                        if (model && root.collapsed) {
                             printerList.currentIndex = model.index;
                         } else {
                             printerList.currentIndex = -1;
@@ -213,6 +212,9 @@ Item {
                 Connections {
                     target: printerList
                     onCurrentIndexChanged: {
+                        if (!model) {
+                            return;
+                        }
                         root.collapsed = printerList.currentIndex != model.index;
                     }
                 }
@@ -221,8 +223,8 @@ Item {
             // Detailed card
             PrinterCardDetails {
                 collapsed: root.collapsed;
-                printer: printer;
-                visible: printer;
+                printer: root.printer;
+                visible: root.printer;
             }
 
             // Progress bar

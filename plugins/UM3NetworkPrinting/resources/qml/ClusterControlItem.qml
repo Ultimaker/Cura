@@ -69,7 +69,8 @@ Component
         // Skeleton loading
         Column
         {
-            id: dummies
+            id: skeletonLoader
+            visible: printerList.count === 0;
             anchors
             {
                 top: printingLabel.bottom
@@ -97,12 +98,11 @@ Component
             id: printerScrollView
             anchors
             {
-                top: dummies.bottom
+                top: printingLabel.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
                 left: parent.left
                 right: parent.right
-                topMargin: UM.Theme.getSize("default_margin").height
-                bottom: parent.bottom
-                bottomMargin: UM.Theme.getSize("default_margin").height
+                bottom: parent.bottom;
             }
 
             style: UM.Theme.styles.scrollview
