@@ -81,7 +81,8 @@ class SettingVisibilityPresetsModel(QObject):
         # Sort them on weight (and if that fails, use ID)
         items.sort(key = lambda k: (int(k.weight), k.id))
 
-        self.setItems(items)
+        # Set items and ensure there are no duplicated values
+        self.setItems(list(set(items)))
 
     @pyqtProperty("QVariantList", notify = onItemsChanged)
     def items(self):
