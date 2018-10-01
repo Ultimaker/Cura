@@ -110,24 +110,23 @@ UM.PreferencesPage
                 right: parent.right
             }
 
-            model: settingVisibilityPresetsModel
+            model: settingVisibilityPresetsModel.items
             textRole: "name"
 
             currentIndex:
             {
-                // Load previously selected preset.
-                var index = settingVisibilityPresetsModel.find("id", settingVisibilityPresetsModel.activePreset)
-                if (index == -1)
-                {
-                    return 0
+                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i) {
+                    if(settingVisibilityPresetsModel.items[i].id == settingVisibilityPresetsModel.activePreset) {
+                        currentIndex = i;
+                        return;
+                    }
                 }
-
-                return index
+                return -1
             }
 
             onActivated:
             {
-                var preset_id = settingVisibilityPresetsModel.getItem(index).id;
+                var preset_id = settingVisibilityPresetsModel.items[index].id;
                 settingVisibilityPresetsModel.setActivePreset(preset_id);
             }
         }
