@@ -2,18 +2,11 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, List
-import os
-import urllib.parse
-from configparser import ConfigParser
 
-from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 
-
-from UM.Application import Application
 from UM.Logger import Logger
-from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
 
 from UM.i18n import i18nCatalog
 from cura.Settings.SettingVisibilityPreset import SettingVisibilityPreset

@@ -6,7 +6,7 @@ from typing import List
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
 from UM.Logger import Logger
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
+from UM.MimeTypeDatabase import MimeTypeDatabase
 
 
 class SettingVisibilityPreset(QObject):
@@ -15,7 +15,7 @@ class SettingVisibilityPreset(QObject):
     onWeightChanged = pyqtSignal()
     onIdChanged = pyqtSignal()
 
-    def __init__(self, id: str = "", name: str = "" , weight: int = 0, parent = None) -> None:
+    def __init__(self, id: str = "", name: str = "", weight: int = 0, parent = None) -> None:
         super().__init__(parent)
         self._settings = []  # type: List[str]
         self._id = id
@@ -43,12 +43,12 @@ class SettingVisibilityPreset(QObject):
             self._name = name
             self.onNameChanged.emit()
 
-    def setId(self, id: int) -> None:
+    def setId(self, id: str) -> None:
         if id != self._id:
             self._id = id
             self.onIdChanged.emit()
 
-    def setWeight(self, weight: str) -> None:
+    def setWeight(self, weight: int) -> None:
         if weight != self._weight:
             self._weight = weight
             self.onWeightChanged.emit()
@@ -83,5 +83,5 @@ class SettingVisibilityPreset(QObject):
         self.setSettings(settings)
         self.setId(item_id)
         self.setName(parser["general"]["name"])
-        self.setWeight(parser["general"]["weight"])
+        self.setWeight(int(parser["general"]["weight"]))
 

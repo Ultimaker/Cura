@@ -24,7 +24,7 @@ def test_settingVisibilityPreset():
     assert setting_visibility_preset_test_settings == set(visibility_preset.settings)
 
     assert visibility_preset.name == "test"
-    assert visibility_preset.weight == '1'
+    assert visibility_preset.weight == 1
     assert visibility_preset.settings.count("yay") == 1  # It's in the file twice but we should load it once.
 
 def test_visibilityFromPrevious():
