@@ -44,6 +44,7 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
+from cura.API import CuraAPI
 from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
@@ -204,7 +205,7 @@ class CuraApplication(QtApplication):
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
-        self._cura_API = None
+        self._cura_API = CuraAPI(self)
 
         self._physics = None
         self._volume = None
@@ -713,6 +714,9 @@ class CuraApplication(QtApplication):
         default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
         self.getPreferences().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
 
+        # Initialize Cura API
+        self._cura_API.initialize()
+
         # Detect in which mode to run and execute that mode
         if self._is_headless:
             self.runWithoutGUI()
@@ -900,10 +904,7 @@ class CuraApplication(QtApplication):
             self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(self)
         return self._custom_quality_profile_drop_down_menu_model
 
-    def getCuraAPI(self, *args, **kwargs):
-        if self._cura_API is None:
-            from cura.API import CuraAPI
-            self._cura_API = CuraAPI()
+    def getCuraAPI(self, *args, **kwargs) -> "CuraAPI":
         return self._cura_API
 
     ##  Registers objects for the QML engine to use.

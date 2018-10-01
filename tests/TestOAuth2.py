@@ -31,15 +31,17 @@ MALFORMED_AUTH_RESPONSE = AuthenticationResponse()
 
 def test_cleanAuthService() -> None:
     # Ensure that when setting up an AuthorizationService, no data is set.
-    authorization_service = AuthorizationService(Preferences(), OAUTH_SETTINGS)
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
+    authorization_service.initialize()
     assert authorization_service.getUserProfile() is None
     assert authorization_service.getAccessToken() is None
 
 
 def test_failedLogin() -> None:
-    authorization_service = AuthorizationService(Preferences(), OAUTH_SETTINGS)
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.onAuthenticationError.emit = MagicMock()
     authorization_service.onAuthStateChanged.emit = MagicMock()
+    authorization_service.initialize()
 
     # Let the service think there was a failed response
     authorization_service._onAuthStateChanged(FAILED_AUTH_RESPONSE)
@@ -58,7 +60,8 @@ def test_failedLogin() -> None:
 @patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile())
 def test_storeAuthData(get_user_profile) -> None:
     preferences = Preferences()
-    authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, preferences)
+    authorization_service.initialize()
 
     # Write stuff to the preferences.
     authorization_service._storeAuthData(SUCCESFULL_AUTH_RESPONSE)
@@ -67,7 +70,8 @@ def test_storeAuthData(get_user_profile) -> None:
     assert preference_value is not None and preference_value != {}
 
     # Create a second auth service, so we can load the data.
-    second_auth_service = AuthorizationService(preferences, OAUTH_SETTINGS)
+    second_auth_service = AuthorizationService(OAUTH_SETTINGS, preferences)
+    second_auth_service.initialize()
     second_auth_service.loadAuthDataFromPreferences()
     assert second_auth_service.getAccessToken() == SUCCESFULL_AUTH_RESPONSE.access_token
 
@@ -77,7 +81,7 @@ def test_storeAuthData(get_user_profile) -> None:
 @patch.object(webbrowser, "open_new")
 def test_localAuthServer(webbrowser_open, start_auth_server, stop_auth_server) -> None:
     preferences = Preferences()
-    authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, preferences)
     authorization_service.startAuthorizationFlow()
     assert webbrowser_open.call_count == 1
 
@@ -92,9 +96,10 @@ def test_localAuthServer(webbrowser_open, start_auth_server, stop_auth_server) -
 
 def test_loginAndLogout() -> None:
     preferences = Preferences()
-    authorization_service = AuthorizationService(preferences, OAUTH_SETTINGS)
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, preferences)
     authorization_service.onAuthenticationError.emit = MagicMock()
     authorization_service.onAuthStateChanged.emit = MagicMock()
+    authorization_service.initialize()
 
     # Let the service think there was a succesfull response
     with patch.object(AuthorizationHelpers, "parseJWT", return_value=UserProfile()):
@@ -121,7 +126,8 @@ def test_loginAndLogout() -> None:
 
 
 def test_wrongServerResponses() -> None:
-    authorization_service = AuthorizationService(Preferences(), OAUTH_SETTINGS)
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
+    authorization_service.initialize()
     with patch.object(AuthorizationHelpers, "parseJWT", return_value=UserProfile()):
         authorization_service._onAuthStateChanged(MALFORMED_AUTH_RESPONSE)
     assert authorization_service.getUserProfile() is None

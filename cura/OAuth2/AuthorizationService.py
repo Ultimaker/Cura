@@ -29,7 +29,7 @@ class AuthorizationService:
     # Emit signal when authentication failed.
     onAuthenticationError = Signal()
 
-    def __init__(self, preferences: Optional["Preferences"], settings: "OAuth2Settings") -> None:
+    def __init__(self, settings: "OAuth2Settings", preferences: Optional["Preferences"] = None) -> None:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
@@ -38,6 +38,9 @@ class AuthorizationService:
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
 
+    def initialize(self, preferences: Optional["Preferences"] = None) -> None:
+        if preferences is not None:
+            self._preferences = preferences
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
