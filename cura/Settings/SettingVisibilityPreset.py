@@ -54,8 +54,8 @@ class SettingVisibilityPreset(QObject):
             self.onWeightChanged.emit()
 
     def setSettings(self, settings: List[str]) -> None:
-        if settings != self._settings:
-            self._settings = settings
+        if set(settings) != set(self._settings):
+            self._settings = list(set(settings))  # filter out non unique
             self.onSettingsChanged.emit()
 
     def loadFromFile(self, file_path: str) -> None:

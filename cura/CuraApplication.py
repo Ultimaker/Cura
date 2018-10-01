@@ -702,7 +702,7 @@ class CuraApplication(QtApplication):
         self._cura_actions = CuraActions.CuraActions(self)
 
         # Initialize setting visibility presets model.
-        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
+        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
