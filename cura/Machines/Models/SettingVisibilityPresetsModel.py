@@ -58,7 +58,7 @@ class SettingVisibilityPresetsModel(ListModel):
                 break
         return result
 
-    def _populate(self):
+    def _populate(self) -> None:
         from cura.CuraApplication import CuraApplication
         items = []
         for file_path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.SettingVisibilityPreset):
@@ -147,7 +147,7 @@ class SettingVisibilityPresetsModel(ListModel):
     def activePreset(self) -> str:
         return self._active_preset_item["id"]
 
-    def _onPreferencesChanged(self, name: str):
+    def _onPreferencesChanged(self, name: str) -> None:
         if name != "general/visible_settings":
             return
 

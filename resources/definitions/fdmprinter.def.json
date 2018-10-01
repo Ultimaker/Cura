@@ -77,6 +77,20 @@
                     "type": "str",
                     "enabled": false
                 },
+                "material_diameter":
+                {
+                    "label": "Diameter",
+                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.85,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "0.4",
+                    "maximum_value_warning": "3.5",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_bed_temp_wait":
                 {
                     "label": "Wait for Build Plate Heatup",
@@ -216,6 +230,7 @@
                     "label": "Number of Extruders that are enabled",
                     "description": "Number of extruder trains that are enabled; automatically set in software",
                     "value": "machine_extruder_count",
+                    "default_value": 1,
                     "minimum_value": "1",
                     "maximum_value": "16",
                     "type": "int",
@@ -1300,8 +1315,8 @@
                     "default_value": 0,
                     "type": "float",
                     "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "wall_min_flow_retract":
                 {
@@ -1310,8 +1325,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "fill_perimeter_gaps":
                 {
@@ -1441,7 +1456,7 @@
                     "label": "Ignore Small Z Gaps",
                     "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "enabled": "top_layers > 0 or bottom_layers > 0",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
@@ -1721,7 +1736,7 @@
                 "infill_wall_line_count":
                 {
                     "label": "Extra Infill Wall Count",
-                    "description": "Add extra wals around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
+                    "description": "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
@@ -1824,9 +1839,9 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.1,
-                    "minimum_value": "resolveOrValue('layer_height')",
+                    "minimum_value": "resolveOrValue('layer_height') if infill_line_distance > 0 else -999999",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
-                    "maximum_value": "resolveOrValue('layer_height') * (1.45 if spaghetti_infill_enabled else 8)",
+                    "maximum_value": "resolveOrValue('layer_height') * (1.45 if spaghetti_infill_enabled else 8) if infill_line_distance > 0 else 999999",
                     "value": "resolveOrValue('layer_height')",
                     "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
                     "limit_to_extruder": "infill_extruder_nr",
@@ -2138,6 +2153,7 @@
                     "type": "float",
                     "default_value": 60,
                     "value": "default_material_bed_temperature",
+                    "resolve": "max(extruderValues('material_bed_temperature'))",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "130",
@@ -3038,7 +3054,7 @@
                         {
                             "label": "Initial Layer Print Acceleration",
                             "description": "The acceleration during the printing of the initial layer.",
-                            "unit": "mm/s",
+                            "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
                             "value": "acceleration_layer_0",
@@ -3052,7 +3068,7 @@
                         {
                             "label": "Initial Layer Travel Acceleration",
                             "description": "The acceleration for travel moves in the initial layer.",
-                            "unit": "mm/s",
+                            "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
                             "value": "acceleration_layer_0 * acceleration_travel / acceleration_print",
@@ -3368,13 +3384,14 @@
                 "retraction_combing":
                 {
                     "label": "Combing Mode",
-                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only.",
+                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases.",
                     "type": "enum",
                     "options":
                     {
                         "off": "Off",
                         "all": "All",
-                        "noskin": "Not in Skin"
+                        "noskin": "Not in Skin",
+                        "infill": "Within Infill"
                     },
                     "default_value": "all",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
@@ -3813,7 +3830,8 @@
                     "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "zig_zaggify_support":
                 {
@@ -3885,6 +3903,19 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "support_infill_angle":
+                {
+                    "label": "Support Infill Line Direction",
+                    "description": "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "-180",
+                    "maximum_value": "180",
+                    "default_value": 0,
+                    "enabled": "support_enable and support_pattern != 'concentric' and support_infill_rate > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "support_z_distance":
                 {
@@ -5070,7 +5101,7 @@
                     "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
                     "unit": "mm³",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 6,
                     "minimum_value": "0",
                     "maximum_value_warning": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') if prime_tower_circular else resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')) - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",
@@ -5085,7 +5116,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_width - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - 1",
+                    "value": "machine_width - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1",
                     "maximum_value": "machine_width / 2 if machine_center_is_zero else machine_width",
                     "minimum_value": "resolveOrValue('prime_tower_size') - machine_width / 2 if machine_center_is_zero else resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
@@ -5099,7 +5130,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - 1",
+                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1",
                     "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
@@ -5637,6 +5668,19 @@
                     "enabled": "False and machine_nozzle_temp_enabled and material_flow_dependent_temperature",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "minimum_polygon_circumference":
+                {
+                    "label": "Minimum Polygon Circumference",
+                    "description": "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.0,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.05",
+                    "maximum_value_warning": "1.0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "meshfix_maximum_resolution":
                 {
@@ -6481,6 +6525,30 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "wall_overhang_angle":
+                {
+                    "label": "Overhanging Wall Angle",
+                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 90,
+                    "settable_per_mesh": true
+                },
+                "wall_overhang_speed_factor":
+                {
+                    "label": "Overhanging Wall Speed",
+                    "description": "Overhanging walls will be printed at this percentage of their normal print speed.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "10",
+                    "minimum_value_warning": "25",
+                    "maximum_value": "100",
+                    "settable_per_mesh": true
+                },
                 "bridge_settings_enabled":
                 {
                     "label": "Enable Bridge Settings",
@@ -6500,8 +6568,8 @@
                     "minimum_value": "0",
                     "default_value": 5,
                     "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "bridge_skin_support_threshold":
                 {
@@ -6509,18 +6577,6 @@
                     "description": "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings.",
                     "unit": "%",
                     "default_value": 50,
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_wall_max_overhang":
-                {
-                    "label": "Bridge Wall Max Overhang",
-                    "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
-                    "unit": "%",
-                    "default_value": 100,
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
@@ -6537,7 +6593,7 @@
                     "minimum_value": "0",
                     "maximum_value": "500",
                     "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "bridge_wall_speed":
                 {

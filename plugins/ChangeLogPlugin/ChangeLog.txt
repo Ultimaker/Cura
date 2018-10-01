@@ -1,3 +1,103 @@
+[3.5.0]
+*Monitor page
+The monitor page of Ultimaker Cura has been remodeled for better consistency with the Cura Connect ‘Print jobs’ interface. This means less switching between interfaces, and more control from within Ultimaker Cura.
+
+*Open recent projects
+Project files can now be found in the ‘Open Recent’ menu.
+
+*New tool hotkeys
+New hotkeys have been assigned for quick toggling between the translate (T), scale (S), rotate (R) and mirror (M) tools.
+
+*Project files use 3MF only
+A 3MF extension is now used for project files. The ‘.curaproject’ extension is no longer used.
+
+*Camera maximum zoom
+The maximum zoom has been adjusted to scale with the size of the selected printer. This fixes third-party printers with huge build volumes to be correctly visible.
+
+*Corrected width of layer number box
+The layer number indicator in the layer view now displays numbers above 999 correctly.
+
+*Materials preferences
+This screen has been redesigned to improve user experience. Materials can now be set as a favorites, so they can be easily accessed in the material selection panel at the top-right of the screen.
+
+*Installed packages checkmark
+Packages that are already installed in the Toolbox are now have a checkmark for easy reference.
+
+*Mac OSX save dialog
+The save dialog has been restored to its native behavior and bugs have been fixed.
+
+*Removed .gz extension
+Saving compressed g-code files from the save dialog has been removed because of incompatibility with MacOS. If sending jobs over Wi-Fi, g-code is still compressed.
+
+*Updates to Chinese translations
+Improved and updated Chinese translations. Contributed by MarmaladeForMeat.
+
+*Save project
+Saving the project no longer triggers the project to reslice.
+
+*File menu
+The Save option in the file menu now saves project files. The export option now saves other types of files, such as STL.
+
+*Improved processing of overhang walls
+Overhang walls are detected and printed with different speeds. It will not start a perimeter on an overhanging wall. The quality of overhanging walls may be improved by printing those at a different speed. Contributed by smartavionics.
+
+*Prime tower reliability
+The prime tower has been improved for better reliability. This is especially useful when printing with two materials that do not adhere well.
+
+*Support infill line direction
+The support infill lines can now be rotated to increase the supporting capabilities and reduce artifacts on the model. This setting rotates existing patterns, like triangle support infill. Contributed by fieldOfView.
+
+*Minimum polygon circumference
+Polygons in sliced layers that have a circumference smaller than the setting value will be filtered out. Lower values lead to higher resolution meshes at the cost of increased slicing time. This setting is ideal for very tiny prints with a lot of detail, or for SLA printers. Contributed by cubiq.
+
+*Initial layer support line distance
+This setting enables the user to reduce or increase the density of the support initial layer in order to increase or reduce adhesion to the build plate and the overall strength.
+
+*Extra infill wall line count
+Adds extra walls around infill. Contributed by BagelOrb.
+
+*Multiply infill
+Creates multiple infill lines on the same pattern for sturdier infill. Contributed by BagelOrb.
+
+*Connected infill polygons
+Connecting infill lines now also works with concentric and cross infill patterns. The benefit would be stronger infill and more consistent material flow/saving retractions. Contributed by BagelOrb.
+
+*Fan speed override
+New setting to modify the fan speed of supported areas. This setting can be found in Support settings > Fan Speed Override when support is enabled. Contributed by smartavionics.
+
+*Minimum wall flow
+New setting to define a minimum flow for thin printed walls. Contributed by smartavionics.
+
+*Custom support plugin
+A tool downloadable from the toolbox, similar to the support blocker, that adds cubes of support to the model manually by clicking parts of it. Contributed by Lokster.
+
+*Quickly toggle autoslicing
+Adds a pause/play button to the progress bar to quickly toggle autoslicing. Contributed by fieldOfview.
+
+*Cura-DuetRRFPlugin
+Adds output devices for a Duet RepRapFirmware printer: "Print", "Simulate", and "Upload". Contributed by Kriechi.
+
+*Dremel 3D20
+This plugin adds the Dremel printer to Ultimaker Cura. Contributed by Kriechi.
+
+*Bug fixes
+- Removed extra M109 commands. Older versions would generate superfluous M109 commands. This has been fixed for better temperature stability when printing.
+- Fixed minor mesh handling bugs. A few combinations of modifier meshes now lead to expected behavior.
+- Removed unnecessary travels. Connected infill lines are now always printed completely connected, without unnecessary travel moves.
+- Removed concentric 3D infill. This infill type has been removed due to lack of reliability.
+- Extra skin wall count. Fixed an issue that caused extra print moves with this setting enabled.
+- Concentric skin. Small gaps in concentric skin are now filled correctly.
+- Order of printed models. The order of a large batch of printed models is now more consistent, instead of random.
+
+*Third party printers
+- TiZYX
+- Winbo
+- Tevo Tornado
+- Creality CR-10S
+- Wanhao Duplicator
+- Deltacomb (update)
+- Dacoma (update)
+
 [3.4.1]
 *Bug fixes
 - Fixed an issue that would occasionally cause an unnecessary extra skin wall to be printed, which increased print time.

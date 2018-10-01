@@ -29,6 +29,7 @@ message Object
     bytes normals = 3; //An array of 3 floats.
     bytes indices = 4; //An array of ints.
     repeated Setting settings = 5; // Setting override per object, overruling the global settings.
+    string name = 6; 
 }
 
 message Progress

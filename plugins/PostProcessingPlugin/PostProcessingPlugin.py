@@ -1,5 +1,6 @@
-# Copyright (c) 2015 Jaime van Kessel, Ultimaker B.V.
+# Copyright (c) 2018 Jaime van Kessel, Ultimaker B.V.
 # The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM.PluginRegistry import PluginRegistry
@@ -260,6 +261,9 @@ class PostProcessingPlugin(QObject, Extension):
         # Create the plugin dialog component
         path = os.path.join(PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), "PostProcessingPlugin.qml")
         self._view = Application.getInstance().createQmlComponent(path, {"manager": self})
+        if self._view is None:
+            Logger.log("e", "Not creating PostProcessing button near save button because the QML component failed to be created.")
+            return
         Logger.log("d", "Post processing view created.")
 
         # Create the save button component
@@ -269,6 +273,9 @@ class PostProcessingPlugin(QObject, Extension):
     def showPopup(self):
         if self._view is None:
             self._createView()
+            if self._view is None:
+                Logger.log("e", "Not creating PostProcessing window since the QML component failed to be created.")
+                return
         self._view.show()
 
     ##  Property changed: trigger re-slice

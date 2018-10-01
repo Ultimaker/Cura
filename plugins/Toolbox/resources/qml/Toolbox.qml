@@ -33,6 +33,7 @@ Window
         {
             id: header
         }
+
         Item
         {
             id: mainView
@@ -75,6 +76,7 @@ Window
                 visible: toolbox.viewCategory == "installed"
             }
         }
+
         ToolboxFooter
         {
             id: footer

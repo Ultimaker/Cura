@@ -39,10 +39,11 @@ Item
         Label
         {
             id: globalProfileLabel
-            text: catalog.i18nc("@label","Profile:");
+            text: catalog.i18nc("@label","Profile:")
+            textFormat: Text.PlainText
             width: Math.round(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -559,6 +560,28 @@ Item
                 MenuSeparator
                 {
                     visible: machineExtruderCount.properties.value > 1
+                }
+
+                Instantiator
+                {
+                    id: customMenuItems
+                    model: Cura.SidebarCustomMenuItemsModel { }
+                    MenuItem
+                    {
+                        text: model.name
+                        iconName: model.icon_name
+                        onTriggered:
+                        {
+                            customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
+                        }
+                    }
+                   onObjectAdded: contextMenu.insertItem(index, object)
+                   onObjectRemoved: contextMenu.removeItem(object)
+                }
+
+                MenuSeparator
+                {
+                    visible: customMenuItems.count > 0
                 }
 
                 MenuItem

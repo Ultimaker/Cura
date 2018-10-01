@@ -1,6 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import argparse #To run the engine in debug mode if the front-end is in debug mode.
 from collections import defaultdict
 import os
 from PyQt5.QtCore import QObject, QTimer, pyqtSlot
@@ -178,8 +179,15 @@ class CuraEngineBackend(QObject, Backend):
     #   This is useful for debugging and used to actually start the engine.
     #   \return list of commands and args / parameters.
     def getEngineCommand(self) -> List[str]:
-        json_path = Resources.getPath(Resources.DefinitionContainers, "fdmprinter.def.json")
-        return [self._application.getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, ""]
+        command = [self._application.getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), ""]
+
+        parser = argparse.ArgumentParser(prog = "cura", add_help = False)
+        parser.add_argument("--debug", action = "store_true", default = False, help = "Turn on the debug mode by setting this option.")
+        known_args = vars(parser.parse_known_args()[0])
+        if known_args["debug"]:
+            command.append("-vvv")
+
+        return command
 
     ##  Emitted when we get a message containing print duration and material amount.
     #   This also implies the slicing has finished.
@@ -334,7 +342,7 @@ class CuraEngineBackend(QObject, Backend):
                 if not self._global_container_stack:
                     Logger.log("w", "Global container stack not assigned to CuraEngineBackend!")
                     return
-                extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
                 error_keys = [] #type: List[str]
                 for extruder in extruders:
                     error_keys.extend(extruder.getErrorKeys())

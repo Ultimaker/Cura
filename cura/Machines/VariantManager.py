@@ -1,9 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from enum import Enum
 from collections import OrderedDict
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, Dict
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
@@ -11,18 +10,11 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
+from cura.Machines.VariantType import VariantType, ALL_VARIANT_TYPES
 from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
-
-
-class VariantType(Enum):
-    BUILD_PLATE = "buildplate"
-    NOZZLE = "nozzle"
-
-
-ALL_VARIANT_TYPES = (VariantType.BUILD_PLATE, VariantType.NOZZLE)
 
 
 #
@@ -44,11 +36,11 @@ ALL_VARIANT_TYPES = (VariantType.BUILD_PLATE, VariantType.NOZZLE)
 #
 class VariantManager:
 
-    def __init__(self, container_registry):
-        self._container_registry = container_registry  # type: ContainerRegistry
+    def __init__(self, container_registry: ContainerRegistry) -> None:
+        self._container_registry = container_registry
 
-        self._machine_to_variant_dict_map = dict()  # <machine_type> -> <variant_dict>
-        self._machine_to_buildplate_dict_map = dict()
+        self._machine_to_variant_dict_map = dict()  # type: Dict[str, Dict["VariantType", Dict[str, ContainerNode]]]
+        self._machine_to_buildplate_dict_map = dict() # type: Dict[str, Dict[str, ContainerNode]]
 
         self._exclude_variant_id_list = ["empty_variant"]
 
@@ -56,7 +48,7 @@ class VariantManager:
     # Initializes the VariantManager including:
     #  - initializing the variant lookup table based on the metadata in ContainerRegistry.
     #
-    def initialize(self):
+    def initialize(self) -> None:
         self._machine_to_variant_dict_map = OrderedDict()
         self._machine_to_buildplate_dict_map = OrderedDict()
 
@@ -114,10 +106,10 @@ class VariantManager:
                     variant_node = variant_dict[variant_name]
                     break
             return variant_node
+
         return self._machine_to_variant_dict_map[machine_definition_id].get(variant_type, {}).get(variant_name)
 
-    def getVariantNodes(self, machine: "GlobalStack",
-                        variant_type: Optional["VariantType"] = None) -> dict:
+    def getVariantNodes(self, machine: "GlobalStack", variant_type: "VariantType") -> Dict[str, ContainerNode]:
         machine_definition_id = machine.definition.getId()
         return self._machine_to_variant_dict_map.get(machine_definition_id, {}).get(variant_type, {})
 

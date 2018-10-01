@@ -3,6 +3,7 @@
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Application import Application #To modify the maximum zoom level.
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -27,7 +28,7 @@ import copy
 
 from typing import List, Optional
 
-# Setting for clearance around the prime
+# Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
 
 
@@ -170,6 +171,12 @@ class BuildVolume(SceneNode):
         if shape:
             self._shape = shape
 
+    ##  Get the length of the 3D diagonal through the build volume.
+    #
+    #   This gives a sense of the scale of the build volume in general.
+    def getDiagonalSize(self) -> float:
+        return math.sqrt(self._width * self._width + self._height * self._height + self._depth * self._depth)
+
     def getDisallowedAreas(self) -> List[Polygon]:
         return self._disallowed_areas
 
@@ -235,6 +242,8 @@ class BuildVolume(SceneNode):
 
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
+                if extruder_position not in self._global_container_stack.extruders:
+                    continue
                 if not self._global_container_stack.extruders[extruder_position].isEnabled:
                     node.setOutsideBuildArea(True)
                     continue
@@ -470,8 +479,6 @@ class BuildVolume(SceneNode):
             maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
-        self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds
-
         self.updateNodeBoundaryCheck()
 
     def getBoundingBox(self) -> AxisAlignedBox:
@@ -519,7 +526,7 @@ class BuildVolume(SceneNode):
     def _onStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingPropertyChanged)
 
@@ -527,7 +534,7 @@ class BuildVolume(SceneNode):
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingPropertyChanged)
 
@@ -551,6 +558,12 @@ class BuildVolume(SceneNode):
 
             if self._engine_ready:
                 self.rebuild()
+
+            camera = Application.getInstance().getController().getCameraTool()
+            if camera:
+                diagonal = self.getDiagonalSize()
+                if diagonal > 1:
+                    camera.setZoomRange(min = 0.1, max = diagonal * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
 
     def _onEngineCreated(self):
         self._engine_ready = True

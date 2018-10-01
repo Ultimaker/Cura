@@ -6,9 +6,9 @@ from PyQt5.QtCore import Qt
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+from UM.Settings.SettingFunction import SettingFunction
 
 from cura.Machines.QualityManager import QualityGroup
-
 
 #
 # QML Model for all built-in quality profiles. This model is used for the drop-down quality menu.
@@ -106,4 +106,8 @@ class QualityProfilesDropDownMenuModel(ListModel):
             container = global_stack.definition
             if container and container.hasProperty("layer_height", "value"):
                 layer_height = container.getProperty("layer_height", "value")
+
+        if isinstance(layer_height, SettingFunction):
+            layer_height = layer_height(global_stack)
+
         return float(layer_height)

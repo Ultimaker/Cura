@@ -6,20 +6,21 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Dict, List, Optional, Tuple, cast
 import xml.etree.ElementTree as ET
-from typing import Dict
-from typing import Iterator
 
 from UM.Resources import Resources
 from UM.Logger import Logger
-from cura.CuraApplication import CuraApplication
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
+from cura.CuraApplication import CuraApplication
+from cura.Machines.VariantType import VariantType
+
 from .XmlMaterialValidator import XmlMaterialValidator
+
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
@@ -268,8 +269,7 @@ class XmlMaterialProfile(InstanceContainer):
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
             buildplate_dict = {} # type: Dict[str, Any]
             for variant_name, variant_dict in machine_variant_map[definition_id].items():
-                variant_type = variant_dict["variant_node"].metadata["hardware_type"]
-                from cura.Machines.VariantManager import VariantType
+                variant_type = variant_dict["variant_node"].getMetaDataEntry("hardware_type", str(VariantType.NOZZLE))
                 variant_type = VariantType(variant_type)
                 if variant_type == VariantType.NOZZLE:
                     # The hotend identifier is not the containers name, but its "name".
@@ -693,74 +693,38 @@ class XmlMaterialProfile(InstanceContainer):
                         if buildplate_id is None:
                             continue
 
-                        from cura.Machines.VariantManager import VariantType
                         variant_manager = CuraApplication.getInstance().getVariantManager()
                         variant_node = variant_manager.getVariantNode(machine_id, buildplate_id,
                                                                       variant_type = VariantType.BUILD_PLATE)
                         if not variant_node:
                             continue
 
-                        buildplate_compatibility = machine_compatibility
-                        buildplate_recommended = machine_compatibility
-                        settings = buildplate.iterfind("./um:setting", self.__namespaces)
-                        for entry in settings:
-                            key = entry.get("key")
-                            if key in self.__unmapped_settings:
-                                if key == "hardware compatible":
-                                    buildplate_compatibility = self._parseCompatibleValue(entry.text)
-                                elif key == "hardware recommended":
-                                    buildplate_recommended = self._parseCompatibleValue(entry.text)
-                            else:
-                                Logger.log("d", "Unsupported material setting %s", key)
+                        _, buildplate_unmapped_settings_dict = self._getSettingsDictForNode(buildplate)
+
+                        buildplate_compatibility = buildplate_unmapped_settings_dict.get("hardware compatible",
+                                                                                         machine_compatibility)
+                        buildplate_recommended = buildplate_unmapped_settings_dict.get("hardware recommended",
+                                                                                       machine_compatibility)
 
                         buildplate_map["buildplate_compatible"][buildplate_id] = buildplate_compatibility
                         buildplate_map["buildplate_recommended"][buildplate_id] = buildplate_recommended
 
                     hotends = machine.iterfind("./um:hotend", self.__namespaces)
                     for hotend in hotends:
-                        # The "id" field for hotends in material profiles are actually
+                        # The "id" field for hotends in material profiles is actually name
                         hotend_name = hotend.get("id")
                         if hotend_name is None:
                             continue
 
                         variant_manager = CuraApplication.getInstance().getVariantManager()
-                        variant_node = variant_manager.getVariantNode(machine_id, hotend_name)
+                        variant_node = variant_manager.getVariantNode(machine_id, hotend_name, VariantType.NOZZLE)
                         if not variant_node:
                             continue
 
-                        hotend_compatibility = machine_compatibility
-                        hotend_setting_values = {}
-                        settings = hotend.iterfind("./um:setting", self.__namespaces)
-                        for entry in settings:
-                            key = entry.get("key")
-                            if key in self.__material_settings_setting_map:
-                                if key == "processing temperature graph": #This setting has no setting text but subtags.
-                                    graph_nodes = entry.iterfind("./um:point", self.__namespaces)
-                                    graph_points = []
-                                    for graph_node in graph_nodes:
-                                        flow = float(graph_node.get("flow"))
-                                        temperature = float(graph_node.get("temperature"))
-                                        graph_points.append([flow, temperature])
-                                    hotend_setting_values[self.__material_settings_setting_map[key]] = str(graph_points)
-                                else:
-                                    hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
-                            elif key in self.__unmapped_settings:
-                                if key == "hardware compatible":
-                                    hotend_compatibility = self._parseCompatibleValue(entry.text)
-                            else:
-                                Logger.log("d", "Unsupported material setting %s", key)
+                        hotend_mapped_settings, hotend_unmapped_settings = self._getSettingsDictForNode(hotend)
+                        hotend_compatibility = hotend_unmapped_settings.get("hardware compatible", machine_compatibility)
 
-                        # Add namespaced Cura-specific settings
-                        settings = hotend.iterfind("./cura:setting", self.__namespaces)
-                        for entry in settings:
-                            value = entry.text
-                            if value.lower() == "yes":
-                                value = True
-                            elif value.lower() == "no":
-                                value = False
-                            key = entry.get("key")
-                            hotend_setting_values[key] = value
-
+                        # Generate container ID for the hotend-specific material container
                         new_hotend_specific_material_id = self.getId() + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
                         # Same as machine compatibility, keep the derived material containers consistent with the parent material
@@ -785,7 +749,7 @@ class XmlMaterialProfile(InstanceContainer):
                             new_hotend_material.getMetaData()["buildplate_recommended"] = buildplate_map["buildplate_recommended"]
 
                         cached_hotend_setting_properties = cached_machine_setting_properties.copy()
-                        cached_hotend_setting_properties.update(hotend_setting_values)
+                        cached_hotend_setting_properties.update(hotend_mapped_settings)
 
                         new_hotend_material.setCachedValues(cached_hotend_setting_properties)
 
@@ -794,12 +758,115 @@ class XmlMaterialProfile(InstanceContainer):
                         if is_new_material:
                             containers_to_add.append(new_hotend_material)
 
+                        #
+                        # Build plates in hotend
+                        #
+                        buildplates = hotend.iterfind("./um:buildplate", self.__namespaces)
+                        for buildplate in buildplates:
+                            # The "id" field for buildplate in material profiles is actually name
+                            buildplate_name = buildplate.get("id")
+                            if buildplate_name is None:
+                                continue
+
+                            variant_manager = CuraApplication.getInstance().getVariantManager()
+                            variant_node = variant_manager.getVariantNode(machine_id, buildplate_name, VariantType.BUILD_PLATE)
+                            if not variant_node:
+                                continue
+
+                            buildplate_mapped_settings, buildplate_unmapped_settings = self._getSettingsDictForNode(buildplate)
+                            buildplate_compatibility = buildplate_unmapped_settings.get("hardware compatible",
+                                                                                        buildplate_map["buildplate_compatible"])
+                            buildplate_recommended = buildplate_unmapped_settings.get("hardware recommended",
+                                                                                        buildplate_map["buildplate_recommended"])
+
+                            # Generate container ID for the hotend-and-buildplate-specific material container
+                            new_hotend_and_buildplate_specific_material_id = new_hotend_specific_material_id + "_" + buildplate_name.replace(" ", "_")
+
+                            # Same as machine compatibility, keep the derived material containers consistent with the parent material
+                            if ContainerRegistry.getInstance().isLoaded(new_hotend_and_buildplate_specific_material_id):
+                                new_hotend_and_buildplate_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_and_buildplate_specific_material_id)[0]
+                                is_new_material = False
+                            else:
+                                new_hotend_and_buildplate_material = XmlMaterialProfile(new_hotend_and_buildplate_specific_material_id)
+                                is_new_material = True
+
+                            new_hotend_and_buildplate_material.setMetaData(copy.deepcopy(new_hotend_material.getMetaData()))
+                            new_hotend_and_buildplate_material.getMetaData()["id"] = new_hotend_and_buildplate_specific_material_id
+                            new_hotend_and_buildplate_material.getMetaData()["name"] = self.getName()
+                            new_hotend_and_buildplate_material.getMetaData()["variant_name"] = hotend_name
+                            new_hotend_and_buildplate_material.getMetaData()["buildplate_name"] = buildplate_name
+                            new_hotend_and_buildplate_material.setDefinition(machine_id)
+                            # Don't use setMetadata, as that overrides it for all materials with same base file
+                            new_hotend_and_buildplate_material.getMetaData()["compatible"] = buildplate_compatibility
+                            new_hotend_and_buildplate_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
+                            new_hotend_and_buildplate_material.getMetaData()["definition"] = machine_id
+                            new_hotend_and_buildplate_material.getMetaData()["buildplate_compatible"] = buildplate_compatibility
+                            new_hotend_and_buildplate_material.getMetaData()["buildplate_recommended"] = buildplate_recommended
+
+                            cached_hotend_and_buildplate_setting_properties = cached_hotend_setting_properties.copy()
+                            cached_hotend_and_buildplate_setting_properties.update(buildplate_mapped_settings)
+
+                            new_hotend_and_buildplate_material.setCachedValues(cached_hotend_and_buildplate_setting_properties)
+
+                            new_hotend_and_buildplate_material._dirty = False
+
+                            if is_new_material:
+                                containers_to_add.append(new_hotend_and_buildplate_material)
+
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
                     # a workable ID for that machine, so there is no need to continue
                     break
 
         for container_to_add in containers_to_add:
             ContainerRegistry.getInstance().addContainer(container_to_add)
+
+    @classmethod
+    def _getSettingsDictForNode(cls, node) -> Tuple[dict, dict]:
+        node_mapped_settings_dict = dict()
+        node_unmapped_settings_dict = dict()
+
+        # Fetch settings in the "um" namespace
+        um_settings = node.iterfind("./um:setting", cls.__namespaces)
+        for um_setting_entry in um_settings:
+            setting_key = um_setting_entry.get("key")
+
+            # Mapped settings
+            if setting_key in cls.__material_settings_setting_map:
+                if setting_key == "processing temperature graph":  # This setting has no setting text but subtags.
+                    graph_nodes = um_setting_entry.iterfind("./um:point", cls.__namespaces)
+                    graph_points = []
+                    for graph_node in graph_nodes:
+                        flow = float(graph_node.get("flow"))
+                        temperature = float(graph_node.get("temperature"))
+                        graph_points.append([flow, temperature])
+                    node_mapped_settings_dict[cls.__material_settings_setting_map[setting_key]] = str(
+                        graph_points)
+                else:
+                    node_mapped_settings_dict[cls.__material_settings_setting_map[setting_key]] = um_setting_entry.text
+
+            # Unmapped settings
+            elif setting_key in cls.__unmapped_settings:
+                if setting_key in ("hardware compatible", "hardware recommended"):
+                    node_unmapped_settings_dict[setting_key] = cls._parseCompatibleValue(um_setting_entry.text)
+
+            # Unknown settings
+            else:
+                Logger.log("w", "Unsupported material setting %s", setting_key)
+
+        # Fetch settings in the "cura" namespace
+        cura_settings = node.iterfind("./cura:setting", cls.__namespaces)
+        for cura_setting_entry in cura_settings:
+            value = cura_setting_entry.text
+            if value.lower() == "yes":
+                value = True
+            elif value.lower() == "no":
+                value = False
+            key = cura_setting_entry.get("key")
+
+            # Cura settings are all mapped
+            node_mapped_settings_dict[key] = value
+
+        return node_mapped_settings_dict, node_unmapped_settings_dict
 
     @classmethod
     def deserializeMetadata(cls, serialized: str, container_id: str) -> List[Dict[str, Any]]:
@@ -982,6 +1049,36 @@ class XmlMaterialProfile(InstanceContainer):
                             new_hotend_material_metadata["buildplate_recommended"] = buildplate_map["buildplate_recommended"]
 
                         result_metadata.append(new_hotend_material_metadata)
+
+                        #
+                        # Buildplates in Hotends
+                        #
+                        buildplates = hotend.iterfind("./um:buildplate", cls.__namespaces)
+                        for buildplate in buildplates:
+                            # The "id" field for buildplate in material profiles is actually name
+                            buildplate_name = buildplate.get("id")
+                            if buildplate_name is None:
+                                continue
+
+                            buildplate_mapped_settings, buildplate_unmapped_settings = cls._getSettingsDictForNode(buildplate)
+                            buildplate_compatibility = buildplate_unmapped_settings.get("hardware compatible",
+                                                                                        buildplate_map["buildplate_compatible"])
+                            buildplate_recommended = buildplate_unmapped_settings.get("hardware recommended",
+                                                                                      buildplate_map["buildplate_recommended"])
+
+                            # Generate container ID for the hotend-and-buildplate-specific material container
+                            new_hotend_and_buildplate_specific_material_id = new_hotend_specific_material_id + "_" + buildplate_name.replace(
+                                " ", "_")
+
+                            new_hotend_and_buildplate_material_metadata = {}
+                            new_hotend_and_buildplate_material_metadata.update(new_hotend_material_metadata)
+                            new_hotend_and_buildplate_material_metadata["id"] = new_hotend_and_buildplate_specific_material_id
+                            new_hotend_and_buildplate_material_metadata["buildplate_name"] = buildplate_name
+                            new_hotend_and_buildplate_material_metadata["compatible"] = buildplate_compatibility
+                            new_hotend_and_buildplate_material_metadata["buildplate_compatible"] = buildplate_compatibility
+                            new_hotend_and_buildplate_material_metadata["buildplate_recommended"] = buildplate_recommended
+
+                            result_metadata.append(new_hotend_and_buildplate_material_metadata)
 
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
                     # a workable ID for that machine, so there is no need to continue

@@ -134,7 +134,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         # Link to new extruders
         self._active_machine_extruders = []
         extruder_manager = Application.getInstance().getExtruderManager()
-        for extruder in extruder_manager.getExtruderStacks():
+        for extruder in extruder_manager.getActiveExtruderStacks():
             if extruder is None: #This extruder wasn't loaded yet. This happens asynchronously while this model is constructed from QML.
                 continue
             extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
@@ -171,7 +171,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             # get machine extruder count for verification
             machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
 
-            for extruder in Application.getInstance().getExtruderManager().getMachineExtruders(global_container_stack.getId()):
+            for extruder in Application.getInstance().getExtruderManager().getActiveExtruderStacks():
                 position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
                 try:
                     position = int(position)

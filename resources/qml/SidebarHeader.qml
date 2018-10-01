@@ -274,7 +274,7 @@ Column
                                 elide: Text.ElideRight
                             }
 
-                            // Everthing for the extruder icon
+                            // Everything for the extruder icon
                             Item
                             {
                                 id: extruderIconItem
@@ -476,8 +476,8 @@ Column
     {
         id: buildplateRow
         height: UM.Theme.getSize("sidebar_setup").height
-        // TODO Temporary hidden, add back again when feature ready
-        visible: false //Cura.MachineManager.hasVariantBuildplates && !sidebar.hideSettings
+        // TODO Only show in dev mode. Remove check when feature ready
+        visible: CuraSDKVersion == "dev" ? Cura.MachineManager.hasVariantBuildplates && !sidebar.hideSettings : false
 
         anchors
         {
@@ -533,6 +533,7 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
+        // TODO This was added to replace the buildplate selector. Remove this component when the feature is ready
         Label
         {
             id: materialCompatibilityLabel
@@ -542,7 +543,7 @@ Column
             text: catalog.i18nc("@label", "Use glue with this material combination")
             font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text")
-            visible: buildplateCompatibilityError || buildplateCompatibilityWarning
+            visible: CuraSDKVersion == "dev" ? false : buildplateCompatibilityError || buildplateCompatibilityWarning
             wrapMode: Text.WordWrap
             opacity: 0.5
         }
@@ -606,7 +607,7 @@ Column
     {
         id: machineExtruderCount
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
         watchedProperties: [ "value" ]
         storeIndex: 0
