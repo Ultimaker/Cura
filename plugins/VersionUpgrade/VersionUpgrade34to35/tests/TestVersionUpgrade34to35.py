@@ -17,6 +17,10 @@ test_upgrade_version_nr_data = [
     version = 5
     [metadata]
     setting_version = 4
+
+    [info]
+    asked_send_slice_info = True
+    send_slice_info = True
 """
     )
 ]
@@ -33,3 +37,7 @@ def test_upgradeVersionNr(test_name, file_data, upgrader):
     #Check the new version.
     assert parser["general"]["version"] == "6"
     assert parser["metadata"]["setting_version"] == "5"
+
+    # Check if the data collection values have been removed
+    assert not parser.has_option("info", "asked_send_slice_info")
+    assert not parser.has_option("info", "send_slice_info")
