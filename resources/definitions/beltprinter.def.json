@@ -222,9 +222,6 @@
         "support_type": {
             "enabled": false
         },
-        "gradual_support_infill_steps": {
-            "enabled": false
-        },
         "support_tree_enable": {
             "enabled": false,
             "settable_per_mesh": false
@@ -259,120 +256,92 @@
             "default_value": 0,
             "enabled": false
         },
-        "raft_base_thickness":
-        {
+        "raft_base_thickness": {
             "value": "blackbelt_raft_thickness",
             "enabled": false
         },
-        "raft_airgap":
-        {
+        "raft_airgap": {
             "value": "blackbelt_raft_gap",
             "enabled": false
         },
 
-        "raft_smoothing":
-        {
+        "raft_smoothing": {
             "enabled": false
         },
-        "raft_surface_thickness":
-        {
+        "raft_surface_thickness": {
             "enabled": false
         },
-        "raft_surface_line_width":
-        {
+        "raft_surface_line_width": {
             "enabled": false
         },
-        "raft_surface_line_spacing":
-        {
+        "raft_surface_line_spacing": {
             "enabled": false
         },
-        "raft_interface_thickness":
-        {
+        "raft_interface_thickness": {
             "enabled": false
         },
-        "raft_interface_line_width":
-        {
+        "raft_interface_line_width": {
             "enabled": false
         },
-        "raft_interface_line_spacing":
-        {
+        "raft_interface_line_spacing": {
             "enabled": false
         },
-        "raft_base_line_width":
-        {
+        "raft_base_line_width": {
             "enabled": false
         },
-        "raft_base_line_spacing":
-        {
+        "raft_base_line_spacing": {
             "enabled": false
         },
-        "raft_speed":
-        {
+        "raft_speed": {
             "enabled": false
         },
-        "raft_surface_speed":
-        {
+        "raft_surface_speed": {
             "enabled": false
         },
-        "raft_interface_speed":
-        {
+        "raft_interface_speed": {
             "enabled": false
         },
-        "raft_base_speed":
-        {
+        "raft_base_speed": {
             "enabled": false
         },
-        "raft_acceleration":
-        {
+        "raft_acceleration": {
             "enabled": false
         },
-        "raft_surface_acceleration":
-        {
+        "raft_surface_acceleration": {
             "enabled": false
         },
-        "raft_interface_acceleration":
-        {
+        "raft_interface_acceleration": {
             "enabled": false
         },
-        "raft_base_acceleration":
-        {
+        "raft_base_acceleration": {
             "enabled": false
         },
-        "raft_jerk":
-        {
+        "raft_jerk": {
             "enabled": false
         },
-        "raft_surface_jerk":
-        {
+        "raft_surface_jerk": {
             "enabled": false
         },
-        "raft_interface_jerk":
-        {
+        "raft_interface_jerk": {
             "enabled": false
         },
-        "raft_base_jerk":
-        {
+        "raft_base_jerk": {
             "enabled": false
         },
-        "raft_fan_speed":
-        {
+        "raft_fan_speed": {
             "enabled": false
         },
-        "raft_surface_fan_speed":
-        {
+        "raft_surface_fan_speed": {
             "enabled": false
         },
-        "raft_interface_fan_speed":
-        {
+        "raft_interface_fan_speed": {
             "enabled": false
         },
-        "raft_base_fan_speed":
-        {
+        "raft_base_fan_speed": {
             "enabled": false
         },
 
-        "relative_extrusion":
-        {
+        "relative_extrusion": {
             "enabled": false
         },
 
@@ -385,8 +354,7 @@
         "top_bottom_pattern_0": {
             "enabled": false
         },
-        "infill_pattern":
-        {
+        "infill_pattern": {
             "options":
             {
                 "grid": "Grid",
@@ -401,60 +369,46 @@
                 "cross_3d": "Cross 3D"
             }
         },
-        "infill_angles":
-        {
+        "infill_angles": {
             "value": "'[' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ',-' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ']' if infill_pattern == 'lines' else '[ ]'"
         },
-        "infill_line_distance":
-        {
+        "infill_line_distance": {
             "minimum_value_warning": "0 if infill_sparse_density == 0 else infill_line_width"
         },
-        "travel_avoid_other_parts":
-        {
+        "travel_avoid_other_parts": {
             "default_value": false
         },
-        "max_feedrate_z_override":
-        {
+        "max_feedrate_z_override": {
             "enabled": false
         },
-        "ooze_shield_enabled":
-        {
+        "ooze_shield_enabled": {
             "enabled": false
         },
-        "draft_shield_enabled":
-        {
+        "draft_shield_enabled": {
             "enabled": false
         },
-        "conical_overhang_enabled":
-        {
+        "conical_overhang_enabled": {
             "enabled": false
         },
-        "support_conical_enabled":
-        {
+        "support_conical_enabled": {
             "settable_per_mesh": false
         },
-        "support_conical_angle":
-        {
+        "support_conical_angle": {
             "settable_per_mesh": false
         },
-        "support_conical_min_width":
-        {
+        "support_conical_min_width": {
             "settable_per_mesh": false
         },
-        "switch_extruder_retraction_amount":
-        {
+        "switch_extruder_retraction_amount": {
             "enabled": false
         },
-        "switch_extruder_retraction_speeds":
-        {
+        "switch_extruder_retraction_speeds": {
             "enabled": false
         },
-        "mold_enabled":
-        {
+        "mold_enabled": {
             "enabled": false
         },
-        "magic_fuzzy_skin_enabled":
-        {
+        "magic_fuzzy_skin_enabled": {
             "enabled": false
         },
         "wireframe_enabled": {
@@ -462,9 +416,6 @@
         },
 
         "layer_height_0": {
-            "enabled": false
-        },
-        "top_bottom_pattern_0": {
             "enabled": false
         },
         "xy_offset_layer_0": {
@@ -475,6 +426,216 @@
         },
         "adaptive_layer_height_enabled": {
             "enabled": false
+        },
+
+
+
+
+        "support_line_width": {
+            "enabled": "True"
+        },
+        "support_interface_line_width": {
+            "enabled": "support_interface_enable"
+        },
+        "support_roof_line_width": {
+            "enabled": "support_roof_enable"
+        },
+        "support_bottom_line_width": {
+            "enabled": "support_bottom_enable"
+        },
+
+        "limit_support_retractions": {
+            "enabled": "retraction_enable"
+        },
+        "speed_support": {
+            "enabled": "True"
+        },
+        "speed_support_infill": {
+            "enabled": "True"
+        },
+        "speed_support_interface": {
+            "enabled": "support_interface_enable"
+        },
+        "speed_support_roof": {
+            "enabled": "support_roof_enable"
+        },
+        "speed_support_bottom": {
+            "enabled": "support_bottom_enable"
+        },
+
+        "acceleration_support": {
+            "enabled": "resolveOrValue('acceleration_enabled')"
+        },
+        "acceleration_support_infill": {
+            "enabled": "resolveOrValue('acceleration_enabled')"
+        },
+        "acceleration_support_interface": {
+            "enabled": "resolveOrValue('acceleration_enabled') and support_interface_enable"
+        },
+        "acceleration_support_roof": {
+            "enabled": "acceleration_enabled and support_roof_enable"
+        },
+        "acceleration_support_bottom": {
+            "enabled": "acceleration_enabled and support_bottom_enable"
+        },
+        "jerk_support": {
+            "enabled": "resolveOrValue('jerk_enabled')"
+        },
+        "jerk_support_infill": {
+            "enabled": "resolveOrValue('jerk_enabled')"
+        },
+        "jerk_support_interface": {
+            "enabled": "resolveOrValue('jerk_enabled') and support_interface_enable"
+        },
+        "jerk_support_roof": {
+            "enabled": "resolveOrValue('jerk_enabled') and support_roof_enable"
+        },
+        "jerk_support_bottom": {
+            "enabled": "resolveOrValue('jerk_enabled') and support_bottom_enable"
+        },
+
+
+        "support_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_infill_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_extruder_nr_layer_0": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_interface_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_roof_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_bottom_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_pattern": {
+            "enabled": "True"
+        },
+        "support_wall_count": {
+            "enabled": "True"
+        },
+        "support_connect_zigzags": {
+            "enabled": "support_pattern == 'zigzag'"
+        },
+        "support_infill_rate": {
+            "enabled": "True"
+        },
+        "support_line_distance": {
+            "enabled": "True"
+        },
+        "support_initial_layer_line_distance": {
+            "enabled": "True"
+        },
+        "support_infill_angle": {
+            "enabled": "support_pattern != 'concentric' and support_infill_rate > 0"
+        },
+        "support_z_distance": {
+            "enabled": "True"
+        },
+        "support_top_distance": {
+            "enabled": "True"
+        },
+        "support_bottom_distance": {
+            "enabled": "resolveOrValue('support_type') == 'everywhere'"
+        },
+        "support_xy_distance": {
+            "enabled": "True"
+        },
+        "support_xy_overrides_z": {
+            "enabled": "True"
+        },
+        "support_xy_distance_overhang": {
+            "enabled": "support_xy_overrides_z == 'z_overrides_xy'"
+        },
+        "support_bottom_stair_step_height": {
+            "enabled": "True"
+        },
+        "support_bottom_stair_step_width": {
+            "enabled": "True"
+        },
+        "support_join_distance": {
+            "enabled": "True"
+        },
+        "support_offset": {
+            "enabled": "True"
+        },
+        "support_infill_sparse_thickness": {
+            "enabled": "support_infill_rate > 0"
+        },
+        "gradual_support_infill_steps": {
+            "enabled": "support_infill_rate > 0"
+        },
+        "gradual_support_infill_step_height": {
+            "enabled": "support_infill_rate > 0 and gradual_support_infill_steps > 0"
+        },
+        "support_interface_enable": {
+            "enabled": "True"
+        },
+        "support_roof_enable": {
+            "enabled": "True"
+        },
+        "support_bottom_enable": {
+            "enabled": "True"
+        },
+        "support_interface_height": {
+            "enabled": "support_interface_enable and True"
+        },
+        "support_roof_height": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_bottom_height": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_interface_skip_height": {
+            "enabled": "support_interface_enable"
+        },
+        "support_interface_density": {
+            "enabled": "support_interface_enable and True"
+        },
+        "support_roof_density": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_roof_line_distance": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_bottom_density": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_bottom_line_distance": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_interface_pattern": {
+            "enabled": "support_interface_enable and True"
+        },
+        "support_roof_pattern": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_bottom_pattern": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_fan_enable": {
+            "enabled": "True"
+        },
+        "support_supported_skin_fan_speed": {
+            "enabled": "support_fan_enable"
+        },
+        "support_use_towers": {
+            "enabled": "False"
+        },
+
+        "support_skip_some_zags": {
+            "enabled": "(support_pattern == 'zigzag')"
+        },
+        "support_skip_zag_per_mm": {
+            "enabled": "(support_pattern == 'zigzag') and support_skip_some_zags"
+        },
+        "support_zag_skip_count": {
+            "enabled": "(support_pattern == 'zigzag') and support_skip_some_zags"
         }
     }
 }
