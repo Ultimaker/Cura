@@ -48,15 +48,13 @@ Item {
             height: childrenRect.height;
 
             // Main content
-            Rectangle {
+            Item {
                 id: mainContent;
-                color: root.debug ? "red" : "transparent";
                 width: parent.width;
                 height: 200; // TODO: Theme!
 
                 // Left content
-                Rectangle {
-                    color: root.debug ? "lightblue" : "transparent";
+                Item {
                     anchors {
                         left: parent.left;
                         right: parent.horizontalCenter;
@@ -179,8 +177,7 @@ Item {
                 }
 
                 // Right content
-                Rectangle {
-                    color: root.debug ? "blue" : "transparent";
+                Item {
                     anchors {
                         left: parent.horizontalCenter;
                         right: parent.right;
@@ -238,7 +235,7 @@ Item {
                 }
             }
 
-            Rectangle {
+            Item {
                 id: configChangesBox;
                 width: parent.width;
                 height: childrenRect.height;
@@ -322,9 +319,8 @@ Item {
                 }
 
                 // Config change details
-                Rectangle {
+                Item {
                     id: configChangeDetails;
-                    color: "transparent";
                     width: parent.width;
                     visible: false;
                     // In case of really massive multi-line configuration changes
@@ -332,8 +328,7 @@ Item {
                     Behavior on height { NumberAnimation { duration: 100 } }
                     anchors.top: configChangeToggle.bottom;
 
-                    Rectangle {
-                        color: "transparent";
+                    Item {
                         clip: true;
                         anchors {
                             fill: parent;

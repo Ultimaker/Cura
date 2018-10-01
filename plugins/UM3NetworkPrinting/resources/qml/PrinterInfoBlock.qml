@@ -73,12 +73,10 @@ Item {
         if (root.printJob) {
             // Use more-specific print job if possible
             return root.printJob.configuration.extruderConfigurations[i];
-        } else {
-            if (root.printer) {
-                return root.printer.printerConfiguration.extruderConfigurations[i];
-            } else {
-                return null;
-            }
         }
+        if (root.printer) {
+            return root.printer.printerConfiguration.extruderConfigurations[i];
+        }
+        return null;
     }
 }
