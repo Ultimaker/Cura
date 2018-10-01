@@ -2177,22 +2177,22 @@ msgstr "Modelo normal"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:75
 msgctxt "@label"
 msgid "Print as support"
-msgstr "Imprimir según compatibilidad"
+msgstr "Imprimir como soporte"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:83
 msgctxt "@label"
 msgid "Don't support overlap with other models"
-msgstr "No es compatible la superposición con otros modelos"
+msgstr "No crear soporte en otros modelos (por superposición)"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:91
 msgctxt "@label"
 msgid "Modify settings for overlap with other models"
-msgstr "Modificar ajustes para superponer con otros modelos"
+msgstr "Modificar ajustes de otros modelos (por superposición)"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:99
 msgctxt "@label"
 msgid "Modify settings for infill of other models"
-msgstr "Modificar ajustes para rellenar con otros modelos"
+msgstr "Modificar ajustes del relleno de otros modelos"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:341
 msgctxt "@action:button"
