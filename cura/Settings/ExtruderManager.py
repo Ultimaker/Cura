@@ -373,7 +373,7 @@ class ExtruderManager(QObject):
     #   \return String representing the extruder values
     @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key: str) -> List:
-        return self._application.getCustomSettingFunctions().getValuesInAllExtruders(key)
+        return self._application.getCuraFormulaFunctions().getValuesInAllExtruders(key)
 
     ##  Get the resolve value or value for a given key
     #

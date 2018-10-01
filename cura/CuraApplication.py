@@ -107,7 +107,7 @@ from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisi
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
 import cura.Settings.cura_empty_instance_containers
-from cura.Settings.CustomSettingFunctions import CustomSettingFunctions
+from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -175,7 +175,7 @@ class CuraApplication(QtApplication):
 
         self._single_instance = None
 
-        self._custom_setting_functions = None
+        self._cura_formula_functions = None
 
         self._cura_package_manager = None
 
@@ -320,7 +320,7 @@ class CuraApplication(QtApplication):
     # Adds custom property types, settings types, and extra operators (functions) that need to be registered in
     # SettingDefinition and SettingFunction.
     def __initializeSettingDefinitionsAndFunctions(self):
-        self._custom_setting_functions = CustomSettingFunctions(self)
+        self._cura_formula_functions = CuraFormulaFunctions(self)
 
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
@@ -342,10 +342,10 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSettingType("optional_extruder", None, str, None)
         SettingDefinition.addSettingType("[int]", None, str, None)
 
-        SettingFunction.registerOperator("extruderValue", self._custom_setting_functions.getValueInExtruder)
-        SettingFunction.registerOperator("extruderValues", self._custom_setting_functions.getValuesInAllExtruders)
-        SettingFunction.registerOperator("resolveOrValue", self._custom_setting_functions.getResolveOrValue)
-        SettingFunction.registerOperator("defaultExtruderPosition", self._custom_setting_functions.getDefaultExtruderPosition)
+        SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
+        SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
+        SettingFunction.registerOperator("resolveOrValue", self._cura_formula_functions.getResolveOrValue)
+        SettingFunction.registerOperator("defaultExtruderPosition", self._cura_formula_functions.getDefaultExtruderPosition)
 
     # Adds all resources and container related resources.
     def __addAllResourcesAndContainerResources(self) -> None:
@@ -809,8 +809,8 @@ class CuraApplication(QtApplication):
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
 
-    def getCustomSettingFunctions(self, *args) -> CustomSettingFunctions:
-        return self._custom_setting_functions
+    def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
+        return self._cura_formula_functions
 
     def getMachineErrorChecker(self, *args) -> MachineErrorChecker:
         return self._machine_error_checker

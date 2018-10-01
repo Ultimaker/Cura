@@ -12,10 +12,10 @@ if TYPE_CHECKING:
 
 
 #
-# This class contains all Cura-related custom setting functions. Some functions requires information such as the
-# currently active machine, so this is made into a class instead of standalone functions.
+# This class contains all Cura-related custom functions that can be used in formulas. Some functions requires
+# information such as the currently active machine, so this is made into a class instead of standalone functions.
 #
-class CustomSettingFunctions:
+class CuraFormulaFunctions:
 
     def __init__(self, application: "CuraApplication") -> None:
         self._application = application

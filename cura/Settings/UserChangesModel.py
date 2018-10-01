@@ -42,7 +42,7 @@ class UserChangesModel(ListModel):
     def _update(self):
         application = Application.getInstance()
         machine_manager = application.getMachineManager()
-        custom_setting_functions = application.getCustomSettingFunctions()
+        cura_formula_functions = application.getCuraFormulaFunctions()
 
         item_dict = OrderedDict()
         item_list = []
@@ -77,7 +77,7 @@ class UserChangesModel(ListModel):
 
             # Override "getExtruderValue" with "getDefaultExtruderValue" so we can get the default values
             user_changes = containers.pop(0)
-            default_value_resolve_context = custom_setting_functions.createContextForDefaultValueEvaluation(stack)
+            default_value_resolve_context = cura_formula_functions.createContextForDefaultValueEvaluation(stack)
 
             for setting_key in user_changes.getAllKeys():
                 original_value = None
