@@ -3735,7 +3735,7 @@ msgstr "Position de la &caméra"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:54
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr "Plateau"
+msgstr "&Plateau"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
@@ -4150,7 +4150,7 @@ msgstr "&Fichier"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:120
 msgctxt "@title:menu menubar:file"
 msgid "&Save..."
-msgstr "&Enregistrer..."
+msgstr "Enregi&strer..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:141
 msgctxt "@title:menu menubar:file"
@@ -4207,7 +4207,7 @@ msgstr "Désactiver l'extrudeuse"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:235
 msgctxt "@title:menu"
 msgid "&Build plate"
-msgstr "&Plateau"
+msgstr "Plateau"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:236
 msgctxt "@title:settings"
