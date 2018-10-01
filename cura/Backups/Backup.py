@@ -36,7 +36,7 @@ class Backup:
 
     ##  Create a back-up from the current user config folder.
     def makeFromCurrent(self) -> None:
-        cura_release = CuraApplication.getInstance().getVersion()
+        cura_release = self._application.getVersion()
         version_data_dir = Resources.getDataStoragePath()
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
@@ -59,7 +59,7 @@ class Backup:
         if archive is None:
             return
         files = archive.namelist()
-        
+
         # Count the metadata items. We do this in a rather naive way at the moment.
         machine_count = len([s for s in files if "machine_instances/" in s]) - 1
         material_count = len([s for s in files if "materials/" in s]) - 1
