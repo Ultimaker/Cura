@@ -285,7 +285,7 @@ Item {
                             horizontalCenter: parent.horizontalCenter;
                             verticalCenter: parent.verticalCenter;
                         }
-                        text: "Configuration change"; // TODO: i18n!
+                        text: catalog.i18nc("@label", "Configuration change");
                     }
 
                     UM.RecolorImage {
