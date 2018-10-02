@@ -784,8 +784,10 @@ Item
 
                     Label {
                         id: gradualInfillLabel
+                        height: parent.height
                         anchors.left: enableGradualInfillCheckBox.right
                         anchors.leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
+                        verticalAlignment: Text.AlignVCenter;
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")

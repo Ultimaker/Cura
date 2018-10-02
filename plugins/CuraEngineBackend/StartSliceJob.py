@@ -270,7 +270,7 @@ class StartSliceJob(Job):
 
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
-
+                    obj.name = object.getName()
                     indices = mesh_data.getIndices()
                     if indices is not None:
                         flat_verts = numpy.take(verts, indices.flatten(), axis=0)
