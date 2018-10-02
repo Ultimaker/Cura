@@ -1580,6 +1580,11 @@ class CuraApplication(QtApplication):
         job.start()
 
     def _readMeshFinished(self, job):
+        global_container_stack = self.getGlobalContainerStack()
+        if not global_container_stack:
+            Logger.log("w", "Can't load meshes before a printer is added.")
+            return
+
         nodes = job.getResult()
         file_name = job.getFileName()
         file_name_lower = file_name.lower()
@@ -1594,7 +1599,6 @@ class CuraApplication(QtApplication):
         for node_ in DepthFirstIterator(root):
             if node_.callDecoration("isSliceable") and node_.callDecoration("getBuildPlateNumber") == target_build_plate:
                 fixed_nodes.append(node_)
-        global_container_stack = self.getGlobalContainerStack()
         machine_width = global_container_stack.getProperty("machine_width", "value")
         machine_depth = global_container_stack.getProperty("machine_depth", "value")
         arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = fixed_nodes)
