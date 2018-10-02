@@ -4794,7 +4794,7 @@ msgstr "Atualiza configurações do Cura 3.4 para o Cura 3.5"
 #: VersionUpgrade/VersionUpgrade34to35/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.4 to 3.5"
-msgstr "Atualização de Versão 3.4 para 3.5"
+msgstr "Atualização de Versão de 3.4 para 3.5"
 
 #: VersionUpgrade/VersionUpgrade30to31/plugin.json
 msgctxt "description"
