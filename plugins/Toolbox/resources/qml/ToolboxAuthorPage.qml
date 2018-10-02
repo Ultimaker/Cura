@@ -15,7 +15,7 @@ Item
     {
         id: sidebar
     }
-    Rectangle
+    Item
     {
         id: header
         anchors

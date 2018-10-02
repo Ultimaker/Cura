@@ -9,9 +9,8 @@ import UM 1.1 as UM
 Item
 {
     id: page
-    property var details: base.selection
+    property var details: base.selection || {}
     anchors.fill: parent
-    width: parent.width
     ToolboxBackColumn
     {
         id: sidebar
