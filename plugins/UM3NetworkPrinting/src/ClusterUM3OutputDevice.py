@@ -17,6 +17,7 @@ from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Version import Version  # To check against firmware versions for support.
 
 from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.ConfigurationChangeModel import ConfigurationChangeModel
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
@@ -406,6 +407,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # is a modification of the cluster queue and not of the actual job.
         self.delete("print_jobs/{uuid}".format(uuid = print_job_uuid), on_finished=None)
 
+    @pyqtSlot(str)
+    def forceSendJob(self, print_job_uuid: str) -> None:
+        data = "{\"force\": true}"
+        self.put("print_jobs/{uuid}".format(uuid=print_job_uuid), data, on_finished=None)
+
     def _printJobStateChanged(self) -> None:
         username = self._getUserName()
 
@@ -574,6 +580,16 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         if not status_set_by_impediment:
             print_job.updateState(data["status"])
 
+        print_job.updateConfigurationChanges(self._createConfigurationChanges(data["configuration_changes_required"]))
+
+    def _createConfigurationChanges(self, data: List[Dict[str, Any]]) -> List[ConfigurationChangeModel]:
+        result = []
+        for change in data:
+            result.append(ConfigurationChangeModel(type_of_change=change["type_of_change"],
+                                                   index=change["index"],
+                                                   target_name=change["target_name"],
+                                                   origin_name=change["origin_name"]))
+        return result
 
     def _createMaterialOutputModel(self, material_data) -> MaterialOutputModel:
         containers = ContainerRegistry.getInstance().findInstanceContainers(type="material", GUID=material_data["guid"])

@@ -12,6 +12,8 @@ if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 
+from cura.PrinterOutput.ConfigurationChangeModel import ConfigurationChangeModel
+
 
 class PrintJobOutputModel(QObject):
     stateChanged = pyqtSignal()
@@ -24,6 +26,7 @@ class PrintJobOutputModel(QObject):
     configurationChanged = pyqtSignal()
     previewImageChanged = pyqtSignal()
     compatibleMachineFamiliesChanged = pyqtSignal()
+    configurationChangesChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -41,6 +44,7 @@ class PrintJobOutputModel(QObject):
         self._preview_image_id = 0
 
         self._preview_image = None  # type: Optional[QImage]
+        self._configuration_changes = []    # type: List[ConfigurationChangeModel]
 
     @pyqtProperty("QStringList", notify=compatibleMachineFamiliesChanged)
     def compatibleMachineFamilies(self):
@@ -148,3 +152,13 @@ class PrintJobOutputModel(QObject):
     @pyqtSlot(str)
     def setState(self, state):
         self._output_controller.setJobState(self, state)
+
+    @pyqtProperty("QVariantList", notify=configurationChangesChanged)
+    def configurationChanges(self) -> List[ConfigurationChangeModel]:
+        return self._configuration_changes
+
+    def updateConfigurationChanges(self, changes: List[ConfigurationChangeModel]) -> None:
+        if len(self._configuration_changes) == 0 and len(changes) == 0:
+            return
+        self._configuration_changes = changes
+        self.configurationChangesChanged.emit()
