@@ -2515,7 +2515,7 @@
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "150",
                             "default_value": 30,
-                            "value": "speed_print / 2",
+                            "value": "speed_print",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -2529,7 +2529,7 @@
                                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                                     "maximum_value_warning": "150",
                                     "default_value": 30,
-                                    "value": "speed_wall",
+                                    "value": "speed_wall / 2",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -2543,7 +2543,7 @@
                                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                                     "maximum_value_warning": "150",
                                     "default_value": 60,
-                                    "value": "speed_wall * 2",
+                                    "value": "speed_wall", 
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
