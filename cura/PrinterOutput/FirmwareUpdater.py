@@ -16,6 +16,8 @@ class FirmwareUpdater(QObject):
     firmwareUpdateStateChanged = pyqtSignal()
 
     def __init__(self, output_device: PrinterOutputDevice) -> None:
+        super().__init__()
+
         self._output_device = output_device
 
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
@@ -31,29 +33,35 @@ class FirmwareUpdater(QObject):
             self._firmware_location = QUrl(file).toLocalFile()
         else:
             self._firmware_location = file
-        self.showFirmwareInterface()
-        self.setFirmwareUpdateState(FirmwareUpdateState.updating)
+        self._showFirmwareInterface()
+        self._setFirmwareUpdateState(FirmwareUpdateState.updating)
+
         self._update_firmware_thread.start()
 
     def _updateFirmware(self) -> None:
         raise NotImplementedError("_updateFirmware needs to be implemented")
 
-    def cleanupAfterUpdate(self) -> None:
+    ##  Show firmware interface.
+    #   This will create the view if its not already created.
+    def _showFirmwareInterface(self) -> None:
+        if self._firmware_view is None:
+            path = Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "FirmwareUpdateWindow.qml")
+            self._firmware_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+
+        if not self._firmware_view:
+            return
+
+        self._onFirmwareProgress(0)
+        self._setFirmwareUpdateState(FirmwareUpdateState.idle)
+        self._firmware_view.show()
+
+    ##  Cleanup after a succesful update
+    def _cleanupAfterUpdate(self) -> None:
         # Clean up for next attempt.
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
         self._firmware_location = ""
         self._onFirmwareProgress(100)
-        self.setFirmwareUpdateState(FirmwareUpdateState.completed)
-
-    ##  Show firmware interface.
-    #   This will create the view if its not already created.
-    def showFirmwareInterface(self) -> None:
-        if self._firmware_view is None:
-            path = Resources.getPath(self.ResourceTypes.QmlFiles, "FirmwareUpdateWindow.qml")
-            self._firmware_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
-
-        if self._firmware_view:
-            self._firmware_view.show()
+        self._setFirmwareUpdateState(FirmwareUpdateState.completed)
 
     @pyqtProperty(float, notify = firmwareProgressChanged)
     def firmwareProgress(self) -> float:
@@ -63,7 +71,7 @@ class FirmwareUpdater(QObject):
     def firmwareUpdateState(self) -> "FirmwareUpdateState":
         return self._firmware_update_state
 
-    def setFirmwareUpdateState(self, state) -> None:
+    def _setFirmwareUpdateState(self, state) -> None:
         if self._firmware_update_state != state:
             self._firmware_update_state = state
             self.firmwareUpdateStateChanged.emit()

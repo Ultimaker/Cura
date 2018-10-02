@@ -22,39 +22,43 @@ class AvrFirmwareUpdater(FirmwareUpdater):
             assert len(hex_file) > 0
         except (FileNotFoundError, AssertionError):
             Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
-            self.setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
+            self._setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
             return
 
         programmer = stk500v2.Stk500v2()
         programmer.progress_callback = self._onFirmwareProgress
 
+        # Ensure that other connections are closed.
+        if self._output_device.isConnected():
+            self._output_device.close()
+
         try:
-            programmer.connect(self._serial_port)
+            programmer.connect(self._output_device._serial_port)
         except:
             programmer.close()
             Logger.logException("e", "Failed to update firmware")
-            self.setFirmwareUpdateState(FirmwareUpdateState.communication_error)
+            self._setFirmwareUpdateState(FirmwareUpdateState.communication_error)
             return
 
         # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
         sleep(1)
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
-            self.setFirmwareUpdateState(FirmwareUpdateState.communication_error)
+            self._setFirmwareUpdateState(FirmwareUpdateState.communication_error)
         try:
             programmer.programChip(hex_file)
         except SerialException as e:
             Logger.log("e", "A serial port exception occured during firmware update: %s" % e)
-            self.setFirmwareUpdateState(FirmwareUpdateState.io_error)
+            self._setFirmwareUpdateState(FirmwareUpdateState.io_error)
             return
         except Exception as e:
             Logger.log("e", "An unknown exception occured during firmware update: %s" % e)
-            self.setFirmwareUpdateState(FirmwareUpdateState.unknown_error)
+            self._setFirmwareUpdateState(FirmwareUpdateState.unknown_error)
             return
 
         programmer.close()
 
         # Try to re-connect with the machine again, which must be done on the Qt thread, so we use call later.
-        CuraApplication.getInstance().callLater(self.connect)
+        CuraApplication.getInstance().callLater(self._output_device.connect)
 
-        self.cleanupAfterUpdate()
+        self._cleanupAfterUpdate()
