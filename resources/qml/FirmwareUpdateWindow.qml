@@ -82,7 +82,7 @@ UM.Dialog
         Button
         {
             text: catalog.i18nc("@action:button","Close");
-            enabled: manager.firmwareUpdateCompleteStatus;
+            enabled: manager.firmwareUpdateState != 1;
             onClicked: base.visible = false;
         }
     ]
