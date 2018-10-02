@@ -88,9 +88,9 @@ class VersionUpgrade34to35(VersionUpgrade):
 
         # Need to show the data collection agreement again because the data Cura collects has been changed.
         if parser.has_option("info", "asked_send_slice_info"):
-            parser.remove_option("info", "asked_send_slice_info")
+            parser.set("info", "asked_send_slice_info", "False")
         if parser.has_option("info", "send_slice_info"):
-            parser.remove_option("info", "send_slice_info")
+            parser.set("info", "send_slice_info", "True")
 
         # Update version number.
         parser["general"]["version"] = "6"

@@ -38,6 +38,6 @@ def test_upgradeVersionNr(test_name, file_data, upgrader):
     assert parser["general"]["version"] == "6"
     assert parser["metadata"]["setting_version"] == "5"
 
-    # Check if the data collection values have been removed
-    assert not parser.has_option("info", "asked_send_slice_info")
-    assert not parser.has_option("info", "send_slice_info")
+    # Check if the data collection values have been reset to their defaults
+    assert parser.get("info", "asked_send_slice_info") == "False"
+    assert parser.get("info", "send_slice_info") == "True"
