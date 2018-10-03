@@ -125,22 +125,11 @@ Item
                     {
                         return ""
                     }
-                    var date = new Date(details.last_updated);
-                    var date_text = formatDateToISOString(date);
-                    return date_text;
+                    var date = new Date(details.last_updated)
+                    return date.toLocaleDateString(UM.Preferences.getValue("general/language"))
                 }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
-
-                function formatDateToISOString(date) {
-                    var day = String(date.getDate());
-                    day = (day.length < 2) ? "0" + day : day;
-                    var month = String(date.getMonth());
-                    month = (month.length < 2) ? "0" + month : month;
-                    var year = String(date.getFullYear());
-
-                    return year + '/' + month + '/' + day;
-                }
             }
             Label
             {
