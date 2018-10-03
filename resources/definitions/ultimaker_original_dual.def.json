@@ -22,7 +22,7 @@
         "firmware_file": "MarlinUltimaker-{baudrate}-dual.hex",
         "firmware_hbk_file": "MarlinUltimaker-HBK-{baudrate}-dual.hex",
         "first_start_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
-        "supported_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel", "UpgradeFirmware"]
+        "supported_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"]
     },
 
     "overrides": {
