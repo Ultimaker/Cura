@@ -41,6 +41,15 @@ Rectangle
         anchors.left: swatch.right
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+        font.italic:
+        {
+            var selected_material = Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex]
+            if(selected_material == material.root_material_id)
+            {
+                return true
+            }
+            return false
+        }
     }
     MouseArea
     {
