@@ -4,10 +4,9 @@
 from . import FirmwareUpdaterMachineAction
 
 def getMetaData():
-    return {
-    }
+    return {}
 
 def register(app):
     return { "machine_action": [
-        FirmwareUpdaterMachineAction.FirmwareUpdaterMachineAction(),
+        FirmwareUpdaterMachineAction.FirmwareUpdaterMachineAction()
     ]}
