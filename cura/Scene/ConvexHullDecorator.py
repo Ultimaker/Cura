@@ -5,6 +5,7 @@ from PyQt5.QtCore import QTimer
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
+
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -18,6 +19,8 @@ from typing import TYPE_CHECKING, Any, Optional
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
     from cura.Settings.GlobalStack import GlobalStack
+    from UM.Mesh.MeshData import MeshData
+    from UM.Math.Matrix import Matrix
 
 
 ##  The convex hull decorator is a scene node decorator that adds the convex hull functionality to a scene node.
@@ -33,17 +36,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         # Make sure the timer is created on the main thread
         self._recompute_convex_hull_timer = None  # type: Optional[QTimer]
-
-        if Application.getInstance() is not None:
-            Application.getInstance().callLater(self.createRecomputeConvexHullTimer)
+        from cura.CuraApplication import CuraApplication
+        if CuraApplication.getInstance() is not None:
+            CuraApplication.getInstance().callLater(self.createRecomputeConvexHullTimer)
 
         self._raft_thickness = 0.0
-        self._build_volume = Application.getInstance().getBuildVolume()
+        self._build_volume = CuraApplication.getInstance().getBuildVolume()
         self._build_volume.raftThicknessChanged.connect(self._onChanged)
 
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        Application.getInstance().getController().toolOperationStarted.connect(self._onChanged)
-        Application.getInstance().getController().toolOperationStopped.connect(self._onChanged)
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        CuraApplication.getInstance().getController().toolOperationStarted.connect(self._onChanged)
+        CuraApplication.getInstance().getController().toolOperationStopped.connect(self._onChanged)
 
         self._onGlobalStackChanged()
 
@@ -61,9 +64,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
             previous_node.parentChanged.disconnect(self._onChanged)
 
         super().setNode(node)
-
-        self._node.transformationChanged.connect(self._onChanged)
-        self._node.parentChanged.connect(self._onChanged)
+        # Mypy doesn't understand that self._node is no longer optional, so just use the node.
+        node.transformationChanged.connect(self._onChanged)
+        node.parentChanged.connect(self._onChanged)
 
         self._onChanged()
 
@@ -78,9 +81,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         hull = self._compute2DConvexHull()
 
-        if self._global_stack and self._node and hull is not None:
+        if self._global_stack and self._node is not None and hull is not None:
             # Parent can be None if node is just loaded.
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
                 hull = self._add2DAdhesionMargin(hull)
         return hull
@@ -92,6 +95,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         return self._compute2DConvexHeadFull()
 
+    @staticmethod
+    def hasGroupAsParent(node: "SceneNode") -> bool:
+        parent = node.getParent()
+        if parent is None:
+            return False
+        return bool(parent.callDecoration("isGroup"))
+
     ##  Get convex hull of the object + head size
     #   In case of printing all at once this is the same as the convex hull.
     #   For one at the time this is area with intersection of mirrored head
@@ -100,8 +110,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
                 head_with_fans = self._compute2DConvexHeadMin()
+                if head_with_fans is None:
+                    return None
                 head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
                 return head_with_fans_with_adhesion_margin
         return None
@@ -114,7 +126,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
                 # Printing one at a time and it's not an object in a group
                 return self._compute2DConvexHull()
         return None
@@ -153,15 +165,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _init2DConvexHullCache(self) -> None:
         # Cache for the group code path in _compute2DConvexHull()
-        self._2d_convex_hull_group_child_polygon = None
-        self._2d_convex_hull_group_result = None
+        self._2d_convex_hull_group_child_polygon = None  # type: Optional[Polygon]
+        self._2d_convex_hull_group_result = None  # type: Optional[Polygon]
 
         # Cache for the mesh code path in _compute2DConvexHull()
-        self._2d_convex_hull_mesh = None
-        self._2d_convex_hull_mesh_world_transform = None
-        self._2d_convex_hull_mesh_result = None
+        self._2d_convex_hull_mesh = None  # type: Optional[MeshData]
+        self._2d_convex_hull_mesh_world_transform = None  # type: Optional[Matrix]
+        self._2d_convex_hull_mesh_result = None  # type: Optional[Polygon]
 
     def _compute2DConvexHull(self) -> Optional[Polygon]:
+        if self._node is None:
+            return None
         if self._node.callDecoration("isGroup"):
             points = numpy.zeros((0, 2), dtype=numpy.int32)
             for child in self._node.getChildren():
@@ -187,46 +201,46 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
         else:
-            offset_hull = None
-            if self._node.getMeshData():
-                mesh = self._node.getMeshData()
-                world_transform = self._node.getWorldTransformation()
-
-                # Check the cache
-                if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
-                    return self._2d_convex_hull_mesh_result
-
-                vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
-                # Don't use data below 0.
-                # TODO; We need a better check for this as this gives poor results for meshes with long edges.
-                # Do not throw away vertices: the convex hull may be too small and objects can collide.
-                # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
-
-                if len(vertex_data) >= 4:
-                    # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
-                    # This is done to greatly speed up further convex hull calculations as the convex hull
-                    # becomes much less complex when dealing with highly detailed models.
-                    vertex_data = numpy.round(vertex_data, 1)
-
-                    vertex_data = vertex_data[:, [0, 2]]  # Drop the Y components to project to 2D.
-
-                    # Grab the set of unique points.
-                    #
-                    # This basically finds the unique rows in the array by treating them as opaque groups of bytes
-                    # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
-                    # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
-                    vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
-                        numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-                    _, idx = numpy.unique(vertex_byte_view, return_index=True)
-                    vertex_data = vertex_data[idx]  # Select the unique rows by index.
-
-                    hull = Polygon(vertex_data)
-
-                    if len(vertex_data) >= 3:
-                        convex_hull = hull.getConvexHull()
-                        offset_hull = self._offsetHull(convex_hull)
-            else:
+            offset_hull = Polygon([])
+            mesh = self._node.getMeshData()
+            if mesh is None:
                 return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
+
+            world_transform = self._node.getWorldTransformation()
+
+            # Check the cache
+            if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
+                return self._2d_convex_hull_mesh_result
+
+            vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
+            # Don't use data below 0.
+            # TODO; We need a better check for this as this gives poor results for meshes with long edges.
+            # Do not throw away vertices: the convex hull may be too small and objects can collide.
+            # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
+
+            if len(vertex_data) >= 4:  # type: ignore # mypy and numpy don't play along well just yet.
+                # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
+                # This is done to greatly speed up further convex hull calculations as the convex hull
+                # becomes much less complex when dealing with highly detailed models.
+                vertex_data = numpy.round(vertex_data, 1)
+
+                vertex_data = vertex_data[:, [0, 2]]  # Drop the Y components to project to 2D.
+
+                # Grab the set of unique points.
+                #
+                # This basically finds the unique rows in the array by treating them as opaque groups of bytes
+                # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
+                # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
+                vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
+                    numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
+                _, idx = numpy.unique(vertex_byte_view, return_index=True)
+                vertex_data = vertex_data[idx]  # Select the unique rows by index.
+
+                hull = Polygon(vertex_data)
+
+                if len(vertex_data) >= 3:
+                    convex_hull = hull.getConvexHull()
+                    offset_hull = self._offsetHull(convex_hull)
 
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
@@ -338,7 +352,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
     def _getSettingProperty(self, setting_key: str, prop: str = "value") -> Any:
-        if not self._global_stack:
+        if self._global_stack is None or self._node is None:
             return None
         per_mesh_stack = self._node.callDecoration("getStack")
         if per_mesh_stack:
@@ -358,7 +372,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return self._global_stack.getProperty(setting_key, prop)
 
     ##  Returns True if node is a descendant or the same as the root node.
-    def __isDescendant(self, root: "SceneNode", node: "SceneNode") -> bool:
+    def __isDescendant(self, root: "SceneNode", node: Optional["SceneNode"]) -> bool:
         if node is None:
             return False
         if root is node:
