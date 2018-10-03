@@ -6,17 +6,14 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.4 as LegacyControls
 import UM 1.3 as UM
 
 Item {
     id: root;
-
     property var shadowRadius: 5;
     property var shadowOffset: 2;
     property var printer: null;
     property var collapsed: true;
-
     height: childrenRect.height + shadowRadius * 2; // Bubbles upward
     width: parent.width; // Bubbles downward
 
@@ -24,10 +21,10 @@ Item {
     Rectangle {
         // 5px margin, but shifted 2px vertically because of the shadow
         anchors {
-            topMargin: root.shadowRadius - root.shadowOffset;
             bottomMargin: root.shadowRadius + root.shadowOffset;
             leftMargin: root.shadowRadius;
             rightMargin: root.shadowRadius;
+            topMargin: root.shadowRadius - root.shadowOffset;
         }
         color: {
             if (printer.state == "disabled") {
@@ -46,8 +43,8 @@ Item {
         width: parent.width - 2 * shadowRadius;
 
         Column {
-            width: parent.width;
             height: childrenRect.height;
+            width: parent.width;
 
             // Main card
             Item {
@@ -65,15 +62,12 @@ Item {
                         margins: UM.Theme.getSize("default_margin").width;
                         top: parent.top;
                     }
-                    height: 58;
-                    width: 58;
+                    height: 58 * screenScaleFactor;
+                    width: 58 * screenScaleFactor;
 
                     // Skeleton
                     Rectangle {
-                        anchors {
-                            fill: parent;
-                            // margins: Math.round(UM.Theme.getSize("default_margin").width / 4);
-                        }
+                        anchors.fill: parent;
                         color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
                         radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
                         visible: !printer;
@@ -153,7 +147,6 @@ Item {
                         height: UM.Theme.getSize("monitor_tab_text_line").height;
                         width: parent.width * 0.75;
 
-
                         // Skeleton
                         Rectangle {
                             anchors.fill: parent;
@@ -192,12 +185,14 @@ Item {
                         verticalCenter: parent.verticalCenter;
                     }
                     color: UM.Theme.getColor("text");
-                    height: 15; // TODO: Theme!
+                    height: 15 * screenScaleFactor; // TODO: Theme!
                     source: root.collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom");
-                    sourceSize.height: height;
-                    sourceSize.width: width;
+                    sourceSize {
+                        height: height;
+                        width: width;
+                    }
                     visible: printer;
-                    width: 15; // TODO: Theme!
+                    width: 15 * screenScaleFactor; // TODO: Theme!
                 }
 
                 MouseArea {
@@ -213,7 +208,7 @@ Item {
                 }
 
                 Connections {
-                    target: printerList
+                    target: printerList;
                     onCurrentIndexChanged: {
                         if (!model) {
                             return;

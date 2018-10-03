@@ -11,13 +11,11 @@ import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
 Item {
-    id: root
-
-    property var shadowRadius: 5;
-    property var shadowOffset: 2;
+    id: root;
+    property var shadowRadius: 5 * screenScaleFactor;
+    property var shadowOffset: 2 * screenScaleFactor;
     property var debug: false;
     property var printJob: null;
-
     width: parent.width; // Bubbles downward
     height: childrenRect.height + shadowRadius * 2; // Bubbles upward
 
@@ -28,87 +26,84 @@ Item {
 
     // The actual card (white block)
     Rectangle {
-        color: "white"; // TODO: Theme!
-        height: childrenRect.height;
-        width: parent.width - shadowRadius * 2;
-
         // 5px margin, but shifted 2px vertically because of the shadow
         anchors {
-            topMargin: root.shadowRadius - root.shadowOffset;
             bottomMargin: root.shadowRadius + root.shadowOffset;
             leftMargin: root.shadowRadius;
             rightMargin: root.shadowRadius;
+            topMargin: root.shadowRadius - root.shadowOffset;
         }
+        color: "white"; // TODO: Theme!
+        height: childrenRect.height;
         layer.enabled: true
         layer.effect: DropShadow {
             radius: root.shadowRadius
             verticalOffset: 2 * screenScaleFactor
             color: "#3F000000" // 25% shadow
         }
+        width: parent.width - shadowRadius * 2;
 
         Column {
-            width: parent.width;
             height: childrenRect.height;
+            width: parent.width;
 
             // Main content
             Item {
                 id: mainContent;
+                height: 200 * screenScaleFactor; // TODO: Theme!
                 width: parent.width;
-                height: 200; // TODO: Theme!
 
                 // Left content
                 Item {
                     anchors {
+                        bottom: parent.bottom;
                         left: parent.left;
+                        margins: UM.Theme.getSize("wide_margin").width;
                         right: parent.horizontalCenter;
                         top: parent.top;
-                        bottom: parent.bottom;
-                        margins: UM.Theme.getSize("wide_margin").width
                     }
 
                     Item {
                         id: printJobName;
-
                         width: parent.width;
                         height: UM.Theme.getSize("monitor_tab_text_line").height;
 
                         Rectangle {
-                            visible: !printJob;
                             color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
                             height: parent.height;
+                            visible: !printJob;
                             width: parent.width / 3;
                         }
                         Label {
-                            visible: printJob;
-                            text: printJob ? printJob.name : ""; // Supress QML warnings
-                            font: UM.Theme.getFont("default_bold");
-                            elide: Text.ElideRight;
                             anchors.fill: parent;
+                            elide: Text.ElideRight;
+                            font: UM.Theme.getFont("default_bold");
+                            text: printJob ? printJob.name : ""; // Supress QML warnings
+                            visible: printJob;
                         }
                     }
 
                     Item {
                         id: printJobOwnerName;
-
-                        width: parent.width;
-                        height: UM.Theme.getSize("monitor_tab_text_line").height;
                         anchors {
                             top: printJobName.bottom;
                             topMargin: Math.floor(UM.Theme.getSize("default_margin").height / 2);
                         }
+                        height: UM.Theme.getSize("monitor_tab_text_line").height;
+                        width: parent.width;
 
                         Rectangle {
-                            visible: !printJob;
                             color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
                             height: parent.height;
+                            visible: !printJob;
                             width: parent.width / 2;
                         }
                         Label {
-                            visible: printJob;
-                            text: printJob ? printJob.owner : ""; // Supress QML warnings
-                            font: UM.Theme.getFont("default");
-                            elide: Text.ElideRight;
                             anchors.fill: parent;
+                            elide: Text.ElideRight;
+                            font: UM.Theme.getFont("default");
+                            text: printJob ? printJob.owner : ""; // Supress QML warnings
+                            visible: printJob;
                         }
                     }
 
@@ -116,90 +111,96 @@ Item {
                         id: printJobPreview;
                         property var useUltibot: false;
                         anchors {
-                            top: printJobOwnerName.bottom;
-                            horizontalCenter: parent.horizontalCenter;
-                            topMargin: UM.Theme.getSize("default_margin").height;
                             bottom: parent.bottom;
+                            horizontalCenter: parent.horizontalCenter;
+                            top: printJobOwnerName.bottom;
+                            topMargin: UM.Theme.getSize("default_margin").height;
                         }
                         width: height;
 
                         // Skeleton
                         Rectangle {
-                            visible: !printJob;
                             anchors.fill: parent;
-                            radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
                             color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                            radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
+                            visible: !printJob;
                         }
 
                         // Actual content
                         Image {
                             id: previewImage;
-                            visible: printJob;
-                            source: printJob ? printJob.previewImageUrl : "";
-                            opacity: printJob && printJob.state == "error" ? 0.5 : 1.0;
                             anchors.fill: parent;
+                            opacity: printJob && printJob.state == "error" ? 0.5 : 1.0;
+                            source: printJob ? printJob.previewImageUrl : "";
+                            visible: printJob;
                         }
 
                         UM.RecolorImage {
                             id: ultiBotImage;
+                            
                             anchors.centerIn: printJobPreview;
+                            color: UM.Theme.getColor("monitor_tab_placeholder_image"); // TODO: Theme!
+                            height: printJobPreview.height;
                             source: "../svg/ultibot.svg";
+                            sourceSize {
+                                height: height;
+                                width: width;
+                            }
                             /* Since print jobs ALWAYS have an image url, we have to check if that image URL errors or
                                 not in order to determine if we show the placeholder (ultibot) image instead. */
                             visible: printJob && previewImage.status == Image.Error;
                             width: printJobPreview.width;
-                            height: printJobPreview.height;
-                            sourceSize.width: width;
-                            sourceSize.height: height;
-                            color: UM.Theme.getColor("monitor_tab_placeholder_image"); // TODO: Theme!
                         }
 
                         UM.RecolorImage {
                             id: statusImage;
                             anchors.centerIn: printJobPreview;
+                            color: "black";
+                            height: 0.5 * printJobPreview.height;
                             source: printJob && printJob.state == "error" ? "../svg/aborted-icon.svg" : "";
+                            sourceSize {
+                                height: height;
+                                width: width;
+                            }
                             visible: source != "";
                             width: 0.5 * printJobPreview.width;
-                            height: 0.5 * printJobPreview.height;
-                            sourceSize.width: width;
-                            sourceSize.height: height;
-                            color: "black";
                         }
                     }
                 }
 
                 // Divider
                 Rectangle {
-                    height: parent.height - 2 * UM.Theme.getSize("default_margin").height;
-                    width: UM.Theme.getSize("default_lining").width;
-                    color: !printJob ? UM.Theme.getColor("viewport_background") : "#e6e6e6"; // TODO: Theme!
                     anchors {
                         horizontalCenter: parent.horizontalCenter;
                         verticalCenter: parent.verticalCenter;
                     }
+                    color: !printJob ? UM.Theme.getColor("viewport_background") : "#e6e6e6"; // TODO: Theme!
+                    height: parent.height - 2 * UM.Theme.getSize("default_margin").height;
+                    width: UM.Theme.getSize("default_lining").width;
                 }
 
                 // Right content
                 Item {
                     anchors {
+                        bottom: parent.bottom;
                         left: parent.horizontalCenter;
+                        margins: UM.Theme.getSize("wide_margin").width;
                         right: parent.right;
                         top: parent.top;
-                        bottom: parent.bottom;
-                        margins: UM.Theme.getSize("wide_margin").width;
                     }
 
                     Item {
                         id: targetPrinterLabel;
-                        width: parent.width;
                         height: UM.Theme.getSize("monitor_tab_text_line").height;
+                        width: parent.width;
+
                         Rectangle {
                             visible: !printJob;
                             color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
                             anchors.fill: parent;
                         }
+
                         Label {
-                            visible: printJob;
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default_bold");
                             text: {
@@ -215,13 +216,14 @@ Item {
                                 }
                                 return "";
                             }
+                            visible: printJob;
                         }
                     }
 
                     PrinterInfoBlock {
+                        anchors.bottom: parent.bottom;
                         printer: root.printJob.assignedPrinter;
                         printJob: root.printJob;
-                        anchors.bottom: parent.bottom;
                     }
                 }
 
@@ -240,15 +242,15 @@ Item {
 
             Item {
                 id: configChangesBox;
-                width: parent.width;
                 height: childrenRect.height;
                 visible: printJob && printJob.configurationChanges.length !== 0;
+                width: parent.width;
 
                 // Config change toggle
                 Rectangle {
                     id: configChangeToggle;
                     color: {
-                        if(configChangeToggleArea.containsMouse) {
+                        if (configChangeToggleArea.containsMouse) {
                             return UM.Theme.getColor("viewport_background"); // TODO: Theme!
                         } else {
                             return "transparent";
@@ -263,23 +265,25 @@ Item {
                     }
 
                     Rectangle {
-                        width: parent.width;
-                        height: UM.Theme.getSize("default_lining").height;
                         color: "#e6e6e6"; // TODO: Theme!
+                        height: UM.Theme.getSize("default_lining").height;
+                        width: parent.width;
                     }
 
                     UM.RecolorImage {
-                        width: 23; // TODO: Theme!
-                        height: 23; // TODO: Theme!
                         anchors {
                             right: configChangeToggleLabel.left;
                             rightMargin: UM.Theme.getSize("default_margin").width;
                             verticalCenter: parent.verticalCenter;
                         }
-                        sourceSize.width: width;
-                        sourceSize.height: height;
-                        source: "../svg/warning-icon.svg";
                         color: UM.Theme.getColor("text");
+                        height: 23 * screenScaleFactor; // TODO: Theme!
+                        source: "../svg/warning-icon.svg";
+                        sourceSize {
+                            height: height;
+                            width: width;
+                        }
+                        width: 23 * screenScaleFactor; // TODO: Theme!
                     }
 
                     Label {
@@ -292,15 +296,13 @@ Item {
                     }
 
                     UM.RecolorImage {
-                        width: 15; // TODO: Theme!
-                        height: 15; // TODO: Theme!
                         anchors {
                             left: configChangeToggleLabel.right;
                             leftMargin: UM.Theme.getSize("default_margin").width;
                             verticalCenter: parent.verticalCenter;
                         }
-                        sourceSize.width: width;
-                        sourceSize.height: height;
+                        color: UM.Theme.getColor("text");
+                        height: 15 * screenScaleFactor; // TODO: Theme!
                         source: {
                             if (configChangeDetails.visible) {
                                 return UM.Theme.getIcon("arrow_top");
@@ -308,7 +310,11 @@ Item {
                                 return UM.Theme.getIcon("arrow_bottom");
                             }
                         }
-                        color: UM.Theme.getColor("text");
+                        sourceSize {
+                            width: width;
+                            height: height;
+                        }
+                        width: 15 * screenScaleFactor; // TODO: Theme!
                     }
 
                     MouseArea {
@@ -324,26 +330,25 @@ Item {
                 // Config change details
                 Item {
                     id: configChangeDetails;
-                    width: parent.width;
-                    visible: false;
+                    anchors.top: configChangeToggle.bottom;
+                    Behavior on height { NumberAnimation { duration: 100 } }
                     // In case of really massive multi-line configuration changes
                     height: visible ? Math.max(UM.Theme.getSize("monitor_tab_config_override_box").height, childrenRect.height) : 0;
-                    Behavior on height { NumberAnimation { duration: 100 } }
-                    anchors.top: configChangeToggle.bottom;
+                    visible: false;
+                    width: parent.width;
 
                     Item {
-                        clip: true;
                         anchors {
-                            fill: parent;
-                            topMargin: UM.Theme.getSize("wide_margin").height;
                             bottomMargin: UM.Theme.getSize("wide_margin").height;
+                            fill: parent;
                             leftMargin: UM.Theme.getSize("wide_margin").height * 4;
                             rightMargin: UM.Theme.getSize("wide_margin").height * 4;
+                            topMargin: UM.Theme.getSize("wide_margin").height;
                         }
+                        clip: true;
 
                         Label {
                             anchors.fill: parent;
-                            wrapMode: Text.WordWrap;
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("large_nonbold");
                             text: {
@@ -380,6 +385,7 @@ Item {
                                 }
                                 return result;
                             }
+                            wrapMode: Text.WordWrap;
                         }
 
                         Button {
@@ -387,6 +393,10 @@ Item {
                                 bottom: parent.bottom;
                                 left: parent.left;
                             }
+                            onClicked: {
+                                overrideConfirmationDialog.visible = true;
+                            }
+                            text: catalog.i18nc("@label", "Override");
                             visible: {
                                 var length = printJob.configurationChanges.length;
                                 for (var i = 0; i < length; i++) {
@@ -397,26 +407,22 @@ Item {
                                 }
                                 return true;
                             }
-                            text: catalog.i18nc("@label", "Override");
-                            onClicked: {
-                                overrideConfirmationDialog.visible = true;
-                            }
                         }
                     }
                 }
 
                 MessageDialog {
                     id: overrideConfirmationDialog;
-                    title: catalog.i18nc("@window:title", "Override configuration configuration and start print");
+                    Component.onCompleted: visible = false;
                     icon: StandardIcon.Warning;
+                    onYes: OutputDevice.forceSendJob(printJob.key);
+                    standardButtons: StandardButton.Yes | StandardButton.No;
                     text: {
                         var printJobName = formatPrintJobName(printJob.name);
                         var confirmText = catalog.i18nc("@label", "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?").arg(printJobName);
                         return confirmText;
                     }
-                    standardButtons: StandardButton.Yes | StandardButton.No;
-                    Component.onCompleted: visible = false;
-                    onYes: OutputDevice.forceSendJob(printJob.key);
+                    title: catalog.i18nc("@window:title", "Override configuration configuration and start print");
                 }
             }
         }

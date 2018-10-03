@@ -2,17 +2,13 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
-import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
 Item {
     id: root;
-
     property var printJob: null;
     property var running: isRunning(printJob);
 
@@ -55,16 +51,20 @@ Item {
             }
 
             Item {
-                id: pointedRectangle
-                width: parent.width - 10 * screenScaleFactor; // Because of the shadow
+                id: pointedRectangle;
+                anchors {
+                    horizontalCenter: parent.horizontalCenter;
+                    verticalCenter: parent.verticalCenter;
+                }
                 height: parent.height - 10 * screenScaleFactor; // Because of the shadow
-                anchors.horizontalCenter: parent.horizontalCenter;
-                anchors.verticalCenter: parent.verticalCenter;
+                width: parent.width - 10 * screenScaleFactor; // Because of the shadow
 
                 Rectangle {
-                    id: point
-                    anchors.right: bloop.right;
-                    anchors.rightMargin: 24;
+                    id: point;
+                    anchors {
+                        right: bloop.right;
+                        rightMargin: 24;
+                    }
                     color: UM.Theme.getColor("setting_control");
                     height: 14 * screenScaleFactor;
                     transform: Rotation {
@@ -75,7 +75,7 @@ Item {
                 }
 
                 Rectangle {
-                    id: bloop
+                    id: bloop;
                     anchors {
                         bottom: parent.bottom;
                         bottomMargin: 8 * screenScaleFactor; // Because of the shadow

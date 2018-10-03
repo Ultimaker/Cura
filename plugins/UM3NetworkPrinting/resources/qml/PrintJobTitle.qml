@@ -17,17 +17,18 @@ Column {
         width: parent.width;
 
         Rectangle {
-            visible: !job;
             color: UM.Theme.getColor("viewport_background"); // TODO: Use explicit theme color
             height: parent.height;
+            visible: !job;
             width: parent.width / 3;
         }
+
         Label {
-            visible: job;
-            text: job ? job.name : "";
-            font: UM.Theme.getFont("default_bold");
-            elide: Text.ElideRight;
             anchors.fill: parent;
+            elide: Text.ElideRight;
+            font: UM.Theme.getFont("default_bold");
+            text: job ? job.name : "";
+            visible: job;
         }
     }
 
@@ -37,17 +38,18 @@ Column {
         width: parent.width;
 
         Rectangle {
-            visible: !job;
             color: UM.Theme.getColor("viewport_background"); // TODO: Use explicit theme color
             height: parent.height;
+            visible: !job;
             width: parent.width / 2;
         }
+
         Label {
-            visible: job;
-            text: job ? job.owner : "";
-            font: UM.Theme.getFont("default");
-            elide: Text.ElideRight;
             anchors.fill: parent;
+            elide: Text.ElideRight;
+            font: UM.Theme.getFont("default");
+            text: job ? job.owner : "";
+            visible: job;
         }
     }
 }

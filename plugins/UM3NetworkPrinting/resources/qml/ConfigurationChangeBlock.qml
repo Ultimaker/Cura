@@ -10,7 +10,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
-Rectangle {
+Item {
     id: root;
     property var job: null;
     property var materialsAreKnown: {
@@ -24,7 +24,6 @@ Rectangle {
         }
         return true;
     }
-    color: "pink";
     width: parent.width;
     height: childrenRect.height;
 
@@ -34,6 +33,11 @@ Rectangle {
         
         // Config change toggle
         Rectangle {
+            anchors {
+                left: parent.left;
+                right: parent.right;
+                top: parent.top;
+            }
             color: {
                 if(configurationChangeToggle.containsMouse) {
                     return UM.Theme.getColor("viewport_background"); // TODO: Theme!
@@ -41,32 +45,29 @@ Rectangle {
                     return "transparent";
                 }
             }
-            width: parent.width;
             height: UM.Theme.getSize("default_margin").height * 4; // TODO: Theme!
-            anchors {
-                left: parent.left;
-                right: parent.right;
-                top: parent.top;
-            }
+            width: parent.width;
 
             Rectangle {
-                width: parent.width;
-                height: UM.Theme.getSize("default_lining").height;
                 color: "#e6e6e6"; // TODO: Theme!
+                height: UM.Theme.getSize("default_lining").height;
+                width: parent.width;
             }
 
             UM.RecolorImage {
-                width: 23; // TODO: Theme!
-                height: 23; // TODO: Theme!
                 anchors {
                     right: configChangeToggleLabel.left;
                     rightMargin: UM.Theme.getSize("default_margin").width;
                     verticalCenter: parent.verticalCenter;
                 }
-                sourceSize.width: width;
-                sourceSize.height: height;
-                source: "../svg/warning-icon.svg";
                 color: UM.Theme.getColor("text");
+                height: 23 * screenScaleFactor; // TODO: Theme!
+                source: "../svg/warning-icon.svg";
+                sourceSize {
+                    width: width;
+                    height: height;
+                }
+                width: 23 * screenScaleFactor; // TODO: Theme!
             }
 
             Label {
@@ -79,15 +80,13 @@ Rectangle {
             }
 
             UM.RecolorImage {
-                width: 15; // TODO: Theme!
-                height: 15; // TODO: Theme!
                 anchors {
                     left: configChangeToggleLabel.right;
                     leftMargin: UM.Theme.getSize("default_margin").width;
                     verticalCenter: parent.verticalCenter;
                 }
-                sourceSize.width: width;
-                sourceSize.height: height;
+                color: UM.Theme.getColor("text");
+                height: 15 * screenScaleFactor; // TODO: Theme!
                 source: {
                     if (configChangeDetails.visible) {
                         return UM.Theme.getIcon("arrow_top");
@@ -95,7 +94,11 @@ Rectangle {
                         return UM.Theme.getIcon("arrow_bottom");
                     }
                 }
-                color: UM.Theme.getColor("text");
+                sourceSize {
+                    width: width;
+                    height: height;
+                }
+                width: 15 * screenScaleFactor; // TODO: Theme!
             }
 
             MouseArea {
@@ -111,26 +114,25 @@ Rectangle {
         // Config change details
         Rectangle {
             id: configChangeDetails
-            color: "transparent";
-            width: parent.width;
-            visible: false;
-            height: visible ? UM.Theme.getSize("monitor_tab_config_override_box").height : 0;
             Behavior on height { NumberAnimation { duration: 100 } }
+            color: "transparent";
+            height: visible ? UM.Theme.getSize("monitor_tab_config_override_box").height : 0;
+            visible: false;
+            width: parent.width;
 
             Rectangle {
-                color: "transparent";
-                clip: true;
                 anchors {
-                    fill: parent;
-                    topMargin: UM.Theme.getSize("wide_margin").height;
                     bottomMargin: UM.Theme.getSize("wide_margin").height;
+                    fill: parent;
                     leftMargin: UM.Theme.getSize("wide_margin").height * 4;
                     rightMargin: UM.Theme.getSize("wide_margin").height * 4;
+                    topMargin: UM.Theme.getSize("wide_margin").height;
                 }
+                color: "transparent";
+                clip: true;
 
                 Label {
                     anchors.fill: parent;
-                    wrapMode: Text.WordWrap;
                     elide: Text.ElideRight;
                     font: UM.Theme.getFont("large_nonbold");
                     text: {
@@ -167,6 +169,7 @@ Rectangle {
                         }
                         return result;
                     }
+                    wrapMode: Text.WordWrap;
                 }
 
                 Button {
@@ -174,6 +177,10 @@ Rectangle {
                         bottom: parent.bottom;
                         left: parent.left;
                     }
+                    onClicked: {
+                        overrideConfirmationDialog.visible = true;
+                    }
+                    text: catalog.i18nc("@label", "Override");
                     visible: {
                         var length = root.job.configurationChanges.length;
                         for (var i = 0; i < length; i++) {
@@ -184,10 +191,6 @@ Rectangle {
                         }
                         return true;
                     }
-                    text: catalog.i18nc("@label", "Override");
-                    onClicked: {
-                        overrideConfirmationDialog.visible = true;
-                    }
                 }
             }
         }
@@ -195,16 +198,16 @@ Rectangle {
 
     MessageDialog {
         id: overrideConfirmationDialog;
-        title: catalog.i18nc("@window:title", "Override configuration configuration and start print");
+        Component.onCompleted: visible = false;
         icon: StandardIcon.Warning;
+        onYes: OutputDevice.forceSendJob(root.job.key);
+        standardButtons: StandardButton.Yes | StandardButton.No;
         text: {
             var printJobName = formatPrintJobName(root.job.name);
             var confirmText = catalog.i18nc("@label", "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?").arg(printJobName);
             return confirmText;
         }
-        standardButtons: StandardButton.Yes | StandardButton.No;
-        Component.onCompleted: visible = false;
-        onYes: OutputDevice.forceSendJob(root.job.key);
+        title: catalog.i18nc("@window:title", "Override configuration configuration and start print");
     }
 
     // Utils

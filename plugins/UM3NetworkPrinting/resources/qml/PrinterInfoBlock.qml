@@ -13,17 +13,14 @@ import UM 1.3 as UM
 
 Item {
     id: root;
-
     property var printer: null;
     property var printJob: null;
-
     width: parent.width;
     height: childrenRect.height;
 
     // Printer family pills
     Row {
         id: printerFamilyPills;
-
         anchors {
             left: parent.left;
             right: parent.right;
@@ -35,21 +32,23 @@ Item {
 
         Repeater {
             id: compatiblePills;
-            visible: printJob;
+            delegate: PrinterFamilyPill {
+                text: modelData;
+            }
             model: printJob ? printJob.compatibleMachineFamilies : [];
-            delegate: PrinterFamilyPill { text: modelData; }
+            visible: printJob;
+            
         }
 
         PrinterFamilyPill {
-            visible: !compatiblePills.visible && printer;
             text: printer.type;
+            visible: !compatiblePills.visible && printer;
         }
     }
 
     // Extruder info
     Row {
         id: extrudersInfo;
-
         anchors {
             left: parent.left;
             right: parent.right;

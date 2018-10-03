@@ -10,17 +10,14 @@ import QtQuick.Controls 1.4 as LegacyControls
 import UM 1.3 as UM
 
 Item {
-
     property var printer: null;
     property var printJob: printer ? printer.activePrintJob : null;
     property var collapsed: true;
-
     Behavior on height { NumberAnimation { duration: 100 } }
     Behavior on opacity { NumberAnimation { duration: 100 } }
-
-    width: parent.width;
     height: collapsed ? 0 : childrenRect.height;
     opacity: collapsed ? 0 : 1;
+    width: parent.width;
 
     Column {
         id: contentColumn;
@@ -44,8 +41,8 @@ Item {
         HorizontalLine {}
 
         Row {
-            width: parent.width;
             height: childrenRect.height;
+            width: parent.width;
 
             PrintJobTitle {
                 job: root.printer.activePrintJob;

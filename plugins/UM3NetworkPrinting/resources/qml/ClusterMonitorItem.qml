@@ -4,141 +4,129 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
-Component
-{
-    Rectangle
-    {
-        id: monitorFrame
-        width: maximumWidth
-        height: maximumHeight
-        color: UM.Theme.getColor("viewport_background")
-        property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
-        property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
-        property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
-
-        UM.I18nCatalog
-        {
-            id: catalog
-            name: "cura"
-        }
-
-        Label
-        {
-            id: manageQueueLabel
-            anchors.rightMargin: 3 * UM.Theme.getSize("default_margin").width
-            anchors.right: queuedPrintJobs.right
-            anchors.bottom: queuedLabel.bottom
-            text: catalog.i18nc("@label link to connect manager", "Manage queue")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("primary")
-            linkColor: UM.Theme.getColor("primary")
-        }
-
-        MouseArea
-        {
-            anchors.fill: manageQueueLabel
-            hoverEnabled: true
-            onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
-            onEntered: manageQueueLabel.font.underline = true
-            onExited: manageQueueLabel.font.underline = false
-        }
-
-        Label
-        {
-            id: queuedLabel
-            anchors.left: queuedPrintJobs.left
-            anchors.top: parent.top
-            anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
-            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width + 5
-            text: catalog.i18nc("@label", "Queued")
-            font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
-        }
-
-        Column
-        {
-            id: skeletonLoader
-            visible: printJobList.count === 0;
-            width: Math.min(800 * screenScaleFactor, maximumWidth)
-            anchors
-            {
-                top: queuedLabel.bottom
-                topMargin: UM.Theme.getSize("default_margin").height
-                horizontalCenter: parent.horizontalCenter
-                bottomMargin: UM.Theme.getSize("default_margin").height
-                bottom: parent.bottom
-            }
-            PrintJobInfoBlock
-            {
-                printJob: null // Use as skeleton
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    rightMargin: UM.Theme.getSize("default_margin").width
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                }
-            }
-            PrintJobInfoBlock
-            {
-                printJob: null // Use as skeleton
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    rightMargin: UM.Theme.getSize("default_margin").width
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                }
+Component {
+    Rectangle {
+        id: monitorFrame;
+        property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight");
+        property var lineColor: "#DCDCDC"; // TODO: Should be linked to theme.
+        property var cornerRadius: 4 * screenScaleFactor; // TODO: Should be linked to theme.
+        color: UM.Theme.getColor("viewport_background");
+        height: maximumHeight;
+        onVisibleChanged: {
+            if (monitorFrame != null && !monitorFrame.visible) {
+                OutputDevice.setActiveCamera(null);
             }
         }
+        width: maximumWidth;
 
-        ScrollView
-        {
-            id: queuedPrintJobs
+        UM.I18nCatalog {
+            id: catalog;
+            name: "cura";
+        }
+
+        Label {
+            id: manageQueueLabel;
             anchors {
-                top: queuedLabel.bottom
-                topMargin: UM.Theme.getSize("default_margin").height
-                horizontalCenter: parent.horizontalCenter
-                bottomMargin: UM.Theme.getSize("default_margin").height
-                bottom: parent.bottom
+                bottom: queuedLabel.bottom;
+                right: queuedPrintJobs.right;
+                rightMargin: 3 * UM.Theme.getSize("default_margin").width;
             }
-            style: UM.Theme.styles.scrollview
-            width: Math.min(800 * screenScaleFactor, maximumWidth)
+            color: UM.Theme.getColor("primary");
+            font: UM.Theme.getFont("default");
+            linkColor: UM.Theme.getColor("primary");
+            text: catalog.i18nc("@label link to connect manager", "Manage queue");
+        }
 
-            ListView
-            {
-                id: printJobList;
-                anchors.fill: parent
-                spacing: UM.Theme.getSize("default_margin").height - 10 // 2x the shadow radius
-                model: OutputDevice.queuedPrintJobs
-                delegate: PrintJobInfoBlock
-                {
-                    printJob: modelData
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        MouseArea {
+            anchors.fill: manageQueueLabel;
+            hoverEnabled: true;
+            onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel();
+            onEntered: manageQueueLabel.font.underline = true;
+            onExited: manageQueueLabel.font.underline = false;
+        }
+
+        Label {
+            id: queuedLabel;
+            anchors {
+                left: queuedPrintJobs.left;
+                leftMargin: 3 * UM.Theme.getSize("default_margin").width + 5;
+                top: parent.top;
+                topMargin: 2 * UM.Theme.getSize("default_margin").height;
+            }
+            color: UM.Theme.getColor("text");
+            font: UM.Theme.getFont("large");
+            text: catalog.i18nc("@label", "Queued");
+        }
+
+        Column {
+            id: skeletonLoader;
+            anchors {
+                bottom: parent.bottom;
+                bottomMargin: UM.Theme.getSize("default_margin").height;
+                horizontalCenter: parent.horizontalCenter;
+                top: queuedLabel.bottom;
+                topMargin: UM.Theme.getSize("default_margin").height;
+            }
+            visible: printJobList.count === 0;
+            width: Math.min(800 * screenScaleFactor, maximumWidth);
+
+            PrintJobInfoBlock {
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
                 }
+                printJob: null; // Use as skeleton
+            }
+
+            PrintJobInfoBlock {
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
+                }
+                printJob: null; // Use as skeleton
             }
         }
 
-        PrinterVideoStream
-        {
-            visible: OutputDevice.activeCamera != null
-            anchors.fill: parent
-            camera: OutputDevice.activeCamera
+        ScrollView {
+            id: queuedPrintJobs;
+            anchors {
+                top: queuedLabel.bottom;
+                topMargin: UM.Theme.getSize("default_margin").height;
+                horizontalCenter: parent.horizontalCenter;
+                bottomMargin: UM.Theme.getSize("default_margin").height;
+                bottom: parent.bottom;
+            }
+            style: UM.Theme.styles.scrollview;
+            width: Math.min(800 * screenScaleFactor, maximumWidth);
+
+            ListView {
+                id: printJobList;
+                anchors.fill: parent;
+                delegate: PrintJobInfoBlock; {
+                    anchors {
+                        left: parent.left;
+                        leftMargin: UM.Theme.getSize("default_margin").width;
+                        right: parent.right;
+                        rightMargin: UM.Theme.getSize("default_margin").width;
+                    }
+                    printJob: modelData;
+                }
+                model: OutputDevice.queuedPrintJobs;
+                spacing: UM.Theme.getSize("default_margin").height - 10; // 2x the shadow radius
+            }
         }
 
-        onVisibleChanged:
-        {
-            if (monitorFrame != null && !monitorFrame.visible)
-            {
-                OutputDevice.setActiveCamera(null)
-            }
+        PrinterVideoStream {
+            anchors.fill: parent;
+            camera: OutputDevice.activeCamera;
+            visible: OutputDevice.activeCamera != null;
         }
     }
 }

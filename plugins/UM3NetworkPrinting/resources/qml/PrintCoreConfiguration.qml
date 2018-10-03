@@ -7,34 +7,29 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.2 as UM
 
 Item {
-    id: extruderInfo
-
+    id: extruderInfo;
     property var printCoreConfiguration: null;
-
-    width: Math.round(parent.width / 2);
     height: childrenRect.height;
+    width: Math.round(parent.width / 2);
 
     // Extruder circle
     Item {
-        id: extruderCircle
-
-        width: UM.Theme.getSize("monitor_tab_extruder_circle").width;
-        height: UM.Theme.getSize("monitor_tab_extruder_circle").height;
+        id: extruderCircle;
         anchors.verticalCenter: parent.verticalCenter;
+        height: UM.Theme.getSize("monitor_tab_extruder_circle").height;
+        width: UM.Theme.getSize("monitor_tab_extruder_circle").width;
 
         // Loading skeleton
         Rectangle {
-            visible: !printCoreConfiguration;
             anchors.fill: parent;
-            radius: Math.round(width / 2);
             color: UM.Theme.getColor("viewport_background");
+            radius: Math.round(width / 2);
+            visible: !printCoreConfiguration;
         }
 
         // Actual content
         Rectangle {
-            visible: printCoreConfiguration;
             anchors.fill: parent;
-            radius: Math.round(width / 2);
             border.width: UM.Theme.getSize("monitor_tab_thick_lining").width;
             border.color: UM.Theme.getColor("monitor_tab_lining_active");
             opacity: {
@@ -43,6 +38,8 @@ Item {
                 }
                 return 1;
             }
+            radius: Math.round(width / 2);
+            visible: printCoreConfiguration;
 
             Label {
                 anchors.centerIn: parent;
@@ -55,68 +52,66 @@ Item {
     // Print core and material labels
     Item {
         id: materialLabel
-
         anchors {
             left: extruderCircle.right;
             leftMargin: UM.Theme.getSize("default_margin").width;
-            top: parent.top;
             right: parent.right;
+            top: parent.top;
         }
         height: UM.Theme.getSize("monitor_tab_text_line").height;
 
         // Loading skeleton
         Rectangle {
-            visible: !extruderInfo.printCoreConfiguration;
             anchors.fill: parent;
             color: UM.Theme.getColor("viewport_background");
+            visible: !extruderInfo.printCoreConfiguration;
         }
 
         // Actual content
         Label {
-            visible: extruderInfo.printCoreConfiguration;
             anchors.fill: parent;
+            elide: Text.ElideRight;
+            font: UM.Theme.getFont("default");
             text: {
                 if (printCoreConfiguration != undefined && printCoreConfiguration.activeMaterial != undefined) {
                     return printCoreConfiguration.activeMaterial.name;
                 }
                 return "";
             }
-            font: UM.Theme.getFont("default");
-            elide: Text.ElideRight;
+            visible: extruderInfo.printCoreConfiguration;
         }
     }
 
     Item {
         id: printCoreLabel;
-
         anchors {
-            right: parent.right;
+            bottom: parent.bottom;
             left: extruderCircle.right;
             leftMargin: UM.Theme.getSize("default_margin").width;
-            bottom: parent.bottom;
+            right: parent.right;
         }
         height: UM.Theme.getSize("monitor_tab_text_line").height;
 
         // Loading skeleton
         Rectangle {
+            color: UM.Theme.getColor("viewport_background");
+            height: parent.height;
             visible: !extruderInfo.printCoreConfiguration;
             width: parent.width / 3;
-            height: parent.height;
-            color: UM.Theme.getColor("viewport_background");
         }
 
         // Actual content
         Label {
-            visible: extruderInfo.printCoreConfiguration;
+            elide: Text.ElideRight;
+            font: UM.Theme.getFont("default");
+            opacity: 0.6;
             text: {
                 if (printCoreConfiguration != undefined && printCoreConfiguration.hotendID != undefined) {
                     return printCoreConfiguration.hotendID;
                 }
                 return "";
             }
-            elide: Text.ElideRight;
-            opacity: 0.6;
-            font: UM.Theme.getFont("default");
+            visible: extruderInfo.printCoreConfiguration;
         }
     }
 }

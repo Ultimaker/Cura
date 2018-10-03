@@ -14,15 +14,15 @@ import UM 1.3 as UM
 Item {
     property var job: null;
     property var useUltibot: false;
-    height: 100;
+    height: 100 * screenScaleFactor;
     width: height;
 
     // Skeleton
     Rectangle {
-        visible: !job;
         anchors.fill: parent;
-        radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
         color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+        radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
+        visible: !job;
     }
 
     // Actual content
@@ -46,26 +46,30 @@ Item {
     UM.RecolorImage {
         id: ultibotImage;
         anchors.centerIn: parent;
+        color: UM.Theme.getColor("monitor_tab_placeholder_image"); // TODO: Theme!
+        height: parent.height;
         source: "../svg/ultibot.svg";
+        sourceSize {
+            height: height;
+            width: width;
+        }
         /* Since print jobs ALWAYS have an image url, we have to check if that image URL errors or
             not in order to determine if we show the placeholder (ultibot) image instead. */
         visible: job && previewImage.status == Image.Error;
         width: parent.width;
-        height: parent.height;
-        sourceSize.width: width;
-        sourceSize.height: height;
-        color: UM.Theme.getColor("monitor_tab_placeholder_image"); // TODO: Theme!
     }
 
     UM.RecolorImage {
         id: statusImage;
         anchors.centerIn: parent;
+        color: "black"; // TODO: Theme!
+        height: 0.5 * parent.height;
         source: job && job.state == "error" ? "../svg/aborted-icon.svg" : "";
+        sourceSize {
+            height: height;
+            width: width;
+        }
         visible: source != "";
         width: 0.5 * parent.width;
-        height: 0.5 * parent.height;
-        sourceSize.width: width;
-        sourceSize.height: height;
-        color: "black";
     }
 }
