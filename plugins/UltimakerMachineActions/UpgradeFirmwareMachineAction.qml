@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -59,7 +59,8 @@ Cura.MachineAction
                 enabled: parent.firmwareName != "" && canUpdateFirmware
                 onClicked:
                 {
-                    activeOutputDevice.updateFirmware(parent.firmwareName)
+                    firmwareUpdateWindow.visible = true;
+                    activeOutputDevice.updateFirmware(parent.firmwareName);
                 }
             }
             Button
@@ -78,7 +79,7 @@ Cura.MachineAction
         {
             width: parent.width
             wrapMode: Text.WordWrap
-            visible: !printerConnected
+            visible: !printerConnected && !firmwareUpdateWindow.visible
             text: catalog.i18nc("@label", "Firmware can not be upgraded because there is no connection with the printer.");
         }
 
@@ -89,14 +90,102 @@ Cura.MachineAction
             visible: printerConnected && !canUpdateFirmware
             text: catalog.i18nc("@label", "Firmware can not be upgraded because the connection with the printer does not support upgrading firmware.");
         }
+    }
 
-        FileDialog
+    FileDialog
+    {
+        id: customFirmwareDialog
+        title: catalog.i18nc("@title:window", "Select custom firmware")
+        nameFilters:  "Firmware image files (*.hex)"
+        selectExisting: true
+        onAccepted:
         {
-            id: customFirmwareDialog
-            title: catalog.i18nc("@title:window", "Select custom firmware")
-            nameFilters:  "Firmware image files (*.hex)"
-            selectExisting: true
-            onAccepted: activeOutputDevice.updateFirmware(fileUrl)
+            firmwareUpdateWindow.visible = true;
+            activeOutputDevice.updateFirmware(fileUrl);
         }
+    }
+
+    UM.Dialog
+    {
+        id: firmwareUpdateWindow
+
+        width: minimumWidth
+        minimumWidth: 500 * screenScaleFactor
+        height: minimumHeight
+        minimumHeight: 100 * screenScaleFactor
+
+        modality: Qt.ApplicationModal
+
+        title: catalog.i18nc("@title:window","Firmware Update")
+
+        Column
+        {
+            anchors.fill: parent
+
+            Label
+            {
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                }
+
+                text: {
+                    if(manager.firmwareUpdater == null)
+                    {
+                        return "";
+                    }
+                    switch (manager.firmwareUpdater.firmwareUpdateState)
+                    {
+                        case 0:
+                            return ""; //Not doing anything (eg; idling)
+                        case 1:
+                            return catalog.i18nc("@label","Updating firmware.");
+                        case 2:
+                            return catalog.i18nc("@label","Firmware update completed.");
+                        case 3:
+                            return catalog.i18nc("@label","Firmware update failed due to an unknown error.");
+                        case 4:
+                            return catalog.i18nc("@label","Firmware update failed due to an communication error.");
+                        case 5:
+                            return catalog.i18nc("@label","Firmware update failed due to an input/output error.");
+                        case 6:
+                            return catalog.i18nc("@label","Firmware update failed due to missing firmware.");
+                    }
+                }
+
+                wrapMode: Text.Wrap
+            }
+
+            ProgressBar
+            {
+                id: prog
+                value: (manager.firmwareUpdater != null) ? manager.firmwareUpdater.firmwareProgress : 0
+                minimumValue: 0
+                maximumValue: 100
+                indeterminate:
+                {
+                    if(manager.firmwareUpdater == null)
+                    {
+                        return false;
+                    }
+                    return manager.firmwareUpdater.firmwareProgress < 1 && manager.firmwareUpdater.firmwareProgress > 0;
+                }
+                anchors
+                {
+                    left: parent.left;
+                    right: parent.right;
+                }
+            }
+        }
+
+        rightButtons: [
+            Button
+            {
+                text: catalog.i18nc("@action:button","Close");
+                enabled: (manager.firmwareUpdater != null) ? manager.firmwareUpdater.firmwareUpdateState != 1 : true;
+                onClicked: firmwareUpdateWindow.visible = false;
+            }
+        ]
     }
 }

@@ -20,6 +20,7 @@ MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+    from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -83,6 +84,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self._connection_state = ConnectionState.closed #type: ConnectionState
 
+        self._firmware_updater = None #type: Optional[FirmwareUpdater]
         self._firmware_name = None #type: Optional[str]
         self._address = "" #type: str
         self._connection_text = "" #type: str
@@ -226,3 +228,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   This name can be used to define device type
     def getFirmwareName(self) -> Optional[str]:
         return self._firmware_name
+
+    def getFirmwareUpdater(self) -> Optional["FirmwareUpdater"]:
+        return self._firmware_updater
