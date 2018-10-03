@@ -334,7 +334,7 @@ class SimulationView(View):
 
         self._old_max_layers = self._max_layers
         ## Recalculate num max layers
-        new_max_layers = 0
+        new_max_layers = -1
         for node in DepthFirstIterator(scene.getRoot()):
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -369,7 +369,7 @@ class SimulationView(View):
             if new_max_layers < layer_count:
                 new_max_layers = layer_count
 
-        if new_max_layers > 0 and new_max_layers != self._old_max_layers:
+        if new_max_layers >= 0 and new_max_layers != self._old_max_layers:
             self._max_layers = new_max_layers
 
             # The qt slider has a bit of weird behavior that if the maxvalue needs to be changed first
