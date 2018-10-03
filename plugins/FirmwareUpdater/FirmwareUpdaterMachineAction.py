@@ -19,10 +19,10 @@ if MYPY:
 catalog = i18nCatalog("cura")
 
 ##  Upgrade the firmware of a machine by USB with this action.
-class UpgradeFirmwareMachineAction(MachineAction):
+class FirmwareUpdaterMachineAction(MachineAction):
     def __init__(self) -> None:
         super().__init__("UpgradeFirmware", catalog.i18nc("@action", "Upgrade Firmware"))
-        self._qml_url = "UpgradeFirmwareMachineAction.qml"
+        self._qml_url = "FirmwareUpdaterMachineAction.qml"
         ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
         self._active_output_device = None #type: Optional[PrinterOutputDevice]

@@ -20,7 +20,7 @@ Cura.MachineAction
 
     Column
     {
-        id: upgradeFirmwareMachineAction
+        id: firmwareUpdaterMachineAction
         anchors.fill: parent;
         UM.I18nCatalog { id: catalog; name:"cura"}
         spacing: UM.Theme.getSize("default_margin").height
@@ -28,7 +28,7 @@ Cura.MachineAction
         Label
         {
             width: parent.width
-            text: catalog.i18nc("@title", "Upgrade Firmware")
+            text: catalog.i18nc("@title", "Update Firmware")
             wrapMode: Text.WordWrap
             font.pointSize: 18
         }
@@ -59,7 +59,7 @@ Cura.MachineAction
                 enabled: parent.firmwareName != "" && canUpdateFirmware
                 onClicked:
                 {
-                    firmwareUpdateWindow.visible = true;
+                    updateProgressDialog.visible = true;
                     activeOutputDevice.updateFirmware(parent.firmwareName);
                 }
             }
@@ -79,8 +79,8 @@ Cura.MachineAction
         {
             width: parent.width
             wrapMode: Text.WordWrap
-            visible: !printerConnected && !firmwareUpdateWindow.visible
-            text: catalog.i18nc("@label", "Firmware can not be upgraded because there is no connection with the printer.");
+            visible: !printerConnected && !updateProgressDialog.visible
+            text: catalog.i18nc("@label", "Firmware can not be updated because there is no connection with the printer.");
         }
 
         Label
@@ -88,7 +88,7 @@ Cura.MachineAction
             width: parent.width
             wrapMode: Text.WordWrap
             visible: printerConnected && !canUpdateFirmware
-            text: catalog.i18nc("@label", "Firmware can not be upgraded because the connection with the printer does not support upgrading firmware.");
+            text: catalog.i18nc("@label", "Firmware can not be updated because the connection with the printer does not support upgrading firmware.");
         }
     }
 
@@ -100,14 +100,14 @@ Cura.MachineAction
         selectExisting: true
         onAccepted:
         {
-            firmwareUpdateWindow.visible = true;
+            updateProgressDialog.visible = true;
             activeOutputDevice.updateFirmware(fileUrl);
         }
     }
 
     UM.Dialog
     {
-        id: firmwareUpdateWindow
+        id: updateProgressDialog
 
         width: minimumWidth
         minimumWidth: 500 * screenScaleFactor
@@ -184,7 +184,7 @@ Cura.MachineAction
             {
                 text: catalog.i18nc("@action:button","Close");
                 enabled: (manager.firmwareUpdater != null) ? manager.firmwareUpdater.firmwareUpdateState != 1 : true;
-                onClicked: firmwareUpdateWindow.visible = false;
+                onClicked: updateProgressDialog.visible = false;
             }
         ]
     }
