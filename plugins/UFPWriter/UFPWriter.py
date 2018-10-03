@@ -1,5 +1,6 @@
 #Copyright (c) 2018 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import cast
 
 from Charon.VirtualFile import VirtualFile #To open UFP files.
@@ -9,6 +10,7 @@ from io import StringIO #For converting g-code to bytes.
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter #The writer we need to implement.
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
@@ -22,6 +24,15 @@ catalog = i18nCatalog("cura")
 class UFPWriter(MeshWriter):
     def __init__(self):
         super().__init__(add_to_recent_files = False)
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "application/x-cura-stl-file",
+                comment = "Cura UFP File",
+                suffixes = ["ufp"]
+            )
+        )
+
         self._snapshot = None
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._createSnapshot)
 

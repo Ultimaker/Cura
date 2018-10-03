@@ -28,10 +28,10 @@ if TYPE_CHECKING:
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from UM.PluginRegistry import PluginRegistry
-    from UM.Settings.ContainerRegistry import ContainerRegistry
     from cura.Settings.MachineManager import MachineManager
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
+    from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 catalog = i18nCatalog("cura")
 
@@ -52,7 +52,7 @@ class ContainerManager(QObject):
 
         self._application = application # type: CuraApplication
         self._plugin_registry = self._application.getPluginRegistry()  # type: PluginRegistry
-        self._container_registry = self._application.getContainerRegistry()  # type: ContainerRegistry
+        self._container_registry = self._application.getContainerRegistry()  # type: CuraContainerRegistry
         self._machine_manager = self._application.getMachineManager()  # type: MachineManager
         self._material_manager = self._application.getMaterialManager()  # type: MaterialManager
         self._quality_manager = self._application.getQualityManager()  # type: QualityManager
@@ -391,7 +391,8 @@ class ContainerManager(QObject):
                 continue
 
             mime_type = self._container_registry.getMimeTypeForContainer(container_type)
-
+            if mime_type is None:
+                continue
             entry = {
                 "type": serialize_type,
                 "mime": mime_type,

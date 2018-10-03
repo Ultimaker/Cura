@@ -23,6 +23,7 @@ from .CuraContainerStack import CuraContainerStack
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
 
+
 ##  Represents the Global or Machine stack and its related containers.
 #
 class GlobalStack(CuraContainerStack):

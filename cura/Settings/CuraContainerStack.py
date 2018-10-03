@@ -291,7 +291,7 @@ class CuraContainerStack(ContainerStack):
 
     # Helper to make sure we emit a PyQt signal on container changes.
     def _onContainersChanged(self, container: Any) -> None:
-        self.pyqtContainersChanged.emit()
+        Application.getInstance().callLater(self.pyqtContainersChanged.emit)
 
     # Helper that can be overridden to get the "machine" definition, that is, the definition that defines the machine
     # and its properties rather than, for example, the extruder. Defaults to simply returning the definition property.
