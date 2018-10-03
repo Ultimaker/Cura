@@ -26,14 +26,14 @@ class Script:
         self._settings = None
         self._stack = None
 
+    def initialize(self):
         setting_data = self.getSettingData()
-        self._stack = ContainerStack(stack_id = str(id(self)))
+        self._stack = ContainerStack(stack_id=str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
-
 
         ## Check if the definition of this script already exists. If not, add it to the registry.
         if "key" in setting_data:
-            definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = setting_data["key"])
+            definitions = ContainerRegistry.getInstance().findDefinitionContainers(id=setting_data["key"])
             if definitions:
                 # Definition was found
                 self._definition = definitions[0]
@@ -48,7 +48,8 @@ class Script:
         self._stack.addContainer(self._definition)
         self._instance = InstanceContainer(container_id="ScriptInstanceContainer")
         self._instance.setDefinition(self._definition.getId())
-        self._instance.setMetaDataEntry("setting_version", self._definition.getMetaDataEntry("setting_version", default = 0))
+        self._instance.setMetaDataEntry("setting_version",
+                                        self._definition.getMetaDataEntry("setting_version", default=0))
         self._stack.addContainer(self._instance)
         self._stack.propertyChanged.connect(self._onPropertyChanged)
 

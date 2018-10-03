@@ -189,6 +189,7 @@ class PostProcessingPlugin(QObject, Extension):
     def addScriptToList(self, key):
         Logger.log("d", "Adding script %s to list.", key)
         new_script = self._loaded_scripts[key]()
+        new_script.initialize()
         self._script_list.append(new_script)
         self.setSelectedScriptIndex(len(self._script_list) - 1)
         self.scriptListChanged.emit()
@@ -220,6 +221,7 @@ class PostProcessingPlugin(QObject, Extension):
                     Logger.log("e", "Unknown post-processing script {script_name} was encountered in this global stack.".format(script_name = script_name))
                     continue
                 new_script = self._loaded_scripts[script_name]()
+                new_script.initialize()
                 for setting_key, setting_value in settings.items(): #Put all setting values into the script.
                     new_script._instance.setProperty(setting_key, "value", setting_value)
                 self._script_list.append(new_script)
