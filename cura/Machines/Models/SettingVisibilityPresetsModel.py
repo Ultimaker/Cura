@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, List, Dict, Union
 import os
 import urllib.parse
 from configparser import ConfigParser
@@ -60,7 +60,7 @@ class SettingVisibilityPresetsModel(ListModel):
 
     def _populate(self) -> None:
         from cura.CuraApplication import CuraApplication
-        items = []
+        items = [] # type: List[Dict[str, Union[str, int, List[str]]]]
         for file_path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.SettingVisibilityPreset):
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(file_path)
@@ -79,7 +79,7 @@ class SettingVisibilityPresetsModel(ListModel):
                 if not parser.has_option("general", "name") or not parser.has_option("general", "weight"):
                     continue
 
-                settings = []
+                settings = []  # type: List[str]
                 for section in parser.sections():
                     if section == 'general':
                         continue
@@ -98,7 +98,7 @@ class SettingVisibilityPresetsModel(ListModel):
             except Exception:
                 Logger.logException("e", "Failed to load setting preset %s", file_path)
 
-        items.sort(key = lambda k: (int(k["weight"]), k["id"]))
+        items.sort(key = lambda k: (int(k["weight"]), k["id"]))  # type: ignore
         # Put "custom" at the top
         items.insert(0, {"id": "custom",
                          "name": "Custom selection",

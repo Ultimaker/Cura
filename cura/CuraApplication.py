@@ -44,6 +44,7 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
+from cura.API import CuraAPI
 from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
@@ -61,6 +62,7 @@ from cura.Scene.CuraSceneController import CuraSceneController
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.MachineNameValidator import MachineNameValidator
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
@@ -203,6 +205,7 @@ class CuraApplication(QtApplication):
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
+        self._cura_API = CuraAPI(self)
 
         self._physics = None
         self._volume = None
@@ -241,6 +244,8 @@ class CuraApplication(QtApplication):
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
+        # Redefined here in order to please the typing.
+        self._container_registry = None # type: CuraContainerRegistry
         from cura.CuraPackageManager import CuraPackageManager
         self._package_manager_class = CuraPackageManager
 
@@ -264,6 +269,9 @@ class CuraApplication(QtApplication):
                                       default = False,
                                       help = "FOR TESTING ONLY. Trigger an early crash to show the crash dialog.")
         self._cli_parser.add_argument("file", nargs = "*", help = "Files to load after starting the application.")
+
+    def getContainerRegistry(self) -> "CuraContainerRegistry":
+        return self._container_registry
 
     def parseCliOptions(self):
         super().parseCliOptions()
@@ -674,7 +682,7 @@ class CuraApplication(QtApplication):
 
         Logger.log("i", "Initializing quality manager")
         from cura.Machines.QualityManager import QualityManager
-        self._quality_manager = QualityManager(container_registry, parent = self)
+        self._quality_manager = QualityManager(self, parent = self)
         self._quality_manager.initialize()
 
         Logger.log("i", "Initializing machine manager")
@@ -705,6 +713,9 @@ class CuraApplication(QtApplication):
         self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
         default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
         self.getPreferences().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
+
+        # Initialize Cura API
+        self._cura_API.initialize()
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
@@ -893,6 +904,9 @@ class CuraApplication(QtApplication):
             self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(self)
         return self._custom_quality_profile_drop_down_menu_model
 
+    def getCuraAPI(self, *args, **kwargs) -> "CuraAPI":
+        return self._cura_API
+
     ##  Registers objects for the QML engine to use.
     #
     #   \param engine The QML engine.
@@ -940,6 +954,9 @@ class CuraApplication(QtApplication):
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)
         qmlRegisterType(SidebarCustomMenuItemsModel, "Cura", 1, 0, "SidebarCustomMenuItemsModel")
+
+        from cura.API import CuraAPI
+        qmlRegisterSingletonType(CuraAPI, "Cura", 1, 1, "API", self.getCuraAPI)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
