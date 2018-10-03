@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING
+from typing import cast, TYPE_CHECKING, Optional
 
 import numpy
 
@@ -175,7 +175,7 @@ class CuraApplication(QtApplication):
 
         self._single_instance = None
 
-        self._cura_formula_functions = None
+        self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
         self._cura_package_manager = None
 
@@ -810,6 +810,8 @@ class CuraApplication(QtApplication):
         return self._setting_visibility_presets_model
 
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
+        if self._cura_formula_functions is None:
+            self._cura_formula_functions = CuraFormulaFunctions(self)
         return self._cura_formula_functions
 
     def getMachineErrorChecker(self, *args) -> MachineErrorChecker:
