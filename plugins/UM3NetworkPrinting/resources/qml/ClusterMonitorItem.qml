@@ -109,7 +109,7 @@ Component {
             ListView {
                 id: printJobList;
                 anchors.fill: parent;
-                delegate: PrintJobInfoBlock; {
+                delegate: PrintJobInfoBlock {
                     anchors {
                         left: parent.left;
                         leftMargin: UM.Theme.getSize("default_margin").width;
