@@ -39,10 +39,11 @@ Item
         Label
         {
             id: globalProfileLabel
-            text: catalog.i18nc("@label","Profile:");
+            text: catalog.i18nc("@label","Profile:")
+            textFormat: Text.PlainText
             width: Math.round(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
             anchors.top: parent.top
             anchors.bottom: parent.bottom

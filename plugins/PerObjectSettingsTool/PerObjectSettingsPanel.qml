@@ -185,6 +185,12 @@ Item {
                         {
                             selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
                         }
+
+                        // For some reason the model object is updated after removing him from the memory and
+                        // it happens only on Windows. For this reason, set the destroyed value manually.
+                        Component.onDestruction: {
+                            setDestroyed(true);
+                        }
                     }
 
                     delegate: Row

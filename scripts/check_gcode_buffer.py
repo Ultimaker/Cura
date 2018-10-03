@@ -351,7 +351,7 @@ class CommandBuffer:
         self.previous_feedrate = [0, 0, 0, 0]
         self.previous_nominal_feedrate = 0
 
-        print("Time Frame: %s" % self._detection_time_frame)
+        print("Command speed: %s" % buffer_filling_rate)
         print("Code Limit: %s" % self._code_count_limit)
 
         self._bad_frame_ranges = []

@@ -28,7 +28,7 @@ import copy
 
 from typing import List, Optional
 
-# Setting for clearance around the prime
+# Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
 
 
@@ -478,8 +478,6 @@ class BuildVolume(SceneNode):
             minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
             maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
-
-        self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds
 
         self.updateNodeBoundaryCheck()
 

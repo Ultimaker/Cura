@@ -14,7 +14,7 @@ Rectangle
 {
     id: base
 
-    property int currentModeIndex
+    property int currentModeIndex: -1
     property bool hideSettings: PrintInformation.preSliced
     property bool hideView: Cura.MachineManager.activeMachineName == ""
 
@@ -262,7 +262,6 @@ Rectangle
         ListView
         {
             id: modesList
-            property var index: 0
             model: modesListModel
             delegate: wizardDelegate
             anchors.top: parent.top
@@ -582,12 +581,16 @@ Rectangle
             tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."),
             item: sidebarAdvanced
         })
-        sidebarContents.replace(modesListModel.get(base.currentModeIndex).item, { "immediate": true })
 
         var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
-        if(index)
+
+        if(index != null && !isNaN(index))
         {
             currentModeIndex = index;
+        }
+        else
+        {
+            currentModeIndex = 0;
         }
     }
 

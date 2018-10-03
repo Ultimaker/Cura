@@ -16,6 +16,7 @@ Button
     anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
     background: Rectangle
     {
+        id: backgroundRectangle
         implicitHeight: UM.Theme.getSize("section").height
         color: {
             if (base.color) {
@@ -35,6 +36,7 @@ Button
         Behavior on color { ColorAnimation { duration: 50; } }
         Rectangle
         {
+            id: backgroundLiningRectangle
             height: UM.Theme.getSize("default_lining").height
             width: parent.width
             anchors.bottom: parent.bottom
@@ -68,6 +70,7 @@ Button
         anchors.left: parent.left
 
         Label {
+            id: settingNameLabel
             anchors
             {
                 left: parent.left
@@ -76,6 +79,7 @@ Button
                 verticalCenter: parent.verticalCenter;
             }
             text: definition.label
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             font: UM.Theme.getFont("setting_category")
             color:

@@ -1,4 +1,5 @@
 # Copyright (c) 2017 Aleph Objects, Inc.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.FileHandler.FileReader import FileReader
@@ -11,13 +12,7 @@ catalog = i18nCatalog("cura")
 from . import MarlinFlavorParser, RepRapFlavorParser
 
 
-MimeTypeDatabase.addMimeType(
-    MimeType(
-        name = "application/x-cura-gcode-file",
-        comment = "Cura GCode File",
-        suffixes = ["gcode", "gcode.gz"]
-    )
-)
+
 
 
 # Class for loading and parsing G-code files
@@ -29,7 +24,15 @@ class GCodeReader(MeshReader):
 
     def __init__(self) -> None:
         super().__init__()
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "application/x-cura-gcode-file",
+                comment = "Cura GCode File",
+                suffixes = ["gcode"]
+            )
+        )
         self._supported_extensions = [".gcode", ".g"]
+
         self._flavor_reader = None
 
         Application.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
