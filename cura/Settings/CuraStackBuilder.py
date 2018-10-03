@@ -114,7 +114,8 @@ class CuraStackBuilder:
 
         # get variant container for extruders
         extruder_variant_container = application.empty_variant_container
-        extruder_variant_node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE)
+        extruder_variant_node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE,
+                                                                      global_stack = global_stack)
         extruder_variant_name = None
         if extruder_variant_node:
             extruder_variant_container = extruder_variant_node.getContainer()
