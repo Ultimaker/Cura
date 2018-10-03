@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Application import Application
+from cura.CuraApplication import CuraApplication
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from cura.MachineAction import MachineAction
 from UM.i18n import i18nCatalog
@@ -28,21 +28,21 @@ class UpgradeFirmwareMachineAction(MachineAction):
         self._active_output_device = None #type: Optional[PrinterOutputDevice]
         self._active_firmware_updater = None #type: Optional[FirmwareUpdater]
 
-        Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
+        CuraApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onEngineCreated(self) -> None:
-        Application.getInstance().getMachineManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+        CuraApplication.getInstance().getMachineManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
     def _onContainerAdded(self, container) -> None:
         # Add this action as a supported action to all machine definitions if they support USB connection
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine" and container.getMetaDataEntry("supports_usb_connection"):
-            Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+            CuraApplication.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     def _onOutputDevicesChanged(self) -> None:
         if self._active_output_device:
             self._active_output_device.activePrinter.getController().canUpdateFirmwareChanged.disconnect(self._onControllerCanUpdateFirmwareChanged)
 
-        output_devices = Application.getInstance().getMachineManager().printerOutputDevices
+        output_devices = CuraApplication.getInstance().getMachineManager().printerOutputDevices
         self._active_output_device = output_devices[0] if output_devices else None
 
         if self._active_output_device:
@@ -55,7 +55,7 @@ class UpgradeFirmwareMachineAction(MachineAction):
 
     outputDeviceCanUpdateFirmwareChanged = pyqtSignal()
     @pyqtProperty(QObject, notify = outputDeviceCanUpdateFirmwareChanged)
-    def firmwareUpdater(self) -> Optional["firmwareUpdater"]:
+    def firmwareUpdater(self) -> Optional["FirmwareUpdater"]:
         if self._active_output_device and self._active_output_device.activePrinter.getController().can_update_firmware:
             self._active_firmware_updater = self._active_output_device.getFirmwareUpdater()
             return self._active_firmware_updater

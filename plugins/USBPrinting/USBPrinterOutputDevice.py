@@ -100,6 +100,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot(str)
     def updateFirmware(self, file: Union[str, QUrl]) -> None:
+        if not self._firmware_updater:
+            return
+
         self._firmware_updater.updateFirmware(file)
 
     ## Reset USB device settings
