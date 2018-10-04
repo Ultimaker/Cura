@@ -11,7 +11,7 @@
         "icon": "icon_ultimaker2",
         "platform": "anycubic_4max_platform.stl",
         "has_materials": true,
-        "has_machine_quality": true,
+        "has_machine_quality": false,
         "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
