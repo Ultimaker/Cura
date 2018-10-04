@@ -27,14 +27,13 @@ class UFPWriter(MeshWriter):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/x-cura-stl-file",
+                name = "application/x-ufp",
                 comment = "Cura UFP File",
                 suffixes = ["ufp"]
             )
         )
 
         self._snapshot = None
-        Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._createSnapshot)
 
     def _createSnapshot(self, *args):
         # must be called from the main thread because of OpenGL
@@ -61,6 +60,8 @@ class UFPWriter(MeshWriter):
         gcode = archive.getStream("/3D/model.gcode")
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
         archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
+
+        self._createSnapshot()
 
         #Store the thumbnail.
         if self._snapshot:
