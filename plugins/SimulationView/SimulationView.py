@@ -24,7 +24,7 @@ from UM.Signal import Signal
 from UM.View.CompositePass import CompositePass
 from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.OpenGLContext import OpenGLContext
-
+from UM.View.GL.ShaderProgram import ShaderProgram
 
 from UM.View.View import View
 from UM.i18n import i18nCatalog
@@ -42,8 +42,6 @@ from typing import Optional, TYPE_CHECKING, List, cast
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
     from UM.Scene.Scene import Scene
-    from UM.View.GL.ShaderProgram import ShaderProgram
-    from UM.View.RenderPass import RenderPass
     from UM.Settings.ContainerStack import ContainerStack
 
 catalog = i18nCatalog("cura")

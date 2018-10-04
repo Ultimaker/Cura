@@ -126,7 +126,7 @@ Item
                         return ""
                     }
                     var date = new Date(details.last_updated)
-                    return date.toLocaleDateString(UM.Preferences.getValue("general/language"))
+                    return date.toLocaleString(UM.Preferences.getValue("general/language"))
                 }
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
