@@ -39,13 +39,13 @@ class FirmwareUpdaterMachineAction(MachineAction):
             CuraApplication.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     def _onOutputDevicesChanged(self) -> None:
-        if self._active_output_device:
+        if self._active_output_device and self._active_output_device.activePrinter:
             self._active_output_device.activePrinter.getController().canUpdateFirmwareChanged.disconnect(self._onControllerCanUpdateFirmwareChanged)
 
         output_devices = CuraApplication.getInstance().getMachineManager().printerOutputDevices
         self._active_output_device = output_devices[0] if output_devices else None
 
-        if self._active_output_device:
+        if self._active_output_device and self._active_output_device.activePrinter:
             self._active_output_device.activePrinter.getController().canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
 
         self.outputDeviceCanUpdateFirmwareChanged.emit()
