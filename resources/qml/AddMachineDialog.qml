@@ -80,7 +80,7 @@ UM.Dialog
         {
             left: parent.left
             top: titleLabel.bottom
-            topMargin: UM.Theme.getSize("default_margin")
+            topMargin: UM.Theme.getSize("default_margin").height
         }
         text: catalog.i18nc("@title:tab", "Select the printer you want to use from the list below.\n\nIf your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and match adjust the settings to match your printer in the next dialog.")
         width: parent.width
