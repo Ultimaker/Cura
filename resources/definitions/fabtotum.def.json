@@ -9,7 +9,6 @@
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "fabtotum_platform.stl",
-        "icon": "fabtotum_platform.png",
         "has_machine_quality": true,
         "has_variants": true,
         "variants_name": "Head",
