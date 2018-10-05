@@ -718,21 +718,23 @@ class BuildVolume(SceneNode):
 
         # Add prime tower location as disallowed area.
         if len(used_extruders) > 1: #No prime tower in single-extrusion.
-            prime_tower_collision = False
-            prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
-            for extruder_id in prime_tower_areas:
-                for prime_tower_area in prime_tower_areas[extruder_id]:
-                    for area in result_areas[extruder_id]:
-                        if prime_tower_area.intersectsPolygon(area) is not None:
-                            prime_tower_collision = True
+
+            if len([x for x in used_extruders if x.isEnabled == True]) > 1: #No prime tower if only one extruder is enabled
+                prime_tower_collision = False
+                prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
+                for extruder_id in prime_tower_areas:
+                    for prime_tower_area in prime_tower_areas[extruder_id]:
+                        for area in result_areas[extruder_id]:
+                            if prime_tower_area.intersectsPolygon(area) is not None:
+                                prime_tower_collision = True
+                                break
+                        if prime_tower_collision: #Already found a collision.
                             break
-                    if prime_tower_collision: #Already found a collision.
-                        break
-                if not prime_tower_collision:
-                    result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
-                    result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
-                else:
-                    self._error_areas.extend(prime_tower_areas[extruder_id])
+                    if not prime_tower_collision:
+                        result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
+                        result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
+                    else:
+                        self._error_areas.extend(prime_tower_areas[extruder_id])
 
         self._has_errors = len(self._error_areas) > 0
 
