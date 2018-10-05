@@ -19,6 +19,18 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
+    Rectangle
+    {
+        width: parent.width + 2 * margin // margin from Dialog.qml
+        height: version.y + version.height + margin
+
+        anchors.top: parent.top
+        anchors.topMargin: - margin
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        color: UM.Theme.getColor("viewport_background")
+    }
+
     Image
     {
         id: logo
@@ -42,6 +54,7 @@ UM.Dialog
 
         text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
         font: UM.Theme.getFont("large")
+        color: UM.Theme.getColor("text")
         anchors.right : logo.right
         anchors.top: logo.bottom
         anchors.topMargin: (UM.Theme.getSize("default_margin").height / 2) | 0
@@ -75,6 +88,7 @@ UM.Dialog
 
     ScrollView
     {
+        id: credits
         anchors.top: creditsNotes.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
 
@@ -128,7 +142,11 @@ UM.Dialog
                 projectsModel.append({ name:"SciPy", description: catalog.i18nc("@label", "Support library for scientific computing"), license: "BSD-new", url: "https://www.scipy.org/" });
                 projectsModel.append({ name:"NumPy", description: catalog.i18nc("@label", "Support library for faster math"), license: "BSD", url: "http://www.numpy.org/" });
                 projectsModel.append({ name:"NumPy-STL", description: catalog.i18nc("@label", "Support library for handling STL files"), license: "BSD", url: "https://github.com/WoLpH/numpy-stl" });
+                projectsModel.append({ name:"Shapely", description: catalog.i18nc("@label", "Support library for handling planar objects"), license: "BSD", url: "https://github.com/Toblerity/Shapely" });
+                projectsModel.append({ name:"Trimesh", description: catalog.i18nc("@label", "Support library for handling triangular meshes"), license: "MIT", url: "https://trimsh.org" });
+                projectsModel.append({ name:"NetworkX", description: catalog.i18nc("@label", "Support library for analysis of complex networks"), license: "3-clause BSD", url: "https://networkx.github.io/" });
                 projectsModel.append({ name:"libSavitar", description: catalog.i18nc("@label", "Support library for handling 3MF files"), license: "LGPLv3", url: "https://github.com/ultimaker/libsavitar" });
+                projectsModel.append({ name:"libCharon", description: catalog.i18nc("@label", "Support library for file metadata and streaming"), license: "LGPLv3", url: "https://github.com/ultimaker/libcharon" });
                 projectsModel.append({ name:"PySerial", description: catalog.i18nc("@label", "Serial communication library"), license: "Python", url: "http://pyserial.sourceforge.net/" });
                 projectsModel.append({ name:"python-zeroconf", description: catalog.i18nc("@label", "ZeroConf discovery library"), license: "LGPL", url: "https://github.com/jstasiak/python-zeroconf" });
                 projectsModel.append({ name:"Clipper", description: catalog.i18nc("@label", "Polygon clipping library"), license: "Boost", url: "http://www.angusj.com/delphi/clipper.php" });
