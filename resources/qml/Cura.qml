@@ -191,6 +191,18 @@ UM.MainWindow
                 }
             }
 
+            ApplicationViews
+            {
+                id: applicationViews
+
+                visible: UM.Controller.activeStage.stageId != "MonitorStage"
+                anchors
+                {
+                    top: parent.top
+                    right: sidebar.left
+                }
+            }
+
             Loader
             {
                 id: main

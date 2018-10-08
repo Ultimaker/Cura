@@ -90,85 +90,11 @@ QtObject {
         }
     }
 
-    property Component topbar_header_tab_no_overlay: Component {
-        ButtonStyle {
-            background: Rectangle {
-                implicitHeight: Theme.getSize("topbar_button").height
-                implicitWidth: Theme.getSize("topbar_button").width
-                color: "transparent"
-                anchors.fill: parent
-
-                Rectangle
-                {
-                    id: underline
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    width: parent.width
-                    height: Theme.getSize("sidebar_header_highlight").height
-                    color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
-                    visible: control.hovered || control.checked
-                }
-            }
-
-            label: Rectangle {
-                implicitHeight: Theme.getSize("topbar_button_icon").height
-                implicitWidth: Theme.getSize("topbar_button").width
-                color: "transparent"
-                anchors.fill: parent
-
-                Item
-                {
-                    anchors.centerIn: parent
-                    width: Math.round(textLabel.width + icon.width + Theme.getSize("default_margin").width / 2)
-                    Label
-                    {
-                        id: textLabel
-                        text: control.text
-                        anchors.right: icon.visible ? icon.left : parent.right
-                        anchors.rightMargin: icon.visible ? Math.round(Theme.getSize("default_margin").width / 2) : 0
-                        anchors.verticalCenter: parent.verticalCenter;
-                        font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
-                        color:
-                        {
-                            if(control.hovered)
-                            {
-                                return UM.Theme.getColor("topbar_button_text_hovered");
-                            }
-                            if(control.checked)
-                            {
-                                return UM.Theme.getColor("topbar_button_text_active");
-                            }
-                            else
-                            {
-                                return UM.Theme.getColor("topbar_button_text_inactive");
-                            }
-                        }
-                    }
-                    Image
-                    {
-                        id: icon
-                        visible: control.iconSource != ""
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        opacity: !control.enabled ? 0.2 : 1.0
-                        source: control.iconSource
-                        width: visible ? Theme.getSize("topbar_button_icon").width : 0
-                        height: Theme.getSize("topbar_button_icon").height
-
-                        sourceSize: Theme.getSize("topbar_button_icon")
-                    }
-                }
-            }
-        }
-    }
-
-    property Component topbar_header_tab: Component {
+    property Component topheader_tab: Component {
         ButtonStyle {
             background: Item {
-                implicitHeight: Theme.getSize("topbar_button").height
-                implicitWidth: Theme.getSize("topbar_button").width + Theme.getSize("topbar_button_icon").width
+                implicitHeight: Theme.getSize("topheader_button").height
+                implicitWidth: Theme.getSize("topheader_button").width + Theme.getSize("topheader_button_icon").width
 
                 Rectangle {
                     id: buttonFace;
@@ -182,7 +108,7 @@ QtObject {
 
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.bottom: parent.bottom
-                        width: Theme.getSize("topbar_button").width + Theme.getSize("topbar_button_icon").width
+                        width: Theme.getSize("topheader_button").width + Theme.getSize("topheader_button_icon").width
                         height: Theme.getSize("sidebar_header_highlight").height
                         color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
                         visible: control.hovered || control.checked
@@ -192,14 +118,14 @@ QtObject {
 
             label: Item
             {
-                implicitHeight: Theme.getSize("topbar_button_icon").height
-                implicitWidth: Theme.getSize("topbar_button").width + Theme.getSize("topbar_button_icon").width
+                implicitHeight: Theme.getSize("topheader_button_icon").height
+                implicitWidth: Theme.getSize("topheader_button").width + Theme.getSize("topheader_button_icon").width
                 Item
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter;
                     width: childrenRect.width
-                    height: Theme.getSize("topbar_button_icon").height
+                    height: Theme.getSize("topheader_button_icon").height
                     Label
                     {
                         id: button_label
@@ -210,15 +136,15 @@ QtObject {
                         {
                             if(control.hovered)
                             {
-                                return UM.Theme.getColor("topbar_button_text_hovered");
+                                return UM.Theme.getColor("topheader_button_text_hovered");
                             }
                             if(control.checked)
                             {
-                                return UM.Theme.getColor("topbar_button_text_active");
+                                return UM.Theme.getColor("topheader_button_text_active");
                             }
                             else
                             {
-                                return UM.Theme.getColor("topbar_button_text_inactive");
+                                return UM.Theme.getColor("topheader_button_text_inactive");
                             }
                         }
                     }
@@ -231,10 +157,10 @@ QtObject {
                         color: UM.Theme.getColor("text_emphasis")
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.iconSource
-                        width: visible ? Theme.getSize("topbar_button_icon").width : 0
-                        height: Theme.getSize("topbar_button_icon").height
+                        width: visible ? Theme.getSize("topheader_button_icon").width : 0
+                        height: Theme.getSize("topheader_button_icon").height
 
-                        sourceSize: Theme.getSize("topbar_button_icon")
+                        sourceSize: Theme.getSize("topheader_button_icon")
                     }
                     UM.RecolorImage
                     {
@@ -245,10 +171,10 @@ QtObject {
                         color: control.overlayColor
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.overlayIconSource
-                        width: visible ? Theme.getSize("topbar_button_icon").width : 0
-                        height: Theme.getSize("topbar_button_icon").height
+                        width: visible ? Theme.getSize("topheader_button_icon").width : 0
+                        height: Theme.getSize("topheader_button_icon").height
 
-                        sourceSize: Theme.getSize("topbar_button_icon")
+                        sourceSize: Theme.getSize("topheader_button_icon")
                     }
                 }
             }

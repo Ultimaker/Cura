@@ -15,12 +15,11 @@
         "border": [127, 127, 127, 255],
         "secondary": [241, 242, 242, 255],
 
-        "topbar_background_color": [0, 0, 0, 0],
-        "topbar_background_color_monitoring": [31, 36, 39, 255],
+        "topheader_background": [31, 36, 39, 255],
 
-        "topbar_button_text_active": [255, 255, 255, 255],
-        "topbar_button_text_inactive": [128, 128, 128, 255],
-        "topbar_button_text_hovered": [255, 255, 255, 255],
+        "topheader_button_text_active": [255, 255, 255, 255],
+        "topheader_button_text_inactive": [128, 128, 128, 255],
+        "topheader_button_text_hovered": [255, 255, 255, 255],
 
         "text": [255, 255, 255, 204],
         "text_detail": [255, 255, 255, 172],
@@ -221,6 +220,10 @@
         "quality_slider_available": [255, 255, 255, 255],
         "quality_slider_handle": [255, 255, 255, 255],
         "quality_slider_handle_hover": [127, 127, 127, 255],
-        "quality_slider_text": [255, 255, 255, 255]
+        "quality_slider_text": [255, 255, 255, 255],
+
+        "toolbox_header_button_text_active": [255, 255, 255, 255],
+        "toolbox_header_button_text_inactive": [128, 128, 128, 255],
+        "toolbox_header_button_text_hovered": [255, 255, 255, 255]
     }
 }

@@ -79,12 +79,11 @@
         "border": [127, 127, 127, 255],
         "secondary": [245, 245, 245, 255],
 
-        "topbar_background_color": [255, 255, 255, 0],
-        "topbar_background_color_monitoring": [255, 255, 255, 255],
+        "topheader_background": [255, 255, 255, 255],
 
-        "topbar_button_text_active": [0, 0, 0, 255],
-        "topbar_button_text_inactive": [128, 128, 128, 255],
-        "topbar_button_text_hovered": [0, 0, 0, 255],
+        "topheader_button_text_active": [0, 0, 0, 255],
+        "topheader_button_text_inactive": [128, 128, 128, 255],
+        "topheader_button_text_hovered": [0, 0, 0, 255],
 
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
@@ -317,6 +316,10 @@
         "printer_config_matched": [12, 169, 227, 255],
         "printer_config_mismatch": [127, 127, 127, 255],
 
+        "toolbox_header_button_text_active": [0, 0, 0, 255],
+        "toolbox_header_button_text_inactive": [128, 128, 128, 255],
+        "toolbox_header_button_text_hovered": [0, 0, 0, 255],
+
         "favorites_header_bar": [245, 245, 245, 255],
         "favorites_header_hover": [245, 245, 245, 255],
         "favorites_header_text": [31, 36, 39, 255],
@@ -331,6 +334,13 @@
 
     "sizes": {
         "window_minimum_size": [70, 50],
+
+        "topheader": [0.0, 4.0],
+        "topheader_logo_right_margin": [3, 0],
+        "topheader_button": [8, 4],
+        "topheader_button_icon": [1.2, 1.2],
+
+        "views_selector": [0.0, 4.0],
 
         "default_lining": [0.08, 0.08],
         "default_arrow": [0.8, 0.8],
@@ -389,10 +399,6 @@
 
         "printer_status_icon": [1.8, 1.8],
         "printer_sync_icon": [1.2, 1.2],
-
-        "topbar_logo_right_margin": [3, 0],
-        "topbar_button": [8, 4],
-        "topbar_button_icon": [1.2, 1.2],
 
         "button_tooltip": [1.0, 1.3],
         "button_tooltip_arrow": [0.25, 0.25],

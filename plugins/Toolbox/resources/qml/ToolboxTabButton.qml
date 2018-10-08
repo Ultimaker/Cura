@@ -32,15 +32,15 @@ Button
             {
                 if(control.hovered)
                 {
-                    return UM.Theme.getColor("topbar_button_text_hovered");
+                    return UM.Theme.getColor("toolbox_header_button_text_hovered");
                 }
                 if(control.active)
                 {
-                    return UM.Theme.getColor("topbar_button_text_active");
+                    return UM.Theme.getColor("toolbox_header_button_text_active");
                 }
                 else
                 {
-                    return UM.Theme.getColor("topbar_button_text_inactive");
+                    return UM.Theme.getColor("toolbox_header_button_text_inactive");
                 }
             }
             font: control.enabled ? (control.active ? UM.Theme.getFont("medium_bold") : UM.Theme.getFont("medium")) : UM.Theme.getFont("default_italic")
