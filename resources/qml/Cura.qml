@@ -183,7 +183,6 @@ UM.MainWindow
                     bottom: parent.bottom;
                     left: parent.left;
                 }
-
             }
 
             Topbar
@@ -340,13 +339,6 @@ UM.MainWindow
         }
     }
 
-    WorkspaceSummaryDialog
-    {
-        id: saveWorkspaceDialog
-        property var args
-        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
-    }
-
     Connections
     {
         target: Cura.Actions.preferences
@@ -357,33 +349,6 @@ UM.MainWindow
     {
         target: CuraApplication
         onShowPreferencesWindow: preferences.visible = true
-    }
-
-    MessageDialog
-    {
-        id: newProjectDialog
-        modality: Qt.ApplicationModal
-        title: catalog.i18nc("@title:window", "New project")
-        text: catalog.i18nc("@info:question", "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings.")
-        standardButtons: StandardButton.Yes | StandardButton.No
-        icon: StandardIcon.Question
-        onYes:
-        {
-            CuraApplication.deleteAll();
-            Cura.Actions.resetProfile.trigger();
-        }
-    }
-
-    Connections
-    {
-        target: Cura.Actions.newProject
-        onTriggered:
-        {
-            if(Printer.platformActivity || Cura.MachineManager.hasUserSettings)
-            {
-                newProjectDialog.visible = true
-            }
-        }
     }
 
     Connections
