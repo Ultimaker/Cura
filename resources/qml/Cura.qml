@@ -63,7 +63,7 @@ UM.MainWindow
         CuraApplication.purgeWindows()
     }
 
-    Item
+    Column
     {
         id: backgroundItem
         anchors.fill: parent
@@ -92,19 +92,25 @@ UM.MainWindow
             window: base
         }
 
+        TopHeader
+        {
+            id: topHeader
+            anchors.left: parent.left
+            anchors.right: parent.right
+        }
+
         Item
         {
-            id: contentItem;
+            id: contentItem
 
-            y: menu.height
-            width: parent.width;
-            height: parent.height - menu.height;
+            width: parent.width
+            height: parent.height - menu.height - topHeader.height
 
             Keys.forwardTo: menu
 
             DropArea
             {
-                anchors.fill: parent;
+                anchors.fill: parent
                 onDropped:
                 {
                     if (drop.urls.length > 0)
@@ -137,60 +143,52 @@ UM.MainWindow
                 id: jobSpecs
                 anchors
                 {
-                    bottom: parent.bottom;
-                    right: sidebar.left;
-                    bottomMargin: UM.Theme.getSize("default_margin").height;
-                    rightMargin: UM.Theme.getSize("default_margin").width;
+                    bottom: parent.bottom
+                    right: sidebar.left
+                    bottomMargin: UM.Theme.getSize("default_margin").height
+                    rightMargin: UM.Theme.getSize("default_margin").width
                 }
             }
 
             Button
             {
-                id: openFileButton;
-                text: catalog.i18nc("@action:button","Open File");
+                id: openFileButton
+                text: catalog.i18nc("@action:button","Open File")
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
                 tooltip: ""
                 anchors
                 {
-                    top: topbar.bottom;
-                    topMargin: UM.Theme.getSize("default_margin").height;
-                    left: parent.left;
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("default_margin").height
+                    left: parent.left
                 }
-                action: Cura.Actions.open;
+                action: Cura.Actions.open
             }
 
             Toolbar
             {
-                id: toolbar;
+                id: toolbar
 
                 property int mouseX: base.mouseX
                 property int mouseY: base.mouseY
 
                 anchors {
-                    top: openFileButton.bottom;
-                    topMargin: UM.Theme.getSize("window_margin").height;
-                    left: parent.left;
+                    top: openFileButton.bottom
+                    topMargin: UM.Theme.getSize("window_margin").height
+                    left: parent.left
                 }
             }
 
             ObjectsList
             {
-                id: objectsList;
-                visible: UM.Preferences.getValue("cura/use_multi_build_plate");
+                id: objectsList
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
                 anchors
                 {
-                    bottom: parent.bottom;
-                    left: parent.left;
+                    bottom: parent.bottom
+                    left: parent.left
                 }
-            }
-
-            Topbar
-            {
-                id: topbar
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: parent.top
             }
 
             Loader
@@ -199,7 +197,7 @@ UM.MainWindow
 
                 anchors
                 {
-                    top: topbar.bottom
+                    top: parent.top
                     bottom: parent.bottom
                     left: parent.left
                     right: sidebar.left
@@ -220,26 +218,30 @@ UM.MainWindow
             {
                 id: sidebar
 
-                property bool collapsed: false;
-                property var initialWidth: UM.Theme.getSize("sidebar").width;
+                property bool collapsed: false
+                property var initialWidth: UM.Theme.getSize("sidebar").width
 
-                function callExpandOrCollapse() {
-                    if (collapsed) {
-                        sidebar.visible = true;
-                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width;
-                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0);
+                function callExpandOrCollapse()
+                {
+                    if (collapsed)
+                    {
+                        sidebar.visible = true
+                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width
+                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
                         expandSidebarAnimation.start();
-                    } else {
-                        viewportRect = Qt.rect(0, 0, 1, 1.0);
-                        collapseSidebarAnimation.start();
                     }
-                    collapsed = !collapsed;
-                    UM.Preferences.setValue("cura/sidebar_collapsed", collapsed);
+                    else
+                    {
+                        viewportRect = Qt.rect(0, 0, 1, 1.0)
+                        collapseSidebarAnimation.start()
+                    }
+                    collapsed = !collapsed
+                    UM.Preferences.setValue("cura/sidebar_collapsed", collapsed)
                 }
 
                 anchors
                 {
-                    top: topbar.top
+                    top: parent.top
                     bottom: parent.bottom
                 }
 
@@ -265,13 +267,13 @@ UM.MainWindow
 
                 Component.onCompleted:
                 {
-                    var sidebar_collapsed = UM.Preferences.getValue("cura/sidebar_collapsed");
+                    var sidebar_collapsed = UM.Preferences.getValue("cura/sidebar_collapsed")
 
                     if (sidebar_collapsed)
                     {
-                        sidebar.collapsed = true;
+                        sidebar.collapsed = true
                         viewportRect = Qt.rect(0, 0, 1, 1.0)
-                        collapseSidebarAnimation.start();
+                        collapseSidebarAnimation.start()
                     }
                 }
 
@@ -290,8 +292,8 @@ UM.MainWindow
                 {
                     horizontalCenter: parent.horizontalCenter
                     horizontalCenterOffset: -(Math.round(UM.Theme.getSize("sidebar").width / 2))
-                    top: parent.verticalCenter;
-                    bottom: parent.bottom;
+                    top: parent.verticalCenter
+                    bottom: parent.bottom
                     bottomMargin:  UM.Theme.getSize("default_margin").height
                 }
             }
