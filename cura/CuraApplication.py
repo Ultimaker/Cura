@@ -617,9 +617,7 @@ class CuraApplication(QtApplication):
             self._message_box_callback(button, *self._message_box_callback_arguments)
             self._message_box_callback = None
             self._message_box_callback_arguments = []
-
-    showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
-
+            
     def setSaveDataEnabled(self, enabled: bool) -> None:
         self._save_data_enabled = enabled
 
