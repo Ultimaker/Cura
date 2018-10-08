@@ -247,7 +247,10 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            # Send the extruder settings in the order of extruder positions. Somehow, if you send e.g. extruder 3 first,
+            # then CuraEngine can slice with the wrong settings. This I think should be fixed in CuraEngine as well.
+            extruder_stack_list = sorted(list(global_stack.extruders.items()), key = lambda item: int(item[0]))
+            for _, extruder_stack in extruder_stack_list:
                 self._buildExtruderMessage(extruder_stack)
 
             for group in filtered_object_groups:
