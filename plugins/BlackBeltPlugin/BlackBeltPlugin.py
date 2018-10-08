@@ -145,7 +145,6 @@ class BlackBeltPlugin(Extension):
             return
 
         # HACK: Remove USB output device for blackbelt printers
-        devices_to_remove = []
         output_device_manager = self._application.getOutputDeviceManager()
         for output_device in output_device_manager.getOutputDevices():
             if "USBPrinterOutputDevice" in str(output_device):
