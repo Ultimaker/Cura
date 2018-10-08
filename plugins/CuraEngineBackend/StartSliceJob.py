@@ -41,11 +41,15 @@ class StartJobResult(IntEnum):
 
 ##  Formatter class that handles token expansion in start/end gcode
 class GcodeStartEndFormatter(Formatter):
-    def get_value(self, key: str, args: str, kwargs: dict, default_extruder_nr: str = "-1") -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
+    def __init__(self, default_extruder_nr: int = -1) -> None:
+        super().__init__()
+        self._default_extruder_nr = default_extruder_nr
+
+    def get_value(self, key: str, args: str, kwargs: dict) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
         # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
         # and a default_extruder_nr to use when no extruder_nr is specified
 
-        extruder_nr = int(default_extruder_nr)
+        extruder_nr = self._default_extruder_nr
 
         key_fragments = [fragment.strip() for fragment in key.split(",")]
         if len(key_fragments) == 2:
@@ -339,7 +343,7 @@ class StartSliceJob(Job):
 
         try:
             # any setting can be used as a token
-            fmt = GcodeStartEndFormatter()
+            fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
             settings = self._all_extruders_settings.copy()
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
