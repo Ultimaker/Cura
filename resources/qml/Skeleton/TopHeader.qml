@@ -4,10 +4,11 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
+
+import "components"
 
 Rectangle
 {
@@ -75,10 +76,20 @@ Rectangle
         text: catalog.i18nc("@action:button", "Toolbox")
         anchors
         {
-            right: parent.right
-            leftMargin: UM.Theme.getSize("default_margin").width
+            right: accountWidget.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
         style: UM.Theme.styles.topheader_tab
         action: Cura.Actions.browsePackages
+    }
+
+    AccountWidget
+    {
+        id: accountWidget
+        anchors
+        {
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
     }
 }
