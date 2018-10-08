@@ -100,8 +100,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                          title=i18n_catalog.i18nc("@info:title",
                                                                                   "Authentication status"))
 
-        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""),
-                                                      title=i18n_catalog.i18nc("@info:title", "Authentication Status"))
+        self._authentication_failed_message = Message("", title=i18n_catalog.i18nc("@info:title", "Authentication Status"))
         self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry"), None,
                                                       i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
         self._authentication_failed_message.actionTriggered.connect(self._messageCallback)
