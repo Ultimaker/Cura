@@ -422,19 +422,6 @@ UM.MainWindow
         }
     }
 
-    UM.ExtensionModel {
-        id: curaExtensions
-    }
-
-    // show the plugin browser dialog
-    Connections
-    {
-        target: Cura.Actions.browsePackages
-        onTriggered: {
-            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
-        }
-    }
-
     Timer
     {
         id: createProfileTimer

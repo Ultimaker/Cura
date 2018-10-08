@@ -180,7 +180,7 @@ Item
 
         Menu
         {
-            id: extension_menu
+            id: extensionMenu
             title: catalog.i18nc("@title:menu menubar:toplevel","E&xtensions")
 
             Instantiator
@@ -207,8 +207,8 @@ Item
                     }
                 }
 
-                onObjectAdded: extension_menu.insertItem(index, object)
-                onObjectRemoved: extension_menu.removeItem(object)
+                onObjectAdded: extensionMenu.insertItem(index, object)
+                onObjectRemoved: extensionMenu.removeItem(object)
             }
         }
 
@@ -241,6 +241,10 @@ Item
         }
     }
 
+    // ###############################################################################################
+    // Definition of other components that are linked to the menus
+    // ###############################################################################################
+
     WorkspaceSummaryDialog
     {
         id: saveWorkspaceDialog
@@ -263,6 +267,14 @@ Item
         }
     }
 
+    UM.ExtensionModel {
+        id: curaExtensions
+    }
+
+    // ###############################################################################################
+    // Definition of all the connections
+    // ###############################################################################################
+
     Connections
     {
         target: Cura.Actions.newProject
@@ -272,6 +284,15 @@ Item
             {
                 newProjectDialog.visible = true
             }
+        }
+    }
+
+    // show the plugin browser dialog
+    Connections
+    {
+        target: Cura.Actions.browsePackages
+        onTriggered: {
+            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
         }
     }
 }

@@ -33,15 +33,19 @@ Rectangle
 
     Row
     {
-        id: stagesMenuContainer
-        anchors.left: logo.right
-        anchors.leftMargin: UM.Theme.getSize("topheader_logo_right_margin").width
+        id: stagesListContainer
+
+        anchors
+        {
+            horizontalCenter: parent.horizontalCenter
+            leftMargin: UM.Theme.getSize("default_margin").width
+        }
         spacing: UM.Theme.getSize("default_margin").width
 
         // The topheader is dynamically filled with all available stages
         Repeater
         {
-            id: stagesMenu
+            id: stagesHeader
 
             model: UM.StageModel { }
 
@@ -62,5 +66,19 @@ Rectangle
         }
 
         ExclusiveGroup { id: topheaderMenuGroup }
+    }
+
+    // Shortcut button to quick access the Toolbox
+    Button
+    {
+        id: toolboxShortcutButton
+        text: catalog.i18nc("@action:button", "Toolbox")
+        anchors
+        {
+            right: parent.right
+            leftMargin: UM.Theme.getSize("default_margin").width
+        }
+        style: UM.Theme.styles.topheader_tab
+        action: Cura.Actions.browsePackages
     }
 }

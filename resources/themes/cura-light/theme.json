@@ -336,7 +336,6 @@
         "window_minimum_size": [70, 50],
 
         "topheader": [0.0, 4.0],
-        "topheader_logo_right_margin": [3, 0],
         "topheader_button": [8, 4],
         "topheader_button_icon": [1.2, 1.2],
 
