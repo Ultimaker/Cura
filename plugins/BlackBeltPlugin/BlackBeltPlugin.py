@@ -341,6 +341,8 @@ class BlackBeltPlugin(Extension):
                     for key in container.getAllKeys():
                         if key not in setting_values:
                             value = container.getProperty(key, "value")
+                            if not global_stack.getProperty(key, "settable_per_extruder"):
+                                value = global_stack.getProperty(key, "value")
                             if isinstance(value, SettingFunction):
                                 value = value(stack)
                             definition = container.getInstance(key).definition
