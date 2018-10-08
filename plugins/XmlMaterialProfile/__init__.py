@@ -5,10 +5,7 @@ from . import XmlMaterialProfile
 from . import XmlMaterialUpgrader
 
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
-from UM.i18n import i18nCatalog
 
-
-catalog = i18nCatalog("cura")
 upgrader = XmlMaterialUpgrader.XmlMaterialUpgrader()
 
 

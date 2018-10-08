@@ -3,9 +3,6 @@
 
 from . import VersionUpgrade
 
-from UM.i18n import i18nCatalog
-catalog = i18nCatalog("cura")
-
 upgrade = VersionUpgrade.VersionUpgrade22to24()
 
 def getMetaData():
