@@ -42,7 +42,7 @@ class BuildVolume(SceneNode):
         super().__init__(parent)
         self._application = application
         self._machine_manager = self._application.getMachineManager()
-        self._custom_setting_functions = self._application.getCustomSettingFunctions()
+        self._cura_formula_functions = self._application.getCuraFormulaFunctions()
 
         self._volume_outline_color = None
         self._x_axis_color = None
@@ -758,7 +758,7 @@ class BuildVolume(SceneNode):
             result[extruder.getId()] = []
 
         #Currently, the only normally printed object is the prime tower.
-        if self._custom_setting_functions.getResolveOrValue("prime_tower_enable"):
+        if self._cura_formula_functions.getResolveOrValue("prime_tower_enable"):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
