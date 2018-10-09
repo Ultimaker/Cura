@@ -33,9 +33,6 @@
         "machine_heated_bed": {
             "default_value": true
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "machine_nozzle_heat_up_speed": {
             "default_value": 6
         },
@@ -53,9 +50,6 @@
         },
         "machine_min_cool_heat_time_window": {
             "default_value": 3600
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "retraction_amount": {
             "default_value": 1.0

@@ -16,6 +16,8 @@ Cura.MachineAction
     property var extrudersModel: Cura.ExtrudersModel{}
     property int extruderTabsCount: 0
 
+    property var activeMachineId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.id : ""
+
     Connections
     {
         target: base.extrudersModel
@@ -244,6 +246,7 @@ Cura.MachineAction
                                 height: childrenRect.height
                                 width: childrenRect.width
                                 text: machineExtruderCountProvider.properties.description
+                                visible: extruderCountModel.count >= 2
 
                                 Row
                                 {
@@ -381,6 +384,11 @@ Cura.MachineAction
                             property string settingKey: "machine_nozzle_size"
                             property string label: catalog.i18nc("@label", "Nozzle size")
                             property string unit: catalog.i18nc("@label", "mm")
+                            function afterOnEditingFinished()
+                            {
+                                // Somehow the machine_nozzle_size dependent settings are not updated otherwise
+                                Cura.MachineManager.forceUpdateAllSettings()
+                            }
                             property bool isExtruderSetting: true
                         }
 
@@ -425,6 +433,18 @@ Cura.MachineAction
                             property bool isExtruderSetting: true
                             property bool forceUpdateOnChange: true
                             property bool allowNegative: true
+                        }
+
+                        Loader
+                        {
+                            id: extruderCoolingFanNumberField
+                            sourceComponent: numericTextFieldWithUnit
+                            property string settingKey: "machine_extruder_cooling_fan_number"
+                            property string label: catalog.i18nc("@label", "Cooling Fan Number")
+                            property string unit: catalog.i18nc("@label", "")
+                            property bool isExtruderSetting: true
+                            property bool forceUpdateOnChange: true
+                            property bool allowNegative: false
                         }
 
                         Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
@@ -505,7 +525,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "description" ]
@@ -558,7 +578,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "description" ]
@@ -649,7 +669,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "options", "description" ]
@@ -748,7 +768,7 @@ Cura.MachineAction
                         }
                         return "";
                     }
-                    return Cura.MachineManager.activeMachineId;
+                    return base.activeMachineId
                 }
                 key: settingKey
                 watchedProperties: [ "value", "description" ]
@@ -873,7 +893,7 @@ Cura.MachineAction
     {
         id: machineExtruderCountProvider
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: base.activeMachineId
         key: "machine_extruder_count"
         watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
@@ -883,7 +903,7 @@ Cura.MachineAction
     {
         id: machineHeadPolygonProvider
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: base.activeMachineId
         key: "machine_head_with_fans_polygon"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex

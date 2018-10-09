@@ -14,6 +14,8 @@
             "maximum_value": "4"
         },
         "machine_nozzle_offset_x": { "default_value": 31.6 },
-        "machine_nozzle_offset_y": { "default_value": 28.2 }
+        "machine_nozzle_offset_y": { "default_value": 28.2 },
+        "machine_nozzle_size": { "default_value": 0.35 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }

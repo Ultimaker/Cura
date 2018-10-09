@@ -21,6 +21,14 @@ UM.Dialog
     minimumWidth: 400 * screenScaleFactor;
     minimumHeight: 250 * screenScaleFactor;
 
+    onVisibleChanged:
+    {
+        if(!visible) //Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
+        {
+            manager.writeScriptsToStack();
+        }
+    }
+
     Item
     {
         UM.I18nCatalog{id: catalog; name:"cura"}
@@ -376,7 +384,7 @@ UM.Dialog
                         UM.SettingPropertyProvider
                         {
                             id: inheritStackProvider
-                            containerStackId: Cura.MachineManager.activeMachineId
+                            containerStack: Cura.MachineManager.activeMachine
                             key: model.key ? model.key : "None"
                             watchedProperties: [ "limit_to_extruder" ]
                         }

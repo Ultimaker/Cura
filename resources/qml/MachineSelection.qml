@@ -12,7 +12,11 @@ import "Menus"
 
 ToolButton
 {
-    text: Cura.MachineManager.activeMachineName
+    id: base
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property bool printerConnected: Cura.MachineManager.printerConnected
+    property var printerStatus: Cura.MachineManager.printerConnected ? "connected" : "disconnected"
+    text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
 
@@ -22,16 +26,13 @@ ToolButton
         {
             color:
             {
-                if(control.pressed)
-                {
+                if (control.pressed) {
                     return UM.Theme.getColor("sidebar_header_active");
                 }
-                else if(control.hovered)
-                {
+                else if (control.hovered) {
                     return UM.Theme.getColor("sidebar_header_hover");
                 }
-                else
-                {
+                else {
                     return UM.Theme.getColor("sidebar_header_bar");
                 }
             }
@@ -50,18 +51,32 @@ ToolButton
                 color: UM.Theme.getColor("text_emphasis")
                 source: UM.Theme.getIcon("arrow_bottom")
             }
+
+            PrinterStatusIcon
+            {
+                id: printerStatusIcon
+                visible: printerConnected || isNetworkPrinter
+                status: printerStatus
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("sidebar_margin").width
+                }
+            }
+
             Label
             {
                 id: sidebarComboBoxLabel
                 color: UM.Theme.getColor("sidebar_header_text_active")
                 text: control.text;
                 elide: Text.ElideRight;
-                anchors.left: parent.left;
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
+                anchors.left: printerStatusIcon.visible ? printerStatusIcon.right : parent.left;
+                anchors.leftMargin: printerStatusIcon.visible ? UM.Theme.getSize("sidebar_lining").width : UM.Theme.getSize("sidebar_margin").width
                 anchors.right: downArrow.left;
                 anchors.rightMargin: control.rightMargin;
                 anchors.verticalCenter: parent.verticalCenter;
-                font: UM.Theme.getFont("large")
+                font: UM.Theme.getFont("medium_bold")
             }
         }
         label: Label {}

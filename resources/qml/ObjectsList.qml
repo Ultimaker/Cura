@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
 import UM 1.3 as UM
-import Cura 1.2 as Cura
+import Cura 1.0 as Cura
 
 import "Menus"
 
@@ -31,7 +31,9 @@ Rectangle
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
 
-    property bool collapsed: true;
+    property bool collapsed: true
+
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     SystemPalette { id: palette }
 
@@ -67,7 +69,7 @@ Rectangle
         Rectangle
             {
                 height: childrenRect.height
-                color: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                color: multiBuildPlateModel.getItem(index).buildPlateNumber == multiBuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                 width: parent.width
                 Label
                 {
@@ -75,8 +77,8 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.BuildPlateModel.getItem(index) ? Cura.BuildPlateModel.getItem(index).name : "";
-                    color: Cura.BuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
+                    text: multiBuildPlateModel.getItem(index) ? multiBuildPlateModel.getItem(index).name : "";
+                    color: multiBuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
 
@@ -118,12 +120,11 @@ Rectangle
         ListView
         {
             id: buildPlateListView
-            model: Cura.BuildPlateModel
+            model: multiBuildPlateModel
             width: parent.width
             delegate: buildPlateDelegate
         }
     }
-
 
     Component {
         id: objectDelegate
@@ -200,7 +201,6 @@ Rectangle
         }
     }
 
-
     CheckBox
     {
         id: filterBuildPlateCheckbox
@@ -260,6 +260,4 @@ Rectangle
         }
         action: Cura.Actions.arrangeAll;
     }
-
-
 }

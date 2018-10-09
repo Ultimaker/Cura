@@ -10,8 +10,13 @@
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "UltimakerPlusbackplate.png",
+        "quality_definition": "ultimaker_original",
         "first_start_actions": ["UMOCheckup", "BedLevel"],
-        "supported_actions": ["UMOCheckup", "BedLevel", "UpgradeFirmware"]
+        "supported_actions": ["UMOCheckup", "BedLevel", "UpgradeFirmware"],
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_original_plus_extruder_0"
+        }
     },
 
     "overrides": {

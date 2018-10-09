@@ -79,6 +79,7 @@ UM.Dialog
             section.property: "section"
             section.delegate: Button
             {
+                id: machineSectionButton
                 text: section
                 width: machineList.width
                 style: ButtonStyle
@@ -214,6 +215,7 @@ UM.Dialog
 
     Button
     {
+        id: addPrinterButton
         text: catalog.i18nc("@action:button", "Add Printer")
         anchors.bottom: parent.bottom
         anchors.right: parent.right

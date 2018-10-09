@@ -13,37 +13,16 @@ Item {
     id: base
 
     property bool activity: CuraApplication.platformActivity
-    property string fileBaseName: ""
+    property string fileBaseName: PrintInformation.baseName
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     height: childrenRect.height
 
-    Connections
-    {
-        target: backgroundItem
-        onHasMesh:
-        {
-            if (base.fileBaseName == "")
-            {
-                base.fileBaseName = name;
-            }
-        }
-    }
-
     onActivityChanged: {
-        if (activity == true && base.fileBaseName == ''){
-            //this only runs when you open a file from the terminal (or something that works the same way; for example when you drag a file on the icon in MacOS or use 'open with' on Windows)
-            base.fileBaseName = PrintInformation.baseName; //get the fileBaseName from PrintInformation.py because this saves the filebase when the file is opened using the terminal (or something alike)
-            PrintInformation.setBaseName(base.fileBaseName);
-        }
-        if (activity == true && base.fileBaseName != ''){
-            //this runs in all other cases where there is a mesh on the buildplate (activity == true). It uses the fileBaseName from the hasMesh signal
-            PrintInformation.setBaseName(base.fileBaseName);
-        }
-        if (activity == false){
+        if (activity == false) {
             //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
-            PrintInformation.setBaseName('')
+            PrintInformation.baseName = ''
         }
     }
 
@@ -101,13 +80,10 @@ Item {
                 property int unremovableSpacing: 5
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
-                onTextChanged: {
-                    PrintInformation.setJobName(text);
-                }
                 onEditingFinished: {
-                    if (printJobTextfield.text != ''){
-                        printJobTextfield.focus = false;
-                    }
+                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text;
+                    PrintInformation.setJobName(new_name, true);
+                    printJobTextfield.focus = false;
                 }
                 validator: RegExpValidator {
                     regExp: /^[^\\ \/ \*\?\|\[\]]*$/
@@ -124,15 +100,50 @@ Item {
         }
     }
 
+    Row {
+        id: additionalComponentsRow
+        anchors.top: jobNameRow.bottom
+        anchors.right: parent.right
+    }
+
     Label
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
-        anchors.right: parent.right
+        anchors.right: additionalComponentsRow.left
+        anchors.rightMargin:
+        {
+            if (additionalComponentsRow.width > 0)
+            {
+                return UM.Theme.getSize("default_margin").width
+            }
+            else
+            {
+                return 0;
+            }
+        }
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
     }
+
+    Component.onCompleted: {
+        base.addAdditionalComponents("jobSpecsButton")
+    }
+
+    Connections {
+        target: CuraApplication
+        onAdditionalComponentsChanged: base.addAdditionalComponents("jobSpecsButton")
+    }
+
+    function addAdditionalComponents (areaId) {
+        if(areaId == "jobSpecsButton") {
+            for (var component in CuraApplication.additionalComponents["jobSpecsButton"]) {
+                CuraApplication.additionalComponents["jobSpecsButton"][component].parent = additionalComponentsRow
+            }
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -16,6 +16,7 @@ Button
     anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
     background: Rectangle
     {
+        id: backgroundRectangle
         implicitHeight: UM.Theme.getSize("section").height
         color: {
             if (base.color) {
@@ -35,6 +36,7 @@ Button
         Behavior on color { ColorAnimation { duration: 50; } }
         Rectangle
         {
+            id: backgroundLiningRectangle
             height: UM.Theme.getSize("default_lining").height
             width: parent.width
             anchors.bottom: parent.bottom
@@ -63,13 +65,12 @@ Button
 
     property var focusItem: base
 
-    //text: definition.label
-
     contentItem: Item {
         anchors.fill: parent
         anchors.left: parent.left
 
         Label {
+            id: settingNameLabel
             anchors
             {
                 left: parent.left
@@ -78,6 +79,7 @@ Button
                 verticalCenter: parent.verticalCenter;
             }
             text: definition.label
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             font: UM.Theme.getFont("setting_category")
             color:
@@ -160,7 +162,7 @@ Button
         if (definition.expanded) {
             settingDefinitionsModel.collapse(definition.key);
         } else {
-            settingDefinitionsModel.expandAll(definition.key);
+            settingDefinitionsModel.expandRecursive(definition.key);
         }
         //Set focus so that tab navigation continues from this point on.
         //NB: This must be set AFTER collapsing/expanding the category so that the scroll position is correct.
@@ -237,7 +239,7 @@ Button
 
         onClicked:
         {
-            settingDefinitionsModel.expandAll(definition.key);
+            settingDefinitionsModel.expandRecursive(definition.key);
             base.checked = true;
             base.showAllHiddenInheritedSettings(definition.key);
         }

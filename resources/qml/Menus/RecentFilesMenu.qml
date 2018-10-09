@@ -61,7 +61,7 @@ Menu
                 }
                 else if (toOpenAsModel)
                 {
-                    CuraApplication.readLocalFile(modelData);
+                    CuraApplication.readLocalFile(modelData, true);
                 }
                 var meshName = backgroundItem.getMeshName(modelData.toString())
                 backgroundItem.hasMesh(decodeURIComponent(meshName))

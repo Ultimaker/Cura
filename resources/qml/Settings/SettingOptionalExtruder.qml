@@ -27,8 +27,19 @@ SettingItem
 
         onActivated:
         {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            if (model.getItem(index).enabled)
+            {
+                forceActiveFocus();
+                propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            } else
+            {
+                if (propertyProvider.properties.value == -1)
+                {
+                    control.currentIndex = model.rowCount() - 1;  // we know the last item is "Not overriden"
+                } else {
+                    control.currentIndex = propertyProvider.properties.value;  // revert to the old value
+                }
+            }
         }
 
         onActiveFocusChanged:
@@ -63,13 +74,6 @@ SettingItem
             // Sometimes when the value is already changed, the model is still being built.
             // The when clause ensures that the current index is not updated when this happens.
             when: control.model.items.length > 0
-        }
-
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            onWheel: wheel.accepted = true;
         }
 
         property string color: "#fff"
@@ -136,6 +140,7 @@ SettingItem
             rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
             text: control.currentText
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             font: UM.Theme.getFont("default")
             color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -164,7 +169,7 @@ SettingItem
         popup: Popup {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
-            implicitHeight: contentItem.implicitHeight
+            implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
             contentItem: ListView {
@@ -190,9 +195,21 @@ SettingItem
 
             contentItem: Label
             {
+                anchors.fill: parent
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+
                 text: model.name
+                textFormat: Text.PlainText
                 renderType: Text.NativeRendering
-                color: UM.Theme.getColor("setting_control_text")
+                color:
+                {
+                    if (model.enabled) {
+                        UM.Theme.getColor("setting_control_text")
+                    } else {
+                        UM.Theme.getColor("action_button_disabled_text");
+                    }
+                }
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter

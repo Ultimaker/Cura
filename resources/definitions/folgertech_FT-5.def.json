@@ -7,14 +7,17 @@
         "author": "Jaime van Kessel & Paul Bussiere",
         "manufacturer": "Folger Tech",
         "file_formats": "text/x-gcode",
-        "platform": "FT-5_build_plate.stl"
+        "platform": "FT-5_build_plate.stl",
+        "machine_extruder_trains":
+        {
+            "0": "folgertech_FT-5_extruder_0"
+        }
     },
     "overrides": {
         "machine_heated_bed": { "default_value": true },
         "machine_width": { "default_value": 300 },
         "machine_height": { "default_value": 400 },
         "machine_depth": { "default_value": 300 },
-        "material_diameter": { "default_value": 1.75 },
         "gantry_height": { "default_value": 55 },
 
         "machine_start_gcode": {

@@ -5,13 +5,14 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from UM.Extension import Extension
-from UM.Preferences import Preferences
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
+from UM.Settings.ContainerRegistry import ContainerRegistry
+
 from cura.Settings.GlobalStack import GlobalStack
 
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
-from UM.Settings.ContainerRegistry import ContainerRegistry
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -27,15 +28,16 @@ class FirmwareUpdateChecker(Extension):
 
         # Initialize the Preference called `latest_checked_firmware` that stores the last version
         # checked for the UM3. In the future if we need to check other printers' firmware
-        Preferences.getInstance().addPreference("info/latest_checked_firmware", "")
+        Application.getInstance().getPreferences().addPreference("info/latest_checked_firmware", "")
 
         # Listen to a Signal that indicates a change in the list of printers, just if the user has enabled the
         # 'check for updates' option
-        Preferences.getInstance().addPreference("info/automatic_update_check", True)
-        if Preferences.getInstance().getValue("info/automatic_update_check"):
+        Application.getInstance().getPreferences().addPreference("info/automatic_update_check", True)
+        if Application.getInstance().getPreferences().getValue("info/automatic_update_check"):
             ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
         self._download_url = None
+        self._check_job = None
 
     ##  Callback for the message that is spawned when there is a new version.
     def _onActionTriggered(self, message, action):
@@ -51,6 +53,9 @@ class FirmwareUpdateChecker(Extension):
         if isinstance(container, GlobalStack):
             self.checkFirmwareVersion(container, True)
 
+    def _onJobFinished(self, *args, **kwargs):
+        self._check_job = None
+
     ##  Connect with software.ultimaker.com, load latest.version and check version info.
     #   If the version info is different from the current version, spawn a message to
     #   allow the user to download it.
@@ -58,7 +63,13 @@ class FirmwareUpdateChecker(Extension):
     #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
     #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
-        job = FirmwareUpdateCheckerJob(container = container, silent = silent, url = self.JEDI_VERSION_URL,
-                                       callback = self._onActionTriggered,
-                                       set_download_url_callback = self._onSetDownloadUrl)
-        job.start()
+        # Do not run multiple check jobs in parallel
+        if self._check_job is not None:
+            Logger.log("i", "A firmware update check is already running, do nothing.")
+            return
+
+        self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent, url = self.JEDI_VERSION_URL,
+                                                   callback = self._onActionTriggered,
+                                                   set_download_url_callback = self._onSetDownloadUrl)
+        self._check_job.start()
+        self._check_job.finished.connect(self._onJobFinished)

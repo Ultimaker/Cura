@@ -20,13 +20,6 @@ SettingItem
 
         anchors.fill: parent
 
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            onWheel: wheel.accepted = true
-        }
-
         background: Rectangle
         {
             color:
@@ -80,6 +73,7 @@ SettingItem
             anchors.right: downArrow.left
 
             text: control.currentText
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             font: UM.Theme.getFont("default")
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
@@ -90,7 +84,7 @@ SettingItem
         popup: Popup {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
-            implicitHeight: contentItem.implicitHeight
+            implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
             contentItem: ListView {
@@ -116,7 +110,13 @@ SettingItem
 
             contentItem: Label
             {
+                // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
+                anchors.fill: parent
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+
                 text: modelData.value
+                textFormat: Text.PlainText
                 renderType: Text.NativeRendering
                 color: control.contentItem.color
                 font: UM.Theme.getFont("default")

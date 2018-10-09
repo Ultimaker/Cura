@@ -16,7 +16,8 @@ class SimpleModeSettingsManager(QObject):
         self._is_profile_user_created = False  # True when profile was custom created by user
 
         self._machine_manager.activeStackValueChanged.connect(self._updateIsProfileCustomized)
-        self._machine_manager.activeQualityChanged.connect(self._updateIsProfileUserCreated)
+        self._machine_manager.activeQualityGroupChanged.connect(self._updateIsProfileUserCreated)
+        self._machine_manager.activeQualityChangesGroupChanged.connect(self._updateIsProfileUserCreated)
 
         # update on create as the activeQualityChanged signal is emitted before this manager is created when Cura starts
         self._updateIsProfileCustomized()
@@ -38,12 +39,12 @@ class SimpleModeSettingsManager(QObject):
         global_stack = self._machine_manager.activeMachine
 
         # check user settings in the global stack
-        user_setting_keys.update(set(global_stack.userChanges.getAllKeys()))
+        user_setting_keys.update(global_stack.userChanges.getAllKeys())
 
         # check user settings in the extruder stacks
         if global_stack.extruders:
             for extruder_stack in global_stack.extruders.values():
-                user_setting_keys.update(set(extruder_stack.userChanges.getAllKeys()))
+                user_setting_keys.update(extruder_stack.userChanges.getAllKeys())
 
         # remove settings that are visible in recommended (we don't show the reset button for those)
         for skip_key in self.__ignored_custom_setting_keys:
@@ -69,12 +70,12 @@ class SimpleModeSettingsManager(QObject):
         global_stack = self._machine_manager.activeMachine
 
         # check quality changes settings in the global stack
-        quality_changes_keys.update(set(global_stack.qualityChanges.getAllKeys()))
+        quality_changes_keys.update(global_stack.qualityChanges.getAllKeys())
 
         # check quality changes settings in the extruder stacks
         if global_stack.extruders:
             for extruder_stack in global_stack.extruders.values():
-                quality_changes_keys.update(set(extruder_stack.qualityChanges.getAllKeys()))
+                quality_changes_keys.update(extruder_stack.qualityChanges.getAllKeys())
 
         # check if the qualityChanges container is not empty (meaning it is a user created profile)
         has_quality_changes = len(quality_changes_keys) > 0

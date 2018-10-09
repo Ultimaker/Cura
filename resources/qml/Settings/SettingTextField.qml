@@ -13,11 +13,17 @@ SettingItem
 
     property string textBeforeEdit
     property bool textHasChanged
+    property bool focusGainedByClick: false
     onFocusReceived:
     {
         textHasChanged = false;
         textBeforeEdit = focusItem.text;
-        focusItem.selectAll();
+
+        if(!focusGainedByClick)
+        {
+            // select all text when tabbing through fields (but not when selecting a field with the mouse)
+            focusItem.selectAll();
+        }
     }
 
     contents: Rectangle
@@ -88,17 +94,10 @@ SettingItem
             anchors.verticalCenter: parent.verticalCenter
 
             text: definition.unit
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
             font: UM.Theme.getFont("default")
-        }
-
-        MouseArea
-        {
-            id: mouseArea
-            anchors.fill: parent;
-            //hoverEnabled: true;
-            cursorShape: Qt.IBeamCursor
         }
 
         TextInput
@@ -142,6 +141,7 @@ SettingItem
                 {
                     base.focusReceived();
                 }
+                base.focusGainedByClick = false;
             }
 
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
@@ -177,6 +177,22 @@ SettingItem
                     }
                 }
                 when: !input.activeFocus
+            }
+
+            MouseArea
+            {
+                id: mouseArea
+                anchors.fill: parent;
+
+                cursorShape: Qt.IBeamCursor
+
+                onPressed: {
+                    if(!input.activeFocus) {
+                        base.focusGainedByClick = true;
+                        input.forceActiveFocus();
+                    }
+                    mouse.accepted = false;
+                }
             }
         }
     }

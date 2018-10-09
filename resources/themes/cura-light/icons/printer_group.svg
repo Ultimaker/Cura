@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="16px" viewBox="0 0 32 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>icn_groupPrinters</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Visual" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Printer-status-icon" transform="translate(-24.000000, -176.000000)" fill="#000000">
+            <path d="M48,188 L54,188 L54,190 L48,190 L48,188 L48,188 Z M48,180 L54,180 L54,182 L48,182 L48,180 L48,180 Z M54,189 L56,189 L56,191 L54,191 L54,189 L54,189 Z M54,177 L56,177 L56,189 L54,189 L54,177 L54,177 Z M48,182 L51,182 L51,183 L48,183 L48,182 L48,182 Z M49,183 L50,183 L50,185 L49,185 L49,183 L49,183 Z M48,177 L54,177 L54,179 L48,179 L48,177 L48,177 Z M34,176 L46,176 L48,176 L48,187 L53,187 L53,188 L48,188 L48,190 L48,192 L46,192 L46,191 L34,191 L34,192 L32,192 L32,190 L26,190 L26,191 L24,191 L24,189 L24,177 L26,177 L32,177 L32,176 L34,176 Z M34,178 L34,179 L46,179 L46,178 L34,178 Z M41,182 L41,184 L39,184 L39,182 L38,182 L38,181 L42,181 L42,182 L41,182 Z M46,189 L46,181 L34,181 L34,189 L46,189 Z M32,179 L26,179 L26,180 L32,180 L32,179 Z M32,183 L31,183 L31,185 L30,185 L30,183 L29,183 L29,182 L26,182 L26,188 L27,188 L27,187 L32,187 L32,183 Z M35,188 L45,188 L45,189 L35,189 L35,188 Z" id="icn_groupPrinters"></path>
+        </g>
+    </g>
+</svg>

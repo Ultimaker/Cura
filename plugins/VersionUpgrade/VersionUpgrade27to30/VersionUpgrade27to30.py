@@ -4,6 +4,8 @@
 import configparser #To parse preference files.
 import io #To serialise the preference files afterwards.
 import os
+import urllib.parse
+import re
 
 from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
 
@@ -118,6 +120,12 @@ class VersionUpgrade27to30(VersionUpgrade):
         if not parser.has_section("general"):
             parser.add_section("general")
 
+        # Clean up the filename
+        file_base_name = os.path.basename(filename)
+        file_base_name = urllib.parse.unquote_plus(file_base_name)
+
+        um2_pattern = re.compile(r"^ultimaker[^a-zA-Z\\d\\s:]2_.*$")
+
         # The ultimaker 2 family
         ultimaker2_prefix_list = ["ultimaker2_extended_",
                                   "ultimaker2_go_",
@@ -127,9 +135,8 @@ class VersionUpgrade27to30(VersionUpgrade):
                                "ultimaker2_plus_"]
 
         # set machine definition to "ultimaker2" for the custom quality profiles that can be for the ultimaker 2 family
-        file_base_name = os.path.basename(filename)
-        is_ultimaker2_family = False
-        if not any(file_base_name.startswith(ep) for ep in exclude_prefix_list):
+        is_ultimaker2_family = um2_pattern.match(file_base_name) is not None
+        if not is_ultimaker2_family and not any(file_base_name.startswith(ep) for ep in exclude_prefix_list):
             is_ultimaker2_family = any(file_base_name.startswith(ep) for ep in ultimaker2_prefix_list)
 
         # ultimaker2 family quality profiles used to set as "fdmprinter" profiles

@@ -17,14 +17,39 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel { onModelChanged: control.color = getItem(control.currentIndex).color }
+        model: Cura.ExtrudersModel
+        {
+            onModelChanged: {
+                control.color = getItem(control.currentIndex).color;
+            }
+        }
 
         textRole: "name"
 
+        // knowing the extruder position, try to find the item index in the model
+        function getIndexByPosition(position)
+        {
+            for (var item_index in model.items)
+            {
+                var item = model.getItem(item_index)
+                if (item.index == position)
+                {
+                    return item_index
+                }
+            }
+            return -1
+        }
+
         onActivated:
         {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            if (model.getItem(index).enabled)
+            {
+                forceActiveFocus();
+                propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            } else
+            {
+                currentIndex = propertyProvider.properties.value;  // keep the old value
+            }
         }
 
         onActiveFocusChanged:
@@ -46,13 +71,6 @@ SettingItem
 
         currentIndex: propertyProvider.properties.value
 
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            onWheel: wheel.accepted = true;
-        }
-
         property string color: "#fff"
 
         Binding
@@ -62,6 +80,16 @@ SettingItem
             target: control
             property: "color"
             value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
+        }
+
+        Binding
+        {
+            target: control
+            property: "currentIndex"
+            value: control.getIndexByPosition(propertyProvider.properties.value)
+            // Sometimes when the value is already changed, the model is still being built.
+            // The when clause ensures that the current index is not updated when this happens.
+            when: control.model.items.length > 0
         }
 
         indicator: UM.RecolorImage
@@ -117,6 +145,7 @@ SettingItem
             rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
             text: control.currentText
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             font: UM.Theme.getFont("default")
             color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -145,7 +174,7 @@ SettingItem
         popup: Popup {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
-            implicitHeight: contentItem.implicitHeight
+            implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
             contentItem: ListView {
@@ -171,9 +200,20 @@ SettingItem
 
             contentItem: Label
             {
+                anchors.fill: parent
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+
                 text: model.name
                 renderType: Text.NativeRendering
-                color: UM.Theme.getColor("setting_control_text")
+                color:
+                {
+                    if (model.enabled) {
+                        UM.Theme.getColor("setting_control_text")
+                    } else {
+                        UM.Theme.getColor("action_button_disabled_text");
+                    }
+                }
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
