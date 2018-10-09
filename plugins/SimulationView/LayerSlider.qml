@@ -234,6 +234,11 @@ Item
             UM.SimulationView.setCurrentLayer(value)
 
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
+            // In case there is only one layer, the diff value results in a NaN, so this is for catching this specific case
+            if (isNaN(diff))
+            {
+                diff = 0
+            }
             var newUpperYPosition = Math.round(diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newUpperYPosition
 
@@ -339,6 +344,11 @@ Item
             UM.SimulationView.setMinimumLayer(value)
 
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
+            // In case there is only one layer, the diff value results in a NaN, so this is for catching this specific case
+            if (isNaN(diff))
+            {
+                diff = 0
+            }
             var newLowerYPosition = Math.round((sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize) + diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newLowerYPosition
 

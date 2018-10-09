@@ -1167,7 +1167,7 @@ class MachineManager(QObject):
                 self._fixQualityChangesGroupToNotSupported(quality_changes_group)
 
         quality_changes_container = self._empty_quality_changes_container
-        quality_container = self._empty_quality_container
+        quality_container = self._empty_quality_container  # type: Optional[InstanceContainer]
         if quality_changes_group.node_for_global and quality_changes_group.node_for_global.getContainer():
             quality_changes_container = cast(InstanceContainer, quality_changes_group.node_for_global.getContainer())
         if quality_group is not None and quality_group.node_for_global and quality_group.node_for_global.getContainer():

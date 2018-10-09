@@ -26,7 +26,7 @@ Component
         Label
         {
             id: manageQueueLabel
-            anchors.rightMargin: 4 * UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: 3 * UM.Theme.getSize("default_margin").width
             anchors.right: queuedPrintJobs.right
             anchors.bottom: queuedLabel.bottom
             text: catalog.i18nc("@label link to connect manager", "Manage queue")
@@ -50,7 +50,7 @@ Component
             anchors.left: queuedPrintJobs.left
             anchors.top: parent.top
             anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
-            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width + 5
             text: catalog.i18nc("@label", "Queued")
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")

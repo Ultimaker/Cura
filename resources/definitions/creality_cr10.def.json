@@ -37,7 +37,7 @@
         "top_bottom_thickness": {
             "default_value": 0.6
         },
-        "top_bottom_pattern": {
+        "top_bottom_pattern_0": {
             "default_value": "concentric"
         },
         "infill_pattern": {
