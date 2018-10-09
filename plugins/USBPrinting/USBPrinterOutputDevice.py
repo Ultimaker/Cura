@@ -15,8 +15,6 @@ from cura.PrinterOutput.GenericOutputController import GenericOutputController
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty, QUrl
-
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
 from time import time, sleep
@@ -98,13 +96,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             application = CuraApplication.getInstance()
             application.triggerNextExitCheck()
 
-    @pyqtSlot(str)
-    def updateFirmware(self, file: Union[str, QUrl]) -> None:
-        if not self._firmware_updater:
-            return
-
-        self._firmware_updater.updateFirmware(file)
-
     ## Reset USB device settings
     #
     def resetDeviceSettings(self) -> None:
@@ -169,7 +160,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._baud_rate = baud_rate
 
     def connect(self):
-        self._firmware_name = None # after each connection ensure that the firmware name is removed
+        self._firmware_name = None  # after each connection ensure that the firmware name is removed
 
         if self._baud_rate is None:
             if self._use_auto_detect:

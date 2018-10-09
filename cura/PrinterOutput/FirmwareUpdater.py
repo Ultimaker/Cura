@@ -22,16 +22,16 @@ class FirmwareUpdater(QObject):
 
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
 
-        self._firmware_location = ""
+        self._firmware_file = ""
         self._firmware_progress = 0
         self._firmware_update_state = FirmwareUpdateState.idle
 
-    def updateFirmware(self, file: Union[str, QUrl]) -> None:
+    def updateFirmware(self, firmware_file: Union[str, QUrl]) -> None:
         # the file path could be url-encoded.
-        if file.startswith("file://"):
-            self._firmware_location = QUrl(file).toLocalFile()
+        if firmware_file.startswith("file://"):
+            self._firmware_file = QUrl(firmware_file).toLocalFile()
         else:
-            self._firmware_location = file
+            self._firmware_file = firmware_file
 
         self._setFirmwareUpdateState(FirmwareUpdateState.updating)
 
@@ -44,26 +44,26 @@ class FirmwareUpdater(QObject):
     def _cleanupAfterUpdate(self) -> None:
         # Clean up for next attempt.
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
-        self._firmware_location = ""
+        self._firmware_file = ""
         self._onFirmwareProgress(100)
         self._setFirmwareUpdateState(FirmwareUpdateState.completed)
 
-    @pyqtProperty(float, notify = firmwareProgressChanged)
-    def firmwareProgress(self) -> float:
+    @pyqtProperty(int, notify = firmwareProgressChanged)
+    def firmwareProgress(self) -> int:
         return self._firmware_progress
 
     @pyqtProperty(int, notify=firmwareUpdateStateChanged)
     def firmwareUpdateState(self) -> "FirmwareUpdateState":
         return self._firmware_update_state
 
-    def _setFirmwareUpdateState(self, state) -> None:
+    def _setFirmwareUpdateState(self, state: "FirmwareUpdateState") -> None:
         if self._firmware_update_state != state:
             self._firmware_update_state = state
             self.firmwareUpdateStateChanged.emit()
 
     # Callback function for firmware update progress.
-    def _onFirmwareProgress(self, progress, max_progress = 100) -> None:
-        self._firmware_progress = (progress / max_progress) * 100  # Convert to scale of 0-100
+    def _onFirmwareProgress(self, progress: int, max_progress: int = 100) -> None:
+        self._firmware_progress = int(progress * 100 / max_progress)   # Convert to scale of 0-100
         self.firmwareProgressChanged.emit()
 
 

@@ -16,7 +16,7 @@ Cura.MachineAction
     anchors.fill: parent;
     property bool printerConnected: Cura.MachineManager.printerConnected
     property var activeOutputDevice: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
-    property var canUpdateFirmware: activeOutputDevice ? activeOutputDevice.activePrinter.canUpdateFirmware : false
+    property bool canUpdateFirmware: activeOutputDevice ? activeOutputDevice.activePrinter.canUpdateFirmware : false
 
     Column
     {
@@ -51,7 +51,7 @@ Cura.MachineAction
             anchors.horizontalCenter: parent.horizontalCenter
             width: childrenRect.width
             spacing: UM.Theme.getSize("default_margin").width
-            property var firmwareName: Cura.MachineManager.activeMachine.getDefaultFirmwareName()
+            property string firmwareName: Cura.MachineManager.activeMachine.getDefaultFirmwareName()
             Button
             {
                 id: autoUpgradeButton

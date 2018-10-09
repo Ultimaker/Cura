@@ -20,15 +20,15 @@ class GenericOutputController(PrinterOutputController):
         self._preheat_bed_timer = QTimer()
         self._preheat_bed_timer.setSingleShot(True)
         self._preheat_bed_timer.timeout.connect(self._onPreheatBedTimerFinished)
-        self._preheat_printer = None #type: Optional[PrinterOutputModel]
+        self._preheat_printer = None  # type: Optional[PrinterOutputModel]
 
         self._preheat_hotends_timer = QTimer()
         self._preheat_hotends_timer.setSingleShot(True)
         self._preheat_hotends_timer.timeout.connect(self._onPreheatHotendsTimerFinished)
-        self._preheat_hotends = set() #type: Set[ExtruderOutputModel]
+        self._preheat_hotends = set()  # type: Set[ExtruderOutputModel]
 
         self._output_device.printersChanged.connect(self._onPrintersChanged)
-        self._active_printer = None #type: Optional[PrinterOutputModel]
+        self._active_printer = None  # type: Optional[PrinterOutputModel]
 
     def _onPrintersChanged(self) -> None:
         if self._active_printer:
@@ -54,7 +54,7 @@ class GenericOutputController(PrinterOutputController):
                 self._preheat_hotends_timer.stop()
                 for extruder in self._preheat_hotends:
                     extruder.updateIsPreheating(False)
-                self._preheat_hotends = set() #type: Set[ExtruderOutputModel]
+                self._preheat_hotends = set()  # type: Set[ExtruderOutputModel]
 
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed) -> None:
         self._output_device.sendCommand("G91")

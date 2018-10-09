@@ -15,6 +15,7 @@ MYPY = False
 if MYPY:
     from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+    from UM.Settings.ContainerInterface import ContainerInterface
 
 catalog = i18nCatalog("cura")
 
@@ -25,15 +26,15 @@ class FirmwareUpdaterMachineAction(MachineAction):
         self._qml_url = "FirmwareUpdaterMachineAction.qml"
         ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
-        self._active_output_device = None #type: Optional[PrinterOutputDevice]
-        self._active_firmware_updater = None #type: Optional[FirmwareUpdater]
+        self._active_output_device = None  # type: Optional[PrinterOutputDevice]
+        self._active_firmware_updater = None  # type: Optional[FirmwareUpdater]
 
         CuraApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onEngineCreated(self) -> None:
         CuraApplication.getInstance().getMachineManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
-    def _onContainerAdded(self, container) -> None:
+    def _onContainerAdded(self, container: "ContainerInterface") -> None:
         # Add this action as a supported action to all machine definitions if they support USB connection
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine" and container.getMetaDataEntry("supports_usb_connection"):
             CuraApplication.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())

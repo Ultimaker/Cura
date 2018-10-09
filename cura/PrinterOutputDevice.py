@@ -4,7 +4,7 @@
 from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, QObject, QTimer, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Logger import Logger
@@ -12,9 +12,10 @@ from UM.FileHandler.FileHandler import FileHandler #For typing.
 from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
+from UM.FlameProfiler import pyqtSlot
 
 from enum import IntEnum  # For the connection state tracking.
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Union
 
 MYPY = False
 if MYPY:
@@ -231,3 +232,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     def getFirmwareUpdater(self) -> Optional["FirmwareUpdater"]:
         return self._firmware_updater
+
+    @pyqtSlot(str)
+    def updateFirmware(self, firmware_file: Union[str, QUrl]) -> None:
+        if not self._firmware_updater:
+            return
+
+        self._firmware_updater.updateFirmware(firmware_file)
