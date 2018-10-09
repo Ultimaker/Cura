@@ -603,7 +603,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def cancelDownload(self) -> None:
-        Logger.log("i", "Toolbox: User cancelled the download of a plugin.")
+        Logger.log("i", "Toolbox: User cancelled the download of a package.")
         self.resetDownload()
 
     def resetDownload(self) -> None:
@@ -755,6 +755,7 @@ class Toolbox(QObject, Extension):
         self._active_package = package
         self.activePackageChanged.emit()
 
+    ##  The active package is the package that is currently being downloaded
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
     def activePackage(self) -> Optional[Dict[str, Any]]:
         return self._active_package
