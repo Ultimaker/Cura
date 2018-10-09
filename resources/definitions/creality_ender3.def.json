@@ -9,7 +9,8 @@
         "file_formats": "text/x-gcode",
         "platform": "creality_ender3_platform.stl",
         "preferred_quality_type": "draft",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "creality_ender3_extruder_0"
         }
     },
