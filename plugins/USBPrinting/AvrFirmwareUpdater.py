@@ -4,7 +4,6 @@
 from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater, FirmwareUpdateState
 
 from .avr_isp import stk500v2, intelHex
@@ -12,8 +11,13 @@ from serial import SerialException
 
 from time import sleep
 
+MYPY = False
+if MYPY:
+    from cura.PrinterOutputDevice import PrinterOutputDevice
+
+
 class AvrFirmwareUpdater(FirmwareUpdater):
-    def __init__(self, output_device: PrinterOutputDevice) -> None:
+    def __init__(self, output_device: "PrinterOutputDevice") -> None:
         super().__init__(output_device)
 
     def _updateFirmware(self) -> None:

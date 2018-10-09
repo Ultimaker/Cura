@@ -4,7 +4,6 @@
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Qt.Duration import DurationFormat
-from UM.PluginRegistry import PluginRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
@@ -17,13 +16,12 @@ from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
-from time import time, sleep
+from time import time
 from queue import Queue
 from typing import Union, Optional, List, cast
 
 import re
 import functools  # Used for reduce
-import os
 
 catalog = i18nCatalog("cura")
 

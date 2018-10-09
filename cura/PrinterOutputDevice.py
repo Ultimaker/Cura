@@ -8,8 +8,6 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Logger import Logger
-from UM.FileHandler.FileHandler import FileHandler #For typing.
-from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
 from UM.FlameProfiler import pyqtSlot
@@ -22,6 +20,8 @@ if MYPY:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
     from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater
+    from UM.FileHandler.FileHandler import FileHandler
+    from UM.Scene.SceneNode import SceneNode
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -131,7 +131,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         return None
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional["FileHandler"] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     @pyqtProperty(QObject, notify = printersChanged)
