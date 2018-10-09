@@ -326,8 +326,9 @@ Item {
             height: UM.Theme.getSize("save_button_save_to_button").height
             // 3 = Done, 5 = Disabled
             enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: base.backendState != "undefined" && (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: base.backendState != "undefined" && (outputDevicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
 
+            property var outputDevicesModel: CuraApplication.getOutputDevicesModel()
 
             style: ButtonStyle {
                 background: Rectangle {
@@ -388,7 +389,7 @@ Item {
             menu: Menu {
                 id: devicesMenu;
                 Instantiator {
-                    model: devicesModel;
+                    model: outputDevicesModel
                     MenuItem {
                         text: model.description
                         checkable: true;
@@ -404,6 +405,5 @@ Item {
                 ExclusiveGroup { id: devicesMenuGroup; }
             }
         }
-        UM.OutputDevicesModel { id: devicesModel; }
     }
 }
