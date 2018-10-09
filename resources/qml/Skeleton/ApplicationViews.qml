@@ -9,7 +9,7 @@ import QtQuick.Layouts 1.1
 import UM 1.4 as UM
 import Cura 1.0 as Cura
 
-import "components"
+import "../components"
 
 // This item contains the views selector, a combobox that is dinamically created from
 // the list of available Views (packages that create different visualizactions of the

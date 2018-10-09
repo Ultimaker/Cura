@@ -5,10 +5,14 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 
 import UM 1.4 as UM
+import Cura 1.1 as Cura
 
 Item
 {
-    id: base
+    id: accountWidget
+    property var profile: Cura.API.account.userProfile
+    property var loggedIn: Cura.API.account.isLoggedIn
+    property var logoutCallback: Cura.API.account.logout
     height: UM.Theme.getSize("topheader").height
     width: UM.Theme.getSize("topheader").height
 
@@ -19,24 +23,21 @@ Item
         height: Math.round(0.8 * parent.height)
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+        source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_default")
     }
 
     MouseArea
     {
-        anchors.fill: avatar
-        onClicked:
-        {
-            // Collapse/Expand the dropdown panel
-            accountManagementPanel.visible = !accountManagementPanel.visible
-        }
+        anchors.fill: parent
+        onClicked: accountManagementPanel.visible = !accountManagementPanel.visible // Collapse/Expand the dropdown panel
     }
 
     UM.PointingRectangle
     {
         id: accountManagementPanel
 
-        width: 250
-        height: 250
+        width: panel.width
+        height: panel.height
 
         anchors
         {
@@ -56,16 +57,23 @@ Item
         borderColor: UM.Theme.getColor("lining")
         borderWidth: UM.Theme.getSize("default_lining").width
 
+        // Shows the user management options or general options to create account
         Loader
         {
             id: panel
-            sourceComponent: login
+            sourceComponent: loggedIn ? userManagementWidget : generalManagementWidget
         }
     }
 
     Component
     {
-        id: login
-        Label {text: "HOLA"}
+        id: userManagementWidget
+        UserManagementWidget { }
+    }
+
+    Component
+    {
+        id: generalManagementWidget
+        GeneralManagementWidget { }
     }
 }

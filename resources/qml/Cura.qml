@@ -105,6 +105,7 @@ UM.MainWindow
 
             width: parent.width
             height: parent.height - menu.height - topHeader.height
+            z: topHeader.z - 1
 
             Keys.forwardTo: menu
 

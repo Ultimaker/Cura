@@ -9,10 +9,12 @@ Item
 {
     id: avatar
 
+    property var source
+
     Image
     {
         id: profileImage
-        source: UM.Theme.getImage("avatar_default")
+        source: avatar.source ? avatar.source : UM.Theme.getImage("avatar_default")
         sourceSize: Qt.size(parent.width, parent.height)
         width: parent.width
         height: parent.height
