@@ -10,6 +10,7 @@ import QtQuick.Dialogs 1.2
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
+import "Dialogs"
 import "Menus"
 import "Skeleton"
 

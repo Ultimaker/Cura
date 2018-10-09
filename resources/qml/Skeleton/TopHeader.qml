@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.4 as UM
 import Cura 1.0 as Cura
 
-import "../Accounts"
+import "../Account"
 
 Rectangle
 {
