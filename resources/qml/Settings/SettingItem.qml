@@ -115,6 +115,7 @@ Item {
             text: definition.label
             elide: Text.ElideMiddle;
             renderType: Text.NativeRendering
+            textFormat: Text.PlainText
 
             color: UM.Theme.getColor("setting_control_text");
             opacity: (definition.visible) ? 1 : 0.5
@@ -139,7 +140,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;
@@ -260,12 +261,6 @@ Item {
                         // entry (user container) are set, we can simply remove the container.
                         propertyProvider.removeFromContainer(0)
                     }
-                    else if(last_entry - 1 == base.stackLevel)
-                    {
-                        // Another special case. The setting that is overriden is only 1 instance container deeper,
-                        // so we can remove it.
-                        propertyProvider.removeFromContainer(0)
-                    }
                     else
                     {
                         // Put that entry into the "top" instance container.
@@ -281,7 +276,7 @@ Item {
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
-                iconSource: UM.Theme.getIcon("notice");
+                iconSource: UM.Theme.getIcon("formula");
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(base.tooltipText);

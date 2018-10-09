@@ -6,13 +6,10 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QImage
 
 from cura.PreviewPass import PreviewPass
-from cura.Scene import ConvexHullNode
 
 from UM.Application import Application
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
-from UM.Mesh.MeshData import transformVertices
 from UM.Scene.Camera import Camera
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
@@ -51,7 +48,7 @@ class Snapshot:
         # determine zoom and look at
         bbox = None
         for node in DepthFirstIterator(root):
-            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
+            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonThumbnailVisibleMesh"):
                 if bbox is None:
                     bbox = node.getBoundingBox()
                 else:
@@ -66,7 +63,7 @@ class Snapshot:
         size = max(bbox.width, bbox.height, bbox.depth * 0.5)
 
         # Looking from this direction (x, y, z) in OGL coordinates
-        looking_from_offset = Vector(1, 1, 2)
+        looking_from_offset = Vector(-1, 1, 2)
         if size > 0:
             # determine the watch distance depending on the size
             looking_from_offset = looking_from_offset * size * 1.3

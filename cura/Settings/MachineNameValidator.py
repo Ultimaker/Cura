@@ -35,10 +35,9 @@ class MachineNameValidator(QObject):
     ##  Check if a specified machine name is allowed.
     #
     #   \param name The machine name to check.
-    #   \param position The current position of the cursor in the text box.
     #   \return ``QValidator.Invalid`` if it's disallowed, or
     #   ``QValidator.Acceptable`` if it's allowed.
-    def validate(self, name, position):
+    def validate(self, name):
         #Check for file name length of the current settings container (which is the longest file we're saving with the name).
         try:
             filename_max_length = os.statvfs(Resources.getDataStoragePath()).f_namemax
@@ -54,7 +53,7 @@ class MachineNameValidator(QObject):
     ##  Updates the validation state of a machine name text field.
     @pyqtSlot(str)
     def updateValidation(self, new_name):
-        is_valid = self.validate(new_name, 0)
+        is_valid = self.validate(new_name)
         if is_valid == QValidator.Acceptable:
             self.validation_regex = "^.*$" #Matches anything.
         else:

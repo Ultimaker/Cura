@@ -1,28 +1,32 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
 import os.path
 import zipfile
 
+import numpy
+
+import Savitar
+
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from UM.Application import Application
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
+
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.QualityManager import QualityManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 MYPY = False
 
-import Savitar
-import numpy
 
 try:
     if not MYPY:
@@ -31,10 +35,20 @@ except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
 
+
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                comment="3MF",
+                suffixes=["3mf"]
+            )
+        )
+
         self._supported_extensions = [".3mf"]
         self._root = None
         self._base_name = ""
@@ -45,7 +59,7 @@ class ThreeMFReader(MeshReader):
         if transformation == "":
             return Matrix()
 
-        splitted_transformation = transformation.split()
+        split_transformation = transformation.split()
         ## Transformation is saved as:
         ## M00 M01 M02 0.0
         ## M10 M11 M12 0.0
@@ -54,20 +68,20 @@ class ThreeMFReader(MeshReader):
         ## We switch the row & cols as that is how everyone else uses matrices!
         temp_mat = Matrix()
         # Rotation & Scale
-        temp_mat._data[0, 0] = splitted_transformation[0]
-        temp_mat._data[1, 0] = splitted_transformation[1]
-        temp_mat._data[2, 0] = splitted_transformation[2]
-        temp_mat._data[0, 1] = splitted_transformation[3]
-        temp_mat._data[1, 1] = splitted_transformation[4]
-        temp_mat._data[2, 1] = splitted_transformation[5]
-        temp_mat._data[0, 2] = splitted_transformation[6]
-        temp_mat._data[1, 2] = splitted_transformation[7]
-        temp_mat._data[2, 2] = splitted_transformation[8]
+        temp_mat._data[0, 0] = split_transformation[0]
+        temp_mat._data[1, 0] = split_transformation[1]
+        temp_mat._data[2, 0] = split_transformation[2]
+        temp_mat._data[0, 1] = split_transformation[3]
+        temp_mat._data[1, 1] = split_transformation[4]
+        temp_mat._data[2, 1] = split_transformation[5]
+        temp_mat._data[0, 2] = split_transformation[6]
+        temp_mat._data[1, 2] = split_transformation[7]
+        temp_mat._data[2, 2] = split_transformation[8]
 
         # Translation
-        temp_mat._data[0, 3] = splitted_transformation[9]
-        temp_mat._data[1, 3] = splitted_transformation[10]
-        temp_mat._data[2, 3] = splitted_transformation[11]
+        temp_mat._data[0, 3] = split_transformation[9]
+        temp_mat._data[1, 3] = split_transformation[10]
+        temp_mat._data[2, 3] = split_transformation[11]
 
         return temp_mat
 
@@ -77,9 +91,9 @@ class ThreeMFReader(MeshReader):
         self._object_count += 1
         node_name = "Object %s" % self._object_count
 
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
-        um_node = CuraSceneNode()
+        um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
         um_node.setName(node_name)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
@@ -108,8 +122,6 @@ class ThreeMFReader(MeshReader):
 
         # Add the setting override decorator, so we can add settings to this node.
         if settings:
-            um_node.addDecorator(SettingOverrideDecorator())
-
             global_container_stack = Application.getInstance().getGlobalContainerStack()
 
             # Ensure the correct next container for the SettingOverride decorator is set.
@@ -120,8 +132,8 @@ class ThreeMFReader(MeshReader):
                     um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
-                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                um_node.callDecoration("getStack").getTop().setDefinition(definition.getId())
+                definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+                um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
 
@@ -138,7 +150,7 @@ class ThreeMFReader(MeshReader):
                     continue
                 setting_container.setProperty(key, "value", setting_value)
 
-        if len(um_node.getChildren()) > 0:
+        if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
             group_decorator = GroupDecorator()
             um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
@@ -149,7 +161,7 @@ class ThreeMFReader(MeshReader):
             um_node.addDecorator(sliceable_decorator)
         return um_node
 
-    def read(self, file_name):
+    def _read(self, file_name):
         result = []
         self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.
@@ -187,9 +199,9 @@ class ThreeMFReader(MeshReader):
                 # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
                 # build volume.
                 if global_container_stack:
-                    translation_vector = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2,
-                                                y=-global_container_stack.getProperty("machine_depth", "value") / 2,
-                                                z=0)
+                    translation_vector = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2,
+                                                y = -global_container_stack.getProperty("machine_depth", "value") / 2,
+                                                z = 0)
                     translation_matrix = Matrix()
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)
@@ -213,7 +225,7 @@ class ThreeMFReader(MeshReader):
 
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")
-            return []
+            return None
 
         return result
 
@@ -225,23 +237,20 @@ class ThreeMFReader(MeshReader):
     #   * inch
     #   * foot
     #   * meter
-    def _getScaleFromUnit(self, unit):
+    def _getScaleFromUnit(self, unit: Optional[str]) -> Vector:
+        conversion_to_mm = {
+            "micron": 0.001,
+            "millimeter": 1,
+            "centimeter": 10,
+            "meter": 1000,
+            "inch": 25.4,
+            "foot": 304.8
+        }
         if unit is None:
             unit = "millimeter"
-        if unit == "micron":
-            scale = 0.001
-        elif unit == "millimeter":
-            scale = 1
-        elif unit == "centimeter":
-            scale = 10
-        elif unit == "inch":
-            scale = 25.4
-        elif unit == "foot":
-            scale = 304.8
-        elif unit == "meter":
-            scale = 1000
-        else:
-            Logger.log("w", "Unrecognised unit %s used. Assuming mm instead", unit)
-            scale = 1
+        elif unit not in conversion_to_mm:
+            Logger.log("w", "Unrecognised unit {unit} used. Assuming mm instead.".format(unit = unit))
+            unit = "millimeter"
 
+        scale = conversion_to_mm[unit]
         return Vector(scale, scale, scale)

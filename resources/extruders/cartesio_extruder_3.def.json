@@ -14,19 +14,13 @@
             "maximum_value": "3"
         },
         "machine_nozzle_offset_x": { "default_value": 0.0 },
-        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": -100.0 },
+        "material_diameter": { "default_value": 1.75 },
         "machine_extruder_start_code": {
-          "default_value": "\n;start extruder_3\n\nM117 printing...\n"
+          "default_value": "\n;start T3\n\nM104 T3 S{material_print_temperature_layer_0}\nG1 X65 Y215 F9000 ; go to wipe position\nM109 T3 S{material_print_temperature_layer_0}; wait for temp\nG1 E10 F300; prime\nG92 E0\nG1 X45 Y235 F3000; wipe\nG1 X55 F9000\nG1 Y215 F6000; wipe again\n\nM117 printing...\n"         
         },
         "machine_extruder_end_code": {
-           "default_value": "\nM104 T3 S120\n;end extruder_3\n"
-        },
-
-        "machine_extruder_start_pos_abs": { "default_value": true },
-        "machine_extruder_start_pos_x": { "default_value": 48 },
-        "machine_extruder_start_pos_y": { "default_value": 309 },
-        "machine_extruder_end_pos_abs": { "default_value": true },
-        "machine_extruder_end_pos_x": { "default_value": 24 },
-        "machine_extruder_end_pos_y": { "default_value": 309}
+           "default_value": "\nM104 T3 S{material_standby_temperature}\nG1 X65 Y215 F9000 ; go to wipe position\nM109 T3 R{material_standby_temperature}; wait for temp\nG1 X45 Y235 F3000; wipe\nG1 X55 F9000\nG1 Y215 F6000; wipe again\n\n;end T3\n\n"
+        }
     }
 }

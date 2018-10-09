@@ -1,5 +1,5 @@
-// Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2018 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -15,7 +15,9 @@ Item
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    height: childrenRect.height + UM.Theme.getSize("sidebar_margin").height
+
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var activePrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0].activePrinter : null
     property var activePrintJob: activePrinter ? activePrinter.activePrintJob: null
@@ -279,16 +281,16 @@ Item
             text: {
                 if (!printerConnected || activePrintJob == null)
                 {
-                   return catalog.i18nc("@label:", "Pause");
+                   return catalog.i18nc("@label", "Pause");
                 }
 
                 if (activePrintJob.state == "paused")
                 {
-                    return catalog.i18nc("@label:", "Resume");
+                    return catalog.i18nc("@label", "Resume");
                 }
                 else
                 {
-                    return catalog.i18nc("@label:", "Pause");
+                    return catalog.i18nc("@label", "Pause");
                 }
             }
             onClicked:
@@ -320,7 +322,7 @@ Item
 
             height: UM.Theme.getSize("save_button_save_to_button").height
 
-            text: catalog.i18nc("@label:", "Abort Print")
+            text: catalog.i18nc("@label", "Abort Print")
             onClicked: confirmationDialog.visible = true
 
             style: UM.Theme.styles.sidebar_action_button

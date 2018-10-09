@@ -6,7 +6,11 @@
         "visible": true,
         "author": "Michael Wildermuth",
         "manufacturer": "Creality3D",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "creality_cr10s4_extruder_0"
+        }
     },
     "overrides": {
         "machine_width": {

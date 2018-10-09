@@ -18,7 +18,7 @@ Rectangle
     height: UM.Theme.getSize("sidebar_header").height
     color: UM.Controller.activeStage.stageId == "MonitorStage" ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
     property int rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
@@ -150,7 +150,7 @@ Rectangle
             visible: base.width - allItemsWidth - 1 * this.width > 0
         }
 
-        // #5 Left view
+        // #5 Right view
         Button
         {
             iconSource: UM.Theme.getIcon("view_right")
@@ -201,7 +201,11 @@ Rectangle
             // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here
         }
 
-        onCurrentIndexChanged: viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+        onCurrentIndexChanged:
+        {
+            if (model.getItem(currentIndex).id != undefined)
+                viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+        }
         currentIndex: getActiveIndex()
 
         // watch the active view proxy for changes made from the menu item

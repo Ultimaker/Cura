@@ -1,15 +1,17 @@
-from UM.Qt.ListModel import ListModel
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+import os
+from collections import OrderedDict
 
 from PyQt5.QtCore import pyqtSlot, Qt
+
 from UM.Application import Application
-from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 
-from collections import OrderedDict
-import os
+from UM.Qt.ListModel import ListModel
 
 
 class UserChangesModel(ListModel):
@@ -38,12 +40,18 @@ class UserChangesModel(ListModel):
         self._update()
 
     def _update(self):
+        application = Application.getInstance()
+        machine_manager = application.getMachineManager()
+        cura_formula_functions = application.getCuraFormulaFunctions()
+
         item_dict = OrderedDict()
         item_list = []
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = machine_manager.activeMachine
         if not global_stack:
             return
-        stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+
+        stacks = [global_stack]
+        stacks.extend(global_stack.extruders.values())
 
         # Check if the definition container has a translation file and ensure it's loaded.
         definition = global_stack.getBottom()
@@ -69,13 +77,7 @@ class UserChangesModel(ListModel):
 
             # Override "getExtruderValue" with "getDefaultExtruderValue" so we can get the default values
             user_changes = containers.pop(0)
-            default_value_resolve_context = PropertyEvaluationContext(stack)
-            default_value_resolve_context.context["evaluate_from_container_index"] = 1  # skip the user settings container
-            default_value_resolve_context.context["override_operators"] = {
-                "extruderValue": ExtruderManager.getDefaultExtruderValue,
-                "extruderValues": ExtruderManager.getDefaultExtruderValues,
-                "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
-            }
+            default_value_resolve_context = cura_formula_functions.createContextForDefaultValueEvaluation(stack)
 
             for setting_key in user_changes.getAllKeys():
                 original_value = None

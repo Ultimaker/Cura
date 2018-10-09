@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 enable_testing()
@@ -34,7 +34,7 @@ function(cura_add_test)
     if (NOT ${test_exists})
         add_test(
             NAME ${_NAME}
-            COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
+            COMMAND ${PYTHON_EXECUTABLE} -m pytest --verbose --full-trace --capture=no --no-print-log --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
         )
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
@@ -53,3 +53,9 @@ foreach(_plugin ${_plugins})
         cura_add_test(NAME pytest-${_plugin_name} DIRECTORY ${_plugin_directory} PYTHONPATH "${_plugin_directory}|${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")
     endif()
 endforeach()
+
+#Add code style test.
+add_test(
+    NAME "code-style"
+    COMMAND ${PYTHON_EXECUTABLE} run_mypy.py WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)

@@ -7,7 +7,11 @@
         "author": "RBC",
         "manufacturer": "RigidBot",
         "file_formats": "text/x-gcode",
-        "platform": "rigidbotbig_platform.stl"
+        "platform": "rigidbotbig_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "rigidbot_big_extruder_0"
+        }
     },
 
     "overrides": {
@@ -23,9 +27,6 @@
         },
         "machine_heated_bed": {
             "default_value": true
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "gantry_height": {
             "default_value": 0
@@ -53,9 +54,6 @@
         },
         "material_bed_temperature": {
             "default_value": 60
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 60

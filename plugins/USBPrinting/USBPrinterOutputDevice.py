@@ -1,28 +1,28 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
-from UM.Application import Application
 from UM.Qt.Duration import DurationFormat
 from UM.PluginRegistry import PluginRegistry
 
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.GenericOutputController import GenericOutputController
 
 from .AutoDetectBaudJob import AutoDetectBaudJob
-from .USBPrinterOutputController import USBPrinterOutputController
 from .avr_isp import stk500v2, intelHex
 
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty, QUrl
 
-from serial import Serial, SerialException
-from threading import Thread
+from serial import Serial, SerialException, SerialTimeoutException
+from threading import Thread, Event
 from time import time, sleep
 from queue import Queue
 from enum import IntEnum
-from typing import Union, Optional, List
+from typing import Union, Optional, List, cast
 
 import re
 import functools  # Used for reduce
@@ -35,7 +35,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     firmwareProgressChanged = pyqtSignal()
     firmwareUpdateStateChanged = pyqtSignal()
 
-    def __init__(self, serial_port: str, baud_rate: Optional[int] = None):
+    def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
@@ -68,7 +68,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._is_printing = False  # A print is being sent.
 
         ## Set when print is started in order to check running time.
-        self._print_start_time = None  # type: Optional[int]
+        self._print_start_time = None  # type: Optional[float]
         self._print_estimated_time = None  # type: Optional[int]
 
         self._accepts_commands = True
@@ -82,8 +82,35 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
-        # Queue for commands that need to be send. Used when command is sent when a print is active.
-        self._command_queue = Queue()
+        # Queue for commands that need to be sent.
+        self._command_queue = Queue()   # type: Queue
+        # Event to indicate that an "ok" was received from the printer after sending a command.
+        self._command_received = Event()
+        self._command_received.set()
+
+        CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
+
+    # This is a callback function that checks if there is any printing in progress via USB when the application tries
+    # to exit. If so, it will show a confirmation before
+    def _checkActivePrintingUponAppExit(self) -> None:
+        application = CuraApplication.getInstance()
+        if not self._is_printing:
+            # This USB printer is not printing, so we have nothing to do. Call the next callback if exists.
+            application.triggerNextExitCheck()
+            return
+
+        application.setConfirmExitDialogCallback(self._onConfirmExitDialogResult)
+        application.showConfirmExitDialog.emit(catalog.i18nc("@label", "A USB print is in progress, closing Cura will stop this print. Are you sure?"))
+
+    def _onConfirmExitDialogResult(self, result: bool) -> None:
+        if result:
+            application = CuraApplication.getInstance()
+            application.triggerNextExitCheck()
+
+    ## Reset USB device settings
+    #
+    def resetDeviceSettings(self):
+        self._firmware_name = None
 
     ##  Request the current scene to be sent to a USB-connected printer.
     #
@@ -96,11 +123,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._is_printing:
             return  # Aleady printing
 
-        Application.getInstance().getController().setActiveStage("MonitorStage")
+        # cancel any ongoing preheat timer before starting a print
+        self._printers[0].getController().stopPreheatTimers()
+
+        CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
 
         # find the G-code for the active build plate to print
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
-        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
+        active_build_plate_id = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        gcode_dict = getattr(CuraApplication.getInstance().getController().getScene(), "gcode_dict")
         gcode_list = gcode_dict[active_build_plate_id]
 
         self._printGCode(gcode_list)
@@ -110,13 +140,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def showFirmwareInterface(self):
         if self._firmware_view is None:
             path = os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")
-            self._firmware_view = Application.getInstance().createQmlComponent(path, {"manager": self})
+            self._firmware_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
 
         self._firmware_view.show()
 
     @pyqtSlot(str)
     def updateFirmware(self, file):
-        self._firmware_location = file
+        # the file path could be url-encoded.
+        if file.startswith("file://"):
+            self._firmware_location = QUrl(file).toLocalFile()
+        else:
+            self._firmware_location = file
         self.showFirmwareInterface()
         self.setFirmwareUpdateState(FirmwareUpdateState.updating)
         self._update_firmware_thread.start()
@@ -126,9 +160,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._connection_state != ConnectionState.closed:
             self.close()
 
-        hex_file = intelHex.readHex(self._firmware_location)
-        if len(hex_file) == 0:
-            Logger.log("e", "Unable to read provided hex file. Could not update firmware")
+        try:
+            hex_file = intelHex.readHex(self._firmware_location)
+            assert len(hex_file) > 0
+        except (FileNotFoundError, AssertionError):
+            Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
             self.setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
             return
 
@@ -166,7 +202,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.setFirmwareUpdateState(FirmwareUpdateState.completed)
 
         # Try to re-connect with the machine again, which must be done on the Qt thread, so we use call later.
-        Application.getInstance().callLater(self.connect)
+        CuraApplication.getInstance().callLater(self.connect)
 
     @pyqtProperty(float, notify = firmwareProgressChanged)
     def firmwareProgress(self):
@@ -198,14 +234,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
-        self._is_printing = True
         self._print_start_time = time()
 
-        self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
+        self._print_estimated_time = int(CuraApplication.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
         for i in range(0, 4):  # Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
 
+        self._is_printing = True
         self.writeFinished.emit(self)
 
     def _autoDetectFinished(self, job: AutoDetectBaudJob):
@@ -222,6 +258,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._baud_rate = baud_rate
 
     def connect(self):
+        self._firmware_name = None # after each connection ensure that the firmware name is removed
+
         if self._baud_rate is None:
             if self._use_auto_detect:
                 auto_detect_job = AutoDetectBaudJob(self._serial_port)
@@ -234,10 +272,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             except SerialException:
                 Logger.log("w", "An exception occured while trying to create serial connection")
                 return
-        container_stack = Application.getInstance().getGlobalContainerStack()
+        container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
-        self._printers = [PrinterOutputModel(output_controller=USBPrinterOutputController(self), number_of_extruders=num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller=GenericOutputController(self), number_of_extruders=num_extruders)]
         self._printers[0].updateName(container_stack.getName())
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
@@ -253,21 +291,23 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send a command to printer.
     def sendCommand(self, command: Union[str, bytes]):
-        if self._is_printing:
+        if not self._command_received.is_set():
             self._command_queue.put(command)
-        elif self._connection_state == ConnectionState.connected:
+        else:
             self._sendCommand(command)
-
     def _sendCommand(self, command: Union[str, bytes]):
-        if self._serial is None:
+        if self._serial is None or self._connection_state != ConnectionState.connected:
             return
 
-        if type(command == str):
-            command = (command + "\n").encode()
-        if not command.endswith(b"\n"):
-            command += b"\n"
-        self._serial.write(b"\n")
-        self._serial.write(command)
+        new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode() # type: bytes
+        if not new_command.endswith(b"\n"):
+            new_command += b"\n"
+        try:
+            self._command_received.clear()
+            self._serial.write(new_command)
+        except SerialTimeoutException:
+            Logger.log("w", "Timeout when sending command to printer via USB.")
+            self._command_received.set()
 
     def _update(self):
         while self._connection_state == ConnectionState.connected and self._serial is not None:
@@ -278,19 +318,38 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
                 # Timeout, or no request has been sent at all.
+                self._command_received.set() # We haven't really received the ok, but we need to send a new command
+
                 self.sendCommand("M105")
                 self._last_temperature_request = time()
 
-            if b"ok T:" in line or line.startswith(b"T:"):  # Temperature message
-                extruder_temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
+                if self._firmware_name is None:
+                    self.sendCommand("M115")
+
+            if re.search(b"[B|T\d*]: ?\d+\.?\d*", line):  # Temperature message. 'T:' for extruder and 'B:' for bed
+                extruder_temperature_matches = re.findall(b"T(\d*): ?(\d+\.?\d*) ?\/?(\d+\.?\d*)?", line)
                 # Update all temperature values
-                for match, extruder in zip(extruder_temperature_matches, self._printers[0].extruders):
+                matched_extruder_nrs = []
+                for match in extruder_temperature_matches:
+                    extruder_nr = 0
+                    if match[0] != b"":
+                        extruder_nr = int(match[0])
+
+                    if extruder_nr in matched_extruder_nrs:
+                        continue
+                    matched_extruder_nrs.append(extruder_nr)
+
+                    if extruder_nr >= len(self._printers[0].extruders):
+                        Logger.log("w", "Printer reports more temperatures than the number of configured extruders")
+                        continue
+
+                    extruder = self._printers[0].extruders[extruder_nr]
                     if match[1]:
                         extruder.updateHotendTemperature(float(match[1]))
                     if match[2]:
                         extruder.updateTargetHotendTemperature(float(match[2]))
 
-                bed_temperature_matches = re.findall(b"B: ?([\d\.]+) ?\/?([\d\.]+)?", line)
+                bed_temperature_matches = re.findall(b"B: ?(\d+\.?\d*)  ?\/?(\d+\.?\d*) ?", line)
                 if bed_temperature_matches:
                     match = bed_temperature_matches[0]
                     if match[0]:
@@ -298,14 +357,23 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     if match[1]:
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
 
-            if self._is_printing:
-                if b"ok" in line:
-                    if not self._command_queue.empty():
-                        self._sendCommand(self._command_queue.get())
-                    elif self._paused:
+            if b"FIRMWARE_NAME:" in line:
+                self._setFirmwareName(line)
+
+            if b"ok" in line:
+                self._command_received.set()
+                if not self._command_queue.empty():
+                    self._sendCommand(self._command_queue.get())
+                if self._is_printing:
+                    if self._paused:
                         pass  # Nothing to do!
                     else:
                         self._sendNextGcodeLine()
+
+            if self._is_printing:
+                if line.startswith(b'!!'):
+                    Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
+                    self.cancelPrint()
                 elif b"resend" in line.lower() or b"rs" in line:
                     # A resend can be requested either by Resend, resend or rs.
                     try:
@@ -315,18 +383,31 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                             # In some cases of the RS command it needs to be handled differently.
                             self._gcode_position = int(line.split()[1])
 
+    def _setFirmwareName(self, name):
+        new_name = re.findall(r"FIRMWARE_NAME:(.*);", str(name))
+        if  new_name:
+            self._firmware_name = new_name[0]
+            Logger.log("i", "USB output device Firmware name: %s", self._firmware_name)
+        else:
+            self._firmware_name = "Unknown"
+            Logger.log("i", "Unknown USB output device Firmware name: %s", str(name))
+
+    def getFirmwareName(self):
+        return self._firmware_name
+
     def pausePrint(self):
         self._paused = True
 
     def resumePrint(self):
         self._paused = False
+        self._sendNextGcodeLine() #Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
 
     def cancelPrint(self):
         self._gcode_position = 0
         self._gcode.clear()
         self._printers[0].updateActivePrintJob(None)
         self._is_printing = False
-        self._is_paused = False
+        self._paused = False
 
         # Turn off temperatures, fan and steppers
         self._sendCommand("M140 S0")
@@ -364,7 +445,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
-            print_job = PrintJobOutputModel(output_controller = USBPrinterOutputController(self), name= Application.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = GenericOutputController(self), name= CuraApplication.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 

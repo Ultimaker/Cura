@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import platform
@@ -14,7 +14,7 @@ import urllib.request
 import urllib.error
 import shutil
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 from PyQt5.QtGui import QDesktopServices
 
@@ -84,14 +84,14 @@ class CrashHandler:
         dialog = QDialog()
         dialog.setMinimumWidth(500)
         dialog.setMinimumHeight(170)
-        dialog.setWindowTitle(catalog.i18nc("@title:window", "Cura Crashed"))
+        dialog.setWindowTitle(catalog.i18nc("@title:window", "Cura can't start"))
         dialog.finished.connect(self._closeEarlyCrashDialog)
 
         layout = QVBoxLayout(dialog)
 
         label = QLabel()
-        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred.</p></b>
-                    <p>Unfortunately, Cura encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>
+                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
                     <p>Backups can be found in the configuration folder.</p>
                     <p>Please send us this Crash Report to fix the problem.</p>
                 """))
@@ -130,66 +130,13 @@ class CrashHandler:
             self._sendCrashReport()
         os._exit(1)
 
+    ##  Backup the current resource directories and create clean ones.
     def _backupAndStartClean(self):
-        # backup the current cura directories and create clean ones
-        from cura.CuraVersion import CuraVersion
-        from UM.Resources import Resources
-        # The early crash may happen before those information is set in Resources, so we need to set them here to
-        # make sure that Resources can find the correct place.
-        Resources.ApplicationIdentifier = "cura"
-        Resources.ApplicationVersion = CuraVersion
-        config_path = Resources.getConfigStoragePath()
-        data_path = Resources.getDataStoragePath()
-        cache_path = Resources.getCacheStoragePath()
-
-        folders_to_backup = []
-        folders_to_remove = []  # only cache folder needs to be removed
-
-        folders_to_backup.append(config_path)
-        if data_path != config_path:
-            folders_to_backup.append(data_path)
-
-        # Only remove the cache folder if it's not the same as data or config
-        if cache_path not in (config_path, data_path):
-            folders_to_remove.append(cache_path)
-
-        for folder in folders_to_remove:
-            shutil.rmtree(folder, ignore_errors = True)
-        for folder in folders_to_backup:
-            base_name = os.path.basename(folder)
-            root_dir = os.path.dirname(folder)
-
-            import datetime
-            date_now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            idx = 0
-            file_name = base_name + "_" + date_now
-            zip_file_path = os.path.join(root_dir, file_name + ".zip")
-            while os.path.exists(zip_file_path):
-                idx += 1
-                file_name = base_name + "_" + date_now + "_" + idx
-                zip_file_path = os.path.join(root_dir, file_name + ".zip")
-            try:
-                # only create the zip backup when the folder exists
-                if os.path.exists(folder):
-                    # remove the .zip extension because make_archive() adds it
-                    zip_file_path = zip_file_path[:-4]
-                    shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
-
-                    # remove the folder only when the backup is successful
-                    shutil.rmtree(folder, ignore_errors = True)
-
-                # create an empty folder so Resources will not try to copy the old ones
-                os.makedirs(folder, 0o0755, exist_ok=True)
-
-            except Exception as e:
-                Logger.logException("e", "Failed to backup [%s] to file [%s]", folder, zip_file_path)
-                if not self.has_started:
-                    print("Failed to backup [%s] to file [%s]: %s", folder, zip_file_path, e)
-
+        Resources.factoryReset()
         self.early_crash_dialog.close()
 
     def _showConfigurationFolder(self):
-        path = Resources.getConfigStoragePath();
+        path = Resources.getConfigStoragePath()
         QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
 
     def _showDetailedReport(self):
@@ -219,7 +166,7 @@ class CrashHandler:
 
     def _messageWidget(self):
         label = QLabel()
-        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>
             <p>Please use the "Send report" button to post a bug report automatically to our servers</p>
         """))
 
@@ -258,7 +205,7 @@ class CrashHandler:
         opengl_instance = OpenGL.getInstance()
         if not opengl_instance:
             self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
-            return catalog.i18nc("@label", "not yet initialised<br/>")
+            return catalog.i18nc("@label", "Not yet initialized<br/>")
 
         info = "<ul>"
         info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())

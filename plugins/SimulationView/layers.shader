@@ -28,6 +28,13 @@ vertex =
     }
 
 fragment =
+    #ifdef GL_ES
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+            precision highp float;
+        #else
+            precision mediump float;
+        #endif // GL_FRAGMENT_PRECISION_HIGH
+    #endif // GL_ES
     varying lowp vec4 v_color;
     varying float v_line_type;
 

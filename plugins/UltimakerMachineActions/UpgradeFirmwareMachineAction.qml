@@ -14,7 +14,7 @@ import Cura 1.0 as Cura
 Cura.MachineAction
 {
     anchors.fill: parent;
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property var activeOutputDevice: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
 
     Item

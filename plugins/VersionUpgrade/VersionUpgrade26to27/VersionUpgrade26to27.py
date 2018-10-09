@@ -1,11 +1,10 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To parse the files we need to upgrade and write the new files.
 import io #To serialise configparser output to a string.
 
 from UM.VersionUpgrade import VersionUpgrade
-from cura.CuraApplication import CuraApplication
 
 # a dict of renamed quality profiles:  <old_id> : <new_id>
 _renamed_quality_profiles = {
@@ -152,6 +151,10 @@ class VersionUpgrade26to27(VersionUpgrade):
                 new_id = _renamed_quality_profiles.get(container_id)
                 if new_id is not None:
                     parser.set("containers", key, new_id)
+
+        if "6" not in parser["containers"]:
+            parser["containers"]["6"] = parser["containers"]["5"]
+            parser["containers"]["5"] = "empty"
 
         for each_section in ("general", "metadata"):
             if not parser.has_section(each_section):

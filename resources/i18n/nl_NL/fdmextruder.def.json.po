@@ -1,14 +1,14 @@
-# Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Cura
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-11-30 13:05+0100\n"
+"Project-Id-Version: Cura 3.5\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com"
+"POT-Creation-Date: 2018-09-19 17:07+0000\n"
+"PO-Revision-Date: 2018-09-28 14:25+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
@@ -54,7 +54,7 @@ msgstr "Nozzlediameter"
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "De binnendiameter van de nozzle. Wijzig deze instelling wanneer u een nozzle gebruikt die geen standaardformaat heeft."
+msgstr "De binnendiameter van de nozzle. Verander deze instelling wanneer u een nozzle gebruikt die geen standaard formaat heeft."
 
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_offset_x label"
@@ -79,7 +79,7 @@ msgstr "De Y-coördinaat van de offset van de nozzle."
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "Start G-code van Extruder"
+msgstr "Start-G-code van Extruder"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
@@ -119,7 +119,7 @@ msgstr "De Y-coördinaat van de startpositie wanneer de extruder wordt ingeschak
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "Eind-g-code van Extruder"
+msgstr "Eind-G-code van Extruder"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
@@ -164,7 +164,7 @@ msgstr "Z-positie voor Primen Extruder"
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
+msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt teruggeduwd aan het begin van het printen."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"
@@ -195,3 +195,23 @@ msgstr "Y-positie voor Primen Extruder"
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "De Y-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
+
+#: fdmextruder.def.json
+msgctxt "material label"
+msgid "Material"
+msgstr "Materiaal"
+
+#: fdmextruder.def.json
+msgctxt "material description"
+msgid "Material"
+msgstr "Materiaal"
+
+#: fdmextruder.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Diameter"
+
+#: fdmextruder.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Bepaalt de diameter van het gebruikte filament. Pas deze waarde aan de diameter van het gebruikte filament aan."

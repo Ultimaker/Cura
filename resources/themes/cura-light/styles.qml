@@ -532,7 +532,7 @@ QtObject {
 
                     SequentialAnimation on x {
                         id: xAnim
-                        property int animEndPoint: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2) - Theme.getSize("progressbar_control").width
+                        property int animEndPoint: Theme.getSize("message").width - Math.round((Theme.getSize("default_margin").width * 2.5)) - Theme.getSize("progressbar_control").width
                         running: control.indeterminate && control.visible
                         loops: Animation.Infinite
                         NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
@@ -1031,6 +1031,61 @@ QtObject {
                 }
             }
             label: Item { }
+        }
+    }
+
+    property Component toolbox_action_button: Component {
+        ButtonStyle
+        {
+            background: Rectangle
+            {
+                implicitWidth: UM.Theme.getSize("toolbox_action_button").width
+                implicitHeight: UM.Theme.getSize("toolbox_action_button").height
+                color:
+                {
+                    if (control.installed)
+                    {
+                        return UM.Theme.getColor("action_button_disabled")
+                    }
+                    else
+                    {
+                        if (control.hovered)
+                        {
+                            return UM.Theme.getColor("primary_hover")
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("primary")
+                        }
+                    }
+
+                }
+            }
+            label: Label
+            {
+                text: control.text
+                color:
+                {
+                    if (control.installed)
+                    {
+                        return UM.Theme.getColor("action_button_disabled_text")
+                    }
+                    else
+                    {
+                        if (control.hovered)
+                        {
+                            return UM.Theme.getColor("button_text_hover")
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("button_text")
+                        }
+                    }
+                }
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font: UM.Theme.getFont("default_bold")
+            }
         }
     }
 }

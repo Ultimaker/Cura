@@ -9,13 +9,15 @@
         "platform": "imade3d_jellybox_platform.stl",
         "platform_offset": [ 0, -0.3, 0],
         "file_formats": "text/x-gcode",
-        "preferred_variant": "*0.4*",
-        "preferred_material": "*generic_pla*",
-        "preferred_quality": "*fast*",
+        "preferred_variant_name": "0.4 mm",
+        "preferred_quality_type": "fast",
         "has_materials": true,
         "has_variants": true,
         "has_machine_materials": true,
-        "has_machine_quality": true
+        "has_machine_quality": true,
+        "machine_extruder_trains": {
+            "0": "imade3d_jellybox_extruder_0"
+        }
       },
 
     "overrides": {
@@ -24,8 +26,6 @@
         "machine_width": { "default_value": 170 },
         "machine_height": { "default_value": 145 },
         "machine_depth": { "default_value": 160 },
-        "machine_nozzle_size": { "default_value": 0.4 },
-        "material_diameter": { "default_value": 1.75 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },

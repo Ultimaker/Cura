@@ -26,7 +26,6 @@ Column
 
     OutputDeviceHeader
     {
-        width: parent.width
         outputDevice: connectedDevice
     }
 
@@ -67,7 +66,7 @@ Column
     HeatedBedBox
     {
         visible: {
-            if(activePrinter != null && activePrinter.bed_temperature != -1)
+            if(activePrinter != null && activePrinter.bedTemperature != -1)
             {
                 return true
             }
@@ -79,18 +78,18 @@ Column
     UM.SettingPropertyProvider
     {
         id: bedTemperature
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "material_bed_temperature"
         watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
         storeIndex: 0
 
-        property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? properties.resolve : "None"
+        property var resolve: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine ? properties.resolve : "None"
     }
 
     UM.SettingPropertyProvider
     {
         id: machineExtruderCount
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
         watchedProperties: ["value"]
     }
@@ -122,7 +121,7 @@ Column
     {
         label: catalog.i18nc("@label", "Printing Time")
         value: activePrintJob != null ? getPrettyTime(activePrintJob.timeTotal) : ""
-        width:base.width
+        width: base.width
         visible: activePrinter != null
     }
 

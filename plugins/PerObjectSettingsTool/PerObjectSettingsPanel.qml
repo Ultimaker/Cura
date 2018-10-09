@@ -17,7 +17,6 @@ Item {
 
     width: childrenRect.width;
     height: childrenRect.height;
-
     property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
                                     "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
 
@@ -45,7 +44,7 @@ Item {
             UM.SettingPropertyProvider
             {
                 id: meshTypePropertyProvider
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 watchedProperties: [ "enabled" ]
             }
 
@@ -163,7 +162,16 @@ Item {
                         id: addedSettingsModel;
                         containerId: Cura.MachineManager.activeDefinitionId
                         expanded: [ "*" ]
-                        exclude: {
+                        filter:
+                        {
+                            if (printSequencePropertyProvider.properties.value == "one_at_a_time")
+                            {
+                                return {"settable_per_meshgroup": true};
+                            }
+                            return {"settable_per_mesh": true};
+                        }
+                        exclude:
+                        {
                             var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
 
                             if(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
@@ -176,6 +184,12 @@ Item {
                         visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                         {
                             selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
+                        }
+
+                        // For some reason the model object is updated after removing him from the memory and
+                        // it happens only on Windows. For this reason, set the destroyed value manually.
+                        Component.onDestruction: {
+                            setDestroyed(true);
                         }
                     }
 
@@ -375,7 +389,6 @@ Item {
         title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
         width: screenScaleFactor * 360
 
-        property string labelFilter: ""
         property var additional_excluded_settings
 
         onVisibilityChanged:
@@ -386,11 +399,33 @@ Item {
                 // Set skip setting, it will prevent from resetting selected mesh_type
                 contents.model.visibilityHandler.addSkipResetSetting(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type)
                 listview.model.forceUpdate()
+
+                updateFilter()
             }
         }
 
+        function updateFilter()
+        {
+            var new_filter = {};
+            if (printSequencePropertyProvider.properties.value == "one_at_a_time")
+            {
+                new_filter["settable_per_meshgroup"] = true;
+            }
+            else
+            {
+                new_filter["settable_per_mesh"] = true;
+            }
+
+            if(filterInput.text != "")
+            {
+                new_filter["i18n_label"] = "*" + filterInput.text;
+            }
+
+            listview.model.filter = new_filter;
+        }
+
         TextField {
-            id: filter
+            id: filterInput
 
             anchors {
                 top: parent.top
@@ -401,17 +436,7 @@ Item {
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...");
 
-            onTextChanged:
-            {
-                if(text != "")
-                {
-                    listview.model.filter = {"settable_per_mesh": true, "i18n_label": "*" + text}
-                }
-                else
-                {
-                    listview.model.filter = {"settable_per_mesh": true}
-                }
-            }
+            onTextChanged: settingPickDialog.updateFilter()
         }
 
         CheckBox
@@ -437,7 +462,7 @@ Item {
 
             anchors
             {
-                top: filter.bottom;
+                top: filterInput.bottom;
                 left: parent.left;
                 right: parent.right;
                 bottom: parent.bottom;
@@ -449,10 +474,6 @@ Item {
                 {
                     id: definitionsModel;
                     containerId: Cura.MachineManager.activeDefinitionId
-                    filter:
-                    {
-                        "settable_per_mesh": true
-                    }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
                     exclude:
@@ -484,6 +505,7 @@ Item {
                         }
                     }
                 }
+                Component.onCompleted: settingPickDialog.updateFilter()
             }
         }
 
@@ -501,8 +523,18 @@ Item {
     {
         id: machineExtruderCount
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: printSequencePropertyProvider
+
+        containerStack: Cura.MachineManager.activeMachine
+        key: "print_sequence"
         watchedProperties: [ "value" ]
         storeIndex: 0
     }

@@ -18,10 +18,10 @@ class RepRapFlavorParser(FlavorParser.FlavorParser):
             self._is_absolute_extrusion = False
 
     ##  Set the absolute positioning
-    #   RepRapFlavor code G90 sets position of X, Y, Z, and E to absolute
+    #   RepRapFlavor code G90 sets position of X, Y, Z to absolute
+    #   For absolute E, M82 is used
     def _gCode90(self, position, params, path):
         self._is_absolute_positioning = True
-        self._is_absolute_extrusion = True
         return position
 
     ##  Set the relative positioning

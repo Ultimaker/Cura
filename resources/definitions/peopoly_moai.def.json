@@ -4,11 +4,16 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "fieldOfView",
+        "author": "Peopoly",
         "manufacturer": "Peopoly",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
-        "has_materials": false
+        "has_materials": false,
+        "platform": "moai.obj",
+        "platform_texture": "moai.jpg",
+        "machine_extruder_trains": {
+            "0": "peopoly_moai_extruder_0"
+        }
     },
 
     "overrides": {
@@ -23,9 +28,6 @@
         },
         "machine_depth": {
             "default_value": 130
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.067
         },
         "machine_head_with_fans_polygon":
         {
@@ -45,7 +47,6 @@
         "machine_end_gcode": {
             "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
         },
-
         "line_width": {
             "minimum_value_warning": "machine_nozzle_size"
         },
@@ -74,7 +75,14 @@
             "value": "0.1"
         },
         "top_bottom_thickness": {
-            "minimum_value_warning": "0.1"
+            "minimum_value_warning": "0.1",
+            "value": "0.1"
+        },
+        "top_thickness": {
+            "minimum_value_warning": "resolveOrValue('layer_height')"
+        },
+        "bottom_thickness": {
+            "minimum_value_warning": "resolveOrValue('layer_height')"
         },
         "infill_sparse_thickness": {
             "maximum_value_warning": "0.5"
@@ -101,24 +109,23 @@
             "value": "speed_print"
         },
         "speed_travel": {
-            "value": "300"
+            "value": 150
         },
         "speed_travel_layer_0": {
-            "value": "300"
+            "value": 150
         },
         "speed_layer_0": {
-            "value": "5"
+            "value": 5
         },
         "speed_slowdown_layers": {
-            "value": "2"
+            "value": 3
         },
         "infill_overlap": {
-            "value": "15"
+            "value": 15
         },
         "adhesion_type": {
-            "value": "\"none\""
+            "value": "'none'"
         },
-
         "acceleration_enabled": {
             "value": "False"
         },
@@ -134,13 +141,13 @@
         "material_bed_temperature": {
             "enabled": false
         },
-        "material_diameter": {
-            "enabled": false,
-            "default_value": 1.75
-        },
         "cool_fan_enabled": {
             "enabled": false,
             "value": "False"
+        },
+        "cool_fan_speed_min": {
+            "enabled": false,
+            "value": 0
         },
         "retraction_enable": {
             "enabled": false,
@@ -151,7 +158,8 @@
             "value": "'off'"
         },
         "retract_at_layer_change": {
-            "enabled": false
+            "enabled": false,
+            "value": false
         },
         "cool_min_layer_time_fan_speed_max": {
             "enabled": false
@@ -160,6 +168,117 @@
             "enabled": false
         },
         "cool_fan_full_layer": {
+            "enabled": false
+        },
+        "minimum_polygon_circumference": {
+            "value": "0.1"
+        },
+        "meshfix_maximum_resolution": {
+            "value": "0.005"
+        },
+        "skin_outline_count": {
+            "value": 0
+        },
+        "travel_compensate_overlapping_walls_enabled": {
+            "value": "False"
+        },
+        "travel_compensate_overlapping_walls_0_enabled": {
+            "value": "False"
+        },
+        "travel_compensate_overlapping_walls_x_enabled": {
+            "value": "False"
+        },
+        "wall_0_wipe_dist": {
+            "value": "machine_nozzle_size / 3"
+        },
+        "wall_thickness": {
+            "value": 0.5
+        },
+        "infill_sparse_density": {
+            "value": 70
+        },
+        "infill_pattern": {
+            "value": "'lines'"
+        },
+        "infill_angles": {
+            "value": "[0,90]"
+        },
+        "cool_min_layer_time": {
+            "enabled": false,
+            "value": 0
+        },
+        "cool_min_speed": {
+            "enabled": false,
+            "value": 0
+        },
+        "cool_lift_head": {
+            "enabled": false,
+            "value": "False"
+        },
+        "material_flow": {
+            "enabled": false
+        },
+        "material_flow_layer_0": {
+            "enabled": false
+        },
+        "speed_equalize_flow_enabled": {
+            "enabled": false,
+            "value": "False"
+        },
+        "draft_shield_enabled": {
+            "enabled": false,
+            "value": "False"
+        },
+        "z_seam_corner": {
+            "value": "'z_seam_corner_none'"
+        },
+        "z_seam_type": {
+            "value": "'shortest'"
+        },
+        "skin_no_small_gaps_heuristic": {
+            "value": "False"
+        },
+        "ironing_enabled": {
+            "enabled": false,
+            "value": "False"
+        },
+        "skin_overlap": {
+            "value": 5
+        },
+        "infill_wipe_dist": {
+            "value": 0
+        },
+        "expand_skins_expand_distance": {
+            "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2"
+        },
+        "max_feedrate_z_override": {
+            "value": 0,
+            "enabled": false
+        },
+        "flow_rate_max_extrusion_offset": {
+            "enabled": false
+        },
+        "flow_rate_extrusion_offset_factor": {
+            "enabled": false
+        },
+        "adaptive_layer_height_enabled": {
+            "value": "False",
+            "enabled": false
+        },
+        "bridge_settings_enabled": {
+            "value": "False",
+            "enabled": false            
+        },
+        "acceleration_enabled": {
+            "value": "False",
+            "enabled": false
+        },
+        "relative_extrusion": {
+            "value": "False",
+            "enabled": false
+        },
+        "coasting_enable": {
+            "value": "False",
             "enabled": false
         }
     }
