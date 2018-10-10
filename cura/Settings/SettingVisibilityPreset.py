@@ -26,15 +26,15 @@ class SettingVisibilityPreset(QObject):
     def settings(self) -> List[str]:
         return self._settings
 
-    @pyqtProperty(str, notify=onIdChanged)
+    @pyqtProperty(str, notify = onIdChanged)
     def id(self) -> str:
         return self._id
 
-    @pyqtProperty(int, notify=onWeightChanged)
+    @pyqtProperty(int, notify = onWeightChanged)
     def weight(self) -> int:
         return self._weight
 
-    @pyqtProperty(str, notify=onNameChanged)
+    @pyqtProperty(str, notify = onNameChanged)
     def name(self) -> str:
         return self._name
 
@@ -66,7 +66,7 @@ class SettingVisibilityPreset(QObject):
             Logger.log("e", "[%s] is not a file", file_path)
             return None
 
-        parser = ConfigParser(allow_no_value=True)  # Accept options without any value,
+        parser = ConfigParser(allow_no_value = True)  # Accept options without any value,
 
         parser.read([file_path])
         if not parser.has_option("general", "name") or not parser.has_option("general", "weight"):

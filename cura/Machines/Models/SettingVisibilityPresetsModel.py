@@ -18,7 +18,7 @@ class SettingVisibilityPresetsModel(QObject):
     onItemsChanged = pyqtSignal()
     activePresetChanged = pyqtSignal()
 
-    def __init__(self, preferences,  parent = None):
+    def __init__(self, preferences, parent = None):
         super().__init__(parent)
 
         self._items = []  # type: List[SettingVisibilityPreset]

@@ -49,7 +49,7 @@ def test_setActivePreset():
     preferences = Preferences()
     visibility_model = SettingVisibilityPresetsModel(preferences)
     visibility_model.activePresetChanged = MagicMock()
-    # Ensure that we start of with basic (since we didn't change anyting just yet!)
+    # Ensure that we start off with basic (since we didn't change anyting just yet!)
     assert visibility_model.activePreset == "basic"
 
     # Everything should be the same.

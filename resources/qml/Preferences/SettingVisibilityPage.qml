@@ -115,8 +115,10 @@ UM.PreferencesPage
 
             currentIndex:
             {
-                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i) {
-                    if(settingVisibilityPresetsModel.items[i].id == settingVisibilityPresetsModel.activePreset) {
+                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
+                {
+                    if(settingVisibilityPresetsModel.items[i].id == settingVisibilityPresetsModel.activePreset)
+                    {
                         currentIndex = i;
                         return;
                     }
