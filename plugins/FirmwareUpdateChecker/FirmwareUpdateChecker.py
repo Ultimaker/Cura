@@ -12,23 +12,34 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.Settings.GlobalStack import GlobalStack
 
-from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
+from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob, MachineId, get_settings_key_for_machine
 
 i18n_catalog = i18nCatalog("cura")
-
 
 ## This Extension checks for new versions of the firmware based on the latest checked version number.
 #  The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
 #  to change it to work for other applications.
 class FirmwareUpdateChecker(Extension):
     JEDI_VERSION_URL = "http://software.ultimaker.com/jedi/releases/latest.version?utm_source=cura&utm_medium=software&utm_campaign=resources"
+    UM_NEW_URL_TEMPLATE = "http://software.ultimaker.com/releases/firmware/{0}/stable/version.txt"
+    VERSION_URLS_PER_MACHINE = \
+        {
+            MachineId.UM3: [JEDI_VERSION_URL, UM_NEW_URL_TEMPLATE.format(MachineId.UM3.value)],
+            MachineId.UM3E: [JEDI_VERSION_URL, UM_NEW_URL_TEMPLATE.format(MachineId.UM3E.value)],
+            MachineId.S5: [UM_NEW_URL_TEMPLATE.format(MachineId.S5.value)]
+        }
+    # The 'new'-style URL is the only way to check for S5 firmware,
+    # and in the future, the UM3 line will also switch over, but for now the old 'JEDI'-style URL is still needed.
+    # TODO: Parse all of that from a file, because this will be a big mess of large static values which gets worse with each printer.
+    #       See also the to-do in FirmWareCheckerJob.
 
     def __init__(self):
         super().__init__()
 
         # Initialize the Preference called `latest_checked_firmware` that stores the last version
-        # checked for the UM3. In the future if we need to check other printers' firmware
-        Application.getInstance().getPreferences().addPreference("info/latest_checked_firmware", "")
+        # checked for each printer.
+        for machine_id in MachineId:
+            Application.getInstance().getPreferences().addPreference(get_settings_key_for_machine(machine_id), "")
 
         # Listen to a Signal that indicates a change in the list of printers, just if the user has enabled the
         # 'check for updates' option
@@ -68,7 +79,8 @@ class FirmwareUpdateChecker(Extension):
             Logger.log("i", "A firmware update check is already running, do nothing.")
             return
 
-        self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent, url = self.JEDI_VERSION_URL,
+        self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
+                                                   urls = self.VERSION_URLS_PER_MACHINE,
                                                    callback = self._onActionTriggered,
                                                    set_download_url_callback = self._onSetDownloadUrl)
         self._check_job.start()
