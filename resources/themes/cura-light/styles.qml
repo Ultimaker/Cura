@@ -90,92 +90,57 @@ QtObject {
         }
     }
 
-    property Component topheader_tab: Component {
-        ButtonStyle {
-            background: Item {
-                implicitHeight: Theme.getSize("topheader_button").height
-                implicitWidth: Theme.getSize("topheader_button").width + Theme.getSize("topheader_button_icon").width
+    property Component topheader_tab: Component
+    {
+        ButtonStyle
+        {
+            // This property will be back-propagated when the width of the label is calculated
+            property var buttonWidth: 0
 
-                Rectangle {
-                    id: buttonFace;
-                    anchors.fill: parent;
+            background: Rectangle
+            {
+                id: buttonFace
+                implicitHeight: control.height
+                implicitWidth: buttonWidth
+                color: control.checked ? UM.Theme.getColor("topheader_button_background_active") : UM.Theme.getColor("topheader_button_background_inactive")
 
-                    color: "transparent"
-                    Behavior on color { ColorAnimation { duration: 50; } }
-
-                    Rectangle {
-                        id: underline;
-
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.bottom: parent.bottom
-                        width: Theme.getSize("topheader_button").width + Theme.getSize("topheader_button_icon").width
-                        height: Theme.getSize("sidebar_header_highlight").height
-                        color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
-                        visible: control.hovered || control.checked
-                    }
-                }
+                Behavior on color { ColorAnimation { duration: 50 } }
             }
 
             label: Item
             {
-                implicitHeight: Theme.getSize("topheader_button_icon").height
-                implicitWidth: Theme.getSize("topheader_button").width + Theme.getSize("topheader_button_icon").width
-                Item
+                id: contents
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                height: control.height
+                width: buttonLabel.width + 4 * UM.Theme.getSize("default_margin").width
+
+                Label
                 {
+                    id: buttonLabel
+                    text: control.text
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter;
-                    width: childrenRect.width
-                    height: Theme.getSize("topheader_button_icon").height
-                    Label
+                    font: UM.Theme.getFont("medium_bold")
+                    color:
                     {
-                        id: button_label
-                        text: control.text;
-                        anchors.verticalCenter: parent.verticalCenter;
-                        font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
-                        color:
+                        if (control.checked)
                         {
-                            if(control.hovered)
+                            return UM.Theme.getColor("topheader_button_text_active")
+                        }
+                        else
+                        {
+                            if (control.hovered)
                             {
-                                return UM.Theme.getColor("topheader_button_text_hovered");
+                                return UM.Theme.getColor("topheader_button_text_hovered")
                             }
-                            if(control.checked)
-                            {
-                                return UM.Theme.getColor("topheader_button_text_active");
-                            }
-                            else
-                            {
-                                return UM.Theme.getColor("topheader_button_text_inactive");
-                            }
+                            return UM.Theme.getColor("topheader_button_text_inactive")
                         }
                     }
-                    UM.RecolorImage
-                    {
-                        visible: control.iconSource != ""
-                        id: icon
-                        anchors.left: button_label.right
-                        anchors.leftMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
-                        color: UM.Theme.getColor("text_emphasis")
-                        opacity: !control.enabled ? 0.2 : 1.0
-                        source: control.iconSource
-                        width: visible ? Theme.getSize("topheader_button_icon").width : 0
-                        height: Theme.getSize("topheader_button_icon").height
-
-                        sourceSize: Theme.getSize("topheader_button_icon")
-                    }
-                    UM.RecolorImage
-                    {
-                        id: overlayIcon
-                        anchors.left: button_label.right
-                        anchors.leftMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
-                        visible: control.overlayIconSource != "" && control.iconSource != ""
-                        color: control.overlayColor
-                        opacity: !control.enabled ? 0.2 : 1.0
-                        source: control.overlayIconSource
-                        width: visible ? Theme.getSize("topheader_button_icon").width : 0
-                        height: Theme.getSize("topheader_button_icon").height
-
-                        sourceSize: Theme.getSize("topheader_button_icon")
-                    }
+                }
+                Component.onCompleted:
+                {
+                    buttonWidth = width
                 }
             }
         }

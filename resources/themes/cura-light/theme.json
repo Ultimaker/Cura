@@ -79,11 +79,13 @@
         "border": [127, 127, 127, 255],
         "secondary": [245, 245, 245, 255],
 
-        "topheader_background": [255, 255, 255, 255],
+        "topheader_background": [12, 169, 227, 255],
 
-        "topheader_button_text_active": [0, 0, 0, 255],
-        "topheader_button_text_inactive": [128, 128, 128, 255],
+        "topheader_button_text_active": [12, 169, 227, 255],
+        "topheader_button_text_inactive": [255, 255, 255, 255],
         "topheader_button_text_hovered": [0, 0, 0, 255],
+        "topheader_button_background_active": [255, 255, 255, 255],
+        "topheader_button_background_inactive": [255, 255, 255, 0],
 
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
@@ -335,7 +337,7 @@
     "sizes": {
         "window_minimum_size": [70, 50],
 
-        "topheader": [0.0, 4.0],
+        "topheader": [0.0, 4.5],
         "topheader_button": [8, 4],
         "topheader_button_icon": [1.2, 1.2],
 
@@ -343,7 +345,7 @@
 
         "default_lining": [0.08, 0.08],
         "default_arrow": [0.8, 0.8],
-        "logo": [7.6, 1.6],
+        "logo": [8, 2.4],
 
         "default_margin": [1.0, 1.0],
         "wide_margin": [2.0, 2.0],

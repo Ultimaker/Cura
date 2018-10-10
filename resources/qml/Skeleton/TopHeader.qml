@@ -41,7 +41,6 @@ Rectangle
             horizontalCenter: parent.horizontalCenter
             leftMargin: UM.Theme.getSize("default_margin").width
         }
-        spacing: UM.Theme.getSize("default_margin").width
 
         // The topheader is dynamically filled with all available stages
         Repeater
@@ -52,7 +51,7 @@ Rectangle
 
             delegate: Button
             {
-                text: model.name
+                text: model.name.toUpperCase()
                 checkable: true
                 checked: model.active
                 exclusiveGroup: topheaderMenuGroup
