@@ -20,16 +20,6 @@ Item
 
     height: UM.Theme.getSize("views_selector").height
 
-    OrientationViews
-    {
-        id: orientationViews
-
-        anchors {
-            verticalCenter: parent.verticalCenter
-            right: viewModeButton.left
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-    }
 
     ComboBox
     {
