@@ -13,6 +13,7 @@ import Cura 1.1 as Cura
 import "Dialogs"
 import "Menus"
 import "Skeleton"
+import "components"
 
 UM.MainWindow
 {
@@ -197,7 +198,7 @@ UM.MainWindow
             {
                 id: applicationViews
 
-                visible: UM.Controller.activeStage.stageId != "MonitorStage"
+
                 anchors
                 {
                     top: parent.top
@@ -309,6 +310,20 @@ UM.MainWindow
                     top: parent.verticalCenter
                     bottom: parent.bottom
                     bottomMargin:  UM.Theme.getSize("default_margin").height
+                }
+            }
+
+
+            ViewOrientationControls
+            {
+                id: viewOrientationControls
+
+                anchors
+                {
+                    left: parent.left
+                    margins: UM.Theme.getSize("default_margin").width
+
+                    bottom: parent.bottom
                 }
             }
         }
@@ -653,11 +668,6 @@ UM.MainWindow
             askOpenAsProjectOrModelsDialog.fileUrl = project_file;
             askOpenAsProjectOrModelsDialog.show();
         }
-    }
-
-    EngineLog
-    {
-        id: engineLog;
     }
 
     Connections

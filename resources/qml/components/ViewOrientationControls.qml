@@ -13,7 +13,8 @@ Row
     id: viewOrientationControl
 
     spacing: 2 * screenScaleFactor
-
+    height: childrenRect.height
+    width: childrenRect.width
     // #1 3d view
     Button
     {

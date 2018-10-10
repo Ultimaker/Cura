@@ -58,7 +58,6 @@ Item
 
     property alias preferences: preferencesAction;
 
-    property alias showEngineLog: showEngineLogAction;
     property alias showProfileFolder: showProfileFolderAction;
     property alias documentation: documentationAction;
     property alias reportBug: reportBugAction;
@@ -394,14 +393,6 @@ Item
         id: newProjectAction
         text: catalog.i18nc("@action:inmenu menubar:file","&New Project...");
         shortcut: StandardKey.New
-    }
-
-    Action
-    {
-        id: showEngineLogAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
-        iconName: "view-list-text";
-        shortcut: StandardKey.WhatsThis;
     }
 
     Action
