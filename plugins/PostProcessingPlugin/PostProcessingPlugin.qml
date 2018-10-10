@@ -115,6 +115,7 @@ UM.Dialog
                             {
                                 wrapMode: Text.Wrap
                                 text: control.text
+                                elide: Text.ElideRight
                                 color: activeScriptButton.checked ? palette.highlightedText : palette.text
                             }
                         }
