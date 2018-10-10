@@ -97,14 +97,38 @@ QtObject {
             // This property will be back-propagated when the width of the label is calculated
             property var buttonWidth: 0
 
-            background: Rectangle
+            background: Item
             {
-                id: buttonFace
                 implicitHeight: control.height
-                implicitWidth: buttonWidth
-                color: control.checked ? UM.Theme.getColor("topheader_button_background_active") : UM.Theme.getColor("topheader_button_background_inactive")
+                implicitWidth: buttonWidth + 2 * UM.Theme.getSize("default_lining").width
 
-                Behavior on color { ColorAnimation { duration: 50 } }
+                Rectangle
+                {
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    implicitHeight: parent.height - 2 * UM.Theme.getSize("default_margin").width
+                    implicitWidth: UM.Theme.getSize("default_lining").width
+                    color: UM.Theme.getColor("topheader_button_background_active")
+                    visible: !control.checked
+                }
+                Rectangle
+                {
+                    id: buttonFace
+                    implicitHeight: parent.height
+                    implicitWidth: parent.width
+                    color: control.checked ? UM.Theme.getColor("topheader_button_background_active") : UM.Theme.getColor("topheader_button_background_inactive")
+
+                    Behavior on color { ColorAnimation { duration: 50 } }
+                }
+                Rectangle
+                {
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    implicitHeight: parent.height - 2 * UM.Theme.getSize("default_margin").width
+                    implicitWidth: UM.Theme.getSize("default_lining").width
+                    color: UM.Theme.getColor("topheader_button_background_active")
+                    visible: !control.checked
+                }
             }
 
             label: Item
