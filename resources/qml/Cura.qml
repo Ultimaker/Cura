@@ -655,11 +655,6 @@ UM.MainWindow
         }
     }
 
-    EngineLog
-    {
-        id: engineLog;
-    }
-
     Connections
     {
         target: Cura.Actions.showProfileFolder
