@@ -973,6 +973,20 @@
                             "maximum_value_warning": "150",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
+                        },
+                        "first_layer_support_line_width": 
+                        {
+                            "label": "First Layer Support Line Width",
+                            "description": "Separate line width for the first layer of support structure that touches the raft or build plate. After this first layer, the support line width returns to normal.",
+                            "type": "float",
+                            "unit": "mm",
+                            "minimum_value": "0.001",
+                            "default_value": 0.4,
+                            "enabled": "support_enable",
+                            "value": "line_width",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 }
