@@ -1,8 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 2.1
 
 import UM 1.4 as UM
 import Cura 1.1 as Cura
@@ -12,7 +12,6 @@ Item
     id: accountWidget
     property var profile: Cura.API.account.userProfile
     property var loggedIn: Cura.API.account.isLoggedIn
-    property var logoutCallback: Cura.API.account.logout
     height: UM.Theme.getSize("topheader").height
     width: UM.Theme.getSize("topheader").height
 
@@ -24,6 +23,7 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
         source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_default")
+        outlineColor: loggedIn ? UM.Theme.getColor("account_widget_ouline_active") : UM.Theme.getColor("account_widget_ouline_inactive")
     }
 
     MouseArea
@@ -58,22 +58,11 @@ Item
         borderWidth: UM.Theme.getSize("default_lining").width
 
         // Shows the user management options or general options to create account
-        Loader
+        AccountDetails
         {
             id: panel
-            sourceComponent: loggedIn ? userManagementWidget : generalManagementWidget
+            profile: Cura.API.account.userProfile
+            loggedIn: Cura.API.account.isLoggedIn
         }
-    }
-
-    Component
-    {
-        id: userManagementWidget
-        UserManagementWidget { }
-    }
-
-    Component
-    {
-        id: generalManagementWidget
-        GeneralManagementWidget { }
     }
 }

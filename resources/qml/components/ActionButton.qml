@@ -19,6 +19,7 @@ Button
     property var textHoverColor: UM.Theme.getColor("button_text_hover")
     property var textDisabledColor: textColor
     property var textFont: UM.Theme.getFont("action_button")
+    property var cornerRadius: 2 * screenScaleFactor
 
     contentItem: Row
     {
@@ -32,6 +33,7 @@ Button
             sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
             visible: button.iconSource != ""
+            anchors.verticalCenter: parent.verticalCenter
         }
 
         Label
@@ -42,12 +44,14 @@ Button
             font: button.textFont
             visible: button.text != ""
             renderType: Text.NativeRendering
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 
     background: Rectangle
     {
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
+        radius: cornerRadius
     }
 
     MouseArea

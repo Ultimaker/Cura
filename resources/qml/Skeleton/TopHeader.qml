@@ -1,13 +1,14 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
 
+import "../components"
 import "../Account"
 
 Rectangle
@@ -72,13 +73,30 @@ Rectangle
     Button
     {
         id: toolboxShortcutButton
-        text: catalog.i18nc("@action:button", "Toolbox")
         anchors
         {
             right: accountWidget.left
             rightMargin: UM.Theme.getSize("default_margin").width
+            verticalCenter: parent.verticalCenter
         }
-        style: UM.Theme.styles.topheader_tab
+        style: ButtonStyle
+        {
+            background: Rectangle
+            {
+                color: control.hovered ? UM.Theme.getColor("secondary") : UM.Theme.getColor("topheader_button_background_active")
+                radius: 2 * screenScaleFactor
+            }
+
+            label: Label
+            {
+                text: catalog.i18nc("@action:button", "Toolbox")
+                color: UM.Theme.getColor("topheader_button_text_active")
+                font: UM.Theme.getFont("action_button")
+                renderType: Text.NativeRendering
+                anchors.verticalCenter: control.verticalCenter
+            }
+
+        }
         action: Cura.Actions.browsePackages
     }
 
