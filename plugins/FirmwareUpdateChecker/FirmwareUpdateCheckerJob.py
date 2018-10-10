@@ -10,6 +10,7 @@ from UM.Job import Job
 from UM.Version import Version
 
 import urllib.request
+from urllib.error import URLError
 import codecs
 
 from UM.i18n import i18nCatalog
@@ -62,16 +63,20 @@ class FirmwareUpdateCheckerJob(Job):
         self._callback = callback
         self._set_download_url_callback = set_download_url_callback
 
-        application_name = Application.getInstance().getApplicationName()
-        application_version = Application.getInstance().getVersion()
-        self._headers = {"User-Agent": "%s - %s" % (application_name, application_version)}
+        self._headers = {}  # Don't set headers yet.
 
     def getUrlResponse(self, url: str) -> str:
-        request = urllib.request.Request(url, headers=self._headers)
-        current_version_file = urllib.request.urlopen(request)
-        reader = codecs.getreader("utf-8")
+        result = "0.0.0"
 
-        return reader(current_version_file).read(firstline=True)
+        try:
+            request = urllib.request.Request(url, headers=self._headers)
+            current_version_file = urllib.request.urlopen(request)
+            reader = codecs.getreader("utf-8")
+            result = reader(current_version_file).read(firstline=True)
+        except URLError:
+            Logger.log('w', "Could not reach '{0}', if this URL is old, consider removal.".format(url))
+
+        return result
 
     def getCurrentVersionForMachine(self, machine_id: MachineId) -> Version:
         max_version = Version([0, 0, 0])
@@ -95,6 +100,10 @@ class FirmwareUpdateCheckerJob(Job):
             return
 
         try:
+            application_name = Application.getInstance().getApplicationName()
+            application_version = Application.getInstance().getVersion()
+            self._headers = {"User-Agent": "%s - %s" % (application_name, application_version)}
+
             # get machine name from the definition container
             machine_name = self._container.definition.getName()
             machine_name_parts = machine_name.lower().split(" ")
