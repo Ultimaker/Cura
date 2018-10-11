@@ -9,6 +9,7 @@ from UM.Version import Version
 
 import urllib.request
 from urllib.error import URLError
+from typing import Dict
 import codecs
 
 from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, get_settings_key_for_machine
@@ -24,14 +25,14 @@ class FirmwareUpdateCheckerJob(Job):
     ZERO_VERSION = Version(STRING_ZERO_VERSION)
     EPSILON_VERSION = Version(STRING_EPSILON_VERSION)
 
-    def __init__(self, container=None, silent=False, lookups:FirmwareUpdateCheckerLookup=None, callback=None):
+    def __init__(self, container, silent, lookups: FirmwareUpdateCheckerLookup, callback) -> None:
         super().__init__()
         self._container = container
         self.silent = silent
         self._callback = callback
 
         self._lookups = lookups
-        self._headers = {}  # Don't set headers yet.
+        self._headers = {}  # type:Dict[str, str]  # Don't set headers yet.
 
     def getUrlResponse(self, url: str) -> str:
         result = self.STRING_ZERO_VERSION
