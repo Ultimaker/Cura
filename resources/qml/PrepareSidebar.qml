@@ -86,7 +86,8 @@ Rectangle
         }
     }
 
-    SidebarHeader {
+    SidebarHeader
+    {
         id: header
         width: parent.width
         visible: !hideSettings && (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants)
@@ -96,7 +97,8 @@ Rectangle
         onHideTooltip: base.hideTooltip()
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: headerSeparator
         width: parent.width
         visible: settingsModeSelection.visible && header.visible
