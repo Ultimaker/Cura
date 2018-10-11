@@ -49,6 +49,7 @@ class FirmwareUpdateChecker(Extension):
 
         self._download_url = None
         self._check_job = None
+        self._name_cache = []
 
     ##  Callback for the message that is spawned when there is a new version.
     def _onActionTriggered(self, message, action):
@@ -74,10 +75,10 @@ class FirmwareUpdateChecker(Extension):
     #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
     #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
-        # Do not run multiple check jobs in parallel
-        if self._check_job is not None:
-            Logger.log("i", "A firmware update check is already running, do nothing.")
+        container_name = container.definition.getName()
+        if container_name in self._name_cache:
             return
+        self._name_cache.append(container_name)
 
         self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
                                                    urls = self.VERSION_URLS_PER_MACHINE,

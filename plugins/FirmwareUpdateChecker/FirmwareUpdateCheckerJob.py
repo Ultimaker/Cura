@@ -34,6 +34,7 @@ def default_parse_version_response(response: str) -> Version:
 
 
 ##  This job checks if there is an update available on the provided URL.
+
 class FirmwareUpdateCheckerJob(Job):
     MACHINE_PER_NAME = \
         {
@@ -155,7 +156,7 @@ class FirmwareUpdateCheckerJob(Job):
                     message.actionTriggered.connect(self._callback)
                     message.show()
             else:
-                Logger.log('i', "No machine with name {0} in list of firmware to check.".format(repr(machine_id)))
+                Logger.log('i', "No machine with name {0} in list of firmware to check.".format(machine_name))
 
         except Exception as e:
             Logger.log("w", "Failed to check for new version: %s", e)
