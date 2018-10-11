@@ -1,8 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from enum import Enum, unique
-
 from UM.Application import Application
 from UM.Message import Message
 from UM.Logger import Logger
@@ -13,6 +11,8 @@ import urllib.request
 from urllib.error import URLError
 import codecs
 
+from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup
+
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
@@ -21,53 +21,20 @@ def get_settings_key_for_machine(machine_id: int) -> str:
     return "info/latest_checked_firmware_for_{0}".format(machine_id)
 
 
-def default_parse_version_response(response: str) -> Version:
-    raw_str = response.split('\n', 1)[0].rstrip()
-    return Version(raw_str.split('.'))  # Split it into a list; the default parsing of 'single string' is different.
-
-
 ##  This job checks if there is an update available on the provided URL.
 class FirmwareUpdateCheckerJob(Job):
     STRING_ZERO_VERSION = "0.0.0"
     STRING_EPSILON_VERSION = "0.0.1"
     ZERO_VERSION = Version(STRING_ZERO_VERSION)
     EPSILON_VERSION = Version(STRING_EPSILON_VERSION)
-    JSON_NAME_TO_VERSION_PARSE_FUNCTION = {"default": default_parse_version_response}
 
-    def __init__(self, container=None, silent=False, machines_json=None, callback=None, set_download_url_callback=None):
+    def __init__(self, container=None, silent=False, lookups:FirmwareUpdateCheckerLookup=None, callback=None, set_download_url_callback=None):
         super().__init__()
         self._container = container
         self.silent = silent
-
-        # Parse all the needed lookup-tables from the '.json' file(s) in the resources folder.
-        # TODO: This should not be here when the merge to master is done, as it will be repeatedly recreated.
-        #       It should be a separate object this constructor receives instead.
-        self._machine_ids = []
-        self._machine_per_name = {}
-        self._parse_version_url_per_machine = {}
-        self._check_urls_per_machine = {}
-        self._redirect_user_per_machine = {}
-        try:
-            for machine_json in machines_json:
-                machine_id = machine_json.get("id")
-                machine_name = machine_json.get("name")
-                self._machine_ids.append(machine_id)
-                self._machine_per_name[machine_name] = machine_id
-                version_parse_function = self.JSON_NAME_TO_VERSION_PARSE_FUNCTION.get(machine_json.get("version_parser"))
-                if version_parse_function is None:
-                    Logger.log('w', "No version-parse-function specified for machine {0}.".format(machine_name))
-                    version_parse_function = default_parse_version_response  # Use default instead if nothing is found.
-                self._parse_version_url_per_machine[machine_id] = version_parse_function
-                self._check_urls_per_machine[machine_id] = []  # Multiple check-urls: see '_comment' in the .json file.
-                for check_url in machine_json.get("check_urls"):
-                    self._check_urls_per_machine[machine_id].append(check_url)
-                self._redirect_user_per_machine[machine_id] = machine_json.get("update_url")
-        except:
-            Logger.log('e', "Couldn't parse firmware-update-check loopup-lists from file.")
-
         self._callback = callback
         self._set_download_url_callback = set_download_url_callback
-
+        self._lookups = lookups
         self._headers = {}  # Don't set headers yet.
 
     def getUrlResponse(self, url: str) -> str:
@@ -86,8 +53,8 @@ class FirmwareUpdateCheckerJob(Job):
     def getCurrentVersionForMachine(self, machine_id: int) -> Version:
         max_version = self.ZERO_VERSION
 
-        machine_urls = self._check_urls_per_machine.get(machine_id)
-        parse_function = self._parse_version_url_per_machine.get(machine_id)
+        machine_urls = self._lookups.getCheckUrlsFor(machine_id)
+        parse_function = self._lookups.getParseVersionUrlFor(machine_id)
         if machine_urls is not None and parse_function is not None:
             for url in machine_urls:
                 version = parse_function(self.getUrlResponse(url))
@@ -100,7 +67,7 @@ class FirmwareUpdateCheckerJob(Job):
         return max_version
 
     def run(self):
-        if not self._machine_ids or self._machine_ids is None:
+        if self._lookups is None:
             Logger.log("e", "Can not check for a new release. URL not set!")
             return
 
@@ -113,7 +80,7 @@ class FirmwareUpdateCheckerJob(Job):
             machine_name = self._container.definition.getName()
 
             # If it is not None, then we compare between the checked_version and the current_version
-            machine_id = self._machine_per_name.get(machine_name.lower())
+            machine_id = self._lookups.getMachineByName(machine_name.lower())
             if machine_id is not None:
                 Logger.log("i", "You have a {0} in the printer list. Let's check the firmware!".format(machine_name))
 
@@ -151,7 +118,7 @@ class FirmwareUpdateCheckerJob(Job):
 
                     # If we do this in a cool way, the download url should be available in the JSON file
                     if self._set_download_url_callback:
-                        redirect = self._redirect_user_per_machine.get(machine_id)
+                        redirect = self._lookups.getRedirectUseror(machine_id)
                         if redirect is not None:
                             self._set_download_url_callback(redirect)
                         else:

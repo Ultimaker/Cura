@@ -15,6 +15,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob, get_settings_key_for_machine
+from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -58,20 +59,12 @@ class FirmwareUpdateChecker(Extension):
     def lateInit(self):
         self._late_init = False
 
-        # Open the .json file with the needed lookup-lists for each machine(/model) and retrieve 'raw' json.
-        self._machines_json = None
-        json_path = os.path.join(PluginRegistry.getInstance().getPluginPath("FirmwareUpdateChecker"),
-                                 "resources/machines.json")
-        with open(json_path, "r", encoding="utf-8") as json_file:
-            self._machines_json = json.load(json_file).get("machines")
-        if self._machines_json is None:
-            Logger.log('e', "Missing or inaccessible: {0}".format(json_path))
-            return
+        self._lookups = FirmwareUpdateCheckerLookup(os.path.join(PluginRegistry.getInstance().getPluginPath(
+            "FirmwareUpdateChecker"), "resources/machines.json"))
 
         # Initialize the Preference called `latest_checked_firmware` that stores the last version
         # checked for each printer.
-        for machine_json in self._machines_json:
-            machine_id = machine_json.get("id")
+        for machine_id in self._lookups.getMachineIds():
             Application.getInstance().getPreferences().addPreference(get_settings_key_for_machine(machine_id), "")
 
     ##  Connect with software.ultimaker.com, load latest.version and check version info.
@@ -90,7 +83,7 @@ class FirmwareUpdateChecker(Extension):
         self._name_cache.append(container_name)
 
         self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
-                                                   machines_json = self._machines_json,
+                                                   lookups = self._lookups,
                                                    callback = self._onActionTriggered,
                                                    set_download_url_callback = self._onSetDownloadUrl)
         self._check_job.start()
