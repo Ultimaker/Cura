@@ -410,6 +410,27 @@ class StartSliceJob(Job):
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
+
+                if transform_matrix:
+                    scene_front = None
+                    for object in group:
+                        if type(object) is ConvexHullNode:
+                            continue
+
+                        is_non_printing_mesh = object.getName() in bottom_cutting_meshes or object.getName() in raft_meshes
+                        if not is_non_printing_mesh:
+                            per_object_stack = object.callDecoration("getStack")
+                            if per_object_stack:
+                                is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+
+                        if not is_non_printing_mesh:
+                            _front = object.getBoundingBox().back
+                            if scene_front is None or _front < scene_front:
+                                scene_front = _front
+
+                    if scene_front is not None:
+                        front_offset = transformVertices(numpy.array([[0,0,scene_front]]), transform_matrix)[0][1]
+
                 for object in group:
                     if type(object) is ConvexHullNode:
                         continue
@@ -420,7 +441,9 @@ class StartSliceJob(Job):
                     # offset all non-raft objects if rafts are enabled
                     # air gap is applied here to vertically offset objects from the raft
                     if object.getName() not in raft_meshes:
-                        translate[1] = translate[1] + raft_offset
+                        translate[1] += raft_offset
+                    if front_offset:
+                        translate[2] -= front_offset
 
                     # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                     verts = mesh_data.getVertices()
@@ -429,17 +452,6 @@ class StartSliceJob(Job):
 
                     if transform_matrix:
                         verts = transformVertices(verts, transform_matrix)
-
-                        is_non_printing_mesh = object.getName() in bottom_cutting_meshes or object.getName() in raft_meshes
-                        if not is_non_printing_mesh:
-                            per_object_stack = object.callDecoration("getStack")
-                            if per_object_stack:
-                                is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
-
-                        if not is_non_printing_mesh:
-                            _front_offset = verts[:, 1].min()
-                            if front_offset is None or _front_offset < front_offset:
-                                front_offset = _front_offset
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
@@ -486,6 +498,7 @@ class StartSliceJob(Job):
                 # Store the front-most coordinate of the scene so the scene can be moved back into place post slicing
                 # TODO: this should be handled per mesh-group instead of per scene
                 # One-at-a-time printing should be disabled for slanted gantry printers for now
+
                 self._scene.getRoot().callDecoration("setSceneFrontOffset", front_offset)
 
         self.setResult(StartJobResult.Finished)
