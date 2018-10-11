@@ -169,6 +169,14 @@ UM.MainWindow
                 action: Cura.Actions.open
             }
 
+            MachineAndConfigurationSelector
+            {
+                anchors.left: openFileButton.right
+                //anchors.right: sidebar.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").height
+                anchors.top: openFileButton.top
+            }
+
             Toolbar
             {
                 id: toolbar
