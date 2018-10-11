@@ -34,8 +34,11 @@ def default_parse_version_response(response: str) -> Version:
 
 
 ##  This job checks if there is an update available on the provided URL.
-
 class FirmwareUpdateCheckerJob(Job):
+    STRING_ZERO_VERSION = "0.0.0"
+    STRING_EPSILON_VERSION = "0.0.1"
+    ZERO_VERSION = Version(STRING_ZERO_VERSION)
+    EPSILON_VERSION = Version(STRING_EPSILON_VERSION)
     MACHINE_PER_NAME = \
         {
             "ultimaker 3": MachineId.UM3,
@@ -67,7 +70,7 @@ class FirmwareUpdateCheckerJob(Job):
         self._headers = {}  # Don't set headers yet.
 
     def getUrlResponse(self, url: str) -> str:
-        result = "0.0.0"
+        result = self.STRING_ZERO_VERSION
 
         try:
             request = urllib.request.Request(url, headers=self._headers)
@@ -80,7 +83,7 @@ class FirmwareUpdateCheckerJob(Job):
         return result
 
     def getCurrentVersionForMachine(self, machine_id: MachineId) -> Version:
-        max_version = Version([0, 0, 0])
+        max_version = self.ZERO_VERSION
 
         machine_urls = self._urls.get(machine_id)
         parse_function = self.PARSE_VERSION_URL_PER_MACHINE.get(machine_id)
@@ -90,7 +93,7 @@ class FirmwareUpdateCheckerJob(Job):
                 if version > max_version:
                     max_version = version
 
-        if max_version < Version([0, 0, 1]):
+        if max_version < self.EPSILON_VERSION:
             Logger.log('w', "MachineID {0} not handled!".format(repr(machine_id)))
 
         return max_version
@@ -107,7 +110,6 @@ class FirmwareUpdateCheckerJob(Job):
 
             # get machine name from the definition container
             machine_name = self._container.definition.getName()
-            machine_name_parts = machine_name.lower().split(" ")
 
             # If it is not None, then we compare between the checked_version and the current_version
             machine_id = self.MACHINE_PER_NAME.get(machine_name.lower())
@@ -118,7 +120,7 @@ class FirmwareUpdateCheckerJob(Job):
 
                 # If it is the first time the version is checked, the checked_version is ''
                 setting_key_str = get_settings_key_for_machine(machine_id)
-                checked_version = Application.getInstance().getPreferences().getValue(setting_key_str)
+                checked_version = Version(Application.getInstance().getPreferences().getValue(setting_key_str))
 
                 # If the checked_version is '', it's because is the first time we check firmware and in this case
                 # we will not show the notification, but we will store it for the next time
