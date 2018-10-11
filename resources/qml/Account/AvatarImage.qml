@@ -10,6 +10,8 @@ Item
     id: avatar
 
     property var source
+    property var fallbackSource: UM.Theme.getImage("avatar_default")
+    property var outlineColor: UM.Theme.getColor("account_widget_ouline_active")
 
     Image
     {
@@ -40,5 +42,15 @@ Item
         maskSource: profileImageMask
         cached: true
         invert: false
+    }
+
+    UM.RecolorImage
+    {
+        id: profileImageOutline
+        source: UM.Theme.getIcon("circle_outline")
+        sourceSize: Qt.size(parent.width, parent.height)
+        width: parent.width
+        height: parent.height
+        color: avatar.outlineColor
     }
 }
