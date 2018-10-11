@@ -50,7 +50,7 @@ class CuraProfileReader(ProfileReader):
     #   \param profile_id \type{str} The name of the profile.
     #   \return \type{List[Tuple[str,str]]} List of serialized profile strings and matching profile names.
     def _upgradeProfile(self, serialized, profile_id):
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
         if "general" not in parser:

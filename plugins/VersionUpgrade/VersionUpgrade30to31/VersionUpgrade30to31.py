@@ -84,7 +84,7 @@ class VersionUpgrade30to31(VersionUpgrade):
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
     def upgradePreferences(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         # Update version numbers
@@ -105,7 +105,7 @@ class VersionUpgrade30to31(VersionUpgrade):
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
     def upgradeInstanceContainer(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         for each_section in ("general", "metadata"):
@@ -130,7 +130,7 @@ class VersionUpgrade30to31(VersionUpgrade):
     #   \param serialised The serialised form of a container stack.
     #   \param filename The name of the file to upgrade.
     def upgradeStack(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         for each_section in ("general", "metadata"):
