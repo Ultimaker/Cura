@@ -11,9 +11,9 @@ import Cura 1.0 as Cura
 
 import "../components"
 
-// This item contains the views selector, a combobox that is dinamically created from
-// the list of available Views (packages that create different visualizactions of the
-// scene. Aside the selector, there is a row of buttons that change the orientation of the view.
+// This item contains the views selector, a combobox that is dynamically created from
+// the list of available Views (packages that create different visualizations of the
+// scene). Aside from the selector, there is a row of buttons that change the orientation of the view.
 Item
 {
     id: applicationViewsSelector
@@ -25,7 +25,8 @@ Item
     {
         id: viewModeButton
 
-        anchors {
+        anchors
+        {
             verticalCenter: parent.verticalCenter
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
@@ -51,15 +52,16 @@ Item
         {
             for (var i = 0; i < model.rowCount(); i++)
             {
-                if (model.getItem(i).active) {
-                    return i
+                if (model.getItem(i).active)
+                {
+                    return i;
                 }
             }
             return 0
         }
 
         // set the active index
-        function setActiveIndex (index)
+        function setActiveIndex(index)
         {
             UM.Controller.setActiveView(index)
             // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here

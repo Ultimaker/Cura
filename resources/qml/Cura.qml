@@ -27,21 +27,25 @@ UM.MainWindow
     UM.I18nCatalog
     {
         id: catalog
-        name:"cura"
+        name: "cura"
     }
 
     onWidthChanged:
     {
         // If slidebar is collapsed then it should be invisible
         // otherwise after the main_window resize the sidebar will be fully re-drawn
-        if (sidebar.collapsed){
-            if (sidebar.visible == true){
+        if (sidebar.collapsed)
+        {
+            if (sidebar.visible == true)
+            {
                 sidebar.visible = false
                 sidebar.initialWidth = 0
             }
         }
-        else{
-            if (sidebar.visible == false){
+        else
+        {
+            if (sidebar.visible == false)
+            {
                 sidebar.visible = true
                 sidebar.initialWidth = UM.Theme.getSize("sidebar").width
             }
@@ -156,7 +160,7 @@ UM.MainWindow
             Button
             {
                 id: openFileButton
-                text: catalog.i18nc("@action:button","Open File")
+                text: catalog.i18nc("@action:button", "Open File")
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
                 tooltip: ""
@@ -352,10 +356,10 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
+            insertPage(0, catalog.i18nc("@title:tab", "General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
 
             removePage(1);
-            insertPage(1, catalog.i18nc("@title:tab","Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
+            insertPage(1, catalog.i18nc("@title:tab", "Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
 
             insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
 
@@ -528,7 +532,7 @@ UM.MainWindow
         id: openDialog;
 
         //: File open dialog title
-        title: catalog.i18nc("@title:window","Open file(s)")
+        title: catalog.i18nc("@title:window", "Open file(s)")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
