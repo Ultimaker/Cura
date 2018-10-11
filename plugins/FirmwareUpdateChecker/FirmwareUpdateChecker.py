@@ -14,8 +14,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.Settings.GlobalStack import GlobalStack
 
-from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob, get_settings_key_for_machine
-from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup
+from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
+from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, get_settings_key_for_machine
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -39,14 +39,15 @@ class FirmwareUpdateChecker(Extension):
         self._name_cache = []
 
     ##  Callback for the message that is spawned when there is a new version.
-    # TODO: Set the right download URL for each message!
     def _onActionTriggered(self, message, action):
-        if action == "download":
-            if self._download_url is not None:
-                QDesktopServices.openUrl(QUrl(self._download_url))
-
-    def _onSetDownloadUrl(self, download_url):
-        self._download_url = download_url
+        try:
+            download_url = self._lookups.getRedirectUserFor(int(action))
+            if download_url is not None:
+                QDesktopServices.openUrl(QUrl(download_url))
+            else:
+                Logger.log('e', "Can't find URL for {0}".format(action))
+        except:
+            Logger.log('e', "Don't know what to do with {0}".format(action))
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
@@ -56,7 +57,7 @@ class FirmwareUpdateChecker(Extension):
     def _onJobFinished(self, *args, **kwargs):
         self._check_job = None
 
-    def lateInit(self):
+    def doLateInit(self):
         self._late_init = False
 
         self._lookups = FirmwareUpdateCheckerLookup(os.path.join(PluginRegistry.getInstance().getPluginPath(
@@ -75,7 +76,7 @@ class FirmwareUpdateChecker(Extension):
     #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
         if self._late_init:
-            self.lateInit()
+            self.doLateInit()
 
         container_name = container.definition.getName()
         if container_name in self._name_cache:
@@ -84,7 +85,6 @@ class FirmwareUpdateChecker(Extension):
 
         self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
                                                    lookups = self._lookups,
-                                                   callback = self._onActionTriggered,
-                                                   set_download_url_callback = self._onSetDownloadUrl)
+                                                   callback = self._onActionTriggered)
         self._check_job.start()
         self._check_job.finished.connect(self._onJobFinished)

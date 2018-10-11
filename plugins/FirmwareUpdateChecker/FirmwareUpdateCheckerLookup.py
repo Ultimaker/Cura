@@ -9,6 +9,11 @@ from UM.Version import Version
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
+
+def get_settings_key_for_machine(machine_id: int) -> str:
+    return "info/latest_checked_firmware_for_{0}".format(machine_id)
+
+
 def default_parse_version_response(response: str) -> Version:
     raw_str = response.split('\n', 1)[0].rstrip()
     return Version(raw_str.split('.'))  # Split it into a list; the default parsing of 'single string' is different.
@@ -63,5 +68,5 @@ class FirmwareUpdateCheckerLookup:
     def getCheckUrlsFor(self, machine_id: int) -> [str]:
         return self._check_urls_per_machine.get(machine_id)
 
-    def getRedirectUseror(self, machine_id: int) -> str:
+    def getRedirectUserFor(self, machine_id: int) -> str:
         return self._redirect_user_per_machine.get(machine_id)

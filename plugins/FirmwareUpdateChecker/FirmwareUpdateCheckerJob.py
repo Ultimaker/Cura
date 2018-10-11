@@ -11,14 +11,10 @@ import urllib.request
 from urllib.error import URLError
 import codecs
 
-from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup
+from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, get_settings_key_for_machine
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
-
-
-def get_settings_key_for_machine(machine_id: int) -> str:
-    return "info/latest_checked_firmware_for_{0}".format(machine_id)
 
 
 ##  This job checks if there is an update available on the provided URL.
@@ -28,12 +24,12 @@ class FirmwareUpdateCheckerJob(Job):
     ZERO_VERSION = Version(STRING_ZERO_VERSION)
     EPSILON_VERSION = Version(STRING_EPSILON_VERSION)
 
-    def __init__(self, container=None, silent=False, lookups:FirmwareUpdateCheckerLookup=None, callback=None, set_download_url_callback=None):
+    def __init__(self, container=None, silent=False, lookups:FirmwareUpdateCheckerLookup=None, callback=None):
         super().__init__()
         self._container = container
         self.silent = silent
         self._callback = callback
-        self._set_download_url_callback = set_download_url_callback
+
         self._lookups = lookups
         self._headers = {}  # Don't set headers yet.
 
@@ -109,20 +105,13 @@ class FirmwareUpdateCheckerJob(Job):
                                           "@info:title The %s gets replaced with the printer name.",
                                           "New %s firmware available") % machine_name)
 
-                    message.addAction("download",
+                    message.addAction(machine_id,
                                       i18n_catalog.i18nc("@action:button", "How to update"),
                                       "[no_icon]",
                                       "[no_description]",
                                       button_style=Message.ActionButtonStyle.LINK,
                                       button_align=Message.ActionButtonStyle.BUTTON_ALIGN_LEFT)
 
-                    # If we do this in a cool way, the download url should be available in the JSON file
-                    if self._set_download_url_callback:
-                        redirect = self._lookups.getRedirectUseror(machine_id)
-                        if redirect is not None:
-                            self._set_download_url_callback(redirect)
-                        else:
-                            Logger.log('w', "No callback-url for firmware of {0}".format(repr(machine_id)))
                     message.actionTriggered.connect(self._callback)
                     message.show()
             else:
