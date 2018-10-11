@@ -22,7 +22,7 @@ class AvrFirmwareUpdater(FirmwareUpdater):
 
     def _updateFirmware(self) -> None:
         try:
-            hex_file = intelHex.readHex(self._firmware_location)
+            hex_file = intelHex.readHex(self._firmware_file)
             assert len(hex_file) > 0
         except (FileNotFoundError, AssertionError):
             Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
