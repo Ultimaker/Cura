@@ -16,16 +16,9 @@ import codecs
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
-# For UM-machines, these need to match the unique firmware-ID (also used in the URLs), i.o.t. only define in one place.
-@unique
-class MachineId(Enum):
-    UM3 = 9066
-    UM3E = 9511
-    S5 = 9051
 
-
-def get_settings_key_for_machine(machine_id: MachineId) -> str:
-    return "info/latest_checked_firmware_for_{0}".format(machine_id.value)
+def get_settings_key_for_machine(machine_id: int) -> str:
+    return "info/latest_checked_firmware_for_{0}".format(machine_id)
 
 
 def default_parse_version_response(response: str) -> Version:
@@ -39,31 +32,39 @@ class FirmwareUpdateCheckerJob(Job):
     STRING_EPSILON_VERSION = "0.0.1"
     ZERO_VERSION = Version(STRING_ZERO_VERSION)
     EPSILON_VERSION = Version(STRING_EPSILON_VERSION)
-    MACHINE_PER_NAME = \
-        {
-            "ultimaker 3": MachineId.UM3,
-            "ultimaker 3 extended": MachineId.UM3E,
-            "ultimaker s5": MachineId.S5
-        }
-    PARSE_VERSION_URL_PER_MACHINE = \
-        {
-            MachineId.UM3: default_parse_version_response,
-            MachineId.UM3E: default_parse_version_response,
-            MachineId.S5: default_parse_version_response
-        }
-    REDIRECT_USER_PER_MACHINE = \
-        {
-            MachineId.UM3: "https://ultimaker.com/en/resources/20500-upgrade-firmware",
-            MachineId.UM3E: "https://ultimaker.com/en/resources/20500-upgrade-firmware",
-            MachineId.S5: "https://ultimaker.com/en/resources/20500-upgrade-firmware"
-        }
-    # TODO: Parse all of that from a file, because this will be a big mess of large static values which gets worse with each printer.
+    JSON_NAME_TO_VERSION_PARSE_FUNCTION = {"default": default_parse_version_response}
 
-    def __init__(self, container=None, silent=False, urls=None, callback=None, set_download_url_callback=None):
+    def __init__(self, container=None, silent=False, machines_json=None, callback=None, set_download_url_callback=None):
         super().__init__()
         self._container = container
         self.silent = silent
-        self._urls = urls
+
+        # Parse all the needed lookup-tables from the '.json' file(s) in the resources folder.
+        # TODO: This should not be here when the merge to master is done, as it will be repeatedly recreated.
+        #       It should be a separate object this constructor receives instead.
+        self._machine_ids = []
+        self._machine_per_name = {}
+        self._parse_version_url_per_machine = {}
+        self._check_urls_per_machine = {}
+        self._redirect_user_per_machine = {}
+        try:
+            for machine_json in machines_json:
+                machine_id = machine_json.get("id")
+                machine_name = machine_json.get("name")
+                self._machine_ids.append(machine_id)
+                self._machine_per_name[machine_name] = machine_id
+                version_parse_function = self.JSON_NAME_TO_VERSION_PARSE_FUNCTION.get(machine_json.get("version_parser"))
+                if version_parse_function is None:
+                    Logger.log('w', "No version-parse-function specified for machine {0}.".format(machine_name))
+                    version_parse_function = default_parse_version_response  # Use default instead if nothing is found.
+                self._parse_version_url_per_machine[machine_id] = version_parse_function
+                self._check_urls_per_machine[machine_id] = []  # Multiple check-urls: see '_comment' in the .json file.
+                for check_url in machine_json.get("check_urls"):
+                    self._check_urls_per_machine[machine_id].append(check_url)
+                self._redirect_user_per_machine[machine_id] = machine_json.get("update_url")
+        except:
+            Logger.log('e', "Couldn't parse firmware-update-check loopup-lists from file.")
+
         self._callback = callback
         self._set_download_url_callback = set_download_url_callback
 
@@ -82,11 +83,11 @@ class FirmwareUpdateCheckerJob(Job):
 
         return result
 
-    def getCurrentVersionForMachine(self, machine_id: MachineId) -> Version:
+    def getCurrentVersionForMachine(self, machine_id: int) -> Version:
         max_version = self.ZERO_VERSION
 
-        machine_urls = self._urls.get(machine_id)
-        parse_function = self.PARSE_VERSION_URL_PER_MACHINE.get(machine_id)
+        machine_urls = self._check_urls_per_machine.get(machine_id)
+        parse_function = self._parse_version_url_per_machine.get(machine_id)
         if machine_urls is not None and parse_function is not None:
             for url in machine_urls:
                 version = parse_function(self.getUrlResponse(url))
@@ -99,7 +100,7 @@ class FirmwareUpdateCheckerJob(Job):
         return max_version
 
     def run(self):
-        if not self._urls or self._urls is None:
+        if not self._machine_ids or self._machine_ids is None:
             Logger.log("e", "Can not check for a new release. URL not set!")
             return
 
@@ -112,7 +113,7 @@ class FirmwareUpdateCheckerJob(Job):
             machine_name = self._container.definition.getName()
 
             # If it is not None, then we compare between the checked_version and the current_version
-            machine_id = self.MACHINE_PER_NAME.get(machine_name.lower())
+            machine_id = self._machine_per_name.get(machine_name.lower())
             if machine_id is not None:
                 Logger.log("i", "You have a {0} in the printer list. Let's check the firmware!".format(machine_name))
 
@@ -150,7 +151,7 @@ class FirmwareUpdateCheckerJob(Job):
 
                     # If we do this in a cool way, the download url should be available in the JSON file
                     if self._set_download_url_callback:
-                        redirect = self.REDIRECT_USER_PER_MACHINE.get(machine_id)
+                        redirect = self._redirect_user_per_machine.get(machine_id)
                         if redirect is not None:
                             self._set_download_url_callback(redirect)
                         else:
