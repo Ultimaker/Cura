@@ -42,7 +42,7 @@ class FirmwareUpdateCheckerLookup:
         try:
             for machine_json in machines_json:
                 machine_id = machine_json.get("id")
-                machine_name = machine_json.get("name")
+                machine_name = machine_json.get("name").lower()  # Lower in case upper-case char are added to the json.
                 self._machine_ids.append(machine_id)
                 self._machine_per_name[machine_name] = machine_id
                 version_parse_function = \

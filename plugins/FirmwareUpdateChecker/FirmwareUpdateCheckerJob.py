@@ -39,9 +39,8 @@ class FirmwareUpdateCheckerJob(Job):
 
         try:
             request = urllib.request.Request(url, headers=self._headers)
-            current_version_file = urllib.request.urlopen(request)
-            reader = codecs.getreader("utf-8")
-            result = reader(current_version_file).read(firstline=True)
+            response = urllib.request.urlopen(request)
+            result = response.read().decode('utf-8')
         except URLError:
             Logger.log('w', "Could not reach '{0}', if this URL is old, consider removal.".format(url))
 
