@@ -38,7 +38,7 @@ class FirmwareUpdateCheckerJob(Job):
         result = self.STRING_ZERO_VERSION
 
         try:
-            request = urllib.request.Request(url, headers=self._headers)
+            request = urllib.request.Request(url, headers = self._headers)
             response = urllib.request.urlopen(request)
             result = response.read().decode("utf-8")
         except URLError:
@@ -100,8 +100,8 @@ class FirmwareUpdateCheckerJob(Job):
                     message = Message(i18n_catalog.i18nc(
                         "@info Don't translate {machine_name}, since it gets replaced by a printer name!",
                         "New features are available for your {machine_name}! It is recommended to update the firmware on your printer.").format(
-                        machine_name=machine_name),
-                        title=i18n_catalog.i18nc(
+                        machine_name = machine_name),
+                        title = i18n_catalog.i18nc(
                                           "@info:title The %s gets replaced with the printer name.",
                                           "New %s firmware available") % machine_name)
 
@@ -109,8 +109,8 @@ class FirmwareUpdateCheckerJob(Job):
                                       i18n_catalog.i18nc("@action:button", "How to update"),
                                       "[no_icon]",
                                       "[no_description]",
-                                      button_style=Message.ActionButtonStyle.LINK,
-                                      button_align=Message.ActionButtonStyle.BUTTON_ALIGN_LEFT)
+                                      button_style = Message.ActionButtonStyle.LINK,
+                                      button_align = Message.ActionButtonStyle.BUTTON_ALIGN_LEFT)
 
                     message.actionTriggered.connect(self._callback)
                     message.show()

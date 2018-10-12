@@ -26,8 +26,7 @@ class FirmwareUpdateCheckerLookup:
 
     def __init__(self, json_path) -> None:
         # Open the .json file with the needed lookup-lists for each machine(/model) and retrieve "raw" json.
-        machines_json = None
-        with open(json_path, "r", encoding="utf-8") as json_file:
+        with open(json_path, "r", encoding = "utf-8") as json_file:
             machines_json = json.load(json_file).get("machines")
         if machines_json is None:
             Logger.log("e", "Missing or inaccessible: {0}".format(json_path))
