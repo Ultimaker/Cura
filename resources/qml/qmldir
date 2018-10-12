@@ -1,0 +1,5 @@
+module Cura
+
+MachineAndConfigurationSelector 1.0 components/MachineAndConfigurationSelector.qml
+MaterialAndVariantSelector 1.0 MaterialAndVariantSelector.qml
+ProfileAndSettingComponent 1.0 ProfileAndSettingComponent.qml
