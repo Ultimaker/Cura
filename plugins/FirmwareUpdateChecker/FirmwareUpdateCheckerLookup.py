@@ -55,7 +55,7 @@ class FirmwareUpdateCheckerLookup:
                     self._check_urls_per_machine[machine_id].append(check_url)
                 self._redirect_user_per_machine[machine_id] = machine_json.get("update_url")
         except Exception as ex:
-            Logger.log("e", "Couldn't parse firmware-update-check loopup-lists from file because {0}.".format(ex))
+            Logger.log("e", "Couldn't parse firmware-update-check lookup-lists from file because {0}.".format(ex))
 
     def getMachineIds(self) -> List[int]:
         return self._machine_ids
