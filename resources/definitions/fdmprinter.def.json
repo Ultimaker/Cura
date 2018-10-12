@@ -2425,7 +2425,6 @@
                     "description": "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value.",
                     "unit": "%",
                     "default_value": 100,
-                    "value": "material_flow",
                     "type": "float",
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "50",
