@@ -2402,7 +2402,22 @@
                                     "settable_per_extruder": true
                                 }
                             }
+                        },
+                        "prime_tower_material_flow":
+                        {
+                            "label": "Prime Tower Flow",
+                            "description": "Flow compensation on prime tower lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
+                    }
                 },
                 "material_flow_layer_0":
                 {
@@ -5362,21 +5377,6 @@
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
-                },
-                "prime_tower_flow":
-                {
-                    "label": "Prime Tower Flow",
-                    "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
-                    "type": "float",
-                    "unit": "%",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": 100,
-                    "value": "material_flow",
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
                 },
                 "prime_tower_wipe_enabled":
                 {
