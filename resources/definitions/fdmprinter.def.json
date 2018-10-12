@@ -1221,7 +1221,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric'",
-                    "limit_to_extruder": "infill_extruder_nr",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "skin_angles":
