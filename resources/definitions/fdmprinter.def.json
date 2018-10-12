@@ -2403,7 +2403,7 @@
                                 }
                             }
                         },
-                        "prime_tower_material_flow":
+                        "prime_tower_flow":
                         {
                             "label": "Prime Tower Flow",
                             "description": "Flow compensation on prime tower lines.",
