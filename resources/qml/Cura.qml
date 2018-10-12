@@ -21,36 +21,45 @@ UM.MainWindow
 
     // Cura application window title
     title: catalog.i18nc("@title:window", "Ultimaker Cura")
-    viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
+    //viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
+    viewportRect: Qt.rect(0, 0, 1.0, 1.0)
     backgroundColor: UM.Theme.getColor("viewport_background")
 
     UM.I18nCatalog
     {
         id: catalog
-        name: "cura"
+        name:"cura"
     }
 
-    onWidthChanged:
+    function showTooltip(item, position, text)
+    {
+        tooltip.text = text;
+        position = item.mapToItem(backgroundItem, position.x - UM.Theme.getSize("default_arrow").width, position.y);
+        tooltip.show(position);
+    }
+
+    function hideTooltip()
+    {
+        tooltip.hide();
+    }
+
+    /*onWidthChanged:
     {
         // If slidebar is collapsed then it should be invisible
         // otherwise after the main_window resize the sidebar will be fully re-drawn
-        if (sidebar.collapsed)
-        {
-            if (sidebar.visible == true)
-            {
+        if (sidebar.collapsed){
+            if (sidebar.visible == true){
                 sidebar.visible = false
                 sidebar.initialWidth = 0
             }
         }
-        else
-        {
-            if (sidebar.visible == false)
-            {
+        else{
+            if (sidebar.visible == false){
                 sidebar.visible = true
                 sidebar.initialWidth = UM.Theme.getSize("sidebar").width
             }
         }
-    }
+    }*/
 
     Component.onCompleted:
     {
@@ -69,10 +78,15 @@ UM.MainWindow
         CuraApplication.purgeWindows()
     }
 
-    Column
+    Item
     {
         id: backgroundItem
         anchors.fill: parent
+
+        SidebarTooltip
+        {
+            id: tooltip
+        }
 
         signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
         function getMeshName(path)
@@ -94,26 +108,34 @@ UM.MainWindow
 
         ApplicationMenu
         {
-            id: menu
+            id: applicationMenu
             window: base
         }
 
         TopHeader
         {
             id: topHeader
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                top: applicationMenu.bottom
+            }
         }
 
         Item
         {
             id: contentItem
 
-            width: parent.width
-            height: parent.height - menu.height - topHeader.height
-            z: topHeader.z - 1
+            anchors
+            {
+                top: topHeader.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
 
-            Keys.forwardTo: menu
+            Keys.forwardTo: applicationMenu
 
             DropArea
             {
@@ -145,41 +167,39 @@ UM.MainWindow
                 }
             }
 
+            Loader
+            {
+                // The stage menu is, as the name implies, a menu that is defined by the active stage.
+                // Note that this menu does not need to be set at all! It's perfectly acceptable to have a stage
+                // without this menu!
+                id: stageMenu
+
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    margins: UM.Theme.getSize("default_margin").height
+                }
+
+                height: 50
+
+                source: UM.Controller.activeStage.stageMenuComponent
+            }
+
             JobSpecs
             {
                 id: jobSpecs
                 anchors
                 {
                     bottom: parent.bottom
-                    right: sidebar.left
+                    //right: sidebar.left
                     bottomMargin: UM.Theme.getSize("default_margin").height
                     rightMargin: UM.Theme.getSize("default_margin").width
                 }
             }
 
-            Button
-            {
-                id: openFileButton
-                text: catalog.i18nc("@action:button", "Open File")
-                iconSource: UM.Theme.getIcon("load")
-                style: UM.Theme.styles.tool_button
-                tooltip: ""
-                anchors
-                {
-                    top: parent.top
-                    topMargin: UM.Theme.getSize("default_margin").height
-                    left: parent.left
-                }
-                action: Cura.Actions.open
-            }
 
-            MachineAndConfigurationSelector
-            {
-                anchors.left: openFileButton.right
-                //anchors.right: sidebar.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").height
-                anchors.top: openFileButton.top
-            }
 
             Toolbar
             {
@@ -189,7 +209,7 @@ UM.MainWindow
                 property int mouseY: base.mouseY
 
                 anchors {
-                    top: openFileButton.bottom
+                    top: stageMenu.bottom
                     topMargin: UM.Theme.getSize("window_margin").height
                     left: parent.left
                 }
@@ -206,7 +226,7 @@ UM.MainWindow
                 }
             }
 
-            ApplicationViews
+            /*ApplicationViews
             {
                 id: applicationViews
 
@@ -216,7 +236,7 @@ UM.MainWindow
                     top: parent.top
                     right: sidebar.left
                 }
-            }
+            }*/
 
             Loader
             {
@@ -227,7 +247,7 @@ UM.MainWindow
                     top: parent.top
                     bottom: parent.bottom
                     left: parent.left
-                    right: sidebar.left
+                    right: parent.right
                 }
 
                 MouseArea
@@ -241,7 +261,7 @@ UM.MainWindow
                 source: UM.Controller.activeStage.mainComponent
             }
 
-            Loader
+            /*Loader
             {
                 id: sidebar
 
@@ -311,7 +331,7 @@ UM.MainWindow
                     acceptedButtons: Qt.AllButtons
                     onWheel: wheel.accepted = true
                 }
-            }
+            }*/
 
             UM.MessageStack
             {
@@ -338,15 +358,33 @@ UM.MainWindow
                     bottom: parent.bottom
                 }
             }
+
+
+            ProgressAndSaveWidget
+            {
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                width: UM.Theme.getSize("sidebar").width
+                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+                onShowTooltip:
+                {
+                    base.showTooltip(item, location, text)
+                }
+                onHideTooltip:
+                {
+                    base.hideTooltip()
+                }
+            }
         }
     }
 
     // Expand or collapse sidebar
-    Connections
+    /*Connections
     {
         target: Cura.Actions.expandSidebar
         onTriggered: sidebar.callExpandOrCollapse()
-    }
+    }*/
 
     UM.PreferencesDialog
     {
@@ -356,10 +394,10 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab", "General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
+            insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
 
             removePage(1);
-            insertPage(1, catalog.i18nc("@title:tab", "Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
+            insertPage(1, catalog.i18nc("@title:tab","Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
 
             insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
 
@@ -532,7 +570,7 @@ UM.MainWindow
         id: openDialog;
 
         //: File open dialog title
-        title: catalog.i18nc("@title:window", "Open file(s)")
+        title: catalog.i18nc("@title:window","Open file(s)")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
@@ -638,7 +676,8 @@ UM.MainWindow
         modality: Qt.ApplicationModal
     }
 
-    MessageDialog {
+    MessageDialog
+    {
         id: infoMultipleFilesWithGcodeDialog
         title: catalog.i18nc("@title:window", "Open File(s)")
         icon: StandardIcon.Information

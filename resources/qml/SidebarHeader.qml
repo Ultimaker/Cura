@@ -90,7 +90,8 @@ Column
         }
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: headerSeparator
         width: parent.width
         visible: printerTypeSelectionRow.visible

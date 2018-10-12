@@ -4,7 +4,6 @@ import UM 1.2 as UM
 
 Item
 {
-
     id: extruderIconItem
 
     implicitWidth: UM.Theme.getSize("button").width

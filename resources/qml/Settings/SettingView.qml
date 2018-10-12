@@ -25,7 +25,6 @@ Item
     {
         id: globalProfileRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: !sidebar.hideSettings
 
         anchors
         {
@@ -54,7 +53,6 @@ Item
             id: globalProfileSelection
 
             text: generateActiveQualityText()
-            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
             width: Math.round(parent.width * 0.55)
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
@@ -177,9 +175,7 @@ Item
             right: settingVisibilityMenu.left
             rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
         }
-        height: visible ? UM.Theme.getSize("setting_control").height : 0
-        Behavior on height { NumberAnimation { duration: 100 } }
-
+        height: UM.Theme.getSize("setting_control").height
         Timer
         {
             id: settingsSearchTimer
@@ -292,8 +288,7 @@ Item
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
-        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("sidebar_margin").height : 0
-        Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;

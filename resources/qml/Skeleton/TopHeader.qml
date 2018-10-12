@@ -15,7 +15,8 @@ Rectangle
 {
     id: base
 
-    height: UM.Theme.getSize("topheader").height
+    implicitHeight: UM.Theme.getSize("topheader").height
+    implicitWidth: UM.Theme.getSize("topheader").width
     color: UM.Theme.getColor("topheader_background")
 
     Image

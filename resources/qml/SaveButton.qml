@@ -9,7 +9,9 @@ import QtQuick.Layouts 1.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-Item {
+// This widget does so much more than "just" being a save button, so it should be refactored at some point in time.
+Item
+{
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
@@ -25,10 +27,6 @@ Item {
         if(!activity)
         {
             return catalog.i18nc("@label:PrintjobStatus", "Please load a 3D model");
-        }
-
-        if (base.backendState == "undefined") {
-            return ""
         }
 
         switch(base.backendState)
@@ -48,19 +46,23 @@ Item {
         }
     }
 
-    function sliceOrStopSlicing() {
+    function sliceOrStopSlicing()
+    {
         try {
-            if ([1, 5].indexOf(base.backendState) != -1) {
+            if ([1, 5].indexOf(base.backendState) != -1)
+            {
                 CuraApplication.backend.forceSlice();
             } else {
                 CuraApplication.backend.stopSlicing();
             }
-        } catch (e) {
+        } catch (e)
+        {
             console.log('Could not start or stop slicing', e)
         }
     }
 
-    Label {
+    Label
+    {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         anchors.top: parent.top
@@ -72,7 +74,8 @@ Item {
         text: statusText;
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: progressBar
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         height: UM.Theme.getSize("progressbar").height
@@ -83,32 +86,37 @@ Item {
         radius: UM.Theme.getSize("progressbar_radius").width
         color: UM.Theme.getColor("progressbar_background")
 
-        Rectangle {
+        Rectangle
+        {
             width: Math.max(parent.width * base.progress)
             height: parent.height
             color: UM.Theme.getColor("progressbar_control")
             radius: UM.Theme.getSize("progressbar_radius").width
-            visible: (base.backendState != "undefined" && base.backendState == 2) ? true : false
+            visible: base.backendState == 2
         }
     }
 
     // Shortcut for "save as/print/..."
-    Action {
+    Action
+    {
         shortcut: "Ctrl+P"
         onTriggered:
         {
             // only work when the button is enabled
-            if (saveToButton.enabled) {
+            if (saveToButton.enabled)
+            {
                 saveToButton.clicked();
             }
             // prepare button
-            if (prepareButton.enabled) {
+            if (prepareButton.enabled)
+            {
                 sliceOrStopSlicing();
             }
         }
     }
 
-    Item {
+    Item
+    {
         id: saveRow
         width: {
             // using childrenRect.width directly causes a binding loop, because setting the width affects the childrenRect
@@ -129,7 +137,8 @@ Item {
         anchors.right: parent.right
         clip: true
 
-        Row {
+        Row
+        {
             id: additionalComponentsRow
             anchors.top: parent.top
             anchors.right: saveToButton.visible ? saveToButton.left : (prepareButton.visible ? prepareButton.left : parent.right)
@@ -138,24 +147,30 @@ Item {
             spacing: UM.Theme.getSize("default_margin").width
         }
 
-        Component.onCompleted: {
+        Component.onCompleted:
+        {
             saveRow.addAdditionalComponents("saveButton")
         }
 
-        Connections {
+        Connections
+        {
             target: CuraApplication
             onAdditionalComponentsChanged: saveRow.addAdditionalComponents("saveButton")
         }
 
-        function addAdditionalComponents (areaId) {
-            if(areaId == "saveButton") {
-                for (var component in CuraApplication.additionalComponents["saveButton"]) {
+        function addAdditionalComponents (areaId)
+        {
+            if(areaId == "saveButton")
+            {
+                for (var component in CuraApplication.additionalComponents["saveButton"])
+                {
                     CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
                 }
             }
         }
 
-        Connections {
+        Connections
+        {
             target: UM.Preferences
             onPreferenceChanged:
             {
@@ -166,13 +181,14 @@ Item {
         }
 
         // Prepare button, only shows if auto_slice is off
-        Button {
+        Button
+        {
             id: prepareButton
 
             tooltip: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
-            enabled: base.backendState != "undefined" && ([1, 2].indexOf(base.backendState) != -1) && base.activity
-            visible: base.backendState != "undefined" && !autoSlice && ([1, 2, 4].indexOf(base.backendState) != -1) && base.activity
+            enabled: ([1, 2].indexOf(base.backendState) != -1) && base.activity
+            visible: !autoSlice && ([1, 2, 4].indexOf(base.backendState) != -1) && base.activity
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -236,11 +252,12 @@ Item {
                         text: control.text;
                     }
                 }
-                label: Item { }
+                label: Item {}
             }
         }
 
-        Button {
+        Button
+        {
             id: saveToButton
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
@@ -262,7 +279,8 @@ Item {
                     { "filter_by_machine": true, "preferred_mimetypes": Cura.MachineManager.activeMachine.preferred_output_file_formats });
             }
 
-            style: ButtonStyle {
+            style: ButtonStyle
+            {
                 background: Rectangle
                 {
                     border.width: UM.Theme.getSize("default_lining").width
@@ -296,17 +314,7 @@ Item {
                     Label {
                         id: actualLabel
                         anchors.centerIn: parent
-                        color:
-                        {
-                            if(!control.enabled)
-                                return UM.Theme.getColor("action_button_disabled_text");
-                            else if(control.pressed)
-                                return UM.Theme.getColor("print_button_ready_text");
-                            else if(control.hovered)
-                                return UM.Theme.getColor("print_button_ready_text");
-                            else
-                                return UM.Theme.getColor("print_button_ready_text");
-                        }
+                        color:control.enabled ? UM.Theme.getColor("print_button_ready_text") : UM.Theme.getColor("action_button_disabled_text")
                         font: UM.Theme.getFont("action_button")
                         text: control.text;
                     }
@@ -324,36 +332,49 @@ Item {
             anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
+
             // 3 = Done, 5 = Disabled
-            enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: base.backendState != "undefined" && (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
 
 
-            style: ButtonStyle {
-                background: Rectangle {
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
                     id: deviceSelectionIcon
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color:
                     {
                         if(!control.enabled)
-                            return UM.Theme.getColor("action_button_disabled_border");
-                        else if(control.pressed)
-                            return UM.Theme.getColor("print_button_ready_pressed_border");
-                        else if(control.hovered)
-                            return UM.Theme.getColor("print_button_ready_hovered_border");
-                        else
-                            return UM.Theme.getColor("print_button_ready_border");
+                        {
+                            return UM.Theme.getColor("action_button_disabled_border")
+                        } else if(control.pressed)
+                        {
+                            return UM.Theme.getColor("print_button_ready_pressed_border")
+                        } else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("print_button_ready_hovered_border")
+                        } else
+                        {
+                            return UM.Theme.getColor("print_button_ready_border")
+                        }
                     }
                     color:
                     {
                         if(!control.enabled)
-                            return UM.Theme.getColor("action_button_disabled");
-                        else if(control.pressed)
-                            return UM.Theme.getColor("print_button_ready_pressed");
-                        else if(control.hovered)
-                            return UM.Theme.getColor("print_button_ready_hovered");
-                        else
-                            return UM.Theme.getColor("print_button_ready");
+                        {
+                            return UM.Theme.getColor("action_button_disabled")
+                        } else if(control.pressed)
+                        {
+                            return UM.Theme.getColor("print_button_ready_pressed")
+                        } else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("print_button_ready_hovered")
+                        } else
+                        {
+                            return UM.Theme.getColor("print_button_ready")
+                        }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
@@ -361,40 +382,34 @@ Item {
                     width: parent.height
                     height: parent.height
 
-                    UM.RecolorImage {
+                    UM.RecolorImage
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: UM.Theme.getSize("standard_arrow").width
                         height: UM.Theme.getSize("standard_arrow").height
                         sourceSize.width: width
                         sourceSize.height: height
-                        color:
-                        {
-                            if(!control.enabled)
-                                return UM.Theme.getColor("action_button_disabled_text");
-                            else if(control.pressed)
-                                return UM.Theme.getColor("print_button_ready_text");
-                            else if(control.hovered)
-                                return UM.Theme.getColor("print_button_ready_text");
-                            else
-                                return UM.Theme.getColor("print_button_ready_text");
-                        }
+                        color: control.enabled ? UM.Theme.getColor("print_button_ready_text") : UM.Theme.getColor("action_button_disabled_text")
                         source: UM.Theme.getIcon("arrow_bottom");
                     }
                 }
-                label: Label{ }
             }
 
-            menu: Menu {
+            menu: Menu
+            {
                 id: devicesMenu;
-                Instantiator {
+                Instantiator
+                {
                     model: devicesModel;
-                    MenuItem {
+                    MenuItem
+                    {
                         text: model.description
                         checkable: true;
                         checked: model.id == UM.OutputDeviceManager.activeDevice;
                         exclusiveGroup: devicesMenuGroup;
-                        onTriggered: {
+                        onTriggered:
+                        {
                             UM.OutputDeviceManager.setActiveDevice(model.id);
                         }
                     }

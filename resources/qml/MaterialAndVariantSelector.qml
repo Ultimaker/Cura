@@ -17,7 +17,7 @@ Rectangle
 
     id: base
     color: UM.Theme.getColor("sidebar")
-    
+
     // Height has an extra 2x margin for the top & bottom margin.
     height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").width
 
