@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -58,7 +58,6 @@ Cura.MachineAction
             anchors.horizontalCenter: parent.horizontalCenter
             width: childrenRect.width
             spacing: UM.Theme.getSize("default_margin").width
-            property var firmwareName: Cura.USBPrinterManager.getDefaultFirmwareName()
             Button
             {
                 id: autoUpgradeButton
@@ -66,7 +65,7 @@ Cura.MachineAction
                 enabled: parent.firmwareName != "" && activeOutputDevice
                 onClicked:
                 {
-                    activeOutputDevice.updateFirmware(parent.firmwareName)
+                    activeOutputDevice.updateFirmware(Cura.USBPrinterManager.getDefaultFirmwareName())
                 }
             }
             Button
