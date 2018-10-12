@@ -2229,7 +2229,180 @@
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
                     "enabled": "machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "wall_material_flow":
+                        {
+                            "label": "Wall Flow",
+                            "description": "Flow compensation on wall lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "wall_0_extruder_nr if wall_x_extruder_nr == wall_0_extruder_nr else -1",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_0_material_flow":
+                                {
+                                    "label": "Outer Wall Flow",
+                                    "description": "Flow compensation on the outermost wall line.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "wall_material_flow",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "wall_x_material_flow":
+                                {
+                                    "label": "Inner Wall(s) Flow",
+                                    "description": "Flow compensation on wall lines for all wall lines except the outermost one.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "wall_material_flow",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
+                                    "settable_per_mesh": true
+                                }
+                            }
+                        },
+                        "skin_material_flow":
+                        {
+                            "label": "Top/Bottom Flow",
+                            "description": "Flow compensation on top/bottom lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "top_layers > 0 or bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "roofing_material_flow":
+                        {
+                            "label": "Top Surface Skin Flow",
+                            "description": "Flow compensation on lines of the areas at the top of the print.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "skin_material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                        },
+                        "infill_material_flow":
+                        {
+                            "label": "Infill Flow",
+                            "description": "Flow compensation on infill lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "infill_sparse_density > 0",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "skirt_brim_material_flow":
+                        {
+                            "label": "Skirt/Brim Flow",
+                            "description": "Flow compensation on skirt or brim lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_material_flow":
+                        {
+                            "label": "Support Flow",
+                            "description": "Flow compensation on support structure lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_interface_material_flow":
+                        {
+                            "label": "Support Interface Flow",
+                            "description": "Flow compensation on lines of support roof or floor.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "support_enable and support_interface_enable",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_roof_material_flow":
+                                {
+                                    "label": "Support Roof Flow",
+                                    "description": "Flow compensation on support roof lines.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_material_flow')",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "enabled": "support_enable and support_roof_enable",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "support_bottom_material_flow":
+                                {
+                                    "label": "Support Floor Flow",
+                                    "description": "Flow compensation on support floor lines.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_material_flow')",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "enabled": "support_enable and support_bottom_enable",
+                                    "limit_to_extruder": "support_bottom_extruder_nr",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
+                        }
                 },
                 "material_flow_layer_0":
                 {
