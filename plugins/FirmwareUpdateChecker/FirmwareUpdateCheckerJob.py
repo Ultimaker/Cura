@@ -40,9 +40,9 @@ class FirmwareUpdateCheckerJob(Job):
         try:
             request = urllib.request.Request(url, headers=self._headers)
             response = urllib.request.urlopen(request)
-            result = response.read().decode('utf-8')
+            result = response.read().decode("utf-8")
         except URLError:
-            Logger.log('w', "Could not reach '{0}', if this URL is old, consider removal.".format(url))
+            Logger.log("w", "Could not reach '{0}', if this URL is old, consider removal.".format(url))
 
         return result
 
@@ -58,7 +58,7 @@ class FirmwareUpdateCheckerJob(Job):
                     max_version = version
 
         if max_version < self.EPSILON_VERSION:
-            Logger.log('w', "MachineID {0} not handled!".format(repr(machine_id)))
+            Logger.log("w", "MachineID {0} not handled!".format(repr(machine_id)))
 
         return max_version
 
@@ -82,11 +82,11 @@ class FirmwareUpdateCheckerJob(Job):
 
                 current_version = self.getCurrentVersionForMachine(machine_id)
 
-                # If it is the first time the version is checked, the checked_version is ''
+                # If it is the first time the version is checked, the checked_version is ""
                 setting_key_str = get_settings_key_for_machine(machine_id)
                 checked_version = Version(Application.getInstance().getPreferences().getValue(setting_key_str))
 
-                # If the checked_version is '', it's because is the first time we check firmware and in this case
+                # If the checked_version is "", it's because is the first time we check firmware and in this case
                 # we will not show the notification, but we will store it for the next time
                 Application.getInstance().getPreferences().setValue(setting_key_str, current_version)
                 Logger.log("i", "Reading firmware version of %s: checked = %s - latest = %s", machine_name, checked_version, current_version)
@@ -115,7 +115,7 @@ class FirmwareUpdateCheckerJob(Job):
                     message.actionTriggered.connect(self._callback)
                     message.show()
             else:
-                Logger.log('i', "No machine with name {0} in list of firmware to check.".format(machine_name))
+                Logger.log("i", "No machine with name {0} in list of firmware to check.".format(machine_name))
 
         except Exception as e:
             Logger.log("w", "Failed to check for new version: %s", e)

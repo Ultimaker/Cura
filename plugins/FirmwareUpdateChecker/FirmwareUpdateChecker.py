@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -31,7 +31,7 @@ class FirmwareUpdateChecker(Extension):
         super().__init__()
 
         # Listen to a Signal that indicates a change in the list of printers, just if the user has enabled the
-        # 'check for updates' option
+        # "check for updates" option
         Application.getInstance().getPreferences().addPreference("info/automatic_update_check", True)
         if Application.getInstance().getPreferences().getValue("info/automatic_update_check"):
             ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
@@ -49,9 +49,9 @@ class FirmwareUpdateChecker(Extension):
             if download_url is not None:
                 QDesktopServices.openUrl(QUrl(download_url))
             else:
-                Logger.log('e', "Can't find URL for {0}".format(action))
+                Logger.log("e", "Can't find URL for {0}".format(action))
         except Exception as ex:
-            Logger.log('e', "Don't know what to do with '{0}' because {1}".format(action, ex))
+            Logger.log("e", "Don't know what to do with '{0}' because {1}".format(action, ex))
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
