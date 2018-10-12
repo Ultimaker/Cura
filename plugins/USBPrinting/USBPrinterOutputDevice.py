@@ -59,9 +59,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._all_baud_rates = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
-        self._update_thread = Thread(target=self._update, daemon = True)
+        self._update_thread = Thread(target = self._update, daemon = True)
 
-        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon = True)
+        self._update_firmware_thread = Thread(target = self._updateFirmware, daemon = True)
 
         self._last_temperature_request = None  # type: Optional[int]
 
@@ -160,6 +160,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._connection_state != ConnectionState.closed:
             self.close()
 
+        Logger.log("i", "Uploading hex file from: {firmware_location}".format(firmware_location = self._firmware_location))
         try:
             hex_file = intelHex.readHex(self._firmware_location)
             assert len(hex_file) > 0
