@@ -273,13 +273,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             except SerialException:
                 Logger.log("w", "An exception occured while trying to create serial connection")
                 return
-        container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        num_extruders = container_stack.getProperty("machine_extruder_count", "value")
-        # Ensure that a printer is created.
-        self._printers = [PrinterOutputModel(output_controller=GenericOutputController(self), number_of_extruders=num_extruders)]
-        self._printers[0].updateName(container_stack.getName())
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        self._onGlobalContainerStackChanged()
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
+
+    def _onGlobalContainerStackChanged(self):
+        container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        num_extruders = container_stack.getProperty("machine_extruder_count", "value")
+        #Ensure that a printer is created.
+        self._printers = [PrinterOutputModel(output_controller = GenericOutputController(self), number_of_extruders = num_extruders)]
+        self._printers[0].updateName(container_stack.getName())
 
     def close(self):
         super().close()
