@@ -27,7 +27,7 @@ Item
         Menu
         {
             id: fileMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel","&File")
+            title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
 
             MenuItem
             {
@@ -46,7 +46,7 @@ Item
             MenuItem
             {
                 id: saveWorkspaceMenu
-                text: catalog.i18nc("@title:menu menubar:file","&Save...")
+                text: catalog.i18nc("@title:menu menubar:file", "&Save...")
                 onTriggered:
                 {
                     var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml" };
@@ -99,7 +99,7 @@ Item
 
         Menu
         {
-            title: catalog.i18nc("@title:menu menubar:toplevel","&Edit")
+            title: catalog.i18nc("@title:menu menubar:toplevel", "&Edit")
 
             MenuItem { action: Cura.Actions.undo }
             MenuItem { action: Cura.Actions.redo }
@@ -181,7 +181,7 @@ Item
         Menu
         {
             id: extensionMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel","E&xtensions")
+            title: catalog.i18nc("@title:menu menubar:toplevel", "E&xtensions")
 
             Instantiator
             {
@@ -223,7 +223,7 @@ Item
         Menu
         {
             id: preferencesMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel","P&references")
+            title: catalog.i18nc("@title:menu menubar:toplevel", "P&references")
 
             MenuItem { action: Cura.Actions.preferences }
         }
@@ -231,7 +231,7 @@ Item
         Menu
         {
             id: helpMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel","&Help")
+            title: catalog.i18nc("@title:menu menubar:toplevel", "&Help")
 
             MenuItem { action: Cura.Actions.showProfileFolder }
             MenuItem { action: Cura.Actions.documentation }
