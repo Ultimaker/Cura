@@ -30,7 +30,12 @@
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
-        "weight": -1
+        "weight": -1,
+        "firmware_update_info": {
+            "id": 9051,
+            "check_urls": ["http://software.ultimaker.com/releases/firmware/9051/stable/version.txt"],
+            "update_url": "https://ultimaker.com/en/resources/20500-upgrade-firmware"
+        }
     },
 
     "overrides": {

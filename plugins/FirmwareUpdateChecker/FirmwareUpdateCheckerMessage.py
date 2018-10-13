@@ -9,7 +9,7 @@ i18n_catalog = i18nCatalog("cura")
 class FirmwareUpdateCheckerMessage(Message):
     STR_ACTION_DOWNLOAD = "download"
 
-    def __init__(self, machine_id: int, machine_name: str) -> None:
+    def __init__(self, machine_id: int, machine_name: str, download_url: str) -> None:
         super().__init__(i18n_catalog.i18nc(
             "@info Don't translate {machine_name}, since it gets replaced by a printer name!",
             "New features are available for your {machine_name}! It is recommended to update the firmware on your printer.").format(
@@ -19,6 +19,7 @@ class FirmwareUpdateCheckerMessage(Message):
                 "New %s firmware available") % machine_name)
 
         self._machine_id = machine_id
+        self._download_url = download_url
 
         self.addAction(self.STR_ACTION_DOWNLOAD,
                           i18n_catalog.i18nc("@action:button", "How to update"),
@@ -29,3 +30,6 @@ class FirmwareUpdateCheckerMessage(Message):
 
     def getMachineId(self) -> int:
         return self._machine_id
+
+    def getDownloadUrl(self) -> str:
+        return self._download_url
