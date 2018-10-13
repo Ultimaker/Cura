@@ -6,7 +6,6 @@ import json
 from typing import Callable, Dict, List, Optional
 
 from UM.Logger import Logger
-from UM.Version import Version
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")

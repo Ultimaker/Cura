@@ -19,6 +19,7 @@ from cura.Settings.GlobalStack import GlobalStack
 
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
 from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, getSettingsKeyForMachine
+from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -40,20 +41,22 @@ class FirmwareUpdateChecker(Extension):
         # Partly initialize after creation, since we need our own path from the plugin-manager.
         self._download_url = None
         self._check_job = None
-        self._checked_printer_names = []  # type: Set[str]
+        self._checked_printer_names = set()  # type: Set[str]
         self._lookups = None
         QtApplication.pluginsLoaded.connect(self._onPluginsLoaded)
 
     ##  Callback for the message that is spawned when there is a new version.
     def _onActionTriggered(self, message, action):
-            download_url = self._lookups.getRedirectUserFor(int(action))
+        if action == FirmwareUpdateCheckerMessage.STR_ACTION_DOWNLOAD:
+            machine_id = message.getMachineId()
+            download_url = self._lookups.getRedirectUserFor(machine_id)
             if download_url is not None:
                 if QDesktopServices.openUrl(QUrl(download_url)):
                     Logger.log("i", "Redirected browser to {0} to show newly available firmware.".format(download_url))
                 else:
                     Logger.log("e", "Can't reach URL: {0}".format(download_url))
             else:
-                Logger.log("e", "Can't find URL for {0}".format(action))
+                Logger.log("e", "Can't find URL for {0}".format(machine_id))
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
@@ -88,7 +91,7 @@ class FirmwareUpdateChecker(Extension):
         container_name = container.definition.getName()
         if container_name in self._checked_printer_names:
             return
-        self._checked_printer_names.append(container_name)
+        self._checked_printer_names.add(container_name)
 
         self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
                                                    lookups = self._lookups,

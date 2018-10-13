@@ -10,9 +10,9 @@ from UM.Version import Version
 import urllib.request
 from urllib.error import URLError
 from typing import Dict
-import codecs
 
 from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, getSettingsKeyForMachine
+from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -99,22 +99,7 @@ class FirmwareUpdateCheckerJob(Job):
                 # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
                     Logger.log("i", "SHOWING FIRMWARE UPDATE MESSAGE")
-
-                    message = Message(i18n_catalog.i18nc(
-                        "@info Don't translate {machine_name}, since it gets replaced by a printer name!",
-                        "New features are available for your {machine_name}! It is recommended to update the firmware on your printer.").format(
-                        machine_name = machine_name),
-                        title = i18n_catalog.i18nc(
-                                          "@info:title The %s gets replaced with the printer name.",
-                                          "New %s firmware available") % machine_name)
-
-                    message.addAction(machine_id,
-                                      i18n_catalog.i18nc("@action:button", "How to update"),
-                                      "[no_icon]",
-                                      "[no_description]",
-                                      button_style = Message.ActionButtonStyle.LINK,
-                                      button_align = Message.ActionButtonStyle.BUTTON_ALIGN_LEFT)
-
+                    message = FirmwareUpdateCheckerMessage(machine_id, machine_name)
                     message.actionTriggered.connect(self._callback)
                     message.show()
             else:
