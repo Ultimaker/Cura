@@ -16,13 +16,7 @@ def getSettingsKeyForMachine(machine_id: int) -> str:
     return "info/latest_checked_firmware_for_{0}".format(machine_id)
 
 
-def defaultParseVersionResponse(response: str) -> Version:
-    raw_str = response.split("\n", 1)[0].rstrip()
-    return Version(raw_str)
-
-
 class FirmwareUpdateCheckerLookup:
-    JSON_NAME_TO_VERSION_PARSE_FUNCTION = {"default": defaultParseVersionResponse}
 
     def __init__(self, json_path) -> None:
         # Open the .json file with the needed lookup-lists for each machine(/model) and retrieve "raw" json.
@@ -44,12 +38,6 @@ class FirmwareUpdateCheckerLookup:
                 machine_name = machine_json.get("name").lower()  # Lower in case upper-case char are added to the json.
                 self._machine_ids.append(machine_id)
                 self._machine_per_name[machine_name] = machine_id
-                version_parse_function = \
-                    self.JSON_NAME_TO_VERSION_PARSE_FUNCTION.get(machine_json.get("version_parser"))
-                if version_parse_function is None:
-                    Logger.log("w", "No version-parse-function specified for machine {0}.".format(machine_name))
-                    version_parse_function = defaultParseVersionResponse  # Use default instead if nothing is found.
-                self._parse_version_url_per_machine[machine_id] = version_parse_function
                 self._check_urls_per_machine[machine_id] = []  # Multiple check-urls: see "_comment" in the .json file.
                 for check_url in machine_json.get("check_urls"):
                     self._check_urls_per_machine[machine_id].append(check_url)

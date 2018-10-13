@@ -46,14 +46,17 @@ class FirmwareUpdateCheckerJob(Job):
 
         return result
 
+    def parseVersionResponse(self, response: str) -> Version:
+        raw_str = response.split("\n", 1)[0].rstrip()
+        return Version(raw_str)
+
     def getCurrentVersionForMachine(self, machine_id: int) -> Version:
         max_version = self.ZERO_VERSION
 
         machine_urls = self._lookups.getCheckUrlsFor(machine_id)
-        parse_function = self._lookups.getParseVersionUrlFor(machine_id)
-        if machine_urls is not None and parse_function is not None:
+        if machine_urls is not None:
             for url in machine_urls:
-                version = parse_function(self.getUrlResponse(url))
+                version = self.parseVersionResponse(self.getUrlResponse(url))
                 if version > max_version:
                     max_version = version
 
