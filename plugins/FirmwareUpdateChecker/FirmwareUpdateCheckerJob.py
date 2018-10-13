@@ -12,7 +12,7 @@ from urllib.error import URLError
 from typing import Dict
 import codecs
 
-from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, get_settings_key_for_machine
+from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, getSettingsKeyForMachine
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -78,12 +78,12 @@ class FirmwareUpdateCheckerJob(Job):
             # If it is not None, then we compare between the checked_version and the current_version
             machine_id = self._lookups.getMachineByName(machine_name.lower())
             if machine_id is not None:
-                Logger.log("i", "You have a {0} in the printer list. Let's check the firmware!".format(machine_name))
+                Logger.log("i", "You have a(n) {0} in the printer list. Let's check the firmware!".format(machine_name))
 
                 current_version = self.getCurrentVersionForMachine(machine_id)
 
                 # If it is the first time the version is checked, the checked_version is ""
-                setting_key_str = get_settings_key_for_machine(machine_id)
+                setting_key_str = getSettingsKeyForMachine(machine_id)
                 checked_version = Version(Application.getInstance().getPreferences().getValue(setting_key_str))
 
                 # If the checked_version is "", it's because is the first time we check firmware and in this case

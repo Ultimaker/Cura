@@ -5,19 +5,20 @@ import os
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
-from typing import List
+from typing import Set
 
 from UM.Extension import Extension
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
+from UM.Qt.QtApplication import QtApplication
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.Settings.GlobalStack import GlobalStack
 
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
-from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, get_settings_key_for_machine
+from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, getSettingsKeyForMachine
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -36,22 +37,23 @@ class FirmwareUpdateChecker(Extension):
         if Application.getInstance().getPreferences().getValue("info/automatic_update_check"):
             ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
-        self._late_init = True  # Init some things after creation, since we need the path from the plugin-mgr.
+        # Partly initialize after creation, since we need our own path from the plugin-manager.
         self._download_url = None
         self._check_job = None
-        self._name_cache = []  # type: List[str]
+        self._checked_printer_names = []  # type: Set[str]
         self._lookups = None
+        QtApplication.pluginsLoaded.connect(self._onPluginsLoaded)
 
     ##  Callback for the message that is spawned when there is a new version.
     def _onActionTriggered(self, message, action):
-        try:
             download_url = self._lookups.getRedirectUserFor(int(action))
             if download_url is not None:
-                QDesktopServices.openUrl(QUrl(download_url))
+                if QDesktopServices.openUrl(QUrl(download_url)):
+                    Logger.log("i", "Redirected browser to {0} to show newly available firmware.".format(download_url))
+                else:
+                    Logger.log("e", "Can't reach URL: {0}".format(download_url))
             else:
                 Logger.log("e", "Can't find URL for {0}".format(action))
-        except Exception as ex:
-            Logger.log("e", "Don't know what to do with '{0}' because {1}".format(action, ex))
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
@@ -61,8 +63,9 @@ class FirmwareUpdateChecker(Extension):
     def _onJobFinished(self, *args, **kwargs):
         self._check_job = None
 
-    def doLateInit(self):
-        self._late_init = False
+    def _onPluginsLoaded(self):
+        if self._lookups is not None:
+            return
 
         self._lookups = FirmwareUpdateCheckerLookup(os.path.join(PluginRegistry.getInstance().getPluginPath(
             "FirmwareUpdateChecker"), "resources/machines.json"))
@@ -70,7 +73,7 @@ class FirmwareUpdateChecker(Extension):
         # Initialize the Preference called `latest_checked_firmware` that stores the last version
         # checked for each printer.
         for machine_id in self._lookups.getMachineIds():
-            Application.getInstance().getPreferences().addPreference(get_settings_key_for_machine(machine_id), "")
+            Application.getInstance().getPreferences().addPreference(getSettingsKeyForMachine(machine_id), "")
 
     ##  Connect with software.ultimaker.com, load latest.version and check version info.
     #   If the version info is different from the current version, spawn a message to
@@ -79,13 +82,13 @@ class FirmwareUpdateChecker(Extension):
     #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
     #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
-        if self._late_init:
-            self.doLateInit()
+        if self._lookups is None:
+            self._onPluginsLoaded()
 
         container_name = container.definition.getName()
-        if container_name in self._name_cache:
+        if container_name in self._checked_printer_names:
             return
-        self._name_cache.append(container_name)
+        self._checked_printer_names.append(container_name)
 
         self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
                                                    lookups = self._lookups,

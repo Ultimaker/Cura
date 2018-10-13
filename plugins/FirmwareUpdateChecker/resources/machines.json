@@ -1,5 +1,5 @@
 {
-    "_comment": "Multiple 'update_urls': The 'new'-style URL is the only way to check for S5 firmware, and in the future, the UM3 line will also switch over, but for now the old 'JEDI'-style URL is still needed.",
+    "_comment": "There are multiple 'check_urls', because sometimes an URL is about to be phased out, and it's useful to have a new 'future-proof' one at the ready.",
 
     "machines":
     [
