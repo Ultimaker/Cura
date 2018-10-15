@@ -189,9 +189,9 @@ UM.MainWindow
                 property int mouseX: base.mouseX
                 property int mouseY: base.mouseY
 
-                anchors {
-                    top: stageMenu.bottom
-                    topMargin: UM.Theme.getSize("window_margin").height
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
                     left: parent.left
                 }
             }
