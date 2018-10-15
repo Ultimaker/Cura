@@ -60,7 +60,7 @@ Item {
         
 
         PrintJobPreview {
-            job: root.printer.activePrintJob;
+            job: root.printer && root.printer.activePrintJob ? root.printer.activePrintJob : null;
             anchors.horizontalCenter: parent.horizontalCenter;
         }
     }

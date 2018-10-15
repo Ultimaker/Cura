@@ -78,7 +78,7 @@ Item {
                             anchors.fill: parent;
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default_bold");
-                            text: printJob ? printJob.name : ""; // Supress QML warnings
+                            text: printJob && printJob.name ? printJob.name : ""; // Supress QML warnings
                             visible: printJob;
                         }
                     }
@@ -204,7 +204,7 @@ Item {
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default_bold");
                             text: {
-                                if (printJob) {
+                                if (printJob !== null) {
                                     if (printJob.assignedPrinter == null) {
                                         if (printJob.state == "error") {
                                             return catalog.i18nc("@label", "Waiting for: Unavailable printer");
@@ -222,7 +222,7 @@ Item {
 
                     PrinterInfoBlock {
                         anchors.bottom: parent.bottom;
-                        printer: root.printJob.assignedPrinter;
+                        printer: root.printJon && root.printJob.assignedPrinter;
                         printJob: root.printJob;
                     }
                 }
@@ -398,11 +398,13 @@ Item {
                             }
                             text: catalog.i18nc("@label", "Override");
                             visible: {
-                                var length = printJob.configurationChanges.length;
-                                for (var i = 0; i < length; i++) {
-                                    var typeOfChange = printJob.configurationChanges[i].typeOfChange;
-                                    if (typeOfChange === "material_insert" || typeOfChange === "buildplate_change") {
-                                        return false;
+                                if (printJob && printJob.configurationChanges) {
+                                    var length = printJob.configurationChanges.length;
+                                    for (var i = 0; i < length; i++) {
+                                        var typeOfChange = printJob.configurationChanges[i].typeOfChange;
+                                        if (typeOfChange === "material_insert" || typeOfChange === "buildplate_change") {
+                                            return false;
+                                        }
                                     }
                                 }
                                 return true;
@@ -418,6 +420,9 @@ Item {
                     onYes: OutputDevice.forceSendJob(printJob.key);
                     standardButtons: StandardButton.Yes | StandardButton.No;
                     text: {
+                        if (!root.job) {
+                            return "";
+                        }
                         var printJobName = formatPrintJobName(printJob.name);
                         var confirmText = catalog.i18nc("@label", "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?").arg(printJobName);
                         return confirmText;

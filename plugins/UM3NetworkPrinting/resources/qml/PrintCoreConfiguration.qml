@@ -73,7 +73,7 @@ Item {
             elide: Text.ElideRight;
             font: UM.Theme.getFont("default");
             text: {
-                if (printCoreConfiguration != undefined && printCoreConfiguration.activeMaterial != undefined) {
+                if (printCoreConfiguration && printCoreConfiguration.activeMaterial != undefined) {
                     return printCoreConfiguration.activeMaterial.name;
                 }
                 return "";

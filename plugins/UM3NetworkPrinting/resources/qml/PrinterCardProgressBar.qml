@@ -8,7 +8,7 @@ import UM 1.3 as UM
 
 ProgressBar {
     property var progress: {
-        if (printer.activePrintJob == null) {
+        if (!printer || printer.activePrintJob == null) {
             return 0;
         }
         var result = printer.activePrintJob.timeElapsed / printer.activePrintJob.timeTotal;
@@ -25,11 +25,10 @@ ProgressBar {
             /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent remaining
                 time from ever being less than 0. Negative durations cause strange behavior such
                 as displaying "-1h -1m". */
-            var activeJob = printer.activePrintJob;
-            return Math.max(activeJob.timeTotal - activeJob.timeElapsed, 0);
+            return Math.max(printer.activePrintJob.timeTotal - printer.activePrintJob.timeElapsed, 0);
         }
         property var progressText: {
-            if (printer.activePrintJob == null) {
+            if (!printer.activePrintJob || !printer.activePrintJob.state ) {
                 return "";
             }
             switch (printer.activePrintJob.state) {
@@ -65,6 +64,9 @@ ProgressBar {
         progress: Rectangle {
             id: progressItem;
             color: {
+                if (!printer.activePrintJob) {
+                    return "black";
+                }
                 var state = printer.activePrintJob.state
                 var inactiveStates = [
                     "pausing",

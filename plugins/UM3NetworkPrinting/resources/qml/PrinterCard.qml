@@ -161,12 +161,15 @@ Item {
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default");
                             text: {
+                                if (!printer) {
+                                    return "";
+                                }
                                 if (printer.state == "disabled") {
                                     return catalog.i18nc("@label", "Not available");
                                 } else if (printer.state == "unreachable") {
                                     return catalog.i18nc("@label", "Unreachable");
                                 }
-                                if (printer.activePrintJob != null) {
+                                if (printer.activePrintJob != null && printer.activePrintJob.name) {
                                     return printer.activePrintJob.name;
                                 }
                                 return catalog.i18nc("@label", "Available");

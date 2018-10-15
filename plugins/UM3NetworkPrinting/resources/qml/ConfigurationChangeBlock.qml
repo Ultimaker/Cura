@@ -136,6 +136,9 @@ Item {
                     elide: Text.ElideRight;
                     font: UM.Theme.getFont("large_nonbold");
                     text: {
+                        if (root.job === null) {
+                            return "";
+                        }
                         if (root.job.configurationChanges.length === 0) {
                             return "";
                         }
@@ -182,11 +185,13 @@ Item {
                     }
                     text: catalog.i18nc("@label", "Override");
                     visible: {
-                        var length = root.job.configurationChanges.length;
-                        for (var i = 0; i < length; i++) {
-                            var typeOfChange = root.job.configurationChanges[i].typeOfChange;
-                            if (typeOfChange === "material_insert" || typeOfChange === "buildplate_change") {
-                                return false;
+                        if (root.job & root.job.configurationChanges) {
+                            var length = root.job.configurationChanges.length;
+                            for (var i = 0; i < length; i++) {
+                                var typeOfChange = root.job.configurationChanges[i].typeOfChange;
+                                if (typeOfChange === "material_insert" || typeOfChange === "buildplate_change") {
+                                    return false;
+                                }
                             }
                         }
                         return true;
@@ -203,6 +208,9 @@ Item {
         onYes: OutputDevice.forceSendJob(root.job.key);
         standardButtons: StandardButton.Yes | StandardButton.No;
         text: {
+            if (!root.job) {
+                return "";
+            }
             var printJobName = formatPrintJobName(root.job.name);
             var confirmText = catalog.i18nc("@label", "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?").arg(printJobName);
             return confirmText;

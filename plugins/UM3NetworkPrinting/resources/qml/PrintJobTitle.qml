@@ -27,7 +27,7 @@ Column {
             anchors.fill: parent;
             elide: Text.ElideRight;
             font: UM.Theme.getFont("default_bold");
-            text: job ? job.name : "";
+            text: job && job.name ? job.name : "";
             visible: job;
         }
     }

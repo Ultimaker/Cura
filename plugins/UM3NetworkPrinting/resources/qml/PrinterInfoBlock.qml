@@ -41,7 +41,7 @@ Item {
         }
 
         PrinterFamilyPill {
-            text: printer.type;
+            text: printer ? printer.type : "";
             visible: !compatiblePills.visible && printer;
         }
     }
