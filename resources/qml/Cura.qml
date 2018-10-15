@@ -63,11 +63,6 @@ UM.MainWindow
         id: backgroundItem
         anchors.fill: parent
 
-        SidebarTooltip
-        {
-            id: tooltip
-        }
-
         signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
         function getMeshName(path)
         {
@@ -273,6 +268,11 @@ UM.MainWindow
                     base.hideTooltip()
                 }
             }
+        }
+
+        SidebarTooltip
+        {
+            id: tooltip
         }
     }
 
