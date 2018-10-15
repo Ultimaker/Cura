@@ -174,15 +174,18 @@ Rectangle
 
                             font: UM.Theme.getFont("large_nonbold")
                             text: catalog.i18nc("@label", "Extruder")
-                            visible: width < (control.width - extruderIconItem.width - UM.Theme.getSize("default_margin").width)
+                            visible: width < (control.width - extruderIcon.width - UM.Theme.getSize("default_margin").width)
                             elide: Text.ElideRight
                         }
 
                         ExtruderIcon
                         {
                             // Round icon with the extruder number and material color indicator.
+                            id: extruderIcon
+
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: extruderStaticText.right
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
                             width: control.height - Math.round(UM.Theme.getSize("default_margin").width / 2)
                             height: width
 

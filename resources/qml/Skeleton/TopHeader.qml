@@ -93,7 +93,6 @@ Rectangle
                 color: UM.Theme.getColor("topheader_button_text_active")
                 font: UM.Theme.getFont("action_button")
                 renderType: Text.NativeRendering
-                anchors.verticalCenter: control.verticalCenter
             }
 
         }

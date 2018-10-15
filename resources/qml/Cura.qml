@@ -159,7 +159,7 @@ UM.MainWindow
                 }
 
                 height: 50
-                source: UM.Controller.activeStage.stageMenuComponent
+                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
             }
 
             Connections
@@ -252,13 +252,13 @@ UM.MainWindow
 
                 MouseArea
                 {
-                    visible: UM.Controller.activeStage.mainComponent != ""
+                    visible: parent.source != ""
                     anchors.fill: parent
                     acceptedButtons: Qt.AllButtons
                     onWheel: wheel.accepted = true
                 }
 
-                source: UM.Controller.activeStage.mainComponent
+                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
             }
 
             UM.MessageStack

@@ -20,7 +20,7 @@ Rectangle
     signal hideTooltip()
 
     // Also add an extra margin, as we ant some breathing room around the edges.
-    height: childrenRect.height + UM.Theme.getSize("sidebar_margin").height
+    height: saveButton.height + UM.Theme.getSize("sidebar_margin").height
     Label
     {
         id: timeDetails
