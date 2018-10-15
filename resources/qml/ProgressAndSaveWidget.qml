@@ -60,8 +60,7 @@ Rectangle
                         }
                     }
                     tooltip_html += "</table>";
-                    //print("trying to show tooltip", base, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), tooltip_html)
-                    base.showTooltip(parent, Qt.point(0, 0), tooltip_html);
+                    base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), tooltip_html);
                 }
             }
             onExited:
