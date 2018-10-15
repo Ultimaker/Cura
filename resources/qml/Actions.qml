@@ -23,8 +23,6 @@ Item
     property alias viewLeftSideCamera: viewLeftSideCameraAction;
     property alias viewRightSideCamera: viewRightSideCameraAction;
 
-    property alias expandSidebar: expandSidebarAction;
-
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
     property alias multiplySelection: multiplySelectionAction;
@@ -414,12 +412,5 @@ Item
         id: browsePackagesAction
         text: catalog.i18nc("@action:menu", "Browse packages...")
         iconName: "plugins_browse"
-    }
-
-    Action
-    {
-        id: expandSidebarAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
-        shortcut: "Ctrl+E";
     }
 }

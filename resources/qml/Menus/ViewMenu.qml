@@ -44,7 +44,8 @@ Menu
         MenuItem { action: Cura.Actions.viewRightSideCamera; }
     }
 
-    MenuSeparator {
+    MenuSeparator
+    {
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
 
@@ -72,8 +73,5 @@ Menu
 
     MenuSeparator {}
 
-    MenuItem { action: Cura.Actions.expandSidebar; }
-	
-    MenuSeparator {}
     MenuItem { action: Cura.Actions.toggleFullScreen; }
 }
