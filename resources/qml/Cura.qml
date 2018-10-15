@@ -163,8 +163,14 @@ UM.MainWindow
                 }
 
                 height: 50
-
                 source: UM.Controller.activeStage.stageMenuComponent
+            }
+
+            Connections
+            {
+                target: stageMenu.item
+                onShowTooltip: base.showTooltip(item, location, text)
+                onHideTooltop: base.hideTooltip()
             }
 
             JobSpecs

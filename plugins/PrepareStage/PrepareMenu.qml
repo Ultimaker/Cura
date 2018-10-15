@@ -10,6 +10,10 @@ Row
 {
     spacing: UM.Theme.getSize("default_margin").width
 
+    // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
+    signal showTooltip(Item item, point location, string text)
+    signal hideTooltip()
+
     UM.I18nCatalog
     {
         id: catalog
@@ -18,12 +22,12 @@ Row
 
     Button
     {
-        id: openFileButton;
-        text: catalog.i18nc("@action:button", "Open File");
+        id: openFileButton
+        text: catalog.i18nc("@action:button", "Open File")
         iconSource: UM.Theme.getIcon("load")
         style: UM.Theme.styles.tool_button
         tooltip: ""
-        action: Cura.Actions.open;
+        action: Cura.Actions.open
     }
 
     Cura.MachineAndConfigurationSelector
@@ -38,5 +42,7 @@ Row
     Cura.ProfileAndSettingComponent
     {
         width: UM.Theme.getSize("sidebar").width
+        onShowTooltip: parent.showTooltip(item, location, text)
+        onHideTooltip: parent.hideTooltip()
     }
 }
