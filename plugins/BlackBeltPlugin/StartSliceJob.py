@@ -348,7 +348,10 @@ class StartSliceJob(Job):
                                 is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                                 node_enable_support = per_object_stack.getProperty("support_enable", "value")
+                                if per_object_stack.getProperty("support_mesh", "value"):
+                                    node_enable_support = node_enable_support or per_object_stack.getProperty("support_mesh_drop_down", "value")
                                 add_support_mesh = node_enable_support if node_enable_support is not None else global_enable_support
+
                                 blackbelt_support_gantry_angle_bias = per_object_stack.getProperty("blackbelt_support_gantry_angle_bias", "value")
                                 blackbelt_support_minimum_island_area = per_object_stack.getProperty("blackbelt_support_minimum_island_area", "value")
                             else:
@@ -670,10 +673,11 @@ class StartSliceJob(Job):
 
         # Remove support_enable for belt-printers
         if self._scene.getRoot().callDecoration("getGantryAngle"):
-            try:
-                changed_setting_keys.remove("support_enable")
-            except KeyError:
-                pass
+            for key in ["support_enable", "support_mesh_drop_down"]:
+                try:
+                    changed_setting_keys.remove(key)
+                except KeyError:
+                    pass
 
         # Add all relations to changed settings as well.
         for key in top_of_stack.getAllKeys():
