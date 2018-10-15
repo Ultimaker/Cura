@@ -166,7 +166,7 @@ UM.MainWindow
             {
                 target: stageMenu.item
                 onShowTooltip: base.showTooltip(item, location, text)
-                onHideTooltop: base.hideTooltip()
+                onHideTooltip: base.hideTooltip()
             }
 
             JobSpecs
