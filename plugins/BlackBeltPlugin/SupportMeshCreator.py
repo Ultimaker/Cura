@@ -16,7 +16,13 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 class SupportMeshCreator():
-    def __init__(self, support_angle = None, filter_upwards_facing_faces = True, down_vector = numpy.array([0, -1, 0]), bottom_cut_off = 0):
+    def __init__(self,
+                    support_angle = None,
+                    filter_upwards_facing_faces = True,
+                    down_vector = numpy.array([0, -1, 0]),
+                    bottom_cut_off = 0,
+                    minimum_island_area = 0
+                ):
         self._support_angle = support_angle
         if self._support_angle is None:
             global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -28,6 +34,7 @@ class SupportMeshCreator():
                 self._support_angle = 50
 
         self._filter_upwards_facing_faces = filter_upwards_facing_faces
+        self._minimum_island_area = minimum_island_area
         self._down_vector = down_vector
         self._bottom_cut_off = bottom_cut_off
 
@@ -77,7 +84,22 @@ class SupportMeshCreator():
         roof = trimesh.base.Trimesh(vertices=node_vertices, faces=roof_indices)
         roof.remove_unreferenced_vertices()
         roof.process()
+
+        if self._minimum_island_area > 0:
+            # filter out all islands that would result in small towers
+            scale_matrix = trimesh.transformations.scale_matrix(0, direction=[0,1,0])
+            roof_elements = roof.split(only_watertight=False)
+            roof = trimesh.base.Trimesh()
+            for roof_element in roof_elements:
+                xy_element = roof_element.copy()
+                xy_element.apply_transform(scale_matrix)
+                if xy_element.area >= self._minimum_island_area:
+                    roof = roof + roof_element
+
         num_roof_vertices = len(roof.vertices)
+        if num_roof_vertices == 0:
+            Logger.log("d", "All surfaces of node %s that need support are smaller than %d" % (node_name, self._minimum_island_area))
+            return None
 
         connecting_faces = []
 

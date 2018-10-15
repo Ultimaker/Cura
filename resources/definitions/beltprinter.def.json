@@ -175,6 +175,18 @@
                     "maximum_value": "90",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
+                },
+                "blackbelt_support_minimum_island_area":
+                {
+                    "label": "Minimum Support Area",
+                    "description": "Minimum area in the X/Y directions of a small area which will be supported. This prevents very small support towers which could fall over.",
+                    "enabled": "support_enable",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 3.0,
+                    "minimum_value": "0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 }
             }
         },
