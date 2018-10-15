@@ -7,19 +7,19 @@ import UM 1.4 as UM
 
 Item
 {
+    // This item shows the provided image while applying a round mask to it.
+    // It also shows a round border around it. The color is defined by the outlineColor property.
+
     id: avatar
 
-    property var source
-    property var fallbackSource: UM.Theme.getImage("avatar_default")
-    property var outlineColor: UM.Theme.getColor("account_widget_ouline_active")
+    property alias source: profileImage.source
+    property alias outlineColor: profileImageOutline.color
 
     Image
     {
         id: profileImage
-        source: avatar.source ? avatar.source : UM.Theme.getImage("avatar_default")
-        sourceSize: Qt.size(parent.width, parent.height)
-        width: parent.width
-        height: parent.height
+        source: UM.Theme.getImage("avatar_default")
+        anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         visible: false
     }
@@ -29,8 +29,7 @@ Item
         id: profileImageMask
         source: UM.Theme.getIcon("circle_mask")
         sourceSize: Qt.size(parent.width, parent.height)
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
         color: UM.Theme.getColor("topheader_background")
         visible: false
     }
@@ -49,8 +48,7 @@ Item
         id: profileImageOutline
         source: UM.Theme.getIcon("circle_outline")
         sourceSize: Qt.size(parent.width, parent.height)
-        width: parent.width
-        height: parent.height
-        color: avatar.outlineColor
+        anchors.fill: parent
+        color: UM.Theme.getColor("account_widget_ouline_active")
     }
 }
