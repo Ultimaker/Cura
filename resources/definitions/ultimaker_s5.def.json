@@ -34,7 +34,7 @@
         "firmware_update_info": {
             "id": 9051,
             "check_urls": ["http://software.ultimaker.com/releases/firmware/9051/stable/version.txt"],
-            "update_url": "https://ultimaker.com/en/resources/20500-upgrade-firmware"
+            "update_url": "https://ultimaker.com/firmware"
         }
     },
 

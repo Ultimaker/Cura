@@ -31,7 +31,7 @@
                 "http://software.ultimaker.com/jedi/releases/latest.version?utm_source=cura&utm_medium=software&utm_campaign=resources",
                 "http://software.ultimaker.com/releases/firmware/9511/stable/version.txt"
             ],
-            "update_url": "https://ultimaker.com/en/resources/20500-upgrade-firmware"
+            "update_url": "https://ultimaker.com/firmware"
         }
     },
 
