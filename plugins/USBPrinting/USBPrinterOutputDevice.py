@@ -51,7 +51,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._all_baud_rates = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
-        self._update_thread = Thread(target=self._update, daemon=True)
+        self._update_thread = Thread(target = self._update, daemon = True)
 
         self._last_temperature_request = None  # type: Optional[int]
 
@@ -172,15 +172,19 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             except SerialException:
                 Logger.log("w", "An exception occured while trying to create serial connection")
                 return
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        self._onGlobalContainerStackChanged()
+        self.setConnectionState(ConnectionState.connected)
+        self._update_thread.start()
+
+    def _onGlobalContainerStackChanged(self):
         container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
         controller = GenericOutputController(self)
         controller.setCanUpdateFirmware(True)
-        self._printers = [PrinterOutputModel(output_controller=controller, number_of_extruders=num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller = controller, number_of_extruders = num_extruders)]
         self._printers[0].updateName(container_stack.getName())
-        self.setConnectionState(ConnectionState.connected)
-        self._update_thread.start()
 
     def close(self):
         super().close()

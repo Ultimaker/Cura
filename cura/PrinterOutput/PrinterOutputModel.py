@@ -175,7 +175,7 @@ class PrinterOutputModel(QObject):
     def getController(self) -> "PrinterOutputController":
         return self._controller
 
-    @pyqtProperty(str, notify=nameChanged)
+    @pyqtProperty(str, notify = nameChanged)
     def name(self) -> str:
         return self._name
 
