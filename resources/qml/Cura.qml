@@ -114,6 +114,7 @@ UM.MainWindow
 
             DropArea
             {
+                // The drop area is here to handle files being dropped onto Cura.
                 anchors.fill: parent
                 onDropped:
                 {
@@ -181,6 +182,8 @@ UM.MainWindow
 
             Toolbar
             {
+                // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
+                // plugins)
                 id: toolbar
 
                 property int mouseX: base.mouseX
@@ -206,6 +209,7 @@ UM.MainWindow
 
             Loader
             {
+                // A stage can control this area. If nothing is set, it will therefor show the 3D view.
                 id: main
 
                 anchors
