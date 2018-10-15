@@ -7,13 +7,11 @@ import QtQuick.Controls 1.1
 import UM 1.4 as UM
 import Cura 1.1 as Cura
 
-import "../components"
-
 Row
 {
     spacing: UM.Theme.getSize("default_margin").width
 
-    ActionButton
+    Cura.ActionButton
     {
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
@@ -25,7 +23,7 @@ Row
         onClicked: Qt.openUrlExternally("https://account.ultimaker.com")
     }
 
-    ActionButton
+    Cura.ActionButton
     {
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height

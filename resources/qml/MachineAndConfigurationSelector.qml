@@ -5,9 +5,8 @@ import QtQuick 2.7
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
-import "../Menus"
-import "../Menus/ConfigurationMenu"
-import ".."
+import "Menus"
+import "Menus/ConfigurationMenu"
 
 Rectangle
 {

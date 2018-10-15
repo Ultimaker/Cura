@@ -13,7 +13,6 @@ import Cura 1.1 as Cura
 import "Dialogs"
 import "Menus"
 import "Skeleton"
-import "components"
 
 UM.MainWindow
 {

@@ -7,8 +7,6 @@ import QtQuick.Controls 2.1
 import UM 1.4 as UM
 import Cura 1.1 as Cura
 
-import "../components"
-
 Column
 {
     property var profile: null
