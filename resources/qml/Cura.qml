@@ -21,7 +21,6 @@ UM.MainWindow
 
     // Cura application window title
     title: catalog.i18nc("@title:window", "Ultimaker Cura")
-    //viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     viewportRect: Qt.rect(0, 0, 1.0, 1.0)
     backgroundColor: UM.Theme.getColor("viewport_background")
 
@@ -42,24 +41,6 @@ UM.MainWindow
     {
         tooltip.hide();
     }
-
-    /*onWidthChanged:
-    {
-        // If slidebar is collapsed then it should be invisible
-        // otherwise after the main_window resize the sidebar will be fully re-drawn
-        if (sidebar.collapsed){
-            if (sidebar.visible == true){
-                sidebar.visible = false
-                sidebar.initialWidth = 0
-            }
-        }
-        else{
-            if (sidebar.visible == false){
-                sidebar.visible = true
-                sidebar.initialWidth = UM.Theme.getSize("sidebar").width
-            }
-        }
-    }*/
 
     Component.onCompleted:
     {
@@ -193,13 +174,10 @@ UM.MainWindow
                 anchors
                 {
                     bottom: parent.bottom
-                    //right: sidebar.left
                     bottomMargin: UM.Theme.getSize("default_margin").height
                     rightMargin: UM.Theme.getSize("default_margin").width
                 }
             }
-
-
 
             Toolbar
             {
@@ -226,18 +204,6 @@ UM.MainWindow
                 }
             }
 
-            /*ApplicationViews
-            {
-                id: applicationViews
-
-
-                anchors
-                {
-                    top: parent.top
-                    right: sidebar.left
-                }
-            }*/
-
             Loader
             {
                 id: main
@@ -261,78 +227,6 @@ UM.MainWindow
                 source: UM.Controller.activeStage.mainComponent
             }
 
-            /*Loader
-            {
-                id: sidebar
-
-                property bool collapsed: false
-                property var initialWidth: UM.Theme.getSize("sidebar").width
-
-                function callExpandOrCollapse()
-                {
-                    if (collapsed)
-                    {
-                        sidebar.visible = true
-                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width
-                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
-                        expandSidebarAnimation.start();
-                    }
-                    else
-                    {
-                        viewportRect = Qt.rect(0, 0, 1, 1.0)
-                        collapseSidebarAnimation.start()
-                    }
-                    collapsed = !collapsed
-                    UM.Preferences.setValue("cura/sidebar_collapsed", collapsed)
-                }
-
-                anchors
-                {
-                    top: parent.top
-                    bottom: parent.bottom
-                }
-
-                width: initialWidth
-                x: base.width - sidebar.width
-                source: UM.Controller.activeStage.sidebarComponent
-
-                NumberAnimation {
-                    id: collapseSidebarAnimation
-                    target: sidebar
-                    properties: "x"
-                    to: base.width
-                    duration: 100
-                }
-
-                NumberAnimation {
-                    id: expandSidebarAnimation
-                    target: sidebar
-                    properties: "x"
-                    to: base.width - sidebar.width
-                    duration: 100
-                }
-
-                Component.onCompleted:
-                {
-                    var sidebar_collapsed = UM.Preferences.getValue("cura/sidebar_collapsed")
-
-                    if (sidebar_collapsed)
-                    {
-                        sidebar.collapsed = true
-                        viewportRect = Qt.rect(0, 0, 1, 1.0)
-                        collapseSidebarAnimation.start()
-                    }
-                }
-
-                MouseArea
-                {
-                    visible: UM.Controller.activeStage.sidebarComponent != ""
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-                    onWheel: wheel.accepted = true
-                }
-            }*/
-
             UM.MessageStack
             {
                 anchors
@@ -344,7 +238,6 @@ UM.MainWindow
                     bottomMargin:  UM.Theme.getSize("default_margin").height
                 }
             }
-
 
             ViewOrientationControls
             {
@@ -358,7 +251,6 @@ UM.MainWindow
                     bottom: parent.bottom
                 }
             }
-
 
             ProgressAndSaveWidget
             {
@@ -378,13 +270,6 @@ UM.MainWindow
             }
         }
     }
-
-    // Expand or collapse sidebar
-    /*Connections
-    {
-        target: Cura.Actions.expandSidebar
-        onTriggered: sidebar.callExpandOrCollapse()
-    }*/
 
     UM.PreferencesDialog
     {
@@ -509,7 +394,8 @@ UM.MainWindow
         }
     }
 
-    ContextMenu {
+    ContextMenu
+    {
         id: contextMenu
     }
 
