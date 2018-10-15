@@ -207,6 +207,36 @@ UM.MainWindow
                 }
             }
 
+            ViewOrientationControls
+            {
+                id: viewOrientationControls
+
+                anchors
+                {
+                    left: parent.left
+                    margins: UM.Theme.getSize("default_margin").width
+
+                    bottom: parent.bottom
+                }
+            }
+
+            ProgressAndSaveWidget
+            {
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                width: UM.Theme.getSize("sidebar").width
+                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+                onShowTooltip:
+                {
+                    base.showTooltip(item, location, text)
+                }
+                onHideTooltip:
+                {
+                    base.hideTooltip()
+                }
+            }
+
             Loader
             {
                 // A stage can control this area. If nothing is set, it will therefor show the 3D view.
@@ -240,36 +270,6 @@ UM.MainWindow
                     top: parent.verticalCenter
                     bottom: parent.bottom
                     bottomMargin:  UM.Theme.getSize("default_margin").height
-                }
-            }
-
-            ViewOrientationControls
-            {
-                id: viewOrientationControls
-
-                anchors
-                {
-                    left: parent.left
-                    margins: UM.Theme.getSize("default_margin").width
-
-                    bottom: parent.bottom
-                }
-            }
-
-            ProgressAndSaveWidget
-            {
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                width: UM.Theme.getSize("sidebar").width
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
-                onShowTooltip:
-                {
-                    base.showTooltip(item, location, text)
-                }
-                onHideTooltip:
-                {
-                    base.hideTooltip()
                 }
             }
         }
