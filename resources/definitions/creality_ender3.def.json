@@ -41,6 +41,9 @@
                 [30, 34]
             ]
         },
+        "material_diameter": {
+            "default_value": 1.75
+        },
         "acceleration_enabled": {
             "default_value": true
         },
@@ -55,6 +58,9 @@
         },
         "jerk_travel": {
             "default_value": 20
+        },
+        "layer_height": {
+            "default_value": 0.10
         },
         "layer_height_0": {
             "default_value": 0.2

@@ -12,7 +12,8 @@
         "machine_extruder_trains":
         {
             "0": "bq_witbox_extruder_0"
-        }
+        },
+        "firmware_file": "MarlinWitbox.hex"
     },
 
     "overrides": {

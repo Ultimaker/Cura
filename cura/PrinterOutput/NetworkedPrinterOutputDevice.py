@@ -130,9 +130,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             # We need to check if the manager needs to be re-created. If we don't, we get some issues when OSX goes to
             # sleep.
             if time_since_last_response > self._recreate_network_manager_time:
-                if self._last_manager_create_time is None:
-                    self._createNetworkManager()
-                elif time() - self._last_manager_create_time > self._recreate_network_manager_time:
+                if self._last_manager_create_time is None or time() - self._last_manager_create_time > self._recreate_network_manager_time:
                     self._createNetworkManager()
                 assert(self._manager is not None)
         elif self._connection_state == ConnectionState.closed:
