@@ -44,6 +44,7 @@ class FlavorParser:
         self._extruder_offsets = {}  # type: Dict[int, List[float]] # Offsets for multi extruders. key is index, value is [x-offset, y-offset]
         self._current_layer_thickness = 0.2  # default
         self._filament_diameter = 2.85       # default
+        self._previous_extrusion_value = 0  # keep track of the filament retractions
 
         CuraApplication.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
@@ -182,6 +183,7 @@ class FlavorParser:
             new_extrusion_value = params.e if self._is_absolute_extrusion else e[self._extruder_number] + params.e
             if new_extrusion_value > e[self._extruder_number]:
                 path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], self._layer_type])  # extrusion
+                self._previous_extrusion_value = new_extrusion_value
             else:
                 path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])  # retraction
             e[self._extruder_number] = new_extrusion_value
@@ -191,6 +193,12 @@ class FlavorParser:
             if z > self._previous_z and (z - self._previous_z < 1.5):
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
+        elif self._previous_extrusion_value > e[self._extruder_number]:
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])
+
+        # This case only for initial start, for the first coordinate in GCode
+        elif e[self._extruder_number] == 0 and self._previous_extrusion_value == 0:
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])
         else:
             path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveCombingType])
         return self._position(x, y, z, f, e)
@@ -235,6 +243,7 @@ class FlavorParser:
             position.e)
 
     def processGCode(self, G: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
+        self.previous_extrusion_value = 0
         func = getattr(self, "_gCode%s" % G, None)
         line = line.split(";", 1)[0]  # Remove comments (if any)
         if func is not None:
