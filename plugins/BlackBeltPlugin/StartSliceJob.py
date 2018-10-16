@@ -57,7 +57,7 @@ class GcodeStartEndFormatter(Formatter):
         super().__init__()
         self._default_extruder_nr = default_extruder_nr
 
-    def get_value(self, key: str, args: str, kwargs: dict) -> str: #type: ignore # [CodeStyle: get_value is an overridden
+    def get_value(self, key: str, args: str, kwargs: dict) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
         # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
         # and a default_extruder_nr to use when no extruder_nr is specified
 
@@ -297,7 +297,10 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            for position, extruder_stack in enumerate(ExtruderManager.getInstance().getActiveExtruderStacks()):
+            # Send the extruder settings in the order of extruder positions. Somehow, if you send e.g. extruder 3 first,
+            # then CuraEngine can slice with the wrong settings. This I think should be fixed in CuraEngine as well.
+            extruder_stack_list = sorted(list(global_stack.extruders.items()), key = lambda item: int(item[0]))
+            for _, extruder_stack in extruder_stack_list:
                 if gantry_angle: # not 0 or None
                     # Act on a copy of the stack, so these changes don't cause a reslice
                     _extruder_stack = CuraContainerStack(extruder_stack.getId() + "_temp")
@@ -495,7 +498,7 @@ class StartSliceJob(Job):
 
                     else:
                         self._handlePerObjectSettings(object, obj)
-                        Job.yieldThread()
+                    Job.yieldThread()
 
                 # Store the front-most coordinate of the scene so the scene can be moved back into place post slicing
                 # TODO: this should be handled per mesh-group instead of per scene
