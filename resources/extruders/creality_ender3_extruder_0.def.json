@@ -1,10 +1,10 @@
 {
-    "id": "printrbot_play_heated_extruder_0",
+    "id": "creality_ender3_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "printrbot_play_heated",
+        "machine": "creality_ender3",
         "position": "0"
     },
 
