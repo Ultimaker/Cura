@@ -77,6 +77,9 @@ Item {
                     UM.RecolorImage {
                         anchors.centerIn: parent;
                         color: {
+                            if (!printer) {
+                                return "black";
+                            }
                             if (printer.state == "disabled") {
                                 return UM.Theme.getColor("monitor_tab_text_inactive");
                             }

@@ -39,8 +39,8 @@ Item {
     Popup {
         id: popup;
         background: Item {
-            height: popup.height;
-            width: popup.width;
+            height: childrenRect.height;
+            width: childrenRect.width;
 
             DropShadow {
                 anchors.fill: pointedRectangle;

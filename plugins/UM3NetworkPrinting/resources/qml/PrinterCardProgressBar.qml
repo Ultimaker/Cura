@@ -19,7 +19,7 @@ ProgressBar {
     }
     style: ProgressBarStyle {
         property var remainingTime: {
-            if (printer.activePrintJob == null) {
+            if (!printer || printer.activePrintJob == null) {
                 return 0;
             }
             /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent remaining
@@ -28,7 +28,7 @@ ProgressBar {
             return Math.max(printer.activePrintJob.timeTotal - printer.activePrintJob.timeElapsed, 0);
         }
         property var progressText: {
-            if (!printer.activePrintJob || !printer.activePrintJob.state ) {
+            if (printer === null ) {
                 return "";
             }
             switch (printer.activePrintJob.state) {
@@ -64,7 +64,7 @@ ProgressBar {
         progress: Rectangle {
             id: progressItem;
             color: {
-                if (!printer.activePrintJob) {
+                if (! printer || !printer.activePrintJob) {
                     return "black";
                 }
                 var state = printer.activePrintJob.state

@@ -35,7 +35,7 @@ Item {
 
         PrinterInfoBlock {
             printer: root.printer;
-            printJob: root.printer.activePrintJob;
+            printJob: root.printer ? root.printer.activePrintJob : null;
         }
 
         HorizontalLine {}
@@ -45,7 +45,7 @@ Item {
             width: parent.width;
 
             PrintJobTitle {
-                job: root.printer.activePrintJob;
+                job: root.printer ? root.printer.activePrintJob : null;
             }
             PrintJobContextMenu {
                 id: contextButton;

@@ -24,7 +24,6 @@ Item {
         anchors {
             left: parent.left;
             right: parent.right;
-            
         }
         height: childrenRect.height;
         spacing: Math.round(0.5 * UM.Theme.getSize("default_margin").width);
