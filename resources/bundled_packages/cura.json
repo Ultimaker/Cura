@@ -118,6 +118,23 @@
             }
         }
     },
+    "FirmwareUpdater": {
+        "package_info": {
+            "package_id": "FirmwareUpdater",
+            "package_type": "plugin",
+            "display_name": "Firmware Updater",
+            "description": "Provides a machine actions for updating firmware.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "GCodeGzReader": {
         "package_info": {
             "package_id": "GCodeGzReader",

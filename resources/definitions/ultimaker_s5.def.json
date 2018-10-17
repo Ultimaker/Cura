@@ -30,7 +30,12 @@
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
-        "weight": -1
+        "weight": -1,
+        "firmware_update_info": {
+            "id": 9051,
+            "check_urls": ["http://software.ultimaker.com/releases/firmware/9051/stable/version.txt"],
+            "update_url": "https://ultimaker.com/firmware"
+        }
     },
 
     "overrides": {
@@ -63,7 +68,7 @@
         "machine_end_gcode": { "default_value": "" },
         "prime_tower_position_x": { "default_value": 345 },
         "prime_tower_position_y": { "default_value": 222.5 },
-        "prime_blob_enable": { "enabled": false },
+        "prime_blob_enable": { "enabled": true, "default_value": false },
 
         "speed_travel":
         {

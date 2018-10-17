@@ -86,7 +86,7 @@ Item {
                     printJobTextfield.focus = false;
                 }
                 validator: RegExpValidator {
-                    regExp: /^[^\\ \/ \*\?\|\[\]]*$/
+                    regExp: /^[^\\\/\*\?\|\[\]]*$/
                 }
                 style: TextFieldStyle{
                     textColor: UM.Theme.getColor("text_scene");
