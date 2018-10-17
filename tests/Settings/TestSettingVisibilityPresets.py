@@ -10,11 +10,11 @@ from cura.Settings.SettingVisibilityPreset import SettingVisibilityPreset
 
 setting_visibility_preset_test_settings = {"test", "zomg", "derp", "yay", "whoo"}
 
-Resources.addSearchPath(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__)), "../..", "resources")))
+Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources")))
 Resources.addStorageType(CuraApplication.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
 
 
-def test_settingVisibilityPreset():
+def test_createVisibilityPresetFromLocalFile():
     # Simple creation test. This is seperated from the visibilityFromPrevious, since we can't check for the contents
     # of the other profiles, since they might change over time.
     visibility_preset = SettingVisibilityPreset()
