@@ -30,7 +30,7 @@ catalog = i18nCatalog("cura")
 #   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
 #   This job name is requested by the JobSpecs qml file.
 class PrintInformation(QObject):
-    
+
     UNTITLED_JOB_NAME = "Untitled"
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
@@ -58,7 +58,7 @@ class PrintInformation(QObject):
         self._abbr_machine = ""
         self._job_name = ""
         self._active_build_plate = 0
-        self._initVariablesWithBuildPlate(self._active_build_plate)
+        self._initVariablesByBuildPlate(self._active_build_plate)
 
         self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
 
@@ -75,8 +75,6 @@ class PrintInformation(QObject):
 
         self._material_amounts = []  # type: List[float]
 
-    # Crate cura message translations and using translation keys initialize empty time Duration object for total time
-    # and time for each feature
     def initializeCuraMessagePrintTimeProperties(self) -> None:
         self._current_print_time = {}  # type: Dict[int, Duration]
 
@@ -94,17 +92,17 @@ class PrintInformation(QObject):
             "none": catalog.i18nc("@tooltip", "Other")
         }
 
-        self._print_time_message_values = {}  # type: Dict[int, Dict[str, Duration]]
+        self._print_times_per_feature = {}  # type: Dict[int, Dict[str, Duration]]
 
-    def _initPrintTimeMessageValues(self, build_plate_number: int) -> None:
+    def _initPrintTimesPerFeature(self, build_plate_number: int) -> None:
         # Full fill message values using keys from _print_time_message_translations
-        self._print_time_message_values[build_plate_number] = {}
+        self._print_times_per_feature[build_plate_number] = {}
         for key in self._print_time_message_translations.keys():
-            self._print_time_message_values[build_plate_number][key] = Duration(None, self)
+            self._print_times_per_feature[build_plate_number][key] = Duration(None, self)
 
-    def _initVariablesWithBuildPlate(self, build_plate_number: int) -> None:
-        if build_plate_number not in self._print_time_message_values:
-            self._initPrintTimeMessageValues(build_plate_number)
+    def _initVariablesByBuildPlate(self, build_plate_number: int) -> None:
+        if build_plate_number not in self._print_times_per_feature:
+            self._initPrintTimesPerFeature(build_plate_number)
         if self._active_build_plate not in self._material_lengths:
             self._material_lengths[self._active_build_plate] = []
         if self._active_build_plate not in self._material_weights:
@@ -158,26 +156,27 @@ class PrintInformation(QObject):
     def materialNames(self):
         return self._material_names[self._active_build_plate]
 
-    def printTimes(self):
-        return self._print_time_message_values[self._active_build_plate]
+    #   Get all print times (by feature) of the active buildplate.
+    def printTimes(self) -> Dict[str, Duration]:
+        return self._print_times_per_feature[self._active_build_plate]
 
-    def _onPrintDurationMessage(self, build_plate_number: int, print_time: Dict[str, int], material_amounts: List[float]) -> None:
-        self._updateTotalPrintTimePerFeature(build_plate_number, print_time)
+    def _onPrintDurationMessage(self, build_plate_number: int, print_times_per_feature: Dict[str, int], material_amounts: List[float]) -> None:
+        self._updateTotalPrintTimePerFeature(build_plate_number, print_times_per_feature)
         self.currentPrintTimeChanged.emit()
 
         self._material_amounts = material_amounts
         self._calculateInformation(build_plate_number)
 
-    def _updateTotalPrintTimePerFeature(self, build_plate_number: int, print_times: Dict[str, int]) -> None:
+    def _updateTotalPrintTimePerFeature(self, build_plate_number: int, print_times_per_feature: Dict[str, int]) -> None:
         total_estimated_time = 0
 
-        if build_plate_number not in self._print_time_message_values:
-            self._initPrintTimeMessageValues(build_plate_number)
+        if build_plate_number not in self._print_times_per_feature:
+            self._initPrintTimesPerFeature(build_plate_number)
 
-        for feature, time in print_times.items():
-            if feature not in self._print_time_message_values[build_plate_number]:
-                self._print_time_message_values[build_plate_number][feature] = Duration(parent=self)
-            duration = self._print_time_message_values[build_plate_number][feature]
+        for feature, time in print_times_per_feature.items():
+            if feature not in self._print_times_per_feature[build_plate_number]:
+                self._print_times_per_feature[build_plate_number][feature] = Duration(parent=self)
+            duration = self._print_times_per_feature[build_plate_number][feature]
 
             if time != time:  # Check for NaN. Engine can sometimes give us weird values.
                 duration.setDuration(0)
@@ -209,7 +208,7 @@ class PrintInformation(QObject):
             if index >= len(self._material_amounts):
                 continue
             amount = self._material_amounts[index]
-            ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
+            # Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
             density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
             material = extruder_stack.findContainer({"type": "material"})
@@ -237,6 +236,7 @@ class PrintInformation(QObject):
                 length = round((amount / (math.pi * radius ** 2)) / 1000, 2)
             else:
                 length = 0
+
             self._material_weights[build_plate_number].append(weight)
             self._material_lengths[build_plate_number].append(length)
             self._material_costs[build_plate_number].append(cost)
@@ -260,7 +260,7 @@ class PrintInformation(QObject):
             self._active_build_plate = new_active_build_plate
             self._updateJobName()
 
-            self._initVariablesWithBuildPlate(self._active_build_plate)
+            self._initVariablesByBuildPlate(self._active_build_plate)
 
             self.materialLengthsChanged.emit()
             self.materialWeightsChanged.emit()
@@ -403,9 +403,9 @@ class PrintInformation(QObject):
     @pyqtSlot(result = "QVariantMap")
     def getFeaturePrintTimes(self):
         result = {}
-        if self._active_build_plate not in self._print_time_message_values:
-            self._initPrintTimeMessageValues(self._active_build_plate)
-        for feature, time in self._print_time_message_values[self._active_build_plate].items():
+        if self._active_build_plate not in self._print_times_per_feature:
+            self._initPrintTimesPerFeature(self._active_build_plate)
+        for feature, time in self._print_times_per_feature[self._active_build_plate].items():
             if feature in self._print_time_message_translations:
                 result[self._print_time_message_translations[feature]] = time
             else:
@@ -419,9 +419,9 @@ class PrintInformation(QObject):
 
         # Construct the 0-time message
         temp_message = {}
-        if build_plate not in self._print_time_message_values:
-            self._print_time_message_values[build_plate] = {}
-        for key in self._print_time_message_values[build_plate].keys():
+        if build_plate not in self._print_times_per_feature:
+            self._print_times_per_feature[build_plate] = {}
+        for key in self._print_times_per_feature[build_plate].keys():
             temp_message[key] = 0
         temp_material_amounts = [0.]
 
