@@ -30,17 +30,7 @@ catalog = i18nCatalog("cura")
 #   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
 #   This job name is requested by the JobSpecs qml file.
 class PrintInformation(QObject):
-    class SlicePass:
-        CurrentSettings = 1
-        LowQualitySettings = 2
-        HighQualitySettings = 3
-
-    class SliceReason:
-        SceneChanged = 1
-        SettingChanged = 2
-        ActiveMachineChanged = 3
-        Other = 4
-
+    
     UNTITLED_JOB_NAME = "Untitled"
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
