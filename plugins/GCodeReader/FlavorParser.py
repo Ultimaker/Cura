@@ -44,7 +44,7 @@ class FlavorParser:
         self._extruder_offsets = {}  # type: Dict[int, List[float]] # Offsets for multi extruders. key is index, value is [x-offset, y-offset]
         self._current_layer_thickness = 0.2  # default
         self._filament_diameter = 2.85       # default
-        self._previous_extrusion_value = 0  # keep track of the filament retractions
+        self._previous_extrusion_value = 0.0  # keep track of the filament retractions
 
         CuraApplication.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
@@ -243,7 +243,7 @@ class FlavorParser:
             position.e)
 
     def processGCode(self, G: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
-        self.previous_extrusion_value = 0
+        self._previous_extrusion_value = 0.0
         func = getattr(self, "_gCode%s" % G, None)
         line = line.split(";", 1)[0]  # Remove comments (if any)
         if func is not None:
