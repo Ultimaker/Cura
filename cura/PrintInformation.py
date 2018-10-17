@@ -203,33 +203,38 @@ class PrintInformation(QObject):
         material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
 
         extruder_stacks = global_stack.extruders
-        for position, extruder_stack in extruder_stacks.items():
+
+        for position in extruder_stacks:
+            extruder_stack = extruder_stacks[position]
             index = int(position)
             if index >= len(self._material_amounts):
                 continue
             amount = self._material_amounts[index]
             # Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
-            #  list comprehension filtering to solve this for us.
+            # list comprehension filtering to solve this for us.
             density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
-            material = extruder_stack.findContainer({"type": "material"})
+            material = extruder_stack.material
             radius = extruder_stack.getProperty("material_diameter", "value") / 2
 
             weight = float(amount) * float(density) / 1000
             cost = 0.
-            material_name = catalog.i18nc("@label unknown material", "Unknown")
-            if material:
-                material_guid = material.getMetaDataEntry("GUID")
-                material_name = material.getName()
-                if material_guid in material_preference_values:
-                    material_values = material_preference_values[material_guid]
 
-                    weight_per_spool = float(material_values["spool_weight"] if material_values and "spool_weight" in material_values else 0)
-                    cost_per_spool = float(material_values["spool_cost"] if material_values and "spool_cost" in material_values else 0)
+            material_guid = material.getMetaDataEntry("GUID")
+            material_name = material.getName()
+            if material_guid in material_preference_values:
+                material_values = material_preference_values[material_guid]
 
-                    if weight_per_spool != 0:
-                        cost = cost_per_spool * weight / weight_per_spool
-                    else:
-                        cost = 0
+                if material_values and "spool_weight" in material_values:
+                    weight_per_spool = float(material_values["spool_weight"])
+                else:
+                    weight_per_spool = float(extruder_stack.getMetaDataEntry("properties", {}).get("weight", 0))
+
+                cost_per_spool = float(material_values["spool_cost"] if material_values and "spool_cost" in material_values else 0)
+
+                if weight_per_spool != 0:
+                    cost = cost_per_spool * weight / weight_per_spool
+                else:
+                    cost = 0
 
             # Material amount is sent as an amount of mm^3, so calculate length from that
             if radius != 0:
