@@ -5,7 +5,6 @@ from . import VersionUpgrade33to34
 
 upgrade = VersionUpgrade33to34.VersionUpgrade33to34()
 
-
 def getMetaData():
     return {
         "version_upgrade": {

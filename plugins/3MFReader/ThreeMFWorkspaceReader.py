@@ -1012,7 +1012,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     ##  Get the list of ID's of all containers in a container stack by partially parsing it's serialized data.
     def _getContainerIdListFromSerialized(self, serialized):
-        parser = ConfigParser(interpolation=None, empty_lines_in_values=False)
+        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
 
         container_ids = []
@@ -1033,7 +1033,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return container_ids
 
     def _getMachineNameFromSerializedStack(self, serialized):
-        parser = ConfigParser(interpolation=None, empty_lines_in_values=False)
+        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
 

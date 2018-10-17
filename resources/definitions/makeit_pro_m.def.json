@@ -8,7 +8,6 @@
         "manufacturer": "NA",
         "file_formats": "text/x-gcode",
         "has_materials": false,
-        "supported_actions": [ "MachineSettingsAction", "UpgradeFirmware" ],
         "machine_extruder_trains":
         {
             "0": "makeit_dual_1st",

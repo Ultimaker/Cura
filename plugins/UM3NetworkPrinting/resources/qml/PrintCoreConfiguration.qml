@@ -67,7 +67,7 @@ Item
                 }
                 return ""
             }
-            font: UM.Theme.getFont("default_bold")
+            font: UM.Theme.getFont("default")
             elide: Text.ElideRight
             width: parent.width
         }

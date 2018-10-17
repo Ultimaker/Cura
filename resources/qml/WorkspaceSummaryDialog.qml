@@ -117,7 +117,7 @@ UM.Dialog
                         height: childrenRect.height
                         Label
                         {
-                            text: catalog.i18nc("@action:label", Cura.MachineManager.activeMachineNetworkGroupName != "" ? "Printer Group" : "Name")
+                            text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? catalog.i18nc("@action:label", "Printer Group") : catalog.i18nc("@action:label", "Name")
                             width: Math.floor(scroll.width / 3) | 0
                         }
                         Label

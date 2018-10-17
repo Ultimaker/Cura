@@ -23,6 +23,7 @@ Item
     {
         id: button
         text: catalog.i18nc("@action:button", "Back")
+        enabled: !toolbox.isDownloading
         UM.RecolorImage
         {
             id: backArrow
@@ -39,7 +40,7 @@ Item
                 width: width
                 height: height
             }
-            color: button.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")
+            color: button.enabled ? (button.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")) : UM.Theme.getColor("text_inactive")
             source: UM.Theme.getIcon("arrow_left")
         }
         width: UM.Theme.getSize("toolbox_back_button").width
@@ -59,7 +60,7 @@ Item
             {
                 id: labelStyle
                 text: control.text
-                color: control.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")
+                color: control.enabled ? (control.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")) : UM.Theme.getColor("text_inactive")
                 font: UM.Theme.getFont("default_bold")
                 horizontalAlignment: Text.AlignRight
                 width: control.width

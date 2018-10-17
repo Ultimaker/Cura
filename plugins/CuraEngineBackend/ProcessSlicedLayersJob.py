@@ -2,6 +2,7 @@
 #Cura is released under the terms of the LGPLv3 or higher.
 
 import gc
+import sys
 
 from UM.Job import Job
 from UM.Application import Application
@@ -95,23 +96,35 @@ class ProcessSlicedLayersJob(Job):
         layer_count = len(self._layers)
 
         # Find the minimum layer number
+        # When disabling the remove empty first layers setting, the minimum layer number will be a positive
+        # value. In that case the first empty layers will be discarded and start processing layers from the
+        # first layer with data.
         # When using a raft, the raft layers are sent as layers < 0. Instead of allowing layers < 0, we
-        # instead simply offset all other layers so the lowest layer is always 0. It could happens that
-        # the first raft layer has value -8 but there are just 4 raft (negative) layers.
-        min_layer_number = 0
+        # simply offset all other layers so the lowest layer is always 0. It could happens that the first
+        # raft layer has value -8 but there are just 4 raft (negative) layers.
+        min_layer_number = sys.maxsize
         negative_layers = 0
         for layer in self._layers:
-            if layer.id < min_layer_number:
-                min_layer_number = layer.id
-            if layer.id < 0:
-                negative_layers += 1
+            if layer.repeatedMessageCount("path_segment") > 0:
+                if layer.id < min_layer_number:
+                    min_layer_number = layer.id
+                if layer.id < 0:
+                    negative_layers += 1
 
         current_layer = 0
 
         for layer in self._layers:
-            # Negative layers are offset by the minimum layer number, but the positive layers are just
-            # offset by the number of negative layers so there is no layer gap between raft and model
-            abs_layer_number = layer.id + abs(min_layer_number) if layer.id < 0 else layer.id + negative_layers
+            # If the layer is below the minimum, it means that there is no data, so that we don't create a layer
+            # data. However, if there are empty layers in between, we compute them.
+            if layer.id < min_layer_number:
+                continue
+
+            # Layers are offset by the minimum layer number. In case the raft (negative layers) is being used,
+            # then the absolute layer number is adjusted by removing the empty layers that can be in between raft
+            # and the model
+            abs_layer_number = layer.id - min_layer_number
+            if layer.id >= 0 and negative_layers != 0:
+                abs_layer_number += (min_layer_number + negative_layers)
 
             layer_data.addLayer(abs_layer_number)
             this_layer = layer_data.getLayer(abs_layer_number)

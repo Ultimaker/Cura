@@ -21,9 +21,10 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from UM.Scene.Selection import Selection
 from UM.Signal import Signal
+from UM.View.CompositePass import CompositePass
 from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.OpenGLContext import OpenGLContext
-
+from UM.View.GL.ShaderProgram import ShaderProgram
 
 from UM.View.View import View
 from UM.i18n import i18nCatalog
@@ -36,13 +37,11 @@ from .SimulationViewProxy import SimulationViewProxy
 import numpy
 import os.path
 
-from typing import Optional, TYPE_CHECKING, List
+from typing import Optional, TYPE_CHECKING, List, cast
 
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
     from UM.Scene.Scene import Scene
-    from UM.View.GL.ShaderProgram import ShaderProgram
-    from UM.View.RenderPass import RenderPass
     from UM.Settings.ContainerStack import ContainerStack
 
 catalog = i18nCatalog("cura")
@@ -64,7 +63,7 @@ class SimulationView(View):
         self._minimum_layer_num = 0
         self._current_layer_mesh = None
         self._current_layer_jumps = None
-        self._top_layers_job = None
+        self._top_layers_job = None  # type: Optional["_CreateTopLayersJob"]
         self._activity = False
         self._old_max_layers = 0
 
@@ -78,10 +77,10 @@ class SimulationView(View):
 
         self._ghost_shader = None  # type: Optional["ShaderProgram"]
         self._layer_pass = None  # type: Optional[SimulationPass]
-        self._composite_pass = None  # type: Optional[RenderPass]
-        self._old_layer_bindings = None
+        self._composite_pass = None  # type: Optional[CompositePass]
+        self._old_layer_bindings = None  # type: Optional[List[str]]
         self._simulationview_composite_shader = None  # type: Optional["ShaderProgram"]
-        self._old_composite_shader = None
+        self._old_composite_shader = None  # type: Optional["ShaderProgram"]
 
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = SimulationViewProxy()
@@ -204,9 +203,11 @@ class SimulationView(View):
 
         if not self._ghost_shader:
             self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
-            self._ghost_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("layerview_ghost").getRgb()))
+            theme = CuraApplication.getInstance().getTheme()
+            if theme is not None:
+                self._ghost_shader.setUniformValue("u_color", Color(*theme.getColor("layerview_ghost").getRgb()))
 
-        for node in DepthFirstIterator(scene.getRoot()):
+        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
             # However, it is somewhat relevant when the node is selected, so do render it then.
             if type(node) is ConvexHullNode and not Selection.isSelected(node.getWatchedNode()):
@@ -346,8 +347,8 @@ class SimulationView(View):
 
         self._old_max_layers = self._max_layers
         ## Recalculate num max layers
-        new_max_layers = 0
-        for node in DepthFirstIterator(scene.getRoot()):
+        new_max_layers = -1
+        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
                 continue
@@ -381,7 +382,7 @@ class SimulationView(View):
             if new_max_layers < layer_count:
                 new_max_layers = layer_count
 
-        if new_max_layers > 0 and new_max_layers != self._old_max_layers:
+        if new_max_layers >= 0 and new_max_layers != self._old_max_layers:
             self._max_layers = new_max_layers
 
             # The qt slider has a bit of weird behavior that if the maxvalue needs to be changed first
@@ -398,7 +399,7 @@ class SimulationView(View):
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
         # Update the currentPath
         scene = self.getController().getScene()
-        for node in DepthFirstIterator(scene.getRoot()):
+        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
                 continue
@@ -474,15 +475,17 @@ class SimulationView(View):
             self._onGlobalStackChanged()
 
             if not self._simulationview_composite_shader:
-                self._simulationview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), "simulationview_composite.shader"))
-                theme = Application.getInstance().getTheme()
-                self._simulationview_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
-                self._simulationview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("SimulationView"))
+                self._simulationview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(plugin_path, "simulationview_composite.shader"))
+                theme = CuraApplication.getInstance().getTheme()
+                if theme is not None:
+                    self._simulationview_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
+                    self._simulationview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
             if not self._composite_pass:
-                self._composite_pass = self.getRenderer().getRenderPass("composite")
+                self._composite_pass = cast(CompositePass, self.getRenderer().getRenderPass("composite"))
 
-            self._old_layer_bindings = self._composite_pass.getLayerBindings()[:] # make a copy so we can restore to it later
+            self._old_layer_bindings = self._composite_pass.getLayerBindings()[:]  # make a copy so we can restore to it later
             self._composite_pass.getLayerBindings().append("simulationview")
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._simulationview_composite_shader)
@@ -496,8 +499,8 @@ class SimulationView(View):
                 self._nozzle_node.setParent(None)
             self.getRenderer().removeRenderPass(self._layer_pass)
             if self._composite_pass:
-                self._composite_pass.setLayerBindings(self._old_layer_bindings)
-                self._composite_pass.setCompositeShader(self._old_composite_shader)
+                self._composite_pass.setLayerBindings(cast(List[str], self._old_layer_bindings))
+                self._composite_pass.setCompositeShader(cast(ShaderProgram, self._old_composite_shader))
 
         return False
 
@@ -606,7 +609,7 @@ class _CreateTopLayersJob(Job):
 
     def run(self) -> None:
         layer_data = None
-        for node in DepthFirstIterator(self._scene.getRoot()):
+        for node in DepthFirstIterator(self._scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if layer_data:
                 break
