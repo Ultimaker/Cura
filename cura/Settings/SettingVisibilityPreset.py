@@ -15,10 +15,10 @@ class SettingVisibilityPreset(QObject):
     onWeightChanged = pyqtSignal()
     onIdChanged = pyqtSignal()
 
-    def __init__(self, id: str = "", name: str = "", weight: int = 0, parent = None) -> None:
+    def __init__(self, preset_id: str = "", name: str = "", weight: int = 0, parent = None) -> None:
         super().__init__(parent)
         self._settings = []  # type: List[str]
-        self._id = id
+        self._id = preset_id
         self._weight = weight
         self._name = name
 
@@ -27,7 +27,7 @@ class SettingVisibilityPreset(QObject):
         return self._settings
 
     @pyqtProperty(str, notify = onIdChanged)
-    def id(self) -> str:
+    def presetId(self) -> str:
         return self._id
 
     @pyqtProperty(int, notify = onWeightChanged)
@@ -58,6 +58,9 @@ class SettingVisibilityPreset(QObject):
             self._settings = list(set(settings))  # filter out non unique
             self.onSettingsChanged.emit()
 
+    #   Load a preset from file. We expect a file that can be parsed by means of the config parser.
+    #   The sections indicate the categories and the parameters placed in it (which don't need values) are the settings
+    #   that should be considered visible.
     def loadFromFile(self, file_path: str) -> None:
         mime_type = MimeTypeDatabase.getMimeTypeForFile(file_path)
 

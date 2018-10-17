@@ -1,6 +1,5 @@
 from unittest.mock import MagicMock
 
-from UM.Preferences import Preferences
 import os.path
 
 from UM.Preferences import Preferences
@@ -9,7 +8,7 @@ from cura.CuraApplication import CuraApplication
 from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 from cura.Settings.SettingVisibilityPreset import SettingVisibilityPreset
 
-setting_visibility_preset_test_settings = set(["test", "zomg", "derp", "yay", "whoo"])
+setting_visibility_preset_test_settings = {"test", "zomg", "derp", "yay", "whoo"}
 
 Resources.addSearchPath(os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__)), "../..", "resources")))
 Resources.addStorageType(CuraApplication.ResourceTypes.SettingVisibilityPreset, "setting_visibility")

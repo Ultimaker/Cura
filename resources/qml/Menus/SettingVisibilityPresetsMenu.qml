@@ -24,11 +24,11 @@ Menu
         {
             text: modelData.name
             checkable: true
-            checked: modelData.id == settingVisibilityPresetsModel.activePreset
+            checked: modelData.presetId == settingVisibilityPresetsModel.activePreset
             exclusiveGroup: group
             onTriggered:
             {
-                settingVisibilityPresetsModel.setActivePreset(modelData.id);
+                settingVisibilityPresetsModel.setActivePreset(modelData.presetId);
             }
         }
 
