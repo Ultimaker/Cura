@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional
+from typing import cast, TYPE_CHECKING, Optional, Callable
 
 import numpy
 
@@ -421,7 +421,7 @@ class CuraApplication(QtApplication):
         )
 
     # Runs preparations that needs to be done before the starting process.
-    def startSplashWindowPhase(self):
+    def startSplashWindowPhase(self) -> None:
         super().startSplashWindowPhase()
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
@@ -527,15 +527,15 @@ class CuraApplication(QtApplication):
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
 
     @pyqtProperty(bool)
-    def needToShowUserAgreement(self):
+    def needToShowUserAgreement(self) -> bool:
         return self._need_to_show_user_agreement
 
-    def setNeedToShowUserAgreement(self, set_value = True):
+    def setNeedToShowUserAgreement(self, set_value = True) -> None:
         self._need_to_show_user_agreement = set_value
 
     # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
     # pre-exit checks such as checking for in-progress USB printing, etc.
-    def closeApplication(self):
+    def closeApplication(self) -> None:
         Logger.log("i", "Close application")
         main_window = self.getMainWindow()
         if main_window is not None:
@@ -562,11 +562,11 @@ class CuraApplication(QtApplication):
 
     showConfirmExitDialog = pyqtSignal(str, arguments = ["message"])
 
-    def setConfirmExitDialogCallback(self, callback):
+    def setConfirmExitDialogCallback(self, callback: Callable) -> None:
         self._confirm_exit_dialog_callback = callback
 
     @pyqtSlot(bool)
-    def callConfirmExitDialogCallback(self, yes_or_no: bool):
+    def callConfirmExitDialogCallback(self, yes_or_no: bool) -> None:
         self._confirm_exit_dialog_callback(yes_or_no)
 
     ##  Signal to connect preferences action in QML
@@ -574,7 +574,7 @@ class CuraApplication(QtApplication):
 
     ##  Show the preferences window
     @pyqtSlot()
-    def showPreferences(self):
+    def showPreferences(self) -> None:
         self.showPreferencesWindow.emit()
 
     @override(Application)
@@ -596,7 +596,7 @@ class CuraApplication(QtApplication):
 
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
-    def discardOrKeepProfileChanges(self):
+    def discardOrKeepProfileChanges(self) -> bool:
         has_user_interaction = False
         choice = self.getPreferences().getValue("cura/choice_on_profile_override")
         if choice == "always_discard":
@@ -612,7 +612,7 @@ class CuraApplication(QtApplication):
         return has_user_interaction
 
     @pyqtSlot(str)
-    def discardOrKeepProfileChangesClosed(self, option):
+    def discardOrKeepProfileChangesClosed(self, option: str) -> None:
         global_stack = self.getGlobalContainerStack()
         if option == "discard":
             for extruder in global_stack.extruders.values():
