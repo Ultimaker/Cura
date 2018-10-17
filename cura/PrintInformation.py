@@ -25,19 +25,7 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
-#
-#   This class contains all the logic relating to calculation and slicing for the
-#   time/quality slider concept. It is a rather tricky combination of event handling
-#   and state management. The logic behind this is as follows:
-#
-#   - A scene change or setting change event happens.
-#        We track what the source was of the change, either a scene change, a setting change, an active machine change or something else.
-#   - This triggers a new slice with the current settings - this is the "current settings pass".
-#   - When the slice is done, we update the current print time and material amount.
-#   - If the source of the slice was not a Setting change, we start the second slice pass, the "low quality settings pass". Otherwise we stop here.
-#   - When that is done, we update the minimum print time and start the final slice pass, the "Extra Fine settings pass".
-#   - When the Extra Fine pass is done, we update the maximum print time.
+##  A class for processing and the print times per build plate as well as managing the job name
 #
 #   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
 #   This job name is requested by the JobSpecs qml file.
