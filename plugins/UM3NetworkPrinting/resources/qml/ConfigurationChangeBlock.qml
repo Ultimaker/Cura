@@ -185,7 +185,7 @@ Item {
                     }
                     text: catalog.i18nc("@label", "Override");
                     visible: {
-                        if (root.job & root.job.configurationChanges) {
+                        if (root.job && root.job.configurationChanges) {
                             var length = root.job.configurationChanges.length;
                             for (var i = 0; i < length; i++) {
                                 var typeOfChange = root.job.configurationChanges[i].typeOfChange;

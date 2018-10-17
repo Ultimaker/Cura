@@ -233,7 +233,7 @@ Item {
 
             // Progress bar
             PrinterCardProgressBar {
-                visible: printer && printer.activePrintJob != null && printer.activePrintJob != undefined;
+                visible: printer && printer.activePrintJob != null;
             }
         }
     }
