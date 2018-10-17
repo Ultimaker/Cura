@@ -15,7 +15,6 @@ Item {
     // Extruder circle
     Item {
         id: extruderCircle;
-        anchors.verticalCenter: parent.verticalCenter;
         height: UM.Theme.getSize("monitor_tab_extruder_circle").height;
         width: UM.Theme.getSize("monitor_tab_extruder_circle").width;
 

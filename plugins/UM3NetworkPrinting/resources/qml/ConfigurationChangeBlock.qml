@@ -36,7 +36,6 @@ Item {
             anchors {
                 left: parent.left;
                 right: parent.right;
-                top: parent.top;
             }
             color: {
                 if(configurationChangeToggle.containsMouse) {

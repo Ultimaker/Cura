@@ -10,6 +10,7 @@ import QtQuick.Controls 1.4 as LegacyControls
 import UM 1.3 as UM
 
 Item {
+    id: root;
     property var printer: null;
     property var printJob: printer ? printer.activePrintJob : null;
     property var collapsed: true;
@@ -38,10 +39,13 @@ Item {
             printJob: root.printer ? root.printer.activePrintJob : null;
         }
 
-        HorizontalLine {}
+        HorizontalLine {
+            visible: root.printJob;
+        }
 
         Row {
             height: childrenRect.height;
+            visible: root.printJob;
             width: parent.width;
 
             PrintJobTitle {
@@ -60,8 +64,9 @@ Item {
         
 
         PrintJobPreview {
-            job: root.printer && root.printer.activePrintJob ? root.printer.activePrintJob : null;
             anchors.horizontalCenter: parent.horizontalCenter;
+            job: root.printer && root.printer.activePrintJob ? root.printer.activePrintJob : null;
+            visible: root.printJob;
         }
     }
 
@@ -74,5 +79,6 @@ Item {
             leftMargin: Math.round(0.5 * UM.Theme.getSize("default_margin").width);
         }
         iconSource: "../svg/camera-icon.svg";
+        visible: root.printJob;
     }
 }
