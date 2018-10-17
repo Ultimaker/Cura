@@ -48,6 +48,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     printJobsChanged = pyqtSignal()
     activePrinterChanged = pyqtSignal()
     activeCameraChanged = pyqtSignal()
+    receivedPrintJobsChanged = pyqtSignal()
 
     # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
     # Inheritance doesn't seem to work. Tying them together does work, but i'm open for better suggestions.
@@ -62,6 +63,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._dummy_lambdas = ("", {}, io.BytesIO()) #type: Tuple[str, Dict, Union[io.StringIO, io.BytesIO]]
 
         self._print_jobs = [] # type: List[UM3PrintJobOutputModel]
+        self._received_print_jobs = False # type: bool
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterMonitorItem.qml")
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterControlItem.qml")
@@ -353,6 +355,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def printJobs(self)-> List[UM3PrintJobOutputModel]:
         return self._print_jobs
 
+    @pyqtProperty(bool, notify = receivedPrintJobsChanged)
+    def receivedPrintJobs(self) -> bool:
+        return self._received_print_jobs
+
     @pyqtProperty("QVariantList", notify = printJobsChanged)
     def queuedPrintJobs(self) -> List[UM3PrintJobOutputModel]:
         return [print_job for print_job in self._print_jobs if print_job.state == "queued" or print_job.state == "error"]
@@ -461,6 +467,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 self.get("print_jobs/{uuid}/preview_image".format(uuid=print_job.key), on_finished=self._onGetPreviewImageFinished)
 
     def _onGetPrintJobsFinished(self, reply: QNetworkReply) -> None:
+        self._received_print_jobs = True
+        self.receivedPrintJobsChanged.emit()
+
         if not checkValidGetReply(reply):
             return
 

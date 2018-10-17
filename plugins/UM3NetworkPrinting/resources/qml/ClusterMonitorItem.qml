@@ -70,7 +70,7 @@ Component {
                 top: queuedLabel.bottom;
                 topMargin: UM.Theme.getSize("default_margin").height;
             }
-            visible: printJobList.count === 0;
+            visible: !queuedPrintJobs.visible;
             width: Math.min(800 * screenScaleFactor, maximumWidth);
 
             PrintJobInfoBlock {
@@ -104,6 +104,7 @@ Component {
                 bottom: parent.bottom;
             }
             style: UM.Theme.styles.scrollview;
+            visible: OutputDevice.receivedPrintJobs;
             width: Math.min(800 * screenScaleFactor, maximumWidth);
 
             ListView {
