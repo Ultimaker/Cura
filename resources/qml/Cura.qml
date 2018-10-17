@@ -220,6 +220,83 @@ UM.MainWindow
                 }
             }
 
+            ComboBox
+            {
+                // This item contains the views selector, a combobox that is dynamically created from
+                // the list of available Views (packages that create different visualizations of the
+                // scene).
+                id: viewModeButton
+
+                anchors.left: viewOrientationControls.right
+                anchors.bottom: viewOrientationControls.bottom
+
+                style: UM.Theme.styles.combobox
+
+                model: UM.ViewModel { }
+                textRole: "name"
+
+                // update the model's active index
+                function updateItemActiveFlags ()
+                {
+                    currentIndex = getActiveIndex()
+                    for (var i = 0; i < model.rowCount(); i++)
+                    {
+                        model.getItem(i).active = (i == currentIndex)
+                    }
+                }
+
+                // get the index of the active model item on start
+                function getActiveIndex ()
+                {
+                    for (var i = 0; i < model.rowCount(); i++)
+                    {
+                        if (model.getItem(i).active)
+                        {
+                            return i;
+                        }
+                    }
+                    return 0
+                }
+
+                // set the active index
+                function setActiveIndex(index)
+                {
+                    UM.Controller.setActiveView(index)
+                    // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here
+                }
+
+                onCurrentIndexChanged:
+                {
+                    if (model.getItem(currentIndex).id != undefined)
+                    {
+                        viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+                    }
+                }
+                currentIndex: getActiveIndex()
+
+                // watch the active view proxy for changes made from the menu item
+                Connections
+                {
+                    target: UM.ActiveView
+                    onActiveViewChanged: viewModeButton.updateItemActiveFlags()
+                }
+            }
+            Loader
+            {
+                id: viewPanel
+
+                anchors.bottom: viewModeButton.top
+                anchors.topMargin: UM.Theme.getSize("default_margin").height
+                anchors.right: viewModeButton.right
+
+                property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
+
+                height: childrenRect.height
+                width: childrenRect.width
+
+                source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : ""
+            }
+
             ProgressAndSaveWidget
             {
                 anchors.right: parent.right
