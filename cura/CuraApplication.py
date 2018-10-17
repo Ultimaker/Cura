@@ -13,6 +13,7 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from UM.Application import Application
 from UM.PluginError import PluginNotFoundError
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -114,12 +115,13 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 from cura.ObjectsModel import ObjectsModel
 
 from UM.FlameProfiler import pyqtSlot
-
+from UM.Decorators import override
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
+    from cura.Settings.GlobalStack import GlobalStack
 
 
 numpy.seterr(all = "ignore")
@@ -574,6 +576,14 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def showPreferences(self):
         self.showPreferencesWindow.emit()
+
+    @override(Application)
+    def getGlobalContainerStack(self) -> Optional["GlobalStack"]:
+        return self._global_container_stack
+
+    @override(Application)
+    def setGlobalContainerStack(self, stack: "GlobalStack") -> None:
+        super().setGlobalContainerStack(stack)
 
     ## A reusable dialogbox
     #
