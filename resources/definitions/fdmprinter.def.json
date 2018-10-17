@@ -3918,6 +3918,48 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_brim_enable":
+                {
+                    "label": "Enable Support Brim",
+                    "description": "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable or support_tree_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_brim_width":
+                {
+                    "label": "Support Brim Width",
+                    "description": "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 8.0,
+                    "minimum_value": "0.0",
+                    "maximum_value_warning": "50.0",
+                    "enabled": "support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "children":
+                    {
+                        "support_brim_line_count":
+                        {
+                            "label": "Support Brim Line Count",
+                            "description": "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material.",
+                            "type": "int",
+                            "default_value": 20,
+                            "minimum_value": "0",
+                            "maximum_value_warning": "50 / skirt_brim_line_width",
+                            "value": "math.ceil(support_brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
+                            "enabled": "support_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "limit_to_extruder": "support_infill_extruder_nr"
+                        }
+                    }
+                },
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
@@ -4567,6 +4609,17 @@
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
                     }
+                },
+                "brim_replaces_support":
+                {
+                    "label": "Brim Replaces Support",
+                    "description": "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim' and support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "adhesion_extruder_nr"
                 },
                 "brim_outside_only":
                 {
