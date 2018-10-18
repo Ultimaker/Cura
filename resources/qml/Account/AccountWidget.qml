@@ -16,7 +16,6 @@ Button
     implicitHeight: UM.Theme.getSize("topheader").height
     implicitWidth: UM.Theme.getSize("topheader").height
 
-
     AvatarImage
     {
         id: avatar

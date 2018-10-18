@@ -38,7 +38,7 @@ Column
 
     Loader
     {
-        id: accountEntryPoints
+        id: accountOperations
         anchors.horizontalCenter: parent.horizontalCenter
         sourceComponent: loggedIn ? userOperations : generalOperations
     }

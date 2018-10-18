@@ -187,7 +187,6 @@ UM.MainWindow
                 {
                     bottom: parent.bottom
                     bottomMargin: UM.Theme.getSize("default_margin").height
-                    rightMargin: UM.Theme.getSize("default_margin").width
                 }
             }
 
@@ -330,13 +329,7 @@ UM.MainWindow
                 // A stage can control this area. If nothing is set, it will therefore show the 3D view.
                 id: main
 
-                anchors
-                {
-                    top: parent.top
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: parent.right
-                }
+                anchors.fill: parent
 
                 MouseArea
                 {
