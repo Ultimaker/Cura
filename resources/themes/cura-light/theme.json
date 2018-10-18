@@ -490,6 +490,8 @@
 
         "avatar_image": [6.8, 6.8],
 
+        "action_button_radius": [0.25, 0.25],
+
         "drop_shadow_radius": [1.0, 1.0]
     }
 }

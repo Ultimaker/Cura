@@ -21,7 +21,6 @@ Button
     {
         id: avatar
 
-
         width: Math.round(0.8 * parent.width)
         height: Math.round(0.8 * parent.height)
         anchors.verticalCenter: parent.verticalCenter

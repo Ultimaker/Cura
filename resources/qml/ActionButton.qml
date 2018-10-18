@@ -11,28 +11,28 @@ Button
 {
     id: button
     property alias cursorShape: mouseArea.cursorShape
-    property var iconSource: ""
+    property alias iconSource: buttonIcon.source
+    property alias textFont: buttonText.font
+    property alias cornerRadius: backgroundRect.radius
     property var color: UM.Theme.getColor("primary")
     property var hoverColor: UM.Theme.getColor("primary_hover")
     property var disabledColor: color
     property var textColor: UM.Theme.getColor("button_text")
     property var textHoverColor: UM.Theme.getColor("button_text_hover")
     property var textDisabledColor: textColor
-    property var textFont: UM.Theme.getFont("action_button")
-    property var cornerRadius: 2 * screenScaleFactor
 
     contentItem: Row
     {
         UM.RecolorImage
         {
             id: buttonIcon
-            source: button.iconSource
-            width: 16 * screenScaleFactor
-            height: 16 * screenScaleFactor
+            source: ""
+            height: Math.round(0.6 * parent.height)
+            width: height
             sourceSize.width: width
             sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
-            visible: button.iconSource != ""
+            visible: source != ""
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -41,8 +41,8 @@ Button
             id: buttonText
             text: button.text
             color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor): button.textDisabledColor
-            font: button.textFont
-            visible: button.text != ""
+            font: UM.Theme.getFont("action_button")
+            visible: text != ""
             renderType: Text.NativeRendering
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -50,8 +50,9 @@ Button
 
     background: Rectangle
     {
+        id: backgroundRect
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
-        radius: cornerRadius
+        radius: UM.Theme.getSize("action_button_radius").width
     }
 
     MouseArea
