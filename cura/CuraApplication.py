@@ -714,10 +714,8 @@ class CuraApplication(QtApplication):
         self._print_information = PrintInformation.PrintInformation(self)
         self._cura_actions = CuraActions.CuraActions(self)
 
-        # Initialize setting visibility presets model
-        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
-        default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
-        self.getPreferences().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
+        # Initialize setting visibility presets model.
+        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
         # Initialize Cura API
         self._cura_API.initialize()
