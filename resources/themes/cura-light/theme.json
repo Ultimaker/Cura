@@ -88,7 +88,7 @@
         "topheader_button_background_inactive": [255, 255, 255, 0],
 
         "account_widget_ouline_active": [9, 140, 188, 255],
-        "account_widget_ouline_inactive": [175, 175, 175, 255],
+        "account_widget_ouline_inactive": [229, 229, 229, 255],
 
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
