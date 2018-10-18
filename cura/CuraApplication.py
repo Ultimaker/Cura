@@ -86,6 +86,8 @@ from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
 
+from cura.MachineActionManager import MachineActionManager
+
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
 from . import PlatformPhysics
@@ -97,7 +99,6 @@ from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
 from . import PrintJobPreviewImageProvider
-from . import MachineActionManager
 
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
 
@@ -299,7 +300,7 @@ class CuraApplication(QtApplication):
         self.__addAllEmptyContainers()
         self.__setLatestResouceVersionsForVersionUpgrade()
 
-        self._machine_action_manager = MachineActionManager.MachineActionManager(self)
+        self._machine_action_manager = MachineActionManager(self)
         self._machine_action_manager.initialize()
 
         self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
@@ -877,7 +878,7 @@ class CuraApplication(QtApplication):
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
     #   It wants to give this function an engine and script engine, but we don't care about that.
-    def getMachineActionManager(self, *args):
+    def getMachineActionManager(self, *args) -> MachineActionManager:
         return self._machine_action_manager
 
     def getSimpleModeSettingsManager(self, *args):
@@ -935,7 +936,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
-        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+        qmlRegisterSingletonType(MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
         qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")

@@ -399,6 +399,11 @@ class MachineManager(QObject):
     def addMachine(self, name: str, definition_id: str) -> None:
         new_stack = CuraStackBuilder.createMachine(name, definition_id)
         if new_stack:
+            # The new machine definition container needs to be registered for the extra actions (Some printers after
+            # creating have dialog messages, like connect to printer and etc)
+            action_manager = self._application.getMachineActionManager()
+            action_manager.addActionsForContainer(new_stack.definition)
+
             # Instead of setting the global container stack here, we set the active machine and so the signals are emitted
             self.setActiveMachine(new_stack.getId())
         else:

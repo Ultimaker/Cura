@@ -38,11 +38,10 @@ class MachineActionManager(QObject):
         # Ensure that all containers that were registered before creation of this registry are also handled.
         # This should not have any effect, but it makes it safer if we ever refactor the order of things.
         for container in container_registry.findDefinitionContainers():
-            self._onContainerAdded(container)
+            self.addActionsForContainer(container)
 
-        container_registry.containerAdded.connect(self._onContainerAdded)
-
-    def _onContainerAdded(self, container):
+    # Register all (required) actions for a Machine container.
+    def addActionsForContainer(self, container) -> None:
         ## Ensure that the actions are added to this manager
         if isinstance(container, DefinitionContainer):
             supported_actions = container.getMetaDataEntry("supported_actions", [])
@@ -87,7 +86,8 @@ class MachineActionManager(QObject):
                 if index is not None:
                     self._first_start_actions[definition_id].insert(index, self._machine_actions[action_key])
                 else:
-                    self._first_start_actions[definition_id].append(self._machine_actions[action_key])
+                    if self._machine_actions[action_key] not in self._first_start_actions[definition_id]:
+                        self._first_start_actions[definition_id].append(self._machine_actions[action_key])
             else:
                 self._first_start_actions[definition_id] = [self._machine_actions[action_key]]
         else:
