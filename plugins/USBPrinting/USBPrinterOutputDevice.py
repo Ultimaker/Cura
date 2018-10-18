@@ -226,14 +226,12 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
                 # Timeout, or no request has been sent at all.
-                self._command_received.set() # We haven't really received the ok, but we need to send a new command
-
-                if not self._printer_busy: # don't flood the printer with temperature requests while it is busy
+                if not self._printer_busy: # Don't flood the printer with temperature requests while it is busy
                     self.sendCommand("M105")
                     self._last_temperature_request = time()
 
-                if self._firmware_name is None:
-                    self.sendCommand("M115")
+                    if self._firmware_name is None:
+                        self.sendCommand("M115")
 
             if re.search(b"[B|T\d*]: ?\d+\.?\d*", line):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?(\d+\.?\d*) ?\/?(\d+\.?\d*)?", line)
