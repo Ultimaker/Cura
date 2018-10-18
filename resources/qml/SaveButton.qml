@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
 Item
 {
     id: base;
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     property real progress: UM.Backend.progress
     property int backendState: UM.Backend.state
@@ -36,7 +36,7 @@ Item
             case 2:
                 return catalog.i18nc("@label:PrintjobStatus", "Slicing...");
             case 3:
-                return catalog.i18nc("@label:PrintjobStatus %1 is target operation","Ready to %1").arg(UM.OutputDeviceManager.activeDeviceShortDescription);
+                return catalog.i18nc("@label:PrintjobStatus %1 is target operation", "Ready to %1").arg(UM.OutputDeviceManager.activeDeviceShortDescription);
             case 4:
                 return catalog.i18nc("@label:PrintjobStatus", "Unable to Slice");
             case 5:
@@ -48,16 +48,20 @@ Item
 
     function sliceOrStopSlicing()
     {
-        try {
+        try
+        {
             if ([1, 5].indexOf(base.backendState) != -1)
             {
                 CuraApplication.backend.forceSlice();
-            } else {
+            }
+            else
+            {
                 CuraApplication.backend.stopSlicing();
             }
-        } catch (e)
+        }
+        catch (e)
         {
-            console.log('Could not start or stop slicing', e)
+            console.log("Could not start or stop slicing.", e)
         }
     }
 
@@ -203,50 +207,76 @@ Item
                 sliceOrStopSlicing();
             }
 
-            style: ButtonStyle {
+            style: ButtonStyle
+            {
                 background: Rectangle
                 {
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color:
                     {
                         if(!control.enabled)
+                        {
                             return UM.Theme.getColor("action_button_disabled_border");
+                        }
                         else if(control.pressed)
+                        {
                             return UM.Theme.getColor("action_button_active_border");
+                        }
                         else if(control.hovered)
+                        {
                             return UM.Theme.getColor("action_button_hovered_border");
+                        }
                         else
+                        {
                             return UM.Theme.getColor("action_button_border");
+                        }
                     }
                     color:
                     {
                         if(!control.enabled)
+                        {
                             return UM.Theme.getColor("action_button_disabled");
+                        }
                         else if(control.pressed)
+                        {
                             return UM.Theme.getColor("action_button_active");
+                        }
                         else if(control.hovered)
+                        {
                             return UM.Theme.getColor("action_button_hovered");
+                        }
                         else
+                        {
                             return UM.Theme.getColor("action_button");
+                        }
                     }
 
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
 
-                    Label {
+                    Label
+                    {
                         id: actualLabel
                         anchors.centerIn: parent
                         color:
                         {
                             if(!control.enabled)
+                            {
                                 return UM.Theme.getColor("action_button_disabled_text");
+                            }
                             else if(control.pressed)
+                            {
                                 return UM.Theme.getColor("action_button_active_text");
+                            }
                             else if(control.hovered)
+                            {
                                 return UM.Theme.getColor("action_button_hovered_text");
+                            }
                             else
+                            {
                                 return UM.Theme.getColor("action_button_text");
+                            }
                         }
                         font: UM.Theme.getFont("action_button")
                         text: control.text;
@@ -287,43 +317,61 @@ Item
                     border.color:
                     {
                         if(!control.enabled)
+                        {
                             return UM.Theme.getColor("action_button_disabled_border");
+                        }
                         else if(control.pressed)
+                        {
                             return UM.Theme.getColor("print_button_ready_pressed_border");
+                        }
                         else if(control.hovered)
+                        {
                             return UM.Theme.getColor("print_button_ready_hovered_border");
+                        }
                         else
+                        {
                             return UM.Theme.getColor("print_button_ready_border");
+                        }
                     }
                     color:
                     {
                         if(!control.enabled)
+                        {
                             return UM.Theme.getColor("action_button_disabled");
+                        }
                         else if(control.pressed)
+                        {
                             return UM.Theme.getColor("print_button_ready_pressed");
+                        }
                         else if(control.hovered)
+                        {
                             return UM.Theme.getColor("print_button_ready_hovered");
+                        }
                         else
+                        {
                             return UM.Theme.getColor("print_button_ready");
+                        }
                     }
 
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
 
-                    Label {
+                    Label
+                    {
                         id: actualLabel
                         anchors.centerIn: parent
-                        color:control.enabled ? UM.Theme.getColor("print_button_ready_text") : UM.Theme.getColor("action_button_disabled_text")
+                        color: control.enabled ? UM.Theme.getColor("print_button_ready_text") : UM.Theme.getColor("action_button_disabled_text")
                         font: UM.Theme.getFont("action_button")
-                        text: control.text;
+                        text: control.text
                     }
                 }
                 label: Item { }
             }
         }
 
-        Button {
+        Button
+        {
             id: deviceSelectionMenu
             tooltip: catalog.i18nc("@info:tooltip","Select the active output device");
             anchors.top: parent.top
@@ -349,13 +397,16 @@ Item
                         if(!control.enabled)
                         {
                             return UM.Theme.getColor("action_button_disabled_border")
-                        } else if(control.pressed)
+                        }
+                        else if(control.pressed)
                         {
                             return UM.Theme.getColor("print_button_ready_pressed_border")
-                        } else if(control.hovered)
+                        }
+                        else if(control.hovered)
                         {
                             return UM.Theme.getColor("print_button_ready_hovered_border")
-                        } else
+                        }
+                        else
                         {
                             return UM.Theme.getColor("print_button_ready_border")
                         }
@@ -365,13 +416,16 @@ Item
                         if(!control.enabled)
                         {
                             return UM.Theme.getColor("action_button_disabled")
-                        } else if(control.pressed)
+                        }
+                        else if(control.pressed)
                         {
                             return UM.Theme.getColor("print_button_ready_pressed")
-                        } else if(control.hovered)
+                        }
+                        else if(control.hovered)
                         {
                             return UM.Theme.getColor("print_button_ready_hovered")
-                        } else
+                        }
+                        else
                         {
                             return UM.Theme.getColor("print_button_ready")
                         }
@@ -391,7 +445,7 @@ Item
                         sourceSize.width: width
                         sourceSize.height: height
                         color: control.enabled ? UM.Theme.getColor("print_button_ready_text") : UM.Theme.getColor("action_button_disabled_text")
-                        source: UM.Theme.getIcon("arrow_bottom");
+                        source: UM.Theme.getIcon("arrow_bottom")
                     }
                 }
             }
@@ -406,8 +460,8 @@ Item
                     {
                         text: model.description
                         checkable: true;
-                        checked: model.id == UM.OutputDeviceManager.activeDevice;
-                        exclusiveGroup: devicesMenuGroup;
+                        checked: model.id == UM.OutputDeviceManager.activeDevice
+                        exclusiveGroup: devicesMenuGroup
                         onTriggered:
                         {
                             UM.OutputDeviceManager.setActiveDevice(model.id);
@@ -416,9 +470,9 @@ Item
                     onObjectAdded: devicesMenu.insertItem(index, object)
                     onObjectRemoved: devicesMenu.removeItem(object)
                 }
-                ExclusiveGroup { id: devicesMenuGroup; }
+                ExclusiveGroup { id: devicesMenuGroup }
             }
         }
-        UM.OutputDevicesModel { id: devicesModel; }
+        UM.OutputDevicesModel { id: devicesModel }
     }
 }

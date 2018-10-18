@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -173,7 +173,8 @@ Rectangle
             var weights = [];
             var costs = [];
             var someCostsKnown = false;
-            if(base.printMaterialLengths) {
+            if(base.printMaterialLengths)
+            {
                 for(var index = 0; index < base.printMaterialLengths.length; index++)
                 {
                     if(base.printMaterialLengths[index] > 0)

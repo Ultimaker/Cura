@@ -21,7 +21,7 @@ Rectangle
     // Height has an extra 2x margin for the top & bottom margin.
     height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").width
 
-    Cura.ExtrudersModel { id: extrudersModel; }
+    Cura.ExtrudersModel { id: extrudersModel }
 
     ListView
     {
@@ -41,7 +41,7 @@ Rectangle
             margins: UM.Theme.getSize("sidebar_margin").width
         }
 
-        ExclusiveGroup { id: extruderMenuGroup; }
+        ExclusiveGroup { id: extruderMenuGroup }
 
         orientation: ListView.Horizontal
 
@@ -69,8 +69,10 @@ Rectangle
             {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
-                onClicked: {
-                    switch (mouse.button) {
+                onClicked:
+                {
+                    switch (mouse.button)
+                    {
                         case Qt.LeftButton:
                             extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
                             if (extruder_enabled)
@@ -114,7 +116,8 @@ Rectangle
                 {
                     anchors.fill: parent
                     border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
-                    border.color: {
+                    border.color:
+                    {
                         if (Cura.MachineManager.getExtruder(index).isEnabled)
                         {
                             if(control.checked || control.pressed)
@@ -128,13 +131,15 @@ Rectangle
                         }
                         return UM.Theme.getColor("action_button_disabled_border")
                     }
-                    color: {
+                    color:
+                    {
                         if (Cura.MachineManager.getExtruder(index).isEnabled)
                         {
                             if(control.checked || control.pressed)
                             {
                                 return  UM.Theme.getColor("action_button_active");
-                            } else if (control.hovered)
+                            }
+                            else if (control.hovered)
                             {
                                 return UM.Theme.getColor("action_button_hovered")
                             }
@@ -157,13 +162,15 @@ Rectangle
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
 
-                            color: {
+                            color:
+                            {
                                 if (Cura.MachineManager.getExtruder(index).isEnabled)
                                 {
                                     if(control.checked || control.pressed)
                                     {
                                         return  UM.Theme.getColor("action_button_active_text");
-                                    } else if (control.hovered)
+                                    }
+                                    else if (control.hovered)
                                     {
                                         return UM.Theme.getColor("action_button_hovered_text")
                                     }
