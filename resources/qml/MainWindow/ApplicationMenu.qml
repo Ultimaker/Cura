@@ -24,78 +24,7 @@ Item
     {
         id: applicationMenu
 
-        Menu
-        {
-            id: fileMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
-
-            MenuItem
-            {
-                id: newProjectMenu
-                action: Cura.Actions.newProject
-            }
-
-            MenuItem
-            {
-                id: openMenu
-                action: Cura.Actions.open
-            }
-
-            RecentFilesMenu { }
-
-            MenuItem
-            {
-                id: saveWorkspaceMenu
-                text: catalog.i18nc("@title:menu menubar:file", "&Save...")
-                onTriggered:
-                {
-                    var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml" };
-                    if(UM.Preferences.getValue("cura/dialog_on_project_save"))
-                    {
-                        saveWorkspaceDialog.args = args
-                        saveWorkspaceDialog.open()
-                    }
-                    else
-                    {
-                        UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
-                    }
-                }
-            }
-
-            MenuSeparator { }
-
-            MenuItem
-            {
-                id: saveAsMenu
-                text: catalog.i18nc("@title:menu menubar:file", "&Export...")
-                onTriggered:
-                {
-                    var localDeviceId = "local_file"
-                    UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"})
-                }
-            }
-
-            MenuItem
-            {
-                id: exportSelectionMenu
-                text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
-                enabled: UM.Selection.hasSelection
-                iconName: "document-save-as"
-                onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"})
-            }
-
-            MenuSeparator { }
-
-            MenuItem
-            {
-                id: reloadAllMenu
-                action: Cura.Actions.reloadAll
-            }
-
-            MenuSeparator { }
-
-            MenuItem { action: Cura.Actions.quit }
-        }
+        FileMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&File") }
 
         Menu
         {
@@ -116,68 +45,9 @@ Item
             MenuItem { action: Cura.Actions.unGroupObjects }
         }
 
-        ViewMenu { title: catalog.i18nc("@title:menu", "&View") }
+        ViewMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&View") }
 
-        Menu
-        {
-            id: settingsMenu
-            title: catalog.i18nc("@title:menu", "&Settings")
-
-            PrinterMenu { title: catalog.i18nc("@title:menu menubar:settings", "&Printer") }
-
-            Instantiator
-            {
-                model: Cura.ExtrudersModel { simpleNames: true }
-                Menu
-                {
-                    title: model.name
-
-                    NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
-                    MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
-
-                    MenuSeparator
-                    {
-                        visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
-                    }
-
-                    MenuItem
-                    {
-                        text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
-                        onTriggered: Cura.MachineManager.setExtruderIndex(model.index)
-                    }
-
-                    MenuItem
-                    {
-                        text: catalog.i18nc("@action:inmenu", "Enable Extruder")
-                        onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
-                        visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
-                    }
-
-                    MenuItem
-                    {
-                        text: catalog.i18nc("@action:inmenu", "Disable Extruder")
-                        onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
-                        visible: Cura.MachineManager.getExtruder(model.index).isEnabled
-                        enabled: Cura.MachineManager.numberExtrudersEnabled > 1
-                    }
-
-                }
-                onObjectAdded: settingsMenu.insertItem(index, object)
-                onObjectRemoved: settingsMenu.removeItem(object)
-            }
-
-            // TODO Only show in dev mode. Remove check when feature ready
-            BuildplateMenu
-            {
-                title: catalog.i18nc("@title:menu", "&Build plate")
-                visible: CuraSDKVersion == "dev" && Cura.MachineManager.hasVariantBuildplates
-            }
-            ProfileMenu { title: catalog.i18nc("@title:settings", "&Profile") }
-
-            MenuSeparator { }
-
-            MenuItem { action: Cura.Actions.configureSettingVisibility }
-        }
+        SettingsMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&Settings") }
 
         Menu
         {
