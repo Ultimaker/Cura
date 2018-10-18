@@ -96,14 +96,6 @@ QtObject
         }
     }
 
-    property Component action_button: Component
-    {
-        ButtonStyle
-        {
-
-        }
-    }
-
     property Component topheader_tab: Component
     {
         ButtonStyle
