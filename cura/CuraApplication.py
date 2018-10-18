@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING
+from typing import cast, TYPE_CHECKING, Optional
 
 import numpy
 
@@ -109,6 +109,7 @@ from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisi
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
 import cura.Settings.cura_empty_instance_containers
+from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -175,6 +176,8 @@ class CuraApplication(QtApplication):
         self._trigger_early_crash = False  # For debug only
 
         self._single_instance = None
+
+        self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
         self._cura_package_manager = None
 
@@ -325,6 +328,8 @@ class CuraApplication(QtApplication):
     # Adds custom property types, settings types, and extra operators (functions) that need to be registered in
     # SettingDefinition and SettingFunction.
     def __initializeSettingDefinitionsAndFunctions(self):
+        self._cura_formula_functions = CuraFormulaFunctions(self)
+
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True, read_only = True)
@@ -345,10 +350,10 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSettingType("optional_extruder", None, str, None)
         SettingDefinition.addSettingType("[int]", None, str, None)
 
-        SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
-        SettingFunction.registerOperator("extruderValue", ExtruderManager.getExtruderValue)
-        SettingFunction.registerOperator("resolveOrValue", ExtruderManager.getResolveOrValue)
-        SettingFunction.registerOperator("defaultExtruderPosition", ExtruderManager.getDefaultExtruderPosition)
+        SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
+        SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
+        SettingFunction.registerOperator("resolveOrValue", self._cura_formula_functions.getResolveOrValue)
+        SettingFunction.registerOperator("defaultExtruderPosition", self._cura_formula_functions.getDefaultExtruderPosition)
 
     # Adds all resources and container related resources.
     def __addAllResourcesAndContainerResources(self) -> None:
@@ -709,10 +714,8 @@ class CuraApplication(QtApplication):
         self._print_information = PrintInformation.PrintInformation(self)
         self._cura_actions = CuraActions.CuraActions(self)
 
-        # Initialize setting visibility presets model
-        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
-        default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
-        self.getPreferences().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
+        # Initialize setting visibility presets model.
+        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
         # Initialize Cura API
         self._cura_API.initialize()
@@ -814,6 +817,11 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
+
+    def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
+        if self._cura_formula_functions is None:
+            self._cura_formula_functions = CuraFormulaFunctions(self)
+        return self._cura_formula_functions
 
     def getMachineErrorChecker(self, *args) -> MachineErrorChecker:
         return self._machine_error_checker

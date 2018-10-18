@@ -17,7 +17,7 @@ UM.Dialog
     // This dialog asks the user whether he/she wants to open a project file as a project or import models.
     id: base
 
-    title: catalog.i18nc("@title:window", "Confirm uninstall ") + toolbox.pluginToUninstall
+    title: catalog.i18nc("@title:window", "Confirm uninstall") + toolbox.pluginToUninstall
     width: 450 * screenScaleFactor
     height: 50 * screenScaleFactor + dialogText.height + buttonBar.height
 

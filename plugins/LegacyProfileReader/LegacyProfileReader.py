@@ -152,7 +152,7 @@ class LegacyProfileReader(ProfileReader):
         profile.setDirty(True)
 
         #Serialise and deserialise in order to perform the version upgrade.
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         data = profile.serialize()
         parser.read_string(data)
         parser["general"]["version"] = "1"

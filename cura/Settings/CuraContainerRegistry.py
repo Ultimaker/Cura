@@ -187,11 +187,11 @@ class CuraContainerRegistry(ContainerRegistry):
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
             except NoProfileException:
-                return { "status": "ok", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "No custom profile to import in file <filename>{0}</filename>", file_name)}
+                return { "status": "ok", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "No custom profile to import in file <filename>{0}</filename>", file_name)}
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name, profile_reader.getPluginId(), str(e))
-                return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "\n" + str(e))}
+                return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Failed to import profile from <filename>{0}</filename>:", file_name) + "\n<message>" + str(e) + "</message>"}
 
             if profile_or_list:
                 # Ensure it is always a list of profiles
@@ -215,7 +215,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 if not global_profile:
                     Logger.log("e", "Incorrect profile [%s]. Could not find global profile", file_name)
                     return { "status": "error",
-                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)}
+                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)}
                 profile_definition = global_profile.getMetaDataEntry("definition")
 
                 # Make sure we have a profile_definition in the file:
@@ -225,7 +225,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 if not machine_definition:
                     Logger.log("e", "Incorrect profile [%s]. Unknown machine type [%s]", file_name, profile_definition)
                     return {"status": "error",
-                            "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)
+                            "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)
                             }
                 machine_definition = machine_definition[0]
 
@@ -238,7 +238,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 if profile_definition != expected_machine_definition:
                     Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name, profile_definition, expected_machine_definition)
                     return { "status": "error",
-                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it.", file_name, profile_definition, expected_machine_definition)}
+                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it.", file_name, profile_definition, expected_machine_definition)}
 
                 # Fix the global quality profile's definition field in case it's not correct
                 global_profile.setMetaDataEntry("definition", expected_machine_definition)
@@ -269,8 +269,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         if idx == 0:
                             # move all per-extruder settings to the first extruder's quality_changes
                             for qc_setting_key in global_profile.getAllKeys():
-                                settable_per_extruder = global_stack.getProperty(qc_setting_key,
-                                                                                           "settable_per_extruder")
+                                settable_per_extruder = global_stack.getProperty(qc_setting_key, "settable_per_extruder")
                                 if settable_per_extruder:
                                     setting_value = global_profile.getProperty(qc_setting_key, "value")
 
@@ -310,8 +309,8 @@ class CuraContainerRegistry(ContainerRegistry):
                     if result is not None:
                         return {"status": "error", "message": catalog.i18nc(
                             "@info:status Don't translate the XML tags <filename> or <message>!",
-                            "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>",
-                            file_name, result)}
+                            "Failed to import profile from <filename>{0}</filename>:",
+                            file_name) + " <message>" + result + "</message>"}
 
                 return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
@@ -686,7 +685,7 @@ class CuraContainerRegistry(ContainerRegistry):
             if not os.path.isfile(file_path):
                 continue
 
-            parser = configparser.ConfigParser(interpolation=None)
+            parser = configparser.ConfigParser(interpolation = None)
             try:
                 parser.read([file_path])
             except:

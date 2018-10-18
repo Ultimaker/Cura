@@ -4,7 +4,7 @@
 from collections import defaultdict
 import threading
 from typing import Any, Dict, Optional, Set, TYPE_CHECKING
-from PyQt5.QtCore import pyqtProperty
+from PyQt5.QtCore import pyqtProperty, pyqtSlot
 
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
@@ -13,6 +13,8 @@ from UM.Settings.SettingInstance import InstanceState
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Logger import Logger
+from UM.Resources import Resources
+from UM.Platform import Platform
 from UM.Util import parseBool
 
 import cura.CuraApplication
@@ -200,6 +202,31 @@ class GlobalStack(CuraContainerStack):
     def getHasMachineQuality(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_machine_quality", False))
 
+    ##  Get default firmware file name if one is specified in the firmware
+    @pyqtSlot(result = str)
+    def getDefaultFirmwareName(self) -> str:
+        machine_has_heated_bed = self.getProperty("machine_heated_bed", "value")
+
+        baudrate = 250000
+        if Platform.isLinux():
+            # Linux prefers a baudrate of 115200 here because older versions of
+            # pySerial did not support a baudrate of 250000
+            baudrate = 115200
+
+        # If a firmware file is available, it should be specified in the definition for the printer
+        hex_file = self.getMetaDataEntry("firmware_file", None)
+        if machine_has_heated_bed:
+            hex_file = self.getMetaDataEntry("firmware_hbk_file", hex_file)
+
+        if not hex_file:
+            Logger.log("w", "There is no firmware for machine %s.", self.getBottom().id)
+            return ""
+
+        try:
+            return Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
+        except FileNotFoundError:
+            Logger.log("w", "Firmware file %s not found.", hex_file)
+            return ""
 
 ## private:
 global_stack_mime = MimeType(
