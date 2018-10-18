@@ -13,6 +13,9 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property bool printerConnected: Cura.MachineManager.printerConnected
+
     UM.I18nCatalog
     {
         id: catalog
@@ -37,19 +40,31 @@ Item
         {
             id: spacing
             width: UM.Theme.getSize("default_margin").width
-            height: parent.height
+            height: prepareMenu.height
         }
 
-        Cura.MachineAndConfigurationSelector
+        Cura.MachineSelector
         {
+            id: machineSelection
+            width: UM.Theme.getSize("sidebar").width
+            height: prepareMenu.height
         }
 
-        Cura.MaterialAndVariantSelector
+        Cura.QuickConfigurationSelector
+        {
+            id: configSelection
+            visible: isNetworkPrinter && printerConnected
+            width: visible ? Math.round(machineSelection.width * 0.15) : 0
+            panelWidth: machineSelection.width
+            height: prepareMenu.height
+        }
+
+        Cura.CustomConfigurationSelector
         {
             width: UM.Theme.getSize("sidebar").width
         }
 
-        Cura.ProfileAndSettingComponent
+        Cura.PrintSetupSelector
         {
             width: UM.Theme.getSize("sidebar").width
             onShowTooltip: prepareMenu.showTooltip(item, location, text)

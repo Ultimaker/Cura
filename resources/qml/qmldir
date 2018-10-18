@@ -1,6 +1,7 @@
 module Cura
 
-MachineAndConfigurationSelector 1.0 MachineAndConfigurationSelector.qml
-MaterialAndVariantSelector 1.0 MaterialAndVariantSelector.qml
-ProfileAndSettingComponent 1.0 ProfileAndSettingComponent.qml
+MachineSelector 1.0 MachineSelector.qml
+QuickConfigurationSelector 1.0 QuickConfigurationSelector.qml
+CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
+PrintSetupSelector 1.0 PrintSetupSelector.qml
 ActionButton 1.0 ActionButton.qml
