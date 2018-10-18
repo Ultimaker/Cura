@@ -5,3 +5,5 @@ QuickConfigurationSelector 1.0 QuickConfigurationSelector.qml
 CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
 PrintSetupSelector 1.0 PrintSetupSelector.qml
 ActionButton 1.0 ActionButton.qml
+MaterialMenu 1.0 MaterialMenu.qml
+NozzleMenu 1.0 NozzleMenu.qml

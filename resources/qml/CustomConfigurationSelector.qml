@@ -8,8 +8,6 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-import "Menus" // TODO: This needs to be fixed in the qmldir!
-
 Rectangle
 {
     implicitWidth: parent.width
@@ -77,16 +75,15 @@ Rectangle
                             extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
                             if (extruder_enabled)
                             {
-                                forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                                Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                                Cura.ExtruderManager.setActiveExtruderIndex(index)
                             }
-                            break;
+                            break
                         case Qt.RightButton:
                             extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
-                            extruderMenu.popup();
-                            break;
+                            extruderMenu.popup()
+                            break
                     }
-
                 }
             }
 
@@ -122,8 +119,9 @@ Rectangle
                         {
                             if(control.checked || control.pressed)
                             {
-                                return  UM.Theme.getColor("action_button_active_border");
-                            } else if (control.hovered)
+                                return  UM.Theme.getColor("action_button_active_border")
+                            }
+                            else if (control.hovered)
                             {
                                 return UM.Theme.getColor("action_button_hovered_border")
                             }
@@ -252,7 +250,7 @@ Rectangle
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
-            menu: MaterialMenu
+            menu: Cura.MaterialMenu
             {
                 extruderIndex: Cura.ExtruderManager.activeExtruderIndex
             }
@@ -300,7 +298,7 @@ Rectangle
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
 
-            menu: NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
+            menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
         }
     }
 
@@ -348,12 +346,12 @@ Rectangle
             {
                 anchors.fill: parent
 
-                onClicked: {
+                onClicked:
+                {
                     // open the material URL with web browser
                     Qt.openUrlExternally("https://ultimaker.com/incoming-links/cura/material-compatibilty");
                 }
             }
         }
     }
-
 }
