@@ -26,7 +26,7 @@ UM.MainWindow
     UM.I18nCatalog
     {
         id: catalog
-        name:"cura"
+        name: "cura"
     }
 
     function showTooltip(item, position, text)
@@ -236,7 +236,7 @@ UM.MainWindow
                 textRole: "name"
 
                 // update the model's active index
-                function updateItemActiveFlags ()
+                function updateItemActiveFlags()
                 {
                     currentIndex = getActiveIndex()
                     for (var i = 0; i < model.rowCount(); i++)
@@ -316,7 +316,7 @@ UM.MainWindow
 
             Loader
             {
-                // A stage can control this area. If nothing is set, it will therefor show the 3D view.
+                // A stage can control this area. If nothing is set, it will therefore show the 3D view.
                 id: main
 
                 anchors

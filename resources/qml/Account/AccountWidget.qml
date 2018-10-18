@@ -40,7 +40,7 @@ Button
         id: popup
 
         y: parent.height + UM.Theme.getSize("default_arrow").height
-        x: (parent.width - width)
+        x: parent.width - width
 
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 

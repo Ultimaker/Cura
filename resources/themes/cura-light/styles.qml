@@ -7,10 +7,14 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
 
-QtObject {
-    property Component sidebar_header_button: Component {
-        ButtonStyle {
-            background: Rectangle {
+QtObject
+{
+    property Component sidebar_header_button: Component
+    {
+        ButtonStyle
+        {
+            background: Rectangle
+            {
                 color:
                 {
                     if(control.enabled)
@@ -61,7 +65,8 @@ QtObject {
                         return Theme.getColor("setting_control_disabled_border");
                     }
                 }
-                UM.RecolorImage {
+                UM.RecolorImage
+                {
                     id: downArrow
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
@@ -73,7 +78,8 @@ QtObject {
                     color: control.enabled ? Theme.getColor("setting_category_text") : Theme.getColor("setting_category_disabled_text")
                     source: Theme.getIcon("arrow_bottom")
                 }
-                Label {
+                Label
+                {
                     id: sidebarComboBoxLabel
                     color: control.enabled ? Theme.getColor("setting_control_text") : Theme.getColor("setting_control_disabled_text")
                     text: control.text;
@@ -158,33 +164,37 @@ QtObject {
                     {
                         if (control.checked)
                         {
-                            return UM.Theme.getColor("topheader_button_text_active")
+                            return UM.Theme.getColor("topheader_button_text_active");
                         }
                         else
                         {
                             if (control.hovered)
                             {
-                                return UM.Theme.getColor("topheader_button_text_hovered")
+                                return UM.Theme.getColor("topheader_button_text_hovered");
                             }
-                            return UM.Theme.getColor("topheader_button_text_inactive")
+                            return UM.Theme.getColor("topheader_button_text_inactive");
                         }
                     }
                 }
                 Component.onCompleted:
                 {
-                    buttonWidth = width
+                    buttonWidth = width;
                 }
             }
         }
     }
 
-    property Component tool_button: Component {
-        ButtonStyle {
-            background: Item {
+    property Component tool_button: Component
+    {
+        ButtonStyle
+        {
+            background: Item
+            {
                 implicitWidth: Theme.getSize("button").width;
                 implicitHeight: Theme.getSize("button").height;
 
-                UM.PointingRectangle {
+                UM.PointingRectangle
+                {
                     id: button_tooltip
 
                     anchors.left: parent.right
@@ -203,7 +213,8 @@ QtObject {
                     Behavior on width { NumberAnimation { duration: 100; } }
                     Behavior on opacity { NumberAnimation { duration: 100; } }
 
-                    Label {
+                    Label
+                    {
                         id: button_tip
 
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -215,7 +226,8 @@ QtObject {
                     }
                 }
 
-                Rectangle {
+                Rectangle
+                {
                     id: buttonFace;
 
                     anchors.fill: parent;
@@ -249,7 +261,8 @@ QtObject {
                     border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 * screenScaleFactor : 0
                     border.color: Theme.getColor("tool_button_border")
 
-                    UM.RecolorImage {
+                    UM.RecolorImage
+                    {
                         id: tool_button_arrow
                         anchors.right: parent.right;
                         anchors.rightMargin: Theme.getSize("button").width - Math.round(Theme.getSize("button_icon").width / 4)
@@ -284,8 +297,10 @@ QtObject {
                 }
             }
 
-            label: Item {
-                UM.RecolorImage {
+            label: Item
+            {
+                UM.RecolorImage
+                {
                     anchors.centerIn: parent;
                     opacity: !control.enabled ? 0.2 : 1.0
                     source: control.iconSource;
@@ -317,13 +332,17 @@ QtObject {
         }
     }
 
-    property Component small_tool_button: Component {
-        ButtonStyle {
-            background: Item {
+    property Component small_tool_button: Component
+    {
+        ButtonStyle
+        {
+            background: Item
+            {
                 implicitWidth: Theme.getSize("small_button").width;
                 implicitHeight: Theme.getSize("small_button").height;
 
-                Rectangle {
+                Rectangle
+                {
                     id: smallButtonFace;
 
                     anchors.fill: parent;
@@ -357,7 +376,8 @@ QtObject {
                     border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 * screenScaleFactor : 0
                     border.color: Theme.getColor("tool_button_border")
 
-                    UM.RecolorImage {
+                    UM.RecolorImage
+                    {
                         id: smallToolButtonArrow
 
                         width: 5
@@ -389,13 +409,15 @@ QtObject {
                 }
             }
 
-            label: Item {
-                UM.RecolorImage {
-                    anchors.centerIn: parent;
+            label: Item
+            {
+                UM.RecolorImage
+                {
+                    anchors.centerIn: parent
                     opacity: !control.enabled ? 0.2 : 1.0
                     source: control.iconSource;
-                    width: Theme.getSize("small_button_icon").width;
-                    height: Theme.getSize("small_button_icon").height;
+                    width: Theme.getSize("small_button_icon").width
+                    height: Theme.getSize("small_button_icon").height
                     color:
                     {
                         if(control.checkable && control.checked && control.hovered)
@@ -422,14 +444,18 @@ QtObject {
         }
     }
 
-    property Component progressbar: Component{
-        ProgressBarStyle {
-            background: Rectangle {
+    property Component progressbar: Component
+    {
+        ProgressBarStyle
+        {
+            background: Rectangle
+            {
                 implicitWidth: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2)
                 implicitHeight: Theme.getSize("progressbar").height
                 color: control.hasOwnProperty("backgroundColor") ? control.backgroundColor : Theme.getColor("progressbar_background")
             }
-            progress: Rectangle {
+            progress: Rectangle
+            {
                 color:
                 {
                     if(control.indeterminate)
@@ -446,14 +472,16 @@ QtObject {
                     }
                 }
                 radius: Theme.getSize("progressbar_radius").width
-                Rectangle{
+                Rectangle
+                {
                     radius: Theme.getSize("progressbar_radius").width
                     color: control.hasOwnProperty("controlColor") ? control.controlColor : Theme.getColor("progressbar_control")
                     width: Theme.getSize("progressbar_control").width
                     height: Theme.getSize("progressbar_control").height
                     visible: control.indeterminate
 
-                    SequentialAnimation on x {
+                    SequentialAnimation on x
+                    {
                         id: xAnim
                         property int animEndPoint: Theme.getSize("message").width - Math.round((Theme.getSize("default_margin").width * 2.5)) - Theme.getSize("progressbar_control").width
                         running: control.indeterminate && control.visible
@@ -466,59 +494,88 @@ QtObject {
         }
     }
 
-    property Component sidebar_category: Component {
-        ButtonStyle {
-            background: Rectangle {
-                anchors.fill: parent;
+    property Component sidebar_category: Component
+    {
+        ButtonStyle
+        {
+            background: Rectangle
+            {
+                anchors.fill: parent
                 anchors.left: parent.left
                 anchors.leftMargin: Theme.getSize("sidebar_margin").width
                 anchors.right: parent.right
                 anchors.rightMargin: Theme.getSize("sidebar_margin").width
-                implicitHeight: Theme.getSize("section").height;
-                color: {
-                    if(control.color) {
+                implicitHeight: Theme.getSize("section").height
+                color:
+                {
+                    if(control.color)
+                    {
                         return control.color;
-                    } else if(!control.enabled) {
+                    }
+                    else if(!control.enabled)
+                    {
                         return Theme.getColor("setting_category_disabled");
-                    } else if(control.hovered && control.checkable && control.checked) {
+                    }
+                    else if(control.hovered && control.checkable && control.checked)
+                    {
                         return Theme.getColor("setting_category_active_hover");
-                    } else if(control.pressed || (control.checkable && control.checked)) {
+                    }
+                    else if(control.pressed || (control.checkable && control.checked))
+                    {
                         return Theme.getColor("setting_category_active");
-                    } else if(control.hovered) {
+                    }
+                    else if(control.hovered)
+                    {
                         return Theme.getColor("setting_category_hover");
-                    } else {
+                    }
+                    else
+                    {
                         return Theme.getColor("setting_category");
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
-                Rectangle {
+                Rectangle
+                {
                     height: Theme.getSize("default_lining").height
                     width: parent.width
                     anchors.bottom: parent.bottom
-                    color: {
-                        if(!control.enabled) {
+                    color:
+                    {
+                        if(!control.enabled)
+                        {
                             return Theme.getColor("setting_category_disabled_border");
-                        } else if((control.hovered || control.activeFocus) && control.checkable && control.checked) {
+                        }
+                        else if((control.hovered || control.activeFocus) && control.checkable && control.checked)
+                        {
                             return Theme.getColor("setting_category_active_hover_border");
-                        } else if(control.pressed || (control.checkable && control.checked)) {
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
                             return Theme.getColor("setting_category_active_border");
-                        } else if(control.hovered || control.activeFocus) {
+                        }
+                        else if(control.hovered || control.activeFocus)
+                        {
                             return Theme.getColor("setting_category_hover_border");
-                        } else {
+                        }
+                        else
+                        {
                             return Theme.getColor("setting_category_border");
                         }
                     }
                 }
             }
-            label: Item {
-                anchors.fill: parent;
+            label: Item
+            {
+                anchors.fill: parent
                 anchors.left: parent.left
-                Item{
-                    id: icon;
+                Item
+                {
+                    id: icon
                     anchors.left: parent.left
                     height: parent.height
                     width: Theme.getSize("section_icon_column").width
-                    UM.RecolorImage {
+                    UM.RecolorImage
+                    {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         anchors.leftMargin: Theme.getSize("sidebar_margin").width
@@ -553,15 +610,17 @@ QtObject {
                     }
                 }
 
-                Label {
-                    anchors {
-                        left: icon.right;
-                        leftMargin: Theme.getSize("default_margin").width;
-                        right: parent.right;
-                        verticalCenter: parent.verticalCenter;
+                Label
+                {
+                    anchors
+                    {
+                        left: icon.right
+                        leftMargin: Theme.getSize("default_margin").width
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
                     }
-                    text: control.text;
-                    font: Theme.getFont("setting_category");
+                    text: control.text
+                    font: Theme.getFont("setting_category")
                     color:
                     {
                         if(!control.enabled)
@@ -585,10 +644,11 @@ QtObject {
                             return Theme.getColor("setting_category_text");
                         }
                     }
-                    fontSizeMode: Text.HorizontalFit;
+                    fontSizeMode: Text.HorizontalFit
                     minimumPointSize: 8
                 }
-                UM.RecolorImage {
+                UM.RecolorImage
+                {
                     id: category_arrow
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
@@ -626,20 +686,24 @@ QtObject {
         }
     }
 
-    property Component scrollview: Component {
-        ScrollViewStyle {
+    property Component scrollview: Component
+    {
+        ScrollViewStyle
+        {
             decrementControl: Item { }
             incrementControl: Item { }
 
             transientScrollBars: false
 
-            scrollBarBackground: Rectangle {
+            scrollBarBackground: Rectangle
+            {
                 implicitWidth: Theme.getSize("scrollbar").width
                 radius: Math.round(implicitWidth / 2)
                 color: Theme.getColor("scrollbar_background");
             }
 
-            handle: Rectangle {
+            handle: Rectangle
+            {
                 id: scrollViewHandle
                 implicitWidth: Theme.getSize("scrollbar").width;
                 radius: Math.round(implicitWidth / 2)
@@ -650,10 +714,13 @@ QtObject {
         }
     }
 
-    property Component combobox: Component {
-        ComboBoxStyle {
+    property Component combobox: Component
+    {
+        ComboBoxStyle
+        {
 
-            background: Rectangle {
+            background: Rectangle
+            {
                 implicitHeight: Theme.getSize("setting_control").height;
                 implicitWidth: Theme.getSize("setting_control").width;
 
@@ -664,28 +731,31 @@ QtObject {
                 border.color: control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
             }
 
-            label: Item {
+            label: Item
+            {
 
-                Label {
-                    anchors.left: parent.left;
+                Label
+                {
+                    anchors.left: parent.left
                     anchors.leftMargin: Theme.getSize("default_lining").width
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: Theme.getSize("default_lining").width;
-                    anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: downArrow.left
+                    anchors.rightMargin: Theme.getSize("default_lining").width
+                    anchors.verticalCenter: parent.verticalCenter
 
-                    text: control.currentText;
+                    text: control.currentText
                     font: Theme.getFont("default");
-                    color: !enabled ? Theme.getColor("setting_control_disabled_text") : Theme.getColor("setting_control_text");
+                    color: !enabled ? Theme.getColor("setting_control_disabled_text") : Theme.getColor("setting_control_text")
 
-                    elide: Text.ElideRight;
-                    verticalAlignment: Text.AlignVCenter;
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
                 }
 
-                UM.RecolorImage {
+                UM.RecolorImage
+                {
                     id: downArrow
-                    anchors.right: parent.right;
-                    anchors.rightMargin: Theme.getSize("default_lining").width * 2;
-                    anchors.verticalCenter: parent.verticalCenter;
+                    anchors.right: parent.right
+                    anchors.rightMargin: Theme.getSize("default_lining").width * 2
+                    anchors.verticalCenter: parent.verticalCenter
 
                     source: Theme.getIcon("arrow_bottom")
                     width: Theme.getSize("standard_arrow").width
@@ -700,19 +770,24 @@ QtObject {
     }
 
     // Combobox with items with colored rectangles
-    property Component combobox_color: Component {
+    property Component combobox_color: Component
+    {
 
-        ComboBoxStyle {
+        ComboBoxStyle
+        {
 
-            background: Rectangle {
+            background: Rectangle
+            {
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled") : control._hovered ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control._hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             }
 
-            label: Item {
+            label: Item
+            {
 
-                Label {
+                Label
+                {
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
                     anchors.right: swatch.left
@@ -727,7 +802,8 @@ QtObject {
                     verticalAlignment: Text.AlignVCenter
                 }
 
-                Rectangle {
+                Rectangle
+                {
                     id: swatch
                     height: Math.round(UM.Theme.getSize("setting_control").height / 2)
                     width: height
@@ -740,7 +816,8 @@ QtObject {
                     color: (control.color_override !== "") ? control.color_override : control.color
                 }
 
-                UM.RecolorImage {
+                UM.RecolorImage
+                {
                     id: downArrow
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
@@ -758,22 +835,26 @@ QtObject {
         }
     }
 
-    property Component checkbox: Component {
-        CheckBoxStyle {
+    property Component checkbox: Component
+    {
+        CheckBoxStyle
+        {
             background: Item { }
-            indicator: Rectangle {
-                implicitWidth:  Theme.getSize("checkbox").width;
-                implicitHeight: Theme.getSize("checkbox").height;
+            indicator: Rectangle
+            {
+                implicitWidth:  Theme.getSize("checkbox").width
+                implicitHeight: Theme.getSize("checkbox").height
 
-                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
+                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox")
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : 0
 
-                border.width: Theme.getSize("default_lining").width;
-                border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
+                border.width: Theme.getSize("default_lining").width
+                border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border")
 
-                UM.RecolorImage {
+                UM.RecolorImage
+                {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.round(parent.width / 2.5)
@@ -786,7 +867,8 @@ QtObject {
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
             }
-            label: Label {
+            label: Label
+            {
                 text: control.text
                 color: Theme.getColor("checkbox_text")
                 font: Theme.getFont("default")
@@ -795,12 +877,15 @@ QtObject {
         }
     }
 
-    property Component partially_checkbox: Component {
-        CheckBoxStyle {
+    property Component partially_checkbox: Component
+    {
+        CheckBoxStyle
+        {
             background: Item { }
-            indicator: Rectangle {
-                implicitWidth:  Theme.getSize("checkbox").width;
-                implicitHeight: Theme.getSize("checkbox").height;
+            indicator: Rectangle
+            {
+                implicitWidth:  Theme.getSize("checkbox").width
+                implicitHeight: Theme.getSize("checkbox").height
 
                 color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
                 Behavior on color { ColorAnimation { duration: 50; } }
@@ -810,7 +895,8 @@ QtObject {
                 border.width: Theme.getSize("default_lining").width;
                 border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
 
-                UM.RecolorImage {
+                UM.RecolorImage
+                {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.round(parent.width / 2.5)
@@ -818,50 +904,60 @@ QtObject {
                     sourceSize.width: width
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
-                    source: {
-                        if (control.checkbox_state == 2){
-                            return Theme.getIcon("solid")
+                    source:
+                    {
+                        if (control.checkbox_state == 2)
+                        {
+                            return Theme.getIcon("solid");
                         }
-                        else{
-                            return control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check")
+                        else
+                        {
+                            return control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check");
                         }
                     }
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
             }
-            label: Label {
-                text: control.text;
-                color: Theme.getColor("checkbox_text");
-                font: Theme.getFont("default");
+            label: Label
+            {
+                text: control.text
+                color: Theme.getColor("checkbox_text")
+                font: Theme.getFont("default")
             }
         }
     }
 
-    property Component slider: Component {
-        SliderStyle {
-            groove: Rectangle {
-                implicitWidth: control.width;
-                implicitHeight: Theme.getSize("slider_groove").height;
+    property Component slider: Component
+    {
+        SliderStyle
+        {
+            groove: Rectangle
+            {
+                implicitWidth: control.width
+                implicitHeight: Theme.getSize("slider_groove").height
 
-                color: Theme.getColor("slider_groove");
-                border.width: Theme.getSize("default_lining").width;
-                border.color: Theme.getColor("slider_groove_border");
+                color: Theme.getColor("slider_groove")
+                border.width: Theme.getSize("default_lining").width
+                border.color: Theme.getColor("slider_groove_border")
 
-                radius: Math.round(width / 2);
+                radius: Math.round(width / 2)
 
-                Rectangle {
-                    anchors {
-                        left: parent.left;
-                        top: parent.top;
-                        bottom: parent.bottom;
+                Rectangle
+                {
+                    anchors
+                    {
+                        left: parent.left
+                        top: parent.top
+                        bottom: parent.bottom
                     }
                     color: Theme.getColor("slider_groove_fill");
                     width: Math.round((control.value / (control.maximumValue - control.minimumValue)) * parent.width);
                     radius: Math.round(width / 2);
                 }
             }
-            handle: Rectangle {
+            handle: Rectangle
+            {
                 width: Theme.getSize("slider_handle").width;
                 height: Theme.getSize("slider_handle").height;
                 color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
@@ -873,11 +969,13 @@ QtObject {
         }
     }
 
-    property Component text_field: Component {
-        TextFieldStyle {
-            textColor: Theme.getColor("setting_control_text");
+    property Component text_field: Component
+    {
+        TextFieldStyle
+        {
+            textColor: Theme.getColor("setting_control_text")
             placeholderTextColor: Theme.getColor("setting_control_text")
-            font: Theme.getFont("default");
+            font: Theme.getFont("default")
 
             background: Rectangle
             {
@@ -889,7 +987,8 @@ QtObject {
 
                 color: Theme.getColor("setting_validation_ok");
 
-                Label {
+                Label
+                {
                     anchors.right: parent.right;
                     anchors.rightMargin: Theme.getSize("setting_unit_margin").width;
                     anchors.verticalCenter: parent.verticalCenter;
@@ -902,7 +1001,8 @@ QtObject {
         }
     }
 
-    property Component sidebar_action_button: Component {
+    property Component sidebar_action_button: Component
+    {
         ButtonStyle
         {
             background: Rectangle
@@ -911,26 +1011,42 @@ QtObject {
                 border.color:
                 {
                     if(!control.enabled)
+                    {
                         return UM.Theme.getColor("action_button_disabled_border");
+                    }
                     else if(control.pressed)
+                    {
                         return UM.Theme.getColor("action_button_active_border");
+                    }
                     else if(control.hovered)
+                    {
                         return UM.Theme.getColor("action_button_hovered_border");
+                    }
                     else
+                    {
                         return UM.Theme.getColor("action_button_border");
+                    }
                 }
                 color:
                 {
                     if(!control.enabled)
+                    {
                         return UM.Theme.getColor("action_button_disabled");
+                    }
                     else if(control.pressed)
+                    {
                         return UM.Theme.getColor("action_button_active");
+                    }
                     else if(control.hovered)
+                    {
                         return UM.Theme.getColor("action_button_hovered");
+                    }
                     else
+                    {
                         return UM.Theme.getColor("action_button");
+                    }
                 }
-                Behavior on color { ColorAnimation { duration: 50; } }
+                Behavior on color { ColorAnimation { duration: 50 } }
 
                 implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
 
@@ -941,13 +1057,21 @@ QtObject {
                     color:
                     {
                         if(!control.enabled)
+                        {
                             return UM.Theme.getColor("action_button_disabled_text");
+                        }
                         else if(control.pressed)
+                        {
                             return UM.Theme.getColor("action_button_active_text");
+                        }
                         else if(control.hovered)
+                        {
                             return UM.Theme.getColor("action_button_hovered_text");
+                        }
                         else
+                        {
                             return UM.Theme.getColor("action_button_text");
+                        }
                     }
                     font: UM.Theme.getFont("action_button")
                     text: control.text
@@ -957,7 +1081,8 @@ QtObject {
         }
     }
 
-    property Component toolbox_action_button: Component {
+    property Component toolbox_action_button: Component
+    {
         ButtonStyle
         {
             background: Rectangle
@@ -968,17 +1093,17 @@ QtObject {
                 {
                     if (control.installed)
                     {
-                        return UM.Theme.getColor("action_button_disabled")
+                        return UM.Theme.getColor("action_button_disabled");
                     }
                     else
                     {
                         if (control.hovered)
                         {
-                            return UM.Theme.getColor("primary_hover")
+                            return UM.Theme.getColor("primary_hover");
                         }
                         else
                         {
-                            return UM.Theme.getColor("primary")
+                            return UM.Theme.getColor("primary");
                         }
                     }
 
@@ -991,17 +1116,17 @@ QtObject {
                 {
                     if (control.installed)
                     {
-                        return UM.Theme.getColor("action_button_disabled_text")
+                        return UM.Theme.getColor("action_button_disabled_text");
                     }
                     else
                     {
                         if (control.hovered)
                         {
-                            return UM.Theme.getColor("button_text_hover")
+                            return UM.Theme.getColor("button_text_hover");
                         }
                         else
                         {
-                            return UM.Theme.getColor("button_text")
+                            return UM.Theme.getColor("button_text");
                         }
                     }
                 }

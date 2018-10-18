@@ -36,7 +36,7 @@ UM.Dialog
         width: parent.width
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
 
-        UM.I18nCatalog { id: catalog; name:"cura" }
+        UM.I18nCatalog { id: catalog; name: "cura" }
 
         Button
         {

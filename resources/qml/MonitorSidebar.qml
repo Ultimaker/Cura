@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -31,7 +31,7 @@ Rectangle
     property variant printMaterialNames: PrintInformation.materialNames
 
     color: UM.Theme.getColor("sidebar")
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     Timer {
         id: tooltipDelayTimer
@@ -70,7 +70,7 @@ Rectangle
         time -= minutes * 60
         var seconds = Math.floor(time);
 
-        var finalTime = strPadLeft(hours, "0", 2) + ':' + strPadLeft(minutes,'0',2)+ ':' + strPadLeft(seconds,'0',2);
+        var finalTime = strPadLeft(hours, "0", 2) + ":" + strPadLeft(minutes, "0", 2) + ":" + strPadLeft(seconds, "0", 2);
         return finalTime;
     }
 

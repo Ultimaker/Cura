@@ -128,7 +128,8 @@ Item
             Instantiator
             {
                 model: Cura.ExtrudersModel { simpleNames: true }
-                Menu {
+                Menu
+                {
                     title: model.name
 
                     NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
@@ -267,7 +268,8 @@ Item
         }
     }
 
-    UM.ExtensionModel {
+    UM.ExtensionModel
+    {
         id: curaExtensions
     }
 
@@ -291,7 +293,8 @@ Item
     Connections
     {
         target: Cura.Actions.browsePackages
-        onTriggered: {
+        onTriggered:
+        {
             curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
         }
     }
