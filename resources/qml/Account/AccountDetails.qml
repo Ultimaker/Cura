@@ -18,8 +18,8 @@ Column
     AvatarImage
     {
         id: avatar
-        width: 75 * screenScaleFactor
-        height: 75 * screenScaleFactor
+        width: UM.Theme.getSize("avatar_image").width
+        height: UM.Theme.getSize("avatar_image").height
         anchors.horizontalCenter: parent.horizontalCenter
         source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_default")
         outlineColor: loggedIn ? UM.Theme.getColor("account_widget_ouline_active") : UM.Theme.getColor("account_widget_ouline_inactive")
@@ -29,8 +29,8 @@ Column
     {
         id: information
         anchors.horizontalCenter: parent.horizontalCenter
-        visible: !loggedIn
-        text: loggedIn ? profile["username"] : catalog.i18nc("@label", "Please login or create an account to  enjoy all features of Ultimaker Cura")
+        horizontalAlignment: Text.AlignHCenter
+        text: loggedIn ? profile["username"] : catalog.i18nc("@label", "Please log in or create an account to\nenjoy all features of Ultimaker Cura.")
         font: loggedIn ? UM.Theme.getFont("large") : UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
     }

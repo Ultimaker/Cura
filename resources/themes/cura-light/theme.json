@@ -488,6 +488,8 @@
         "toolbox_action_button": [8.0, 2.5],
         "toolbox_loader": [2.0, 2.0],
 
+        "avatar_image": [6.8, 6.8],
+
         "drop_shadow_radius": [1.0, 1.0]
     }
 }
