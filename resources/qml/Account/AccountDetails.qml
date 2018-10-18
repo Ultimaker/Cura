@@ -27,34 +27,12 @@ Column
 
     Label
     {
-        id: message
+        id: information
         anchors.horizontalCenter: parent.horizontalCenter
         visible: !loggedIn
-        text: catalog.i18nc("@label", "Please login or create an account to  enjoy all features of Ultimaker Cura")
+        text: loggedIn ? profile["username"] : catalog.i18nc("@label", "Please login or create an account to  enjoy all features of Ultimaker Cura")
+        font: loggedIn ? UM.Theme.getFont("large") : UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
-    }
-
-    Column
-    {
-        id: userInformation
-        anchors.horizontalCenter: parent.horizontalCenter
-        visible: loggedIn
-
-        Label
-        {
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: loggedIn ? profile["username"] : ""
-            font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
-        }
-
-        Label
-        {
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "email.address@hardcoded.is"
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-        }
     }
 
     Loader
