@@ -31,6 +31,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         visible: !loggedIn
         text: catalog.i18nc("@label", "Please login or create an account to  enjoy all features of Ultimaker Cura")
+        color: UM.Theme.getColor("text")
     }
 
     Column
@@ -44,6 +45,7 @@ Column
             anchors.horizontalCenter: parent.horizontalCenter
             text: loggedIn ? profile["username"] : ""
             font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
         }
 
         Label
@@ -51,6 +53,7 @@ Column
             anchors.horizontalCenter: parent.horizontalCenter
             text: "email.address@hardcoded.is"
             font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
         }
     }
 
