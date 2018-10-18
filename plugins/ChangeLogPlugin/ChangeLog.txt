@@ -1,4 +1,13 @@
+[3.5.1]
+*BlackBelt changes
+- Added automatic support generation
+- Optimised start and end gcode
+- Updated firmware to Marlin 1.1.9, with support for homing the Y axis and parking the nozzle on pause
+- Fixed multiplying models on the belt
+- Fixed layer view for objects that are cut off below the belt
+
 [3.5.0]
+
 *Monitor page
 The monitor page of Ultimaker Cura has been remodeled for better consistency with the Cura Connect ‘Print jobs’ interface. This means less switching between interfaces, and more control from within Ultimaker Cura.
 
