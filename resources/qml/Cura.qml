@@ -20,7 +20,6 @@ UM.MainWindow
 
     // Cura application window title
     title: catalog.i18nc("@title:window", "Ultimaker Cura")
-    viewportRect: Qt.rect(0, 0, 1.0, 1.0)
     backgroundColor: UM.Theme.getColor("viewport_background")
 
     UM.I18nCatalog
@@ -143,6 +142,19 @@ UM.MainWindow
                 }
             }
 
+            Rectangle
+            {
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                }
+                visible: stageMenu.source != ""
+                height: Math.round(UM.Theme.getSize("stage_menu").height / 2)
+                color: UM.Theme.getColor("topheader_background")
+            }
+
             Loader
             {
                 // The stage menu is, as the name implies, a menu that is defined by the active stage.
@@ -155,10 +167,9 @@ UM.MainWindow
                     left: parent.left
                     right: parent.right
                     top: parent.top
-                    margins: UM.Theme.getSize("default_margin").height
                 }
 
-                height: 50
+                height: UM.Theme.getSize("stage_menu").height
                 source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
             }
 

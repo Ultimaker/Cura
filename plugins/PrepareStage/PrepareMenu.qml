@@ -21,7 +21,6 @@ Item
 
     Row
     {
-        spacing: UM.Theme.getSize("default_margin").width
         anchors.horizontalCenter: parent.horizontalCenter
 
         Button
@@ -32,6 +31,13 @@ Item
             style: UM.Theme.styles.tool_button
             tooltip: ""
             action: Cura.Actions.open
+        }
+
+        Item
+        {
+            id: spacing
+            width: UM.Theme.getSize("default_margin").width
+            height: parent.height
         }
 
         Cura.MachineAndConfigurationSelector

@@ -1,5 +1,6 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from PyQt5.QtCore import pyqtProperty, QUrl
 
 from UM.Stage import Stage
@@ -27,6 +28,6 @@ class CuraStage(Stage):
     def sidebarComponent(self) -> QUrl:
         return self.getDisplayComponent("sidebar")
 
-    @pyqtProperty(QUrl, constant=True)
+    @pyqtProperty(QUrl, constant = True)
     def stageMenuComponent(self) -> QUrl:
         return self.getDisplayComponent("menu")

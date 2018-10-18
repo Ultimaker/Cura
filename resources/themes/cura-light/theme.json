@@ -344,6 +344,8 @@
         "topheader_button": [8, 4],
         "topheader_button_icon": [1.2, 1.2],
 
+        "stage_menu": [0.0, 4.5],
+
         "account_button": [12, 3],
 
         "views_selector": [0.0, 4.0],
