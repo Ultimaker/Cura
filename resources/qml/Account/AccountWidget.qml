@@ -33,7 +33,7 @@ Button
 
     background: Item {}
 
-    onClicked: popup.open()
+    onClicked: popup.opened ? popup.close() : popup.open()
 
     Popup
     {
@@ -41,6 +41,8 @@ Button
 
         y: parent.height + UM.Theme.getSize("default_arrow").height
         x: (parent.width - width)
+
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
         contentItem: AccountDetails
         {
