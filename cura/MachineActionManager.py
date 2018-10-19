@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional, List, Set
+from typing import TYPE_CHECKING, Optional, List, Set, Dict
 
 from PyQt5.QtCore import QObject
 
@@ -26,7 +26,7 @@ class NotUniqueMachineActionError(Exception):
 
 
 class MachineActionManager(QObject):
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None):
+    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent = parent)
         self._application = application
         self._container_registry = self._application.getContainerRegistry()
@@ -34,10 +34,14 @@ class MachineActionManager(QObject):
         # Keeps track of which machines have already been processed so we don't do that again.
         self._definition_ids_with_default_actions_added = set()  # type: Set[str]
 
-        self._machine_actions = {}  # Dict of all known machine actions
-        self._required_actions = {}  # Dict of all required actions by definition ID
-        self._supported_actions = {}  # Dict of all supported actions by definition ID
-        self._first_start_actions = {}  # Dict of all actions that need to be done when first added by definition ID
+        # Dict of all known machine actions
+        self._machine_actions = {}  # type: Dict[str, MachineAction]
+        # Dict of all required actions by definition ID
+        self._required_actions = {}  # type: Dict[str, List[MachineAction]]
+        # Dict of all supported actions by definition ID
+        self._supported_actions = {}  # type: Dict[str, List[MachineAction]]
+        # Dict of all actions that need to be done when first added by definition ID
+        self._first_start_actions = {}  # type: Dict[str, List[MachineAction]]
 
     def initialize(self):
         # Add machine_action as plugin type
@@ -53,16 +57,16 @@ class MachineActionManager(QObject):
             return
 
         supported_actions = global_stack.getMetaDataEntry("supported_actions", [])
-        for action in supported_actions:
-            self.addSupportedAction(definition_id, action)
+        for action_key in supported_actions:
+            self.addSupportedAction(definition_id, action_key)
 
         required_actions = global_stack.getMetaDataEntry("required_actions", [])
-        for action in required_actions:
-            self.addRequiredAction(definition_id, action)
+        for action_key in required_actions:
+            self.addRequiredAction(definition_id, action_key)
 
         first_start_actions = global_stack.getMetaDataEntry("first_start_actions", [])
-        for action in first_start_actions:
-            self.addFirstStartAction(definition_id, action)
+        for action_key in first_start_actions:
+            self.addFirstStartAction(definition_id, action_key)
 
         self._definition_ids_with_default_actions_added.add(definition_id)
         Logger.log("i", "Default machine actions added for machine definition [%s]", definition_id)
@@ -121,11 +125,11 @@ class MachineActionManager(QObject):
     ##  Get all actions required by given machine
     #   \param definition_id The ID of the definition you want the required actions of
     #   \returns set of required actions.
-    def getRequiredActions(self, definition_id: str) -> Set["MachineAction"]:
+    def getRequiredActions(self, definition_id: str) -> List["MachineAction"]:
         if definition_id in self._required_actions:
             return self._required_actions[definition_id]
         else:
-            return set()
+            return list()
 
     ##  Get all actions that need to be performed upon first start of a given machine.
     #   Note that contrary to required / supported actions a list is returned (as it could be required to run the same

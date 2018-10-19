@@ -44,7 +44,7 @@ def test_addMachineAction(machine_action_manager):
     assert machine_action_manager.getSupportedActions(test_machine) == [test_action, test_action_2]
 
     # Check that the machine has no required actions yet.
-    assert machine_action_manager.getRequiredActions(test_machine) == set()
+    assert machine_action_manager.getRequiredActions(test_machine) == list()
 
     ## Ensure that only known actions can be added.
     with pytest.raises(UnknownMachineActionError):
