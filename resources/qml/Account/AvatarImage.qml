@@ -26,31 +26,27 @@ Item
         visible: false
     }
 
-    UM.RecolorImage
+    Rectangle
     {
         id: profileImageMask
-        source: UM.Theme.getIcon("circle_mask")
-        sourceSize: Qt.size(parent.width, parent.height)
         anchors.fill: parent
-        color: UM.Theme.getColor("topheader_background")
-        visible: false
+        radius: width
     }
 
     OpacityMask
     {
-        anchors.fill: profileImage
+        anchors.fill: parent
         source: profileImage
         maskSource: profileImageMask
         cached: true
-        invert: false
     }
 
     UM.RecolorImage
     {
         id: profileImageOutline
+        anchors.fill: parent
         source: UM.Theme.getIcon("circle_outline")
         sourceSize: Qt.size(parent.width, parent.height)
-        anchors.fill: parent
         color: UM.Theme.getColor("account_widget_ouline_active")
     }
 }
