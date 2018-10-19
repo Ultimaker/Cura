@@ -74,6 +74,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._command_received = Event()
         self._command_received.set()
 
+        self._firmware_name_requested = False
         self._firmware_updater = AvrFirmwareUpdater(self)
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
@@ -224,14 +225,18 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             except:
                 continue
 
+            if not self._firmware_name_requested:
+                self._firmware_name_requested = True
+                self.sendCommand("M115")
+
+            if b"FIRMWARE_NAME:" in line:
+                self._setFirmwareName(line)
+
             if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
                 # Timeout, or no request has been sent at all.
                 if not self._printer_busy: # Don't flood the printer with temperature requests while it is busy
                     self.sendCommand("M105")
                     self._last_temperature_request = time()
-
-                    if self._firmware_name is None:
-                        self.sendCommand("M115")
 
             if re.search(b"[B|T\d*]: ?\d+\.?\d*", line):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?(\d+\.?\d*) ?\/?(\d+\.?\d*)?", line)
@@ -263,9 +268,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._printers[0].updateBedTemperature(float(match[0]))
                     if match[1]:
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
-
-            if b"FIRMWARE_NAME:" in line:
-                self._setFirmwareName(line)
 
             if line == b"":
                 # An empty line means that the firmware is idle
