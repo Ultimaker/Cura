@@ -65,12 +65,3 @@ def test_addMachineAction(machine_action_manager):
     machine_action_manager.addFirstStartAction(test_machine, "test_action")
     machine_action_manager.addFirstStartAction(test_machine, "test_action")
     assert machine_action_manager.getFirstStartActions(test_machine) == [test_action, test_action]
-
-    # Check if inserting an action works
-    machine_action_manager.addFirstStartAction(test_machine, "test_action_2", index = 1)
-    assert machine_action_manager.getFirstStartActions(test_machine) == [test_action, test_action_2, test_action]
-
-    # Check that adding a unknown action doesn't change anything.
-    machine_action_manager.addFirstStartAction(test_machine, "key_that_doesnt_exist", index = 1)
-    assert machine_action_manager.getFirstStartActions(test_machine) == [test_action, test_action_2, test_action]
-

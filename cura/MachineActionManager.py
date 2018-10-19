@@ -86,13 +86,10 @@ class MachineActionManager(QObject):
             Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, definition_id)
 
     ##  Add an action to the first start list of a machine.
-    def addFirstStartAction(self, definition_id, action_key, index = None):
+    def addFirstStartAction(self, definition_id: str, action_key: str) -> None:
         if action_key in self._machine_actions:
             if definition_id in self._first_start_actions:
-                if index is not None:
-                    self._first_start_actions[definition_id].insert(index, self._machine_actions[action_key])
-                else:
-                    self._first_start_actions[definition_id].append(self._machine_actions[action_key])
+                self._first_start_actions[definition_id].append(self._machine_actions[action_key])
             else:
                 self._first_start_actions[definition_id] = [self._machine_actions[action_key]]
         else:
