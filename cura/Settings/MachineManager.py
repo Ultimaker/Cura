@@ -364,6 +364,10 @@ class MachineManager(QObject):
             return
 
         global_stack = containers[0]
+
+        # Make sure that the default machine actions for this machine have been added
+        self._application.getMachineActionManager().addDefaultMachineActions(global_stack)
+
         ExtruderManager.getInstance()._fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
             # Mark global stack as invalid

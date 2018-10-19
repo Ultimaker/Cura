@@ -31,6 +31,9 @@ class MachineActionManager(QObject):
         self._application = application
         self._container_registry = self._application.getContainerRegistry()
 
+        # Keeps track of which machines have already been processed so we don't do that again.
+        self._definition_ids_with_default_actions_added = set()  # type: Set[str]
+
         self._machine_actions = {}  # Dict of all known machine actions
         self._required_actions = {}  # Dict of all required actions by definition ID
         self._supported_actions = {}  # Dict of all supported actions by definition ID
@@ -40,27 +43,29 @@ class MachineActionManager(QObject):
         # Add machine_action as plugin type
         PluginRegistry.addType("machine_action", self.addMachineAction)
 
-        # Ensure that all containers that were registered before creation of this registry are also handled.
-        # This should not have any effect, but it makes it safer if we ever refactor the order of things.
-        for container in container_registry.findDefinitionContainers():
-            self._onContainerAdded(container)
+    # Adds all default machine actions that are defined in the machine definition for the given machine.
+    def addDefaultMachineActions(self, global_stack: "GlobalStack") -> None:
+        definition_id = global_stack.definition.getId()
 
-        container_registry.containerAdded.connect(self._onContainerAdded)
+        if definition_id in self._definition_ids_with_default_actions_added:
+            Logger.log("i", "Default machine actions have been added for machine definition [%s], do nothing.",
+                       definition_id)
+            return
 
-    def _onContainerAdded(self, container):
-        ## Ensure that the actions are added to this manager
-        if isinstance(container, DefinitionContainer):
-            supported_actions = container.getMetaDataEntry("supported_actions", [])
-            for action in supported_actions:
-                self.addSupportedAction(container.getId(), action)
+        supported_actions = global_stack.getMetaDataEntry("supported_actions", [])
+        for action in supported_actions:
+            self.addSupportedAction(definition_id, action)
 
-            required_actions = container.getMetaDataEntry("required_actions", [])
-            for action in required_actions:
-                self.addRequiredAction(container.getId(), action)
+        required_actions = global_stack.getMetaDataEntry("required_actions", [])
+        for action in required_actions:
+            self.addRequiredAction(definition_id, action)
 
-            first_start_actions = container.getMetaDataEntry("first_start_actions", [])
-            for action in first_start_actions:
-                self.addFirstStartAction(container.getId(), action)
+        first_start_actions = global_stack.getMetaDataEntry("first_start_actions", [])
+        for action in first_start_actions:
+            self.addFirstStartAction(definition_id, action)
+
+        self._definition_ids_with_default_actions_added.add(definition_id)
+        Logger.log("i", "Default machine actions added for machine definition [%s]", definition_id)
 
     ##  Add a required action to a machine
     #   Raises an exception when the action is not recognised.
