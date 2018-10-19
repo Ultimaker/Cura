@@ -1276,11 +1276,7 @@ class MachineManager(QObject):
             if extruder.variant.getId() != self._empty_variant_container.getId():
                 current_nozzle_name = extruder.variant.getMetaDataEntry("name")
 
-            from UM.Settings.Interfaces import PropertyEvaluationContext
-            from cura.Settings.CuraContainerStack import _ContainerIndexes
-            context = PropertyEvaluationContext(extruder)
-            context.context["evaluate_from_container_index"] = _ContainerIndexes.DefinitionChanges
-            material_diameter = extruder.getProperty("material_diameter", "value", context)
+            material_diameter = extruder.getComptabileMaterialDiameter()
             candidate_materials = self._material_manager.getAvailableMaterials(
                 self._global_container_stack.definition,
                 current_nozzle_name,
@@ -1415,7 +1411,7 @@ class MachineManager(QObject):
         position = str(position)
         extruder_stack = self._global_container_stack.extruders[position]
         nozzle_name = extruder_stack.variant.getName()
-        material_diameter = extruder_stack.approximateMaterialDiameter
+        material_diameter = extruder_stack.getApproximateMaterialDiameter()
         material_node = self._material_manager.getMaterialNode(machine_definition_id, nozzle_name, buildplate_name,
                                                                material_diameter, root_material_id)
         self.setMaterial(position, material_node)

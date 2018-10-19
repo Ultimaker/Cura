@@ -408,6 +408,10 @@ Cura.MachineAction
                                     manager.updateMaterialForDiameter(settingsTabs.currentIndex - 1);
                                 }
                             }
+                            function setValueFunction(value)
+                            {
+                                Cura.MachineManager.activeStack.compatibleMaterialDiameter = value;
+                            }
                             property bool isExtruderSetting: true
                         }
 
@@ -564,6 +568,7 @@ Cura.MachineAction
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false : forceUpdateOnChange
             property string _label: (typeof(label) === 'undefined') ? "" : label
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
+            property var _setValueFunction: (typeof(setValueFunction) === 'undefined') ? undefined : setValueFunction
 
             UM.SettingPropertyProvider
             {
@@ -616,7 +621,14 @@ Cura.MachineAction
                         {
                             if (propertyProvider && text != propertyProvider.properties.value)
                             {
-                                propertyProvider.setPropertyValue("value", text);
+                                if (_setValueFunction !== undefined)
+                                {
+                                    _setValueFunction(text);
+                                }
+                                else
+                                {
+                                    propertyProvider.setPropertyValue("value", text);
+                                }
                                 if(_forceUpdateOnChange)
                                 {
                                     manager.forceUpdate();

@@ -129,7 +129,7 @@ class CuraStackBuilder:
 
         # get material container for extruders
         material_container = application.empty_material_container
-        material_node = material_manager.getDefaultMaterial(global_stack, extruder_position, extruder_variant_name,
+        material_node = material_manager.getDefaultMaterial(global_stack, str(extruder_position), extruder_variant_name,
                                                             extruder_definition = extruder_definition)
         if material_node and material_node.getContainer():
             material_container = material_node.getContainer()
