@@ -195,10 +195,6 @@ class FlavorParser:
                 self._previous_z = z
         elif self._previous_extrusion_value > e[self._extruder_number]:
             path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])
-
-        # This case only for initial start, for the first coordinate in GCode
-        elif e[self._extruder_number] == 0 and self._previous_extrusion_value == 0:
-            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])
         else:
             path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveCombingType])
         return self._position(x, y, z, f, e)
@@ -235,6 +231,9 @@ class FlavorParser:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
             self._extrusion_length_offset[self._extruder_number] += position.e[self._extruder_number] - params.e
             position.e[self._extruder_number] = params.e
+            self._previous_extrusion_value = params.e
+        else:
+            self._previous_extrusion_value = 0.0
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -243,7 +242,6 @@ class FlavorParser:
             position.e)
 
     def processGCode(self, G: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
-        self._previous_extrusion_value = 0.0
         func = getattr(self, "_gCode%s" % G, None)
         line = line.split(";", 1)[0]  # Remove comments (if any)
         if func is not None:
@@ -295,7 +293,7 @@ class FlavorParser:
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        
+
         if not global_stack:
             return None
 
@@ -338,6 +336,7 @@ class FlavorParser:
         min_layer_number = 0
         negative_layers = 0
         previous_layer = 0
+        self._previous_extrusion_value = 0.0
 
         for line in stream.split("\n"):
             if self._cancelled:
