@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
@@ -14,9 +14,9 @@ Rectangle
 {
     id: base
 
-    implicitHeight: UM.Theme.getSize("topheader").height
-    implicitWidth: UM.Theme.getSize("topheader").width
-    color: UM.Theme.getColor("topheader_background")
+    implicitHeight: UM.Theme.getSize("main_window_header").height
+    implicitWidth: UM.Theme.getSize("main_window_header").width
+    color: UM.Theme.getColor("main_window_header_background")
 
     Image
     {
@@ -43,7 +43,7 @@ Rectangle
             leftMargin: UM.Theme.getSize("default_margin").width
         }
 
-        // The topheader is dynamically filled with all available stages
+        // The main window header is dynamically filled with all available stages
         Repeater
         {
             id: stagesHeader
@@ -55,9 +55,9 @@ Rectangle
                 text: model.name.toUpperCase()
                 checkable: true
                 checked: model.active
-                exclusiveGroup: topheaderMenuGroup
-                style: UM.Theme.styles.topheader_tab
-                height: UM.Theme.getSize("topheader").height
+                exclusiveGroup: mainWindowHeaderMenuGroup
+                style: UM.Theme.styles.main_window_header_tab
+                height: UM.Theme.getSize("main_window_header").height
                 onClicked: UM.Controller.setActiveStage(model.id)
                 iconSource: model.stage.iconSource
 
@@ -66,7 +66,7 @@ Rectangle
             }
         }
 
-        ExclusiveGroup { id: topheaderMenuGroup }
+        ExclusiveGroup { id: mainWindowHeaderMenuGroup }
     }
 
     // Shortcut button to quick access the Toolbox
@@ -83,14 +83,14 @@ Rectangle
         {
             background: Rectangle
             {
-                color: control.hovered ? UM.Theme.getColor("secondary") : UM.Theme.getColor("topheader_button_background_active")
+                color: control.hovered ? UM.Theme.getColor("secondary") : UM.Theme.getColor("main_window_header_button_background_active")
                 radius: 2 * screenScaleFactor
             }
 
             label: Label
             {
                 text: catalog.i18nc("@action:button", "Toolbox")
-                color: UM.Theme.getColor("topheader_button_text_active")
+                color: UM.Theme.getColor("main_window_header_button_text_active")
                 font: UM.Theme.getFont("action_button")
                 renderType: Text.NativeRendering
             }

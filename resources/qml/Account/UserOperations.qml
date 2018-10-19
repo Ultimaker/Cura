@@ -18,8 +18,8 @@ Row
         text: catalog.i18nc("@button", "Manage account")
         color: UM.Theme.getColor("secondary")
         hoverColor: UM.Theme.getColor("secondary")
-        textColor: UM.Theme.getColor("text_link")
-        textHoverColor: UM.Theme.getColor("text")
+        textColor: UM.Theme.getColor("main_window_header_button_text_active")
+        textHoverColor: UM.Theme.getColor("main_window_header_button_text_active")
         onClicked: Qt.openUrlExternally("https://account.ultimaker.com")
     }
 

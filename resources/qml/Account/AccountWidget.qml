@@ -13,8 +13,8 @@ Button
     property var profile: Cura.API.account.userProfile
     property var loggedIn: Cura.API.account.isLoggedIn
 
-    implicitHeight: UM.Theme.getSize("topheader").height
-    implicitWidth: UM.Theme.getSize("topheader").height
+    implicitHeight: UM.Theme.getSize("main_window_header").height
+    implicitWidth: UM.Theme.getSize("main_window_header").height
 
     AvatarImage
     {

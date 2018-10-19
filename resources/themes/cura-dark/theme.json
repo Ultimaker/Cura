@@ -15,11 +15,10 @@
         "border": [127, 127, 127, 255],
         "secondary": [241, 242, 242, 255],
 
-        "topheader_background": [31, 36, 39, 255],
-
-        "topheader_button_text_active": [31, 36, 39, 255],
-        "topheader_button_text_inactive": [128, 128, 128, 255],
-        "topheader_button_text_hovered": [255, 255, 255, 255],
+        "main_window_header_background": [31, 36, 39, 255],
+        "main_window_header_button_text_active": [31, 36, 39, 255],
+        "main_window_header_button_text_inactive": [128, 128, 128, 255],
+        "main_window_header_button_text_hovered": [255, 255, 255, 255],
 
         "text": [255, 255, 255, 204],
         "text_detail": [255, 255, 255, 172],

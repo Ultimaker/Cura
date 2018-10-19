@@ -86,9 +86,9 @@ UM.MainWindow
             window: base
         }
 
-        TopHeader
+        MainWindowHeader
         {
-            id: topHeader
+            id: mainWindowHeader
             anchors
             {
                 left: parent.left
@@ -103,7 +103,7 @@ UM.MainWindow
 
             anchors
             {
-                top: topHeader.bottom
+                top: mainWindowHeader.bottom
                 bottom: parent.bottom
                 left: parent.left
                 right: parent.right
@@ -152,7 +152,7 @@ UM.MainWindow
                 }
                 visible: stageMenu.source != ""
                 height: Math.round(UM.Theme.getSize("stage_menu").height / 2)
-                color: UM.Theme.getColor("topheader_background")
+                color: UM.Theme.getColor("main_window_header_background")
             }
 
             Loader

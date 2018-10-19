@@ -79,13 +79,12 @@
         "border": [127, 127, 127, 255],
         "secondary": [245, 245, 245, 255],
 
-        "topheader_background": [12, 169, 227, 255],
-
-        "topheader_button_text_active": [12, 169, 227, 255],
-        "topheader_button_text_inactive": [255, 255, 255, 255],
-        "topheader_button_text_hovered": [0, 0, 0, 255],
-        "topheader_button_background_active": [255, 255, 255, 255],
-        "topheader_button_background_inactive": [255, 255, 255, 0],
+        "main_window_header_background": [12, 169, 227, 255],
+        "main_window_header_button_text_active": [12, 169, 227, 255],
+        "main_window_header_button_text_inactive": [255, 255, 255, 255],
+        "main_window_header_button_text_hovered": [0, 0, 0, 255],
+        "main_window_header_button_background_active": [255, 255, 255, 255],
+        "main_window_header_button_background_inactive": [255, 255, 255, 0],
 
         "account_widget_outline_active": [9, 140, 188, 255],
         "account_widget_outline_inactive": [229, 229, 229, 255],
@@ -340,9 +339,9 @@
     "sizes": {
         "window_minimum_size": [70, 50],
 
-        "topheader": [0.0, 4.5],
-        "topheader_button": [8, 4],
-        "topheader_button_icon": [1.2, 1.2],
+        "main_window_header": [0.0, 4.5],
+        "main_window_header_button": [8, 4],
+        "main_window_header_button_icon": [1.2, 1.2],
 
         "stage_menu": [0.0, 4.5],
 
