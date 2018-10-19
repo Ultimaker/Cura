@@ -691,7 +691,7 @@ class CuraApplication(QtApplication):
         self._quality_manager.initialize()
 
         Logger.log("i", "Initializing machine manager")
-        self._machine_manager = MachineManager(self)
+        self._machine_manager = MachineManager(self, parent = self)
 
         Logger.log("i", "Initializing container manager")
         self._container_manager = ContainerManager(self)
