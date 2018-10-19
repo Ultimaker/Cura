@@ -12,9 +12,10 @@ Row
 {
     id: viewOrientationControl
 
-    spacing: 2 * screenScaleFactor
+    spacing: UM.Theme.getSize("narrow_margin").width
     height: childrenRect.height
     width: childrenRect.width
+
     // #1 3d view
     Button
     {
