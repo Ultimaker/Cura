@@ -70,7 +70,7 @@ class ExtruderStack(CuraContainerStack):
     #   If the machine has no requirement for the diameter, -1 is returned.
     #   \return The filament diameter for the printer
     @property
-    def materialDiameter(self) -> float:
+    def comptabileMaterialDiameter(self) -> float:
         context = PropertyEvaluationContext(self)
         context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
 
@@ -86,7 +86,7 @@ class ExtruderStack(CuraContainerStack):
     #   \return The approximate filament diameter for the printer
     @pyqtProperty(float)
     def approximateMaterialDiameter(self) -> float:
-        return round(float(self.materialDiameter))
+        return round(float(self.comptabileMaterialDiameter))
 
     ##  Overridden from ContainerStack
     #

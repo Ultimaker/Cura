@@ -926,7 +926,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             build_plate_id = global_stack.variant.getId()
 
             # get material diameter of this extruder
-            machine_material_diameter = extruder_stack.materialDiameter
+            machine_material_diameter = extruder_stack.comptabileMaterialDiameter
             material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
                                                              extruder_stack.variant.getName(),
                                                              build_plate_id,
