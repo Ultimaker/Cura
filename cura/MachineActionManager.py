@@ -1,12 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import TYPE_CHECKING, Optional, List, Set
+
 from PyQt5.QtCore import QObject
 
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as plugin type
-from UM.Settings.DefinitionContainer import DefinitionContainer
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
+    from cura.Settings.GlobalStack import GlobalStack
+    from .MachineAction import MachineAction
 
 
 ##  Raised when trying to add an unknown machine action as a required action
@@ -20,9 +26,10 @@ class NotUniqueMachineActionError(Exception):
 
 
 class MachineActionManager(QObject):
-    def __init__(self, application, parent = None):
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None):
+        super().__init__(parent = parent)
         self._application = application
+        self._container_registry = self._application.getContainerRegistry()
 
         self._machine_actions = {}  # Dict of all known machine actions
         self._required_actions = {}  # Dict of all required actions by definition ID
@@ -30,8 +37,6 @@ class MachineActionManager(QObject):
         self._first_start_actions = {}  # Dict of all actions that need to be done when first added by definition ID
 
     def initialize(self):
-        container_registry = self._application.getContainerRegistry()
-
         # Add machine_action as plugin type
         PluginRegistry.addType("machine_action", self.addMachineAction)
 
@@ -59,7 +64,7 @@ class MachineActionManager(QObject):
 
     ##  Add a required action to a machine
     #   Raises an exception when the action is not recognised.
-    def addRequiredAction(self, definition_id, action_key):
+    def addRequiredAction(self, definition_id: str, action_key: str) -> None:
         if action_key in self._machine_actions:
             if definition_id in self._required_actions:
                 if self._machine_actions[action_key] not in self._required_actions[definition_id]:
@@ -70,7 +75,7 @@ class MachineActionManager(QObject):
             raise UnknownMachineActionError("Action %s, which is required for %s is not known." % (action_key, definition_id))
 
     ##  Add a supported action to a machine.
-    def addSupportedAction(self, definition_id, action_key):
+    def addSupportedAction(self, definition_id: str, action_key: str) -> None:
         if action_key in self._machine_actions:
             if definition_id in self._supported_actions:
                 if self._machine_actions[action_key] not in self._supported_actions[definition_id]:
@@ -95,7 +100,7 @@ class MachineActionManager(QObject):
 
     ##  Add a (unique) MachineAction
     #   if the Key of the action is not unique, an exception is raised.
-    def addMachineAction(self, action):
+    def addMachineAction(self, action: "MachineAction") -> None:
         if action.getKey() not in self._machine_actions:
             self._machine_actions[action.getKey()] = action
         else:
@@ -105,7 +110,7 @@ class MachineActionManager(QObject):
     #   \param definition_id The ID of the definition you want the supported actions of
     #   \returns set of supported actions.
     @pyqtSlot(str, result = "QVariantList")
-    def getSupportedActions(self, definition_id):
+    def getSupportedActions(self, definition_id: str) -> List["MachineAction"]:
         if definition_id in self._supported_actions:
             return list(self._supported_actions[definition_id])
         else:
@@ -114,7 +119,7 @@ class MachineActionManager(QObject):
     ##  Get all actions required by given machine
     #   \param definition_id The ID of the definition you want the required actions of
     #   \returns set of required actions.
-    def getRequiredActions(self, definition_id):
+    def getRequiredActions(self, definition_id: str) -> Set["MachineAction"]:
         if definition_id in self._required_actions:
             return self._required_actions[definition_id]
         else:
@@ -126,7 +131,7 @@ class MachineActionManager(QObject):
     #   \param definition_id The ID of the definition that you want to get the "on added" actions for.
     #   \returns List of actions.
     @pyqtSlot(str, result="QVariantList")
-    def getFirstStartActions(self, definition_id):
+    def getFirstStartActions(self, definition_id: str) -> List["MachineAction"]:
         if definition_id in self._first_start_actions:
             return self._first_start_actions[definition_id]
         else:
@@ -134,7 +139,7 @@ class MachineActionManager(QObject):
 
     ##  Remove Machine action from manager
     #   \param action to remove
-    def removeMachineAction(self, action):
+    def removeMachineAction(self, action: "MachineAction") -> None:
         try:
             del self._machine_actions[action.getKey()]
         except KeyError:
@@ -143,7 +148,7 @@ class MachineActionManager(QObject):
     ##  Get MachineAction by key
     #   \param key String of key to select
     #   \return Machine action if found, None otherwise
-    def getMachineAction(self, key):
+    def getMachineAction(self, key: str) -> Optional["MachineAction"]:
         if key in self._machine_actions:
             return self._machine_actions[key]
         else:
