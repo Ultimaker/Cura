@@ -166,6 +166,8 @@ class CuraApplication(QtApplication):
 
         self.default_theme = "cura-light"
 
+        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
+
         self._boot_loading_time = time.time()
 
         self._on_exit_callback_manager = OnExitCallbackManager(self)
@@ -301,8 +303,6 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager(self)
         self._machine_action_manager.initialize()
-
-        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
 
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open)
