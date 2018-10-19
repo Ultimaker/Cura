@@ -13,11 +13,12 @@ Column {
 
     Item {
         id: jobName;
-        height: UM.Theme.getSize("monitor_tab_text_line").height;
+        height: UM.Theme.getSize("monitor_text_line").height;
         width: parent.width;
 
+        // Skeleton loading
         Rectangle {
-            color: UM.Theme.getColor("viewport_background"); // TODO: Use explicit theme color
+            color: UM.Theme.getColor("monitor_skeleton_fill");
             height: parent.height;
             visible: !job;
             width: parent.width / 3;
@@ -25,6 +26,7 @@ Column {
 
         Label {
             anchors.fill: parent;
+            color: UM.Theme.getColor("text");
             elide: Text.ElideRight;
             font: UM.Theme.getFont("default_bold");
             text: job && job.name ? job.name : "";
@@ -34,11 +36,12 @@ Column {
 
     Item {
         id: ownerName;
-        height: UM.Theme.getSize("monitor_tab_text_line").height;
+        height: UM.Theme.getSize("monitor_text_line").height;
         width: parent.width;
 
+        // Skeleton loading
         Rectangle {
-            color: UM.Theme.getColor("viewport_background"); // TODO: Use explicit theme color
+            color: UM.Theme.getColor("monitor_skeleton_fill");
             height: parent.height;
             visible: !job;
             width: parent.width / 2;
@@ -46,6 +49,7 @@ Column {
 
         Label {
             anchors.fill: parent;
+            color: UM.Theme.getColor("text")
             elide: Text.ElideRight;
             font: UM.Theme.getFont("default");
             text: job ? job.owner : "";

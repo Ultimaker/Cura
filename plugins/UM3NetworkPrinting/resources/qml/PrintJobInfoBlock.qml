@@ -12,7 +12,7 @@ import UM 1.3 as UM
 
 Item {
     id: root;
-    property var shadowRadius: 5 * screenScaleFactor;
+    property var shadowRadius: UM.Theme.getSize("monitor_shadow_radius").width;
     property var shadowOffset: 2 * screenScaleFactor;
     property var debug: false;
     property var printJob: null;
@@ -33,7 +33,7 @@ Item {
             rightMargin: root.shadowRadius;
             topMargin: root.shadowRadius - root.shadowOffset;
         }
-        color: "white"; // TODO: Theme!
+        color: UM.Theme.getColor("monitor_card_background");
         height: childrenRect.height;
         layer.enabled: true
         layer.effect: DropShadow {
@@ -66,16 +66,17 @@ Item {
                     Item {
                         id: printJobName;
                         width: parent.width;
-                        height: UM.Theme.getSize("monitor_tab_text_line").height;
+                        height: UM.Theme.getSize("monitor_text_line").height;
 
                         Rectangle {
-                            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill");
                             height: parent.height;
                             visible: !printJob;
                             width: parent.width / 3;
                         }
                         Label {
                             anchors.fill: parent;
+                            color: UM.Theme.getColor("text");
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default_bold");
                             text: printJob && printJob.name ? printJob.name : ""; // Supress QML warnings
@@ -89,17 +90,18 @@ Item {
                             top: printJobName.bottom;
                             topMargin: Math.floor(UM.Theme.getSize("default_margin").height / 2);
                         }
-                        height: UM.Theme.getSize("monitor_tab_text_line").height;
+                        height: UM.Theme.getSize("monitor_text_line").height;
                         width: parent.width;
 
                         Rectangle {
-                            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill");
                             height: parent.height;
                             visible: !printJob;
                             width: parent.width / 2;
                         }
                         Label {
                             anchors.fill: parent;
+                            color: UM.Theme.getColor("text");
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default");
                             text: printJob ? printJob.owner : ""; // Supress QML warnings
@@ -121,8 +123,8 @@ Item {
                         // Skeleton
                         Rectangle {
                             anchors.fill: parent;
-                            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
-                            radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill");
+                            radius: UM.Theme.getSize("default_margin").width;
                             visible: !printJob;
                         }
 
@@ -139,7 +141,7 @@ Item {
                             id: ultiBotImage;
                             
                             anchors.centerIn: printJobPreview;
-                            color: UM.Theme.getColor("monitor_tab_placeholder_image"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_placeholder_image");
                             height: printJobPreview.height;
                             source: "../svg/ultibot.svg";
                             sourceSize {
@@ -155,7 +157,7 @@ Item {
                         UM.RecolorImage {
                             id: statusImage;
                             anchors.centerIn: printJobPreview;
-                            color: "black";
+                            color: UM.Theme.getColor("monitor_image_overlay");
                             height: 0.5 * printJobPreview.height;
                             source: printJob && printJob.state == "error" ? "../svg/aborted-icon.svg" : "";
                             sourceSize {
@@ -174,7 +176,7 @@ Item {
                         horizontalCenter: parent.horizontalCenter;
                         verticalCenter: parent.verticalCenter;
                     }
-                    color: !printJob ? UM.Theme.getColor("viewport_background") : "#e6e6e6"; // TODO: Theme!
+                    color: !printJob ? UM.Theme.getColor("monitor_skeleton_fill") : UM.Theme.getColor("monitor_lining_light");
                     height: parent.height - 2 * UM.Theme.getSize("default_margin").height;
                     width: UM.Theme.getSize("default_lining").width;
                 }
@@ -191,16 +193,17 @@ Item {
 
                     Item {
                         id: targetPrinterLabel;
-                        height: UM.Theme.getSize("monitor_tab_text_line").height;
+                        height: UM.Theme.getSize("monitor_text_line").height;
                         width: parent.width;
 
                         Rectangle {
                             visible: !printJob;
-                            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill");
                             anchors.fill: parent;
                         }
 
                         Label {
+                            color: UM.Theme.getColor("text");
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default_bold");
                             text: {
@@ -265,7 +268,7 @@ Item {
                     }
 
                     Rectangle {
-                        color: "#e6e6e6"; // TODO: Theme!
+                        color: !printJob ? UM.Theme.getColor("monitor_skeleton_fill") : UM.Theme.getColor("monitor_lining_light");
                         height: UM.Theme.getSize("default_lining").height;
                         width: parent.width;
                     }
@@ -292,6 +295,7 @@ Item {
                             horizontalCenter: parent.horizontalCenter;
                             verticalCenter: parent.verticalCenter;
                         }
+                        color: UM.Theme.getColor("text");
                         text: catalog.i18nc("@label", "Configuration change");
                     }
 
@@ -333,7 +337,7 @@ Item {
                     anchors.top: configChangeToggle.bottom;
                     Behavior on height { NumberAnimation { duration: 100 } }
                     // In case of really massive multi-line configuration changes
-                    height: visible ? Math.max(UM.Theme.getSize("monitor_tab_config_override_box").height, childrenRect.height) : 0;
+                    height: visible ? Math.max(UM.Theme.getSize("monitor_config_override_box").height, childrenRect.height) : 0;
                     visible: false;
                     width: parent.width;
 
@@ -350,6 +354,7 @@ Item {
                         Label {
                             anchors.fill: parent;
                             elide: Text.ElideRight;
+                            color: UM.Theme.getColor("text");
                             font: UM.Theme.getFont("large_nonbold");
                             text: {
                                 if (!printJob || printJob.configurationChanges.length === 0) {

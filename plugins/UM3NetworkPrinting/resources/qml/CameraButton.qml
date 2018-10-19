@@ -9,7 +9,7 @@ import Cura 1.0 as Cura
 
 Rectangle {
     property var iconSource: null;
-    color: clickArea.containsMouse ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary");
+    color: clickArea.containsMouse ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary");  // "Cura Blue"
     height: width;
     radius: 0.5 * width;
     width: 36 * screenScaleFactor;

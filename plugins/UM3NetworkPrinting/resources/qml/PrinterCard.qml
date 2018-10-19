@@ -27,10 +27,13 @@ Item {
             topMargin: root.shadowRadius - root.shadowOffset;
         }
         color: {
+            if (!printer) {
+                return UM.Theme.getColor("monitor_card_background_inactive");
+            }
             if (printer.state == "disabled") {
-                return UM.Theme.getColor("monitor_tab_background_inactive");
+                return UM.Theme.getColor("monitor_card_background_inactive");
             } else {
-                return UM.Theme.getColor("monitor_tab_background_active");
+                return UM.Theme.getColor("monitor_card_background");
             }
         }
         height: childrenRect.height;
@@ -68,7 +71,7 @@ Item {
                     // Skeleton
                     Rectangle {
                         anchors.fill: parent;
-                        color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                        color: UM.Theme.getColor("monitor_skeleton_fill"); // TODO: Theme!
                         radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
                         visible: !printer;
                     }
@@ -77,16 +80,10 @@ Item {
                     UM.RecolorImage {
                         anchors.centerIn: parent;
                         color: {
-                            if (!printer) {
-                                return "black";
+                            if (printer && printer.activePrintJob != undefined) {
+                                return UM.Theme.getColor("monitor_printer_icon");
                             }
-                            if (printer.state == "disabled") {
-                                return UM.Theme.getColor("monitor_tab_text_inactive");
-                            }
-                            if (printer.activePrintJob != undefined) {
-                                return UM.Theme.getColor("primary");
-                            }
-                            return UM.Theme.getColor("monitor_tab_text_inactive");
+                            return UM.Theme.getColor("monitor_printer_icon_inactive");
                         }
                         height: sourceSize.height;
                         source: {
@@ -119,19 +116,20 @@ Item {
                     // Machine name
                     Item {
                         id: machineNameLabel;
-                        height: UM.Theme.getSize("monitor_tab_text_line").height;
+                        height: UM.Theme.getSize("monitor_text_line").height;
                         width: parent.width * 0.3;
 
                         // Skeleton
                         Rectangle {
                             anchors.fill: parent;
-                            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill"); // TODO: Theme!
                             visible: !printer;
                         }
 
                         // Actual content
                         Label {
                             anchors.fill: parent;
+                            color: UM.Theme.getColor("text");
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default_bold");
                             text: printer.name;
@@ -147,20 +145,20 @@ Item {
                             top: machineNameLabel.bottom;
                             topMargin: Math.round(UM.Theme.getSize("default_margin").height / 2);
                         }
-                        height: UM.Theme.getSize("monitor_tab_text_line").height;
+                        height: UM.Theme.getSize("monitor_text_line").height;
                         width: parent.width * 0.75;
 
                         // Skeleton
                         Rectangle {
                             anchors.fill: parent;
-                            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill"); // TODO: Theme!
                             visible: !printer;
                         }
 
                         // Actual content
                         Label {
                             anchors.fill: parent;
-                            color: UM.Theme.getColor("monitor_tab_text_inactive");
+                            color: UM.Theme.getColor("monitor_text_inactive");
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default");
                             text: {

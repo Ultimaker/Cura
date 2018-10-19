@@ -115,7 +115,7 @@ Item {
             id: configChangeDetails
             Behavior on height { NumberAnimation { duration: 100 } }
             color: "transparent";
-            height: visible ? UM.Theme.getSize("monitor_tab_config_override_box").height : 0;
+            height: visible ? UM.Theme.getSize("monitor_config_override_box").height : 0;
             visible: false;
             width: parent.width;
 

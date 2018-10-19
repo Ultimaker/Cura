@@ -16,15 +16,15 @@ Item {
     Button {
         id: button;
         background: Rectangle {
-            color: UM.Theme.getColor("viewport_background");
+            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
             height: button.height;
             opacity: button.down || button.hovered ? 1 : 0;
             radius: 0.5 * width;
             width: button.width;
         }
         contentItem: Label {
-            color: UM.Theme.getColor("monitor_tab_text_inactive");
-            font.pixelSize: 25;
+            color: UM.Theme.getColor("monitor_context_menu_dots");
+            font.pixelSize: 25 * screenScaleFactor;
             horizontalAlignment: Text.AlignHCenter;
             text: button.text;
             verticalAlignment: Text.AlignVCenter;
@@ -33,7 +33,7 @@ Item {
         hoverEnabled: true;
         onClicked: parent.switchPopupState();
         text: "\u22EE"; //Unicode; Three stacked points.
-        width: 35;
+        width: 35 * screenScaleFactor; // TODO: Theme!
     }
 
     Popup {
@@ -45,10 +45,10 @@ Item {
             DropShadow {
                 anchors.fill: pointedRectangle;
                 color: "#3F000000"; // 25% shadow
-                radius: 5;
+                radius: UM.Theme.getSize("monitor_shadow_radius").width;
                 source: pointedRectangle;
                 transparentBorder: true;
-                verticalOffset: 2;
+                verticalOffset: 2 * screenScaleFactor;
             }
 
             Item {
@@ -64,15 +64,15 @@ Item {
                     id: point;
                     anchors {
                         right: bloop.right;
-                        rightMargin: 24;
+                        rightMargin: 24 * screenScaleFactor;
                     }
-                    color: UM.Theme.getColor("setting_control");
+                    color: UM.Theme.getColor("monitor_context_menu_background");
                     height: 14 * screenScaleFactor;
                     transform: Rotation {
                         angle: 45;
                     }
                     width: 14 * screenScaleFactor;
-                    y: 1;
+                    y: 1 * screenScaleFactor;
                 }
 
                 Rectangle {
@@ -83,7 +83,7 @@ Item {
                         top: parent.top;
                         topMargin: 8 * screenScaleFactor; // Because of the shadow + point
                     }
-                    color: UM.Theme.getColor("setting_control");
+                    color: UM.Theme.getColor("monitor_context_menu_background");
                     width: parent.width;
                 }
             }
@@ -162,7 +162,7 @@ Item {
         height: contentItem.height + 2 * padding;
         onClosed: visible = false;
         onOpened: visible = true;
-        padding: 5 * screenScaleFactor; // Because shadow
+        padding: UM.Theme.getSize("monitor_shadow_radius").width;
         transformOrigin: Popup.Top;
         visible: false;
         width: 182 * screenScaleFactor;

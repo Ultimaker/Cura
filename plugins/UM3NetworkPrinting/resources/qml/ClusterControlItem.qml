@@ -10,11 +10,10 @@ import Cura 1.0 as Cura
 Component {
     Rectangle {
         id: base;
-        property var lineColor: "#DCDCDC"; // TODO: Should be linked to theme.
-        property var shadowRadius: 5 * screenScaleFactor;
-        property var cornerRadius: 4 * screenScaleFactor; // TODO: Should be linked to theme.
+        property var shadowRadius: UM.Theme.getSize("monitor_shadow_radius").width;
+        property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width;
         anchors.fill: parent;
-        color: "white";
+        color: UM.Theme.getColor("sidebar");
         visible: OutputDevice != null;
 
         UM.I18nCatalog {
@@ -31,6 +30,7 @@ Component {
                 right: parent.right;
                 top: parent.top;
             }
+            color: UM.Theme.getColor("text");
             elide: Text.ElideRight;
             font: UM.Theme.getFont("large");
             text: catalog.i18nc("@label", "Printing");
@@ -43,9 +43,9 @@ Component {
                 right: printerScrollView.right;
                 rightMargin: 4 * UM.Theme.getSize("default_margin").width;
             }
-            color: UM.Theme.getColor("primary");
+            color: UM.Theme.getColor("primary"); // "Cura Blue"
             font: UM.Theme.getFont("default");
-            linkColor: UM.Theme.getColor("primary");
+            linkColor: UM.Theme.getColor("primary"); // "Cura Blue"
             text: catalog.i18nc("@label link to connect manager", "Manage printers");
         }
 

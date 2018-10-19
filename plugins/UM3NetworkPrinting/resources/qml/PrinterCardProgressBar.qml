@@ -57,7 +57,7 @@ ProgressBar {
             }
         }
         background: Rectangle {
-            color: UM.Theme.getColor("viewport_background");
+            color: UM.Theme.getColor("monitor_progress_background");
             implicitHeight: visible ? 24 : 0;
             implicitWidth: 100;
         }
@@ -75,9 +75,9 @@ ProgressBar {
                     "wait_cleanup"
                 ];
                 if (inactiveStates.indexOf(state) > -1 && remainingTime > 0) {
-                    return UM.Theme.getColor("monitor_tab_text_inactive");
+                    return UM.Theme.getColor("monitor_progress_fill_inactive");
                 } else {
-                    return UM.Theme.getColor("primary");
+                    return UM.Theme.getColor("monitor_progress_fill");
                 }
             }
 
@@ -89,7 +89,7 @@ ProgressBar {
                 }
                 text: progressText;
                 anchors.verticalCenter: parent.verticalCenter;
-                color: progressItem.width + progressLabel.width < control.width ? "black" : "white";
+                color: progressItem.width + progressLabel.width < control.width ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_progress_fill_text");
                 width: contentWidth;
                 font: UM.Theme.getFont("default");
             }

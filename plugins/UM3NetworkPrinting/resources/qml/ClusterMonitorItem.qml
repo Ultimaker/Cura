@@ -11,8 +11,7 @@ Component {
     Rectangle {
         id: monitorFrame;
         property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight");
-        property var lineColor: "#DCDCDC"; // TODO: Should be linked to theme.
-        property var cornerRadius: 4 * screenScaleFactor; // TODO: Should be linked to theme.
+        property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width;
         color: UM.Theme.getColor("viewport_background");
         height: maximumHeight;
         onVisibleChanged: {

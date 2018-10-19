@@ -20,8 +20,8 @@ Item {
     // Skeleton
     Rectangle {
         anchors.fill: parent;
-        color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
-        radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
+        color: UM.Theme.getColor("monitor_skeleton_fill");
+        radius: UM.Theme.getSize("default_margin").width;
         visible: !job;
     }
 
@@ -46,7 +46,7 @@ Item {
     UM.RecolorImage {
         id: ultibotImage;
         anchors.centerIn: parent;
-        color: UM.Theme.getColor("monitor_tab_placeholder_image"); // TODO: Theme!
+        color: UM.Theme.getColor("monitor_placeholder_image"); // TODO: Theme!
         height: parent.height;
         source: "../svg/ultibot.svg";
         sourceSize {

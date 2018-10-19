@@ -9,9 +9,10 @@ import UM 1.3 as UM
 Button {
     background: Rectangle {
         opacity: parent.down || parent.hovered ? 1 : 0;
-        color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+        color: UM.Theme.getColor("monitor_context_menu_highlight");
     }
     contentItem: Label {
+        color: UM.Theme.getColor("text");
         text: parent.text
         horizontalAlignment: Text.AlignLeft;
         verticalAlignment: Text.AlignVCenter;

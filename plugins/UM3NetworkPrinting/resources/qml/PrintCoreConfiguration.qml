@@ -15,13 +15,13 @@ Item {
     // Extruder circle
     Item {
         id: extruderCircle;
-        height: UM.Theme.getSize("monitor_tab_extruder_circle").height;
-        width: UM.Theme.getSize("monitor_tab_extruder_circle").width;
+        height: UM.Theme.getSize("monitor_extruder_circle").height;
+        width: UM.Theme.getSize("monitor_extruder_circle").width;
 
         // Loading skeleton
         Rectangle {
             anchors.fill: parent;
-            color: UM.Theme.getColor("viewport_background");
+            color: UM.Theme.getColor("monitor_skeleton_fill");
             radius: Math.round(width / 2);
             visible: !printCoreConfiguration;
         }
@@ -29,8 +29,9 @@ Item {
         // Actual content
         Rectangle {
             anchors.fill: parent;
-            border.width: UM.Theme.getSize("monitor_tab_thick_lining").width;
-            border.color: UM.Theme.getColor("monitor_tab_lining_active");
+            border.width: UM.Theme.getSize("monitor_thick_lining").width;
+            border.color: UM.Theme.getColor("monitor_lining_heavy");
+            color: "transparent";
             opacity: {
                 if (printCoreConfiguration == null || printCoreConfiguration.activeMaterial == null || printCoreConfiguration.hotendID == null) {
                     return 0.5;
@@ -42,6 +43,7 @@ Item {
 
             Label {
                 anchors.centerIn: parent;
+                color: UM.Theme.getColor("text");
                 font: UM.Theme.getFont("default_bold");
                 text: printCoreConfiguration ? printCoreConfiguration.position + 1 : 0;
             }
@@ -57,12 +59,12 @@ Item {
             right: parent.right;
             top: parent.top;
         }
-        height: UM.Theme.getSize("monitor_tab_text_line").height;
+        height: UM.Theme.getSize("monitor_text_line").height;
 
         // Loading skeleton
         Rectangle {
             anchors.fill: parent;
-            color: UM.Theme.getColor("viewport_background");
+            color: UM.Theme.getColor("monitor_skeleton_fill");
             visible: !extruderInfo.printCoreConfiguration;
         }
 
@@ -70,6 +72,7 @@ Item {
         Label {
             anchors.fill: parent;
             elide: Text.ElideRight;
+            color: UM.Theme.getColor("text");
             font: UM.Theme.getFont("default");
             text: {
                 if (printCoreConfiguration && printCoreConfiguration.activeMaterial != undefined) {
@@ -84,16 +87,17 @@ Item {
     Item {
         id: printCoreLabel;
         anchors {
-            bottom: parent.bottom;
             left: extruderCircle.right;
             leftMargin: UM.Theme.getSize("default_margin").width;
             right: parent.right;
+            top: materialLabel.bottom;
+            topMargin: Math.floor(UM.Theme.getSize("default_margin").height/4);
         }
-        height: UM.Theme.getSize("monitor_tab_text_line").height;
+        height: UM.Theme.getSize("monitor_text_line").height;
 
         // Loading skeleton
         Rectangle {
-            color: UM.Theme.getColor("viewport_background");
+            color: UM.Theme.getColor("monitor_skeleton_fill");
             height: parent.height;
             visible: !extruderInfo.printCoreConfiguration;
             width: parent.width / 3;
@@ -101,6 +105,7 @@ Item {
 
         // Actual content
         Label {
+            color: UM.Theme.getColor("text");
             elide: Text.ElideRight;
             font: UM.Theme.getFont("default");
             opacity: 0.6;
