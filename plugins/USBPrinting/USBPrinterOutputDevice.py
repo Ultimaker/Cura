@@ -267,19 +267,27 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if b"FIRMWARE_NAME:" in line:
                 self._setFirmwareName(line)
 
-            if line.startswith(b"ok "):
+            if line == b"":
+                # An empty line means that the firmware is idle
+                # Multiple empty lines probably means that the firmware and Cura are waiting
+                # for eachother due to a missed "ok", so we keep track of empty lines
+                self._firmware_idle_count += 1
+            else:
+                self._firmware_idle_count = 0
+
+            if line.startswith(b"ok") or self._firmware_idle_count > 1:
                 self._printer_busy = False
 
                 self._command_received.set()
                 if not self._command_queue.empty():
                     self._sendCommand(self._command_queue.get())
-                if self._is_printing:
+                elif self._is_printing:
                     if self._paused:
                         pass  # Nothing to do!
                     else:
                         self._sendNextGcodeLine()
 
-            if line.startswith(b"echo:busy: "):
+            if line.startswith(b"echo:busy:"):
                 self._printer_busy = True
 
             if self._is_printing:
