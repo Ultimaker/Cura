@@ -10,8 +10,8 @@ import UM 1.3 as UM
 
 Item {
     id: root;
-    property var shadowRadius: 5;
-    property var shadowOffset: 2;
+    property var shadowRadius: UM.Theme.getSize("monitor_shadow_radius").width;
+    property var shadowOffset: UM.Theme.getSize("monitor_shadow_offset").width;
     property var printer: null;
     property var collapsed: true;
     height: childrenRect.height + shadowRadius * 2; // Bubbles upward
@@ -52,21 +52,18 @@ Item {
             // Main card
             Item {
                 id: mainCard;
-                // I don't know why the extra height is needed but it is in order to look proportional.
-                height: childrenRect.height + 2;
+                height: 60 * screenScaleFactor + 2 * UM.Theme.getSize("default_margin").width;
                 width: parent.width;
 
                 // Machine icon
                 Item {
                     id: machineIcon;
                     anchors {
-                        left: parent.left;
                         leftMargin: UM.Theme.getSize("wide_margin").width;
                         margins: UM.Theme.getSize("default_margin").width;
-                        top: parent.top;
                     }
-                    height: 58 * screenScaleFactor;
-                    width: 58 * screenScaleFactor;
+                    height: parent.height;
+                    width: height;
 
                     // Skeleton
                     Rectangle {
@@ -87,6 +84,9 @@ Item {
                         }
                         height: sourceSize.height;
                         source: {
+                            if (!printer) {
+                                return "";
+                            }
                             switch(printer.type) {
                                 case "Ultimaker 3":
                                     return "../svg/UM3-icon.svg";
@@ -104,20 +104,18 @@ Item {
                 // Printer info
                 Item {
                     id: printerInfo;
-                    height: childrenRect.height
                     anchors {
                         left: machineIcon.right;
-                        leftMargin: UM.Theme.getSize("default_margin").width;
                         right: collapseIcon.left;
-                        rightMargin: UM.Theme.getSize("default_margin").width;
                         verticalCenter: machineIcon.verticalCenter;
                     }
+                    height: childrenRect.height;
 
                     // Machine name
                     Item {
                         id: machineNameLabel;
                         height: UM.Theme.getSize("monitor_text_line").height;
-                        width: parent.width * 0.3;
+                        width: Math.round(parent.width * 0.3);
 
                         // Skeleton
                         Rectangle {
@@ -132,7 +130,7 @@ Item {
                             color: UM.Theme.getColor("text");
                             elide: Text.ElideRight;
                             font: UM.Theme.getFont("default_bold");
-                            text: printer.name;
+                            text: printer ? printer.name : "";
                             visible: printer;
                             width: parent.width;
                         }
@@ -146,7 +144,7 @@ Item {
                             topMargin: Math.round(UM.Theme.getSize("default_margin").height / 2);
                         }
                         height: UM.Theme.getSize("monitor_text_line").height;
-                        width: parent.width * 0.75;
+                        width: Math.round(parent.width * 0.75);
 
                         // Skeleton
                         Rectangle {
@@ -214,9 +212,6 @@ Item {
                 Connections {
                     target: printerList;
                     onCurrentIndexChanged: {
-                        if (!model) {
-                            return;
-                        }
                         root.collapsed = printerList.currentIndex != model.index;
                     }
                 }

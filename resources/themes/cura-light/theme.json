@@ -340,6 +340,7 @@
         "monitor_progress_fill_inactive": [154, 154, 154, 255],
         "monitor_progress_fill_text": [255,255,255,255],
         "monitor_progress_fill": [12, 169, 227, 255],
+        "monitor_shadow": [0, 0, 0, 63],
         "monitor_skeleton_fill": [245, 245, 245, 255],
         "monitor_text_inactive": [154, 154, 154, 255]
     },
@@ -496,6 +497,7 @@
         "monitor_text_line": [1.16, 1.16],
         "monitor_thick_lining": [0.16, 0.16],
         "monitor_corner_radius": [0.3, 0.3],
-        "monitor_shadow_radius": [0.4, 0.4]
+        "monitor_shadow_radius": [0.4, 0.4],
+        "monitor_shadow_offset": [0.15, 0.15]
     }
 }

@@ -57,8 +57,8 @@ Item {
                     right: parent.right;
                     rightMargin: UM.Theme.getSize("wide_margin").width;
                 }
-                printJob: root.printer.activePrintJob;
-                visible: root.printer.activePrintJob;
+                printJob: root.printer ? root.printer.activePrintJob : null;
+                visible: printJob;
             }
         }
         

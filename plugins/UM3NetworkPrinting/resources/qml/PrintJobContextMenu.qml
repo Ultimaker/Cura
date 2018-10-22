@@ -39,12 +39,11 @@ Item {
     Popup {
         id: popup;
         background: Item {
-            height: popup.height;
-            width: popup.width;
+            anchors.fill: parent;
 
             DropShadow {
                 anchors.fill: pointedRectangle;
-                color: "#3F000000"; // 25% shadow
+                color: UM.Theme.getColor("monitor_shadow");
                 radius: UM.Theme.getSize("monitor_shadow_radius").width;
                 source: pointedRectangle;
                 transparentBorder: true;
@@ -96,7 +95,8 @@ Item {
                 top: parent.top;
                 topMargin: UM.Theme.getSize("default_margin").height + 10 * screenScaleFactor; // Account for the point of the box
             }
-            height: childrenRect.height + spacing * popupOptions.children.length + UM.Theme.getSize("default_margin").height;
+            // height: childrenRect.height + spacing * popupOptions.children.length + UM.Theme.getSize("default_margin").height;
+            height: 200;
             spacing: Math.floor(UM.Theme.getSize("default_margin").height / 2);
             width: parent.width;
 
