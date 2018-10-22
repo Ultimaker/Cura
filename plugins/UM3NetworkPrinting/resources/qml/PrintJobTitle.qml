@@ -21,7 +21,7 @@ Column {
             color: UM.Theme.getColor("monitor_skeleton_fill");
             height: parent.height;
             visible: !job;
-            width: parent.width / 3;
+            width: Math.round(parent.width / 3);
         }
 
         Label {
@@ -44,7 +44,7 @@ Column {
             color: UM.Theme.getColor("monitor_skeleton_fill");
             height: parent.height;
             visible: !job;
-            width: parent.width / 2;
+            width: Math.round(parent.width / 2);
         }
 
         Label {

@@ -100,7 +100,7 @@ Item {
             color: UM.Theme.getColor("monitor_skeleton_fill");
             height: parent.height;
             visible: !extruderInfo.printCoreConfiguration;
-            width: parent.width / 3;
+            width: Math.round(parent.width / 3);
         }
 
         // Actual content

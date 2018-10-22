@@ -23,7 +23,7 @@ Rectangle {
         color: UM.Theme.getColor("primary_text");
         height: width;
         source: iconSource;
-        width: parent.width / 2;
+        width: Math.round(parent.width / 2);
     }
 
     MouseArea {
