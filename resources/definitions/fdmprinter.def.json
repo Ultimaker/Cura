@@ -4619,7 +4619,7 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'brim' and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "adhesion_extruder_nr"
+                    "limit_to_extruder": "support_infill_extruder_nr"
                 },
                 "brim_outside_only":
                 {
