@@ -20,8 +20,8 @@ Item
     Image
     {
         id: profileImage
-        source: UM.Theme.getImage("avatar_default")
         anchors.fill: parent
+        source: UM.Theme.getImage("avatar_default")
         fillMode: Image.PreserveAspectCrop
         visible: false
     }

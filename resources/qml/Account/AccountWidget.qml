@@ -25,7 +25,7 @@ Button
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
 
-        source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_default")
+        source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_no_user")
         outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("account_widget_outline_inactive")
     }
 
