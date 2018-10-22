@@ -621,6 +621,17 @@ Cura.MachineAction
                         {
                             if (propertyProvider && text != propertyProvider.properties.value)
                             {
+                                // For some properties like the extruder-compatible material diameter, they need to
+                                // trigger many updates, such as the available materials, the current material may
+                                // need to be switched, etc. Although setting the diameter can be done directly via
+                                // the provider, all the updates that need to be triggered then need to depend on
+                                // the metadata update, a signal that can be fired way too often. The update functions
+                                // can have if-checks to filter out the irrelevant updates, but still it incurs unnecessary
+                                // overhead.
+                                // The ExtruderStack class has a dedicated function for this call "setCompatibleMaterialDiameter()",
+                                // and it triggers the diameter update signals only when it is needed. Here it is optionally
+                                // choose to use setCompatibleMaterialDiameter() or other more specific functions that
+                                // are available.
                                 if (_setValueFunction !== undefined)
                                 {
                                     _setValueFunction(text);
