@@ -70,33 +70,20 @@ Rectangle
     }
 
     // Shortcut button to quick access the Toolbox
-    Button
+    Cura.ActionButton
     {
-        id: toolboxShortcutButton
         anchors
         {
             right: accountWidget.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
-        style: ButtonStyle
-        {
-            background: Rectangle
-            {
-                color: control.hovered ? UM.Theme.getColor("secondary") : UM.Theme.getColor("main_window_header_button_background_active")
-                radius: 2 * screenScaleFactor
-            }
-
-            label: Label
-            {
-                text: catalog.i18nc("@action:button", "Toolbox")
-                color: UM.Theme.getColor("main_window_header_button_text_active")
-                font: UM.Theme.getFont("action_button")
-                renderType: Text.NativeRendering
-            }
-
-        }
-        action: Cura.Actions.browsePackages
+        text: catalog.i18nc("@action:button", "Toolbox")
+        color: UM.Theme.getColor("main_window_header_button_background_active")
+        hoverColor: UM.Theme.getColor("secondary")
+        textColor: UM.Theme.getColor("main_window_header_button_text_active")
+        textHoverColor: UM.Theme.getColor("main_window_header_button_text_active")
+        onClicked: Cura.Actions.browsePackages.trigger()
     }
 
     AccountWidget
