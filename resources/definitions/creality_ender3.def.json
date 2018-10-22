@@ -64,7 +64,7 @@
         },
         "layer_height_0": {
             "default_value": 0.2
-        },        
+        },
         "adhesion_type": {
             "default_value": "skirt"
         },
