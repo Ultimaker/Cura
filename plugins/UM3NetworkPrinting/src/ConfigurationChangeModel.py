@@ -15,8 +15,6 @@ class ConfigurationChangeModel(QObject):
     @pyqtProperty(int, constant = True)
     def index(self) -> int:
         return self._index
-    # "target_id": fields.String(required=True, description="Target material guid or hotend id"),
-    # "origin_id": fields.String(required=True, description="Original/current material guid or hotend id"),
 
     @pyqtProperty(str, constant = True)
     def typeOfChange(self) -> str:
