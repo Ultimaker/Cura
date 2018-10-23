@@ -63,13 +63,13 @@ Item {
         id: statusImage;
         anchors.centerIn: parent;
         color: "black"; // TODO: Theme!
-        height: 0.5 * parent.height;
+        height: Math.round(0.5 * parent.height);
         source: job && job.state == "error" ? "../svg/aborted-icon.svg" : "";
         sourceSize {
             height: height;
             width: width;
         }
         visible: source != "";
-        width: 0.5 * parent.width;
+        width: Math.round(0.5 * parent.width);
     }
 }

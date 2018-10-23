@@ -51,7 +51,7 @@ Component {
             id: queuedLabel;
             anchors {
                 left: queuedPrintJobs.left;
-                leftMargin: 3 * UM.Theme.getSize("default_margin").width + 5;
+                leftMargin: 3 * UM.Theme.getSize("default_margin").width + 5 * screenScaleFactor;
                 top: parent.top;
                 topMargin: 2 * UM.Theme.getSize("default_margin").height;
             }
@@ -119,7 +119,7 @@ Component {
                     printJob: modelData;
                 }
                 model: OutputDevice.queuedPrintJobs;
-                spacing: UM.Theme.getSize("default_margin").height - 10; // 2x the shadow radius
+                spacing: UM.Theme.getSize("default_margin").height - 2 * UM.Theme.getSize("monitor_shadow_radius").width;
             }
         }
 

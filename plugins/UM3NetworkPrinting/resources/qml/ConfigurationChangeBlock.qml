@@ -39,16 +39,16 @@ Item {
             }
             color: {
                 if(configurationChangeToggle.containsMouse) {
-                    return UM.Theme.getColor("viewport_background"); // TODO: Theme!
+                    return UM.Theme.getColor("viewport_background");
                 } else {
                     return "transparent";
                 }
             }
-            height: UM.Theme.getSize("default_margin").height * 4; // TODO: Theme!
+            height: UM.Theme.getSize("default_margin").height * 4;
             width: parent.width;
 
             Rectangle {
-                color: "#e6e6e6"; // TODO: Theme!
+                color: UM.Theme.getColor("monitor_lining_light");
                 height: UM.Theme.getSize("default_lining").height;
                 width: parent.width;
             }
