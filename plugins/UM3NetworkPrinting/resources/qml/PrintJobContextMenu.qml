@@ -95,8 +95,7 @@ Item {
                 top: parent.top;
                 topMargin: UM.Theme.getSize("default_margin").height + 10 * screenScaleFactor; // Account for the point of the box
             }
-            // height: childrenRect.height + spacing * popupOptions.children.length + UM.Theme.getSize("default_margin").height;
-            height: 200;
+            height: childrenRect.height + spacing * popupOptions.children.length + UM.Theme.getSize("default_margin").height;
             spacing: Math.floor(UM.Theme.getSize("default_margin").height / 2);
             width: parent.width;
 
