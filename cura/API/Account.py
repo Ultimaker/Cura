@@ -45,7 +45,7 @@ class Account(QObject):
             CALLBACK_PORT=self._callback_port,
             CALLBACK_URL="http://localhost:{}/callback".format(self._callback_port),
             CLIENT_ID="um---------------ultimaker_cura_drive_plugin",
-            CLIENT_SCOPES="user.read drive.backups.read drive.backups.write",
+            CLIENT_SCOPES="account.user.read drive.backup.read drive.backup.write packages.download packages.rating.read packages.rating.write",
             AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
