@@ -1,8 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from unittest import mock
-
 import pytest
 
 from cura.MachineAction import MachineAction
@@ -13,10 +11,11 @@ from cura.Settings.GlobalStack import GlobalStack
 @pytest.fixture()
 def global_stack():
     gs = GlobalStack("test_global_stack")
-    gs._metadata = {"supported_actions": ["supported_action_1", "supported_action_2"],
-                    "required_actions": ["required_action_1", "required_action_2"],
-                    "first_start_actions": ["first_start_actions_1", "first_start_actions_2"]
-                    }
+    gs._metadata = {
+        "supported_actions": ["supported_action_1", "supported_action_2"],
+        "required_actions": ["required_action_1", "required_action_2"],
+        "first_start_actions": ["first_start_actions_1", "first_start_actions_2"]
+    }
     return gs
 
 
@@ -29,6 +28,8 @@ class Machine:
 
 
 def test_addDefaultMachineActions(machine_action_manager, global_stack):
+    # The actions need to be registered first as "available actions" in the manager,
+    # same as the "machine_action" type does when registering a plugin.
     all_actions = []
     for action_key_list in global_stack._metadata.values():
         for key in action_key_list:
@@ -36,6 +37,8 @@ def test_addDefaultMachineActions(machine_action_manager, global_stack):
     for action in all_actions:
         machine_action_manager.addMachineAction(action)
 
+    # Only the actions in the definition that were registered first will be added to the machine.
+    # For the sake of this test, all the actions were previouly added.
     machine_action_manager.addDefaultMachineActions(global_stack)
     definition_id = global_stack.getDefinition().getId()
 
