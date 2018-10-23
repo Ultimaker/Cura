@@ -13,7 +13,6 @@ from cura.CuraApplication import CuraApplication
 from cura.MachineActionManager import MachineActionManager
 
 
-
 # Create a CuraApplication object that will be shared among all tests. It needs to be initialized.
 # Since we need to use it more that once, we create the application the first time and use its instance afterwards.
 @pytest.fixture()
