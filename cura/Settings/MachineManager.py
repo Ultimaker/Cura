@@ -1276,7 +1276,7 @@ class MachineManager(QObject):
             if extruder.variant.getId() != self._empty_variant_container.getId():
                 current_nozzle_name = extruder.variant.getMetaDataEntry("name")
 
-            material_diameter = extruder.getComptabileMaterialDiameter()
+            material_diameter = extruder.getCompatibleMaterialDiameter()
             candidate_materials = self._material_manager.getAvailableMaterials(
                 self._global_container_stack.definition,
                 current_nozzle_name,

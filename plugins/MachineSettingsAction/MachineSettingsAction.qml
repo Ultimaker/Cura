@@ -410,7 +410,7 @@ Cura.MachineAction
                             }
                             function setValueFunction(value)
                             {
-                                Cura.MachineManager.activeStack.compatibleMaterialDiameter = value;
+                                Cura.MachineManager.activeStack.compatibleMaterialDiameter = value
                             }
                             property bool isExtruderSetting: true
                         }
@@ -634,19 +634,19 @@ Cura.MachineAction
                                 // are available.
                                 if (_setValueFunction !== undefined)
                                 {
-                                    _setValueFunction(text);
+                                    _setValueFunction(text)
                                 }
                                 else
                                 {
-                                    propertyProvider.setPropertyValue("value", text);
+                                    propertyProvider.setPropertyValue("value", text)
                                 }
                                 if(_forceUpdateOnChange)
                                 {
-                                    manager.forceUpdate();
+                                    manager.forceUpdate()
                                 }
                                 if(_afterOnEditingFinished)
                                 {
-                                    _afterOnEditingFinished();
+                                    _afterOnEditingFinished()
                                 }
                             }
                         }
