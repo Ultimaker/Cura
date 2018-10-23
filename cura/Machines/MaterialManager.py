@@ -490,7 +490,7 @@ class MaterialManager(QObject):
 
         if extruder_stack_or_definition and parseBool(global_stack.getMetaDataEntry("has_materials", False)):
             if is_extruder_stack:
-                material_diameter = extruder_stack_or_definition.getComptabileMaterialDiameter()
+                material_diameter = extruder_stack_or_definition.getCompatibleMaterialDiameter()
             else:
                 material_diameter = extruder_stack_or_definition.getProperty("material_diameter", "value")
 
