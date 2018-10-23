@@ -19,7 +19,7 @@ Item {
             color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
             height: button.height;
             opacity: button.down || button.hovered ? 1 : 0;
-            radius: 0.5 * width;
+            radius: Math.round(0.5 * width);
             width: button.width;
         }
         contentItem: Label {
