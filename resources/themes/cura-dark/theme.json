@@ -221,6 +221,26 @@
         "quality_slider_available": [255, 255, 255, 255],
         "quality_slider_handle": [255, 255, 255, 255],
         "quality_slider_handle_hover": [127, 127, 127, 255],
-        "quality_slider_text": [255, 255, 255, 255]
+        "quality_slider_text": [255, 255, 255, 255],
+
+        "monitor_card_background_inactive": [43, 48, 52, 255],
+        "monitor_card_background": [43, 48, 52, 255],
+        "monitor_context_menu_background": [80, 84, 87, 255],
+        "monitor_context_menu_dots": [0, 167, 233, 255],
+        "monitor_context_menu_highlight": [0, 167, 233, 255],
+        "monitor_image_overlay": [255, 255, 255, 255],
+        "monitor_lining_heavy": [255, 255, 255, 255],
+        "monitor_lining_light": [102, 102, 102, 255],
+        "monitor_pill_background": [102, 102, 102, 255],
+        "monitor_placeholder_image": [102, 102, 102, 255],
+        "monitor_printer_icon": [255, 255, 255, 255],
+        "monitor_progress_background_text": [102, 102, 102, 255],
+        "monitor_progress_background": [80, 84, 87, 255],
+        "monitor_progress_fill_inactive": [216, 216, 216, 255],
+        "monitor_progress_fill_text": [0, 0, 0, 255],
+        "monitor_progress_fill": [216, 216, 216, 255],
+        "monotir_printer_icon_inactive": [154, 154, 154, 255],
+        "monitor_skeleton_fill": [31, 36, 39, 255],
+        "monitor_skeleton_fill_dark": [31, 36, 39, 255]
     }
 }

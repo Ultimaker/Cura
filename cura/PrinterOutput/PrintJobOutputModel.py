@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-
 
 class PrintJobOutputModel(QObject):
     stateChanged = pyqtSignal()
