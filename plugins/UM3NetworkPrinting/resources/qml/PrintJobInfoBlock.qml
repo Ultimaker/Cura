@@ -425,7 +425,7 @@ Item {
                     onYes: OutputDevice.forceSendJob(printJob.key);
                     standardButtons: StandardButton.Yes | StandardButton.No;
                     text: {
-                        if (!root.job) {
+                        if (!printJob) {
                             return "";
                         }
                         var printJobName = formatPrintJobName(printJob.name);
