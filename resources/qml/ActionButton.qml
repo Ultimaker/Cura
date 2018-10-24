@@ -20,6 +20,9 @@ Button
     property var textColor: UM.Theme.getColor("button_text")
     property var textHoverColor: UM.Theme.getColor("button_text_hover")
     property var textDisabledColor: textColor
+    property var outlineColor: color
+    property var outlineHoverColor: hoverColor
+    property var outlineDisabledColor: outlineColor
 
     contentItem: Row
     {
@@ -34,6 +37,7 @@ Button
             color: button.hovered ? button.textHoverColor : button.textColor
             visible: source != ""
             anchors.verticalCenter: parent.verticalCenter
+            Behavior on color { ColorAnimation { duration: 50 } }
         }
 
         Label
@@ -53,6 +57,9 @@ Button
         id: backgroundRect
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
         radius: UM.Theme.getSize("action_button_radius").width
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
+        Behavior on color { ColorAnimation { duration: 50 } }
     }
 
     MouseArea

@@ -106,34 +106,31 @@ QtObject
             background: Item
             {
                 implicitHeight: control.height
-                implicitWidth: buttonWidth + 2 * UM.Theme.getSize("default_lining").width
-
-                Rectangle
-                {
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    implicitHeight: parent.height - 2 * UM.Theme.getSize("default_margin").width
-                    implicitWidth: UM.Theme.getSize("default_lining").width
-                    color: UM.Theme.getColor("main_window_header_button_background_active")
-                    visible: !control.checked
-                }
+                implicitWidth: buttonWidth
                 Rectangle
                 {
                     id: buttonFace
                     implicitHeight: parent.height
                     implicitWidth: parent.width
-                    color: control.checked ? UM.Theme.getColor("main_window_header_button_background_active") : UM.Theme.getColor("main_window_header_button_background_inactive")
+                    radius: UM.Theme.getSize("action_button_radius").width
+
+                    color:
+                    {
+                        if (control.checked)
+                        {
+                            return UM.Theme.getColor("main_window_header_button_background_active")
+                        }
+                        else
+                        {
+                            if (control.hovered)
+                            {
+                                return UM.Theme.getColor("main_window_header_button_background_hovered")
+                            }
+                            return UM.Theme.getColor("main_window_header_button_background_inactive")
+                        }
+                    }
 
                     Behavior on color { ColorAnimation { duration: 50 } }
-                }
-                Rectangle
-                {
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    implicitHeight: parent.height - 2 * UM.Theme.getSize("default_margin").width
-                    implicitWidth: UM.Theme.getSize("default_lining").width
-                    color: UM.Theme.getColor("main_window_header_button_background_active")
-                    visible: !control.checked
                 }
             }
 
@@ -156,21 +153,21 @@ QtObject
                     {
                         if (control.checked)
                         {
-                            return UM.Theme.getColor("main_window_header_button_text_active");
+                            return UM.Theme.getColor("main_window_header_button_text_active")
                         }
                         else
                         {
                             if (control.hovered)
                             {
-                                return UM.Theme.getColor("main_window_header_button_text_hovered");
+                                return UM.Theme.getColor("main_window_header_button_text_hovered")
                             }
-                            return UM.Theme.getColor("main_window_header_button_text_inactive");
+                            return UM.Theme.getColor("main_window_header_button_text_inactive")
                         }
                     }
                 }
                 Component.onCompleted:
                 {
-                    buttonWidth = width;
+                    buttonWidth = width
                 }
             }
         }

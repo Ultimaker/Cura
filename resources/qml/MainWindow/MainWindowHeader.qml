@@ -36,10 +36,12 @@ Rectangle
     Row
     {
         id: stagesListContainer
+        spacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
 
         anchors
         {
             horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
             leftMargin: UM.Theme.getSize("default_margin").width
         }
 
@@ -55,9 +57,10 @@ Rectangle
                 text: model.name.toUpperCase()
                 checkable: true
                 checked: model.active
+                anchors.verticalCenter: parent.verticalCenter
                 exclusiveGroup: mainWindowHeaderMenuGroup
                 style: UM.Theme.styles.main_window_header_tab
-                height: UM.Theme.getSize("main_window_header").height
+                height: Math.round(0.56 * UM.Theme.getSize("main_window_header").height)
                 onClicked: UM.Controller.setActiveStage(model.id)
                 iconSource: model.stage.iconSource
 
@@ -78,11 +81,16 @@ Rectangle
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
+        leftPadding: UM.Theme.getSize("default_margin").width
+        rightPadding: UM.Theme.getSize("default_margin").width
         text: catalog.i18nc("@action:button", "Toolbox")
-        color: UM.Theme.getColor("main_window_header_button_background_active")
-        hoverColor: UM.Theme.getColor("secondary")
-        textColor: UM.Theme.getColor("main_window_header_button_text_active")
-        textHoverColor: UM.Theme.getColor("main_window_header_button_text_active")
+        height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
+        color: UM.Theme.getColor("main_window_header_secondary_button_background_active")
+        hoverColor: UM.Theme.getColor("main_window_header_secondary_button_background_hovered")
+        outlineColor: UM.Theme.getColor("main_window_header_secondary_button_outline_active")
+        outlineHoverColor: UM.Theme.getColor("main_window_header_secondary_button_outline_hovered")
+        textColor: UM.Theme.getColor("main_window_header_secondary_button_text_active")
+        textHoverColor: UM.Theme.getColor("main_window_header_secondary_button_text_hovered")
         onClicked: Cura.Actions.browsePackages.trigger()
     }
 

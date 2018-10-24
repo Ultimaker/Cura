@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-64.285714"
-     inkscape:cy="560"
+     inkscape:zoom="1.979899"
+     inkscape:cx="97.165681"
+     inkscape:cy="69.313647"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4570"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1137"
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -61,7 +61,7 @@
          id="polygon4506"
          points="741.8,410.8 781.7,410.8 801.9,390.6 801.9,350.7 762,350.7 741.8,370.9 "
          class="st0"
-         style="fill:#333333" />
+         style="fill:#3282ff;fill-opacity:1" />
       <path
          id="path4508"
          d="m 40,334.7 c 0,44.3 28.1,76.1 74.4,76.1 h 70.3 V 371 H 114.4 C 91,370.9 79.5,354.4 79.5,334.7 79.5,315 91,298.8 114.4,298.6 h 70.3 V 258.9 H 114.4 C 68.1,258.9 40,290.4 40,334.7 Z"

@@ -79,14 +79,22 @@
         "border": [127, 127, 127, 255],
         "secondary": [245, 245, 245, 255],
 
-        "main_window_header_background": [12, 169, 227, 255],
-        "main_window_header_button_text_active": [12, 169, 227, 255],
+        "main_window_header_background": [10, 8, 80, 255],
+        "main_window_header_button_text_active": [10, 8, 80, 255],
         "main_window_header_button_text_inactive": [255, 255, 255, 255],
-        "main_window_header_button_text_hovered": [0, 0, 0, 255],
+        "main_window_header_button_text_hovered": [255, 255, 255, 255],
         "main_window_header_button_background_active": [255, 255, 255, 255],
         "main_window_header_button_background_inactive": [255, 255, 255, 0],
+        "main_window_header_button_background_hovered": [255, 255, 255, 102],
 
-        "account_widget_outline_active": [9, 140, 188, 255],
+        "main_window_header_secondary_button_text_active": [255, 255, 255, 255],
+        "main_window_header_secondary_button_text_hovered": [10, 8, 80, 255],
+        "main_window_header_secondary_button_background_active": [255, 255, 255, 0],
+        "main_window_header_secondary_button_background_hovered": [255, 255, 255, 255],
+        "main_window_header_secondary_button_outline_active": [255, 255, 255, 255],
+        "main_window_header_secondary_button_outline_hovered": [255, 255, 255, 255],
+
+        "account_widget_outline_active": [70, 66, 126, 255],
         "account_widget_outline_inactive": [229, 229, 229, 255],
 
         "text": [0, 0, 0, 255],
@@ -491,7 +499,7 @@
 
         "avatar_image": [6.8, 6.8],
 
-        "action_button_radius": [0.25, 0.25],
+        "action_button_radius": [0.15, 0.15],
 
         "drop_shadow_radius": [1.0, 1.0]
     }
