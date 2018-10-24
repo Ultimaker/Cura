@@ -29,6 +29,15 @@ Button
         outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("account_widget_outline_inactive")
     }
 
+    MouseArea
+    {
+        id: mouseArea
+        anchors.fill: parent
+        onPressed: mouse.accepted = false
+        hoverEnabled: true
+        cursorShape: accountWidget.enabled ? (hovered ? Qt.PointingHandCursor : Qt.ArrowCursor) : Qt.ForbiddenCursor
+    }
+
     background: Item {}
 
     onClicked: popup.opened ? popup.close() : popup.open()
