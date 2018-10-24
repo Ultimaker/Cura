@@ -959,6 +959,9 @@ class CuraApplication(QtApplication):
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
         qmlRegisterType(MachineManagementModel, "Cura", 1, 0, "MachineManagementModel")
 
+        from cura.PrinterOutput.CameraView import CameraView
+        qmlRegisterType(CameraView, "Cura", 1, 0, "CameraView")
+
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
         qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
