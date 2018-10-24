@@ -60,16 +60,18 @@ Item {
                     id: machineIcon;
                     anchors {
                         leftMargin: UM.Theme.getSize("wide_margin").width;
+                        top: parent.top;
+                        left: parent.left;
                         margins: UM.Theme.getSize("default_margin").width;
                     }
-                    height: parent.height;
+                    height: parent.height - 2 * UM.Theme.getSize("default_margin").width;
                     width: height;
 
                     // Skeleton
                     Rectangle {
                         anchors.fill: parent;
-                        color: UM.Theme.getColor("monitor_skeleton_fill"); // TODO: Theme!
-                        radius: UM.Theme.getSize("default_margin").width; // TODO: Theme!
+                        color: UM.Theme.getColor("monitor_skeleton_fill_dark");
+                        radius: UM.Theme.getSize("default_margin").width;
                         visible: !printer;
                     }
 
@@ -106,6 +108,7 @@ Item {
                     id: printerInfo;
                     anchors {
                         left: machineIcon.right;
+                        leftMargin: UM.Theme.getSize("default_margin").width;
                         right: collapseIcon.left;
                         verticalCenter: machineIcon.verticalCenter;
                     }
@@ -120,7 +123,7 @@ Item {
                         // Skeleton
                         Rectangle {
                             anchors.fill: parent;
-                            color: UM.Theme.getColor("monitor_skeleton_fill"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill_dark");
                             visible: !printer;
                         }
 
@@ -149,7 +152,7 @@ Item {
                         // Skeleton
                         Rectangle {
                             anchors.fill: parent;
-                            color: UM.Theme.getColor("monitor_skeleton_fill"); // TODO: Theme!
+                            color: UM.Theme.getColor("monitor_skeleton_fill_dark");
                             visible: !printer;
                         }
 

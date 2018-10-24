@@ -342,6 +342,7 @@
         "monitor_progress_fill": [12, 169, 227, 255],
         "monitor_shadow": [0, 0, 0, 63],
         "monitor_skeleton_fill": [245, 245, 245, 255],
+        "monitor_skeleton_fill_dark": [216, 216, 216, 255],
         "monitor_text_inactive": [154, 154, 154, 255]
     },
 
