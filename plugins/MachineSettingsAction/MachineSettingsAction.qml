@@ -405,15 +405,15 @@ Cura.MachineAction
                             {
                                 if (settingsTabs.currentIndex > 0)
                                 {
-                                    manager.updateMaterialForDiameter(settingsTabs.currentIndex - 1);
+                                    manager.updateMaterialForDiameter(settingsTabs.currentIndex - 1)
                                 }
                             }
                             function setValueFunction(value)
                             {
                                 if (settingsTabs.currentIndex > 0)
                                 {
-                                    var extruderIndex = (settingsTabs.currentIndex - 1).toString();
-                                    Cura.MachineManager.extruders[extruderIndex].compatibleMaterialDiameter = value;
+                                    var extruderIndex = (settingsTabs.currentIndex - 1).toString()
+                                    Cura.MachineManager.activeMachine.extruders[extruderIndex].compatibleMaterialDiameter = value
                                 }
                             }
                             property bool isExtruderSetting: true
