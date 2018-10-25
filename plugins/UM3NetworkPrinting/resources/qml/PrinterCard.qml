@@ -118,7 +118,10 @@ Item {
                     Item {
                         id: machineNameLabel;
                         height: UM.Theme.getSize("monitor_text_line").height;
-                        width: Math.round(parent.width * 0.3);
+                        width: {
+                            var percent = printer ? 0.75 : 0.3;
+                            return Math.round(parent.width * percent);
+                        }
 
                         // Skeleton
                         Rectangle {
