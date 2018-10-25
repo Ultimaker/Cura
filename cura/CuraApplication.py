@@ -114,6 +114,8 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
+from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
+
 from UM.FlameProfiler import pyqtSlot
 from UM.Decorators import override
 
@@ -946,6 +948,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
+        qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
         qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")
