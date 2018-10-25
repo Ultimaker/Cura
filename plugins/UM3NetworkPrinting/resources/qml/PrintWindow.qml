@@ -8,9 +8,6 @@ import UM 1.1 as UM
 
 UM.Dialog {
     id: base;
-    property var printersModel: {
-        return ListModel{};
-    }
     height: minimumHeight;
     leftButtons: [
         Button {
@@ -87,7 +84,9 @@ UM.Dialog {
             id: printerSelectionCombobox;
             Behavior on height { NumberAnimation { duration: 100 } }
             height: 40 * screenScaleFactor;
-            model: base.printersModel;
+            model: ListModel {
+                id: printersModel;
+            }
             textRole: "name";
             width: parent.width;
         }
