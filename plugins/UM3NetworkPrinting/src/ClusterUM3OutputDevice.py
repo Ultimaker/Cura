@@ -548,7 +548,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _createPrinterModel(self, data: Dict[str, Any]) -> PrinterOutputModel:
         printer = PrinterOutputModel(output_controller = ClusterUM3PrinterOutputController(self),
                                      number_of_extruders = self._number_of_extruders)
-        printer.setCamera(NetworkCamera("http://" + data["ip_address"] + ":8080/?action=stream"))
+        printer.setCameraUrl(QUrl("http://" + data["ip_address"] + ":8080/?action=stream"))
         self._printers.append(printer)
         return printer
 

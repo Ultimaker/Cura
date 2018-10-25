@@ -34,33 +34,23 @@ Item {
         z: 999;
     }
 
-    Cura.CameraView {
+    Cura.NetworkMJPGImage {
         id: cameraImage
         anchors.horizontalCenter: parent.horizontalCenter;
         anchors.verticalCenter: parent.verticalCenter;
         height: Math.round((imageHeight === 0 ? 600 * screenScaleFactor : imageHeight) * width / imageWidth);
         onVisibleChanged: {
             if (visible) {
-                if (camera != null) {
-                    camera.start();
+                if (cameraUrl != null) {
+                    start();
                 }
             } else {
-                if (camera != null) {
-                    camera.stop();
+                if (cameraUrl != null) {
+                    stop();
                 }
             }
         }
-
-        Connections
-        {
-            target: camera
-            onNewImage: {
-                if (cameraImage.visible) {
-                    cameraImage.image = camera.latestImage;
-                    cameraImage.update();
-                }
-            }
-        }
+        source: cameraUrl
         width: Math.min(imageWidth === 0 ? 800 * screenScaleFactor : imageWidth, maximumWidth);
         z: 1
     }

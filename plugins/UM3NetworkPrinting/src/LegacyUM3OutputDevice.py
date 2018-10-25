@@ -18,7 +18,7 @@ from UM.i18n import i18nCatalog
 from UM.Message import Message
 
 from PyQt5.QtNetwork import QNetworkRequest
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
@@ -568,7 +568,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # Quickest way to get the firmware version is to grab it from the zeroconf.
                 firmware_version = self._properties.get(b"firmware_version", b"").decode("utf-8")
                 self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders, firmware_version=firmware_version)]
-                self._printers[0].setCamera(NetworkCamera("http://" + self._address + ":8080/?action=stream"))
+                self._printers[0].setCameraUrl(QUrl("http://" + self._address + ":8080/?action=stream"))
                 for extruder in self._printers[0].extruders:
                     extruder.activeMaterialChanged.connect(self.materialIdChanged)
                     extruder.hotendIDChanged.connect(self.hotendIdChanged)
