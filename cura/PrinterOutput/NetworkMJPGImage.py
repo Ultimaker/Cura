@@ -1,8 +1,8 @@
 # Copyright (c) 2018 Aldo Hoeben / fieldOfView
 # NetworkMJPGImage is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QUrl, pyqtProperty, pyqtSignal, pyqtSlot, QRect
-from PyQt5.QtGui import QImage
+from PyQt5.QtCore import QUrl, pyqtProperty, pyqtSignal, pyqtSlot, QRect, QByteArray
+from PyQt5.QtGui import QImage, QPainter
 from PyQt5.QtQuick import QQuickPaintedItem
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 
@@ -17,11 +17,11 @@ class NetworkMJPGImage(QQuickPaintedItem):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self._stream_buffer = b""
+        self._stream_buffer = QByteArray()
         self._stream_buffer_start_index = -1
-        self._network_manager = None
-        self._image_request = None
-        self._image_reply = None
+        self._network_manager = None  # type: QNetworkAccessManager
+        self._image_request = None  # type: QNetworkRequest
+        self._image_reply = None  # type: QNetworkReply
         self._image = QImage()
         self._image_rect = QRect()
 
@@ -99,7 +99,7 @@ class NetworkMJPGImage(QQuickPaintedItem):
 
     @pyqtSlot()
     def stop(self) -> None:
-        self._stream_buffer = b""
+        self._stream_buffer = QByteArray()
         self._stream_buffer_start_index = -1
 
         if self._image_reply:

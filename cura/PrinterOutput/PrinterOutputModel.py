@@ -25,7 +25,7 @@ class PrinterOutputModel(QObject):
     keyChanged = pyqtSignal()
     printerTypeChanged = pyqtSignal()
     buildplateChanged = pyqtSignal()
-    cameraChanged = pyqtSignal()
+    cameraUrlChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
     canUpdateFirmwareChanged = pyqtSignal()
 
@@ -50,7 +50,7 @@ class PrinterOutputModel(QObject):
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
 
-        self._camera`_url = None  # type: Optional[QUrl]
+        self._camera_url = None  # type: Optional[QUrl]
 
     @pyqtProperty(str, constant = True)
     def firmwareVersion(self) -> str:
