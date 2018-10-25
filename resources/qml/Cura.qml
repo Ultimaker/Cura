@@ -291,6 +291,7 @@ UM.MainWindow
                     onActiveViewChanged: viewModeButton.updateItemActiveFlags()
                 }
             }
+
             Loader
             {
                 id: viewPanel
@@ -307,7 +308,7 @@ UM.MainWindow
                 source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : ""
             }
 
-            ProgressAndSaveWidget
+            Cura.ActionPanelWidget
             {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom

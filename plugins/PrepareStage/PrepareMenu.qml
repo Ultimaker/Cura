@@ -46,7 +46,7 @@ Item
         Cura.MachineSelector
         {
             id: machineSelection
-            width: UM.Theme.getSize("sidebar").width
+            width: Math.round(0.8 * UM.Theme.getSize("sidebar").width) - configSelection.width
             height: prepareMenu.height
         }
 
@@ -54,8 +54,8 @@ Item
         {
             id: configSelection
             visible: isNetworkPrinter && printerConnected
-            width: visible ? Math.round(machineSelection.width * 0.15) : 0
-            panelWidth: machineSelection.width
+            width: visible ? Math.round(UM.Theme.getSize("sidebar").width * 0.15) : 0
+            panelWidth: Math.round(0.8 * UM.Theme.getSize("sidebar").width)
             height: prepareMenu.height
         }
 

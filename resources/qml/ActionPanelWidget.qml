@@ -19,7 +19,9 @@ Rectangle
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    // Also add an extra margin, as we ant some breathing room around the edges.
+    color: UM.Theme.getColor("sidebar")
+
+    // Also add an extra margin, as we want some breathing room around the edges.
     height: saveButton.height + UM.Theme.getSize("sidebar_margin").height
     Label
     {
@@ -231,7 +233,7 @@ Rectangle
     {
         id: saveButton
         width: parent.width
-        height: 100
+        height: 100 * screenScaleFactor
         anchors.bottom: parent.bottom
     }
 }

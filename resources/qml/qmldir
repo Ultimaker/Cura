@@ -7,3 +7,4 @@ PrintSetupSelector 1.0 PrintSetupSelector.qml
 ActionButton 1.0 ActionButton.qml
 MaterialMenu 1.0 MaterialMenu.qml
 NozzleMenu 1.0 NozzleMenu.qml
+ActionPanelWidget 1.0 ActionPanelWidget.qml
