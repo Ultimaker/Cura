@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -11,7 +11,6 @@ Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View");
     id: base
-    enabled: !PrintInformation.preSliced
 
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
@@ -26,6 +25,7 @@ Menu
             checked: model.active
             exclusiveGroup: group
             onTriggered: UM.Controller.setActiveView(model.id)
+            enabled: !PrintInformation.preSliced
         }
         onObjectAdded: base.insertItem(index, object)
         onObjectRemoved: base.removeItem(object)
