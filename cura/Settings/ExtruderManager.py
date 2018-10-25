@@ -367,7 +367,6 @@ class ExtruderManager(QObject):
             # Single extrusion machine without an ExtruderStack, create it
             from cura.Settings.CuraStackBuilder import CuraStackBuilder
             CuraStackBuilder.createExtruderStackWithDefaultSetup(global_stack, 0)
-            extruder_stack_0.setNextStack(global_stack)
 
         elif extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
             Logger.log("e", "Single extruder printer [{printer}] expected extruder [{expected}], but got [{got}]. I'm making it [{expected}].".format(
