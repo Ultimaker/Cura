@@ -145,7 +145,6 @@ class CuraStackBuilder:
             quality_container = application.empty_quality_container
         )
         new_extruder.setNextStack(global_stack)
-        global_stack.addExtruder(new_extruder)
 
         registry.addContainer(new_extruder)
 
