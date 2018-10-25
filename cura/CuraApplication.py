@@ -96,7 +96,6 @@ from . import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
-from . import CameraImageProvider
 from . import PrintJobPreviewImageProvider
 from . import MachineActionManager
 
@@ -525,7 +524,6 @@ class CuraApplication(QtApplication):
         CuraApplication.Created = True
 
     def _onEngineCreated(self):
-        self._qml_engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
 
     @pyqtProperty(bool)
