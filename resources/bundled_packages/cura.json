@@ -1238,6 +1238,25 @@
             }
         }
     },
+    "UltimakerBAM": {
+        "package_info": {
+            "package_id": "UltimakerBAM",
+            "package_type": "material",
+            "display_name": "Ultimaker Breakaway",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/breakaway",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
     "UltimakerCPE": {
         "package_info": {
             "package_id": "UltimakerCPE",
@@ -1247,6 +1266,25 @@
             "package_version": "1.0.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/abs",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerCPEP": {
+        "package_info": {
+            "package_id": "UltimakerCPEP",
+            "package_type": "material",
+            "display_name": "Ultimaker CPE+",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/cpe",
             "author": {
                 "author_id": "Ultimaker",
                 "display_name": "Ultimaker B.V.",
@@ -1314,6 +1352,25 @@
             }
         }
     },
+    "UltimakerPP": {
+        "package_info": {
+            "package_id": "UltimakerPP",
+            "package_type": "material",
+            "display_name": "Ultimaker PP",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/pp",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
     "UltimakerPVA": {
         "package_info": {
             "package_id": "UltimakerPVA",
@@ -1323,6 +1380,44 @@
             "package_version": "1.0.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/abs",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerTPU": {
+        "package_info": {
+            "package_id": "UltimakerTPU",
+            "package_type": "material",
+            "display_name": "Ultimaker TPU 95A",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/tpu-95a",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerTPLA": {
+        "package_info": {
+            "package_id": "UltimakerTPLA",
+            "package_type": "material",
+            "display_name": "Ultimaker Tough PLA",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/tough-pla",
             "author": {
                 "author_id": "Ultimaker",
                 "display_name": "Ultimaker B.V.",
