@@ -167,7 +167,7 @@ Item
             id: rangleHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            x: parent.x + parent.width + UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
@@ -275,7 +275,7 @@ Item
             id: upperHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            x: parent.x + parent.width + UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
@@ -385,7 +385,7 @@ Item
             id: lowerHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            x: parent.x + parent.width + UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.activeHandle == parent

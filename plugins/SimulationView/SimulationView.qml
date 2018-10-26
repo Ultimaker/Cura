@@ -588,13 +588,14 @@ Item
         id: slidersBox
 
         width: parent.width
+        height: parent.height
         visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
         anchors
         {
-            top: parent.bottom
-            topMargin: UM.Theme.getSize("slider_layerview_margin").height
-            left: parent.left
+            top: parent.top
+            leftMargin: UM.Theme.getSize("slider_layerview_margin").height
+            left: parent.right
         }
 
         PathSlider
@@ -602,9 +603,13 @@ Item
             id: pathSlider
 
             height: UM.Theme.getSize("slider_handle").width
-            anchors.left: playButton.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
+            anchors
+            {
+                verticalCenter: playButton.verticalCenter
+                left: playButton.right
+                leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
+            }
             visible: !UM.SimulationView.compatibilityMode
 
             // custom properties
@@ -650,10 +655,11 @@ Item
 
             anchors
             {
-                top: !UM.SimulationView.compatibilityMode ? pathSlider.bottom : parent.top
-                topMargin: !UM.SimulationView.compatibilityMode ? UM.Theme.getSize("default_margin").height : 0
-                right: parent.right
-                rightMargin: UM.Theme.getSize("slider_layerview_margin").width
+                bottom: !UM.SimulationView.compatibilityMode ? pathSlider.top : parent.bottom
+                top: parent.top
+                bottomMargin: !UM.SimulationView.compatibilityMode ? UM.Theme.getSize("default_margin").height : 0
+                left: parent.left
+                leftMargin: Math.round(UM.Theme.getSize("slider_layerview_margin").width / 2)
             }
 
             // custom properties
@@ -704,7 +710,8 @@ Item
             visible: !UM.SimulationView.compatibilityMode
             anchors
             {
-                verticalCenter: pathSlider.verticalCenter
+                left: parent.left
+                bottom: parent.bottom
             }
 
             property var status: 0  // indicates if it's stopped (0) or playing (1)
