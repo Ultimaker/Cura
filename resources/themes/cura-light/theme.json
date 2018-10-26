@@ -345,7 +345,7 @@
     },
 
     "sizes": {
-        "window_minimum_size": [106, 85],
+        "window_minimum_size": [106, 66],
 
         "main_window_header": [0.0, 4.5],
         "main_window_header_button": [8, 4],
