@@ -5,7 +5,9 @@
     },
 
     "colors": {
-        "sidebar": [39, 44, 48, 255],
+        "main_background": [39, 44, 48, 255],
+        "wide_lining": [31, 36, 39, 255],
+        "thick_lining": [255, 255, 255, 30],
         "lining": [64, 69, 72, 255],
         "viewport_overlay": [0, 6, 9, 222],
 
@@ -17,6 +19,9 @@
 
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
+
+        "machine_selector_bar": [39, 44, 48, 255],
+        "machine_selector_active": [39, 44, 48, 255],
 
         "text": [255, 255, 255, 204],
         "text_detail": [255, 255, 255, 172],
@@ -30,16 +35,6 @@
         "text_scene_hover": [255, 255, 255, 204],
 
         "error": [212, 31, 53, 255],
-        "sidebar_header_bar": [39, 44, 48, 255],
-        "sidebar_header_active": [39, 44, 48, 255],
-        "sidebar_header_hover": [68, 72, 75, 255],
-        "sidebar_header_highlight": [68, 192, 255, 255],
-        "sidebar_header_highlight_hover": [68, 192, 255, 255],
-        "sidebar_header_text_active": [255, 255, 255, 255],
-        "sidebar_header_text_hover": [255, 255, 255, 255],
-        "sidebar_header_text_inactive": [255, 255, 255, 127],
-        "sidebar_lining": [31, 36, 39, 255],
-        "sidebar_lining_thin": [255, 255, 255, 30],
 
         "button": [39, 44, 48, 255],
         "button_hover": [39, 44, 48, 255],

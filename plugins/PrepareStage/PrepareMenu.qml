@@ -43,15 +43,15 @@ Item
         Cura.MachineSelector
         {
             id: machineSelection
-            width: Math.round(0.8 * UM.Theme.getSize("sidebar").width) - configSelection.width
+            width: UM.Theme.getSize("machine_selector_widget").width - configSelection.width
             height: prepareMenu.height
         }
 
         Cura.QuickConfigurationSelector
         {
             id: configSelection
-            width: visible ? Math.round(UM.Theme.getSize("sidebar").width * 0.15) : 0
-            panelWidth: Math.round(0.8 * UM.Theme.getSize("sidebar").width)
+            width: visible ? UM.Theme.getSize("machine_selector_widget").width * 0.2 : 0
+            panelWidth: UM.Theme.getSize("machine_selector_widget").width
             height: prepareMenu.height
         }
 

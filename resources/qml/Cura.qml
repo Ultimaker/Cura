@@ -312,9 +312,9 @@ UM.MainWindow
             {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                width: UM.Theme.getSize("sidebar").width
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+                width: UM.Theme.getSize("action_panel_widget").width
+                anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+                anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
                 onShowTooltip:
                 {
                     base.showTooltip(item, location, text)
@@ -348,7 +348,6 @@ UM.MainWindow
                 anchors
                 {
                     horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(Math.round(UM.Theme.getSize("sidebar").width / 2))
                     top: parent.verticalCenter
                     bottom: parent.bottom
                     bottomMargin:  UM.Theme.getSize("default_margin").height

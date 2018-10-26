@@ -68,10 +68,10 @@ Item
     Label
     {
         id: statusLabel
-        width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
+        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width
 
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("default_bold")
@@ -81,12 +81,12 @@ Item
     Rectangle
     {
         id: progressBar
-        width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
+        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
         height: UM.Theme.getSize("progressbar").height
         anchors.top: statusLabel.bottom
-        anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 4)
+        anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 4)
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width
         radius: UM.Theme.getSize("progressbar_radius").width
         color: UM.Theme.getColor("progressbar_background")
 
@@ -133,11 +133,11 @@ Item
                     children_width += child.width + child.anchors.rightMargin;
                 }
             }
-            return Math.min(children_width, base.width - UM.Theme.getSize("sidebar_margin").width);
+            return Math.min(children_width, base.width - UM.Theme.getSize("thick_margin").width);
         }
         height: saveToButton.height
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
         anchors.right: parent.right
         clip: true
 
@@ -198,7 +198,7 @@ Item
 
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
 
             // 1 = not started, 4 = error, 5 = disabled
             text: [1, 4, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
@@ -253,7 +253,7 @@ Item
 
                     Behavior on color { ColorAnimation { duration: 50; } }
 
-                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
+                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("thick_margin").width * 2)
 
                     Label
                     {
@@ -299,7 +299,7 @@ Item
 
             anchors.top: parent.top
             anchors.right: deviceSelectionMenu.visible ? deviceSelectionMenu.left : parent.right
-            anchors.rightMargin: deviceSelectionMenu.visible ? -3 * UM.Theme.getSize("default_lining").width : UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: deviceSelectionMenu.visible ? -3 * UM.Theme.getSize("default_lining").width : UM.Theme.getSize("thick_margin").width
 
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
@@ -355,7 +355,7 @@ Item
 
                     Behavior on color { ColorAnimation { duration: 50; } }
 
-                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
+                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("thick_margin").width * 2)
 
                     Label
                     {
@@ -377,7 +377,7 @@ Item
             anchors.top: parent.top
             anchors.right: parent.right
 
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
 

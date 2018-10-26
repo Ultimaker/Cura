@@ -19,10 +19,10 @@ Button
             Rectangle
             {
                 visible: control.active
-                color: UM.Theme.getColor("sidebar_header_highlight_hover")
+                color: UM.Theme.getColor("toolbox_header_highlight_hover")
                 anchors.bottom: parent.bottom
                 width: parent.width
-                height: UM.Theme.getSize("sidebar_header_highlight").height
+                height: UM.Theme.getSize("toolbox_header_highlight").height
             }
         }
         label: Label

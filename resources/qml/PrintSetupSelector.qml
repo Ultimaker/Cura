@@ -25,7 +25,7 @@ Rectangle
     property variant printMaterialCosts: PrintInformation.materialCosts
     property variant printMaterialNames: PrintInformation.materialNames
 
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
     UM.I18nCatalog { id: catalog; name: "cura"}
 
     // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
@@ -89,7 +89,7 @@ Rectangle
         {
             left: parent.left
             top: parent.top
-            margins: UM.Theme.getSize("sidebar_margin").width
+            margins: UM.Theme.getSize("thick_margin").width
         }
 
         width: Math.round(parent.width * 0.45)
@@ -105,10 +105,10 @@ Rectangle
         id: settingsModeSelection
         model: modesListModel
         width: Math.round(parent.width * 0.55)
-        height: UM.Theme.getSize("sidebar_header_mode_toggle").height
+        height: UM.Theme.getSize("print_setup_mode_toggle").height
 
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.rightMargin: UM.Theme.getSize("thick_margin").width
 
         anchors.top: settingsModeLabel.top
 
@@ -186,7 +186,7 @@ Rectangle
     {
         id: sidebarContents
         anchors.top: settingsModeSelection.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.topMargin: UM.Theme.getSize("thick_margin").height
         anchors.left: parent.left
         anchors.right: parent.right
         height: UM.Theme.getSize("print_setup_widget").height

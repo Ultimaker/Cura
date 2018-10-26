@@ -31,14 +31,14 @@ Column
 
     Rectangle
     {
-        color: UM.Theme.getColor("sidebar_lining")
+        color: UM.Theme.getColor("wide_lining")
         width: parent.width
         height: childrenRect.height
 
         Flow
         {
             id: extrudersGrid
-            spacing: UM.Theme.getSize("sidebar_lining_thin").width
+            spacing: UM.Theme.getSize("thick_lining").width
             width: parent.width
 
             Repeater
@@ -48,8 +48,8 @@ Column
 
                 ExtruderBox
                 {
-                    color: UM.Theme.getColor("sidebar")
-                    width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.round(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
+                    color: UM.Theme.getColor("main_background")
+                    width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.round(extrudersGrid.width / 2 - UM.Theme.getSize("thick_lining").width / 2)
                     extruderModel: modelData
                 }
             }
@@ -58,9 +58,9 @@ Column
 
     Rectangle
     {
-        color: UM.Theme.getColor("sidebar_lining")
+        color: UM.Theme.getColor("wide_lining")
         width: parent.width
-        height: UM.Theme.getSize("sidebar_lining_thin").width
+        height: UM.Theme.getSize("thick_lining").width
     }
 
     HeatedBedBox

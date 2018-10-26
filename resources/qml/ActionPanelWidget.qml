@@ -19,16 +19,16 @@ Rectangle
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
 
     // Also add an extra margin, as we want some breathing room around the edges.
-    height: saveButton.height + UM.Theme.getSize("sidebar_margin").height
+    height: saveButton.height + UM.Theme.getSize("thick_margin").height
     Label
     {
         id: timeDetails
         anchors.left: parent.left
         anchors.bottom: costSpec.top
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width
 
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text_subtext")
@@ -62,7 +62,7 @@ Rectangle
                         }
                     }
                     tooltip_html += "</table>";
-                    base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), tooltip_html);
+                    base.showTooltip(parent, Qt.point(-UM.Theme.getSize("thick_margin").width, 0), tooltip_html);
                 }
             }
             onExited:
@@ -160,8 +160,8 @@ Rectangle
 
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width
 
         font: UM.Theme.getFont("very_small")
         renderType: Text.NativeRendering
@@ -219,7 +219,7 @@ Rectangle
                 {
                     var show_data = costSpec.getSpecsData()
 
-                    base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), show_data);
+                    base.showTooltip(parent, Qt.point(-UM.Theme.getSize("thick_margin").width, 0), show_data);
                 }
             }
             onExited:

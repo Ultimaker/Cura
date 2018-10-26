@@ -12,12 +12,12 @@ import Cura 1.0 as Cura
 Item
 {
     implicitWidth: parent.width
-    height: visible ? UM.Theme.getSize("sidebar_extruder_box").height : 0
+    height: visible ? UM.Theme.getSize("print_setup_extruder_box").height : 0
     property var printerModel
 
     Rectangle
     {
-        color: UM.Theme.getColor("sidebar")
+        color: UM.Theme.getColor("main_background")
         anchors.fill: parent
 
         Label //Build plate label.

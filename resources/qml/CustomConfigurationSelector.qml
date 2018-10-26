@@ -14,7 +14,7 @@ Rectangle
     implicitHeight: parent.height
 
     id: base
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
 
     // Height has an extra 2x margin for the top & bottom margin.
     height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").width
@@ -28,7 +28,7 @@ Rectangle
         visible: extrudersModel.items.length > 1
         property var index: 0
 
-        height: UM.Theme.getSize("sidebar_header_mode_tabs").height
+        height: UM.Theme.getSize("configuration_selector_mode_tabs").height
         boundsBehavior: Flickable.StopAtBounds
 
         anchors
@@ -36,7 +36,7 @@ Rectangle
             left: parent.left
             right: parent.right
             top: parent.top
-            margins: UM.Theme.getSize("sidebar_margin").width
+            margins: UM.Theme.getSize("thick_margin").width
         }
 
         ExclusiveGroup { id: extruderMenuGroup }
@@ -209,7 +209,7 @@ Rectangle
     Item
     {
         id: materialRow
-        height: UM.Theme.getSize("sidebar_setup").height
+        height: UM.Theme.getSize("print_setup_item").height
         visible: Cura.MachineManager.hasMaterials
 
         anchors
@@ -217,7 +217,7 @@ Rectangle
             left: parent.left
             right: parent.right
             top: extrudersList.bottom
-            margins: UM.Theme.getSize("sidebar_margin").width
+            margins: UM.Theme.getSize("thick_margin").width
         }
 
         Label
@@ -246,7 +246,7 @@ Rectangle
             enabled: !extrudersList.visible || Cura.ExtruderManager.activeExtruderIndex > -1
 
             height: UM.Theme.getSize("setting_control").height
-            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
+            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("thick_margin").width
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
@@ -263,7 +263,7 @@ Rectangle
     Item
     {
         id: variantRow
-        height: UM.Theme.getSize("sidebar_setup").height
+        height: UM.Theme.getSize("print_setup_item").height
         visible: Cura.MachineManager.hasVariants
 
         anchors
@@ -271,7 +271,7 @@ Rectangle
             left: parent.left
             right: parent.right
             top: materialRow.bottom
-            margins: UM.Theme.getSize("sidebar_margin").width
+            margins: UM.Theme.getSize("thick_margin").width
         }
 
         Label
@@ -293,7 +293,7 @@ Rectangle
             visible: Cura.MachineManager.hasVariants
 
             height: UM.Theme.getSize("setting_control").height
-            width: Math.round(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
+            width: Math.round(parent.width * 0.7 + UM.Theme.getSize("thick_margin").width)
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
@@ -305,11 +305,11 @@ Rectangle
     Item
     {
         id: materialCompatibilityLink
-        height: UM.Theme.getSize("sidebar_setup").height
+        height: UM.Theme.getSize("print_setup_item").height
 
         anchors.right: parent.right
         anchors.top: variantRow.bottom
-        anchors.margins: UM.Theme.getSize("sidebar_margin").width
+        anchors.margins: UM.Theme.getSize("thick_margin").width
         UM.RecolorImage
         {
             id: warningImage

@@ -491,9 +491,9 @@ QtObject
             {
                 anchors.fill: parent
                 anchors.left: parent.left
-                anchors.leftMargin: Theme.getSize("sidebar_margin").width
+                anchors.leftMargin: Theme.getSize("thick_margin").width
                 anchors.right: parent.right
-                anchors.rightMargin: Theme.getSize("sidebar_margin").width
+                anchors.rightMargin: Theme.getSize("thick_margin").width
                 implicitHeight: Theme.getSize("section").height
                 color:
                 {
@@ -567,7 +567,7 @@ QtObject
                     {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
-                        anchors.leftMargin: Theme.getSize("sidebar_margin").width
+                        anchors.leftMargin: Theme.getSize("thick_margin").width
                         color:
                         {
                             if(!control.enabled)
@@ -1037,7 +1037,7 @@ QtObject
                 }
                 Behavior on color { ColorAnimation { duration: 50 } }
 
-                implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
+                implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("thick_margin").width * 2)
 
                 Label
                 {

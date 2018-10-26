@@ -260,7 +260,7 @@ UM.Dialog
 
         Rectangle
         {
-            color: UM.Theme.getColor("sidebar")
+            color: UM.Theme.getColor("main_background")
             anchors.left: activeScripts.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right

@@ -27,13 +27,13 @@ ToolButton
             color:
             {
                 if (control.pressed) {
-                    return UM.Theme.getColor("sidebar_header_active");
+                    return UM.Theme.getColor("machine_selector_active");
                 }
                 else if (control.hovered) {
-                    return UM.Theme.getColor("sidebar_header_hover");
+                    return UM.Theme.getColor("machine_selector_hover");
                 }
                 else {
-                    return UM.Theme.getColor("sidebar_header_bar");
+                    return UM.Theme.getColor("machine_selector_bar");
                 }
             }
             Behavior on color { ColorAnimation { duration: 50; } }
@@ -61,18 +61,18 @@ ToolButton
                 {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    leftMargin: UM.Theme.getSize("thick_margin").width
                 }
             }
 
             Label
             {
                 id: sidebarComboBoxLabel
-                color: UM.Theme.getColor("sidebar_header_text_active")
+                color: UM.Theme.getColor("machine_selector_text_active")
                 text: control.text;
                 elide: Text.ElideRight;
                 anchors.left: printerStatusIcon.visible ? printerStatusIcon.right : parent.left;
-                anchors.leftMargin: printerStatusIcon.visible ? UM.Theme.getSize("sidebar_lining").width : UM.Theme.getSize("sidebar_margin").width
+                anchors.leftMargin: printerStatusIcon.visible ? UM.Theme.getSize("narrow_margin").width : UM.Theme.getSize("thick_margin").width
                 anchors.right: downArrow.left;
                 anchors.rightMargin: control.rightMargin;
                 anchors.verticalCenter: parent.verticalCenter;

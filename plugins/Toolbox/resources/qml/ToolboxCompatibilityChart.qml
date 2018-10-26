@@ -54,7 +54,7 @@ Item
         model: packageData.supported_configs
         headerDelegate: Rectangle
         {
-            color: UM.Theme.getColor("sidebar")
+            color: UM.Theme.getColor("main_background")
             height: UM.Theme.getSize("toolbox_chart_row").height
             Label
             {

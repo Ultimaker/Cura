@@ -13,7 +13,7 @@ Item
     property var extruderModel
     property var position: index
     implicitWidth: parent.width
-    implicitHeight: UM.Theme.getSize("sidebar_extruder_box").height
+    implicitHeight: UM.Theme.getSize("print_setup_extruder_box").height
 
     UM.SettingPropertyProvider
     {

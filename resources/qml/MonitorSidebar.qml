@@ -30,7 +30,7 @@ Rectangle
     property variant printMaterialCosts: PrintInformation.materialCosts
     property variant printMaterialNames: PrintInformation.materialNames
 
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
     UM.I18nCatalog { id: catalog; name: "cura"}
 
     Timer {
@@ -89,7 +89,7 @@ Rectangle
     {
         id: machineSelection
         width: base.width - configSelection.width - separator.width
-        height: UM.Theme.getSize("sidebar_header").height
+        height: UM.Theme.getSize("stage_menu").height
         anchors.top: base.top
         anchors.left: parent.left
     }
@@ -98,9 +98,9 @@ Rectangle
     {
         id: separator
         visible: configSelection.visible
-        width: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
-        height: UM.Theme.getSize("sidebar_header").height
-        color: UM.Theme.getColor("sidebar_lining_thin")
+        width: visible ? Math.round(UM.Theme.getSize("thick_lining").height / 2) : 0
+        height: UM.Theme.getSize("stage_menu").height
+        color: UM.Theme.getColor("thick_lining")
         anchors.left: machineSelection.right
     }
 
@@ -109,7 +109,7 @@ Rectangle
         id: configSelection
         visible: isNetworkPrinter && printerConnected
         width: visible ? Math.round(base.width * 0.15) : 0
-        height: UM.Theme.getSize("sidebar_header").height
+        height: UM.Theme.getSize("stage_menu").height
         anchors.top: base.top
         anchors.right: parent.right
         panelWidth: base.width
@@ -158,10 +158,10 @@ Rectangle
     {
         id: footerSeparator
         width: parent.width
-        height: UM.Theme.getSize("sidebar_lining").height
-        color: UM.Theme.getColor("sidebar_lining")
+        height: UM.Theme.getSize("wide_lining").height
+        color: UM.Theme.getColor("wide_lining")
         anchors.bottom: monitorButton.top
-        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
     }
 
     // MonitorButton is actually the bottom footer panel.

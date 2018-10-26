@@ -63,7 +63,7 @@ Rectangle
 
             visible: buildplateInformation.visible
             width: parent.width - 2 * parent.padding
-            height: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
+            height: visible ? Math.round(UM.Theme.getSize("thick_lining").height / 2) : 0
             color: textColor
         }
 
@@ -110,7 +110,7 @@ Rectangle
             parent.border.color = UM.Theme.getColor("configuration_item_border_hover")
             if (configurationItem.selected == false)
             {
-                configurationItem.color = UM.Theme.getColor("sidebar_lining")
+                configurationItem.color = UM.Theme.getColor("wide_lining")
             }
         }
         onExited:

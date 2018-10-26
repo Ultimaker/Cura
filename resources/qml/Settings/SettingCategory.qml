@@ -12,8 +12,8 @@ Button
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+    anchors.leftMargin: UM.Theme.getSize("thick_margin").width
+    anchors.rightMargin: UM.Theme.getSize("thick_margin").width
     background: Rectangle
     {
         id: backgroundRectangle

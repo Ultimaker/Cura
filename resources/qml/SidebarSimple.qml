@@ -35,7 +35,7 @@ Item
         {
             width: childrenRect.width
             height: childrenRect.height
-            color: UM.Theme.getColor("sidebar")
+            color: UM.Theme.getColor("main_background")
 
             //
             // Quality profile
@@ -44,10 +44,10 @@ Item
             {
                 id: qualityRow
 
-                height: UM.Theme.getSize("sidebar_margin").height
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                height: UM.Theme.getSize("thick_margin").height
+                anchors.topMargin: UM.Theme.getSize("thick_margin").height
                 anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.leftMargin: UM.Theme.getSize("thick_margin").width
                 anchors.right: parent.right
 
                 Timer
@@ -207,7 +207,7 @@ Item
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
-                            anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
+                            anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2)
                             color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
@@ -262,10 +262,10 @@ Item
                 {
                     id: speedSlider
                     width: Math.round(base.width * 0.55)
-                    height: UM.Theme.getSize("sidebar_margin").height
+                    height: UM.Theme.getSize("thick_margin").height
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                    anchors.topMargin: UM.Theme.getSize("thick_margin").height
 
                     // This Item is used only for tooltip, for slider area which is unavailable
                     Item
@@ -275,7 +275,7 @@ Item
                             if (showTooltip)
                             {
                                 var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
-                                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height), content)
+                                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), content)
                             }
                             else
                             {
@@ -380,7 +380,7 @@ Item
                     Slider
                     {
                         id: qualitySlider
-                        height: UM.Theme.getSize("sidebar_margin").height
+                        height: UM.Theme.getSize("thick_margin").height
                         anchors.bottom: speedSlider.bottom
                         enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
                         visible: qualityModel.availableTotalTicks > 0
@@ -448,7 +448,7 @@ Item
                         onEntered:
                         {
                             var content = catalog.i18nc("@tooltip","A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
-                            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height),  content)
+                            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
                         }
                         onExited:
                         {
@@ -467,7 +467,7 @@ Item
                     text: catalog.i18nc("@label", "Print Speed")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
-                    width: Math.round(UM.Theme.getSize("sidebar").width * 0.35)
+                    width: Math.round(UM.Theme.getSize("print_setup_widget").width * 0.35)
                     elide: Text.ElideRight
                 }
 
@@ -503,7 +503,7 @@ Item
 
                     anchors.verticalCenter: speedSlider.verticalCenter
                     anchors.right: speedSlider.left
-                    anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
+                    anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
 
                     color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                     iconSource: UM.Theme.getIcon("reset");
@@ -516,7 +516,7 @@ Item
                     onEntered:
                     {
                         var content = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
-                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height),  content)
+                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
                     }
                     onExited: base.hideTooltip()
                 }
@@ -530,10 +530,10 @@ Item
                 id: infillCellLeft
 
                 anchors.top: qualityRow.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+                anchors.topMargin: UM.Theme.getSize("thick_margin").height * 2
                 anchors.left: parent.left
 
-                width: Math.round(UM.Theme.getSize("sidebar").width * .45) - UM.Theme.getSize("sidebar_margin").width
+                width: Math.round(UM.Theme.getSize("print_setup_widget").width * .45) - UM.Theme.getSize("thick_margin").width
 
                 Label
                 {
@@ -543,9 +543,9 @@ Item
                     color: UM.Theme.getColor("text")
 
                     anchors.top: parent.top
-                    anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 1.7)
+                    anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.7)
                     anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("thick_margin").width
                 }
             }
 
@@ -553,12 +553,12 @@ Item
             {
                 id: infillCellRight
 
-                height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
-                width: Math.round(UM.Theme.getSize("sidebar").width * .55)
+                height: infillSlider.height + UM.Theme.getSize("thick_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("thick_margin").height)
+                width: Math.round(UM.Theme.getSize("print_setup_widget").width * .55)
 
                 anchors.left: infillCellLeft.right
                 anchors.top: infillCellLeft.top
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("thick_margin").height
 
                 Label {
                     id: selectedInfillRateText
@@ -588,10 +588,10 @@ Item
                     anchors.top: selectedInfillRateText.bottom
                     anchors.left: parent.left
                     anchors.right: infillIcon.left
-                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    anchors.rightMargin: UM.Theme.getSize("thick_margin").width
 
-                    height: UM.Theme.getSize("sidebar_margin").height
-                    width: parseInt(infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth)
+                    height: UM.Theme.getSize("thick_margin").height
+                    width: parseInt(infillCellRight.width - UM.Theme.getSize("thick_margin").width - style.handleWidth)
 
                     minimumValue: 0
                     maximumValue: 100
@@ -679,12 +679,12 @@ Item
                 {
                     id: infillIcon
 
-                    width: Math.round((parent.width / 5) - (UM.Theme.getSize("sidebar_margin").width))
+                    width: Math.round((parent.width / 5) - (UM.Theme.getSize("thick_margin").width))
                     height: width
 
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
+                    anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2)
 
                     // we loop over all density icons and only show the one that has the current density and steps
                     Repeater
@@ -737,7 +737,7 @@ Item
                     property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
                     anchors.top: infillSlider.bottom
-                    anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2) // closer to slider since it belongs to the same category
+                    anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2) // closer to slider since it belongs to the same category
                     anchors.left: infillCellRight.left
 
                     style: UM.Theme.styles.checkbox
@@ -786,7 +786,7 @@ Item
                         id: gradualInfillLabel
                         height: parent.height
                         anchors.left: enableGradualInfillCheckBox.right
-                        anchors.leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
+                        anchors.leftMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
                         verticalAlignment: Text.AlignVCenter;
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
@@ -848,11 +848,11 @@ Item
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 1.5)
+                anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.5)
                 anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.leftMargin: UM.Theme.getSize("thick_margin").width
                 anchors.right: infillCellLeft.right
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.rightMargin: UM.Theme.getSize("thick_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
 
                 text: catalog.i18nc("@label", "Generate Support");
@@ -916,11 +916,11 @@ Item
                 textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
 
                 anchors.top: enableSupportCheckBox.top
-                //anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
+                //anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("thick_margin").height : 0
                 anchors.left: enableSupportCheckBox.right
-                anchors.leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
+                anchors.leftMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
 
-                width: Math.round(UM.Theme.getSize("sidebar").width * .55) - Math.round(UM.Theme.getSize("sidebar_margin").width / 2) - enableSupportCheckBox.width
+                width: Math.round(UM.Theme.getSize("print_setup_widget").width * .55) - Math.round(UM.Theme.getSize("thick_margin").width / 2) - enableSupportCheckBox.width
                 height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
 
                 Behavior on height { NumberAnimation { duration: 100 } }
@@ -991,9 +991,9 @@ Item
 
                 anchors {
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    leftMargin: UM.Theme.getSize("thick_margin").width
                     right: infillCellLeft.right
-                    rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    rightMargin: UM.Theme.getSize("thick_margin").width
                     verticalCenter: adhesionCheckBox.verticalCenter
                 }
             }
@@ -1004,7 +1004,7 @@ Item
                 property alias _hovered: adhesionMouseArea.containsMouse
 
                 anchors.top: enableSupportCheckBox.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("thick_margin").height
                 anchors.left: infillCellRight.left
 
                 //: Setting enable printing build-plate adhesion helper checkbox
@@ -1065,7 +1065,7 @@ Item
             {
                 id: tipsCell
                 anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-                anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 2)
+                anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 2)
                 anchors.left: parent.left
                 width: parent.width
                 height: tipsText.contentHeight * tipsText.lineCount
@@ -1074,9 +1074,9 @@ Item
                 {
                     id: tipsText
                     anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("thick_margin").width
                     anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    anchors.rightMargin: UM.Theme.getSize("thick_margin").width
                     anchors.top: parent.top
                     wrapMode: Text.WordWrap
                     text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting")

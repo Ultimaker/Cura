@@ -20,7 +20,7 @@ Window
     maximumWidth: minimumWidth
     minimumHeight: height
     maximumHeight: minimumHeight
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
     UM.I18nCatalog
     {
         id: catalog
