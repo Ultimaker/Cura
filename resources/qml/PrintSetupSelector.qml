@@ -189,7 +189,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 500
+        height: UM.Theme.getSize("print_setup_widget").height
 
         // We load both of them at once (instead of using a loader) because the advanced sidebar can take
         // quite some time to load. So in this case we sacrifice memory for speed.

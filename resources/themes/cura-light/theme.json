@@ -355,6 +355,9 @@
 
         "account_button": [12, 3],
 
+        "print_setup_widget": [35.0, 42.0],
+        "configuration_selector_widget": [35.0, 0.0],
+
         "views_selector": [0.0, 4.0],
 
         "default_lining": [0.08, 0.08],

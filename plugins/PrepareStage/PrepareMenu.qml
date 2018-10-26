@@ -61,12 +61,12 @@ Item
 
         Cura.CustomConfigurationSelector
         {
-            width: UM.Theme.getSize("sidebar").width
+            width: UM.Theme.getSize("configuration_selector_widget").width
         }
 
         Cura.PrintSetupSelector
         {
-            width: UM.Theme.getSize("sidebar").width
+            width: UM.Theme.getSize("print_setup_widget").width
             onShowTooltip: prepareMenu.showTooltip(item, location, text)
             onHideTooltip: prepareMenu.hideTooltip()
         }
