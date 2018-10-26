@@ -31,10 +31,10 @@ Rectangle {
         anchors.fill: parent;
         hoverEnabled: true;
         onClicked: {
-            if (OutputDevice.activeCamera !== null) {
-                OutputDevice.setActiveCamera(null)
+            if (OutputDevice.activeCameraUrl !== null) {
+                OutputDevice.setActiveCameraUrl(null)
             } else {
-                OutputDevice.setActiveCamera(modelData.camera);
+                OutputDevice.setActiveCameraUrl(modelData.cameraUrl);
             }
         }
     }

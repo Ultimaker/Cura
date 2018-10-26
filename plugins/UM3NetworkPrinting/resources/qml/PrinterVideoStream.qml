@@ -8,7 +8,7 @@ import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 Item {
-    property var camera: null;
+    property var cameraUrl: null;
 
     Rectangle {
         anchors.fill:parent;
@@ -18,7 +18,7 @@ Item {
 
     MouseArea {
         anchors.fill: parent;
-        onClicked: OutputDevice.setActiveCamera(null);
+        onClicked: OutputDevice.setActiveCameraUrl(null);
         z: 0;
     }
 
@@ -58,7 +58,7 @@ Item {
     MouseArea {
         anchors.fill: cameraImage;
         onClicked: {
-            OutputDevice.setActiveCamera(null);
+            OutputDevice.setActiveCameraUrl(null);
         }
         z: 1;
     }

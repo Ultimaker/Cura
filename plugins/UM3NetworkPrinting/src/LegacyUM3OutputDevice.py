@@ -7,7 +7,6 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutp
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager

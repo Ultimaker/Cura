@@ -11,7 +11,6 @@ MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-    from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 
 class PrinterOutputModel(QObject):
