@@ -16,29 +16,18 @@ Button
     implicitHeight: UM.Theme.getSize("main_window_header").height
     implicitWidth: UM.Theme.getSize("main_window_header").height
 
-    AvatarImage
+    background: AvatarImage
     {
         id: avatar
 
-        width: Math.round(0.8 * parent.width)
-        height: Math.round(0.8 * parent.height)
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
+        width: Math.round(0.8 * accountWidget.width)
+        height: Math.round(0.8 * accountWidget.height)
+        anchors.verticalCenter: accountWidget.verticalCenter
+        anchors.horizontalCenter: accountWidget.horizontalCenter
 
         source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_no_user")
         outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("account_widget_outline_inactive")
     }
-
-    MouseArea
-    {
-        id: mouseArea
-        anchors.fill: parent
-        onPressed: mouse.accepted = false
-        hoverEnabled: true
-        cursorShape: accountWidget.enabled ? (hovered ? Qt.PointingHandCursor : Qt.ArrowCursor) : Qt.ForbiddenCursor
-    }
-
-    background: Item {}
 
     onClicked: popup.opened ? popup.close() : popup.open()
 

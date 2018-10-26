@@ -68,6 +68,5 @@ Button
         anchors.fill: parent
         onPressed: mouse.accepted = false
         hoverEnabled: true
-        cursorShape: button.enabled ? (hovered ? Qt.PointingHandCursor : Qt.ArrowCursor) : Qt.ForbiddenCursor
     }
 }
