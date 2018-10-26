@@ -220,11 +220,11 @@ Rectangle
     {
         modesListModel.append({
             text: catalog.i18nc("@title:tab", "Recommended"),
-            tooltipText: catalog.i18nc("@tooltip", "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality.")
+            tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Recommended Print Setup")).arg(catalog.i18nc("@tooltip", "Print with the recommended settings for the selected printer, material and quality."))
         })
         modesListModel.append({
             text: catalog.i18nc("@title:tab", "Custom"),
-            tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process.")
+            tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Custom Print Setup")).arg(catalog.i18nc("@tooltip", "Print with finegrained control over every last bit of the slicing process."))
         })
 
         var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
