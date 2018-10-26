@@ -3529,6 +3529,19 @@
                     "enabled": "retraction_hop_enabled and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "retraction_hop_after_extruder_switch_height": 
+                {
+                    "label": "Z Hop After Extruder Switch Height",
+                    "description": "The height difference when performing a Z Hop after extruder switch.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "10",
+                    "enabled": "retraction_enable and retraction_hop_after_extruder_switch",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
