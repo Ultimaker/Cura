@@ -14,6 +14,9 @@ Item
     property var connectedDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
     property var panelWidth: control.width
 
+    // Make this component only visible when it's a network printer and it is connected
+    visible: Cura.MachineManager.activeMachineNetworkKey != "" && Cura.MachineManager.printerConnected
+
     function switchPopupState()
     {
         popup.visible ? popup.close() : popup.open()

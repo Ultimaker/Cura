@@ -13,9 +13,6 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
-    property bool printerConnected: Cura.MachineManager.printerConnected
-
     UM.I18nCatalog
     {
         id: catalog
@@ -53,7 +50,6 @@ Item
         Cura.QuickConfigurationSelector
         {
             id: configSelection
-            visible: isNetworkPrinter && printerConnected
             width: visible ? Math.round(UM.Theme.getSize("sidebar").width * 0.15) : 0
             panelWidth: Math.round(0.8 * UM.Theme.getSize("sidebar").width)
             height: prepareMenu.height
