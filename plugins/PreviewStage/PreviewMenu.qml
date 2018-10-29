@@ -21,6 +21,8 @@ Item
     Row
     {
         anchors.horizontalCenter: parent.horizontalCenter
+        spacing: UM.Theme.getSize("default_margin").width
+
         ComboBox
         {
             // This item contains the views selector, a combobox that is dynamically created from
@@ -65,6 +67,19 @@ Item
                 }
             }
             currentIndex: getActiveIndex()
+        }
+
+        Loader
+        {
+            // TODO: Make this panel collapsable and ensure it has a standardised background.
+            id: viewPanel
+
+            property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
+
+            height: childrenRect.height
+            width: childrenRect.width
+
+            source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : ""
         }
 
         Cura.PrintSetupSelector
