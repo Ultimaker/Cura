@@ -312,17 +312,16 @@ UM.MainWindow
             {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                width: UM.Theme.getSize("action_panel_widget").width
                 anchors.rightMargin: UM.Theme.getSize("thick_margin").width
                 anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
-                onShowTooltip:
-                {
-                    base.showTooltip(item, location, text)
-                }
-                onHideTooltip:
-                {
-                    base.hideTooltip()
-                }
+//                onShowTooltip:
+//                {
+//                    base.showTooltip(item, location, text)
+//                }
+//                onHideTooltip:
+//                {
+//                    base.hideTooltip()
+//                }
             }
 
             Loader

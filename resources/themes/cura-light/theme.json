@@ -378,9 +378,13 @@
         "configuration_selector_mode_tabs": [0.0, 3.0],
 
         "action_panel_widget": [35.0, 0.0],
+        "action_panel_button": [15.0, 3.0],
+
         "machine_selector_widget": [28.0, 4.5],
 
         "views_selector": [0.0, 4.0],
+
+        "default_radius": [0.25, 0.25],
 
         "wide_lining": [0.5, 0.5],
         "thick_lining": [0.2, 0.2],
