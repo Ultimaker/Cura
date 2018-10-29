@@ -45,8 +45,6 @@ Item
             MenuItem { action: Cura.Actions.unGroupObjects }
         }
 
-        ViewMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&View") }
-
         SettingsMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&Settings") }
 
         Menu

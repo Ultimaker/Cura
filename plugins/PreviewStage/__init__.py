@@ -18,5 +18,5 @@ def getMetaData():
 
 def register(app):
     return {
-        "stage": PreviewStage.PreviewStage()
+        "stage": PreviewStage.PreviewStage(app)
     }
