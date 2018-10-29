@@ -5,6 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 Item {
     property var camera: null;
@@ -33,11 +34,11 @@ Item {
         z: 999;
     }
 
-    Image {
+    Cura.CameraView {
         id: cameraImage
         anchors.horizontalCenter: parent.horizontalCenter;
         anchors.verticalCenter: parent.verticalCenter;
-        height: Math.round((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width);
+        height: Math.round((imageHeight === 0 ? 600 * screenScaleFactor : imageHeight) * width / imageWidth);
         onVisibleChanged: {
             if (visible) {
                 if (camera != null) {
@@ -49,13 +50,18 @@ Item {
                 }
             }
         }
-        source: {
-            if (camera != null && camera.latestImage != null) {
-                return camera.latestImage;
+
+        Connections
+        {
+            target: camera
+            onNewImage: {
+                if (cameraImage.visible) {
+                    cameraImage.image = camera.latestImage;
+                    cameraImage.update();
+                }
             }
-            return "";
         }
-        width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth);
+        width: Math.min(imageWidth === 0 ? 800 * screenScaleFactor : imageWidth, maximumWidth);
         z: 1
     }
 

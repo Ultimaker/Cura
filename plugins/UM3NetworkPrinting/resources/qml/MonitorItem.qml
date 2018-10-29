@@ -10,7 +10,7 @@ Component {
         height: maximumHeight;
         width: maximumWidth;
 
-        Image {
+        Cura.CameraView {
             id: cameraImage;
             anchors {
                 horizontalCenter: parent.horizontalCenter;
@@ -21,7 +21,7 @@ Component {
                     OutputDevice.activePrinter.camera.start();
                 }
             }
-            height: Math.floor((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width);
+            height: Math.floor((imageHeight === 0 ? 600 * screenScaleFactor : imageHeight) * width / imageWidth);
             onVisibleChanged: {
                 if (visible) {
                     if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null) {
@@ -33,14 +33,20 @@ Component {
                     }
                 }
             }
-            source: {
-                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage) {
-                    return OutputDevice.activePrinter.camera.latestImage;
-                }
-                return "";
-            }
-            width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth);
+            width: Math.min(imageWidth === 0 ? 800 * screenScaleFactor : imageWidth, maximumWidth);
             z: 1;
+
+            Connections
+            {
+                target: OutputDevice.activePrinter.camera;
+                onNewImage:
+                {
+                    if (cameraImage.visible) {
+                        cameraImage.image = OutputDevice.activePrinter.camera.latestImage;
+                        cameraImage.update();
+                    }
+                }
+            }
         }
     }
 }
