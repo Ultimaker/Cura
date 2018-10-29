@@ -50,7 +50,6 @@ Item
             {
                 for (var i = 0; i < model.rowCount(); i++)
                 {
-                    print(model.getItem(i).active)
                     if (model.getItem(i).active)
                     {
                         return i;
