@@ -50,7 +50,7 @@ class PrinterOutputModel(QObject):
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
 
-        self._camera = None
+        self._camera = None  # type: Optional[NetworkCamera]
 
     @pyqtProperty(str, constant = True)
     def firmwareVersion(self) -> str:

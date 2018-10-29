@@ -16,7 +16,6 @@ class NetworkCamera(QObject):
         self._image_request = None
         self._image_reply = None
         self._image = QImage()
-        self._image_id = 0
 
         self._target = target
         self._started = False
@@ -33,15 +32,9 @@ class NetworkCamera(QObject):
         if restart_required:
             self.start()
 
-    @pyqtProperty(QUrl, notify=newImage)
+    @pyqtProperty(QImage, notify=newImage)
     def latestImage(self):
-        self._image_id += 1
-        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
-        # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
-        # as new (instead of relying on cached version and thus forces an update.
-        temp = "image://camera/" + str(self._image_id)
-
-        return QUrl(temp, QUrl.TolerantMode)
+        return self._image
 
     @pyqtSlot()
     def start(self):
@@ -116,4 +109,4 @@ class NetworkCamera(QObject):
             self._stream_buffer_start_index = -1
             self._image.loadFromData(jpg_data)
 
-        self.newImage.emit()
+            self.newImage.emit()
