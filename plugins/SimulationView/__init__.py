@@ -8,6 +8,7 @@ from . import SimulationViewProxy, SimulationView
 
 catalog = i18nCatalog("cura")
 
+
 def getMetaData():
     return {
         "view": {
@@ -17,8 +18,10 @@ def getMetaData():
         }
     }
 
+
 def createSimulationViewProxy(engine, script_engine):
     return SimulationViewProxy.SimulationViewProxy()
+
 
 def register(app):
     simulation_view = SimulationView.SimulationView()

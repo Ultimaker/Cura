@@ -78,7 +78,7 @@ Item
             height: childrenRect.height
             width: childrenRect.width
 
-            source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : ""
+            source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
         }
 
         Cura.PrintSetupSelector
