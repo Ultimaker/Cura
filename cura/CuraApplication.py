@@ -433,6 +433,7 @@ class CuraApplication(QtApplication):
             "XmlMaterialProfile",
             "Toolbox",
             "PrepareStage",
+            "PreviewStage",
             "MonitorStage",
             "LocalFileOutputDevice",
             "LocalContainerProvider",
