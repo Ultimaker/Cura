@@ -31,8 +31,8 @@ Rectangle {
         anchors.fill: parent;
         hoverEnabled: true;
         onClicked: {
-            if (OutputDevice.activeCameraUrl !== null) {
-                OutputDevice.setActiveCameraUrl(null)
+            if (OutputDevice.activeCameraUrl != "") {
+                OutputDevice.setActiveCameraUrl("");
             } else {
                 OutputDevice.setActiveCameraUrl(modelData.cameraUrl);
             }
