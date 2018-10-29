@@ -16,7 +16,7 @@ Component {
         height: maximumHeight;
         onVisibleChanged: {
             if (monitorFrame != null && !monitorFrame.visible) {
-                OutputDevice.setActiveCameraUrl(null);
+                OutputDevice.setActiveCameraUrl("");
             }
         }
         width: maximumWidth;
@@ -126,7 +126,7 @@ Component {
         PrinterVideoStream {
             anchors.fill: parent;
             cameraUrl: OutputDevice.activeCameraUrl;
-            visible: OutputDevice.activeCameraUrl != null;
+            visible: OutputDevice.activeCameraUrl != "";
         }
     }
 }

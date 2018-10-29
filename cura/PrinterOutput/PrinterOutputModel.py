@@ -49,16 +49,20 @@ class PrinterOutputModel(QObject):
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
 
-        self._camera_url = None  # type: Optional[QUrl]
+        self._camera_url = QUrl()  # type: QUrl
 
     @pyqtProperty(str, constant = True)
     def firmwareVersion(self) -> str:
         return self._firmware_version
 
-    def setCameraUrl(self, camera_url: Optional["QUrl"]) -> None:
-        if self._camera_url is not camera_url:
+    def setCameraUrl(self, camera_url: "QUrl") -> None:
+        if self._camera_url != camera_url:
             self._camera_url = camera_url
             self.cameraUrlChanged.emit()
+
+    @pyqtProperty(QUrl, fset = setCameraUrl, notify = cameraUrlChanged)
+    def cameraUrl(self) -> "QUrl":
+        return self._camera_url
 
     def updateIsPreheating(self, pre_heating: bool) -> None:
         if self._is_preheating != pre_heating:
@@ -68,10 +72,6 @@ class PrinterOutputModel(QObject):
     @pyqtProperty(bool, notify=isPreheatingChanged)
     def isPreheating(self) -> bool:
         return self._is_preheating
-
-    @pyqtProperty(QUrl, notify=cameraUrlChanged)
-    def cameraUrl(self) -> Optional["QUrl"]:
-        return self._camera_url
 
     @pyqtProperty(str, notify = printerTypeChanged)
     def type(self) -> str:

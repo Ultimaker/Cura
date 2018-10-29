@@ -99,7 +99,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._latest_reply_handler = None  # type: Optional[QNetworkReply]
         self._sending_job = None
 
-        self._active_camera_url = None # type: Optional[QUrl]
+        self._active_camera_url = QUrl()  # type: QUrl
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
@@ -263,27 +263,20 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def activePrinter(self) -> Optional[PrinterOutputModel]:
         return self._active_printer
 
-    @pyqtProperty(QUrl, notify=activeCameraUrlChanged)
-    def activeCameraUrl(self) -> Optional[QUrl]:
-        return self._active_camera_url
-
     @pyqtSlot(QObject)
     def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
         if self._active_printer != printer:
             self._active_printer = printer
             self.activePrinterChanged.emit()
 
-    @pyqtSlot(QObject)
-    def setActiveCameraUrl(self, camera_url: Optional[QUrl]) -> None:
+    @pyqtProperty(QUrl, notify = activeCameraUrlChanged)
+    def activeCameraUrl(self) -> "QUrl":
+        return self._active_camera_url
+
+    @pyqtSlot(QUrl)
+    def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
         if self._active_camera_url != camera_url:
-            if self._active_camera_url:
-                self._active_camera_url.stop()
-
             self._active_camera_url = camera_url
-
-            if self._active_camera_url:
-                self._active_camera_url.start()
-
             self.activeCameraUrlChanged.emit()
 
     def _onPostPrintJobFinished(self, reply: QNetworkReply) -> None:
