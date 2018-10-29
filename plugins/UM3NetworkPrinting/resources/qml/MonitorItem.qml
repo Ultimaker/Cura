@@ -10,43 +10,36 @@ Component {
         height: maximumHeight;
         width: maximumWidth;
 
-        Cura.CameraView {
+        Cura.NetworkMJPGImage {
             id: cameraImage;
             anchors {
                 horizontalCenter: parent.horizontalCenter;
                 verticalCenter: parent.verticalCenter;
             }
             Component.onCompleted: {
-                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null) {
-                    OutputDevice.activePrinter.camera.start();
+                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                    cameraImage.start();
                 }
             }
             height: Math.floor((imageHeight === 0 ? 600 * screenScaleFactor : imageHeight) * width / imageWidth);
             onVisibleChanged: {
                 if (visible) {
-                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null) {
-                        OutputDevice.activePrinter.camera.start();
+                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                        cameraImage.start();
                     }
                 } else {
-                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null) {
-                        OutputDevice.activePrinter.camera.stop();
+                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                        cameraImage.stop();
                     }
+                }
+            }
+            source: {
+                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                    return OutputDevice.activePrinter.cameraUrl;
                 }
             }
             width: Math.min(imageWidth === 0 ? 800 * screenScaleFactor : imageWidth, maximumWidth);
             z: 1;
-
-            Connections
-            {
-                target: OutputDevice.activePrinter.camera;
-                onNewImage:
-                {
-                    if (cameraImage.visible) {
-                        cameraImage.image = OutputDevice.activePrinter.camera.latestImage;
-                        cameraImage.update();
-                    }
-                }
-            }
         }
     }
 }

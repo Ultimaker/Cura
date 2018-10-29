@@ -96,7 +96,6 @@ from . import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
-from . import CameraImageProvider
 from . import PrintJobPreviewImageProvider
 from . import MachineActionManager
 
@@ -113,6 +112,8 @@ import cura.Settings.cura_empty_instance_containers
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
+
+from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
 from UM.FlameProfiler import pyqtSlot
 from UM.Decorators import override
@@ -523,7 +524,6 @@ class CuraApplication(QtApplication):
         CuraApplication.Created = True
 
     def _onEngineCreated(self):
-        self._qml_engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
 
     @pyqtProperty(bool)
@@ -947,6 +947,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
+        qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
+
         qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")
         qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
@@ -958,9 +960,6 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
         qmlRegisterType(MachineManagementModel, "Cura", 1, 0, "MachineManagementModel")
-
-        from cura.PrinterOutput.CameraView import CameraView
-        qmlRegisterType(CameraView, "Cura", 1, 0, "CameraView")
 
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)

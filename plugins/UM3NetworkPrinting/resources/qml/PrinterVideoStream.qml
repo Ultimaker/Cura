@@ -8,7 +8,7 @@ import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 Item {
-    property var camera: null;
+    property var cameraUrl: "";
 
     Rectangle {
         anchors.fill:parent;
@@ -18,7 +18,7 @@ Item {
 
     MouseArea {
         anchors.fill: parent;
-        onClicked: OutputDevice.setActiveCamera(null);
+        onClicked: OutputDevice.setActiveCameraUrl("");
         z: 0;
     }
 
@@ -34,33 +34,23 @@ Item {
         z: 999;
     }
 
-    Cura.CameraView {
+    Cura.NetworkMJPGImage {
         id: cameraImage
         anchors.horizontalCenter: parent.horizontalCenter;
         anchors.verticalCenter: parent.verticalCenter;
         height: Math.round((imageHeight === 0 ? 600 * screenScaleFactor : imageHeight) * width / imageWidth);
         onVisibleChanged: {
             if (visible) {
-                if (camera != null) {
-                    camera.start();
+                if (cameraUrl != "") {
+                    start();
                 }
             } else {
-                if (camera != null) {
-                    camera.stop();
+                if (cameraUrl != "") {
+                    stop();
                 }
             }
         }
-
-        Connections
-        {
-            target: camera
-            onNewImage: {
-                if (cameraImage.visible) {
-                    cameraImage.image = camera.latestImage;
-                    cameraImage.update();
-                }
-            }
-        }
+        source: cameraUrl
         width: Math.min(imageWidth === 0 ? 800 * screenScaleFactor : imageWidth, maximumWidth);
         z: 1
     }
@@ -68,7 +58,7 @@ Item {
     MouseArea {
         anchors.fill: cameraImage;
         onClicked: {
-            OutputDevice.setActiveCamera(null);
+            OutputDevice.setActiveCameraUrl("");
         }
         z: 1;
     }
