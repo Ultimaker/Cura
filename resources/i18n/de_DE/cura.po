@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
+"Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-29 15:01+0100\n"
 "PO-Revision-Date: 2018-09-28 14:42+0200\n"
