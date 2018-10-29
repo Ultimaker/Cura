@@ -5,6 +5,7 @@ from typing import Any, Optional
 
 from UM.Application import Application
 from UM.Decorators import override
+from UM.Logger import Logger
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Settings.SettingInstance import InstanceState
 
@@ -57,7 +58,22 @@ class PerObjectContainerStack(CuraContainerStack):
         return result
 
     @override(CuraContainerStack)
-    def setNextStack(self, stack: CuraContainerStack) -> None:
+    def setProperty(self, key: str, property_name: str, property_value: Any, container: "ContainerInterface" = None, set_from_cache: bool = False) -> None:
+        application = Application.getInstance()
+        machine_manager = application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        # Ignore all settable-per-meshgroup settings for now because the current CuraEngine architecture cannot handle
+        # that correctly. This check is also here is because if an old project file includes per-object settings that
+        # are settable-per-meshgroup, when it is loaded, we need to filter out those settings.
+        if not global_stack.getProperty(key, "settable_per_mesh"):
+            Logger.log("i", "Setting [%s] ignored as a per-object setting because it's not settable-per-mesh.", key)
+            return
+        super().setProperty(self, key, property_name, property_value,
+                            container = container, set_from_cache = set_from_cache)
+
+    @override(CuraContainerStack)
+    def setNextStack(self, stack: "CuraContainerStack") -> None:
         super().setNextStack(stack)
 
         # trigger signal to re-evaluate all default settings
