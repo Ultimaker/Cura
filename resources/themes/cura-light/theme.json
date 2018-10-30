@@ -361,7 +361,7 @@
         "window_minimum_size": [106, 66],
 
         "main_window_header": [0.0, 4.5],
-        "main_window_header_button": [8, 4],
+        "main_window_header_button": [8, 2.35],
         "main_window_header_button_icon": [1.2, 1.2],
 
         "stage_menu": [0.0, 4.5],
