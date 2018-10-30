@@ -4,6 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4 as Controls1
 
 import UM 1.1 as UM
 import Cura 1.0 as Cura
@@ -25,12 +26,24 @@ Column
     property real progress: UM.Backend.progress
     property int backendState: UM.Backend.state
 
+    function sliceOrStopSlicing()
+    {
+        if ([1, 5].indexOf(widget.backendState) != -1)   // == BackendState.NotStarted or BackendState.Disabled
+        {
+            CuraApplication.backend.forceSlice()
+        }
+        else
+        {
+            CuraApplication.backend.stopSlicing()
+        }
+    }
+
     Item
     {
         id: message
         width: parent.width
         height: childrenRect.height
-        visible: widget.backendState == 4
+        visible: widget.backendState == 4   // == BackendState.Error
 
         UM.RecolorImage
         {
@@ -66,7 +79,7 @@ Column
         width: parent.width
         height: UM.Theme.getSize("progressbar").height
         value: progress
-        visible: widget.backendState == 2
+        visible: widget.backendState == 2   // == BackendState.Processing
 
         background: Rectangle
         {
@@ -93,7 +106,21 @@ Column
         id: prepareButton
         width: parent.width
         height: UM.Theme.getSize("action_panel_button").height
-        text: autoSlice ? catalog.i18nc("@button", "Auto slicing...") : (widget.backendState == 1 ? catalog.i18nc("@button", "Slice") : catalog.i18nc("@button", "Cancel"))
+        text:
+        {
+            if (autoSlice)
+            {
+                return catalog.i18nc("@button", "Auto slicing...")
+            }
+            else if ([1, 5].indexOf(widget.backendState) != -1)   // == BackendState.NotStarted or BackendState.Disabled
+            {
+                return catalog.i18nc("@button", "Slice")
+            }
+            else
+            {
+                return catalog.i18nc("@button", "Cancel")
+            }
+        }
         enabled: !autoSlice
 
         // Get the current value from the preferences
@@ -103,17 +130,7 @@ Column
         textDisabledColor: UM.Theme.getColor("primary")
         outlineDisabledColor: "transparent"
 
-        onClicked:
-        {
-            if ([1, 5].indexOf(widget.backendState) != -1)
-            {
-                CuraApplication.backend.forceSlice()
-            }
-            else
-            {
-                CuraApplication.backend.stopSlicing()
-            }
-        }
+        onClicked: sliceOrStopSlicing()
     }
 
     // React when the user changes the preference of having the auto slice enabled
@@ -124,6 +141,19 @@ Column
         {
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
             prepareButton.autoSlice = autoSlice
+        }
+    }
+
+    // Shortcut for "slice/stop"
+    Controls1.Action
+    {
+        shortcut: "Ctrl+P"
+        onTriggered:
+        {
+            if (prepareButton.enabled)
+            {
+                sliceOrStopSlicing()
+            }
         }
     }
 }
