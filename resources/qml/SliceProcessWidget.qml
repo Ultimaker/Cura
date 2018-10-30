@@ -108,27 +108,24 @@ Column
         height: UM.Theme.getSize("action_panel_button").height
         text:
         {
+            if ([1, 4, 5].indexOf(widget.backendState) != -1)   // == BackendState.NotStarted or BackendState.Error or BackendState.Disabled
+            {
+                return catalog.i18nc("@button", "Slice")
+            }
             if (autoSlice)
             {
                 return catalog.i18nc("@button", "Auto slicing...")
             }
-            else if ([1, 5].indexOf(widget.backendState) != -1)   // == BackendState.NotStarted or BackendState.Disabled
-            {
-                return catalog.i18nc("@button", "Slice")
-            }
-            else
-            {
-                return catalog.i18nc("@button", "Cancel")
-            }
+            return catalog.i18nc("@button", "Cancel")
         }
-        enabled: !autoSlice
+        enabled: !autoSlice && ([1, 2].indexOf(widget.backendState) != -1)
 
         // Get the current value from the preferences
         property bool autoSlice: UM.Preferences.getValue("general/auto_slice")
 
-        disabledColor: "transparent"
-        textDisabledColor: UM.Theme.getColor("primary")
-        outlineDisabledColor: "transparent"
+        disabledColor: ([1, 2].indexOf(widget.backendState) == -1) ? UM.Theme.getColor("action_button_disabled") : "transparent"
+        textDisabledColor: ([1, 2].indexOf(widget.backendState) == -1) ?  UM.Theme.getColor("action_button_disabled_text") : UM.Theme.getColor("primary")
+        outlineDisabledColor: ([1, 2].indexOf(widget.backendState) == -1) ? UM.Theme.getColor("action_button_disabled_border") : "transparent"
 
         onClicked: sliceOrStopSlicing()
     }
