@@ -135,7 +135,7 @@ class ThreeMFReader(MeshReader):
                 definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
-            setting_container = um_node.callDecoration("getStack")
+            setting_container = um_node.callDecoration("getStack").getTop()
 
             for key in settings:
                 setting_value = settings[key]
