@@ -1,3 +1,62 @@
+[3.6.0]
+*Gyroid infill
+New infill pattern with enhanced strength properties. Gyroid infill is one of the strongest infill types for a given weight, has isotropic properties, and prints relatively fast with reduced material use and a fully connected part interior. Note: Slicing time can increase up to 40 seconds or more, depending on the model. Contributed by smartavionics.
+
+*Support brim
+New setting that integrates the first layer of support material with the brim’s geometry. This significantly improves adhesion when printing with support material. Contributed by BagelOrb.
+
+*Cooling fan number
+It is now possible to specify the cooling fan to use if your printer has multiple fans. This is implemented under Machine settings in the Extruder tab. Contributed by smartavionics.
+
+*Settings refactor
+The CuraEngine has been refactored to create a more testable, future-proof way of storing and representing settings. This makes slicing faster, and future development easier.
+
+*Print core CC Red 0.6
+The new print core CC Red 0.6 is selectable when the Ultimaker S5 profile is active. This print core is optimized for use with abrasive materials and composites.
+
+*File name and layer display
+Added M117 commands to GCODE to give real-time information about the print job file name and layer number shown on the printer’s display when printing via USB. Contributed by adecastilho.
+
+*Firmware checker/Ultimaker S5
+The update checker code has been improved and tested for more reliable firmware update notifications in Ultimaker Cura. The Ultimaker S5 is now included.
+
+*Fullscreen mode shortcuts
+Fullscreen mode can be toggled using the View menu or with the keyboard shortcuts: Command + Control + F (macOS), or F11 (Windows and Linux). Contributed by KangDroid.
+
+*Configuration error message
+In previous versions, Ultimaker Cura would display an error dialog explaining when something happened to user configuration files, including the option to reset to factory defaults. This would not warn about losing the current printer and print profile settings, so this information has been added.
+
+*Materials in the Toolbox
+A new tab has been added to the Toolbox that includes downloadable material profiles, to quickly and easily prepare models for a range of third-party materials.
+
+*New third-party definitions
+New profiles added for Anycube 4MAx and Tizyx K25.
+
+*Improved definitions for Ender-3
+The Ender-3 build plate size has been adjusted to the correct size of 235 x 235 mm, corrected the start-up sequence, and the printhead position has been adjusted when prints are purged or completed.
+
+*Add mesh names to slicing message
+Added comment generation to indicate which mesh the GCODE after this comment is constructing. Contributed by paukstelis.
+
+*Bug fixes
+- The active material is highlighted in Ultimaker Cura’s material manager list. This behavior is now consistent with the profile and machine manager.
+- The option to use 1.75 mm diameter filament with third-party 3D printers is now fixed and does not revert back to 2.85 mm. This fix also applies the appropriate a Z-axis speed change for 1.75 mm filament printers. Contributed by kaleidoscopeit.
+- A fix was created to handle OSX version 10.10, but due to the QT upgrade, users with older versions won’t be able to run Ultimaker Cura on their system without a system update. This applies to OSX version 10.09 and 10.08.
+- Fixed a memory leak when leaving the “Monitor” page open.
+- Added performance improvements to the PolygonConnector to efficiently connect polygons that are close to each other. This also reduces the chances of the print head collide with previously printed things. Contributed by BagelOrb.
+- Fixed a bug where the GCODE reader didn’t show retractions.
+- Changes the USBPrinting update thread to prevent flooding the printer with M105 temperature update requests. Contributed by fieldOfView.
+- Fix the behavior of the "manage visible settings" button, when pressing the "cog" icon of a particular category. Contributed by fieldOfView.
+- Add a new post processing script that pauses the print at a certain height that works with RepRap printers. Contributed by Kriechi.
+- Fix updates to the print monitor temperatures while preheating. Contributed by fieldOfView.
+- Fixed a bug where material cost is not shown unless weight is changed.
+- Fixed bugs crashing the CuraEngine when TreeSupport is enabled.
+- Fixed a bug where Ultimaker Cura would upload the wrong firmware after switching printers in the UI.
+- Fixed a bug where the layer view was missing if the first layer was empty.
+- Fixed a bug where erroneous combing movements were taking place.
+- Fixed a bug where the initial layer temperature is set correctly for the first object but then never again.
+- Fixed a bug where clicking the fx icon didn’t respond.
+
 [3.5.1]
 *Bug fixes
 - Fixed M104 temperature commands giving inaccurate results.
