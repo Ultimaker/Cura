@@ -223,12 +223,35 @@ Item {
                 }
             }
 
+            HorizontalLine {
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
+                }
+                visible: root.printer;
+            }
+
             // Detailed card
             PrinterCardDetails {
                 collapsed: root.collapsed;
                 printer: root.printer;
                 visible: root.printer;
             }
+
+            Item {
+                id: cameraButtonWrapper;
+                height: showCameraButton.width + 2 * UM.Theme.getSize("default_margin").height;
+                visible: root.printer && root.printJob;
+                width: height;
+                CameraButton {
+                    id: showCameraButton;
+                    anchors.centerIn: parent;
+                    iconSource: "../svg/camera-icon.svg";
+                }
+            }
+            
 
             // Progress bar
             PrinterCardProgressBar {
