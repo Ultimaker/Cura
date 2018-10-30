@@ -28,7 +28,7 @@ Column
 
     function sliceOrStopSlicing()
     {
-        if ([1, 5].indexOf(widget.backendState) != -1)   // == BackendState.NotStarted or BackendState.Disabled
+        if ([UM.Backend.NotStarted, UM.Backend.Disabled].indexOf(widget.backendState) != -1)
         {
             CuraApplication.backend.forceSlice()
         }
@@ -43,7 +43,7 @@ Column
         id: message
         width: parent.width
         height: childrenRect.height
-        visible: widget.backendState == 4   // == BackendState.Error
+        visible: widget.backendState == UM.Backend.Error
 
         UM.RecolorImage
         {
@@ -79,7 +79,7 @@ Column
         width: parent.width
         height: UM.Theme.getSize("progressbar").height
         value: progress
-        visible: widget.backendState == 2   // == BackendState.Processing
+        visible: widget.backendState == UM.Backend.Processing
 
         background: Rectangle
         {
@@ -108,7 +108,7 @@ Column
         height: UM.Theme.getSize("action_panel_button").height
         text:
         {
-            if ([1, 4, 5].indexOf(widget.backendState) != -1)   // == BackendState.NotStarted or BackendState.Error or BackendState.Disabled
+            if ([UM.Backend.NotStarted, UM.Backend.Error, UM.Backend.Disabled].indexOf(widget.backendState) != -1)
             {
                 return catalog.i18nc("@button", "Slice")
             }
@@ -118,14 +118,16 @@ Column
             }
             return catalog.i18nc("@button", "Cancel")
         }
-        enabled: !autoSlice && ([1, 2].indexOf(widget.backendState) != -1)
+        enabled: !autoSlice && !disabledSlice
 
         // Get the current value from the preferences
         property bool autoSlice: UM.Preferences.getValue("general/auto_slice")
+        // Disable the slice process when
+        property bool disabledSlice: [UM.Backend.Done, UM.Backend.Error, UM.Backend.Disabled].indexOf(widget.backendState) != -1
 
-        disabledColor: ([1, 2].indexOf(widget.backendState) == -1) ? UM.Theme.getColor("action_button_disabled") : "transparent"
-        textDisabledColor: ([1, 2].indexOf(widget.backendState) == -1) ?  UM.Theme.getColor("action_button_disabled_text") : UM.Theme.getColor("primary")
-        outlineDisabledColor: ([1, 2].indexOf(widget.backendState) == -1) ? UM.Theme.getColor("action_button_disabled_border") : "transparent"
+        disabledColor: disabledSlice ? UM.Theme.getColor("action_button_disabled") : "transparent"
+        textDisabledColor: disabledSlice ?  UM.Theme.getColor("action_button_disabled_text") : UM.Theme.getColor("primary")
+        outlineDisabledColor: disabledSlice ? UM.Theme.getColor("action_button_disabled_border") : "transparent"
 
         onClicked: sliceOrStopSlicing()
     }
