@@ -38,38 +38,16 @@ Column
         }
     }
 
-    Item
+    Cura.IconLabel
     {
         id: message
         width: parent.width
-        height: childrenRect.height
         visible: widget.backendState == UM.Backend.Error
 
-        UM.RecolorImage
-        {
-            id: warningImage
-
-            anchors.left: parent.left
-
-            source: UM.Theme.getIcon("warning")
-            width: UM.Theme.getSize("section_icon").width
-            height: UM.Theme.getSize("section_icon").height
-
-            sourceSize.width: width
-            sourceSize.height: height
-
-            color: UM.Theme.getColor("warning")
-        }
-
-        Label
-        {
-            id: unableToSliceLabel
-            anchors.left: warningImage.right
-            anchors.leftMargin: UM.Theme.getSize("thin_margin").width
-            text: catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")
-            color: UM.Theme.getColor("warning")
-            font: UM.Theme.getFont("very_small")
-        }
+        text: catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")
+        source: UM.Theme.getIcon("warning")
+        color: UM.Theme.getColor("warning")
+        font: UM.Theme.getFont("very_small")
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob

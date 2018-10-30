@@ -21,7 +21,7 @@ Rectangle
     radius: UM.Theme.getSize("default_radius").width
     visible: CuraApplication.platformActivity
 
-    property bool backendStatusDone: UM.Backend.state == 3
+    property bool backendStatusDone: UM.Backend.state == UM.Backend.Done
 
     Loader
     {

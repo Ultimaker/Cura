@@ -4,69 +4,104 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4 as Controls1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
-Button
+Column
 {
-    id: button
-    property alias cursorShape: mouseArea.cursorShape
-    property alias iconSource: buttonIcon.source
-    property alias textFont: buttonText.font
-    property alias cornerRadius: backgroundRect.radius
-    property var color: UM.Theme.getColor("primary")
-    property var hoverColor: UM.Theme.getColor("primary_hover")
-    property var disabledColor: color
-    property var textColor: UM.Theme.getColor("button_text")
-    property var textHoverColor: UM.Theme.getColor("button_text_hover")
-    property var textDisabledColor: textColor
-    property var outlineColor: color
-    property var outlineHoverColor: hoverColor
-    property var outlineDisabledColor: outlineColor
+    id: widget
 
-    contentItem: Row
+    spacing: UM.Theme.getSize("thin_margin").height
+
+    UM.I18nCatalog
     {
+        id: catalog
+        name: "cura"
+    }
+
+    Item
+    {
+        id: information
+        width: parent.width
+        height: childrenRect.height
+
+        Column
+        {
+            id: timeAndCostsInformation
+
+            anchors
+            {
+                left: parent.left
+                right: moreInformationIcon.left
+                rightMargin: UM.Theme.getSize("thin_margin").height
+            }
+
+            Cura.IconLabel
+            {
+                id: estimatedTime
+                width: parent.width
+
+                text: "Time"
+                source: UM.Theme.getIcon("clock")
+                font: UM.Theme.getFont("small")
+            }
+
+            Cura.IconLabel
+            {
+                id: estimatedCosts
+                width: parent.width
+
+                text: "Material costs"
+                source: UM.Theme.getIcon("spool")
+                font: UM.Theme.getFont("very_small")
+            }
+        }
+
         UM.RecolorImage
         {
-            id: buttonIcon
-            source: ""
-            height: Math.round(0.6 * parent.height)
-            width: height
+            id: moreInformationIcon
+
+            anchors
+            {
+                right: parent.right
+                verticalCenter: timeAndCostsInformation.verticalCenter
+            }
+
+            source: UM.Theme.getIcon("info")
+            width: UM.Theme.getSize("section_icon").width
+            height: UM.Theme.getSize("section_icon").height
+
             sourceSize.width: width
             sourceSize.height: height
-            color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != ""
-            anchors.verticalCenter: parent.verticalCenter
-            Behavior on color { ColorAnimation { duration: 50 } }
-        }
 
-        Label
+            color: UM.Theme.getColor("text_medium")
+        }
+    }
+
+    Row
+    {
+        id: buttonRow
+        spacing: UM.Theme.getSize("default_margin").width
+
+        Cura.ActionButton
         {
-            id: buttonText
-            text: "Preview"
-            color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor): button.textDisabledColor
-            font: UM.Theme.getFont("action_button")
-            visible: text != ""
-            renderType: Text.NativeRendering
-            anchors.verticalCenter: parent.verticalCenter
+            height: UM.Theme.getSize("action_panel_button").height
+            text: catalog.i18nc("@button", "Preview")
+            color: UM.Theme.getColor("secondary")
+            hoverColor: UM.Theme.getColor("secondary")
+            textColor: UM.Theme.getColor("primary")
+            textHoverColor: UM.Theme.getColor("text")
+            onClicked: console.log("Clicking preview")
         }
-    }
 
-    background: Rectangle
-    {
-        id: backgroundRect
-        color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
-        radius: UM.Theme.getSize("action_button_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
-        Behavior on color { ColorAnimation { duration: 50 } }
-    }
-
-    MouseArea
-    {
-        id: mouseArea
-        anchors.fill: parent
-        onPressed: mouse.accepted = false
-        hoverEnabled: true
+        Cura.ActionButton
+        {
+            width: UM.Theme.getSize("account_button").width
+            height: UM.Theme.getSize("action_panel_button").height
+            text: catalog.i18nc("@button", "Save to file")
+            onClicked: console.log("Clicking action button")
+        }
     }
 }
