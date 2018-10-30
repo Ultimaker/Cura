@@ -48,11 +48,12 @@ Item {
         Column {
             height: childrenRect.height;
             width: parent.width;
+            spacing: UM.Theme.getSize("default_margin").height;
 
             // Main card
             Item {
                 id: mainCard;
-                height: 60 * screenScaleFactor + 2 * UM.Theme.getSize("default_margin").width;
+                height: 60 * screenScaleFactor + UM.Theme.getSize("default_margin").width;
                 width: parent.width;
 
                 // Machine icon
@@ -240,18 +241,15 @@ Item {
                 visible: root.printer;
             }
 
-            Item {
-                id: cameraButtonWrapper;
-                height: showCameraButton.width + 2 * UM.Theme.getSize("default_margin").height;
-                visible: root.printer && root.printJob;
-                width: height;
-                CameraButton {
-                    id: showCameraButton;
-                    anchors.centerIn: parent;
-                    iconSource: "../svg/camera-icon.svg";
+            CameraButton {
+                id: showCameraButton;
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
                 }
+                iconSource: "../svg/camera-icon.svg";
+                visible: root.printer && root.printJob;
             }
-            
 
             // Progress bar
             PrinterCardProgressBar {
