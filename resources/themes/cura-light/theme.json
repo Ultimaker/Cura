@@ -116,6 +116,7 @@
         "text_scene_hover": [70, 84, 113, 255],
 
         "error": [255, 140, 0, 255],
+        "warning": [255, 190, 35, 255],
 
         "button": [31, 36, 39, 255],
         "button_hover": [68, 72, 75, 255],
@@ -210,7 +211,7 @@
         "material_compatibility_warning": [0, 0, 0, 255],
 
         "progressbar_background": [245, 245, 245, 255],
-        "progressbar_control": [31, 36, 39, 255],
+        "progressbar_control": [50, 130, 255, 255],
 
         "slider_groove": [245, 245, 245, 255],
         "slider_groove_border": [127, 127, 127, 255],
