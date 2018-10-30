@@ -385,8 +385,8 @@ msgstr "Enviando Dados"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:260
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:236
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:80
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:18
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:80
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:381
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:143
@@ -1424,166 +1424,166 @@ msgctxt "@label"
 msgid "Extruder End G-code"
 msgstr "G-Code Final do Extrusor"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:17
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:17
 msgctxt "@action:button"
 msgid "Install"
 msgstr "Instalar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:19
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "Instalado"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceErrorPage.qml:16
 msgctxt "@info"
 msgid "Could not connect to the Cura Package database. Please check your connection."
 msgstr "Não foi possível conectar-se à base de dados de Pacotes do Cura. Por favor verifique sua conexão."
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:38
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:28
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledPage.qml:38
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:28
 msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "Complementos"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:75
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:42
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledPage.qml:75
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:42
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:66
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:551
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "Materiais"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
 msgstr "Versão"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:85
 msgctxt "@label"
 msgid "Last updated"
 msgstr "Última atualização"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
 msgstr "Autor"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:97
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:97
 msgctxt "@label"
 msgid "Downloads"
 msgstr "Downloads"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:116
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:158
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:116
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:158
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:258
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:44
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:30
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:44
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:30
 msgctxt "@action:button"
 msgid "Update"
 msgstr "Atualizar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:45
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:45
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:31
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "Atualizando"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:46
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:32
 msgctxt "@action:button"
 msgid "Updated"
 msgstr "Atualizado"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:13
 msgctxt "@title"
-msgid "Toolbox"
+msgid "Marketplace"
 msgstr "Ferramentas"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceBackColumn.qml:25
 msgctxt "@action:button"
 msgid "Back"
 msgstr "Voltar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
 msgid "You are uninstalling materials and/or profiles that are still in use. Confirming will reset the following materials/profiles to their defaults."
 msgstr "Você está desinstalando material e/ou perfis que ainda estão em uso. Confirmar irá restaurar os materiais e perfis seguintes a seus defaults."
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:51
 msgctxt "@text:window"
 msgid "Materials"
 msgstr "Materiais"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:52
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:52
 msgctxt "@text:window"
 msgid "Profiles"
 msgstr "Perfis"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:89
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:89
 msgctxt "@action:button"
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceFooter.qml:17
 msgctxt "@info"
 msgid "You will need to restart Cura before changes in packages have effect."
 msgstr "Você precisará reiniciar o Cura para que as alterações tenham efeito."
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceFooter.qml:34
 msgctxt "@info:button"
 msgid "Quit Cura"
 msgstr "Sair do Cura"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:34
 msgctxt "@label"
 msgid "Community Contributions"
 msgstr "Contribuições da Comunidade"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:34
 msgctxt "@label"
 msgid "Community Plugins"
 msgstr "Complementos da Comunidade"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:43
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:43
 msgctxt "@label"
 msgid "Generic Materials"
 msgstr "Materiais Genéricos"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:56
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:56
 msgctxt "@title:tab"
 msgid "Installed"
 msgstr "Instalado"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:19
 msgctxt "@label"
 msgid "Will install upon restarting"
 msgstr "Será instalado ao reiniciar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Downgrade"
 msgstr "Downgrade"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Uninstall"
 msgstr "Desinstalar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:16
 msgctxt "@title:window"
 msgid "Plugin License Agreement"
 msgstr "Acordo de Licença do Complemento"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:33
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:33
 msgctxt "@label"
 msgid ""
 "This plugin contains a license.\n"
@@ -1594,37 +1594,37 @@ msgstr ""
 "Você precisa aceitar esta licença para instalar este complemento.\n"
 "Você concorda com os termos abaixo?"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:54
 msgctxt "@action:button"
 msgid "Accept"
 msgstr "Aceitar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:65
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:65
 msgctxt "@action:button"
 msgid "Decline"
 msgstr "Recusar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:23
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsShowcase.qml:23
 msgctxt "@label"
 msgid "Featured"
 msgstr "Em destaque"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:31
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceCompatibilityChart.qml:31
 msgctxt "@label"
 msgid "Compatibility"
 msgstr "Compatibilidade"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
 msgstr "Obtendo pacotes..."
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:88
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceAuthorPage.qml:88
 msgctxt "@label"
 msgid "Website"
 msgstr "Sítio Web"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:94
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceAuthorPage.qml:94
 msgctxt "@label"
 msgid "Email"
 msgstr "Email"
@@ -4271,7 +4271,7 @@ msgstr "E&xtensões"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:286
 msgctxt "@title:menu menubar:toplevel"
-msgid "&Toolbox"
+msgid "Marke&tplace"
 msgstr "Ferramen&tas"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:294
@@ -4532,14 +4532,14 @@ msgctxt "name"
 msgid "Machine Settings action"
 msgstr "Ação de Configurações de Máquina"
 
-#: Toolbox/plugin.json
+#: Marketplace/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new Cura packages."
 msgstr "Buscar, gerenciar e instalar novos pacotes do Cura."
 
-#: Toolbox/plugin.json
+#: Marketplace/plugin.json
 msgctxt "name"
-msgid "Toolbox"
+msgid "Marketplace"
 msgstr "Ferramentas"
 
 #: XRayView/plugin.json

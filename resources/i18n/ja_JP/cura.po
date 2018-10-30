@@ -387,8 +387,8 @@ msgstr "プリントデータを送信中"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:260
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:236
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:80
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:18
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:80
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:381
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:143
@@ -1426,166 +1426,166 @@ msgctxt "@label"
 msgid "Extruder End G-code"
 msgstr "エクストルーダーがG-Codeを終了する"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:17
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:17
 msgctxt "@action:button"
 msgid "Install"
 msgstr "インストール"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:19
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "インストールした"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceErrorPage.qml:16
 msgctxt "@info"
 msgid "Could not connect to the Cura Package database. Please check your connection."
 msgstr "Curaパッケージデータベースに接続できません。接続を確認してください。"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:38
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:28
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledPage.qml:38
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:28
 msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "プラグイン"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:75
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:42
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledPage.qml:75
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:42
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:66
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:551
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "マテリアル"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
 msgstr "バージョン"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:85
 msgctxt "@label"
 msgid "Last updated"
 msgstr "最終更新日"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
 msgstr "著者"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:97
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:97
 msgctxt "@label"
 msgid "Downloads"
 msgstr "ダウンロード"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:116
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:158
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:116
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:158
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:258
 msgctxt "@label"
 msgid "Unknown"
 msgstr "不明"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:44
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:30
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:44
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:30
 msgctxt "@action:button"
 msgid "Update"
 msgstr "アップデート"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:45
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:45
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:31
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "更新中"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:46
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:32
 msgctxt "@action:button"
 msgid "Updated"
 msgstr "更新済み"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:13
 msgctxt "@title"
-msgid "Toolbox"
+msgid "Marketplace"
 msgstr "ツールボックス"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceBackColumn.qml:25
 msgctxt "@action:button"
 msgid "Back"
 msgstr "戻る"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
 msgid "You are uninstalling materials and/or profiles that are still in use. Confirming will reset the following materials/profiles to their defaults."
 msgstr "使用中の材料またはプロファイルをアンインストールしようとしています。確定すると以下の材料/プロファイルをデフォルトにリセットします。"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:51
 msgctxt "@text:window"
 msgid "Materials"
 msgstr "材料"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:52
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:52
 msgctxt "@text:window"
 msgid "Profiles"
 msgstr "プロファイル"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:89
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:89
 msgctxt "@action:button"
 msgid "Confirm"
 msgstr "確認"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceFooter.qml:17
 msgctxt "@info"
 msgid "You will need to restart Cura before changes in packages have effect."
 msgstr "パッケージへの変更を有効にするためにCuraを再起動する必要があります。"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceFooter.qml:34
 msgctxt "@info:button"
 msgid "Quit Cura"
 msgstr "Curaを終了する"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:34
 msgctxt "@label"
 msgid "Community Contributions"
 msgstr "地域貢献"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:34
 msgctxt "@label"
 msgid "Community Plugins"
 msgstr "コミュニティプラグイン"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:43
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:43
 msgctxt "@label"
 msgid "Generic Materials"
 msgstr "汎用材料"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:56
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:56
 msgctxt "@title:tab"
 msgid "Installed"
 msgstr "インストールした"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:19
 msgctxt "@label"
 msgid "Will install upon restarting"
 msgstr "再起動時にインストール"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Downgrade"
 msgstr "ダウングレード"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Uninstall"
 msgstr "アンインストール"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:16
 msgctxt "@title:window"
 msgid "Plugin License Agreement"
 msgstr "プラグインライセンス同意書"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:33
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:33
 msgctxt "@label"
 msgid ""
 "This plugin contains a license.\n"
@@ -1596,37 +1596,37 @@ msgstr ""
 "このプラグインをインストールするにはこのライセンスに同意する必要があります。\n"
 "下の利用規約に同意しますか？"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:54
 msgctxt "@action:button"
 msgid "Accept"
 msgstr "承認する"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:65
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:65
 msgctxt "@action:button"
 msgid "Decline"
 msgstr "拒否する"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:23
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsShowcase.qml:23
 msgctxt "@label"
 msgid "Featured"
 msgstr "特長"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:31
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceCompatibilityChart.qml:31
 msgctxt "@label"
 msgid "Compatibility"
 msgstr "互換性"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
 msgstr "パッケージ取得中"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:88
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceAuthorPage.qml:88
 msgctxt "@label"
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:94
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceAuthorPage.qml:94
 msgctxt "@label"
 msgid "Email"
 msgstr "電子メール"
@@ -4264,7 +4264,7 @@ msgstr "拡張子"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:286
 msgctxt "@title:menu menubar:toplevel"
-msgid "&Toolbox"
+msgid "Marke&tplace"
 msgstr "&ツールボックス"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:294
@@ -4525,14 +4525,14 @@ msgctxt "name"
 msgid "Machine Settings action"
 msgstr "プリンターの設定アクション"
 
-#: Toolbox/plugin.json
+#: Marketplace/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new Cura packages."
 msgstr "新しいCuraパッケージを検索、管理、インストールします。"
 
-#: Toolbox/plugin.json
+#: Marketplace/plugin.json
 msgctxt "name"
-msgid "Toolbox"
+msgid "Marketplace"
 msgstr "ツールボックス"
 
 #: XRayView/plugin.json

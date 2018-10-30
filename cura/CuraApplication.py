@@ -434,7 +434,7 @@ class CuraApplication(QtApplication):
             "UserAgreement",
             "FileLogger",
             "XmlMaterialProfile",
-            "Toolbox",
+            "Marketplace",
             "PrepareStage",
             "MonitorStage",
             "LocalFileOutputDevice",

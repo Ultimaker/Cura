@@ -386,8 +386,8 @@ msgstr "데이터 전송 중"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:260
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:236
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:80
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:18
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:80
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:381
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:143
@@ -1425,166 +1425,166 @@ msgctxt "@label"
 msgid "Extruder End G-code"
 msgstr "익스트루더 종료 Gcode"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:17
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:17
 msgctxt "@action:button"
 msgid "Install"
 msgstr "설치"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceProgressButton.qml:19
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "설치됨"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceErrorPage.qml:16
 msgctxt "@info"
 msgid "Could not connect to the Cura Package database. Please check your connection."
 msgstr "Cura 패키지 데이터베이스에 연결할 수 없습니다. 연결을 확인하십시오."
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:38
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:28
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledPage.qml:38
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:28
 msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "플러그인"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:75
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:42
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledPage.qml:75
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:42
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:66
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:551
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "재료"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
 msgstr "버전"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:85
 msgctxt "@label"
 msgid "Last updated"
 msgstr "마지막으로 업데이트한 날짜"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
 msgstr "원작자"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:97
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:97
 msgctxt "@label"
 msgid "Downloads"
 msgstr "다운로드"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:116
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:158
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:116
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailPage.qml:158
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:258
 msgctxt "@label"
 msgid "Unknown"
 msgstr "알 수 없는"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:44
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:30
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:44
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:30
 msgctxt "@action:button"
 msgid "Update"
 msgstr "업데이트"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:45
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:31
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:45
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:31
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "업데이트 중"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:32
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDetailTileActions.qml:46
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:32
 msgctxt "@action:button"
 msgid "Updated"
 msgstr "업데이트됨"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:13
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:13
 msgctxt "@title"
-msgid "Toolbox"
+msgid "Marketplace"
 msgstr "도구 상자"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxBackColumn.qml:25
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceBackColumn.qml:25
 msgctxt "@action:button"
 msgid "Back"
 msgstr "뒤로"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
 msgid "You are uninstalling materials and/or profiles that are still in use. Confirming will reset the following materials/profiles to their defaults."
 msgstr "아직 사용 중인 재료 및/또는 프로파일을 제거합니다. 확인하면 다음 재료/프로파일이 기본값으로 재설정됩니다."
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:51
 msgctxt "@text:window"
 msgid "Materials"
 msgstr "재료"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:52
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:52
 msgctxt "@text:window"
 msgid "Profiles"
 msgstr "프로파일"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:89
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceConfirmUninstallResetDialog.qml:89
 msgctxt "@action:button"
 msgid "Confirm"
 msgstr "확인"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceFooter.qml:17
 msgctxt "@info"
 msgid "You will need to restart Cura before changes in packages have effect."
 msgstr "패키지의 변경 사항이 적용되기 전에 Cura를 다시 시작해야 합니다"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceFooter.qml:34
 msgctxt "@info:button"
 msgid "Quit Cura"
 msgstr "Cura 끝내기"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:34
 msgctxt "@label"
 msgid "Community Contributions"
 msgstr "커뮤니티 기여"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:34
 msgctxt "@label"
 msgid "Community Plugins"
 msgstr "커뮤니티 플러그인"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:43
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsPage.qml:43
 msgctxt "@label"
 msgid "Generic Materials"
 msgstr "일반 재료"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:56
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceHeader.qml:56
 msgctxt "@title:tab"
 msgid "Installed"
 msgstr "설치됨"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:19
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:19
 msgctxt "@label"
 msgid "Will install upon restarting"
 msgstr "다시 시작 시 설치 예정"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Downgrade"
 msgstr "다운그레이드"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:51
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceInstalledTileActions.qml:51
 msgctxt "@action:button"
 msgid "Uninstall"
 msgstr "설치 제거"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:16
 msgctxt "@title:window"
 msgid "Plugin License Agreement"
 msgstr "플러그인 사용 계약"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:33
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:33
 msgctxt "@label"
 msgid ""
 "This plugin contains a license.\n"
@@ -1595,37 +1595,37 @@ msgstr ""
 "이 플러그인을 설치하려면 이 라이선스를 수락해야 합니다.\n"
 "아래의 약관에 동의하시겠습니까?"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:54
 msgctxt "@action:button"
 msgid "Accept"
 msgstr "동의"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:65
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLicenseDialog.qml:65
 msgctxt "@action:button"
 msgid "Decline"
 msgstr "거절"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsShowcase.qml:23
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceDownloadsShowcase.qml:23
 msgctxt "@label"
 msgid "Featured"
 msgstr "추천"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:31
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceCompatibilityChart.qml:31
 msgctxt "@label"
 msgid "Compatibility"
 msgstr "호환성"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
 msgstr "패키지 가져오는 중..."
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:88
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceAuthorPage.qml:88
 msgctxt "@label"
 msgid "Website"
 msgstr "웹 사이트"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:94
+#: /home/ruben/Projects/Cura/plugins/Marketplace/resources/qml/MarketplaceAuthorPage.qml:94
 msgctxt "@label"
 msgid "Email"
 msgstr "이메일"
@@ -4265,7 +4265,7 @@ msgstr "확장 프로그램(&X)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:286
 msgctxt "@title:menu menubar:toplevel"
-msgid "&Toolbox"
+msgid "Marke&tplace"
 msgstr "도구 상자(&T)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:294
@@ -4525,14 +4525,14 @@ msgctxt "name"
 msgid "Machine Settings action"
 msgstr "컴퓨터 설정 작업"
 
-#: Toolbox/plugin.json
+#: Marketplace/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new Cura packages."
 msgstr "새 Cura 패키지를 찾고, 관리하고 설치하십시오."
 
-#: Toolbox/plugin.json
+#: Marketplace/plugin.json
 msgctxt "name"
-msgid "Toolbox"
+msgid "Marketplace"
 msgstr "도구 상자"
 
 #: XRayView/plugin.json

@@ -1034,13 +1034,13 @@ QtObject {
         }
     }
 
-    property Component toolbox_action_button: Component {
+    property Component marketplace_action_button: Component {
         ButtonStyle
         {
             background: Rectangle
             {
-                implicitWidth: UM.Theme.getSize("toolbox_action_button").width
-                implicitHeight: UM.Theme.getSize("toolbox_action_button").height
+                implicitWidth: UM.Theme.getSize("marketplace_action_button").width
+                implicitHeight: UM.Theme.getSize("marketplace_action_button").height
                 color:
                 {
                     if (control.installed)

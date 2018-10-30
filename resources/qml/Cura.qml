@@ -679,7 +679,7 @@ UM.MainWindow
     {
         target: Cura.Actions.browsePackages
         onTriggered: {
-            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
+            curaExtensions.callExtensionMethod("Marketplace", "browsePackages")
         }
     }
 
