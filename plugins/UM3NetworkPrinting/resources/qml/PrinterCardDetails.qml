@@ -59,7 +59,6 @@ Item {
                 visible: printJob;
             }
         }
-        
 
         PrintJobPreview {
             anchors.horizontalCenter: parent.horizontalCenter;
