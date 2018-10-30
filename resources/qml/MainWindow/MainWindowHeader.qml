@@ -60,7 +60,7 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 exclusiveGroup: mainWindowHeaderMenuGroup
                 style: UM.Theme.styles.main_window_header_tab
-                height: Math.round(0.56 * UM.Theme.getSize("main_window_header").height)
+                height: UM.Theme.getSize("main_window_header_button").height
                 onClicked: UM.Controller.setActiveStage(model.id)
                 iconSource: model.stage.iconSource
 

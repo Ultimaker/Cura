@@ -26,7 +26,7 @@ Button
         anchors.horizontalCenter: accountWidget.horizontalCenter
 
         source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_no_user")
-        outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("account_widget_outline_inactive")
+        outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
     }
 
     onClicked: popup.opened ? popup.close() : popup.open()
