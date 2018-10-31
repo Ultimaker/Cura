@@ -36,7 +36,7 @@ Item {
                 return UM.Theme.getColor("monitor_card_background");
             }
         }
-        height: childrenRect.height;
+        height: childrenRect.height + UM.Theme.getSize("default_margin").height;
         layer.effect: DropShadow {
             radius: root.shadowRadius;
             verticalOffset: root.shadowOffset;
@@ -46,6 +46,11 @@ Item {
         width: parent.width - 2 * shadowRadius;
 
         Column {
+            id: cardContents;
+            anchors {
+                top: parent.top;
+                topMargin: UM.Theme.getSize("default_margin").height;
+            }
             height: childrenRect.height;
             width: parent.width;
             spacing: UM.Theme.getSize("default_margin").height;
@@ -53,7 +58,7 @@ Item {
             // Main card
             Item {
                 id: mainCard;
-                height: 60 * screenScaleFactor + UM.Theme.getSize("default_margin").width;
+                height: 60 * screenScaleFactor;
                 width: parent.width;
 
                 // Machine icon
@@ -109,7 +114,7 @@ Item {
                     id: printerInfo;
                     anchors {
                         left: machineIcon.right;
-                        leftMargin: UM.Theme.getSize("default_margin").width;
+                        leftMargin: UM.Theme.getSize("wide_margin").width;
                         right: collapseIcon.left;
                         verticalCenter: machineIcon.verticalCenter;
                     }
@@ -250,11 +255,16 @@ Item {
                 iconSource: "../svg/camera-icon.svg";
                 visible: root.printer && root.printJob;
             }
+        }
 
-            // Progress bar
-            PrinterCardProgressBar {
-                visible: printer && printer.activePrintJob != null;
+        // Progress bar
+        PrinterCardProgressBar {
+            anchors {
+                top: cardContents.bottom;
+                topMargin: UM.Theme.getSize("default_margin").height;
             }
+            visible: printer && printer.activePrintJob != null;
+            width: parent.width;
         }
     }
 }
