@@ -442,7 +442,6 @@ class CuraApplication(QtApplication):
 
             # Views:
             "SimpleView", #Dependency of SolidView.
-            "SimulationView",
             "SolidView", #Displays models. Cura is useless without it.
 
             # Readers & Writers:
@@ -452,11 +451,8 @@ class CuraApplication(QtApplication):
 
             # Tools:
             "CameraTool", #Needed to see the scene. Cura is useless without it.
-            "MirrorTool",
-            "RotateTool",
-            "ScaleTool",
             "SelectionTool", #Dependency of the rest of the tools.
-            "TranslateTool",
+            "TranslateTool", #You'll need this for almost every print.
         ])
         self._i18n_catalog = i18nCatalog("cura")
 
