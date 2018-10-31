@@ -12,6 +12,7 @@ Item {
     id: root;
     property var printJob: null;
     property var running: isRunning(printJob);
+    property var assigned: isAssigned(printJob);
 
     Button {
         id: button;
@@ -102,7 +103,7 @@ Item {
 
             PrintJobContextMenuItem {
                 enabled: {
-                    if (printJob && printJob.state == "queued") {
+                    if (printJob && printJob.state == "queued" && !assigned) {
                         if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
                             return OutputDevice.queuedPrintJobs[0].key != printJob.key;
                         }
@@ -117,7 +118,6 @@ Item {
             }
 
             PrintJobContextMenuItem {
-                enabled: printJob && printJob.state == "queued";
                 onClicked: {
                     deleteConfirmationDialog.visible = true;
                     popup.close();
@@ -209,5 +209,11 @@ Item {
             return false;
         }
         return ["paused", "printing", "pre_print"].indexOf(job.state) !== -1;
+    }
+    function isAssigned(job) {
+        if (!job) {
+            return false;
+        }
+        return job.assignedPrinter ? true : false;
     }
 }
