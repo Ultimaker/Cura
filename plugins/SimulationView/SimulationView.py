@@ -16,6 +16,7 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry
+from UM.Qt.QtApplication import QtApplication
 from UM.Resources import Resources
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
@@ -113,17 +114,15 @@ class SimulationView(CuraView):
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
 
-        Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
+        QtApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onEngineCreated(self) -> None:
-        menu_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"),
-                                           "SimulationViewMenuComponent.qml")
-
-        main_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"),
-                                           "SimulationViewMainComponent.qml")
-
-        self.addDisplayComponent("main", main_component_path)
-        self.addDisplayComponent("menu", menu_component_path)
+        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        if plugin_path:
+            self.addDisplayComponent("main", os.path.join(plugin_path, "SimulationViewMainComponent.qml"))
+            self.addDisplayComponent("menu", os.path.join(plugin_path, "SimulationViewMenuComponent.qml"))
+        else:
+            Logger.log("e", "Unable to find the path for %s", self.getPluginId())
 
     def _evaluateCompatibilityMode(self) -> bool:
         return OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode"))
