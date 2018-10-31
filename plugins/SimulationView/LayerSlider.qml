@@ -28,8 +28,8 @@ Item
     property real trackThickness: UM.Theme.getSize("slider_groove").width // width of the slider track
     property real trackRadius: trackThickness / 2
     property color trackColor: UM.Theme.getColor("slider_groove")
-    property real trackBorderWidth: UM.Theme.getColor("slider_groove_border")
-    property color trackBorderColor: "black"
+    property real trackBorderWidth: 1
+    property color trackBorderColor: UM.Theme.getColor("slider_groove_border")
 
     // value properties
     property real maximumValue: 100
@@ -80,7 +80,7 @@ Item
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
-    // slider track
+    // Slider track
     Rectangle
     {
         id: track
@@ -106,7 +106,7 @@ Item
         anchors.horizontalCenter: sliderRoot.horizontalCenter
         visible: sliderRoot.layersVisible
 
-        // set the new value when dragging
+        // Set the new value when dragging
         function onHandleDragged()
         {
             sliderRoot.manuallyChanged = true
@@ -169,7 +169,7 @@ Item
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
             x: parent.x + parent.width + UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
+            target: Qt.point(sliderRoot.width + width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
 
             // custom properties
@@ -275,7 +275,7 @@ Item
             id: upperHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x + parent.width + UM.Theme.getSize("default_margin").width
+            x: parent.x - parent.width - width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
@@ -385,9 +385,9 @@ Item
             id: lowerHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x + parent.width + UM.Theme.getSize("default_margin").width
+            x: parent.x - parent.width - width
             anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
+            target: Qt.point(sliderRoot.width + width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
 
             // custom properties

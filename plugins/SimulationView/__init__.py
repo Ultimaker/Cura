@@ -13,7 +13,7 @@ def getMetaData():
     return {
         "view": {
             "name": catalog.i18nc("@item:inlistbox", "Layer view"),
-            "weight": 2
+            "weight": 0
         }
     }
 

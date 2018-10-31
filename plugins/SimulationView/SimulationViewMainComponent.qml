@@ -135,13 +135,13 @@ Item
                     }
                     else
                     {
-                        UM.SimulationView.setCurrentLayer(currentLayer+1)
+                        UM.SimulationView.setCurrentLayer(currentLayer + 1)
                         UM.SimulationView.setCurrentPath(0)
                     }
                 }
                 else
                 {
-                    UM.SimulationView.setCurrentPath(currentPath+1)
+                    UM.SimulationView.setCurrentPath(currentPath + 1)
                 }
             }
             // The status must be set here instead of in the resumeSimulation function otherwise it won't work
