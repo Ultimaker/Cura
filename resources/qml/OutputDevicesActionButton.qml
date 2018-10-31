@@ -49,6 +49,7 @@ Item
 
         tooltip: catalog.i18nc("@info:tooltip", "Select the active output device")
         iconSource: popup.opened ? UM.Theme.getIcon("arrow_top") : UM.Theme.getIcon("arrow_bottom")
+        color: UM.Theme.getColor("action_panel_secondary")
         visible: (devicesModel.deviceCount > 1)
 
         onClicked: popup.opened ? popup.close() : popup.open()
@@ -56,6 +57,7 @@ Item
         Popup
         {
             id: popup
+            padding: 0
 
             y: -height
             x: parent.width - width
@@ -72,7 +74,9 @@ Item
                     {
                         text: model.description
                         color: "transparent"
-                        hoverColor: "red"
+                        outlineColor: "transparent"
+                        cornerRadius: 0
+                        hoverColor: UM.Theme.getColor("primary")
 
                         onClicked:
                         {
@@ -87,7 +91,8 @@ Item
             {
                 opacity: visible ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
-                color: UM.Theme.getColor("primary")
+                radius: UM.Theme.getSize("default_radius")
+                color: UM.Theme.getColor("action_panel_secondary")
                 border.color: UM.Theme.getColor("lining")
                 border.width: UM.Theme.getSize("default_lining").width
             }
