@@ -117,7 +117,12 @@ class SimulationView(CuraView):
 
     def _onEngineCreated(self) -> None:
         menu_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"),
-                                           "SimulationView.qml")
+                                           "SimulationViewMenuComponent.qml")
+
+        main_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"),
+                                           "SimulationViewMainComponent.qml")
+
+        self.addDisplayComponent("main", main_component_path)
         self.addDisplayComponent("menu", menu_component_path)
 
     def _evaluateCompatibilityMode(self) -> bool:

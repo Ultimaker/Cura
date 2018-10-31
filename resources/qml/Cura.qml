@@ -155,24 +155,6 @@ UM.MainWindow
                 color: UM.Theme.getColor("main_window_header_background")
             }
 
-            Loader
-            {
-                // The stage menu is, as the name implies, a menu that is defined by the active stage.
-                // Note that this menu does not need to be set at all! It's perfectly acceptable to have a stage
-                // without this menu!
-                id: stageMenu
-
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                }
-
-                height: UM.Theme.getSize("stage_menu").height
-                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
-            }
-
             Connections
             {
                 target: stageMenu.item
@@ -230,6 +212,22 @@ UM.MainWindow
                 }
             }
 
+            Loader
+            {
+                id: viewPanel
+
+                anchors.bottom: viewModeButton.top
+                anchors.topMargin: UM.Theme.getSize("default_margin").height
+                anchors.right: viewModeButton.right
+
+                property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
+
+                height: childrenRect.height
+                width: childrenRect.width
+
+                source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : ""
+            }
+
             Cura.ActionPanelWidget
             {
                 anchors.right: parent.right
@@ -254,15 +252,26 @@ UM.MainWindow
 
                 anchors.fill: parent
 
-                MouseArea
+                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
+            }
+
+
+            Loader
+            {
+                // The stage menu is, as the name implies, a menu that is defined by the active stage.
+                // Note that this menu does not need to be set at all! It's perfectly acceptable to have a stage
+                // without this menu!
+                id: stageMenu
+
+                anchors
                 {
-                    visible: parent.source != ""
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-                    onWheel: wheel.accepted = true
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
                 }
 
-                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
+                height: UM.Theme.getSize("stage_menu").height
+                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
             }
 
             UM.MessageStack

@@ -30,4 +30,6 @@ class PreviewStage(CuraStage):
         plugin_path = self._application.getPluginRegistry().getPluginPath(self.getPluginId())
         if plugin_path is not None:
             menu_component_path = os.path.join(plugin_path, "PreviewMenu.qml")
+            main_component_path = os.path.join(plugin_path, "PreviewMain.qml")
             self.addDisplayComponent("menu", menu_component_path)
+            self.addDisplayComponent("main", main_component_path)
