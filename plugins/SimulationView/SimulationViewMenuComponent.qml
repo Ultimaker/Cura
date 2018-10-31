@@ -70,7 +70,8 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-        Button {
+        Button
+        {
             id: collapseButton
             anchors.top: parent.top
             anchors.topMargin: Math.round(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
@@ -97,7 +98,7 @@ Item
             }
         }
 
-        ColumnLayout
+        Column
         {
             id: viewSettings
 
@@ -126,11 +127,10 @@ Item
             Label
             {
                 id: layerViewTypesLabel
-                anchors.left: parent.left
                 text: catalog.i18nc("@label","Color scheme")
                 font: UM.Theme.getFont("default");
                 visible: !UM.SimulationView.compatibilityMode
-                Layout.fillWidth: true
+                width: parent.width
                 color: UM.Theme.getColor("setting_control_text")
             }
 
@@ -162,13 +162,10 @@ Item
             ComboBox
             {
                 id: layerTypeCombobox
-                anchors.left: parent.left
-                Layout.fillWidth: true
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                width: parent.width
                 model: layerViewTypes
                 visible: !UM.SimulationView.compatibilityMode
                 style: UM.Theme.styles.combobox
-                anchors.right: parent.right
 
                 onActivated:
                 {
@@ -194,14 +191,12 @@ Item
             Label
             {
                 id: compatibilityModeLabel
-                anchors.left: parent.left
                 text: catalog.i18nc("@label","Compatibility Mode")
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 visible: UM.SimulationView.compatibilityMode
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                height: UM.Theme.getSize("layerview_row").height
+                width: parent.width
             }
 
             Item
@@ -253,9 +248,9 @@ Item
                         border.color: UM.Theme.getColor("lining")
                         visible: !viewSettings.show_legend & !viewSettings.show_gradient
                     }
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
-                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                    width: parent.width
+
                     style: UM.Theme.styles.checkbox
                     Label
                     {
@@ -264,9 +259,9 @@ Item
                         color: UM.Theme.getColor("setting_control_text")
                         font: UM.Theme.getFont("default")
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: extrudersModelCheckBox.left;
-                        anchors.right: extrudersModelCheckBox.right;
-                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width/2)
+                        anchors.left: extrudersModelCheckBox.left
+                        anchors.right: extrudersModelCheckBox.right
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width / 2)
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
                     }
                 }
@@ -325,9 +320,8 @@ Item
                         border.color: UM.Theme.getColor("lining")
                         visible: viewSettings.show_legend
                     }
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
-                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                    width: parent.width
                     style: UM.Theme.styles.checkbox
                     Label
                     {
@@ -336,9 +330,9 @@ Item
                         elide: Text.ElideRight
                         color: UM.Theme.getColor("setting_control_text")
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: legendModelCheckBox.left;
-                        anchors.right: legendModelCheckBox.right;
-                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width/2)
+                        anchors.left: legendModelCheckBox.left
+                        anchors.right: legendModelCheckBox.right
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width / 2)
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
                     }
                 }
@@ -349,7 +343,7 @@ Item
                 checked: viewSettings.only_show_top_layers
                 onClicked:
                 {
-                    UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0);
+                    UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0)
                 }
                 text: catalog.i18nc("@label", "Only Show Top Layers")
                 visible: UM.SimulationView.compatibilityMode
@@ -360,7 +354,7 @@ Item
                 checked: viewSettings.top_layer_count == 5
                 onClicked:
                 {
-                    UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1);
+                    UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1)
                 }
                 text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
                 visible: UM.SimulationView.compatibilityMode
@@ -401,9 +395,8 @@ Item
                         border.color: UM.Theme.getColor("lining")
                         visible: viewSettings.show_legend
                     }
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
-                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                    width: parent.width
                     color: UM.Theme.getColor("setting_control_text")
                     font: UM.Theme.getFont("default")
                 }
@@ -416,11 +409,6 @@ Item
                 visible: viewSettings.show_gradient
                 width: parent.width
                 height: UM.Theme.getSize("layerview_row").height
-                anchors
-                {
-                    topMargin: UM.Theme.getSize("slider_layerview_margin").height
-                    horizontalCenter: parent.horizontalCenter
-                }
 
                 Label
                 {
@@ -503,7 +491,7 @@ Item
 
             // Gradient colors for feedrate
             Rectangle
-            { // In QML 5.9 can be changed by LinearGradient
+            {   // In QML 5.9 can be changed by LinearGradient
                 // Invert values because then the bar is rotated 90 degrees
                 id: feedrateGradient
                 visible: viewSettings.show_feedrate_gradient

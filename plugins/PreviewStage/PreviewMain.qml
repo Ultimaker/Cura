@@ -15,5 +15,4 @@ Loader
     id: previewMain
 
     source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
-    onSourceChanged: print("THE SOURCE IS", source)
 }
