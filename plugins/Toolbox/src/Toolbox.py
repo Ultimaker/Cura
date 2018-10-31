@@ -845,6 +845,7 @@ class Toolbox(QObject, Extension):
     def buildMaterialsModels(self) -> None:
         self._metadata["materials_showcase"] = []
         self._metadata["materials_available"] = []
+        self._metadata["materials_generic"] = []
 
         processed_authors = [] # type: List[str]
 
