@@ -1118,6 +1118,7 @@ Item
             {
                 id: platformAdhesionType
                 containerStack: Cura.MachineManager.activeMachine
+                removeUnusedValue: false //Doesn't work with settings that are resolved.
                 key: "adhesion_type"
                 watchedProperties: [ "value", "enabled" ]
                 storeIndex: 0
