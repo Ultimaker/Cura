@@ -1,3 +1,16 @@
+[3.5.1]
+*Bug fixes
+- Fixed M104 temperature commands giving inaccurate results.
+- Fixed crashes caused by loading files from USB stick on Windows platforms.
+- Fixed several issues with configuration files that missed the type in the metadata.
+- Fixed issues caused by skin/infill optimization.
+- Fixed several issues related to missing definition files for third-party printers.
+- Fixed an issue where combing path generation cuts corners.
+- Fixed a range of crashes caused by lock files.
+- Fixed issues with remembering save directories on MacOS.
+- Fixed an issue where CuraEngine uses incorrect material settings.
+- Fixed an issue where some support layers don't have support infill.
+
 [3.5.0]
 *Monitor page
 The monitor page of Ultimaker Cura has been remodeled for better consistency with the Cura Connect ‘Print jobs’ interface. This means less switching between interfaces, and more control from within Ultimaker Cura.
