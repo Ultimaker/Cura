@@ -33,10 +33,10 @@ The entry points to the Toolbox are now renamed to Marketplace.
 A new tab has been added to the Marketplace that includes downloadable material profiles, to quickly and easily prepare models for a range of third-party materials.
 
 *New third-party definitions
-New profiles added for Anycube 4MAx and Tizyx K25.
+New profiles added for Anycube 4MAx and Tizyx K25. Contributed by jscurtu and ValentinPitre respectively.
 
 *Improved definitions for Ender-3
-The Ender-3 build plate size has been adjusted to the correct size of 235 x 235 mm, corrected the start-up sequence, and the printhead position has been adjusted when prints are purged or completed.
+The Ender-3 build plate size has been adjusted to the correct size of 235 x 235 mm, corrected the start-up sequence, and the printhead position has been adjusted when prints are purged or completed. Contributed by stelgenhof.
 
 *Add mesh names to slicing message
 Added comment generation to indicate which mesh the GCODE after this comment is constructing. Contributed by paukstelis.
