@@ -262,7 +262,7 @@ class Marketplace(QObject, Extension):
 
         dialog = self._application.createQmlComponent(path, {"marketplace": self})
         if not dialog:
-            raise Exception("Failed to create marketplace dialog")
+            raise Exception("Failed to create Marketplace dialog")
         return dialog
 
     def _convertPluginMetadata(self, plugin: Dict[str, Any]) -> Dict[str, Any]:
@@ -845,6 +845,7 @@ class Marketplace(QObject, Extension):
     def buildMaterialsModels(self) -> None:
         self._metadata["materials_showcase"] = []
         self._metadata["materials_available"] = []
+        self._metadata["materials_generic"] = []
 
         processed_authors = [] # type: List[str]
 

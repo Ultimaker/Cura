@@ -429,34 +429,30 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             # Misc.:
-            "ConsoleLogger",
-            "CuraEngineBackend",
-            "UserAgreement",
-            "FileLogger",
-            "XmlMaterialProfile",
-            "Marketplace",
-            "PrepareStage",
-            "MonitorStage",
-            "LocalFileOutputDevice",
-            "LocalContainerProvider",
+            "ConsoleLogger", #You want to be able to read the log if something goes wrong.
+            "CuraEngineBackend", #Cura is useless without this one since you can't slice.
+            "UserAgreement", #Our lawyers want every user to see this at least once.
+            "FileLogger", #You want to be able to read the log if something goes wrong.
+            "XmlMaterialProfile", #Cura crashes without this one.
+            "Marketplace", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "PrepareStage", #Cura is useless without this one since you can't load models.
+            "MonitorStage", #Major part of Cura's functionality.
+            "LocalFileOutputDevice", #Major part of Cura's functionality.
+            "LocalContainerProvider", #Cura is useless without any profiles or setting definitions.
 
             # Views:
-            "SimpleView",
-            "SimulationView",
-            "SolidView",
+            "SimpleView", #Dependency of SolidView.
+            "SolidView", #Displays models. Cura is useless without it.
 
             # Readers & Writers:
-            "GCodeWriter",
-            "STLReader",
-            "3MFWriter",
+            "GCodeWriter", #Cura is useless if it can't write its output.
+            "STLReader", #Most common model format, so disabling this makes Cura 90% useless.
+            "3MFWriter", #Required for writing project files.
 
             # Tools:
-            "CameraTool",
-            "MirrorTool",
-            "RotateTool",
-            "ScaleTool",
-            "SelectionTool",
-            "TranslateTool",
+            "CameraTool", #Needed to see the scene. Cura is useless without it.
+            "SelectionTool", #Dependency of the rest of the tools.
+            "TranslateTool", #You'll need this for almost every print.
         ])
         self._i18n_catalog = i18nCatalog("cura")
 

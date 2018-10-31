@@ -36,7 +36,7 @@ Item {
                 return UM.Theme.getColor("monitor_card_background");
             }
         }
-        height: childrenRect.height;
+        height: childrenRect.height + UM.Theme.getSize("default_margin").height;
         layer.effect: DropShadow {
             radius: root.shadowRadius;
             verticalOffset: root.shadowOffset;
@@ -46,13 +46,19 @@ Item {
         width: parent.width - 2 * shadowRadius;
 
         Column {
+            id: cardContents;
+            anchors {
+                top: parent.top;
+                topMargin: UM.Theme.getSize("default_margin").height;
+            }
             height: childrenRect.height;
             width: parent.width;
+            spacing: UM.Theme.getSize("default_margin").height;
 
             // Main card
             Item {
                 id: mainCard;
-                height: 60 * screenScaleFactor + 2 * UM.Theme.getSize("default_margin").width;
+                height: 60 * screenScaleFactor;
                 width: parent.width;
 
                 // Machine icon
@@ -108,7 +114,7 @@ Item {
                     id: printerInfo;
                     anchors {
                         left: machineIcon.right;
-                        leftMargin: UM.Theme.getSize("default_margin").width;
+                        leftMargin: UM.Theme.getSize("wide_margin").width;
                         right: collapseIcon.left;
                         verticalCenter: machineIcon.verticalCenter;
                     }
@@ -223,6 +229,16 @@ Item {
                 }
             }
 
+            HorizontalLine {
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
+                }
+                visible: root.printer;
+            }
+
             // Detailed card
             PrinterCardDetails {
                 collapsed: root.collapsed;
@@ -230,10 +246,25 @@ Item {
                 visible: root.printer;
             }
 
-            // Progress bar
-            PrinterCardProgressBar {
-                visible: printer && printer.activePrintJob != null;
+            CameraButton {
+                id: showCameraButton;
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                }
+                iconSource: "../svg/camera-icon.svg";
+                visible: root.printer && root.printJob;
             }
+        }
+
+        // Progress bar
+        PrinterCardProgressBar {
+            anchors {
+                top: cardContents.bottom;
+                topMargin: UM.Theme.getSize("default_margin").height;
+            }
+            visible: printer && printer.activePrintJob != null;
+            width: parent.width;
         }
     }
 }
