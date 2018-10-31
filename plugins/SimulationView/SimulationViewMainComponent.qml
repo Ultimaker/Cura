@@ -30,13 +30,6 @@ Item
         // Custom properties
         handleValue: UM.SimulationView.currentPath
         maximumValue: UM.SimulationView.numPaths
-        handleSize: UM.Theme.getSize("slider_handle").width
-        trackThickness: UM.Theme.getSize("slider_groove").width
-        trackColor: UM.Theme.getColor("slider_groove")
-        trackBorderColor: UM.Theme.getColor("slider_groove_border")
-        handleColor: UM.Theme.getColor("slider_handle")
-        handleActiveColor: UM.Theme.getColor("slider_handle_active")
-        rangeColor: UM.Theme.getColor("slider_groove_fill")
 
         // Update values when layer data changes.
         Connections
@@ -175,15 +168,6 @@ Item
         upperValue: UM.SimulationView.currentLayer
         lowerValue: UM.SimulationView.minimumLayer
         maximumValue: UM.SimulationView.numLayers
-        handleSize: UM.Theme.getSize("slider_handle").width
-        trackThickness: UM.Theme.getSize("slider_groove").width
-        trackColor: UM.Theme.getColor("slider_groove")
-        trackBorderColor: UM.Theme.getColor("slider_groove_border")
-        upperHandleColor: UM.Theme.getColor("slider_handle")
-        lowerHandleColor: UM.Theme.getColor("slider_handle")
-        rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
-        handleActiveColor: UM.Theme.getColor("slider_handle_active")
-        handleLabelWidth: UM.Theme.getSize("slider_layerview_background").width
 
         // Update values when layer data changes
         Connections

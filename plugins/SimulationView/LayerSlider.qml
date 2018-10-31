@@ -13,22 +13,22 @@ Item
 {
     id: sliderRoot
 
-    // handle properties
-    property real handleSize: 10
+    // Handle properties
+    property real handleSize: UM.Theme.getSize("slider_handle").width
     property real handleRadius: handleSize / 2
     property real minimumRangeHandleSize: handleSize / 2
-    property color upperHandleColor: "black"
-    property color lowerHandleColor: "black"
-    property color rangeHandleColor: "black"
-    property color handleActiveColor: "white"
-    property real handleLabelWidth: width
+    property color upperHandleColor: UM.Theme.getColor("slider_handle")
+    property color lowerHandleColor: UM.Theme.getColor("slider_handle")
+    property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+    property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
+    property real handleLabelWidth: UM.Theme.getSize("slider_layerview_background").width
     property var activeHandle: upperHandle
 
-    // track properties
-    property real trackThickness: 4 // width of the slider track
+    // Track properties
+    property real trackThickness: UM.Theme.getSize("slider_groove").width // width of the slider track
     property real trackRadius: trackThickness / 2
-    property color trackColor: "white"
-    property real trackBorderWidth: 1 // width of the slider track border
+    property color trackColor: UM.Theme.getColor("slider_groove")
+    property real trackBorderWidth: UM.Theme.getColor("slider_groove_border")
     property color trackBorderColor: "black"
 
     // value properties

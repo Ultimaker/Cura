@@ -14,19 +14,19 @@ Item
     id: sliderRoot
 
     // handle properties
-    property real handleSize: 10
+    property real handleSize: UM.Theme.getSize("slider_handle").width
     property real handleRadius: handleSize / 2
-    property color handleColor: "black"
-    property color handleActiveColor: "white"
-    property color rangeColor: "black"
+    property color handleColor: UM.Theme.getColor("slider_handle")
+    property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
+    property color rangeColor: UM.Theme.getColor("slider_groove_fill")
     property real handleLabelWidth: width
 
     // track properties
-    property real trackThickness: 4 // width of the slider track
+    property real trackThickness: UM.Theme.getSize("slider_groove").width
     property real trackRadius: trackThickness / 2
-    property color trackColor: "white"
+    property color trackColor: UM.Theme.getColor("slider_groove")
     property real trackBorderWidth: 1 // width of the slider track border
-    property color trackBorderColor: "black"
+    property color trackBorderColor: UM.Theme.getColor("slider_groove_border")
 
     // value properties
     property real maximumValue: 100

@@ -216,15 +216,14 @@ Item
                 onPreferenceChanged:
                 {
                     layerTypeCombobox.currentIndex = UM.SimulationView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
-                    layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex);
-                    playButton.pauseSimulation();
-                    viewSettings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
-                    viewSettings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
-                    viewSettings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
-                    viewSettings.show_skin = UM.Preferences.getValue("layerview/show_skin");
-                    viewSettings.show_infill = UM.Preferences.getValue("layerview/show_infill");
-                    viewSettings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
-                    viewSettings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
+                    layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex)
+                    viewSettings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|")
+                    viewSettings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves")
+                    viewSettings.show_helpers = UM.Preferences.getValue("layerview/show_helpers")
+                    viewSettings.show_skin = UM.Preferences.getValue("layerview/show_skin")
+                    viewSettings.show_infill = UM.Preferences.getValue("layerview/show_infill")
+                    viewSettings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers")
+                    viewSettings.top_layer_count = UM.Preferences.getValue("view/top_layer_count")
                 }
             }
 
