@@ -33,6 +33,7 @@ Item {
         hoverEnabled: true;
         onClicked: parent.switchPopupState();
         text: "\u22EE"; //Unicode; Three stacked points.
+        visible: printJob.state == "queued" || running ? true : false;
         width: 35 * screenScaleFactor; // TODO: Theme!
     }
 
@@ -101,7 +102,7 @@ Item {
 
             PrintJobContextMenuItem {
                 enabled: {
-                    if (printJob && !running) {
+                    if (printJob && printJob.state == "queued") {
                         if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
                             return OutputDevice.queuedPrintJobs[0].key != printJob.key;
                         }
@@ -116,7 +117,7 @@ Item {
             }
 
             PrintJobContextMenuItem {
-                enabled: printJob && !running;
+                enabled: printJob && printJob.state == "queued";
                 onClicked: {
                     deleteConfirmationDialog.visible = true;
                     popup.close();
