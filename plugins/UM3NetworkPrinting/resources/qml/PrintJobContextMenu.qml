@@ -118,6 +118,7 @@ Item {
             }
 
             PrintJobContextMenuItem {
+                enabled: printJob && !running;
                 onClicked: {
                     deleteConfirmationDialog.visible = true;
                     popup.close();
