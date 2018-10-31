@@ -14,6 +14,7 @@ Button
     property alias iconSource: buttonIcon.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
+    property alias tooltip: tooltip.text
     property var color: UM.Theme.getColor("primary")
     property var hoverColor: UM.Theme.getColor("primary_hover")
     property var disabledColor: color
@@ -60,6 +61,14 @@ Button
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
         Behavior on color { ColorAnimation { duration: 50 } }
+    }
+
+    ToolTip
+    {
+        id: tooltip
+        text: ""
+        delay: 500
+        visible: text != "" && button.hovered
     }
 
     MouseArea

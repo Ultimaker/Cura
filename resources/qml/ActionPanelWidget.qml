@@ -21,7 +21,7 @@ Rectangle
     radius: UM.Theme.getSize("default_radius").width
     visible: CuraApplication.platformActivity
 
-    property bool backendStatusDone: UM.Backend.state == UM.Backend.Done
+    property bool outputAvailable: UM.Backend.state == UM.Backend.Done || UM.Backend.state == UM.Backend.Disabled
 
     Loader
     {
@@ -33,7 +33,7 @@ Rectangle
             left: parent.left
             leftMargin: UM.Theme.getSize("thick_margin").width
         }
-        sourceComponent: backendStatusDone ? outputProcessWidget : sliceProcessWidget
+        sourceComponent: outputAvailable ? outputProcessWidget : sliceProcessWidget
     }
 
     Behavior on height { NumberAnimation { duration: 100 } }

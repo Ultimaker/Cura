@@ -28,7 +28,7 @@ Column
 
     function sliceOrStopSlicing()
     {
-        if ([UM.Backend.NotStarted, UM.Backend.Disabled].indexOf(widget.backendState) != -1)
+        if (widget.backendState == UM.Backend.NotStarted)
         {
             CuraApplication.backend.forceSlice()
         }
@@ -86,7 +86,7 @@ Column
         height: UM.Theme.getSize("action_panel_button").height
         text:
         {
-            if ([UM.Backend.NotStarted, UM.Backend.Error, UM.Backend.Disabled].indexOf(widget.backendState) != -1)
+            if ([UM.Backend.NotStarted, UM.Backend.Error].indexOf(widget.backendState) != -1)
             {
                 return catalog.i18nc("@button", "Slice")
             }
@@ -101,7 +101,7 @@ Column
         // Get the current value from the preferences
         property bool autoSlice: UM.Preferences.getValue("general/auto_slice")
         // Disable the slice process when
-        property bool disabledSlice: [UM.Backend.Done, UM.Backend.Error, UM.Backend.Disabled].indexOf(widget.backendState) != -1
+        property bool disabledSlice: [UM.Backend.Done, UM.Backend.Error].indexOf(widget.backendState) != -1
 
         disabledColor: disabledSlice ? UM.Theme.getColor("action_button_disabled") : "transparent"
         textDisabledColor: disabledSlice ?  UM.Theme.getColor("action_button_disabled_text") : UM.Theme.getColor("primary")

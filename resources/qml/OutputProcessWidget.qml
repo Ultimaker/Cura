@@ -96,12 +96,10 @@ Column
             onClicked: console.log("Clicking preview")
         }
 
-        Cura.ActionButton
+        Cura.OutputDevicesActionButton
         {
-            width: UM.Theme.getSize("account_button").width
+            width: UM.Theme.getSize("action_panel_button").width
             height: UM.Theme.getSize("action_panel_button").height
-            text: catalog.i18nc("@button", "Save to file")
-            onClicked: console.log("Clicking action button")
         }
     }
 }
