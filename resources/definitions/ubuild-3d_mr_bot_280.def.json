@@ -9,7 +9,6 @@
         "manufacturer": "uBuild-3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
-        "icon": "icon_uBuild-3D",
         "platform": "mr_bot_280_platform.stl",
         "has_materials": true,
         "preferred_quality_type": "draft",

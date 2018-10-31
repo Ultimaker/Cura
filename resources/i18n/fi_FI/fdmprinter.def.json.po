@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
+"Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2018-09-19 17:07+0000\n"
+"POT-Creation-Date: 2018-10-29 15:01+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -1072,7 +1072,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1492,7 +1492,7 @@ msgstr "Täyttökuvio"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1554,6 +1554,11 @@ msgstr "Risti"
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
 msgstr "Risti 3D"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option gyroid"
+msgid "Gyroid"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -3258,6 +3263,36 @@ msgid "Orientation of the infill pattern for supports. The support infill patter
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_brim_enable label"
+msgid "Enable Support Brim"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable description"
+msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width label"
+msgid "Support Brim Width"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width description"
+msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count label"
+msgid "Support Brim Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count description"
+msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Tuen Z-etäisyys"
@@ -3823,6 +3858,16 @@ msgstr "Reunuksen linjaluku"
 msgctxt "brim_line_count description"
 msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
 msgstr "Reunukseen käytettävien linjojen lukumäärä. Useampi reunuslinja parantaa kiinnitystä alustaan, mutta rajoittaa tehokasta tulostusaluetta."
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support label"
+msgid "Brim Replaces Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support description"
+msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"

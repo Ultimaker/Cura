@@ -283,7 +283,7 @@ UM.MainWindow
             Menu
             {
                 id: plugin_menu
-                title: catalog.i18nc("@title:menu menubar:toplevel", "&Toolbox")
+                title: catalog.i18nc("@title:menu menubar:toplevel", "&Marketplace")
 
                 MenuItem { action: Cura.Actions.browsePackages }
             }

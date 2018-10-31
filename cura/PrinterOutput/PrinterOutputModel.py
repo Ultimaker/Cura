@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
 from typing import List, Dict, Optional
 from UM.Math.Vector import Vector
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
@@ -11,7 +11,6 @@ MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-    from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 
 class PrinterOutputModel(QObject):
@@ -25,7 +24,7 @@ class PrinterOutputModel(QObject):
     keyChanged = pyqtSignal()
     printerTypeChanged = pyqtSignal()
     buildplateChanged = pyqtSignal()
-    cameraChanged = pyqtSignal()
+    cameraUrlChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
     canUpdateFirmwareChanged = pyqtSignal()
 
@@ -50,16 +49,20 @@ class PrinterOutputModel(QObject):
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
 
-        self._camera = None
+        self._camera_url = QUrl()  # type: QUrl
 
     @pyqtProperty(str, constant = True)
     def firmwareVersion(self) -> str:
         return self._firmware_version
 
-    def setCamera(self, camera: Optional["NetworkCamera"]) -> None:
-        if self._camera is not camera:
-            self._camera = camera
-            self.cameraChanged.emit()
+    def setCameraUrl(self, camera_url: "QUrl") -> None:
+        if self._camera_url != camera_url:
+            self._camera_url = camera_url
+            self.cameraUrlChanged.emit()
+
+    @pyqtProperty(QUrl, fset = setCameraUrl, notify = cameraUrlChanged)
+    def cameraUrl(self) -> "QUrl":
+        return self._camera_url
 
     def updateIsPreheating(self, pre_heating: bool) -> None:
         if self._is_preheating != pre_heating:
@@ -69,10 +72,6 @@ class PrinterOutputModel(QObject):
     @pyqtProperty(bool, notify=isPreheatingChanged)
     def isPreheating(self) -> bool:
         return self._is_preheating
-
-    @pyqtProperty(QObject, notify=cameraChanged)
-    def camera(self) -> Optional["NetworkCamera"]:
-        return self._camera
 
     @pyqtProperty(str, notify = printerTypeChanged)
     def type(self) -> str:

@@ -21,12 +21,12 @@ from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .SendMaterialJob import SendMaterialJob
+from .ConfigurationChangeModel import ConfigurationChangeModel
+from .UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices, QImage
@@ -46,7 +46,8 @@ i18n_catalog = i18nCatalog("cura")
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     printJobsChanged = pyqtSignal()
     activePrinterChanged = pyqtSignal()
-    activeCameraChanged = pyqtSignal()
+    activeCameraUrlChanged = pyqtSignal()
+    receivedPrintJobsChanged = pyqtSignal()
 
     # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
     # Inheritance doesn't seem to work. Tying them together does work, but i'm open for better suggestions.
@@ -60,7 +61,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._dummy_lambdas = ("", {}, io.BytesIO()) #type: Tuple[str, Dict, Union[io.StringIO, io.BytesIO]]
 
-        self._print_jobs = [] # type: List[PrintJobOutputModel]
+        self._print_jobs = [] # type: List[UM3PrintJobOutputModel]
+        self._received_print_jobs = False # type: bool
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterMonitorItem.qml")
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterControlItem.qml")
@@ -90,14 +92,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._printer_uuid_to_unique_name_mapping = {}  # type: Dict[str, str]
 
-        self._finished_jobs = []  # type: List[PrintJobOutputModel]
+        self._finished_jobs = []  # type: List[UM3PrintJobOutputModel]
 
         self._cluster_size = int(properties.get(b"cluster_size", 0))  # type: int
 
         self._latest_reply_handler = None  # type: Optional[QNetworkReply]
         self._sending_job = None
 
-        self._active_camera = None # type: Optional[NetworkCamera]
+        self._active_camera_url = QUrl()  # type: QUrl
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
@@ -261,30 +263,21 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def activePrinter(self) -> Optional[PrinterOutputModel]:
         return self._active_printer
 
-    @pyqtProperty(QObject, notify=activeCameraChanged)
-    def activeCamera(self) -> Optional[NetworkCamera]:
-        return self._active_camera
-
     @pyqtSlot(QObject)
     def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
         if self._active_printer != printer:
-            if self._active_printer and self._active_printer.camera:
-                self._active_printer.camera.stop()
             self._active_printer = printer
             self.activePrinterChanged.emit()
 
-    @pyqtSlot(QObject)
-    def setActiveCamera(self, camera: Optional[NetworkCamera]) -> None:
-        if self._active_camera != camera:
-            if self._active_camera:
-                self._active_camera.stop()
+    @pyqtProperty(QUrl, notify = activeCameraUrlChanged)
+    def activeCameraUrl(self) -> "QUrl":
+        return self._active_camera_url
 
-            self._active_camera = camera
-
-            if self._active_camera:
-                self._active_camera.start()
-
-            self.activeCameraChanged.emit()
+    @pyqtSlot(QUrl)
+    def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
+        if self._active_camera_url != camera_url:
+            self._active_camera_url = camera_url
+            self.activeCameraUrlChanged.emit()
 
     def _onPostPrintJobFinished(self, reply: QNetworkReply) -> None:
         if self._progress_message:
@@ -349,15 +342,19 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
 
     @pyqtProperty("QVariantList", notify = printJobsChanged)
-    def printJobs(self)-> List[PrintJobOutputModel]:
+    def printJobs(self)-> List[UM3PrintJobOutputModel]:
         return self._print_jobs
 
+    @pyqtProperty(bool, notify = receivedPrintJobsChanged)
+    def receivedPrintJobs(self) -> bool:
+        return self._received_print_jobs
+
     @pyqtProperty("QVariantList", notify = printJobsChanged)
-    def queuedPrintJobs(self) -> List[PrintJobOutputModel]:
+    def queuedPrintJobs(self) -> List[UM3PrintJobOutputModel]:
         return [print_job for print_job in self._print_jobs if print_job.state == "queued" or print_job.state == "error"]
 
     @pyqtProperty("QVariantList", notify = printJobsChanged)
-    def activePrintJobs(self) -> List[PrintJobOutputModel]:
+    def activePrintJobs(self) -> List[UM3PrintJobOutputModel]:
         return [print_job for print_job in self._print_jobs if print_job.assignedPrinter is not None and print_job.state != "queued"]
 
     @pyqtProperty("QVariantList", notify = clusterPrintersChanged)
@@ -405,6 +402,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # This function is part of the output device (and not of the printjob output model) as this type of operation
         # is a modification of the cluster queue and not of the actual job.
         self.delete("print_jobs/{uuid}".format(uuid = print_job_uuid), on_finished=None)
+
+    @pyqtSlot(str)
+    def forceSendJob(self, print_job_uuid: str) -> None:
+        data = "{\"force\": true}"
+        self.put("print_jobs/{uuid}".format(uuid=print_job_uuid), data, on_finished=None)
 
     def _printJobStateChanged(self) -> None:
         username = self._getUserName()
@@ -455,6 +457,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 self.get("print_jobs/{uuid}/preview_image".format(uuid=print_job.key), on_finished=self._onGetPreviewImageFinished)
 
     def _onGetPrintJobsFinished(self, reply: QNetworkReply) -> None:
+        self._received_print_jobs = True
+        self.receivedPrintJobsChanged.emit()
+
         if not checkValidGetReply(reply):
             return
 
@@ -533,12 +538,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _createPrinterModel(self, data: Dict[str, Any]) -> PrinterOutputModel:
         printer = PrinterOutputModel(output_controller = ClusterUM3PrinterOutputController(self),
                                      number_of_extruders = self._number_of_extruders)
-        printer.setCamera(NetworkCamera("http://" + data["ip_address"] + ":8080/?action=stream"))
+        printer.setCameraUrl(QUrl("http://" + data["ip_address"] + ":8080/?action=stream"))
         self._printers.append(printer)
         return printer
 
-    def _createPrintJobModel(self, data: Dict[str, Any]) -> PrintJobOutputModel:
-        print_job = PrintJobOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
+    def _createPrintJobModel(self, data: Dict[str, Any]) -> UM3PrintJobOutputModel:
+        print_job = UM3PrintJobOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
                                         key=data["uuid"], name= data["name"])
 
         configuration = ConfigurationModel()
@@ -558,7 +563,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job.stateChanged.connect(self._printJobStateChanged)
         return print_job
 
-    def _updatePrintJob(self, print_job: PrintJobOutputModel, data: Dict[str, Any]) -> None:
+    def _updatePrintJob(self, print_job: UM3PrintJobOutputModel, data: Dict[str, Any]) -> None:
         print_job.updateTimeTotal(data["time_total"])
         print_job.updateTimeElapsed(data["time_elapsed"])
         impediments_to_printing = data.get("impediments_to_printing", [])
@@ -574,6 +579,16 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         if not status_set_by_impediment:
             print_job.updateState(data["status"])
 
+        print_job.updateConfigurationChanges(self._createConfigurationChanges(data["configuration_changes_required"]))
+
+    def _createConfigurationChanges(self, data: List[Dict[str, Any]]) -> List[ConfigurationChangeModel]:
+        result = []
+        for change in data:
+            result.append(ConfigurationChangeModel(type_of_change=change["type_of_change"],
+                                                   index=change["index"],
+                                                   target_name=change["target_name"],
+                                                   origin_name=change["origin_name"]))
+        return result
 
     def _createMaterialOutputModel(self, material_data) -> MaterialOutputModel:
         containers = ContainerRegistry.getInstance().findInstanceContainers(type="material", GUID=material_data["guid"])
@@ -631,7 +646,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 material = self._createMaterialOutputModel(material_data)
                 extruder.updateActiveMaterial(material)
 
-    def _removeJob(self, job: PrintJobOutputModel) -> bool:
+    def _removeJob(self, job: UM3PrintJobOutputModel) -> bool:
         if job not in self._print_jobs:
             return False
 
@@ -675,7 +690,7 @@ def checkValidGetReply(reply: QNetworkReply) -> bool:
     return True
 
 
-def findByKey(lst: List[Union[PrintJobOutputModel, PrinterOutputModel]], key: str) -> Optional[PrintJobOutputModel]:
+def findByKey(lst: List[Union[UM3PrintJobOutputModel, PrinterOutputModel]], key: str) -> Optional[UM3PrintJobOutputModel]:
     for item in lst:
         if item.key == key:
             return item

@@ -64,9 +64,11 @@ class BaseMaterialsModel(ListModel):
 
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.disconnect(self._update)
+            self._extruder_stack.approximateMaterialDiameterChanged.disconnect(self._update)
         self._extruder_stack = global_stack.extruders.get(str(self._extruder_position))
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.connect(self._update)
+            self._extruder_stack.approximateMaterialDiameterChanged.connect(self._update)
         # Force update the model when the extruder stack changes
         self._update()
 
