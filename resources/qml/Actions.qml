@@ -421,7 +421,7 @@ Item
     Action
     {
         id: browsePackagesAction
-        text: catalog.i18nc("@action:menu", "Open Marketplace...")
+        text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
     }
 
