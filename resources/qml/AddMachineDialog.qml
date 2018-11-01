@@ -82,7 +82,7 @@ UM.Dialog
             top: titleLabel.bottom
             topMargin: UM.Theme.getSize("default_margin").height
         }
-        text: catalog.i18nc("@title:tab", "Select the printer you want to use from the list below.\n\nIf your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and match adjust the settings to match your printer in the next dialog.")
+        text: catalog.i18nc("@title:tab", "Select the printer you want to use from the list below.\n\nIf your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog.")
         width: parent.width
         wrapMode: Text.WordWrap
     }
