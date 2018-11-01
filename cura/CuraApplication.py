@@ -161,6 +161,7 @@ class CuraApplication(QtApplication):
 
     def __init__(self, *args, **kwargs):
         super().__init__(name = "cura",
+                         app_display_name = "Ultimaker Cura",
                          version = CuraVersion,
                          buildtype = CuraBuildType,
                          is_debug_mode = CuraDebugMode,
