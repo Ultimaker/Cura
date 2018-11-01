@@ -12,6 +12,7 @@ Item {
     id: root;
     property var printJob: null;
     property var running: isRunning(printJob);
+    property var assigned: isAssigned(printJob);
 
     Button {
         id: button;
@@ -33,6 +34,7 @@ Item {
         hoverEnabled: true;
         onClicked: parent.switchPopupState();
         text: "\u22EE"; //Unicode; Three stacked points.
+        visible: printJob.state == "queued" || running ? true : false;
         width: 35 * screenScaleFactor; // TODO: Theme!
     }
 
@@ -101,7 +103,7 @@ Item {
 
             PrintJobContextMenuItem {
                 enabled: {
-                    if (printJob && !running) {
+                    if (printJob && printJob.state == "queued" && !assigned) {
                         if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
                             return OutputDevice.queuedPrintJobs[0].key != printJob.key;
                         }
@@ -208,5 +210,11 @@ Item {
             return false;
         }
         return ["paused", "printing", "pre_print"].indexOf(job.state) !== -1;
+    }
+    function isAssigned(job) {
+        if (!job) {
+            return false;
+        }
+        return job.assignedPrinter ? true : false;
     }
 }

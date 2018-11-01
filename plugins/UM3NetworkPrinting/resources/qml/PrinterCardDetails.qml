@@ -28,7 +28,7 @@ Item {
             right: parent.right;
             rightMargin: UM.Theme.getSize("default_margin").width;
         }
-        height: childrenRect.height + UM.Theme.getSize("wide_margin").height;
+        height: childrenRect.height + UM.Theme.getSize("default_margin").height;
         spacing: UM.Theme.getSize("default_margin").height;
         width: parent.width;
 
@@ -39,9 +39,7 @@ Item {
             printJob: root.printer ? root.printer.activePrintJob : null;
         }
 
-        HorizontalLine {
-            visible: root.printJob;
-        }
+        HorizontalLine {}
 
         Row {
             height: childrenRect.height;
@@ -61,24 +59,17 @@ Item {
                 visible: printJob;
             }
         }
-        
 
         PrintJobPreview {
             anchors.horizontalCenter: parent.horizontalCenter;
             job: root.printer && root.printer.activePrintJob ? root.printer.activePrintJob : null;
             visible: root.printJob;
         }
-    }
 
-    CameraButton {
-        id: showCameraButton;
-        anchors {
-            bottom: contentColumn.bottom;
-            bottomMargin: Math.round(1.5 * UM.Theme.getSize("default_margin").height);
-            left: contentColumn.left;
-            leftMargin: Math.round(0.5 * UM.Theme.getSize("default_margin").width);
+        CameraButton {
+            id: showCameraButton;
+            iconSource: "../svg/camera-icon.svg";
+            visible: root.printer;
         }
-        iconSource: "../svg/camera-icon.svg";
-        visible: root.printJob;
     }
 }

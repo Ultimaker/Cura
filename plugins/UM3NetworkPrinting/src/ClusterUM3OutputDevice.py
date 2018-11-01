@@ -22,7 +22,6 @@ from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationM
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .SendMaterialJob import SendMaterialJob
@@ -47,7 +46,7 @@ i18n_catalog = i18nCatalog("cura")
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     printJobsChanged = pyqtSignal()
     activePrinterChanged = pyqtSignal()
-    activeCameraChanged = pyqtSignal()
+    activeCameraUrlChanged = pyqtSignal()
     receivedPrintJobsChanged = pyqtSignal()
 
     # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
@@ -100,7 +99,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._latest_reply_handler = None  # type: Optional[QNetworkReply]
         self._sending_job = None
 
-        self._active_camera = None # type: Optional[NetworkCamera]
+        self._active_camera_url = QUrl()  # type: QUrl
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
@@ -264,30 +263,21 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def activePrinter(self) -> Optional[PrinterOutputModel]:
         return self._active_printer
 
-    @pyqtProperty(QObject, notify=activeCameraChanged)
-    def activeCamera(self) -> Optional[NetworkCamera]:
-        return self._active_camera
-
     @pyqtSlot(QObject)
     def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
         if self._active_printer != printer:
-            if self._active_printer and self._active_printer.camera:
-                self._active_printer.camera.stop()
             self._active_printer = printer
             self.activePrinterChanged.emit()
 
-    @pyqtSlot(QObject)
-    def setActiveCamera(self, camera: Optional[NetworkCamera]) -> None:
-        if self._active_camera != camera:
-            if self._active_camera:
-                self._active_camera.stop()
+    @pyqtProperty(QUrl, notify = activeCameraUrlChanged)
+    def activeCameraUrl(self) -> "QUrl":
+        return self._active_camera_url
 
-            self._active_camera = camera
-
-            if self._active_camera:
-                self._active_camera.start()
-
-            self.activeCameraChanged.emit()
+    @pyqtSlot(QUrl)
+    def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
+        if self._active_camera_url != camera_url:
+            self._active_camera_url = camera_url
+            self.activeCameraUrlChanged.emit()
 
     def _onPostPrintJobFinished(self, reply: QNetworkReply) -> None:
         if self._progress_message:
@@ -548,7 +538,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _createPrinterModel(self, data: Dict[str, Any]) -> PrinterOutputModel:
         printer = PrinterOutputModel(output_controller = ClusterUM3PrinterOutputController(self),
                                      number_of_extruders = self._number_of_extruders)
-        printer.setCamera(NetworkCamera("http://" + data["ip_address"] + ":8080/?action=stream"))
+        printer.setCameraUrl(QUrl("http://" + data["ip_address"] + ":8080/?action=stream"))
         self._printers.append(printer)
         return printer
 

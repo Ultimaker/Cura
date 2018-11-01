@@ -6,7 +6,6 @@
         "visible": true,
         "manufacturer": "Velleman",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "Vertex_build_panel.stl",
         "platform_offset": [0, -3, 0],
         "machine_extruder_trains": {

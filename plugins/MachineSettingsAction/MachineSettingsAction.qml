@@ -412,7 +412,7 @@ Cura.MachineAction
                             {
                                 if (settingsTabs.currentIndex > 0)
                                 {
-                                    var extruderIndex = (settingsTabs.currentIndex - 1).toString()
+                                    const extruderIndex = index.toString()
                                     Cura.MachineManager.activeMachine.extruders[extruderIndex].compatibleMaterialDiameter = value
                                 }
                             }
