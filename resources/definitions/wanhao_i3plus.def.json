@@ -7,7 +7,6 @@
     "author": "Ricardo Snoek",
     "manufacturer": "Wanhao",
     "file_formats": "text/x-gcode",
-    "icon": "wanhao-icon.png",
     "has_materials": true,
     "platform": "wanhao_200_200_platform.obj",
     "platform_texture": "Wanhaobackplate.png",

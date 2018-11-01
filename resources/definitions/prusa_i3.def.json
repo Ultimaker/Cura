@@ -7,7 +7,6 @@
         "author": "Quillford",
         "manufacturer": "Prusajr",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "prusai3_platform.stl",
         "machine_extruder_trains":
         {
