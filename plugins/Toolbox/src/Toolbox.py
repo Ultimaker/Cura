@@ -209,11 +209,11 @@ class Toolbox(QObject, Extension):
     # Get the packages version depending on Cura version settings.
     def _getSDKVersion(self) -> Union[int, str]:
         if not hasattr(cura, "CuraVersion"):
-            return self._plugin_registry.APIVersion
+            return self._plugin_registry.APIVersion.getMajor()
         if not hasattr(cura.CuraVersion, "CuraSDKVersion"):  # type: ignore
-            return self._plugin_registry.APIVersion
+            return self._plugin_registry.APIVersion.getMajor()
         if not cura.CuraVersion.CuraSDKVersion:  # type: ignore
-            return self._plugin_registry.APIVersion
+            return self._plugin_registry.APIVersion.getMajor()
         return cura.CuraVersion.CuraSDKVersion  # type: ignore
 
     @pyqtSlot()
