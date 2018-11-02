@@ -30,6 +30,7 @@ Column
         Column
         {
             id: timeAndCostsInformation
+            spacing: UM.Theme.getSize("thin_margin").height
 
             anchors
             {
@@ -43,7 +44,9 @@ Column
                 id: estimatedTime
                 width: parent.width
 
-                text: "Time"
+                property var printDuration: PrintInformation.currentPrintTime
+
+                text: printDuration.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
                 font: UM.Theme.getFont("small")
             }
@@ -53,7 +56,33 @@ Column
                 id: estimatedCosts
                 width: parent.width
 
-                text: "Material costs"
+                property var printMaterialLengths: PrintInformation.materialLengths
+                property var printMaterialWeights: PrintInformation.materialWeights
+
+                function getText()
+                {
+                    var lengths = []
+                    var weights = []
+                    if(printMaterialLengths)
+                    {
+                        for(var index = 0; index < printMaterialLengths.length; index++)
+                        {
+                            if(printMaterialLengths[index] > 0)
+                            {
+                                lengths.push(printMaterialLengths[index].toFixed(2))
+                                weights.push(String(Math.round(printMaterialWeights[index])))
+                            }
+                        }
+                    }
+                    if(lengths.length == 0)
+                    {
+                        lengths = ["0.00"]
+                        weights = ["0"]
+                    }
+                    return weights.join(" + ") + "g · " + lengths.join(" + ") + "m"
+                }
+
+                text: getText()
                 source: UM.Theme.getIcon("spool")
                 font: UM.Theme.getFont("very_small")
             }
