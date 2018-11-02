@@ -17,6 +17,7 @@ if(CURA_DEBUGMODE)
     set(_cura_debugmode "ON")
 endif()
 
+set(CURA_APP_DISPLAY_NAME "Ultimaker Cura" CACHE STRING "Display name of Cura")
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
 set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
 set(CURA_SDK_VERSION "" CACHE STRING "SDK version of Cura")
