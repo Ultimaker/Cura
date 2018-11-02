@@ -8,6 +8,10 @@ import QtQuick.Layouts 1.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+
+// This element hold all the elements needed for the user to trigger the slicing process, and later
+// to get information about the printing times, material consumption and the output process (such as
+// saving to a file, printing over network, ...
 Rectangle
 {
     id: actionPanelWidget

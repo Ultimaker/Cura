@@ -9,6 +9,10 @@ import QtQuick.Controls 1.4 as Controls1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
+
+// This element contains all the elements the user needs to create a printjob from the
+// model(s) that is(are) on the buildplate. Mainly the button to start/stop the slicing
+// process and a progress bar to see the progress of the process.
 Column
 {
     id: widget
