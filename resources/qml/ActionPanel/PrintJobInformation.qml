@@ -39,7 +39,7 @@ Column
         {
             property var printDuration: PrintInformation.currentPrintTime
 
-            function getTimeSpecifications()
+            text:
             {
                 // All the time information for the different features is achieved
                 var printTime = PrintInformation.getFeaturePrintTimes()
@@ -60,8 +60,6 @@ Column
                 text += "</table>"
                 return text
             }
-
-            text: getTimeSpecifications()
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("very_small")
@@ -112,7 +110,7 @@ Column
                 return rowHTML
             }
 
-            function getMaterialSpecifications()
+            text:
             {
                 var lengths = []
                 var weights = []
@@ -153,8 +151,6 @@ Column
 
                 return text
             }
-
-            text: getMaterialSpecifications()
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("very_small")
