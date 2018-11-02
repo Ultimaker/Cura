@@ -379,7 +379,7 @@
         "configuration_selector_widget": [35.0, 4.5],
         "configuration_selector_mode_tabs": [0.0, 3.0],
 
-        "action_panel_widget": [35.0, 0.0],
+        "action_panel_information_widget": [20.0, 0.0],
         "action_panel_button": [15.0, 3.0],
 
         "machine_selector_widget": [28.0, 4.5],

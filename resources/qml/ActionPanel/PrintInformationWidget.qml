@@ -39,10 +39,10 @@ Button
 
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
-        contentItem: Label
+        contentItem: PrintJobInformation
         {
-            id: panel
-            text: "Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, \nsed do eiusmod tempor incididunt \nut labore et dolore magna aliqua. \nUt enim ad minim veniam, ..."
+            id: printJobInformation
+            width: UM.Theme.getSize("action_panel_information_widget").width
         }
 
         background: UM.PointingRectangle
