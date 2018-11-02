@@ -54,7 +54,7 @@ class PrintJobOutputModel(QObject):
     @pyqtProperty(QUrl, notify=previewImageChanged)
     def previewImageUrl(self):
         self._preview_image_id += 1
-        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
+        # There is an image provider that is called "print_job_preview". In order to ensure that the image qml object, that
         # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
         # as new (instead of relying on cached version and thus forces an update.
         temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key

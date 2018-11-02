@@ -46,24 +46,26 @@ Item {
         width: parent.width - 2 * shadowRadius;
 
         Column {
+            id: cardContents;
             height: childrenRect.height;
             width: parent.width;
 
             // Main card
             Item {
                 id: mainCard;
-                height: 60 * screenScaleFactor + 2 * UM.Theme.getSize("default_margin").width;
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
+                }
+                height: 60 * screenScaleFactor + 2 * UM.Theme.getSize("default_margin").height;
                 width: parent.width;
 
                 // Machine icon
                 Item {
                     id: machineIcon;
-                    anchors {
-                        leftMargin: UM.Theme.getSize("wide_margin").width;
-                        top: parent.top;
-                        left: parent.left;
-                        margins: UM.Theme.getSize("default_margin").width;
-                    }
+                    anchors.verticalCenter: parent.verticalCenter;
                     height: parent.height - 2 * UM.Theme.getSize("default_margin").width;
                     width: height;
 
@@ -108,7 +110,7 @@ Item {
                     id: printerInfo;
                     anchors {
                         left: machineIcon.right;
-                        leftMargin: UM.Theme.getSize("default_margin").width;
+                        leftMargin: UM.Theme.getSize("wide_margin").width;
                         right: collapseIcon.left;
                         verticalCenter: machineIcon.verticalCenter;
                     }
@@ -222,7 +224,6 @@ Item {
                     }
                 }
             }
-
             // Detailed card
             PrinterCardDetails {
                 collapsed: root.collapsed;
@@ -233,6 +234,7 @@ Item {
             // Progress bar
             PrinterCardProgressBar {
                 visible: printer && printer.activePrintJob != null;
+                width: parent.width;
             }
         }
     }

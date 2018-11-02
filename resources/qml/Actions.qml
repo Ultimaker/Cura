@@ -165,6 +165,7 @@ Item
         id: manageMaterialsAction
         text: catalog.i18nc("@action:inmenu", "Manage Materials...")
         iconName: "configure"
+        shortcut: "Ctrl+K"
     }
 
     Action
@@ -179,7 +180,7 @@ Item
     {
         id: resetProfileAction;
         enabled: Cura.MachineManager.hasUserSettings
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Discard current changes");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Discard current changes");
         onTriggered:
         {
             forceActiveFocus();
@@ -191,20 +192,21 @@ Item
     {
         id: addProfileAction;
         enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings/overrides...");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Create profile from current settings/overrides...");
     }
 
     Action
     {
-        id: manageProfilesAction;
-        text: catalog.i18nc("@action:inmenu menubar:profile","Manage Profiles...");
-        iconName: "configure";
+        id: manageProfilesAction
+        text: catalog.i18nc("@action:inmenu menubar:profile", "Manage Profiles...")
+        iconName: "configure"
+        shortcut: "Ctrl+J"
     }
 
     Action
     {
         id: documentationAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Online &Documentation");
+        text: catalog.i18nc("@action:inmenu menubar:help", "Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
         onTriggered: CuraActions.openDocumentation();
@@ -212,7 +214,7 @@ Item
 
     Action {
         id: reportBugAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Report a &Bug");
+        text: catalog.i18nc("@action:inmenu menubar:help", "Report a &Bug");
         iconName: "tools-report-bug";
         onTriggered: CuraActions.openBugReportPage();
     }
@@ -220,7 +222,7 @@ Item
     Action
     {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","About...");
+        text: catalog.i18nc("@action:inmenu menubar:help", "About...");
         iconName: "help-about";
     }
 
@@ -410,7 +412,7 @@ Item
     Action
     {
         id: browsePackagesAction
-        text: catalog.i18nc("@action:menu", "Browse packages...")
+        text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
     }
 }

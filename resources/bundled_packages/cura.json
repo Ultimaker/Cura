@@ -753,8 +753,8 @@
             "package_type": "material",
             "display_name": "Generic ABS",
             "description": "The generic ABS profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -771,8 +771,44 @@
             "package_type": "material",
             "display_name": "Generic BAM",
             "description": "The generic BAM profile which other profiles can be based upon.",
+            "package_version": "1.1.0",
+            "sdk_version": 5,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericCFFCPE": {
+        "package_info": {
+            "package_id": "GenericCFFCPE",
+            "package_type": "material",
+            "display_name": "Generic CFF CPE",
+            "description": "The generic CFF CPE profile which other profiles can be based upon.",
             "package_version": "1.0.0",
-            "sdk_version": 6,
+            "sdk_version": 5,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericCFFPA": {
+        "package_info": {
+            "package_id": "GenericCFFPA",
+            "package_type": "material",
+            "display_name": "Generic CFF PA",
+            "description": "The generic CFF PA profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -789,8 +825,8 @@
             "package_type": "material",
             "display_name": "Generic CPE",
             "description": "The generic CPE profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -807,8 +843,44 @@
             "package_type": "material",
             "display_name": "Generic CPE+",
             "description": "The generic CPE+ profile which other profiles can be based upon.",
+            "package_version": "1.1.0",
+            "sdk_version": 5,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericGFFCPE": {
+        "package_info": {
+            "package_id": "GenericGFFCPE",
+            "package_type": "material",
+            "display_name": "Generic GFF CPE",
+            "description": "The generic GFF CPE profile which other profiles can be based upon.",
             "package_version": "1.0.0",
-            "sdk_version": 6,
+            "sdk_version": 5,
+            "website": "https://github.com/Ultimaker/fdm_materials",
+            "author": {
+                "author_id": "Generic",
+                "display_name": "Generic",
+                "email": "materials@ultimaker.com",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "description": "Professional 3D printing made accessible."
+            }
+        }
+    },
+    "GenericGFFPA": {
+        "package_info": {
+            "package_id": "GenericGFFPA",
+            "package_type": "material",
+            "display_name": "Generic GFF PA",
+            "description": "The generic GFF PA profile which other profiles can be based upon.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -826,7 +898,7 @@
             "display_name": "Generic HIPS",
             "description": "The generic HIPS profile which other profiles can be based upon.",
             "package_version": "1.0.0",
-            "sdk_version": 6,
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -843,8 +915,8 @@
             "package_type": "material",
             "display_name": "Generic Nylon",
             "description": "The generic Nylon profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -861,8 +933,8 @@
             "package_type": "material",
             "display_name": "Generic PC",
             "description": "The generic PC profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -880,7 +952,7 @@
             "display_name": "Generic PETG",
             "description": "The generic PETG profile which other profiles can be based upon.",
             "package_version": "1.0.0",
-            "sdk_version": 6,
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -897,8 +969,8 @@
             "package_type": "material",
             "display_name": "Generic PLA",
             "description": "The generic PLA profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -915,8 +987,8 @@
             "package_type": "material",
             "display_name": "Generic PP",
             "description": "The generic PP profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -933,8 +1005,8 @@
             "package_type": "material",
             "display_name": "Generic PVA",
             "description": "The generic PVA profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -951,8 +1023,8 @@
             "package_type": "material",
             "display_name": "Generic Tough PLA",
             "description": "The generic Tough PLA profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.0.1",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -969,8 +1041,8 @@
             "package_type": "material",
             "display_name": "Generic TPU",
             "description": "The generic TPU profile which other profiles can be based upon.",
-            "package_version": "1.0.0",
-            "sdk_version": 6,
+            "package_version": "1.1.0",
+            "sdk_version": 5,
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
                 "author_id": "Generic",
@@ -1077,7 +1149,7 @@
             "website": "http://fiberlogy.com/en/fiberlogy-filaments/filament-hd-pla/",
             "author": {
                 "author_id": "Fiberlogy",
-                "diplay_name": "Fiberlogy S.A.",
+                "display_name": "Fiberlogy S.A.",
                 "email": "grzegorz.h@fiberlogy.com",
                 "website": "http://fiberlogy.com"
             }
@@ -1225,9 +1297,28 @@
             "package_type": "material",
             "display_name": "Ultimaker ABS",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.0.0",
+            "package_version": "1.1.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/abs",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerBAM": {
+        "package_info": {
+            "package_id": "UltimakerBAM",
+            "package_type": "material",
+            "display_name": "Ultimaker Breakaway",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.1.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/breakaway",
             "author": {
                 "author_id": "Ultimaker",
                 "display_name": "Ultimaker B.V.",
@@ -1244,9 +1335,28 @@
             "package_type": "material",
             "display_name": "Ultimaker CPE",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.0.0",
+            "package_version": "1.1.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/abs",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerCPEP": {
+        "package_info": {
+            "package_id": "UltimakerCPEP",
+            "package_type": "material",
+            "display_name": "Ultimaker CPE+",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.1.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/cpe",
             "author": {
                 "author_id": "Ultimaker",
                 "display_name": "Ultimaker B.V.",
@@ -1263,7 +1373,7 @@
             "package_type": "material",
             "display_name": "Ultimaker Nylon",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.0.0",
+            "package_version": "1.1.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1282,7 +1392,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PC",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.0.0",
+            "package_version": "1.1.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/pc",
             "author": {
@@ -1301,9 +1411,28 @@
             "package_type": "material",
             "display_name": "Ultimaker PLA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.0.0",
+            "package_version": "1.1.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/abs",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerPP": {
+        "package_info": {
+            "package_id": "UltimakerPP",
+            "package_type": "material",
+            "display_name": "Ultimaker PP",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.1.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/pp",
             "author": {
                 "author_id": "Ultimaker",
                 "display_name": "Ultimaker B.V.",
@@ -1320,9 +1449,47 @@
             "package_type": "material",
             "display_name": "Ultimaker PVA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.0.0",
+            "package_version": "1.1.0",
             "sdk_version": 5,
             "website": "https://ultimaker.com/products/materials/abs",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerTPU": {
+        "package_info": {
+            "package_id": "UltimakerTPU",
+            "package_type": "material",
+            "display_name": "Ultimaker TPU 95A",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.1.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/tpu-95a",
+            "author": {
+                "author_id": "Ultimaker",
+                "display_name": "Ultimaker B.V.",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+            }
+        }
+    },
+    "UltimakerTPLA": {
+        "package_info": {
+            "package_id": "UltimakerTPLA",
+            "package_type": "material",
+            "display_name": "Ultimaker Tough PLA",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com/products/materials/tough-pla",
             "author": {
                 "author_id": "Ultimaker",
                 "display_name": "Ultimaker B.V.",
