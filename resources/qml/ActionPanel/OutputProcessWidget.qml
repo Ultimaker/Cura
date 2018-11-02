@@ -4,7 +4,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4 as Controls1
 
 import UM 1.1 as UM
 import Cura 1.0 as Cura
@@ -35,7 +34,7 @@ Column
             anchors
             {
                 left: parent.left
-                right: moreInformationIcon.left
+                right: printInformationPanel.left
                 rightMargin: UM.Theme.getSize("thin_margin").height
             }
 
@@ -83,24 +82,15 @@ Column
             }
         }
 
-        UM.RecolorImage
+        PrintInformationWidget
         {
-            id: moreInformationIcon
+            id: printInformationPanel
 
             anchors
             {
                 right: parent.right
                 verticalCenter: timeAndCostsInformation.verticalCenter
             }
-
-            source: UM.Theme.getIcon("info")
-            width: UM.Theme.getSize("section_icon").width
-            height: UM.Theme.getSize("section_icon").height
-
-            sourceSize.width: width
-            sourceSize.height: height
-
-            color: UM.Theme.getColor("text_medium")
         }
     }
 
