@@ -58,7 +58,6 @@ Column
                     }
                 }
                 text += "</table>"
-                print(text)
                 return text
             }
 

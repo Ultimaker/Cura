@@ -74,7 +74,6 @@ Item
                     {
                         text: model.description
                         color: "transparent"
-                        outlineColor: "transparent"
                         cornerRadius: 0
                         hoverColor: UM.Theme.getColor("primary")
 
