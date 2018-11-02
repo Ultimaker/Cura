@@ -48,9 +48,7 @@ Column
                 id: estimatedTime
                 width: parent.width
 
-                property var printDuration: PrintInformation.currentPrintTime
-
-                text: printDuration.getDisplayString(UM.DurationFormat.Long)
+                text: PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
                 font: UM.Theme.getFont("small")
             }
@@ -63,7 +61,7 @@ Column
                 property var printMaterialLengths: PrintInformation.materialLengths
                 property var printMaterialWeights: PrintInformation.materialWeights
 
-                function getText()
+                text:
                 {
                     var totalLengths = 0
                     var totalWeights = 0
@@ -80,8 +78,6 @@ Column
                     }
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
-
-                text: getText()
                 source: UM.Theme.getIcon("spool")
                 font: UM.Theme.getFont("very_small")
             }
