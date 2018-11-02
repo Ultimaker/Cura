@@ -61,25 +61,20 @@ Column
 
                 function getText()
                 {
-                    var lengths = []
-                    var weights = []
-                    if(printMaterialLengths)
+                    var totalLengths = 0
+                    var totalWeights = 0
+                    if (printMaterialLengths)
                     {
                         for(var index = 0; index < printMaterialLengths.length; index++)
                         {
                             if(printMaterialLengths[index] > 0)
                             {
-                                lengths.push(printMaterialLengths[index].toFixed(2))
-                                weights.push(String(Math.round(printMaterialWeights[index])))
+                                totalLengths += printMaterialLengths[index]
+                                totalWeights += Math.round(printMaterialWeights[index])
                             }
                         }
                     }
-                    if(lengths.length == 0)
-                    {
-                        lengths = ["0.00"]
-                        weights = ["0"]
-                    }
-                    return weights.join(" + ") + "g · " + lengths.join(" + ") + "m"
+                    return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
 
                 text: getText()
@@ -116,13 +111,15 @@ Column
 
         Cura.ActionButton
         {
+            leftPadding: UM.Theme.getSize("default_margin").width
+            rightPadding: UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("action_panel_button").height
             text: catalog.i18nc("@button", "Preview")
             color: UM.Theme.getColor("secondary")
             hoverColor: UM.Theme.getColor("secondary")
             textColor: UM.Theme.getColor("primary")
             textHoverColor: UM.Theme.getColor("text")
-            onClicked: console.log("Clicking preview")
+            onClicked: UM.Controller.setActiveStage("MonitorStage")
         }
 
         Cura.OutputDevicesActionButton
