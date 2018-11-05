@@ -18,7 +18,7 @@ Item
     {
         id: pathSlider
         height: UM.Theme.getSize("slider_handle").width
-        width: 250
+        width: UM.Theme.getSize("layerview_menu_size").width
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
