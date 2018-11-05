@@ -210,7 +210,7 @@ Item
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
-                    layerTypeCombobox.currentIndex = UM.SimulationView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
+                    layerTypeCombobox.currentIndex = UM.SimulationView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type")
                     layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex)
                     viewSettings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|")
                     viewSettings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves")
