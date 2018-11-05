@@ -19,21 +19,7 @@ Rectangle
 
     width: UM.Theme.getSize("layerview_menu_size").width
 
-    height:
-    {
-        if (viewSettings.collapsed)
-        {
-            return UM.Theme.getSize("layerview_menu_size_collapsed").height
-        }
-        else if (UM.Preferences.getValue("layerview/layer_view_type") == 0)
-        {
-            return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.SimulationView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
-        }
-        else
-        {
-            return UM.Theme.getSize("layerview_menu_size").height + UM.SimulationView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
-        }
-    }
+    height: viewSettings.collapsed ? layerViewTypesLabel.height + 2 * UM.Theme.getSize("default_margin").height  : childrenRect.height
 
     Behavior on height { NumberAnimation { duration: 100 } }
 
@@ -64,6 +50,23 @@ Rectangle
         }
     }
 
+    Label
+    {
+        id: layerViewTypesLabel
+        text: catalog.i18nc("@label","Color scheme")
+        font: UM.Theme.getFont("default");
+        visible: !UM.SimulationView.compatibilityMode
+        color: UM.Theme.getColor("setting_control_text")
+        height: contentHeight
+        anchors
+        {
+            top: parent.top
+            margins: UM.Theme.getSize("default_margin").height
+            right: collapseButton.left
+            left: parent.left
+        }
+    }
+
     Button
     {
         id: collapseButton
@@ -71,9 +74,8 @@ Rectangle
         anchors
         {
             top: parent.top
-            topMargin: Math.round(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
+            margins: UM.Theme.getSize("default_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         width: UM.Theme.getSize("standard_arrow").width
@@ -117,23 +119,16 @@ Rectangle
 
         anchors
         {
-            top: parent.top
+            top: layerViewTypesLabel.bottom
             left: parent.left
             right: parent.right
             margins: UM.Theme.getSize("default_margin").height
+
         }
 
         spacing: UM.Theme.getSize("layerview_row_spacing").height
 
-        Label
-        {
-            id: layerViewTypesLabel
-            text: catalog.i18nc("@label","Color scheme")
-            font: UM.Theme.getFont("default");
-            visible: !UM.SimulationView.compatibilityMode
-            width: parent.width
-            color: UM.Theme.getColor("setting_control_text")
-        }
+        visible: !collapsed
 
         ListModel  // matches SimulationView.py
         {
