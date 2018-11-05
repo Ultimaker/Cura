@@ -61,6 +61,16 @@ Item
         iconSource: !is_simulation_playing ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
         style: UM.Theme.styles.small_tool_button
         visible: !UM.SimulationView.compatibilityMode
+
+        Connections
+        {
+            target: UM.Preferences
+            onPreferenceChanged:
+            {
+                playButton.pauseSimulation()
+            }
+        }
+
         anchors
         {
             right: pathSlider.left
