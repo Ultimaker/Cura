@@ -296,6 +296,7 @@ Item {
                             verticalCenter: parent.verticalCenter;
                         }
                         color: UM.Theme.getColor("text");
+                        font: UM.Theme.getFont("default");
                         text: catalog.i18nc("@label", "Configuration change");
                     }
 
@@ -355,7 +356,7 @@ Item {
                             anchors.fill: parent;
                             elide: Text.ElideRight;
                             color: UM.Theme.getColor("text");
-                            font: UM.Theme.getFont("medium");
+                            font: UM.Theme.getFont("default");
                             text: {
                                 if (!printJob || printJob.configurationChanges.length === 0) {
                                     return "";
