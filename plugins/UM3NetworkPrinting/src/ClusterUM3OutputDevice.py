@@ -590,7 +590,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                    origin_name=change["origin_name"]))
         return result
 
-    def _createMaterialOutputModel(self, material_data) -> MaterialOutputModel:
+    def _createMaterialOutputModel(self, material_data: Dict[str, Any]) -> "MaterialOutputModel":
         material_manager = CuraApplication.getInstance().getMaterialManager()
         material_group_list = material_manager.getMaterialGroupListByGUID(material_data["guid"])
 
