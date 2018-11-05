@@ -12,6 +12,7 @@ from UM.Application import Application
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
 
@@ -298,7 +299,7 @@ class MaterialManager(QObject):
     def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
         return self._diameter_material_map.get(root_material_id, "")
 
-    def getMaterialGroupListByGUID(self, guid: str) -> Optional[list]:
+    def getMaterialGroupListByGUID(self, guid: str) -> Optional[List[MaterialGroup]]:
         return self._guid_material_groups_map.get(guid)
 
     #
@@ -445,6 +446,28 @@ class MaterialManager(QObject):
             node = self.getMaterialNode(machine_definition.getId(), nozzle_name, buildplate_name,
                                         material_diameter, root_material_id)
         return node
+
+    #   There are 2 ways to get fallback materials;
+    #   - A fallback by type (@sa getFallbackMaterialIdByMaterialType), which adds the generic version of this material
+    #   - A fallback by GUID; If a material has been duplicated, it should also check if the original materials do have
+    #       a GUID. This should only be done if the material itself does not have a quality just yet.
+    def getFallBackMaterialIdsByMaterial(self, material: InstanceContainer) -> List[str]:
+        results = []  # List[str]
+
+        material_groups = self.getMaterialGroupListByGUID(material.getMetaDataEntry("GUID"))
+        for material_group in material_groups:
+            if material_group.name != material.getId():
+                # If the material in the group is read only, put it at the front of the list (since that is the most
+                # likely one to get a result)
+                if material_group.is_read_only:
+                    results.insert(0, material_group.name)
+                else:
+                    results.append(material_group.name)
+
+        fallback = self.getFallbackMaterialIdByMaterialType(material.getMetaDataEntry("material"))
+        if fallback is not None:
+            results.append(fallback)
+        return results
 
     #
     # Used by QualityManager. Built-in quality profiles may be based on generic material IDs such as "generic_pla".
@@ -601,7 +624,6 @@ class MaterialManager(QObject):
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
             self._container_registry.addContainer(container_to_add)
-
 
         # if the duplicated material was favorite then the new material should also be added to favorite.
         if root_material_id in self.getFavorites():

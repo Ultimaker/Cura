@@ -259,11 +259,13 @@ class QualityManager(QObject):
                 root_material_id = self._material_manager.getRootMaterialIDWithoutDiameter(root_material_id)
                 root_material_id_list.append(root_material_id)
 
-                # Also try to get the fallback material
-                material_type = extruder.material.getMetaDataEntry("material")
-                fallback_root_material_id = self._material_manager.getFallbackMaterialIdByMaterialType(material_type)
-                if fallback_root_material_id:
-                    root_material_id_list.append(fallback_root_material_id)
+                # Also try to get the fallback materials
+                fallback_ids = self._material_manager.getFallBackMaterialIdsByMaterial(extruder.material)
+
+                if fallback_ids:
+                    root_material_id_list.extend(fallback_ids)
+                root_material_id_list = list(set(root_material_id_list))  # Weed out duplicates
+
 
             # Here we construct a list of nodes we want to look for qualities with the highest priority first.
             # The use case is that, when we look for qualities for a machine, we first want to search in the following
