@@ -72,7 +72,8 @@ Item
             if(is_simulation_playing)
             {
                 pauseSimulation()
-            } else
+            }
+            else
             {
                 resumeSimulation()
             }
