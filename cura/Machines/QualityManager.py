@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional, cast, Dict, List
+from typing import TYPE_CHECKING, Optional, cast, Dict, List, Set
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
@@ -264,8 +264,10 @@ class QualityManager(QObject):
 
                 if fallback_ids:
                     root_material_id_list.extend(fallback_ids)
-                root_material_id_list = list(set(root_material_id_list))  # Weed out duplicates
 
+                # Weed out duplicates while preserving the order.
+                seen = set()  # type: Set[str]
+                root_material_id_list = [x for x in root_material_id_list if x not in seen and not seen.add(x)]  # type: ignore
 
             # Here we construct a list of nodes we want to look for qualities with the highest priority first.
             # The use case is that, when we look for qualities for a machine, we first want to search in the following
