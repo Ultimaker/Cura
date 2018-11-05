@@ -452,10 +452,10 @@ class MaterialManager(QObject):
     #   - A fallback by GUID; If a material has been duplicated, it should also check if the original materials do have
     #       a GUID. This should only be done if the material itself does not have a quality just yet.
     def getFallBackMaterialIdsByMaterial(self, material: InstanceContainer) -> List[str]:
-        results = []  # List[str]
+        results = []  # type: List[str]
 
         material_groups = self.getMaterialGroupListByGUID(material.getMetaDataEntry("GUID"))
-        for material_group in material_groups:
+        for material_group in material_groups:  # type: ignore
             if material_group.name != material.getId():
                 # If the material in the group is read only, put it at the front of the list (since that is the most
                 # likely one to get a result)
