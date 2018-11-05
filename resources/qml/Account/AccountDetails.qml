@@ -11,6 +11,7 @@ Column
 {
     property var profile: null
     property var loggedIn: false
+    property var profileImage: ""
 
     padding: 2 * UM.Theme.getSize("default_margin").height
     spacing: 2 * UM.Theme.getSize("default_margin").height
@@ -21,7 +22,18 @@ Column
         width: UM.Theme.getSize("avatar_image").width
         height: UM.Theme.getSize("avatar_image").height
         anchors.horizontalCenter: parent.horizontalCenter
-        source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_no_user")
+        source:
+        {
+            if(loggedIn)
+            {
+                if(profileImage)
+                {
+                    return profileImage
+                }
+                return UM.Theme.getImage("avatar_no_user")
+            }
+            return UM.Theme.getImage("avatar_no_user")
+        }
         outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
     }
 
