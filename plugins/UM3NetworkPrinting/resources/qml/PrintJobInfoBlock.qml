@@ -355,7 +355,7 @@ Item {
                             anchors.fill: parent;
                             elide: Text.ElideRight;
                             color: UM.Theme.getColor("text");
-                            font: UM.Theme.getFont("large_nonbold");
+                            font: UM.Theme.getFont("medium");
                             text: {
                                 if (!printJob || printJob.configurationChanges.length === 0) {
                                     return "";
@@ -397,6 +397,22 @@ Item {
                             anchors {
                                 bottom: parent.bottom;
                                 left: parent.left;
+                            }
+                            background: Rectangle {
+                                border {
+                                    color: UM.Theme.getColor("monitor_lining_heavy");
+                                    width: UM.Theme.getSize("default_lining").width;
+                                }
+                                color: parent.hovered ? UM.Theme.getColor("monitor_card_background_inactive") : UM.Theme.getColor("monitor_card_background");
+                                implicitHeight: UM.Theme.getSize("default_margin").height * 3;
+                                implicitWidth: UM.Theme.getSize("default_margin").height * 8;
+                            }
+                            contentItem: Label {
+                                color: UM.Theme.getColor("text");
+                                font: UM.Theme.getFont("medium");
+                                horizontalAlignment: Text.AlignHCenter;
+                                text: parent.text;
+                                verticalAlignment: Text.AlignVCenter;
                             }
                             onClicked: {
                                 overrideConfirmationDialog.visible = true;
