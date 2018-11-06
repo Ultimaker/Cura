@@ -11,7 +11,7 @@ import UM 1.3 as UM
 Item {
     id: root;
     property var printJob: null;
-    property var running: isRunning(printJob);
+    property var started: isStarted(printJob);
     property var assigned: isAssigned(printJob);
 
     Button {
@@ -34,7 +34,13 @@ Item {
         hoverEnabled: true;
         onClicked: parent.switchPopupState();
         text: "\u22EE"; //Unicode; Three stacked points.
-        visible: printJob.state == "queued" || running ? true : false;
+        visible: {
+            if (!printJob) {
+                return false;
+            }
+            var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"];
+            return states.indexOf(printJob.state) !== -1;
+        }
         width: 35 * screenScaleFactor; // TODO: Theme!
     }
 
@@ -102,7 +108,12 @@ Item {
             width: parent.width;
 
             PrintJobContextMenuItem {
-                enabled: {
+                onClicked: {
+                    sendToTopConfirmationDialog.visible = true;
+                    popup.close();
+                }
+                text: catalog.i18nc("@label", "Move to top");
+                visible: {
                     if (printJob && printJob.state == "queued" && !assigned) {
                         if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
                             return OutputDevice.queuedPrintJobs[0].key != printJob.key;
@@ -110,42 +121,75 @@ Item {
                     }
                     return false;
                 }
-                onClicked: {
-                    sendToTopConfirmationDialog.visible = true;
-                    popup.close();
-                }
-                text: catalog.i18nc("@label", "Move to top");
             }
 
             PrintJobContextMenuItem {
-                enabled: printJob && !running;
                 onClicked: {
                     deleteConfirmationDialog.visible = true;
                     popup.close();
                 }
                 text: catalog.i18nc("@label", "Delete");
+                visible: {
+                    if (!printJob) {
+                        return false;
+                    }
+                    var states = ["queued", "sent_to_printer"];
+                    return states.indexOf(printJob.state) !== -1;
+                }
             }
 
             PrintJobContextMenuItem {
-                enabled: printJob && running;
+                enabled: visible && !(printJob.state == "pausing" || printJob.state == "resuming");
                 onClicked: {
                     if (printJob.state == "paused") {
                         printJob.setState("print");
-                    } else if(printJob.state == "printing") {
-                        printJob.setState("pause");
+                        popup.close();
+                        return;
                     }
-                    popup.close();
+                    if (printJob.state == "printing") {
+                        printJob.setState("pause");
+                        popup.close();
+                        return;
+                    }
                 }
-                text: printJob && printJob.state == "paused" ? catalog.i18nc("@label", "Resume") : catalog.i18nc("@label", "Pause");
+                text: {
+                    if (!printJob) {
+                        return "";
+                    }
+                    switch(printJob.state) {
+                        case "paused":
+                            return catalog.i18nc("@label", "Resume");
+                        case "pausing":
+                            return catalog.i18nc("@label", "Pausing...");
+                        case "resuming":
+                            return catalog.i18nc("@label", "Resuming...");
+                        default:
+                            catalog.i18nc("@label", "Pause");
+                    }
+                }
+                visible: {
+                    if (!printJob) {
+                        return false;
+                    }
+                    var states = ["printing", "pausing", "paused", "resuming"];
+                    return states.indexOf(printJob.state) !== -1;
+                }
             }
 
             PrintJobContextMenuItem {
-                enabled: printJob && running;
+                enabled: visible && printJob.state !== "aborting";
                 onClicked: {
                     abortConfirmationDialog.visible = true;
                     popup.close();
                 }
-                text: catalog.i18nc("@label", "Abort");
+                text: printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
+                visible: {
+                    if (!printJob) {
+                        return false;
+                    }
+                    var states = ["pre_print", "printing", "pausing", "paused", "resuming"];
+                    return states.indexOf(printJob.state) !== -1;
+                }
             }
         }
         enter: Transition {
@@ -205,16 +249,25 @@ Item {
     function switchPopupState() {
         popup.visible ? popup.close() : popup.open();
     }
-    function isRunning(job) {
+    function isStarted(job) {
         if (!job) {
             return false;
         }
-        return ["paused", "printing", "pre_print"].indexOf(job.state) !== -1;
+        return ["pre_print", "printing", "pausing", "paused", "resuming", "aborting"].indexOf(job.state) !== -1;
     }
     function isAssigned(job) {
         if (!job) {
             return false;
         }
         return job.assignedPrinter ? true : false;
+    }
+    function getMenuLength() {
+        var visible = 0;
+        for (var i = 0; i < popupOptions.children.length; i++) {
+            if (popupOptions.children[i].visible) {
+                visible++;
+            }
+        }
+        return visible;
     }
 }

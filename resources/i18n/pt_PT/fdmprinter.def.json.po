@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Comandos G-code a serem executados no início – separados por \n"
-"."
+msgstr "Comandos G-code a serem executados no início – separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Comandos G-code a serem executados no fim – separados por \n"
-"."
+msgstr "Comandos G-code a serem executados no fim – separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1099,7 +1095,7 @@ msgstr "Ligar polígonos superiores/inferiores"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Ligar caminhos de revestimento superiores/inferiores quando as trajetórias são paralelas. Para o padrão concêntrico, ativar esta definição reduz consideravelmente o tempo de deslocação mas, uma vez que as ligações podem suceder num ponto intermediário sobre o enchimento, esta funcionalidade pode reduzir a qualidade da superfície superior."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1559,7 +1555,7 @@ msgstr "Padrão de Enchimento"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "O padrão do material de enchimento da impressão. A direção de troca de enchimento de linha e ziguezague em camadas alternadas, reduzindo os custos de material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos Gyroid, cúbico, quarto cúbico e octeto são alterados a cada camada para fornecer uma distribuição mais uniforme da resistência em cada direção."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1624,7 +1620,7 @@ msgstr "Cruz 3D"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroid"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1699,9 +1695,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"Adicionar paredes adicionais em torno da área de enchimento. Essas paredes podem fazer com que as linhas de revestimento superiores/inferiores desçam menos, o que significa que são necessárias menos camadas de revestimento superior/inferior para a mesma qualidade à custa de algum material adicional.\n"
-"Esta funcionalidade pode ser combinada com a opção Ligar polígonos de enchimento para unir todo o enchimento num único caminho de extrusão sem necessidade de deslocações ou retrações, se configurado corretamente."
+msgstr "Adicionar paredes adicionais em torno da área de enchimento. Essas paredes podem fazer com que as linhas de revestimento superiores/inferiores desçam menos, o que significa que são necessárias menos camadas de revestimento superior/inferior para a mesma qualidade à custa de algum material adicional.\nEsta funcionalidade pode ser combinada com a opção Ligar polígonos de enchimento para unir todo o enchimento num único caminho de extrusão sem necessidade de deslocações ou retrações, se configurado corretamente."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -3403,32 +3397,32 @@ msgstr "Orientação do padrão de enchimento para suportes. O padrão de enchim
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "Ativar borda de suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Gera uma borda dentro das regiões de enchimento do suporte da primeira camada. Esta borda é impressa na parte por baixo do suporte e não em torno do mesmo. Ativar esta definição aumenta a aderência do suporte à placa de construção."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "Largura da borda do suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "A largura da borda para imprimir na parte por baixo do suporte. Uma borda mais larga melhora a aderência à placa de construção à custa de algum material adicional."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "Contagem de linhas da borda do suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "O número de linhas utilizado para a borda do suporte. Uma borda com mais linhas melhora a aderência à placa de construção à custa de algum material adicional."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3971,9 +3965,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"A distância horizontal entre o contorno e o perímetro exterior da primeira camada da impressão.\n"
-"Esta é a distância mínima. Linhas múltiplas de contorno serão impressas para o exterior."
+msgstr "A distância horizontal entre o contorno e o perímetro exterior da primeira camada da impressão.\nEsta é a distância mínima. Linhas múltiplas de contorno serão impressas para o exterior."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4008,12 +4000,12 @@ msgstr "O número de linhas utilizado para uma aba. Um maior número de linhas d
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "A borda substitui o suporte"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "Aplicar a borda para ser impressa em torno do modelo, mesmo se esse espaço fosse ocupado de outra forma pelo suporte. Isto substitui algumas regiões da primeira camada do suporte por regiões de borda."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -5462,9 +5454,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"A distância de um movimento ascendente que é extrudido a metade da velocidade.\n"
-"Isto pode causar melhor aderência às camadas anteriores, sendo que o material nessas camadas não é demasiado aquecido. Aplica-se apenas à impressão de fios."
+msgstr "A distância de um movimento ascendente que é extrudido a metade da velocidade.\nIsto pode causar melhor aderência às camadas anteriores, sendo que o material nessas camadas não é demasiado aquecido. Aplica-se apenas à impressão de fios."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
