@@ -44,7 +44,10 @@ Item
     UM.RecolorImage
     {
         id: profileImageOutline
-        anchors.fill: parent
+        anchors.centerIn: parent
+        // Make it a bit bigger than it has to, otherwise it sometimes shows a white border.
+        width: parent.width + 2
+        height: parent.height + 2
         source: UM.Theme.getIcon("circle_outline")
         sourceSize: Qt.size(parent.width, parent.height)
         color: UM.Theme.getColor("account_widget_ouline_active")
