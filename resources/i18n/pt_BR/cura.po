@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -414,7 +415,7 @@ msgstr "Nenhum material carregado no slot {slot_number}"
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
-msgstr "PrintCore Diferente (Cura: {cure_printcore_name}, Impressora: {remote_printcore_name}) selecionado para o extrusor {extruder_id}"
+msgstr "PrintCore Diferente (Cura: {cura_printcore_name}, Impressora: {remote_printcore_name}) selecionado para o extrusor {extruder_id}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:361
 #, python-brace-format
@@ -2058,7 +2059,7 @@ msgstr "Abortar impressão"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:43
 msgctxt "@info:tooltip"
 msgid "Connect to a printer"
-msgstr "Conecta a uma impressora."
+msgstr "Conecta a uma impressora"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:121
 msgctxt "@action:button"
@@ -2602,7 +2603,7 @@ msgstr "Tudo está em ordem! A verificação terminou."
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"
 msgid "Not connected to a printer"
-msgstr "Não conectado a nenhuma impressora."
+msgstr "Não conectado a nenhuma impressora"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:123
 msgctxt "@label:MonitorStatus"
@@ -2980,7 +2981,7 @@ msgstr "Exibir seções pendentes"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:355
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
-msgstr "Move a câmera de modo que o modelo fique no centro da visão quando for selecionado."
+msgstr "Move a câmera de modo que o modelo fique no centro da visão quando for selecionado"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:360
 msgctxt "@action:button"
@@ -3025,7 +3026,7 @@ msgstr "Os modelos devem ser movidos pra baixo pra se assentar na plataforma de 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:418
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
-msgstr "Automaticamente fazer os modelos caírem na mesa de impressão."
+msgstr "Automaticamente fazer os modelos caírem na mesa de impressão"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:430
 msgctxt "@info:tooltip"
@@ -3110,7 +3111,7 @@ msgstr "Comportamento default ao abrir um arquivo de projeto"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:557
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
-msgstr "Comportamento default ao abrir um arquivo de projeto"
+msgstr "Comportamento default ao abrir um arquivo de projeto: "
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:571
 msgctxt "@option:openProject"
@@ -3175,7 +3176,7 @@ msgstr "Dados anônimos sobre sua impressão podem ser enviados para a Ultimaker
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:702
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
-msgstr "Enviar informação (anônima) de impressão."
+msgstr "Enviar informação (anônima) de impressão"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:711
 msgctxt "@action:button"
@@ -3562,7 +3563,7 @@ msgid ""
 msgstr ""
 "Alguns ajustes ocultados usam valores diferentes de seu valor calculado normal.\n"
 "\n"
-"Clique para tornar estes ajustes visíveis. "
+"Clique para tornar estes ajustes visíveis."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3582,7 +3583,7 @@ msgstr "Este ajuste é sempre compartilhado entre todos os extrusores. Modificá
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:158
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
-msgstr "O valor é resolvido de valores específicos de cada extrusor"
+msgstr "O valor é resolvido de valores específicos de cada extrusor "
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:189
 msgctxt "@label"
@@ -3655,7 +3656,7 @@ msgstr "A temperatura-alvo do hotend. O hotend vai aquecer ou esfriar na direç�
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:98
 msgctxt "@tooltip"
 msgid "The current temperature of this hotend."
-msgstr "A temperatura atual deste hotend"
+msgstr "A temperatura atual deste hotend."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:172
 msgctxt "@tooltip of temperature input"
@@ -4403,7 +4404,7 @@ msgstr "Você modificou alguns ajustes de perfil. Se você quiser alterá-los, u
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:541
 msgctxt "@label"
 msgid "Infill"
-msgstr "Preenchimento:"
+msgstr "Preenchimento"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:777
 msgctxt "@label"
@@ -4495,7 +4496,7 @@ msgstr "Material"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:543
 msgctxt "@label"
 msgid "Use glue with this material combination"
-msgstr "Use cola com esta combinação de materiais."
+msgstr "Use cola com esta combinação de materiais"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:575
 msgctxt "@label"
@@ -4845,7 +4846,7 @@ msgstr "Atualização de Versão de 2.7 para 3.0"
 #: VersionUpgrade/VersionUpgrade34to35/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Atualiza configurações do Cura 3.4 para o Cura 3.5"
+msgstr "Atualiza configurações do Cura 3.4 para o Cura 3.5."
 
 #: VersionUpgrade/VersionUpgrade34to35/plugin.json
 msgctxt "name"
