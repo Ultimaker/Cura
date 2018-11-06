@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0000\n"
-"PO-Revision-Date: 2018-10-02 06:30-0300\n"
+"PO-Revision-Date: 2018-10-06 04:30-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language: pt_BR\n"
@@ -1078,7 +1078,7 @@ msgstr "Conectar Polígonos do Topo e Base"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Conectar caminhos de contorno da base e topo quando estiverem próximos entre si. Para o padrão concêntrico, habilitar este ajuste reduzirá bastante o tempo de percurso, mas por as conexões poderem acontecer no meio do preenchimento, este recurso pode reduzir a qualidade da superfície superior."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1498,7 +1498,7 @@ msgstr "Padrão de Preenchimento"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "O padrão do material de preenchimento da impressão. Os preenchimentos de linha e ziguezague mudam de direção em camadas alternadas, reduzindo o custo do material. Os padrões de grade, triângulo, tri-hexágono, cúbico, octeto, quarto cúbico, cruzado e concêntrico são impressos em totalidade a cada camada. Os padrões giróide, cúbico, quarto cúbico e octeto mudam a cada camada para prover uma distribuição mais igualitária de força em cada direção."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1563,7 +1563,7 @@ msgstr "Cruzado 3D"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Giróide"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -3272,32 +3272,32 @@ msgstr "Orientação do padrão de preenchimento para suportes. O padrão de pre
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "Habilitar Brim de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Gera o brim dentro das regiões de preenchimento de suporte da primeira camada. Este brim é impresso sob o suporte, não em volta dele. Habilitar este ajuste aumenta a aderência de suporte à mesa de impressão."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "Largura do Brim de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "A largura do brim a ser impresso sob o suporte. Um brim mais largo melhora a aderência à mesa de impressão, ao custo de material extra."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "Número de Filetes do Brim de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "O número de filetes usado para o brim de suporte. Mais filetes melhoram a aderência na mesa de impressão, ao custo de material extra."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3871,12 +3871,12 @@ msgstr "O número de linhas usada para o brim. Mais linhas de brim melhoram a ad
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "Brim Substitui Suporte"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "Força que o brim seja impresso em volta do modelo mesmo se este espaço fosse ser ocupado por suporte. Isto substitui algumas regiões da primeira camada de suporte por regiões de brim."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
