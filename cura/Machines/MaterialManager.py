@@ -12,7 +12,6 @@ from UM.Application import Application
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
 
@@ -22,6 +21,7 @@ from .VariantType import VariantType
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
+    from UM.Settings.InstanceContainer import InstanceContainer
     from cura.Settings.GlobalStack import GlobalStack
     from cura.Settings.ExtruderStack import ExtruderStack
 
@@ -451,7 +451,7 @@ class MaterialManager(QObject):
     #   - A fallback by type (@sa getFallbackMaterialIdByMaterialType), which adds the generic version of this material
     #   - A fallback by GUID; If a material has been duplicated, it should also check if the original materials do have
     #       a GUID. This should only be done if the material itself does not have a quality just yet.
-    def getFallBackMaterialIdsByMaterial(self, material: InstanceContainer) -> List[str]:
+    def getFallBackMaterialIdsByMaterial(self, material: "InstanceContainer") -> List[str]:
         results = []  # type: List[str]
 
         material_groups = self.getMaterialGroupListByGUID(material.getMetaDataEntry("GUID"))
