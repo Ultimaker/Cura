@@ -8,13 +8,15 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0100\n"
-"PO-Revision-Date: 2018-10-01 13:40+0100\n"
+"PO-Revision-Date: 2018-11-06 15:33+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -47,7 +49,7 @@ msgstr "GCodeWriter metin dışı modu desteklemez."
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:89
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
-msgstr ""
+msgstr "Lütfen dışa aktarmadan önce G-code'u hazırlayın."
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
@@ -76,7 +78,7 @@ msgstr "Değişiklik Günlüğünü Göster"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
 msgid "Update Firmware"
-msgstr ""
+msgstr "Aygıt Yazılımını Güncelle"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
 msgctxt "@item:inmenu"
@@ -171,7 +173,7 @@ msgstr "Yazılacak dosya biçimleri mevcut değil!"
 #, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
-msgstr "Çıkarılabilir Sürücü <filename>{0}</filename> Üzerine Kaydediliyor "
+msgstr "Çıkarılabilir Sürücü <filename>{0}</filename> Üzerine Kaydediliyor"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:94
 msgctxt "@info:title"
@@ -439,7 +441,7 @@ msgstr "Yazıcınızda bulunan PrintCore’lar ve/veya malzemeler geçerli proje
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:91
 msgctxt "@info:status"
 msgid "Connected over the network"
-msgstr "Ağ üzerinden bağlandı."
+msgstr "Ağ üzerinden bağlandı"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:303
 msgctxt "@info:status"
@@ -513,7 +515,7 @@ msgstr "Katman görünümü"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:113
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled"
-msgstr "Tel Yazma etkinleştirildiğinde, Cura katmanları doğru olarak görüntülemez."
+msgstr "Tel Yazma etkinleştirildiğinde, Cura katmanları doğru olarak görüntülemez"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:114
 msgctxt "@info:title"
@@ -552,7 +554,7 @@ msgstr "Daha fazla bilgi"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:58
 msgctxt "@action:tooltip"
 msgid "See more information on what data Cura sends."
-msgstr "Cura’nın gönderdiği veriler hakkında daha fazla bilgi alın"
+msgstr "Cura’nın gönderdiği veriler hakkında daha fazla bilgi alın."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:60
 msgctxt "@action:button"
@@ -651,7 +653,7 @@ msgstr "Bilgi"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:14
 msgctxt "@label"
 msgid "Per Model Settings"
-msgstr "Model Başına Ayarlar "
+msgstr "Model Başına Ayarlar"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:15
 msgctxt "@info:tooltip"
@@ -820,7 +822,7 @@ msgstr "Önceden dilimlenmiş dosya {0}"
 #: /home/ruben/Projects/Cura/cura/API/Account.py:71
 msgctxt "@info:title"
 msgid "Login failed"
-msgstr ""
+msgstr "Giriş başarısız"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:201
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
@@ -894,32 +896,32 @@ msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısı
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
-msgstr ""
+msgstr "<filename>{0}</filename> dosyasında içe aktarılabilecek özel profil yok"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-msgstr ""
+msgstr "Bu <filename>{0}</filename> profili yanlış veri içeriyor, içeri aktarılamadı."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr ""
+msgstr "<filename>{0}</filename> ({1}) profilinde tanımlanan makine, mevcut makineniz ({2}) ile eşleşmiyor, içe aktarılamadı."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:312
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
 #, python-brace-format
@@ -1406,7 +1408,7 @@ msgstr "Nozül Y ofseti"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:451
 msgctxt "@label"
 msgid "Cooling Fan Number"
-msgstr ""
+msgstr "Soğutma Fanı Numarası"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:452
 msgctxt "@label"
@@ -1510,7 +1512,7 @@ msgstr "Geri"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
-msgstr ""
+msgstr "Kaldırmayı onayla"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
@@ -1653,7 +1655,7 @@ msgstr "Kapat"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
 msgid "Update Firmware"
-msgstr ""
+msgstr "Aygıt Yazılımını Güncelle"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:39
 msgctxt "@label"
@@ -1678,12 +1680,12 @@ msgstr "Özel Aygıt Yazılımı Yükle"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:83
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
-msgstr ""
+msgstr "Yazıcı ile bağlantı kurulmadığı için aygıt yazılımı güncellenemiyor."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:91
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
-msgstr ""
+msgstr "Yazıcı bağlantısı aygıt yazılımını yükseltmeyi desteklemediği için aygıt yazılımı güncellenemiyor."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:98
 msgctxt "@title:window"
@@ -1918,62 +1920,62 @@ msgstr "Bekleniyor: "
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:299
 msgctxt "@label"
 msgid "Configuration change"
-msgstr ""
+msgstr "Yapılandırma değişikliği"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:365
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change(s):"
-msgstr ""
+msgstr "Atanan yazıcı %1, aşağıdaki yapılandırma değişikliklerini gerektiriyor:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:367
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr ""
+msgstr "Yazıcı %1 atandı, fakat iş bilinmeyen bir malzeme yapılandırması içeriyor."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:375
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr ""
+msgstr "%2 olan %1 malzemesini %3 yapın."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:378
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
-msgstr ""
+msgstr "%3 malzemesini %1 malzemesi olarak yükleyin (Bu işlem geçersiz kılınamaz)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:381
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
-msgstr ""
+msgstr "%2 olan %1 print core'u %3 yapın."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:384
 msgctxt "@label"
 msgid "Change build plate to %1 (This cannot be overridden)."
-msgstr ""
+msgstr "Baskı tablasını %1 olarak değiştirin (Bu işlem geçersiz kılınamaz)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:404
 msgctxt "@label"
 msgid "Override"
-msgstr ""
+msgstr "Geçersiz kıl"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:432
 msgctxt "@label"
 msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
-msgstr ""
+msgstr "Bir yazdırma işini uyumsuz bir yapılandırmayla başlatmak 3D yazıcınıza zarar verebilir. Yapılandırmayı geçersiz kılmak ve %1 öğesini yazdırmak istediğinizden emin misiniz?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:435
 msgctxt "@window:title"
 msgid "Override configuration configuration and start print"
-msgstr ""
+msgstr "Yapılandırmayı geçersiz kıl ve yazdırmayı başlat"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:466
 msgctxt "@label"
 msgid "Glass"
-msgstr ""
+msgstr "Cam"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:469
 msgctxt "@label"
 msgid "Aluminum"
-msgstr ""
+msgstr "Alüminyum"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:39
 msgctxt "@label link to connect manager"
@@ -2257,7 +2259,7 @@ msgstr "Daha koyu olan daha yüksek"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:149
 msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
-msgstr "Resme uygulanacak düzeltme miktarı"
+msgstr "Resme uygulanacak düzeltme miktarı."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:154
 msgctxt "@action:label"
@@ -2640,7 +2642,7 @@ msgstr "Hazırlanıyor..."
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:154
 msgctxt "@label:MonitorStatus"
 msgid "Please remove the print"
-msgstr "Lütfen yazıcıyı çıkarın "
+msgstr "Lütfen yazıcıyı çıkarın"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:325
 msgctxt "@label"
@@ -2979,7 +2981,7 @@ msgstr "Dışarıda kalan alanı göster"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:355
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
-msgstr "Bir model seçildiğinde bu model görüntünün ortasında kalacak şekilde kamera hareket eder."
+msgstr "Bir model seçildiğinde bu model görüntünün ortasında kalacak şekilde kamera hareket eder"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:360
 msgctxt "@action:button"
@@ -3433,17 +3435,17 @@ msgstr "STL dosyalarının işlenmesi için destek kitaplığı"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:145
 msgctxt "@label"
 msgid "Support library for handling planar objects"
-msgstr ""
+msgstr "Düzlemsel nesnelerin işlenmesi için destek kitaplığı"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:146
 msgctxt "@label"
 msgid "Support library for handling triangular meshes"
-msgstr ""
+msgstr "Üçgen birleşimlerin işlenmesi için destek kitaplığı"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:147
 msgctxt "@label"
 msgid "Support library for analysis of complex networks"
-msgstr ""
+msgstr "Karmaşık ağların analizi için destek kitaplığı"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
 msgctxt "@label"
@@ -3453,7 +3455,7 @@ msgstr "3MF dosyalarının işlenmesi için destek kitaplığı"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:149
 msgctxt "@label"
 msgid "Support library for file metadata and streaming"
-msgstr ""
+msgstr "Dosya meta verileri ve akış için destek kitaplığı"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:150
 msgctxt "@label"
@@ -4604,12 +4606,12 @@ msgstr "Değişiklik Günlüğü"
 #: FirmwareUpdater/plugin.json
 msgctxt "description"
 msgid "Provides a machine actions for updating firmware."
-msgstr ""
+msgstr "Aygıt yazılımını güncellemeye yönelik makine eylemleri sağlar."
 
 #: FirmwareUpdater/plugin.json
 msgctxt "name"
 msgid "Firmware Updater"
-msgstr ""
+msgstr "Aygıt Yazılımı Güncelleyici"
 
 #: ProfileFlattener/plugin.json
 msgctxt "description"
@@ -4634,7 +4636,7 @@ msgstr "USB yazdırma"
 #: UserAgreement/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license."
-msgstr "Kullanıcıya bir kez lisansımızı kabul edip etmediğini sorun"
+msgstr "Kullanıcıya bir kez lisansımızı kabul edip etmediğini sorun."
 
 #: UserAgreement/plugin.json
 msgctxt "name"
@@ -4694,7 +4696,7 @@ msgstr "Çıkarılabilir Sürücü Çıkış Cihazı Eklentisi"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr "Ultimaker 3 yazıcıları için ağ bağlantılarını yönetir"
+msgstr "Ultimaker 3 yazıcıları için ağ bağlantılarını yönetir."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
