@@ -1,5 +1,5 @@
 {
-    "name": "JGAurora A5",
+    "name": "JGAurora A5 & A5S",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -17,7 +17,7 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "JGAurora A5"
+            "default_value": "JGAurora A5 & A5S"
         },
         "machine_start_gcode": {
             "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28                     ;home all axis\nM420 S1                 ;turn on mesh bed levelling if enabled in firmware\nG92 E0                  ;zero the extruded length\nG1 Z1 F1000             ;move up slightly\nG1 X60.0 Z0 E9.0 F1000.0;intro line\nG1 X100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\n; -- end of START GCODE --"
