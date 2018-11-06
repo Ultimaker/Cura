@@ -128,7 +128,7 @@ if TYPE_CHECKING:
 numpy.seterr(all = "ignore")
 
 try:
-    from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion
+    from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
 except ImportError:
     CuraAppDisplayName = "Ultimaker Cura"
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
