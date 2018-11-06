@@ -24,6 +24,7 @@ Item
         source: UM.Theme.getImage("avatar_default")
         fillMode: Image.PreserveAspectCrop
         visible: false
+        mipmap: true 
     }
 
     Rectangle
