@@ -248,8 +248,6 @@ Item {
     // Utils
     function switchPopupState() {
         popup.visible ? popup.close() : popup.open();
-        console.log("printJob.state is:", printJob.state);
-        console.log("children.length is:", getMenuLength());
     }
     function isStarted(job) {
         if (!job) {
