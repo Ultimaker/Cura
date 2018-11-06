@@ -374,6 +374,11 @@ class PrintInformation(QObject):
             if self._base_name.endswith(OLD_CURA_PROJECT_EXT):
                 self._base_name = self._base_name[:len(self._base_name) - len(OLD_CURA_PROJECT_EXT)]
 
+            # CURA-5896 Try to strip extra extensions with an infinite amount of ".curaproject.3mf".
+            OLD_CURA_PROJECT_3MF_EXT = ".curaproject.3mf"
+            while self._base_name.endswith(OLD_CURA_PROJECT_3MF_EXT):
+                self._base_name = self._base_name[:len(self._base_name) - len(OLD_CURA_PROJECT_3MF_EXT)]
+
             self._updateJobName()
 
     @pyqtProperty(str, fset = setBaseName, notify = baseNameChanged)
