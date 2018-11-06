@@ -16,7 +16,7 @@ Rectangle
 {
     id: actionPanelWidget
 
-    width: childrenRect.width + 2 * UM.Theme.getSize("thick_margin").width
+    width: UM.Theme.getSize("action_panel_widget").width
     height: childrenRect.height + 2 * UM.Theme.getSize("thick_margin").height
 
     color: UM.Theme.getColor("main_background")
@@ -36,12 +36,11 @@ Rectangle
             topMargin: UM.Theme.getSize("thick_margin").height
             left: parent.left
             leftMargin: UM.Theme.getSize("thick_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("thick_margin").width
         }
         sourceComponent: outputAvailable ? outputProcessWidget : sliceProcessWidget
     }
-
-    Behavior on height { NumberAnimation { duration: 100 } }
-    Behavior on width { NumberAnimation { duration: 100 } }
 
     Component
     {

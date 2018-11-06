@@ -17,8 +17,6 @@ Column
 {
     id: widget
 
-    width: UM.Theme.getSize("action_panel_button").width
-
     spacing: UM.Theme.getSize("thin_margin").height
 
     UM.I18nCatalog
