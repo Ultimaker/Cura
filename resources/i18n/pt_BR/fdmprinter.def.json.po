@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0000\n"
-"PO-Revision-Date: 2018-10-02 06:30-0300\n"
+"PO-Revision-Date: 2018-10-06 04:30-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language: pt_BR\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -458,7 +459,7 @@ msgstr "ID do Bico"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "O identificador do bico para o carro extrusor, tais como \"AA 0.4\" ou \"BB 0.8\""
+msgstr "O identificador do bico para o carro extrusor, tais como \"AA 0.4\" ou \"BB 0.8.\""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
@@ -548,7 +549,7 @@ msgstr "Aceleração Máxima em X"
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
-msgstr "A aceleração máxima para o motor da impressora na direção X."
+msgstr "A aceleração máxima para o motor da impressora na direção X"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y label"
@@ -598,7 +599,7 @@ msgstr "Jerk Default nos eixos X-Y"
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_xy description"
 msgid "Default jerk for movement in the horizontal plane."
-msgstr "O valor default de jerk para movimentos no plano horizontal"
+msgstr "O valor default de jerk para movimentos no plano horizontal."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_z label"
@@ -1078,7 +1079,7 @@ msgstr "Conectar Polígonos do Topo e Base"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Conectar caminhos de contorno da base e topo quando estiverem próximos entre si. Para o padrão concêntrico, habilitar este ajuste reduzirá bastante o tempo de percurso, mas por as conexões poderem acontecer no meio do preenchimento, este recurso pode reduzir a qualidade da superfície superior."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1498,7 +1499,7 @@ msgstr "Padrão de Preenchimento"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "O padrão do material de preenchimento da impressão. Os preenchimentos de linha e ziguezague mudam de direção em camadas alternadas, reduzindo o custo do material. Os padrões de grade, triângulo, tri-hexágono, cúbico, octeto, quarto cúbico, cruzado e concêntrico são impressos em totalidade a cada camada. Os padrões giróide, cúbico, quarto cúbico e octeto mudam a cada camada para prover uma distribuição mais igualitária de força em cada direção."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1563,7 +1564,7 @@ msgstr "Cruzado 3D"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Giróide"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1867,7 +1868,7 @@ msgstr "Temperatura Default de Impressão"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr "A temperatura default usada para a impressão. Esta deve ser a temperatura \"base\" de um material. Todas as outras temperaturas de impressão devem usar diferenças baseadas neste valor."
+msgstr "A temperatura default usada para a impressão. Esta deve ser a temperatura \"base\" de um material. Todas as outras temperaturas de impressão devem usar diferenças baseadas neste valor"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1957,7 +1958,7 @@ msgstr "Tendência à Aderência"
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr "Tendência de aderência da superfície"
+msgstr "Tendência de aderência da superfície."
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy label"
@@ -2007,7 +2008,7 @@ msgstr "Habilitar Retração"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "Retrai o filamento quando o bico está se movendo sobre uma área não impressa."
+msgstr "Retrai o filamento quando o bico está se movendo sobre uma área não impressa. "
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3272,32 +3273,32 @@ msgstr "Orientação do padrão de preenchimento para suportes. O padrão de pre
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "Habilitar Brim de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Gera o brim dentro das regiões de preenchimento de suporte da primeira camada. Este brim é impresso sob o suporte, não em volta dele. Habilitar este ajuste aumenta a aderência de suporte à mesa de impressão."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "Largura do Brim de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "A largura do brim a ser impresso sob o suporte. Um brim mais largo melhora a aderência à mesa de impressão, ao custo de material extra."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "Número de Filetes do Brim de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "O número de filetes usado para o brim de suporte. Mais filetes melhoram a aderência na mesa de impressão, ao custo de material extra."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3547,7 +3548,7 @@ msgstr "Densidade da Base do Suporte"
 #: fdmprinter.def.json
 msgctxt "support_bottom_density description"
 msgid "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model."
-msgstr "A densidade das bases da estrutura de suporte. Um valor maior resulta em melhor aderência do suporte no topo da superfície"
+msgstr "A densidade das bases da estrutura de suporte. Um valor maior resulta em melhor aderência do suporte no topo da superfície."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_line_distance label"
@@ -3672,7 +3673,7 @@ msgstr "Sobrepor Velocidade de Ventoinha"
 #: fdmprinter.def.json
 msgctxt "support_fan_enable description"
 msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
-msgstr "Quando habilitado, a velocidade da ventoinha de resfriamento é alterada para as regiões de contorno imediatamente acima do suporte"
+msgstr "Quando habilitado, a velocidade da ventoinha de resfriamento é alterada para as regiões de contorno imediatamente acima do suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -3871,12 +3872,12 @@ msgstr "O número de linhas usada para o brim. Mais linhas de brim melhoram a ad
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "Brim Substitui Suporte"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "Força que o brim seja impresso em volta do modelo mesmo se este espaço fosse ser ocupado por suporte. Isto substitui algumas regiões da primeira camada de suporte por regiões de brim."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -3946,7 +3947,7 @@ msgstr "Espessura da Camada Superior do Raft"
 #: fdmprinter.def.json
 msgctxt "raft_surface_thickness description"
 msgid "Layer thickness of the top raft layers."
-msgstr "Espessura de camada das camadas superiores do raft"
+msgstr "Espessura de camada das camadas superiores do raft."
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_line_width label"
@@ -5116,7 +5117,7 @@ msgstr "A distância média entre os pontos aleatórios introduzidos em cada seg
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow rate compensation max extrusion offset"
-msgstr "Deslocamento de extrusão máxima da compensação de taxa de fluxo."
+msgstr "Deslocamento de extrusão máxima da compensação de taxa de fluxo"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
