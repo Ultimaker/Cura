@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1077,7 +1073,7 @@ msgstr "Boven-/onderkant Polygonen Verbinden"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Verbind skinpaden aan de boven-/onderkant waar ze naast elkaar lopen. Met deze instelling wordt bij concentrische patronen de bewegingstijd aanzienlijk verkort. Dit kan echter ten koste gaan van de kwaliteit van de bovenste laag aangezien de verbindingen in het midden van de vulling kunnen komen te liggen."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1497,7 +1493,7 @@ msgstr "Vulpatroon"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor wordt bespaard op materiaalkosten. De raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden elke laag volledig geprint. Gyroïde, kubische, afgeknotte kubus- en achtvlaksvullingen veranderen elke laag voor een meer gelijke krachtverdeling in elke richting."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1562,7 +1558,7 @@ msgstr "Kruis 3D"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroïde"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1634,9 +1630,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"Voeg extra wanden toe rondom de vulling. Deze wanden kunnen ervoor zorgen dat de skin aan de boven-/onderkant minder doorzakt. Dit betekent dat u met alleen wat extra materiaal voor dezelfde kwaliteit minder skinlagen aan de boven-/onderkant nodig hebt.\n"
-"Deze optie kan in combinatie met de optie 'Polygonen voor de vulling verbinden' worden gebruikt om alle vulling in één doorvoerpad te verbinden zonder extra bewegingen of intrekkingen, mits correct ingesteld."
+msgstr "Voeg extra wanden toe rondom de vulling. Deze wanden kunnen ervoor zorgen dat de skin aan de boven-/onderkant minder doorzakt. Dit betekent dat u met alleen wat extra materiaal voor dezelfde kwaliteit minder skinlagen aan de boven-/onderkant nodig hebt.\nDeze optie kan in combinatie met de optie 'Polygonen voor de vulling verbinden' worden gebruikt om alle vulling in één doorvoerpad te verbinden zonder extra bewegingen of intrekkingen, mits correct ingesteld."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -3271,32 +3265,32 @@ msgstr "Richting van het vulpatroon voor supportstructuren. Het vulpatroon voor 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "Supportbrim inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Genereer een brim binnen de supportvulgebieden van de eerste laag. Deze brim wordt niet rondom maar onder de supportstructuur geprint. Als u deze instelling inschakelt, hecht de supportstructuur beter aan het platform."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "Lijnbreedte supportbrim"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "De breedte van de brim die onder de support wordt geprint. Een bredere brim kost meer materiaal, maar hecht beter aan het platform."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "Aantal supportbrimlijnen"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Het aantal lijnen dat voor de supportbrim wordt gebruikt. Meer brimlijnen zorgen voor betere hechting aan het platform, maar kosten wat extra materiaal."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3833,9 +3827,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"De horizontale afstand tussen de skirt en de eerste laag van de print.\n"
-"Dit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
+msgstr "De horizontale afstand tussen de skirt en de eerste laag van de print.\nDit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3870,12 +3862,12 @@ msgstr "Het aantal lijnen dat voor een brim wordt gebruikt. Meer lijnen zorgen v
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "Brim vervangt supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "Dwing af dat de brim rond het model wordt geprint, zelfs als deze ruimte anders door supportstructuur zou worden ingenomen. Hierdoor worden enkele gebieden van de eerste supportlaag vervangen door brimgebieden."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -5282,9 +5274,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\n"
-"Hierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
+msgstr "De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\nHierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"

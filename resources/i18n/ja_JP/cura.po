@@ -49,7 +49,7 @@ msgstr "GCodeWriter は非テキストモードはサポートしていません
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:89
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
-msgstr ""
+msgstr "エクスポートする前にG-codeの準備をしてください。"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
@@ -64,11 +64,7 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr ""
-"<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
+msgstr "<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n<p>{model_names}</p>\n<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.py:32
 msgctxt "@item:inmenu"
@@ -78,7 +74,7 @@ msgstr "Changelogの表示"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
 msgid "Update Firmware"
-msgstr ""
+msgstr "ファームウェアアップデート"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
 msgctxt "@item:inmenu"
@@ -823,7 +819,7 @@ msgstr "スライス前ファイル {0}"
 #: /home/ruben/Projects/Cura/cura/API/Account.py:71
 msgctxt "@info:title"
 msgid "Login failed"
-msgstr ""
+msgstr "ログインに失敗しました"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:201
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
@@ -897,32 +893,32 @@ msgstr "<filename>{0}</filename>: <message>{1}</message>からプロファイル
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
-msgstr ""
+msgstr "ファイル<filename>{0}</filename>にはカスタムプロファイルがインポートされていません。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-msgstr ""
+msgstr "このプロファイル<filename>{0}</filename>には、正しくないデータが含まれているため、インポートできません。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr ""
+msgstr "プロファイル<filename>{0}</filename>の中で定義されているマシン({1})は、現在お使いのマシン({2})と一致しないため、インポートできませんでした。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:312
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
 #, python-brace-format
@@ -1074,12 +1070,7 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr ""
-"<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n"
-"                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n"
-"                    <p>バックアップは、設定フォルダに保存されます。</p>\n"
-"                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n"
-"                "
+msgstr "<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n                    <p>バックアップは、設定フォルダに保存されます。</p>\n                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
@@ -1112,10 +1103,7 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr ""
-"<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
-"            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n"
-"        "
+msgstr "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
@@ -1409,7 +1397,7 @@ msgstr "ノズルオフセットY"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:451
 msgctxt "@label"
 msgid "Cooling Fan Number"
-msgstr ""
+msgstr "冷却ファンの番号"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:452
 msgctxt "@label"
@@ -1513,7 +1501,7 @@ msgstr "戻る"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
-msgstr ""
+msgstr "アンインストール確認"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
@@ -1591,10 +1579,7 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr ""
-"このプラグインにはライセンスが含まれています。\n"
-"このプラグインをインストールするにはこのライセンスに同意する必要があります。\n"
-"下の利用規約に同意しますか？"
+msgstr "このプラグインにはライセンスが含まれています。\nこのプラグインをインストールするにはこのライセンスに同意する必要があります。\n下の利用規約に同意しますか？"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
 msgctxt "@action:button"
@@ -1656,7 +1641,7 @@ msgstr "閉める"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
 msgid "Update Firmware"
-msgstr ""
+msgstr "ファームウェアアップデート"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:39
 msgctxt "@label"
@@ -1681,12 +1666,12 @@ msgstr "カスタムファームウェアをアップロードする"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:83
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
-msgstr ""
+msgstr "プリンターと接続されていないため、ファームウェアをアップデートできません。"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:91
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
-msgstr ""
+msgstr "プリンターとの接続はファームウェアのアップデートをサポートしていないため、ファームウェアをアップデートできません。"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:98
 msgctxt "@title:window"
@@ -1918,62 +1903,62 @@ msgstr "待ち時間: "
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:299
 msgctxt "@label"
 msgid "Configuration change"
-msgstr ""
+msgstr "構成の変更"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:365
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change(s):"
-msgstr ""
+msgstr "割り当てられたプリンター %1 には以下の構成変更が必要です。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:367
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr ""
+msgstr "プリンター %1 が割り当てられましたが、ジョブには不明な材料構成があります。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:375
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr ""
+msgstr "材料 ％1 を ％2 から %3 に変更します。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:378
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
-msgstr ""
+msgstr "%3 を 材料 %1 にロードします（これは上書きできません）。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:381
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
-msgstr ""
+msgstr "プリントコア ％1 を ％2 から %3 に変更します。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:384
 msgctxt "@label"
 msgid "Change build plate to %1 (This cannot be overridden)."
-msgstr ""
+msgstr "ビルドプレートを %1 に変更します（これは上書きできません）。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:404
 msgctxt "@label"
 msgid "Override"
-msgstr ""
+msgstr "上書き"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:432
 msgctxt "@label"
 msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
-msgstr ""
+msgstr "互換性のない構成で印刷ジョブを開始すると3Dプリンターを損傷することがあります。構成と印刷 ％1 を上書きしますか？"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:435
 msgctxt "@window:title"
 msgid "Override configuration configuration and start print"
-msgstr ""
+msgstr "構成を上書きしてから印刷を開始"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:466
 msgctxt "@label"
 msgid "Glass"
-msgstr ""
+msgstr "ガラス"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:469
 msgctxt "@label"
 msgid "Aluminum"
-msgstr ""
+msgstr "アルミニウム"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:39
 msgctxt "@label link to connect manager"
@@ -3431,17 +3416,17 @@ msgstr "STLファイルを操作するためのライブラリーサポート"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:145
 msgctxt "@label"
 msgid "Support library for handling planar objects"
-msgstr ""
+msgstr "平面対象物を操作するためのライブラリーサポート"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:146
 msgctxt "@label"
 msgid "Support library for handling triangular meshes"
-msgstr ""
+msgstr "参画メッシュを操作するためのライブラリーサポート"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:147
 msgctxt "@label"
 msgid "Support library for analysis of complex networks"
-msgstr ""
+msgstr "複雑なネットワークを分析するためのライブラリーサポート"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
 msgctxt "@label"
@@ -3451,7 +3436,7 @@ msgstr "3MFファイルを操作するためのライブラリーサポート"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:149
 msgctxt "@label"
 msgid "Support library for file metadata and streaming"
-msgstr ""
+msgstr "ファイルメタデータとストリーミングのためのライブラリーサポート"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:150
 msgctxt "@label"
@@ -3499,9 +3484,7 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"いくらかの設定プロファイルにある値とことなる場合無効にします。\n"
-"プロファイルマネージャーをクリックして開いてください。"
+msgstr "いくらかの設定プロファイルにある値とことなる場合無効にします。\nプロファイルマネージャーをクリックして開いてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:200
 msgctxt "@label:textbox"
@@ -3555,9 +3538,7 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n"
-"表示されるようにクリックしてください。"
+msgstr "いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n表示されるようにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3585,9 +3566,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"この設定にプロファイルと異なった値があります。\n"
-"プロファイルの値を戻すためにクリックしてください。"
+msgstr "この設定にプロファイルと異なった値があります。\nプロファイルの値を戻すためにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:281
 msgctxt "@label"
@@ -3595,9 +3574,7 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"このセッティングは通常計算されます、今は絶対値に固定されています。\n"
-"計算された値に変更するためにクリックを押してください。"
+msgstr "このセッティングは通常計算されます、今は絶対値に固定されています。\n計算された値に変更するためにクリックを押してください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:129
 msgctxt "@label"
@@ -3822,9 +3799,7 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr ""
-"プリントセットアップが無効\n"
-"G-codeファイルを修正することができません"
+msgstr "プリントセットアップが無効\nG-codeファイルを修正することができません"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:340
 msgctxt "@label Hours and minutes"
@@ -4598,12 +4573,12 @@ msgstr "Changelog"
 #: FirmwareUpdater/plugin.json
 msgctxt "description"
 msgid "Provides a machine actions for updating firmware."
-msgstr ""
+msgstr "ファームウェアアップデートのためのマシン操作を提供します。"
 
 #: FirmwareUpdater/plugin.json
 msgctxt "name"
 msgid "Firmware Updater"
-msgstr ""
+msgstr "ファームウェアアップデーター"
 
 #: ProfileFlattener/plugin.json
 msgctxt "description"
