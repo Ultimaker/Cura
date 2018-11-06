@@ -34,7 +34,13 @@ Item {
         hoverEnabled: true;
         onClicked: parent.switchPopupState();
         text: "\u22EE"; //Unicode; Three stacked points.
-        visible: printJob.state == "queued" || printJob.state == "aborted" || started ? true : false;
+        visible: {
+            if (!printJob) {
+                return false;
+            }
+            var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"];
+            return states.indexOf(printJob.state) !== -1;
+        }
         width: 35 * screenScaleFactor; // TODO: Theme!
     }
 
@@ -123,11 +129,17 @@ Item {
                     popup.close();
                 }
                 text: catalog.i18nc("@label", "Delete");
-                visible: printJob && !started && printJob.state !== "aborted" && printJob.state !== "finished";
+                visible: {
+                    if (!printJob) {
+                        return false;
+                    }
+                    var states = ["queued", "sent_to_printer"];
+                    return states.indexOf(printJob.state) !== -1;
+                }
             }
 
             PrintJobContextMenuItem {
-                enabled: !(printJob.state == "pausing" || printJob.state == "resuming");
+                enabled: visible && !(printJob.state == "pausing" || printJob.state == "resuming");
                 onClicked: {
                     if (printJob.state == "paused") {
                         printJob.setState("print");
@@ -155,17 +167,29 @@ Item {
                             catalog.i18nc("@label", "Pause");
                     }
                 }
-                visible: printJob && started && printJob.state;
+                visible: {
+                    if (!printJob) {
+                        return false;
+                    }
+                    var states = ["printing", "pausing", "paused", "resuming"];
+                    return states.indexOf(printJob.state) !== -1;
+                }
             }
 
             PrintJobContextMenuItem {
-                enabled: printJob.state !== "aborting";
+                enabled: visible && printJob.state !== "aborting";
                 onClicked: {
                     abortConfirmationDialog.visible = true;
                     popup.close();
                 }
                 text: printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
-                visible: printJob && started;
+                visible: {
+                    if (!printJob) {
+                        return false;
+                    }
+                    var states = ["pre_print", "printing", "pausing", "paused", "resuming"];
+                    return states.indexOf(printJob.state) !== -1;
+                }
             }
         }
         enter: Transition {
@@ -224,6 +248,8 @@ Item {
     // Utils
     function switchPopupState() {
         popup.visible ? popup.close() : popup.open();
+        console.log("printJob.state is:", printJob.state);
+        console.log("children.length is:", getMenuLength());
     }
     function isStarted(job) {
         if (!job) {
@@ -236,5 +262,14 @@ Item {
             return false;
         }
         return job.assignedPrinter ? true : false;
+    }
+    function getMenuLength() {
+        var visible = 0;
+        for (var i = 0; i < popupOptions.children.length; i++) {
+            if (popupOptions.children[i].visible) {
+                visible++;
+            }
+        }
+        return visible;
     }
 }

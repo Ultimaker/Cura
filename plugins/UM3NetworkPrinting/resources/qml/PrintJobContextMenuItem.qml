@@ -17,7 +17,7 @@ Button {
         horizontalAlignment: Text.AlignLeft;
         verticalAlignment: Text.AlignVCenter;
     }
-    height: 39 * screenScaleFactor; // TODO: Theme!
+    height: visible ? 39 * screenScaleFactor : 0; // TODO: Theme!
     hoverEnabled: true;
     width: parent.width;
 }
