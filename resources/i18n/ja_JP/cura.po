@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0100\n"
-"PO-Revision-Date: 2018-09-28 15:19+0200\n"
+"PO-Revision-Date: 2018-11-06 14:58+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -64,7 +64,11 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n<p>{model_names}</p>\n<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
+msgstr ""
+"<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.py:32
 msgctxt "@item:inmenu"
@@ -870,7 +874,7 @@ msgstr "<filename>{0}</filename>にプロファイルを書き出すのに失敗
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
-msgstr " <filename>{0}</filename>にプロファイルを書き出すことに失敗しました。：ライタープラグイン失敗の報告。"
+msgstr "<filename>{0}</filename>にプロファイルを書き出すことに失敗しました。：ライタープラグイン失敗の報告。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
@@ -1070,7 +1074,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n                    <p>バックアップは、設定フォルダに保存されます。</p>\n                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n                "
+msgstr ""
+"<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n"
+"                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n"
+"                    <p>バックアップは、設定フォルダに保存されます。</p>\n"
+"                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n"
+"                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@action:button"
@@ -1103,7 +1112,10 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n        "
+msgstr ""
+"<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
+"            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:177
 msgctxt "@title:groupbox"
@@ -1579,7 +1591,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "このプラグインにはライセンスが含まれています。\nこのプラグインをインストールするにはこのライセンスに同意する必要があります。\n下の利用規約に同意しますか？"
+msgstr ""
+"このプラグインにはライセンスが含まれています。\n"
+"このプラグインをインストールするにはこのライセンスに同意する必要があります。\n"
+"下の利用規約に同意しますか？"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:54
 msgctxt "@action:button"
@@ -1604,7 +1619,7 @@ msgstr "互換性"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
-msgstr "パッケージ取得中"
+msgstr "パッケージ取得中…"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxAuthorPage.qml:88
 msgctxt "@label"
@@ -2610,7 +2625,7 @@ msgstr "プリンターへの接続が切断されました"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:187
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
-msgstr "プリント中"
+msgstr "プリント中…"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:149
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:189
@@ -2622,7 +2637,7 @@ msgstr "一時停止しました"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:191
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
-msgstr "準備中"
+msgstr "準備中…"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:154
 msgctxt "@label:MonitorStatus"
@@ -2847,12 +2862,12 @@ msgstr "フィラメントを取り込む"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:286
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr " <filename>%1</filename>フィラメントを取り込むことができない: <message>%2</message>"
+msgstr "<filename>%1</filename>フィラメントを取り込むことができない: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:290
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "フィラメント<filename>%1</filename>の取り込みに成功しました。"
+msgstr "フィラメント<filename>%1</filename>の取り込みに成功しました"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:308
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:316
@@ -2868,7 +2883,7 @@ msgstr "フィラメントの書き出しに失敗しました <filename>%1</fil
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:326
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "フィラメントの<filename>%1</filename>への書き出しが完了ました。"
+msgstr "フィラメントの<filename>%1</filename>への書き出しが完了ました"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:14
 msgctxt "@title:tab"
@@ -3484,7 +3499,9 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "いくらかの設定プロファイルにある値とことなる場合無効にします。\nプロファイルマネージャーをクリックして開いてください。"
+msgstr ""
+"いくらかの設定プロファイルにある値とことなる場合無効にします。\n"
+"プロファイルマネージャーをクリックして開いてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:200
 msgctxt "@label:textbox"
@@ -3520,7 +3537,7 @@ msgstr "常に見えるように設定する"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:417
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
-msgstr "視野のセッティングを構成する"
+msgstr "視野のセッティングを構成する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:644
 msgctxt "@action:inmenu"
@@ -3538,7 +3555,9 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n表示されるようにクリックしてください。"
+msgstr ""
+"いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n"
+"表示されるようにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3566,7 +3585,9 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "この設定にプロファイルと異なった値があります。\nプロファイルの値を戻すためにクリックしてください。"
+msgstr ""
+"この設定にプロファイルと異なった値があります。\n"
+"プロファイルの値を戻すためにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:281
 msgctxt "@label"
@@ -3574,7 +3595,9 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "このセッティングは通常計算されます、今は絶対値に固定されています。\n計算された値に変更するためにクリックを押してください。"
+msgstr ""
+"このセッティングは通常計算されます、今は絶対値に固定されています。\n"
+"計算された値に変更するためにクリックを押してください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:129
 msgctxt "@label"
@@ -3743,7 +3766,7 @@ msgstr "すべての設定を表示"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:53
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
-msgstr "視野のセッティングを管理する"
+msgstr "視野のセッティングを管理する…"
 
 # can’t enter japanese texts
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:27
@@ -3799,7 +3822,9 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr "プリントセットアップが無効\nG-codeファイルを修正することができません"
+msgstr ""
+"プリントセットアップが無効\n"
+"G-codeファイルを修正することができません"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:340
 msgctxt "@label Hours and minutes"
@@ -3916,17 +3941,17 @@ msgstr "Curaを構成する…"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:156
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
-msgstr "＆プリンターを追加する"
+msgstr "＆プリンターを追加する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
-msgstr "プリンターを管理する"
+msgstr "プリンターを管理する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:169
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
-msgstr "フィラメントを管理する"
+msgstr "フィラメントを管理する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:177
 msgctxt "@action:inmenu menubar:profile"
@@ -3946,7 +3971,7 @@ msgstr "&今の設定/無効からプロファイルを作成する…"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:203
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
-msgstr "プロファイルを管理する"
+msgstr "プロファイルを管理する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:210
 msgctxt "@action:inmenu menubar:help"
@@ -4067,7 +4092,7 @@ msgstr "&新しいプロジェクト…"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:402
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
-msgstr "エンジン＆ログを表示する"
+msgstr "エンジン＆ログを表示する…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:410
 msgctxt "@action:inmenu menubar:help"
@@ -4270,7 +4295,7 @@ msgstr "設定"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:593
 msgctxt "@title:window"
 msgid "New project"
-msgstr "新しいプロジェクト…"
+msgstr "新しいプロジェクト"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:594
 msgctxt "@info:question"

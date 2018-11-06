@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0000\n"
-"PO-Revision-Date: 2018-10-01 14:20+0100\n"
+"PO-Revision-Date: 2018-11-06 15:38+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: PCDotFan <pc@edu.ax>, Bothof <info@bothof.nl>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.13\n"
+"X-Generator: Poedit 2.0.6\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: fdmprinter.def.json
@@ -58,7 +58,9 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
+msgstr ""
+"在开始时执行的 G-code 命令 - 以 \n"
+" 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,7 +72,9 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
+msgstr ""
+"在结束前执行的 G-code 命令 - 以 \n"
+" 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -80,7 +84,7 @@ msgstr "材料 GUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
-msgstr "材料 GUID，此项为自动设置。"
+msgstr "材料 GUID，此项为自动设置。 "
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -235,7 +239,7 @@ msgstr "挤出机组数目。 挤出机组是指进料装置、鲍登管和喷�
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders that are enabled"
-msgstr "已启用的挤出机数目。"
+msgstr "已启用的挤出机数目"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
@@ -550,7 +554,7 @@ msgstr "X 轴方向电机的最大加速度"
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y label"
 msgid "Maximum Acceleration Y"
-msgstr " 轴最大加速度"
+msgstr "轴最大加速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y description"
@@ -850,7 +854,7 @@ msgstr "单一支撑底板走线宽度。"
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
-msgstr "装填塔走线宽度。"
+msgstr "装填塔走线宽度"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
@@ -1632,7 +1636,9 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。\n在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
+msgstr ""
+"在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。\n"
+"在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -3829,7 +3835,9 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "skirt  和打印第一层之间的水平距离。\n这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgstr ""
+"skirt  和打印第一层之间的水平距离。\n"
+"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -5276,7 +5284,9 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "以半速挤出的上行移动的距离。\n这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
+msgstr ""
+"以半速挤出的上行移动的距离。\n"
+"这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
