@@ -37,7 +37,6 @@ Button
             color: button.hovered ? button.textHoverColor : button.textColor
             visible: source != ""
             anchors.verticalCenter: parent.verticalCenter
-            Behavior on color { ColorAnimation { duration: 50 } }
         }
 
         Label
@@ -59,7 +58,6 @@ Button
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
-        Behavior on color { ColorAnimation { duration: 50 } }
     }
 
     MouseArea

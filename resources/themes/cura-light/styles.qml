@@ -129,8 +129,6 @@ QtObject
                             return UM.Theme.getColor("main_window_header_button_background_inactive")
                         }
                     }
-
-                    Behavior on color { ColorAnimation { duration: 50 } }
                 }
             }
 
