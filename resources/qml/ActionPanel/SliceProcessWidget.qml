@@ -86,6 +86,7 @@ Column
         id: prepareButton
         width: parent.width
         height: UM.Theme.getSize("action_panel_button").height
+        fixedWidthMode: true
         text:
         {
             if ([UM.Backend.NotStarted, UM.Backend.Error].indexOf(widget.backendState) != -1)

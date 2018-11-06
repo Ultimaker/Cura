@@ -16,6 +16,7 @@ Item
     {
         id: saveToButton
         height: parent.height
+        fixedWidthMode: true
 
         anchors
         {

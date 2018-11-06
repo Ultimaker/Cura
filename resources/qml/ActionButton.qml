@@ -24,6 +24,10 @@ Button
     property var outlineColor: color
     property var outlineHoverColor: hoverColor
     property var outlineDisabledColor: outlineColor
+    // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
+    // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
+    // we elide the text to the right so the text will be cut off with the three dots at the end.
+    property var fixedWidthMode: false
 
     contentItem: Row
     {
@@ -50,6 +54,9 @@ Button
             visible: text != ""
             renderType: Text.NativeRendering
             anchors.verticalCenter: parent.verticalCenter
+            width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : undefined
+            horizontalAlignment: Text.AlignHCenter
+            elide: Text.ElideRight
         }
     }
 
