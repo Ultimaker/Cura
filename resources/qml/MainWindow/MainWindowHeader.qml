@@ -83,7 +83,7 @@ Rectangle
         }
         leftPadding: UM.Theme.getSize("default_margin").width
         rightPadding: UM.Theme.getSize("default_margin").width
-        text: catalog.i18nc("@action:button", "Toolbox")
+        text: catalog.i18nc("@action:button", "Marketplace")
         height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         color: UM.Theme.getColor("main_window_header_secondary_button_background_active")
         hoverColor: UM.Theme.getColor("main_window_header_secondary_button_background_hovered")

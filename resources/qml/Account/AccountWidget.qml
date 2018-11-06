@@ -25,7 +25,18 @@ Button
         anchors.verticalCenter: accountWidget.verticalCenter
         anchors.horizontalCenter: accountWidget.horizontalCenter
 
-        source: loggedIn ? profile["profile_image_url"] : UM.Theme.getImage("avatar_no_user")
+        source:
+        {
+            if(loggedIn)
+            {
+                if(profile["profile_image_url"])
+                {
+                    return profile["profile_image_url"]
+                }
+                return UM.Theme.getImage("avatar_no_user")
+            }
+            return UM.Theme.getImage("avatar_no_user")
+        }
         outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
     }
 
@@ -45,6 +56,7 @@ Button
             id: panel
             profile: Cura.API.account.userProfile
             loggedIn: Cura.API.account.isLoggedIn
+            profileImage: Cura.API.account.profileImageUrl
         }
 
         background: UM.PointingRectangle

@@ -194,8 +194,9 @@ UM.MainWindow
                 visible: UM.Preferences.getValue("cura/use_multi_build_plate")
                 anchors
                 {
-                    bottom: parent.bottom
-                    left: parent.left
+                    bottom: viewOrientationControls.top
+                    left: toolbar.right
+                    margins: UM.Theme.getSize("default_margin").width
                 }
             }
 

@@ -45,6 +45,7 @@ Item
             id: machineSelection
             width: UM.Theme.getSize("machine_selector_widget").width - configSelection.width
             height: prepareMenu.height
+            z: openFileButton.z - 1
         }
 
         Cura.QuickConfigurationSelector

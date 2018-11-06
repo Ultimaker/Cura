@@ -106,10 +106,10 @@ Rectangle
         model: modesListModel
         width: Math.round(parent.width * 0.55)
         height: UM.Theme.getSize("print_setup_mode_toggle").height
+        visible: !hideSettings
 
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("thick_margin").width
-
         anchors.top: settingsModeLabel.top
 
         ButtonGroup
@@ -190,6 +190,8 @@ Rectangle
         anchors.left: parent.left
         anchors.right: parent.right
         height: UM.Theme.getSize("print_setup_widget").height
+
+        visible: !hideSettings
 
         // We load both of them at once (instead of using a loader) because the advanced sidebar can take
         // quite some time to load. So in this case we sacrifice memory for speed.
