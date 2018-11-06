@@ -24,7 +24,6 @@ Item
         id: icon
 
         anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
 
         source: UM.Theme.getIcon("dot")
         width: UM.Theme.getSize("section_icon").width
@@ -41,7 +40,7 @@ Item
         id: label
         anchors.left: icon.right
         anchors.leftMargin: UM.Theme.getSize("thin_margin").width
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenter: icon.verticalCenter
         text: "Empty label"
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("very_small")
