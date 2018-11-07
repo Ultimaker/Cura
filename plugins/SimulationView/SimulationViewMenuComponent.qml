@@ -5,6 +5,7 @@ import QtQuick 2.4
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
+import QtGraphicalEffects 1.0
 
 import UM 1.0 as UM
 import Cura 1.0 as Cura
@@ -469,75 +470,95 @@ Rectangle
             }
         }
 
-        Item
+        // Gradient colors for feedrate
+        Rectangle
         {
-            // Another hack on top of the rotation of the gradient.
-            // Since we set the side of the panel to use childrenRect (and that uses the un-rotated height), add this
-            // wrapper item with the correct width & height so it doesn't get confused.
-            width: parent.width
-            height: feedrateGradient.visible || thicknessGradient.visible ? Math.round(UM.Theme.getSize("layerview_row").height * 1.5) : 0
-            // Gradient colors for feedrate
-            Rectangle
-            {   // In QML 5.9 can be changed by LinearGradient
-                // Invert values because then the bar is rotated 90 degrees
-                id: feedrateGradient
-                visible: viewSettings.show_feedrate_gradient
-                anchors.left: parent.right
-                height: parent.width
-                width: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("lining")
-                transform: Rotation {origin.x: 0; origin.y: 0; angle: 90}
-                gradient: Gradient
-                {
-                    GradientStop
-                    {
-                        position: 0.000
-                        color: Qt.rgba(1, 0.5, 0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.625
-                        color: Qt.rgba(0.375, 0.5, 0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.75
-                        color: Qt.rgba(0.25, 1, 0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 1.0
-                        color: Qt.rgba(0, 0, 1, 1)
-                    }
-                }
-            }
+            id: feedrateGradient
+            visible: viewSettings.show_feedrate_gradient
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
 
-            // Gradient colors for layer thickness (similar to parula colormap)
-            Rectangle // In QML 5.9 can be changed by LinearGradient
+            LinearGradient
             {
-                // Invert values because then the bar is rotated 90 degrees
-                id: thicknessGradient
-                visible: viewSettings.show_thickness_gradient
-                anchors.left: parent.right
-                height: parent.width
-                width: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)
-
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("lining")
-
-                transform: Rotation {origin.x: 0; origin.y: 0; angle: 90}
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_lining").width
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("default_lining").width
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("default_lining").width
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.getSize("default_lining").width
+                }
+                start: Qt.point(0, 0)
+                end: Qt.point(parent.width, 0)
                 gradient: Gradient
                 {
                     GradientStop
                     {
                         position: 0.000
-                        color: Qt.rgba(1, 1, 0, 1)
+                        color: Qt.rgba(0, 0, 1, 1)
                     }
                     GradientStop
                     {
                         position: 0.25
-                        color: Qt.rgba(1, 0.75, 0.25, 1)
+                        color: Qt.rgba(0.25, 1, 0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.375
+                        color: Qt.rgba(0.375, 0.5, 0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 1.0
+                        color: Qt.rgba(1, 0.5, 0, 1)
+                    }
+                }
+            }
+        }
+
+        // Gradient colors for layer thickness (similar to parula colormap)
+        Rectangle
+        {
+            id: thicknessGradient
+            visible: viewSettings.show_thickness_gradient
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+
+            LinearGradient
+            {
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_lining").width
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("default_lining").width
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("default_lining").width
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.getSize("default_lining").width
+                }
+                start: Qt.point(0, 0)
+                end: Qt.point(parent.width, 0)
+                gradient: Gradient
+                {
+                    GradientStop
+                    {
+                        position: 0.000
+                        color: Qt.rgba(0, 0, 0.5, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.25
+                        color: Qt.rgba(0, 0.375, 0.75, 1)
                     }
                     GradientStop
                     {
@@ -547,12 +568,12 @@ Rectangle
                     GradientStop
                     {
                         position: 0.75
-                        color: Qt.rgba(0, 0.375, 0.75, 1)
+                        color: Qt.rgba(1, 0.75, 0.25, 1)
                     }
                     GradientStop
                     {
                         position: 1.0
-                        color: Qt.rgba(0, 0, 0.5, 1)
+                        color: Qt.rgba(1, 1, 0, 1)
                     }
                 }
             }
