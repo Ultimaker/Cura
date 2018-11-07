@@ -8,13 +8,14 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0000\n"
-"PO-Revision-Date: 2018-10-01 14:20+0100\n"
+"PO-Revision-Date: 2018-11-06 15:36+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -1077,7 +1078,7 @@ msgstr "Üst/Alt Poligonları Bağla"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Üst/alt yüzey yollarını yan yana ise bağla. Eş merkezli şekil için bu ayarı etkinleştirmek, hareket süresini önemli ölçüde kısaltır ancak bağlantılar dolgunun üzerinde meydana gelebileceğinden bu özellik üst yüzeyin kalitesini düşürebilir."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1497,7 +1498,7 @@ msgstr "Dolgu Şekli"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Baskının dolgu malzemesinin şeklidir. Hat ve zikzak dolgu, farklı katmanlar üzerinde yön değiştirerek malzeme maliyetini azaltır. Izgara, üçgen, üçlü altıgen, kübik, sekizlik, çeyrek kübik, çapraz ve eşmerkezli şekiller, her katmana tam olarak basılır. Gyroid, kübik, çeyrek kübik ve sekizlik dolgu, her yönde daha eşit bir kuvvet dağılımı sağlamak için her katmanda değişir."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1562,7 +1563,7 @@ msgstr "Çapraz 3D"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroid"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1866,7 +1867,7 @@ msgstr "Varsayılan Yazdırma Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr "Yazdırma için kullanılan varsayılan sıcaklık. Bu sıcaklık malzemenin “temel” sıcaklığı olmalıdır. Diğer tüm yazıcı sıcaklıkları bu değere dayanan ofsetler kullanmalıdır."
+msgstr "Yazdırma için kullanılan varsayılan sıcaklık. Bu sıcaklık malzemenin “temel” sıcaklığı olmalıdır. Diğer tüm yazıcı sıcaklıkları bu değere dayanan ofsetler kullanmalıdır"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1896,7 +1897,7 @@ msgstr "İlk Yazdırma Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "material_initial_print_temperature description"
 msgid "The minimal temperature while heating up to the Printing Temperature at which printing can already start."
-msgstr "Yazdırmanın başlayacağı Yazdırma Sıcaklığına ulaşırken görülen minimum sıcaklık"
+msgstr "Yazdırmanın başlayacağı Yazdırma Sıcaklığına ulaşırken görülen minimum sıcaklık."
 
 #: fdmprinter.def.json
 msgctxt "material_final_print_temperature label"
@@ -1926,7 +1927,7 @@ msgstr "Varsayılan Yapı Levhası Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
-msgstr "Isınan yapı levhası için kullanılan varsayılan sıcaklık. Bu sıcaklık yapı levhasının “temel” sıcaklığı olmalıdır. Diğer tüm yazıcı sıcaklıkları bu değere dayanan ofsetler kullanmalıdır."
+msgstr "Isınan yapı levhası için kullanılan varsayılan sıcaklık. Bu sıcaklık yapı levhasının “temel” sıcaklığı olmalıdır. Diğer tüm yazıcı sıcaklıkları bu değere dayanan ofsetler kullanmalıdır"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -2016,7 +2017,7 @@ msgstr "Katman Değişimindeki Geri Çekme"
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change description"
 msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "Nozül bir sonraki katmana doğru hareket ettiğinde filamanı geri çekin. "
+msgstr "Nozül bir sonraki katmana doğru hareket ettiğinde filamanı geri çekin."
 
 #: fdmprinter.def.json
 msgctxt "retraction_amount label"
@@ -3271,32 +3272,32 @@ msgstr "Destekler için dolgu şeklinin döndürülmesi. Destek dolgu şekli yat
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "Destek Kenarını Etkinleştir"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "İlk katmanın destek dolgu alanı içinde bir kenar oluşturun. Bu kenar, desteğin çevresine değil, altına yazdırılır. Bu ayarı etkinleştirmek, desteğin baskı tablasına yapışma alanını artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "Destek Kenar Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Desteğin altına yazdırılacak kenarın genişliği. Daha geniş kenar, ekstra malzeme karşılığında baskı tablasına daha fazla alanın yapışacağı anlamına gelir."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "Destek Kenar Hattı Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Bir destek kenarı için kullanılan hatların sayısı. Daha fazla kenar hattı, ekstra malzeme karşılığında baskı tablasına daha fazla alanın yapışacağı anlamına gelir."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3476,7 +3477,7 @@ msgstr "Destek Arayüzü Kalınlığı"
 #: fdmprinter.def.json
 msgctxt "support_interface_height description"
 msgid "The thickness of the interface of the support where it touches with the model on the bottom or the top."
-msgstr "Alt veya üst kısımdaki modele değdiği yerde destek arayüzü kalınlığı"
+msgstr "Alt veya üst kısımdaki modele değdiği yerde destek arayüzü kalınlığı."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_height label"
@@ -3870,12 +3871,12 @@ msgstr "Bir kenar için kullanılan hatların sayısı Daha fazla kenar hattı y
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "Kenar, Desteği Değiştirir"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "İlgili alan üzerinde destek olsa bile kenarı modelin çevresine yazdırmaya zorlayın. Desteğin ilk katmanının bazı alanlarını kenar alanları ile değiştirir."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -4155,7 +4156,7 @@ msgstr "Radye Fan Hızı"
 #: fdmprinter.def.json
 msgctxt "raft_fan_speed description"
 msgid "The fan speed for the raft."
-msgstr "Radye için fan hızı"
+msgstr "Radye için fan hızı."
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_fan_speed label"
@@ -4165,7 +4166,7 @@ msgstr "Radye Üst Fan Hızı"
 #: fdmprinter.def.json
 msgctxt "raft_surface_fan_speed description"
 msgid "The fan speed for the top raft layers."
-msgstr "Üst radye katmanları için fan hızı"
+msgstr "Üst radye katmanları için fan hızı."
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_fan_speed label"
@@ -4175,7 +4176,7 @@ msgstr "Radyenin Orta Fan Hızı"
 #: fdmprinter.def.json
 msgctxt "raft_interface_fan_speed description"
 msgid "The fan speed for the middle raft layer."
-msgstr "Radyenin orta katmanı için fan hızı"
+msgstr "Radyenin orta katmanı için fan hızı."
 
 #: fdmprinter.def.json
 msgctxt "raft_base_fan_speed label"
@@ -4185,7 +4186,7 @@ msgstr "Radyenin Taban Fan Hızı"
 #: fdmprinter.def.json
 msgctxt "raft_base_fan_speed description"
 msgid "The fan speed for the base raft layer."
-msgstr "Radyenin taban katmanı için fan hızı"
+msgstr "Radyenin taban katmanı için fan hızı."
 
 #: fdmprinter.def.json
 msgctxt "dual label"
@@ -4225,7 +4226,7 @@ msgstr "İlk Direk Boyutu"
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
-msgstr "İlk Direk Genişliği"
+msgstr "İlk Direk Genişliği."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume label"
@@ -5699,7 +5700,7 @@ msgstr "Bileşim Rotasyon Matrisi"
 #: fdmprinter.def.json
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
-msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi"
+msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi."
 
 #~ msgctxt "connect_skin_polygons description"
 #~ msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."

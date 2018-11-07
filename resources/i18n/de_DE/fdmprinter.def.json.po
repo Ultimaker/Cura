@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \n"
-"."
+msgstr "G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \n"
-"."
+msgstr "G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1078,7 +1074,7 @@ msgstr "Polygone oben/unten verbinden"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Außenhaut-Pfade oben/unten verbinden, wenn sie nebeneinander laufen. Bei konzentrischen Mustern reduziert die Aktivierung dieser Einstellung die Durchlaufzeit erheblich. Da die Verbindungen jedoch auf halbem Weg über der Füllung erfolgen können, kann diese Funktion die Oberflächenqualität reduzieren."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1498,7 +1494,7 @@ msgstr "Füllmuster"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Das Muster des Füllmaterials des Drucks. Die Linien- und Zickzackfüllmethode wechseln nach jeder Schicht die Richtung, um Materialkosten zu reduzieren. Die Gitter-, Dreieck- Tri-Hexagon-, Würfel-, Octahedral-, Viertelwürfel-, Quer- und konzentrischen Muster werden in jeder Schicht vollständig gedruckt. Gyroid-, Würfel-, Viertelwürfel- und Octahedral-Füllungen wechseln mit jeder Schicht, um eine gleichmäßigere Verteilung der Stärke in allen Richtungen zu erzielen."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1563,7 +1559,7 @@ msgstr "3D-Quer"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroid"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1635,9 +1631,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen.\n"
-" Diese Funktion ist verknüpfbar mit „Füllungspolygone verbinden“, um alle Füllungen mit einem einzigen Extrusionspfad zu verbinden, ohne dass hierzu Vorwärtsbewegungen oder Rückzüge erforderlich sind, sofern die richtige Konfiguration gewählt wurde."
+msgstr "Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen.\n Diese Funktion ist verknüpfbar mit „Füllungspolygone verbinden“, um alle Füllungen mit einem einzigen Extrusionspfad zu verbinden, ohne dass hierzu Vorwärtsbewegungen oder Rückzüge erforderlich sind, sofern die richtige Konfiguration gewählt wurde."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -3272,32 +3266,32 @@ msgstr "Ausrichtung des Füllmusters für Unterstützung. Das Füllmuster für U
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "Stütz-Brim aktivieren"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Erstellen Sie ein Brim in den Stützstruktur-Füllungsbereichen der ersten Schicht. Das Brim wird unterhalb der Stützstruktur und nicht drumherum gedruckt. Die Aktivierung dieser Einstellung erhöht die Haftung der Stützstruktur am Druckbett."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "Breite der Brim-Stützstruktur"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Die Breite des unter der Stützstruktur zu druckenden Brims. Ein größeres Brim erhöht die Haftung am Druckbett, jedoch erhöht sich hierdurch der Materialverbrauch."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "Anzahl der Brim-Stützstrukturlinien"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Die Anzahl der Linien für die Brim-Stützstruktur. Eine größere Anzahl von Brim-Linien verbessert die Haftung am Druckbett, jedoch erhöht sich hierdurch der Materialverbrauch."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3834,9 +3828,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks.\n"
-"Es handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden mehrere Skirt-Linien in äußerer Richtung angebracht."
+msgstr "Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks.\nEs handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden mehrere Skirt-Linien in äußerer Richtung angebracht."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3871,12 +3863,12 @@ msgstr "Die Anzahl der Linien für das Brim-Element. Eine größere Anzahl von B
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "Brim ersetzt die Stützstruktur"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "Erzwingen Sie den Druck des Brims um das Modell herum, auch wenn dieser Raum sonst durch die Stützstruktur belegt würde. Dies ersetzt einige der ersten Schichten der Stützstruktur durch Brim-Bereiche."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -5283,9 +5275,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Die Strecke einer Aufwärtsbewegung, die mit halber Geschwindigkeit extrudiert wird.\n"
-"Dies kann zu einer besseren Haftung an vorhergehenden Schichten führen, während gleichzeitig ein Überhitzen des Materials in diesen Schichten vermieden wird. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgstr "Die Strecke einer Aufwärtsbewegung, die mit halber Geschwindigkeit extrudiert wird.\nDies kann zu einer besseren Haftung an vorhergehenden Schichten führen, während gleichzeitig ein Überhitzen des Materials in diesen Schichten vermieden wird. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"

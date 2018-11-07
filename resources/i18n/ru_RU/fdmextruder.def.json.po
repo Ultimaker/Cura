@@ -171,12 +171,12 @@ msgstr "Позиция кончика сопла на оси Z при старт
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
-msgstr ""
+msgstr "Охлаждающий вентилятор экструдера, используемый во время печати"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr ""
+msgstr "Номер охлаждающего вентилятора, используемого при печати и ассоциированного с этим экструдером. Применяемое по умолчанию значение 0 следует менять только при наличии другого охлаждающего вентилятора, используемого при печати, для каждого экструдера."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"

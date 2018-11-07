@@ -298,7 +298,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 values = parser["values"] if parser.has_section("values") else dict()
                 num_settings_overriden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
-                quality_changes = self._container_registry.findInstanceContainers(id = container_id)
+                quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
+                                                                                  type = "quality_changes")
                 if quality_changes:
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values

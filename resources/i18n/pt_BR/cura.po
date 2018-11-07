@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0100\n"
-"PO-Revision-Date: 2018-10-01 03:20-0300\n"
+"PO-Revision-Date: 2018-11-06 02:20-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language: pt_BR\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -48,7 +49,7 @@ msgstr "O GCodeWriter não suporta modo binário."
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:89
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
-msgstr ""
+msgstr "Por favor prepare o G-Code antes de exportar."
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
@@ -77,7 +78,7 @@ msgstr "Exibir registro de alterações"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
 msgid "Update Firmware"
-msgstr ""
+msgstr "Atualizar Firmware"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
 msgctxt "@item:inmenu"
@@ -414,7 +415,7 @@ msgstr "Nenhum material carregado no slot {slot_number}"
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
-msgstr "PrintCore Diferente (Cura: {cure_printcore_name}, Impressora: {remote_printcore_name}) selecionado para o extrusor {extruder_id}"
+msgstr "PrintCore Diferente (Cura: {cura_printcore_name}, Impressora: {remote_printcore_name}) selecionado para o extrusor {extruder_id}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:361
 #, python-brace-format
@@ -821,7 +822,7 @@ msgstr "Arquivo pré-fatiado {0}"
 #: /home/ruben/Projects/Cura/cura/API/Account.py:71
 msgctxt "@info:title"
 msgid "Login failed"
-msgstr ""
+msgstr "Login falhou"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:201
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
@@ -895,32 +896,32 @@ msgstr "Falha ao importa perfil de <filename>{0}</filename>: <message>{1}</messa
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
-msgstr ""
+msgstr "Não há perfil personalizado a importar no arquivo <filename>{0}</filename>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "Erro ao importar perfil de <filename>{0}</filename>:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-msgstr ""
+msgstr "Este perfil <filename>{0}</filename> contém dados incorretos, não foi possível importá-lo."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr ""
+msgstr "A máquina definida no perfil <filename>{0}</filename> ({1}) não equivale à sua máquina atual ({2}), não foi possível importá-lo."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:312
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "Erro ao importar perfil de <filename>{0}</filename>:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
 #, python-brace-format
@@ -1407,7 +1408,7 @@ msgstr "Deslocamento Y do Bico"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:451
 msgctxt "@label"
 msgid "Cooling Fan Number"
-msgstr ""
+msgstr "Número da Ventoinha de Resfriamento"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:452
 msgctxt "@label"
@@ -1511,7 +1512,7 @@ msgstr "Voltar"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
-msgstr ""
+msgstr "Confirme a desinstalação"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
@@ -1654,7 +1655,7 @@ msgstr "Fechar"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
 msgid "Update Firmware"
-msgstr ""
+msgstr "Atualizar Firmware"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:39
 msgctxt "@label"
@@ -1679,12 +1680,12 @@ msgstr "Carregar Firmware personalizado"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:83
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
-msgstr ""
+msgstr "O firmware não pode ser atualizado porque não há conexão com a impressora."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:91
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
-msgstr ""
+msgstr "O firmware não pode ser atualizado porque a conexão com a impressora não suporta atualização de firmware."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:98
 msgctxt "@title:window"
@@ -1919,62 +1920,62 @@ msgstr "Aguardando por: "
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:299
 msgctxt "@label"
 msgid "Configuration change"
-msgstr ""
+msgstr "Alteração de configuração"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:365
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change(s):"
-msgstr ""
+msgstr "A impressora atribuída, %1, requer as seguintes alterações de configuração:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:367
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr ""
+msgstr "A impressora %1 está atribuída, mas o trabalho contém configuração de material desconhecida."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:375
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr ""
+msgstr "Alterar material %1 de %2 para %3."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:378
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
-msgstr ""
+msgstr "Carregar %3 como material %1 (isto não pode ser sobreposto)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:381
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
-msgstr ""
+msgstr "Alterar núcleo de impressão %1 de %2 para %3."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:384
 msgctxt "@label"
 msgid "Change build plate to %1 (This cannot be overridden)."
-msgstr ""
+msgstr "Alterar mesa de impressão para %1 (Isto não pode ser sobreposto)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:404
 msgctxt "@label"
 msgid "Override"
-msgstr ""
+msgstr "Sobrepôr"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:432
 msgctxt "@label"
 msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
-msgstr ""
+msgstr "Iniciar um trabalho de impressão com configuração incompatível pode danificar sua impressora 3D. Voce tem certeza que quer sobrepôr a configuração e imprimir %1?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:435
 msgctxt "@window:title"
 msgid "Override configuration configuration and start print"
-msgstr ""
+msgstr "Sobrepôr configuração e iniciar impressão"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:466
 msgctxt "@label"
 msgid "Glass"
-msgstr ""
+msgstr "Vidro"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:469
 msgctxt "@label"
 msgid "Aluminum"
-msgstr ""
+msgstr "Alumínio"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:39
 msgctxt "@label link to connect manager"
@@ -2058,7 +2059,7 @@ msgstr "Abortar impressão"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:43
 msgctxt "@info:tooltip"
 msgid "Connect to a printer"
-msgstr "Conecta a uma impressora."
+msgstr "Conecta a uma impressora"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:121
 msgctxt "@action:button"
@@ -2602,7 +2603,7 @@ msgstr "Tudo está em ordem! A verificação terminou."
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"
 msgid "Not connected to a printer"
-msgstr "Não conectado a nenhuma impressora."
+msgstr "Não conectado a nenhuma impressora"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:123
 msgctxt "@label:MonitorStatus"
@@ -2980,7 +2981,7 @@ msgstr "Exibir seções pendentes"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:355
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
-msgstr "Move a câmera de modo que o modelo fique no centro da visão quando for selecionado."
+msgstr "Move a câmera de modo que o modelo fique no centro da visão quando for selecionado"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:360
 msgctxt "@action:button"
@@ -3025,7 +3026,7 @@ msgstr "Os modelos devem ser movidos pra baixo pra se assentar na plataforma de 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:418
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
-msgstr "Automaticamente fazer os modelos caírem na mesa de impressão."
+msgstr "Automaticamente fazer os modelos caírem na mesa de impressão"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:430
 msgctxt "@info:tooltip"
@@ -3110,7 +3111,7 @@ msgstr "Comportamento default ao abrir um arquivo de projeto"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:557
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
-msgstr "Comportamento default ao abrir um arquivo de projeto"
+msgstr "Comportamento default ao abrir um arquivo de projeto: "
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:571
 msgctxt "@option:openProject"
@@ -3175,7 +3176,7 @@ msgstr "Dados anônimos sobre sua impressão podem ser enviados para a Ultimaker
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:702
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
-msgstr "Enviar informação (anônima) de impressão."
+msgstr "Enviar informação (anônima) de impressão"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:711
 msgctxt "@action:button"
@@ -3562,7 +3563,7 @@ msgid ""
 msgstr ""
 "Alguns ajustes ocultados usam valores diferentes de seu valor calculado normal.\n"
 "\n"
-"Clique para tornar estes ajustes visíveis. "
+"Clique para tornar estes ajustes visíveis."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3582,7 +3583,7 @@ msgstr "Este ajuste é sempre compartilhado entre todos os extrusores. Modificá
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:158
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
-msgstr "O valor é resolvido de valores específicos de cada extrusor"
+msgstr "O valor é resolvido de valores específicos de cada extrusor "
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:189
 msgctxt "@label"
@@ -3655,7 +3656,7 @@ msgstr "A temperatura-alvo do hotend. O hotend vai aquecer ou esfriar na direç�
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:98
 msgctxt "@tooltip"
 msgid "The current temperature of this hotend."
-msgstr "A temperatura atual deste hotend"
+msgstr "A temperatura atual deste hotend."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:172
 msgctxt "@tooltip of temperature input"
@@ -4403,7 +4404,7 @@ msgstr "Você modificou alguns ajustes de perfil. Se você quiser alterá-los, u
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:541
 msgctxt "@label"
 msgid "Infill"
-msgstr "Preenchimento:"
+msgstr "Preenchimento"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:777
 msgctxt "@label"
@@ -4495,7 +4496,7 @@ msgstr "Material"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:543
 msgctxt "@label"
 msgid "Use glue with this material combination"
-msgstr "Use cola com esta combinação de materiais."
+msgstr "Use cola com esta combinação de materiais"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:575
 msgctxt "@label"
@@ -4845,7 +4846,7 @@ msgstr "Atualização de Versão de 2.7 para 3.0"
 #: VersionUpgrade/VersionUpgrade34to35/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Atualiza configurações do Cura 3.4 para o Cura 3.5"
+msgstr "Atualiza configurações do Cura 3.4 para o Cura 3.5."
 
 #: VersionUpgrade/VersionUpgrade34to35/plugin.json
 msgctxt "name"
