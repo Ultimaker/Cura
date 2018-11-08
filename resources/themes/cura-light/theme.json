@@ -75,7 +75,7 @@
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [0, 0, 0, 192],
 
-        "primary": [12, 169, 227, 255],
+        "primary": [50, 130, 255, 255],
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
         "border": [127, 127, 127, 255],
@@ -103,12 +103,14 @@
         "machine_selector_hover": [68, 72, 75, 255],
         "machine_selector_text_active": [255, 255, 255, 255],
 
+        "action_panel_secondary": [27, 95, 202, 255],
+
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
-        "text_link": [12, 169, 227, 255],
+        "text_link": [50, 130, 255, 255],
         "text_inactive": [174, 174, 174, 255],
         "text_hover": [70, 84, 113, 255],
-        "text_pressed": [12, 169, 227, 255],
+        "text_pressed": [50, 130, 255, 255],
         "text_subtext": [0, 0, 0, 255],
         "text_medium": [128, 128, 128, 255],
         "text_emphasis": [255, 255, 255, 255],
@@ -116,6 +118,7 @@
         "text_scene_hover": [70, 84, 113, 255],
 
         "error": [255, 140, 0, 255],
+        "warning": [255, 190, 35, 255],
 
         "button": [31, 36, 39, 255],
         "button_hover": [68, 72, 75, 255],
@@ -151,16 +154,16 @@
         "action_button_border": [127, 127, 127, 255],
         "action_button_hovered": [255, 255, 255, 255],
         "action_button_hovered_text": [31, 36, 39, 255],
-        "action_button_hovered_border": [12, 169, 227, 255],
+        "action_button_hovered_border": [50, 130, 255, 255],
         "action_button_active": [255, 255, 255, 255],
         "action_button_active_text": [0, 0, 0, 255],
-        "action_button_active_border": [12, 169, 227, 255],
+        "action_button_active_border": [50, 130, 255, 255],
         "action_button_disabled": [245, 245, 245, 255],
         "action_button_disabled_text": [127, 127, 127, 255],
         "action_button_disabled_border": [245, 245, 245, 255],
 
-        "print_button_ready": [12, 169, 227, 255],
-        "print_button_ready_border": [12, 169, 227, 255],
+        "print_button_ready": [50, 130, 255, 255],
+        "print_button_ready_border": [50, 130, 255, 255],
         "print_button_ready_text": [255, 255, 255, 255],
         "print_button_ready_hovered": [30, 186, 245, 243],
         "print_button_ready_hovered_border": [30, 186, 245, 243],
@@ -192,7 +195,7 @@
         "setting_control_selected": [31, 36, 39, 255],
         "setting_control_highlight": [255, 255, 255, 255],
         "setting_control_border": [127, 127, 127, 255],
-        "setting_control_border_highlight": [12, 169, 227, 255],
+        "setting_control_border_highlight": [50, 130, 255, 255],
         "setting_control_text": [27, 27, 27, 255],
         "setting_control_depth_line": [127, 127, 127, 255],
         "setting_control_button": [127, 127, 127, 255],
@@ -210,7 +213,7 @@
         "material_compatibility_warning": [0, 0, 0, 255],
 
         "progressbar_background": [245, 245, 245, 255],
-        "progressbar_control": [31, 36, 39, 255],
+        "progressbar_control": [50, 130, 255, 255],
 
         "slider_groove": [245, 245, 245, 255],
         "slider_groove_border": [127, 127, 127, 255],
@@ -230,18 +233,18 @@
         "checkbox": [255, 255, 255, 255],
         "checkbox_hover": [255, 255, 255, 255],
         "checkbox_border": [64, 69, 72, 255],
-        "checkbox_border_hover": [12, 169, 227, 255],
+        "checkbox_border_hover": [50, 130, 255, 255],
         "checkbox_mark": [119, 122, 124, 255],
         "checkbox_text": [27, 27, 27, 255],
 
         "mode_switch": [255, 255, 255, 255],
         "mode_switch_hover": [255, 255, 255, 255],
         "mode_switch_border": [127, 127, 127, 255],
-        "mode_switch_border_hover": [12, 169, 227, 255],
+        "mode_switch_border_hover": [50, 130, 255, 255],
         "mode_switch_handle": [31, 36, 39, 255],
         "mode_switch_text": [31, 36, 39, 255],
         "mode_switch_text_hover": [31, 36, 39, 255],
-        "mode_switch_text_checked": [12, 169, 227, 255],
+        "mode_switch_text_checked": [50, 130, 255, 255],
 
         "tooltip": [68, 192, 255, 255],
         "tooltip_text": [255, 255, 255, 255],
@@ -252,9 +255,9 @@
         "message_shadow": [0, 0, 0, 120],
         "message_border": [127, 127, 127, 255],
         "message_text": [0, 0, 0, 255],
-        "message_button": [12, 169, 227, 255],
-        "message_button_hover": [12, 169, 227, 255],
-        "message_button_active": [12, 169, 227, 255],
+        "message_button": [50, 130, 255, 255],
+        "message_button_hover": [50, 130, 255, 255],
+        "message_button_active": [50, 130, 255, 255],
         "message_button_text": [255, 255, 255, 255],
         "message_button_text_hover": [255, 255, 255, 255],
         "message_button_text_active": [255, 255, 255, 255],
@@ -265,7 +268,7 @@
 
         "status_offline": [0, 0, 0, 255],
         "status_ready": [0, 205, 0, 255],
-        "status_busy": [12, 169, 227, 255],
+        "status_busy": [50, 130, 255, 255],
         "status_paused": [255, 140, 0, 255],
         "status_stopped": [236, 82, 80, 255],
         "status_unknown": [127, 127, 127, 255],
@@ -277,7 +280,7 @@
         "all_axis": [255, 255, 255, 255],
 
         "viewport_background": [245, 245, 245, 255],
-        "volume_outline": [12, 169, 227, 255],
+        "volume_outline": [50, 130, 255, 255],
         "buildplate": [244, 244, 244, 255],
         "buildplate_grid": [129, 131, 134, 255],
         "buildplate_grid_minor": [230, 230, 231, 255],
@@ -290,7 +293,7 @@
         "model_overhang": [255, 0, 0, 255],
         "model_unslicable": [122, 122, 122, 255],
         "model_unslicable_alt": [172, 172, 127, 255],
-        "model_selection_outline": [12, 169, 227, 255],
+        "model_selection_outline": [50, 130, 255, 255],
         "model_non_printing": [122, 122, 122, 255],
 
         "xray": [26,  26,  62, 255],
@@ -316,12 +319,12 @@
         "configuration_item_text_active": [0, 0, 0, 255],
         "configuration_item_border": [127, 127, 127, 255],
         "configuration_item_border_active": [12, 169, 227, 32],
-        "configuration_item_border_hover": [12, 169, 227, 255],
+        "configuration_item_border_hover": [50, 130, 255, 255],
 
-        "tab_status_connected": [12, 169, 227, 255],
+        "tab_status_connected": [50, 130, 255, 255],
         "tab_status_disconnected": [200, 200, 200, 255],
 
-        "printer_config_matched": [12, 169, 227, 255],
+        "printer_config_matched": [50, 130, 255, 255],
         "printer_config_mismatch": [127, 127, 127, 255],
 
         "toolbox_header_button_text_active": [0, 0, 0, 255],
@@ -345,12 +348,12 @@
         "monitor_pill_background": [245, 245, 245, 255],
         "monitor_placeholder_image": [230, 230, 230, 255],
         "monitor_printer_icon_inactive": [154, 154, 154, 255],
-        "monitor_printer_icon": [12, 169, 227, 255],
+        "monitor_printer_icon": [50, 130, 255, 255],
         "monitor_progress_background_text": [0,0,0,255],
         "monitor_progress_background": [245, 245, 245, 255],
         "monitor_progress_fill_inactive": [154, 154, 154, 255],
         "monitor_progress_fill_text": [255,255,255,255],
-        "monitor_progress_fill": [12, 169, 227, 255],
+        "monitor_progress_fill": [50, 130, 255, 255],
         "monitor_shadow": [0, 0, 0, 63],
         "monitor_skeleton_fill": [245, 245, 245, 255],
         "monitor_skeleton_fill_dark": [216, 216, 216, 255],
@@ -376,10 +379,15 @@
         "configuration_selector_widget": [35.0, 4.5],
         "configuration_selector_mode_tabs": [0.0, 3.0],
 
-        "action_panel_widget": [35.0, 0.0],
+        "action_panel_widget": [25.0, 0.0],
+        "action_panel_information_widget": [20.0, 0.0],
+        "action_panel_button": [15.0, 3.0],
+
         "machine_selector_widget": [28.0, 4.5],
 
         "views_selector": [0.0, 4.0],
+
+        "default_radius": [0.25, 0.25],
 
         "wide_lining": [0.5, 0.5],
         "thick_lining": [0.2, 0.2],
@@ -435,8 +443,8 @@
 
         "tool_button_border": [1.0, 0],
 
-        "progressbar": [26.0, 0.4],
-        "progressbar_radius": [0, 0],
+        "progressbar": [26.0, 0.75],
+        "progressbar_radius": [0.15, 0.15],
         "progressbar_control": [8.0, 0.4],
 
         "scrollbar": [0.75, 0.5],
