@@ -110,7 +110,7 @@ Column
             hoverColor: UM.Theme.getColor("secondary")
             textColor: UM.Theme.getColor("primary")
             textHoverColor: UM.Theme.getColor("text")
-            onClicked: UM.Controller.setActiveStage("MonitorStage")
+            onClicked: UM.Controller.setActiveStage("PreviewStage")
         }
 
         Cura.OutputDevicesActionButton
