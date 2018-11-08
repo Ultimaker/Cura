@@ -498,8 +498,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_id = None
 
         self.post("auth/request",
-                  json.dumps({"application":  "Cura-" + CuraApplication.getInstance().getVersion(),
-                                               "user": self._getUserName()}).encode(),
+                  json.dumps({"application": "Cura-" + CuraApplication.getInstance().getVersion(),
+                              "user": self._getUserName()}),
                   on_finished=self._onRequestAuthenticationFinished)
 
         self.setAuthenticationState(AuthState.AuthenticationRequested)
