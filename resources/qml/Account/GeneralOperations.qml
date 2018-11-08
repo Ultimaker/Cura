@@ -21,6 +21,7 @@ Row
         textColor: UM.Theme.getColor("main_window_header_button_text_active")
         textHoverColor: UM.Theme.getColor("main_window_header_button_text_active")
         onClicked: Qt.openUrlExternally("https://account.ultimaker.com")
+        fixedWidthMode: true
     }
 
     Cura.ActionButton
@@ -29,5 +30,6 @@ Row
         height: UM.Theme.getSize("account_button").height
         text: catalog.i18nc("@button", "Login")
         onClicked: Cura.API.account.login()
+        fixedWidthMode: true
     }
 }
