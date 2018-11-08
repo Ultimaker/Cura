@@ -915,7 +915,7 @@ msgstr "프로파일 <filename>{0}</filename>에는 정확하지 않은 데이�
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr "The machine defined in profile <filename>{0}</filename> ({1}) doesn’t match with your current machine ({2}), could not import it."
+msgstr "프로필 <filename>{0}</filename>({1})에 정의된 제품이 현재 제품({2})과 일치하지 않으므로, 불러올 수 없습니다."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:312
 #, python-brace-format
