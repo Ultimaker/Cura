@@ -4380,7 +4380,7 @@
                 },
                 "support_interface_offset": 
                 {
-                    "label": "Support Interface Offset",
+                    "label": "Support Interface Horizontal Expansion",
                     "description": "Amount of offset applied to the support interface polygons.",
                     "unit": "mm",
                     "type": "float",
@@ -4393,7 +4393,7 @@
                     {
                         "support_roof_offset": 
                         {
-                            "label": "Support Roof Offset",
+                            "label": "Support Roof Horizontal Expansion",
                             "description": "Amount of offset applied to the roofs of the support.",
                             "unit": "mm",
                             "type": "float",
@@ -4407,7 +4407,7 @@
                         },
                         "support_bottom_offset": 
                         {
-                            "label": "Support Floor Offset",
+                            "label": "Support Floor Horizontal Expansion",
                             "description": "Amount of offset applied to the floors of the support.",
                             "unit": "mm",
                             "type": "float",
