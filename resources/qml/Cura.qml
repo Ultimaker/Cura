@@ -155,24 +155,6 @@ UM.MainWindow
                 color: UM.Theme.getColor("main_window_header_background")
             }
 
-            Loader
-            {
-                // The stage menu is, as the name implies, a menu that is defined by the active stage.
-                // Note that this menu does not need to be set at all! It's perfectly acceptable to have a stage
-                // without this menu!
-                id: stageMenu
-
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                }
-
-                height: UM.Theme.getSize("stage_menu").height
-                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
-            }
-
             Connections
             {
                 target: stageMenu.item
@@ -231,68 +213,6 @@ UM.MainWindow
                 }
             }
 
-            ComboBox
-            {
-                // This item contains the views selector, a combobox that is dynamically created from
-                // the list of available Views (packages that create different visualizations of the
-                // scene).
-                id: viewModeButton
-
-                anchors.left: viewOrientationControls.right
-                anchors.bottom: viewOrientationControls.bottom
-
-                style: UM.Theme.styles.combobox
-
-                model: UM.ViewModel { }
-                textRole: "name"
-
-                // update the model's active index
-                function updateItemActiveFlags()
-                {
-                    currentIndex = getActiveIndex()
-                    for (var i = 0; i < model.rowCount(); i++)
-                    {
-                        model.getItem(i).active = (i == currentIndex)
-                    }
-                }
-
-                // get the index of the active model item on start
-                function getActiveIndex ()
-                {
-                    for (var i = 0; i < model.rowCount(); i++)
-                    {
-                        if (model.getItem(i).active)
-                        {
-                            return i;
-                        }
-                    }
-                    return 0
-                }
-
-                // set the active index
-                function setActiveIndex(index)
-                {
-                    UM.Controller.setActiveView(index)
-                    // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here
-                }
-
-                onCurrentIndexChanged:
-                {
-                    if (model.getItem(currentIndex).id != undefined)
-                    {
-                        viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
-                    }
-                }
-                currentIndex: getActiveIndex()
-
-                // watch the active view proxy for changes made from the menu item
-                Connections
-                {
-                    target: UM.ActiveView
-                    onActiveViewChanged: viewModeButton.updateItemActiveFlags()
-                }
-            }
-
             Loader
             {
                 id: viewPanel
@@ -324,15 +244,26 @@ UM.MainWindow
 
                 anchors.fill: parent
 
-                MouseArea
+                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
+            }
+
+
+            Loader
+            {
+                // The stage menu is, as the name implies, a menu that is defined by the active stage.
+                // Note that this menu does not need to be set at all! It's perfectly acceptable to have a stage
+                // without this menu!
+                id: stageMenu
+
+                anchors
                 {
-                    visible: parent.source != ""
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-                    onWheel: wheel.accepted = true
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
                 }
 
-                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
+                height: UM.Theme.getSize("stage_menu").height
+                source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
             }
 
             UM.MessageStack
