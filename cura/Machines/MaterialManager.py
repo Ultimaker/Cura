@@ -21,6 +21,7 @@ from .VariantType import VariantType
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
+    from UM.Settings.InstanceContainer import InstanceContainer
     from cura.Settings.GlobalStack import GlobalStack
     from cura.Settings.ExtruderStack import ExtruderStack
 
@@ -298,7 +299,7 @@ class MaterialManager(QObject):
     def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
         return self._diameter_material_map.get(root_material_id, "")
 
-    def getMaterialGroupListByGUID(self, guid: str) -> Optional[list]:
+    def getMaterialGroupListByGUID(self, guid: str) -> Optional[List[MaterialGroup]]:
         return self._guid_material_groups_map.get(guid)
 
     #
@@ -365,7 +366,7 @@ class MaterialManager(QObject):
         nozzle_name = None
         if extruder_stack.variant.getId() != "empty_variant":
             nozzle_name = extruder_stack.variant.getName()
-        diameter = extruder_stack.approximateMaterialDiameter
+        diameter = extruder_stack.getApproximateMaterialDiameter()
 
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
         return self.getAvailableMaterials(machine.definition, nozzle_name, buildplate_name, diameter)
@@ -446,6 +447,28 @@ class MaterialManager(QObject):
                                         material_diameter, root_material_id)
         return node
 
+    #   There are 2 ways to get fallback materials;
+    #   - A fallback by type (@sa getFallbackMaterialIdByMaterialType), which adds the generic version of this material
+    #   - A fallback by GUID; If a material has been duplicated, it should also check if the original materials do have
+    #       a GUID. This should only be done if the material itself does not have a quality just yet.
+    def getFallBackMaterialIdsByMaterial(self, material: "InstanceContainer") -> List[str]:
+        results = []  # type: List[str]
+
+        material_groups = self.getMaterialGroupListByGUID(material.getMetaDataEntry("GUID"))
+        for material_group in material_groups:  # type: ignore
+            if material_group.name != material.getId():
+                # If the material in the group is read only, put it at the front of the list (since that is the most
+                # likely one to get a result)
+                if material_group.is_read_only:
+                    results.insert(0, material_group.name)
+                else:
+                    results.append(material_group.name)
+
+        fallback = self.getFallbackMaterialIdByMaterialType(material.getMetaDataEntry("material"))
+        if fallback is not None:
+            results.append(fallback)
+        return results
+
     #
     # Used by QualityManager. Built-in quality profiles may be based on generic material IDs such as "generic_pla".
     # For materials such as ultimaker_pla_orange, no quality profiles may be found, so we should fall back to use
@@ -478,12 +501,22 @@ class MaterialManager(QObject):
 
         buildplate_name = global_stack.getBuildplateName()
         machine_definition = global_stack.definition
-        if extruder_definition is None:
-            extruder_definition = global_stack.extruders[position].definition
 
-        if extruder_definition and parseBool(global_stack.getMetaDataEntry("has_materials", False)):
-            # At this point the extruder_definition is not None
-            material_diameter = extruder_definition.getProperty("material_diameter", "value")
+        # The extruder-compatible material diameter in the extruder definition may not be the correct value because
+        # the user can change it in the definition_changes container.
+        if extruder_definition is None:
+            extruder_stack_or_definition = global_stack.extruders[position]
+            is_extruder_stack = True
+        else:
+            extruder_stack_or_definition = extruder_definition
+            is_extruder_stack = False
+
+        if extruder_stack_or_definition and parseBool(global_stack.getMetaDataEntry("has_materials", False)):
+            if is_extruder_stack:
+                material_diameter = extruder_stack_or_definition.getCompatibleMaterialDiameter()
+            else:
+                material_diameter = extruder_stack_or_definition.getProperty("material_diameter", "value")
+
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)
             approximate_material_diameter = str(round(material_diameter))
@@ -591,7 +624,6 @@ class MaterialManager(QObject):
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
             self._container_registry.addContainer(container_to_add)
-
 
         # if the duplicated material was favorite then the new material should also be added to favorite.
         if root_material_id in self.getFavorites():

@@ -142,6 +142,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         controller = Application.getInstance().getController()
         root = controller.getScene().getRoot()
         if self._node is None or controller.isToolOperationActive() or not self.__isDescendant(root, self._node):
+            # If the tool operation is still active, we need to compute the convex hull later after the controller is
+            # no longer active.
+            if controller.isToolOperationActive():
+                self.recomputeConvexHullDelayed()
+                return
+
             if self._convex_hull_node:
                 self._convex_hull_node.setParent(None)
                 self._convex_hull_node = None

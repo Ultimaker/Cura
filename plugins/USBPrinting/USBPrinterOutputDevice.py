@@ -64,6 +64,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._accepts_commands = True
 
         self._paused = False
+        self._printer_busy = False # when printer is preheating and waiting (M190/M109), or when waiting for action on the printer
 
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
@@ -73,6 +74,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._command_received = Event()
         self._command_received.set()
 
+        self._firmware_name_requested = False
         self._firmware_updater = AvrFirmwareUpdater(self)
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
@@ -223,15 +225,18 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             except:
                 continue
 
+            if not self._firmware_name_requested:
+                self._firmware_name_requested = True
+                self.sendCommand("M115")
+
+            if b"FIRMWARE_NAME:" in line:
+                self._setFirmwareName(line)
+
             if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
                 # Timeout, or no request has been sent at all.
-                self._command_received.set() # We haven't really received the ok, but we need to send a new command
-
-                self.sendCommand("M105")
-                self._last_temperature_request = time()
-
-                if self._firmware_name is None:
-                    self.sendCommand("M115")
+                if not self._printer_busy: # Don't flood the printer with temperature requests while it is busy
+                    self.sendCommand("M105")
+                    self._last_temperature_request = time()
 
             if re.search(b"[B|T\d*]: ?\d+\.?\d*", line):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?(\d+\.?\d*) ?\/?(\d+\.?\d*)?", line)
@@ -264,29 +269,39 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     if match[1]:
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
 
-            if b"FIRMWARE_NAME:" in line:
-                self._setFirmwareName(line)
+            if line == b"":
+                # An empty line means that the firmware is idle
+                # Multiple empty lines probably means that the firmware and Cura are waiting
+                # for eachother due to a missed "ok", so we keep track of empty lines
+                self._firmware_idle_count += 1
+            else:
+                self._firmware_idle_count = 0
 
-            if b"ok" in line:
+            if line.startswith(b"ok") or self._firmware_idle_count > 1:
+                self._printer_busy = False
+
                 self._command_received.set()
                 if not self._command_queue.empty():
                     self._sendCommand(self._command_queue.get())
-                if self._is_printing:
+                elif self._is_printing:
                     if self._paused:
                         pass  # Nothing to do!
                     else:
                         self._sendNextGcodeLine()
 
+            if line.startswith(b"echo:busy:"):
+                self._printer_busy = True
+
             if self._is_printing:
                 if line.startswith(b'!!'):
                     Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
                     self.cancelPrint()
-                elif b"resend" in line.lower() or b"rs" in line:
+                elif line.lower().startswith(b"resend") or line.startswith(b"rs"):
                     # A resend can be requested either by Resend, resend or rs.
                     try:
                         self._gcode_position = int(line.replace(b"N:", b" ").replace(b"N", b" ").replace(b":", b" ").split()[-1])
                     except:
-                        if b"rs" in line:
+                        if line.startswith(b"rs"):
                             # In some cases of the RS command it needs to be handled differently.
                             self._gcode_position = int(line.split()[1])
 

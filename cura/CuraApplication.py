@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional
+from typing import cast, TYPE_CHECKING, Optional, Callable
 
 import numpy
 
@@ -13,6 +13,7 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from UM.Application import Application
 from UM.PluginError import PluginNotFoundError
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -95,7 +96,6 @@ from . import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
-from . import CameraImageProvider
 from . import PrintJobPreviewImageProvider
 from . import MachineActionManager
 
@@ -113,20 +113,24 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
-from UM.FlameProfiler import pyqtSlot
+from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
+from UM.FlameProfiler import pyqtSlot
+from UM.Decorators import override
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
+    from cura.Settings.GlobalStack import GlobalStack
 
 
 numpy.seterr(all = "ignore")
 
 try:
-    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion
+    from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
 except ImportError:
+    CuraAppDisplayName = "Ultimaker Cura"
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
@@ -158,6 +162,7 @@ class CuraApplication(QtApplication):
 
     def __init__(self, *args, **kwargs):
         super().__init__(name = "cura",
+                         app_display_name = CuraAppDisplayName,
                          version = CuraVersion,
                          buildtype = CuraBuildType,
                          is_debug_mode = CuraDebugMode,
@@ -165,6 +170,8 @@ class CuraApplication(QtApplication):
                          **kwargs)
 
         self.default_theme = "cura-light"
+
+        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
 
         self._boot_loading_time = time.time()
 
@@ -302,8 +309,6 @@ class CuraApplication(QtApplication):
         self._machine_action_manager = MachineActionManager.MachineActionManager(self)
         self._machine_action_manager.initialize()
 
-        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
-
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open)
 
@@ -419,41 +424,37 @@ class CuraApplication(QtApplication):
         )
 
     # Runs preparations that needs to be done before the starting process.
-    def startSplashWindowPhase(self):
+    def startSplashWindowPhase(self) -> None:
         super().startSplashWindowPhase()
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
             # Misc.:
-            "ConsoleLogger",
-            "CuraEngineBackend",
-            "UserAgreement",
-            "FileLogger",
-            "XmlMaterialProfile",
-            "Toolbox",
-            "PrepareStage",
-            "MonitorStage",
-            "LocalFileOutputDevice",
-            "LocalContainerProvider",
+            "ConsoleLogger", #You want to be able to read the log if something goes wrong.
+            "CuraEngineBackend", #Cura is useless without this one since you can't slice.
+            "UserAgreement", #Our lawyers want every user to see this at least once.
+            "FileLogger", #You want to be able to read the log if something goes wrong.
+            "XmlMaterialProfile", #Cura crashes without this one.
+            "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "PrepareStage", #Cura is useless without this one since you can't load models.
+            "MonitorStage", #Major part of Cura's functionality.
+            "LocalFileOutputDevice", #Major part of Cura's functionality.
+            "LocalContainerProvider", #Cura is useless without any profiles or setting definitions.
 
             # Views:
-            "SimpleView",
-            "SimulationView",
-            "SolidView",
+            "SimpleView", #Dependency of SolidView.
+            "SolidView", #Displays models. Cura is useless without it.
 
             # Readers & Writers:
-            "GCodeWriter",
-            "STLReader",
-            "3MFWriter",
+            "GCodeWriter", #Cura is useless if it can't write its output.
+            "STLReader", #Most common model format, so disabling this makes Cura 90% useless.
+            "3MFWriter", #Required for writing project files.
 
             # Tools:
-            "CameraTool",
-            "MirrorTool",
-            "RotateTool",
-            "ScaleTool",
-            "SelectionTool",
-            "TranslateTool",
+            "CameraTool", #Needed to see the scene. Cura is useless without it.
+            "SelectionTool", #Dependency of the rest of the tools.
+            "TranslateTool", #You'll need this for almost every print.
         ])
         self._i18n_catalog = i18nCatalog("cura")
 
@@ -521,19 +522,18 @@ class CuraApplication(QtApplication):
         CuraApplication.Created = True
 
     def _onEngineCreated(self):
-        self._qml_engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
 
     @pyqtProperty(bool)
-    def needToShowUserAgreement(self):
+    def needToShowUserAgreement(self) -> bool:
         return self._need_to_show_user_agreement
 
-    def setNeedToShowUserAgreement(self, set_value = True):
+    def setNeedToShowUserAgreement(self, set_value = True) -> None:
         self._need_to_show_user_agreement = set_value
 
     # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
     # pre-exit checks such as checking for in-progress USB printing, etc.
-    def closeApplication(self):
+    def closeApplication(self) -> None:
         Logger.log("i", "Close application")
         main_window = self.getMainWindow()
         if main_window is not None:
@@ -560,11 +560,11 @@ class CuraApplication(QtApplication):
 
     showConfirmExitDialog = pyqtSignal(str, arguments = ["message"])
 
-    def setConfirmExitDialogCallback(self, callback):
+    def setConfirmExitDialogCallback(self, callback: Callable) -> None:
         self._confirm_exit_dialog_callback = callback
 
     @pyqtSlot(bool)
-    def callConfirmExitDialogCallback(self, yes_or_no: bool):
+    def callConfirmExitDialogCallback(self, yes_or_no: bool) -> None:
         self._confirm_exit_dialog_callback(yes_or_no)
 
     ##  Signal to connect preferences action in QML
@@ -572,8 +572,16 @@ class CuraApplication(QtApplication):
 
     ##  Show the preferences window
     @pyqtSlot()
-    def showPreferences(self):
+    def showPreferences(self) -> None:
         self.showPreferencesWindow.emit()
+
+    @override(Application)
+    def getGlobalContainerStack(self) -> Optional["GlobalStack"]:
+        return self._global_container_stack
+
+    @override(Application)
+    def setGlobalContainerStack(self, stack: "GlobalStack") -> None:
+        super().setGlobalContainerStack(stack)
 
     ## A reusable dialogbox
     #
@@ -586,7 +594,7 @@ class CuraApplication(QtApplication):
 
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
-    def discardOrKeepProfileChanges(self):
+    def discardOrKeepProfileChanges(self) -> bool:
         has_user_interaction = False
         choice = self.getPreferences().getValue("cura/choice_on_profile_override")
         if choice == "always_discard":
@@ -602,7 +610,7 @@ class CuraApplication(QtApplication):
         return has_user_interaction
 
     @pyqtSlot(str)
-    def discardOrKeepProfileChangesClosed(self, option):
+    def discardOrKeepProfileChangesClosed(self, option: str) -> None:
         global_stack = self.getGlobalContainerStack()
         if option == "discard":
             for extruder in global_stack.extruders.values():
@@ -691,7 +699,7 @@ class CuraApplication(QtApplication):
         self._quality_manager.initialize()
 
         Logger.log("i", "Initializing machine manager")
-        self._machine_manager = MachineManager(self)
+        self._machine_manager = MachineManager(self, parent = self)
 
         self._extruder_manager = ExtruderManager(self)
 
@@ -716,10 +724,8 @@ class CuraApplication(QtApplication):
         self._print_information = PrintInformation.PrintInformation(self)
         self._cura_actions = CuraActions.CuraActions(self)
 
-        # Initialize setting visibility presets model
-        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
-        default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
-        self.getPreferences().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
+        # Initialize setting visibility presets model.
+        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
         # Initialize Cura API
         self._cura_API.initialize()
@@ -940,6 +946,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
+        qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
         qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")

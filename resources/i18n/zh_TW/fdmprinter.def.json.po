@@ -5,17 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com"
-"POT-Creation-Date: 2018-09-19 17:07+0000\n"
-"PO-Revision-Date: 2018-10-02 10:30+0100\n"
+"Project-Id-Version: Cura 3.6\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2018-10-29 15:01+0000\n"
+"PO-Revision-Date: 2018-11-06 16:00+0100\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -59,7 +59,7 @@ msgid ""
 "."
 msgstr ""
 "開始時最先執行的 G-code 命令 - 使用 \n"
-". 隔開"
+"隔開。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -73,7 +73,7 @@ msgid ""
 "."
 msgstr ""
 "結束前最後執行的 G-code 命令 - 使用 \n"
-". 隔開"
+" 隔開。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -83,7 +83,7 @@ msgstr "耗材 GUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
-msgstr "耗材 GUID，此項為自動設定。"
+msgstr "耗材 GUID，此項為自動設定。 "
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1077,8 +1077,8 @@ msgstr "連接頂部/底部多邊形"
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
-msgstr "將頂部/底部表層路徑相鄰的位置連接。同心模式時開啟此設定，可以大大地減少空跑時間。但因連接可能發生在填充途中，所以此功能可能降低頂部表層的品質。"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr "將頂部/底部表層路徑相鄰的位置連接。同心模式時啟用此設定，可以大大地減少移動時間。但因連接可能碰巧在途中跨越填充，所以此功能可能會降低頂部表層的品質。"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1497,8 +1497,8 @@ msgstr "填充列印樣式"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "填充耗材的樣式。線條和鋸齒狀填充輪流在每一層交換方向，以降低耗材成本。網格、三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完整列印。立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgstr "選擇填充耗材的樣式。直線和鋸齒狀填充輪流在每一層交換方向，以降低耗材成本。網格、三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完整列印。螺旋形、立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1559,6 +1559,11 @@ msgstr "十字形"
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
 msgstr "立體十字形"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option gyroid"
+msgid "Gyroid"
+msgstr "螺旋形"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2002,7 +2007,7 @@ msgstr "啟用回抽"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "當噴頭移動到非列印區域上方時回抽耗材。"
+msgstr "當噴頭移動到非列印區域上方時回抽耗材。 "
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3265,6 +3270,36 @@ msgid "Orientation of the infill pattern for supports. The support infill patter
 msgstr "支撐填充樣式的方向。 支撐填充樣式的旋轉方向是在水平面上旋轉。"
 
 #: fdmprinter.def.json
+msgctxt "support_brim_enable label"
+msgid "Enable Support Brim"
+msgstr "啟用支撐邊緣"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable description"
+msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+msgstr "在第一層的支撐填充區域內產生邊緣。這些邊緣列印在支撐下面，而不是支撐的周圍。啟用此設定可增加支撐對列印平台的附著力。"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width label"
+msgid "Support Brim Width"
+msgstr "支撐邊緣寬度"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width description"
+msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr "列印在支撐下面邊緣的寬度。較大的邊緣會加強對列印平台的附著力，但會需要一些額外的耗材。"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count label"
+msgid "Support Brim Line Count"
+msgstr "支撐邊緣線條數量"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count description"
+msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr "支撐邊緣所使用的線條數量。邊緣使用較多的線條會加強對列印平台的附著力，但會需要一些額外的耗材。"
+
+#: fdmprinter.def.json
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "支撐 Z 間距"
@@ -3332,7 +3367,7 @@ msgstr "最小支撐 X/Y 間距"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "支撐結構在 X/Y 方向與突出部分的間距。"
+msgstr "支撐結構在 X/Y 方向與突出部分的間距。 "
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -3832,6 +3867,16 @@ msgstr "邊緣線條數量"
 msgctxt "brim_line_count description"
 msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
 msgstr "邊緣所用線條數量。更多邊緣線條可增强與列印平台的附著，但也會減少有效列印區域。"
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support label"
+msgid "Brim Replaces Support"
+msgstr "邊綠取代支撐"
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support description"
+msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
+msgstr "強制在模型周圍列印邊緣，即使該空間已被支撐佔用。在第一層的部份區域會以邊綠取代支撐。"
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -5656,6 +5701,14 @@ msgstr "網格旋轉矩陣"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在將模型從檔案中載入時套用在模型上的轉換矩陣。"
+
+#~ msgctxt "connect_skin_polygons description"
+#~ msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
+#~ msgstr "將頂部/底部表層路徑相鄰的位置連接。同心模式時開啟此設定，可以大大地減少空跑時間。但因連接可能發生在填充途中，所以此功能可能降低頂部表層的品質。"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "填充耗材的樣式。線條和鋸齒狀填充輪流在每一層交換方向，以降低耗材成本。網格、三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完整列印。立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
 
 #~ msgctxt "infill_pattern option concentric_3d"
 #~ msgid "Concentric 3D"

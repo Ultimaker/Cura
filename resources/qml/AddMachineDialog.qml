@@ -25,7 +25,8 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
-    flags: {
+    flags:
+    {
         var window_flags = Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint;
         if (Cura.MachineManager.activeDefinitionId !== "") //Disallow closing the window if we have no active printer yet. You MUST add a printer.
         {
@@ -45,10 +46,52 @@ UM.Dialog
     }
 
     signal machineAdded(string id)
+
     function getMachineName()
     {
-        var name = machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).name : ""
-        return name
+        if (machineList.model.getItem(machineList.currentIndex) != undefined)
+        {
+            return machineList.model.getItem(machineList.currentIndex).name;
+        }
+        return  "";
+    }
+
+    function getMachineMetaDataEntry(key)
+    {
+        if (machineList.model.getItem(machineList.currentIndex) != undefined)
+        {
+            return machineList.model.getItem(machineList.currentIndex).metadata[key];
+        }
+        return  "";
+    }
+
+    Label
+    {
+        id: titleLabel
+
+        anchors
+        {
+            top: parent.top
+            left: parent.left
+            topMargin: UM.Theme.getSize("default_margin")
+        }
+        text: catalog.i18nc("@title:tab", "Add a printer to Cura")
+
+        font.pointSize: 18
+    }
+
+    Label
+    {
+        id: captionLabel
+        anchors
+        {
+            left: parent.left
+            top: titleLabel.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
+        }
+        text: catalog.i18nc("@title:tab", "Select the printer you want to use from the list below.\n\nIf your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog.")
+        width: parent.width
+        wrapMode: Text.WordWrap
     }
 
     ScrollView
@@ -57,11 +100,20 @@ UM.Dialog
 
         anchors
         {
-            left: parent.left;
-            top: parent.top;
-            right: parent.right;
-            bottom: machineNameRow.top;
+            top: captionLabel.visible ? captionLabel.bottom : parent.top;
+            topMargin: captionLabel.visible ? UM.Theme.getSize("default_margin").height : 0;
+            bottom: addPrinterButton.top;
             bottomMargin: UM.Theme.getSize("default_margin").height
+        }
+
+        width: Math.round(parent.width * 0.45)
+
+        frameVisible: true;
+        Rectangle
+        {
+            parent: viewport
+            anchors.fill: parent
+            color: palette.light
         }
 
         ListView
@@ -115,11 +167,14 @@ UM.Dialog
                 onClicked:
                 {
                     base.activeCategory = section;
-                    if (machineList.model.getItem(machineList.currentIndex).section != section) {
+                    if (machineList.model.getItem(machineList.currentIndex).section != section)
+                    {
                         // Find the first machine from this section
-                        for(var i = 0; i < machineList.model.rowCount(); i++) {
+                        for(var i = 0; i < machineList.model.rowCount(); i++)
+                        {
                             var item = machineList.model.getItem(i);
-                            if (item.section == section) {
+                            if (item.section == section)
+                            {
                                 machineList.currentIndex = i;
                                 break;
                             }
@@ -184,32 +239,76 @@ UM.Dialog
         }
     }
 
-    Row
+    Column
     {
-        id: machineNameRow
-        anchors.bottom:parent.bottom
-        spacing: UM.Theme.getSize("default_margin").width
-
-        Label
+        anchors
         {
-            text: catalog.i18nc("@label", "Printer Name:")
-            anchors.verticalCenter: machineName.verticalCenter
+            top: machinesHolder.top
+            left: machinesHolder.right
+            right: parent.right
+            leftMargin: UM.Theme.getSize("default_margin").width
         }
 
-        TextField
+        spacing: UM.Theme.getSize("default_margin").height
+        Label
         {
-            id: machineName
+            width: parent.width
+            wrapMode: Text.WordWrap
             text: getMachineName()
-            implicitWidth: UM.Theme.getSize("standard_list_input").width
-            maximumLength: 40
-            //validator: Cura.MachineNameValidator { } //TODO: Gives a segfault in PyQt5.6. For now, we must use a signal on text changed.
-            validator: RegExpValidator
+            font.pointSize: 16
+            elide: Text.ElideRight
+        }
+        Grid
+        {
+            width: parent.width
+            columns: 2
+            rowSpacing: UM.Theme.getSize("default_lining").height
+            columnSpacing: UM.Theme.getSize("default_margin").width
+            verticalItemAlignment: Grid.AlignVCenter
+
+            Label
             {
-                regExp: {
-                    machineName.machine_name_validator.machineNameRegex
-                }
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label", "Manufacturer")
             }
-            property var machine_name_validator: Cura.MachineNameValidator { }
+            Label
+            {
+                width: Math.floor(parent.width * 0.65)
+                wrapMode: Text.WordWrap
+                text: getMachineMetaDataEntry("manufacturer")
+            }
+            Label
+            {
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label", "Author")
+            }
+            Label
+            {
+                width: Math.floor(parent.width * 0.75)
+                wrapMode: Text.WordWrap
+                text: getMachineMetaDataEntry("author")
+            }
+            Label
+            {
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label", "Printer Name")
+            }
+            TextField
+            {
+                id: machineName
+                text: getMachineName()
+                width: Math.floor(parent.width * 0.75)
+                implicitWidth: UM.Theme.getSize("standard_list_input").width
+                maximumLength: 40
+                //validator: Cura.MachineNameValidator { } //TODO: Gives a segfault in PyQt5.6. For now, we must use a signal on text changed.
+                validator: RegExpValidator
+                {
+                    regExp: {
+                        machineName.machine_name_validator.machineNameRegex
+                    }
+                }
+                property var machine_name_validator: Cura.MachineNameValidator { }
+            }
         }
     }
 

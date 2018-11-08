@@ -263,8 +263,6 @@ class ExtruderManager(QObject):
             extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
             extruder_stack_0.definition = extruder_definition
 
-        extruder_stack_0.setNextStack(global_stack)
-
     ##  Get all extruder values for a certain setting.
     #
     #   This is exposed to qml for display purposes

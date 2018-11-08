@@ -298,7 +298,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 values = parser["values"] if parser.has_section("values") else dict()
                 num_settings_overriden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
-                quality_changes = self._container_registry.findInstanceContainers(id = container_id)
+                quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
+                                                                                  type = "quality_changes")
                 if quality_changes:
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
@@ -926,7 +927,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             build_plate_id = global_stack.variant.getId()
 
             # get material diameter of this extruder
-            machine_material_diameter = extruder_stack.materialDiameter
+            machine_material_diameter = extruder_stack.getCompatibleMaterialDiameter()
             material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
                                                              extruder_stack.variant.getName(),
                                                              build_plate_id,
