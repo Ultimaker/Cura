@@ -168,6 +168,19 @@ Item {
                             width: 0.5 * printJobPreview.width;
                         }
                     }
+
+                    Label {
+                        id: totalTimeLabel;
+                        anchors {
+                            bottom: parent.bottom;
+                            right: parent.right;
+                        }
+                        color: UM.Theme.getColor("text");
+                        elide: Text.ElideRight;
+                        font: UM.Theme.getFont("default");
+                        opacity: 0.6;
+                        text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : "";
+                    }
                 }
 
                 // Divider
