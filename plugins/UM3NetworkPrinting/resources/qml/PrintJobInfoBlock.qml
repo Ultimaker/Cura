@@ -178,7 +178,6 @@ Item {
                         color: UM.Theme.getColor("text");
                         elide: Text.ElideRight;
                         font: UM.Theme.getFont("default");
-                        opacity: 0.6;
                         text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : "";
                     }
                 }
