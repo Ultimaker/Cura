@@ -133,7 +133,7 @@ except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
-    CuraSDKVersion = ""
+    CuraSDKVersion = "5.0.0"
 
 
 class CuraApplication(QtApplication):
@@ -162,6 +162,7 @@ class CuraApplication(QtApplication):
     def __init__(self, *args, **kwargs):
         super().__init__(name = "cura",
                          version = CuraVersion,
+                         api_version = CuraSDKVersion,
                          buildtype = CuraBuildType,
                          is_debug_mode = CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png",
