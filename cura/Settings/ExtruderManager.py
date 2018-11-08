@@ -305,15 +305,15 @@ class ExtruderManager(QObject):
         machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
         return result_list[:machine_extruder_count]
 
-    def globalContainerStackChanged(self) -> None:
+    def globalContainerStackChanged(self, stack: "GlobalStack") -> None:
         # If the global container changed, the machine changed and might have extruders that were not registered yet
-        self._addCurrentMachineExtruders()
+        self._addCurrentMachineExtruders(stack)
 
         self.resetSelectedObjectExtruders()
 
     ##  Adds the extruders of the currently active machine.
-    def _addCurrentMachineExtruders(self) -> None:
-        global_stack = self._application.getMachineManager()._global_container_stack
+    def _addCurrentMachineExtruders(self, stack: "GlobalStack") -> None:
+        global_stack = stack
         extruders_changed = False
 
         if global_stack:

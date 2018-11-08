@@ -378,7 +378,7 @@ class MachineManager(QObject):
 
         self._global_container_stack = global_stack
 
-        ExtruderManager.getInstance().globalContainerStackChanged()
+        ExtruderManager.getInstance().globalContainerStackChanged(global_stack)
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
 
