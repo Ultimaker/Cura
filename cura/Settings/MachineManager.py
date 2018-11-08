@@ -375,10 +375,13 @@ class MachineManager(QObject):
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
             return  # We're done here
-        ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
+
         self._global_container_stack = global_stack
+
+        ExtruderManager.getInstance().globalContainerStackChanged()
         self._application.setGlobalContainerStack(global_stack)
-        ExtruderManager.getInstance()._globalContainerStackChanged()
+        ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
+
         self._initMachineState(global_stack)
         self._onGlobalContainerChanged()
 

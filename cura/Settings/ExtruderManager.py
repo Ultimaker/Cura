@@ -42,8 +42,6 @@ class ExtruderManager(QObject):
         # TODO; I have no idea why this is a union of ID's and extruder stacks. This needs to be fixed at some point.
         self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
 
-        self._addCurrentMachineExtruders()
-
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
 
     ##  Signal to notify other components when the list of extruders for a machine definition changes.
@@ -307,7 +305,7 @@ class ExtruderManager(QObject):
         machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
         return result_list[:machine_extruder_count]
 
-    def _globalContainerStackChanged(self) -> None:
+    def globalContainerStackChanged(self) -> None:
         # If the global container changed, the machine changed and might have extruders that were not registered yet
         self._addCurrentMachineExtruders()
 
@@ -315,7 +313,7 @@ class ExtruderManager(QObject):
 
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self) -> None:
-        global_stack = self._application.getGlobalContainerStack()
+        global_stack = self._application.getMachineManager()._global_container_stack
         extruders_changed = False
 
         if global_stack:
@@ -343,7 +341,6 @@ class ExtruderManager(QObject):
             self._fixSingleExtrusionMachineExtruderDefinition(global_stack)
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
-                self.setActiveExtruderIndex(0)
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
