@@ -4384,7 +4384,6 @@
                     "description": "Amount of offset applied to the support interface polygons.",
                     "unit": "mm",
                     "type": "float",
-                    "minimum_value": "0",
                     "default_value": 0.0,
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and (support_enable or support_tree_enable)",
