@@ -5,13 +5,13 @@ from . import VersionUpgrade33to34
 
 upgrade = VersionUpgrade33to34.VersionUpgrade33to34()
 
-
 def getMetaData():
     return {
         "version_upgrade": {
             # From                           To                              Upgrade function
             ("definition_changes", 3000004): ("definition_changes", 4000004, upgrade.upgradeInstanceContainer),
             ("quality_changes", 3000004):    ("quality_changes", 4000004,    upgrade.upgradeInstanceContainer),
+            ("quality", 3000004):            ("quality", 4000004,            upgrade.upgradeInstanceContainer),
             ("user", 3000004):               ("user", 4000004,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
@@ -22,6 +22,10 @@ def getMetaData():
             "quality_changes": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./quality_changes"}
+            },
+            "quality": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./quality"}
             },
             "user": {
                 "get_version": upgrade.getCfgVersion,

@@ -14,6 +14,8 @@
         "preferred_material": "tizyx_pla",
         "has_machine_quality": true,
         "has_materials": true,
+        "has_variants": true,
+        "preferred_variant_name": "0.4 mm",
         "machine_extruder_trains":
         {
             "0": "tizyx_k25_extruder_0"

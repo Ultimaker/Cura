@@ -7,7 +7,6 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutp
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -18,7 +17,7 @@ from UM.i18n import i18nCatalog
 from UM.Message import Message
 
 from PyQt5.QtNetwork import QNetworkRequest
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
@@ -100,8 +99,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                          title=i18n_catalog.i18nc("@info:title",
                                                                                   "Authentication status"))
 
-        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""),
-                                                      title=i18n_catalog.i18nc("@info:title", "Authentication Status"))
+        self._authentication_failed_message = Message("", title=i18n_catalog.i18nc("@info:title", "Authentication Status"))
         self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry"), None,
                                                       i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
         self._authentication_failed_message.actionTriggered.connect(self._messageCallback)
@@ -500,8 +498,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_id = None
 
         self.post("auth/request",
-                  json.dumps({"application":  "Cura-" + CuraApplication.getInstance().getVersion(),
-                                               "user": self._getUserName()}).encode(),
+                  json.dumps({"application": "Cura-" + CuraApplication.getInstance().getVersion(),
+                              "user": self._getUserName()}),
                   on_finished=self._onRequestAuthenticationFinished)
 
         self.setAuthenticationState(AuthState.AuthenticationRequested)
@@ -569,7 +567,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # Quickest way to get the firmware version is to grab it from the zeroconf.
                 firmware_version = self._properties.get(b"firmware_version", b"").decode("utf-8")
                 self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders, firmware_version=firmware_version)]
-                self._printers[0].setCamera(NetworkCamera("http://" + self._address + ":8080/?action=stream"))
+                self._printers[0].setCameraUrl(QUrl("http://" + self._address + ":8080/?action=stream"))
                 for extruder in self._printers[0].extruders:
                     extruder.activeMaterialChanged.connect(self.materialIdChanged)
                     extruder.hotendIDChanged.connect(self.hotendIdChanged)

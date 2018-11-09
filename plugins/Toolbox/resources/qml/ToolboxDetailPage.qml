@@ -9,9 +9,8 @@ import UM 1.1 as UM
 Item
 {
     id: page
-    property var details: base.selection
+    property var details: base.selection || {}
     anchors.fill: parent
-    width: parent.width
     ToolboxBackColumn
     {
         id: sidebar
@@ -26,20 +25,25 @@ Item
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
         height: UM.Theme.getSize("toolbox_detail_header").height
-        Image
+        Rectangle
         {
             id: thumbnail
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
-            fillMode: Image.PreserveAspectFit
-            source: details === null ? "" : (details.icon_url || "../images/logobot.svg")
-            mipmap: true
             anchors
             {
                 top: parent.top
                 left: parent.left
                 leftMargin: UM.Theme.getSize("wide_margin").width
                 topMargin: UM.Theme.getSize("wide_margin").height
+            }
+            color: white //Always a white background for image (regardless of theme).
+            Image
+            {
+                anchors.fill: parent
+                fillMode: Image.PreserveAspectFit
+                source: details === null ? "" : (details.icon_url || "../images/logobot.svg")
+                mipmap: true
             }
         }
 

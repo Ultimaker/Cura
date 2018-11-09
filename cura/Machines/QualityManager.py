@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional, cast, Dict, List
+from typing import TYPE_CHECKING, Optional, cast, Dict, List, Set
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
-from UM.Application import Application
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Util import parseBool
@@ -21,7 +20,6 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
     from .QualityChangesGroup import QualityChangesGroup
     from cura.CuraApplication import CuraApplication
-    from UM.Settings.ContainerRegistry import ContainerRegistry
 
 
 #
@@ -38,11 +36,11 @@ class QualityManager(QObject):
 
     qualitiesUpdated = pyqtSignal()
 
-    def __init__(self, container_registry: "ContainerRegistry", parent = None) -> None:
+    def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
-        self._application = Application.getInstance()  # type: CuraApplication
+        self._application = application
         self._material_manager = self._application.getMaterialManager()
-        self._container_registry = container_registry
+        self._container_registry = self._application.getContainerRegistry()
 
         self._empty_quality_container = self._application.empty_quality_container
         self._empty_quality_changes_container = self._application.empty_quality_changes_container
@@ -261,11 +259,15 @@ class QualityManager(QObject):
                 root_material_id = self._material_manager.getRootMaterialIDWithoutDiameter(root_material_id)
                 root_material_id_list.append(root_material_id)
 
-                # Also try to get the fallback material
-                material_type = extruder.material.getMetaDataEntry("material")
-                fallback_root_material_id = self._material_manager.getFallbackMaterialIdByMaterialType(material_type)
-                if fallback_root_material_id:
-                    root_material_id_list.append(fallback_root_material_id)
+                # Also try to get the fallback materials
+                fallback_ids = self._material_manager.getFallBackMaterialIdsByMaterial(extruder.material)
+
+                if fallback_ids:
+                    root_material_id_list.extend(fallback_ids)
+
+                # Weed out duplicates while preserving the order.
+                seen = set()  # type: Set[str]
+                root_material_id_list = [x for x in root_material_id_list if x not in seen and not seen.add(x)]  # type: ignore
 
             # Here we construct a list of nodes we want to look for qualities with the highest priority first.
             # The use case is that, when we look for qualities for a machine, we first want to search in the following
@@ -458,7 +460,7 @@ class QualityManager(QObject):
     #   stack and clear the user settings.
     @pyqtSlot(str)
     def createQualityChanges(self, base_name: str) -> None:
-        machine_manager = Application.getInstance().getMachineManager()
+        machine_manager = self._application.getMachineManager()
 
         global_stack = machine_manager.activeMachine
         if not global_stack:

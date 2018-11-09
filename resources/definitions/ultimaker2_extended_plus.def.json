@@ -10,11 +10,11 @@
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2ExtendedPlusbackplate.png",
-        "supported_actions": ["UpgradeFirmware"],
         "machine_extruder_trains":
         {
             "0": "ultimaker2_extended_plus_extruder_0"
-        }
+        },
+        "firmware_file": "MarlinUltimaker2extended-plus.hex"
     },
 
     "overrides": {

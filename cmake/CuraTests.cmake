@@ -57,5 +57,13 @@ endforeach()
 #Add code style test.
 add_test(
     NAME "code-style"
-    COMMAND ${PYTHON_EXECUTABLE} run_mypy.py WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMAND ${PYTHON_EXECUTABLE} run_mypy.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+#Add test for whether the shortcut alt-keys are unique in every translation.
+add_test(
+    NAME "shortcut-keys"
+    COMMAND ${PYTHON_EXECUTABLE} scripts/check_shortcut_keys.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )

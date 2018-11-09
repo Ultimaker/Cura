@@ -62,6 +62,7 @@ UM.Dialog
                 anchors.right: parent.right
                 anchors.rightMargin: base.textMargin
                 font: UM.Theme.getFont("large")
+                elide: Text.ElideRight
             }
             ListView
             {
@@ -115,6 +116,7 @@ UM.Dialog
                             {
                                 wrapMode: Text.Wrap
                                 text: control.text
+                                elide: Text.ElideRight
                                 color: activeScriptButton.checked ? palette.highlightedText : palette.text
                             }
                         }
@@ -275,6 +277,7 @@ UM.Dialog
                 anchors.leftMargin: base.textMargin
                 anchors.right: parent.right
                 anchors.rightMargin: base.textMargin
+                elide: Text.ElideRight
                 height: 20 * screenScaleFactor
                 font: UM.Theme.getFont("large")
                 color: UM.Theme.getColor("text")

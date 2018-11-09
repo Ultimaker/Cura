@@ -1,108 +1,132 @@
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
-Component
-{
-    Rectangle
-    {
-        id: monitorFrame
-        width: maximumWidth
-        height: maximumHeight
-        color: UM.Theme.getColor("viewport_background")
-        property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
-        property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
-        property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
-
-        UM.I18nCatalog
-        {
-            id: catalog
-            name: "cura"
-        }
-
-        Label
-        {
-            id: manageQueueLabel
-            anchors.rightMargin: 4 * UM.Theme.getSize("default_margin").width
-            anchors.right: queuedPrintJobs.right
-            anchors.bottom: queuedLabel.bottom
-            text: catalog.i18nc("@label link to connect manager", "Manage queue")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("primary")
-            linkColor: UM.Theme.getColor("primary")
-        }
-
-        MouseArea
-        {
-            anchors.fill: manageQueueLabel
-            hoverEnabled: true
-            onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
-            onEntered: manageQueueLabel.font.underline = true
-            onExited: manageQueueLabel.font.underline = false
-        }
-
-        Label
-        {
-            id: queuedLabel
-            anchors.left: queuedPrintJobs.left
-            anchors.top: parent.top
-            anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
-            anchors.leftMargin: 3 * UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "Queued")
-            font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
-        }
-
-        ScrollView
-        {
-            id: queuedPrintJobs
-
-            anchors
-            {
-                top: queuedLabel.bottom
-                topMargin: UM.Theme.getSize("default_margin").height
-                horizontalCenter: parent.horizontalCenter
-                bottomMargin: 0
-                bottom: parent.bottom
+Component {
+    Rectangle {
+        id: monitorFrame;
+        property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight");
+        property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width;
+        color: UM.Theme.getColor("viewport_background");
+        height: maximumHeight;
+        onVisibleChanged: {
+            if (monitorFrame != null && !monitorFrame.visible) {
+                OutputDevice.setActiveCameraUrl("");
             }
-            style: UM.Theme.styles.scrollview
-            width: Math.min(800 * screenScaleFactor, maximumWidth)
-            ListView
-            {
-                anchors.fill: parent
-                //anchors.margins: UM.Theme.getSize("default_margin").height
-                spacing: UM.Theme.getSize("default_margin").height - 10 // 2x the shadow radius
+        }
+        width: maximumWidth;
 
-                model: OutputDevice.queuedPrintJobs
+        UM.I18nCatalog {
+            id: catalog;
+            name: "cura";
+        }
 
-                delegate: PrintJobInfoBlock
-                {
-                    printJob: modelData
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").height
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").height
-                    height: 175 * screenScaleFactor
+        Label {
+            id: manageQueueLabel;
+            anchors {
+                bottom: queuedLabel.bottom;
+                right: queuedPrintJobs.right;
+                rightMargin: 3 * UM.Theme.getSize("default_margin").width;
+            }
+            color: UM.Theme.getColor("primary");
+            font: UM.Theme.getFont("default");
+            linkColor: UM.Theme.getColor("primary");
+            text: catalog.i18nc("@label link to connect manager", "Manage queue");
+        }
+
+        MouseArea {
+            anchors.fill: manageQueueLabel;
+            hoverEnabled: true;
+            onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel();
+            onEntered: manageQueueLabel.font.underline = true;
+            onExited: manageQueueLabel.font.underline = false;
+        }
+
+        Label {
+            id: queuedLabel;
+            anchors {
+                left: queuedPrintJobs.left;
+                leftMargin: 3 * UM.Theme.getSize("default_margin").width + 5 * screenScaleFactor;
+                top: parent.top;
+                topMargin: 2 * UM.Theme.getSize("default_margin").height;
+            }
+            color: UM.Theme.getColor("text");
+            font: UM.Theme.getFont("large");
+            text: catalog.i18nc("@label", "Queued");
+        }
+
+        Column {
+            id: skeletonLoader;
+            anchors {
+                bottom: parent.bottom;
+                bottomMargin: UM.Theme.getSize("default_margin").height;
+                horizontalCenter: parent.horizontalCenter;
+                top: queuedLabel.bottom;
+                topMargin: UM.Theme.getSize("default_margin").height;
+            }
+            visible: !queuedPrintJobs.visible;
+            width: Math.min(800 * screenScaleFactor, maximumWidth);
+
+            PrintJobInfoBlock {
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
                 }
+                printJob: null; // Use as skeleton
+            }
+
+            PrintJobInfoBlock {
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
+                }
+                printJob: null; // Use as skeleton
             }
         }
 
-        PrinterVideoStream
-        {
-            visible: OutputDevice.activeCamera != null
-            anchors.fill: parent
-            camera: OutputDevice.activeCamera
+        ScrollView {
+            id: queuedPrintJobs;
+            anchors {
+                top: queuedLabel.bottom;
+                topMargin: UM.Theme.getSize("default_margin").height;
+                horizontalCenter: parent.horizontalCenter;
+                bottomMargin: UM.Theme.getSize("default_margin").height;
+                bottom: parent.bottom;
+            }
+            style: UM.Theme.styles.scrollview;
+            visible: OutputDevice.receivedPrintJobs;
+            width: Math.min(800 * screenScaleFactor, maximumWidth);
+
+            ListView {
+                id: printJobList;
+                anchors.fill: parent;
+                delegate: PrintJobInfoBlock {
+                    anchors {
+                        left: parent.left;
+                        leftMargin: UM.Theme.getSize("default_margin").width;
+                        right: parent.right;
+                        rightMargin: UM.Theme.getSize("default_margin").width;
+                    }
+                    printJob: modelData;
+                }
+                model: OutputDevice.queuedPrintJobs;
+                spacing: UM.Theme.getSize("default_margin").height - 2 * UM.Theme.getSize("monitor_shadow_radius").width;
+            }
         }
 
-        onVisibleChanged:
-        {
-            if (monitorFrame != null && !monitorFrame.visible)
-            {
-                OutputDevice.setActiveCamera(null)
-            }
+        PrinterVideoStream {
+            anchors.fill: parent;
+            cameraUrl: OutputDevice.activeCameraUrl;
+            visible: OutputDevice.activeCameraUrl != "";
         }
     }
 }

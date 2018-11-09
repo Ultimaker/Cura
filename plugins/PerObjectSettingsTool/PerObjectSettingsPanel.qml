@@ -185,6 +185,12 @@ Item {
                         {
                             selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
                         }
+
+                        // For some reason the model object is updated after removing him from the memory and
+                        // it happens only on Windows. For this reason, set the destroyed value manually.
+                        Component.onDestruction: {
+                            setDestroyed(true);
+                        }
                     }
 
                     delegate: Row
@@ -401,14 +407,9 @@ Item {
         function updateFilter()
         {
             var new_filter = {};
-            if (printSequencePropertyProvider.properties.value == "one_at_a_time")
-            {
-                new_filter["settable_per_meshgroup"] = true;
-            }
-            else
-            {
-                new_filter["settable_per_mesh"] = true;
-            }
+            new_filter["settable_per_mesh"] = true;
+            // Don't filter on "settable_per_meshgroup" any more when `printSequencePropertyProvider.properties.value`
+            //   is set to "one_at_a_time", because the current backend architecture isn't ready for that.
 
             if(filterInput.text != "")
             {
