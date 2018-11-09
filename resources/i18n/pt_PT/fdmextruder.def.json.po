@@ -171,12 +171,12 @@ msgstr "A coordenada Z da posição onde o nozzle é preparado ao iniciar a impr
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
-msgstr ""
+msgstr "Ventoinha de arrefecimento de impressão do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr ""
+msgstr "O número de ventoinhas de arrefecimento de impressão associadas a este extrusor. Apenas alterar o valor predefinido de 0 quando tiver uma ventoinha de arrefecimento de impressão diferente para cada extrusor."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"

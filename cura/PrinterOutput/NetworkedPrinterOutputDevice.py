@@ -213,7 +213,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         if self._manager is not None:
-            reply = self._manager.post(request, data)
+            reply = self._manager.post(request, data.encode())
             if on_progress is not None:
                 reply.uploadProgress.connect(on_progress)
             self._registerOnFinishedCallback(reply, on_finished)

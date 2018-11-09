@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"시작과 동시에형실행될 G 코드 명령어 \n"
-"."
+msgstr "시작과 동시에형실행될 G 코드 명령어 \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"맨 마지막에 실행될 G 코드 명령 \n"
-"."
+msgstr "맨 마지막에 실행될 G 코드 명령 \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1079,7 +1075,7 @@ msgstr "상단/하단 다각형 연결"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "스킨 경로가 나란히 이어지는 상단/하단 스킨 경로를 연결합니다. 동심원 패턴의 경우 이 설정을 사용하면 이동 시간이 크게 감소하지만, 내부채움의 중간에 연결될 수 있기 때문에 이 기능은 상단 표면 품질을 저하시킬 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1499,7 +1495,7 @@ msgstr "내부채움 패턴"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "프린트 충진 재료의 패턴입니다. 선과 갈지자형 충진이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 입방체, 옥텟, 4분 입방체, 십자, 동심원 패턴이 레이어마다 완전히 인쇄됩니다. 자이로이드, 입방체, 4분 입방체, 옥텟 충진이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1564,7 +1560,7 @@ msgstr "십자형 3D"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "자이로이드"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1636,9 +1632,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n"
-"이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트랙션없이 모든 내부채움을 단일 돌출 경로에 연결할 수 있습니다."
+msgstr "내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트랙션없이 모든 내부채움을 단일 돌출 경로에 연결할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -3273,32 +3267,32 @@ msgstr "서포트에 대한 내부채움 패턴 방향. 서포트 내부채움 �
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "서포트 브림 사용"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "첫 번째 레이어의 서포트 내부채움 영역 내에서 브림을 생성합니다. 이 브림은 서포트 주변이 아니라 아래에 인쇄됩니다. 이 설정을 사용하면 빌드 플레이트에 대한 서포트력이 향상됩니다."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "서포트 브림 폭"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "서포트 아래를 인쇄하기 위한 브림 폭. 브림이 커질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "서포트 브림 라인 수"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "서포트 브림에 사용되는 라인의 수. 브림 라인이 많아질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3835,9 +3829,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
-"이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
+msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3872,12 +3864,12 @@ msgstr "브림에 사용되는 선의 수입니다. 더 많은 브림 선이 빌
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "브림이 서포트 대체"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "서포트가 차지할 공간이더라도 모델 주변에 브림이 인쇄되도록 합니다. 이렇게 하면 서포트의 첫 번째 레이어 영역 일부가 브림 영역으로 대체됩니다."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"

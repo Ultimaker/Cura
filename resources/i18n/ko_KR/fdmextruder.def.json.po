@@ -171,12 +171,12 @@ msgstr "프린팅이 시작될 때 노즐이 시작하는 위치의 Z 좌표입�
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
-msgstr ""
+msgstr "익스트루더 프린팅 냉각 팬"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr ""
+msgstr "이 익스트루더와 관련된 프린팅 냉각 팬의 개수. 각 익스트루더마다 다른 프린팅 냉각 팬이 있을 때만 기본값 0에서 변경하십시오."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"

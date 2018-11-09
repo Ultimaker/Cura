@@ -12,13 +12,12 @@ Button {
         color: UM.Theme.getColor("monitor_context_menu_highlight");
     }
     contentItem: Label {
-        color: UM.Theme.getColor("text");
+        color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_inactive");
         text: parent.text
         horizontalAlignment: Text.AlignLeft;
         verticalAlignment: Text.AlignVCenter;
     }
-    height: 39 * screenScaleFactor; // TODO: Theme!
+    height: visible ? 39 * screenScaleFactor : 0; // TODO: Theme!
     hoverEnabled: true;
-    visible: enabled;
     width: parent.width;
 }

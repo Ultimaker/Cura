@@ -4380,12 +4380,12 @@
                 },
                 "support_interface_offset": 
                 {
-                    "label": "Support Interface Offset",
+                    "label": "Support Interface Horizontal Expansion",
                     "description": "Amount of offset applied to the support interface polygons.",
                     "unit": "mm",
                     "type": "float",
-                    "minimum_value": "0",
                     "default_value": 0.0,
+                    "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and (support_enable or support_tree_enable)",
                     "settable_per_mesh": false,
@@ -4394,13 +4394,14 @@
                     {
                         "support_roof_offset": 
                         {
-                            "label": "Support Roof Offset",
+                            "label": "Support Roof Horizontal Expansion",
                             "description": "Amount of offset applied to the roofs of the support.",
                             "unit": "mm",
                             "type": "float",
                             "minimum_value": "0",
                             "default_value": 0.0,
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_offset')",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and (support_enable or support_tree_enable)",
                             "settable_per_mesh": false,
@@ -4408,13 +4409,14 @@
                         },
                         "support_bottom_offset": 
                         {
-                            "label": "Support Floor Offset",
+                            "label": "Support Floor Horizontal Expansion",
                             "description": "Amount of offset applied to the floors of the support.",
                             "unit": "mm",
                             "type": "float",
                             "minimum_value": "0",
                             "default_value": 0.0,
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_offset')",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_tree_enable)",
                             "settable_per_mesh": false,
