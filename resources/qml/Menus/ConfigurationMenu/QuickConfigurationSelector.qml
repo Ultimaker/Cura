@@ -8,7 +8,82 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Item
+
+Cura.ExpandableComponent
+{
+    id: base
+    headerItem: Item
+    {
+        Cura.ExtrudersModel
+        {
+            id: extrudersModel
+        }
+
+        ListView
+        {
+            // Horizontal list that shows the extruders
+            id: extrudersList
+
+            orientation: ListView.Horizontal
+            anchors.fill: parent
+            model: extrudersModel
+
+            Connections
+            {
+                target: Cura.MachineManager
+                onGlobalContainerChanged: forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+            }
+
+            delegate: Item
+            {
+                height: parent.height
+                width: Math.round(ListView.view.width / extrudersModel.rowCount())
+
+                Cura.ExtruderIcon
+                {
+                    id: extruderIcon
+                    materialColor: model.color
+                    height: parent.height
+                    width: height
+                }
+
+                Label
+                {
+                    id: brandNameLabel
+
+                    text: model.material_brand
+                    elide: Text.ElideRight
+
+                    anchors
+                    {
+                        left: extruderIcon.right
+                        leftMargin: UM.Theme.getSize("default_margin").width
+                        right: parent.right
+                        rightMargin: UM.Theme.getSize("default_margin").width
+                    }
+                }
+                Label
+                {
+                    text: model.color_name
+                    elide: Text.ElideRight
+
+                    anchors
+                    {
+                        left: extruderIcon.right
+                        leftMargin: UM.Theme.getSize("default_margin").width
+                        right: parent.right
+                        rightMargin: UM.Theme.getSize("default_margin").width
+                        top: brandNameLabel.bottom
+                    }
+                }
+            }
+        }
+    }
+
+    
+}
+
+/*Item
 {
     id: configurationSelector
     property var connectedDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
@@ -65,4 +140,4 @@ Item
         onClosed: visible = false
         onOpened: visible = true
     }
-}
+}*/

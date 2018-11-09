@@ -50,16 +50,18 @@ Item
 
         Cura.QuickConfigurationSelector
         {
-            id: configSelection
+            height: prepareMenu.height
+            width: UM.Theme.getSize("configuration_selector_widget").width
+            /*id: configSelection
             width: visible ? UM.Theme.getSize("machine_selector_widget").width * 0.2 : 0
             panelWidth: UM.Theme.getSize("machine_selector_widget").width
-            height: prepareMenu.height
+            height: prepareMenu.height*/
         }
 
-        Cura.CustomConfigurationSelector
+        /*Cura.CustomConfigurationSelector
         {
             width: UM.Theme.getSize("configuration_selector_widget").width
-        }
+        }*/
 
         Cura.PrintSetupSelector
         {
