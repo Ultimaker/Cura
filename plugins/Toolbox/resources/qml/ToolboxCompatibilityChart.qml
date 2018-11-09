@@ -31,11 +31,17 @@ Item
         var sds_name = "safetyDataSheet"
         return (sds_name in packageData.links) ? packageData.links[sds_name] : undefined
     }
+    property var printingGuidelinesUrl:
+    {
+        var pg_name = "printingGuidelines"
+        return (pg_name in packageData.links) ? packageData.links[pg_name] : undefined
+    }
     anchors.topMargin: UM.Theme.getSize("default_margin").height
     height: visible ? childrenRect.height : 0
 
     visible: packageData.type == "material" &&
-        (packageData.has_configs || technicalDataSheetUrl !== undefined || safetyDataSheetUrl !== undefined)
+        (packageData.has_configs || technicalDataSheetUrl !== undefined ||
+            safetyDataSheetUrl !== undefined || printingGuidelinesUrl !== undefined)
 
     Item
     {
@@ -173,7 +179,8 @@ Item
         id: data_sheet_links
         anchors.top: combatibilityItem.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
-        visible: base.technicalDataSheetUrl !== undefined || base.safetyDataSheetUrl !== undefined
+        visible: base.technicalDataSheetUrl !== undefined ||
+            base.safetyDataSheetUrl !== undefined || base.printingGuidelinesUrl !== undefined
         height: visible ? contentHeight : 0
         text:
         {
@@ -189,6 +196,14 @@ Item
                     result += "<br/>"
                 }
                 result += "<a href='%1'>%2</a>".arg(base.safetyDataSheetUrl).arg("Safety Data Sheet")
+            }
+            if (base.printingGuidelinesUrl !== undefined)
+            {
+                if (result.length > 0)
+                {
+                    result += "<br/>"
+                }
+                result += "<a href='%1'>%2</a>".arg(base.printingGuidelinesUrl).arg("Printing Guidelines")
             }
             return result
         }
