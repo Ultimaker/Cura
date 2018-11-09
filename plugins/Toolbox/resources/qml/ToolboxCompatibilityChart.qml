@@ -11,7 +11,8 @@ Item
     id: base
 
     property var packageData
-    property var technicalDataSheetUrl: {
+    property var technicalDataSheetUrl:
+    {
         var link = undefined
         if ("Technical Data Sheet" in packageData.links)
         {
@@ -25,10 +26,16 @@ Item
         }
         return link
     }
+    property var safetyDataSheetUrl:
+    {
+        var sds_name = "safetyDataSheet"
+        return (sds_name in packageData.links) ? packageData.links[sds_name] : undefined
+    }
     anchors.topMargin: UM.Theme.getSize("default_margin").height
     height: visible ? childrenRect.height : 0
 
-    visible: packageData.type == "material" && (packageData.has_configs || technicalDataSheetUrl != undefined)
+    visible: packageData.type == "material" &&
+        (packageData.has_configs || technicalDataSheetUrl !== undefined || safetyDataSheetUrl !== undefined)
 
     Item
     {
@@ -163,23 +170,31 @@ Item
 
     Label
     {
-        id: technical_data_sheet
+        id: data_sheet_links
         anchors.top: combatibilityItem.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
-        visible: base.technicalDataSheetUrl !== undefined
+        visible: base.technicalDataSheetUrl !== undefined || base.safetyDataSheetUrl !== undefined
         height: visible ? contentHeight : 0
         text:
         {
+            var result = ""
             if (base.technicalDataSheetUrl !== undefined)
             {
-                return "<a href='%1'>%2</a>".arg(base.technicalDataSheetUrl).arg("Technical Data Sheet")
+                result += "<a href='%1'>%2</a>".arg(base.technicalDataSheetUrl).arg("Technical Data Sheet")
             }
-            return ""
+            if (base.safetyDataSheetUrl !== undefined)
+            {
+                if (result.length > 0)
+                {
+                    result += "<br/>"
+                }
+                result += "<a href='%1'>%2</a>".arg(base.safetyDataSheetUrl).arg("Safety Data Sheet")
+            }
+            return result
         }
         font: UM.Theme.getFont("very_small")
         color: UM.Theme.getColor("text")
         linkColor: UM.Theme.getColor("text_link")
         onLinkActivated: Qt.openUrlExternally(link)
     }
-
 }
