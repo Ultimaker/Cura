@@ -1,6 +1,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
+import UM 1.2 as UM
+
 // The expandable component has 3 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
 //      * The popupItem; The content that needs to be shown if the component is expanded.
@@ -16,8 +18,13 @@ Item
     // The background color of the popup
     property color popupBackgroundColor: "white"
 
+    property alias headerBackgroundColor: background.color
+
     // How much spacing is needed around the popupItem
-    property alias padding: popup.padding
+    property alias popupPadding: popup.padding
+
+    // How much padding is needed around the header & button
+    property alias headerPadding: background.padding
 
     onPopupItemChanged:
     {
@@ -30,30 +37,39 @@ Item
 
     implicitHeight: 100
     implicitWidth: 400
-
-    Loader
+    Rectangle
     {
-        id: headerItemLoader
-        anchors
-        {
-            left: parent.left
-            right: collapseButton.left
-            top: parent.top
-            bottom: parent.bottom
-        }
-    }
+        id: background
+        property real padding: UM.Theme.getSize("default_margin").width
 
-    Button
-    {
-        id: collapseButton
-        anchors
+        color: "white"
+        anchors.fill: parent
+        Loader
         {
-            right: parent.right
-            top: parent.top
-            bottom: parent.bottom
+            id: headerItemLoader
+            anchors
+            {
+                left: parent.left
+                right: collapseButton.left
+                top: parent.top
+                bottom: parent.bottom
+                margins: background.padding
+            }
         }
-        text: popup.visible ? "close" : "open"
-        onClicked: popup.visible ? popup.close() : popup.open()
+
+        Button
+        {
+            id: collapseButton
+            anchors
+            {
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
+                margins: background.padding
+            }
+            text: popup.visible ? "close" : "open"
+            onClicked: popup.visible ? popup.close() : popup.open()
+        }
     }
 
     Popup
@@ -61,16 +77,16 @@ Item
         id: popup
 
         // Ensure that the popup is located directly below the headerItem
-        y: headerItemLoader.height
+        y: headerItemLoader.height + 2 * background.padding
 
-        // Make the popup right aligned with the rest.
-        x: -width + collapseButton.width + headerItemLoader.width
+        // Make the popup right aligned with the rest. The 3x padding is due to left, right and padding between
+        //the button & text.
+        x: -width + collapseButton.width + headerItemLoader.width + 3 * background.padding
 
         closePolicy: Popup.CloseOnPressOutsideParent
 
         background: Rectangle
         {
-            id: background
             color: popupBackgroundColor
         }
     }
