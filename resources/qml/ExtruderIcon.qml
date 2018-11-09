@@ -13,46 +13,44 @@ Item
     implicitHeight: implicitWidth
 
     property bool checked: true
-    property alias material_color: materialColorCircle.color
-    property alias text_color: extruderNumberText.color
+    property alias materialColor: mainIcon.color
+    property alias textColor: extruderNumberText.color
 
     UM.RecolorImage
     {
-        id: mainCircle
+        id: mainIcon
         anchors.fill: parent
 
         sourceSize.width: parent.width
         sourceSize.height: parent.width
         source: UM.Theme.getIcon("extruder_button")
-        color: extruderNumberText.color
     }
 
-    Label
-    {
-        id: extruderNumberText
-        anchors.centerIn: parent
-        text: index + 1;
-        font: UM.Theme.getFont("default_bold")
-    }
-
-    // Material colour circle
-    // Only draw the filling colour of the material inside the SVG border.
     Rectangle
     {
-        id: materialColorCircle
+        id: extruderNumberCircle
+
+        width: height
+        height: parent.height / 2
+        radius: Math.round(width / 2)
+        color: "white"
 
         anchors
         {
-            right: parent.right
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            // The circle needs to be slightly off center (so it sits in the middle of the square bit of the icon)
+            topMargin: (parent.height - height) / 2 - 0.1 * parent.height
         }
 
-        width: Math.round(parent.width * 0.35)
-        height: Math.round(parent.height * 0.35)
-        radius: Math.round(width / 2)
-
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("extruder_button_material_border")
-
-        opacity: !extruderIconItem.checked ? 0.6 : 1.0
+        Label
+        {
+            id: extruderNumberText
+            anchors.centerIn: parent
+            text: index + 1
+            font: UM.Theme.getFont("default")
+            width: contentWidth
+            height: contentHeight
+        }
     }
 }

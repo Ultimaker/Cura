@@ -195,8 +195,8 @@ Rectangle
                             height: width
 
                             checked: control.checked
-                            material_color: model.color
-                            text_color: extruderStaticText.color
+                            materialColor: model.color
+                            textColor: extruderStaticText.color
                         }
                     }
                 }
