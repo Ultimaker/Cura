@@ -171,6 +171,81 @@ QtObject
         }
     }
 
+    property Component toolbar_button: Component
+    {
+        ButtonStyle
+        {
+            background: Item
+            {
+                implicitWidth: Theme.getSize("button").width;
+                implicitHeight: Theme.getSize("button").height;
+
+                UM.PointingRectangle
+                {
+                    id: button_tooltip
+
+                    anchors.left: parent.right
+                    anchors.leftMargin: Theme.getSize("button_tooltip_arrow").width * 2
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    target: Qt.point(parent.x, y + Math.round(height/2))
+                    arrowSize: Theme.getSize("button_tooltip_arrow").width
+                    color: Theme.getColor("button_tooltip")
+                    opacity: control.hovered ? 1.0 : 0.0;
+                    visible: control.text != ""
+
+                    width: control.hovered ? button_tip.width + Theme.getSize("button_tooltip").width : 0
+                    height: Theme.getSize("button_tooltip").height
+
+                    Behavior on width { NumberAnimation { duration: 100; } }
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
+
+                    Label
+                    {
+                        id: button_tip
+
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter;
+
+                        text: control.text;
+                        font: Theme.getFont("button_tooltip");
+                        color: Theme.getColor("tooltip_text");
+                    }
+                }
+            }
+
+            label: Item
+            {
+                UM.RecolorImage
+                {
+                    anchors.centerIn: parent;
+                    opacity: !control.enabled ? 0.2 : 1.0
+                    source: control.iconSource;
+                    width: Theme.getSize("button_icon").width;
+                    height: Theme.getSize("button_icon").height;
+                    color:
+                    {
+                        if(control.checkable && control.checked && control.hovered)
+                        {
+                            return Theme.getColor("toolbar_button_text_active_hover");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("toolbar_button_text_active");
+                        }
+                        else if(control.hovered)
+                        {
+                            return Theme.getColor("toolbar_button_text_hover");
+                        }
+                        return Theme.getColor("toolbar_button_text");
+                    }
+
+                    sourceSize: Theme.getSize("button_icon")
+                }
+            }
+        }
+    }
+
     property Component tool_button: Component
     {
         ButtonStyle
