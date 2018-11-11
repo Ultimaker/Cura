@@ -915,47 +915,6 @@ QtObject
         }
     }
 
-    property Component slider: Component
-    {
-        SliderStyle
-        {
-            groove: Rectangle
-            {
-                implicitWidth: control.width
-                implicitHeight: Theme.getSize("slider_groove").height
-
-                color: Theme.getColor("slider_groove")
-                border.width: Theme.getSize("default_lining").width
-                border.color: Theme.getColor("slider_groove_border")
-
-                radius: Math.round(width / 2)
-
-                Rectangle
-                {
-                    anchors
-                    {
-                        left: parent.left
-                        top: parent.top
-                        bottom: parent.bottom
-                    }
-                    color: Theme.getColor("slider_groove_fill");
-                    width: Math.round((control.value / (control.maximumValue - control.minimumValue)) * parent.width);
-                    radius: Math.round(width / 2);
-                }
-            }
-            handle: Rectangle
-            {
-                width: Theme.getSize("slider_handle").width;
-                height: Theme.getSize("slider_handle").height;
-                color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
-                border.width: Theme.getSize("default_lining").width
-                border.color: control.hovered ? Theme.getColor("slider_handle_hover_border") : Theme.getColor("slider_handle_border")
-                radius: Math.round(Theme.getSize("slider_handle").width / 2); //Round.
-                Behavior on color { ColorAnimation { duration: 50; } }
-            }
-        }
-    }
-
     property Component text_field: Component
     {
         TextFieldStyle
