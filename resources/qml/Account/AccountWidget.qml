@@ -51,6 +51,9 @@ Button
 
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
+        opacity: opened ? 1 : 0
+        Behavior on opacity { NumberAnimation { duration: 100 } }
+
         contentItem: AccountDetails
         {
             id: panel
@@ -61,8 +64,6 @@ Button
 
         background: UM.PointingRectangle
         {
-            opacity: visible ? 1 : 0
-            Behavior on opacity { NumberAnimation { duration: 100 } }
             color: UM.Theme.getColor("tool_panel_background")
             borderColor: UM.Theme.getColor("lining")
             borderWidth: UM.Theme.getSize("default_lining").width
