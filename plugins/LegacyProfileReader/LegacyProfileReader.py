@@ -6,6 +6,7 @@ import io
 import json  # For reading the Dictionary of Doom.
 import math  # For mathematical operations included in the Dictionary of Doom.
 import os.path  # For concatenating the path to the plugin and the relative path to the Dictionary of Doom.
+from typing import Dict
 
 from UM.Application import Application  # To get the machine manager to create the new profile in.
 from UM.Logger import Logger  # Logging errors.
@@ -33,10 +34,11 @@ class LegacyProfileReader(ProfileReader):
     #   \param json The JSON file to load the default setting values from. This
     #   should not be a URL but a pre-loaded JSON handle.
     #   \return A dictionary of the default values of the legacy Cura version.
-    def prepareDefaults(self, json):
+    def prepareDefaults(self, json: Dict[str, Dict[str, str]]) -> Dict[str, str]:
         defaults = {}
-        for key in json["defaults"]:  # We have to copy over all defaults from the JSON handle to a normal dict.
-            defaults[key] = json["defaults"][key]
+        if "defaults" in json:
+            for key in json["defaults"]:  # We have to copy over all defaults from the JSON handle to a normal dict.
+                defaults[key] = json["defaults"][key]
         return defaults
 
     ##  Prepares the local variables that can be used in evaluation of computing
