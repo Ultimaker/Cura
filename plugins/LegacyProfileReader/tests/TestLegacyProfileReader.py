@@ -33,7 +33,7 @@ def test_prepareDefaults(legacy_profile_reader, input):
         assert output == {}
 
 test_prepareLocalsData = [
-    (
+    ( # Ordinary case.
         { # Parser data.
             "profile":
             {
@@ -46,6 +46,56 @@ test_prepareLocalsData = [
             "layer_height": "0.1",
             "infill_density": "20",
             "line_width": "0.4"
+        }
+    ),
+    ( # Empty data.
+        { # Parser data.
+            "profile":
+            {
+            }
+        },
+        "profile", # Config section.
+        { # Defaults.
+        }
+    ),
+    ( # All defaults.
+        { # Parser data.
+            "profile":
+            {
+            }
+        },
+        "profile", # Config section.
+        { # Defaults.
+            "foo": "bar",
+            "boo": "far"
+        }
+    ),
+    ( # Multiple config sections.
+        { # Parser data.
+            "some_other_name":
+            {
+                "foo": "bar"
+            },
+            "profile":
+            {
+                "foo": "baz" #Not the same as in some_other_name
+            }
+        },
+        "profile", # Config section.
+        { # Defaults.
+            "foo": "bla"
+        }
+    ),
+    ( # Section does not exist.
+        { # Parser data.
+            "some_other_name":
+            {
+                "foo": "bar"
+            },
+        },
+        "profile", # Config section.
+        { # Defaults.
+            "foo": "baz"
         }
     )
 ]
