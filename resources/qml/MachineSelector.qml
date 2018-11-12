@@ -19,7 +19,7 @@ ToolButton
     text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
-
+    width: 240
     style: ButtonStyle
     {
         background: Rectangle

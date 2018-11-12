@@ -1,5 +1,5 @@
 import QtQuick 2.7
-
+import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 
 import UM 1.3 as UM
@@ -19,9 +19,12 @@ Item
         name: "cura"
     }
 
-    Row
+    // Item to ensure that all of the buttons are nicely centered.
+    Item
     {
         anchors.horizontalCenter: parent.horizontalCenter
+        width: openFileButton.width + UM.Theme.getSize("default_margin").width + itemRow.width
+        height: parent.height
 
         Button
         {
@@ -33,42 +36,46 @@ Item
             action: Cura.Actions.open
         }
 
-        Item
+        RowLayout
         {
-            id: spacing
-            width: UM.Theme.getSize("default_margin").width
-            height: prepareMenu.height
-        }
+            id: itemRow
 
-        Cura.MachineSelector
-        {
-            id: machineSelection
-            width: UM.Theme.getSize("machine_selector_widget").width - configSelection.width
-            height: prepareMenu.height
-            z: openFileButton.z - 1
-        }
+            anchors.left: openFileButton.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-        Cura.QuickConfigurationSelector
-        {
-            height: prepareMenu.height
-            width: UM.Theme.getSize("configuration_selector_widget").width
-            /*id: configSelection
-            width: visible ? UM.Theme.getSize("machine_selector_widget").width * 0.2 : 0
-            panelWidth: UM.Theme.getSize("machine_selector_widget").width
-            height: prepareMenu.height*/
-        }
+            width: 0.9 * prepareMenu.width
+            height: parent.height
 
-        /*Cura.CustomConfigurationSelector
-        {
-            width: UM.Theme.getSize("configuration_selector_widget").width
-        }*/
+            Cura.MachineSelector
+            {
+                id: machineSelection
+                z: openFileButton.z - 1
 
-        Cura.PrintSetupSelector
-        {
-            width: UM.Theme.getSize("print_setup_widget").width
-            height: prepareMenu.height
-            onShowTooltip: prepareMenu.showTooltip(item, location, text)
-            onHideTooltip: prepareMenu.hideTooltip()
+                Layout.minimumWidth: 240
+                Layout.maximumWidth: 240
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+
+            Cura.QuickConfigurationSelector
+            {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelector.width
+            }
+
+            Cura.PrintSetupSelector
+            {
+                id: printSetupSelector
+
+                onShowTooltip: prepareMenu.showTooltip(item, location, text)
+                onHideTooltip: prepareMenu.hideTooltip()
+
+                Layout.minimumWidth: 460
+                Layout.maximumWidth: 460
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
         }
     }
 }
