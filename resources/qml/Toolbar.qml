@@ -116,7 +116,12 @@ Item
                 height: childrenRect.height
                 property var _model: Cura.ExtrudersModel { id: extrudersModel }
                 model: _model.items.length > 1 ? _model : 0
-                ExtruderButton { extruder: model }
+                ExtruderButton
+                {
+                    extruder: model
+                    height: UM.Theme.getSize("button").width
+                    width: UM.Theme.getSize("button").width
+                }
             }
         }
     }
