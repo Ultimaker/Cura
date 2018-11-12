@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
 from UM.Settings.ContainerFormatError import ContainerFormatError
+from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -27,7 +28,7 @@ from . import GlobalStack
 
 import cura.CuraApplication
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-from cura.ReaderWriters.ProfileReader import NoProfileException
+from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -182,7 +183,7 @@ class CuraContainerRegistry(ContainerRegistry):
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:
                 continue
-            profile_reader = plugin_registry.getPluginObject(plugin_id)
+            profile_reader = cast(ProfileReader, plugin_registry.getPluginObject(plugin_id))
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
             except NoProfileException:
@@ -220,13 +221,13 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Make sure we have a profile_definition in the file:
                 if profile_definition is None:
                     break
-                machine_definition = self.findDefinitionContainers(id = profile_definition)
-                if not machine_definition:
+                machine_definitions = self.findDefinitionContainers(id = profile_definition)
+                if not machine_definitions:
                     Logger.log("e", "Incorrect profile [%s]. Unknown machine type [%s]", file_name, profile_definition)
                     return {"status": "error",
                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)
                             }
-                machine_definition = machine_definition[0]
+                machine_definition = machine_definitions[0]
 
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
@@ -273,11 +274,12 @@ class CuraContainerRegistry(ContainerRegistry):
                                     setting_value = global_profile.getProperty(qc_setting_key, "value")
 
                                     setting_definition = global_stack.getSettingDefinition(qc_setting_key)
-                                    new_instance = SettingInstance(setting_definition, profile)
-                                    new_instance.setProperty("value", setting_value)
-                                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
-                                    profile.addInstance(new_instance)
-                                    profile.setDirty(True)
+                                    if setting_definition is not None:
+                                        new_instance = SettingInstance(setting_definition, profile)
+                                        new_instance.setProperty("value", setting_value)
+                                        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                                        profile.addInstance(new_instance)
+                                        profile.setDirty(True)
 
                                     global_profile.removeInstance(qc_setting_key, postpone_emit=True)
                         extruder_profiles.append(profile)
@@ -289,7 +291,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
                         # This is assumed to be the global profile
-                        profile_id = (global_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
+                        profile_id = (cast(ContainerInterface, global_stack.getBottom()).getId() + "_" + name_seed).lower().replace(" ", "_")
 
                     elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
