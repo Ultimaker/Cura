@@ -225,11 +225,11 @@ QtObject
                     height: Theme.getSize("button_icon").height;
                     color:
                     {
-                        if(control.checkable && control.checked && control.hovered)
+                        if (control.checked && control.hovered)
                         {
                             return Theme.getColor("toolbar_button_text_active_hover");
                         }
-                        else if(control.pressed || (control.checkable && control.checked))
+                        else if (control.checked)
                         {
                             return Theme.getColor("toolbar_button_text_active");
                         }
