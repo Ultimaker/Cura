@@ -82,9 +82,9 @@ class LegacyProfileReader(ProfileReader):
         profile_id = container_registry.uniqueName("Imported Legacy Profile")
         profile = InstanceContainer(profile_id)  # Create an empty profile.
 
-        parser = configparser.ConfigParser(interpolation = None)
+        input_parser = configparser.ConfigParser(interpolation = None)
         try:
-            parser.read([file_name])  # Parse the INI file.
+            input_parser.read([file_name])  # Parse the INI file.
         except Exception as e:
             Logger.log("e", "Unable to open legacy profile %s: %s", file_name, str(e))
             return None
@@ -92,7 +92,7 @@ class LegacyProfileReader(ProfileReader):
         # Legacy Cura saved the profile under the section "profile_N" where N is the ID of a machine, except when you export in which case it saves it in the section "profile".
         # Since importing multiple machine profiles is out of scope, just import the first section we find.
         section = ""
-        for found_section in parser.sections():
+        for found_section in input_parser.sections():
             if found_section.startswith("profile"):
                 section = found_section
                 break
@@ -110,7 +110,7 @@ class LegacyProfileReader(ProfileReader):
             return None
 
         defaults = self.prepareDefaults(dict_of_doom)
-        legacy_settings = self.prepareLocals(parser, section, defaults) #Gets the settings from the legacy profile.
+        legacy_settings = self.prepareLocals(input_parser, section, defaults) #Gets the settings from the legacy profile.
 
         #Check the target version in the Dictionary of Doom with this application version.
         if "target_version" not in dict_of_doom:
@@ -152,15 +152,15 @@ class LegacyProfileReader(ProfileReader):
         profile.setDirty(True)
 
         #Serialise and deserialise in order to perform the version upgrade.
-        parser = configparser.ConfigParser(interpolation = None)
+        output_parser = configparser.ConfigParser(interpolation = None)
         data = profile.serialize()
-        parser.read_string(data)
-        parser["general"]["version"] = "1"
-        if parser.has_section("values"):
-            parser["settings"] = parser["values"]
-            del parser["values"]
+        output_parser.read_string(data)
+        output_parser["general"]["version"] = "1"
+        if output_parser.has_section("values"):
+            output_parser["settings"] = output_parser["values"]
+            del output_parser["values"]
         stream = io.StringIO()
-        parser.write(stream)
+        output_parser.write(stream)
         data = stream.getvalue()
         profile.deserialize(data)
 
