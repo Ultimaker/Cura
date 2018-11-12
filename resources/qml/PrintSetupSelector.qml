@@ -18,11 +18,18 @@ Cura.ExpandableComponent
     property int currentModeIndex: -1
     property bool hideSettings: PrintInformation.preSliced
 
-    UM.I18nCatalog { id: catalog; name: "cura"}
+    property string enabledText: catalog.i18nc("@label", "On")
+    property string disabledText: catalog.i18nc("@label", "Off")
 
     // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
+
+    UM.I18nCatalog
+    {
+        id: catalog
+        name: "cura"
+    }
 
     Timer
     {
@@ -32,18 +39,82 @@ Cura.ExpandableComponent
         property var item
         property string text
 
-        onTriggered:
+        onTriggered: base.showTooltip(base, {x: 0, y: item.y}, text)
+    }
+
+    onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
+
+    headerItem: Row
+    {
+        anchors.fill: parent
+
+        IconWithText
         {
-            base.showTooltip(base, {x: 0, y: item.y}, text);
+            source: UM.Theme.getIcon("category_layer_height")
+            text: Cura.MachineManager.activeQualityOrQualityChangesName + " " + layerHeight.properties.value + "mm"
+            width: parent.width / 4
+            height: parent.height
+
+            UM.SettingPropertyProvider
+            {
+                id: layerHeight
+                containerStackId: Cura.MachineManager.activeStackId
+                key: "layer_height"
+                watchedProperties: ["value"]
+            }
+        }
+
+        IconWithText
+        {
+            source: UM.Theme.getIcon("category_infill")
+            text: parseInt(infillDensity.properties.value) + "%"
+            width: parent.width / 4
+            height: parent.height
+
+            UM.SettingPropertyProvider
+            {
+                id: infillDensity
+                containerStackId: Cura.MachineManager.activeStackId
+                key: "infill_sparse_density"
+                watchedProperties: ["value"]
+            }
+        }
+
+        IconWithText
+        {
+            source: UM.Theme.getIcon("category_support")
+            text: supportEnabled.properties.value == "True" ? enabledText : disabledText
+            width: parent.width / 4
+            height: parent.height
+
+            UM.SettingPropertyProvider
+            {
+                id: supportEnabled
+                containerStack: Cura.MachineManager.activeMachine
+                key: "support_enable"
+                watchedProperties: ["value"]
+            }
+        }
+
+        IconWithText
+        {
+            source: UM.Theme.getIcon("category_adhesion")
+            text: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none" ? enabledText : disabledText
+            width: parent.width / 4
+            height: parent.height
+
+            UM.SettingPropertyProvider
+            {
+                id: platformAdhesionType
+                containerStack: Cura.MachineManager.activeMachine
+                key: "adhesion_type"
+                watchedProperties: [ "value"]
+            }
         }
     }
 
-    onCurrentModeIndexChanged:
-    {
-        UM.Preferences.setValue("cura/active_mode", currentModeIndex);
-    }
 
-    headerItem: Label
+    /*Label
     {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
@@ -51,16 +122,13 @@ Cura.ExpandableComponent
 
         anchors
         {
-            left: parent.left
-            top: parent.top
-            margins: UM.Theme.getSize("thick_margin").width
+            fill: parent
         }
 
-        width: Math.round(parent.width * 0.45)
         height: contentHeight
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
-    }
+    }*/
 
     popupItem: Item
     {
