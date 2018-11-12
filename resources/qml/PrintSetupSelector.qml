@@ -18,8 +18,8 @@ Cura.ExpandableComponent
     property int currentModeIndex: -1
     property bool hideSettings: PrintInformation.preSliced
 
-    property string enabledText: catalog.i18nc("@label", "On")
-    property string disabledText: catalog.i18nc("@label", "Off")
+    property string enabledText: catalog.i18nc("@label:Should be short", "On")
+    property string disabledText: catalog.i18nc("@label:Should be short", "Off")
 
     // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
     signal showTooltip(Item item, point location, string text)
@@ -44,7 +44,7 @@ Cura.ExpandableComponent
 
     onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
 
-    headerItem: Row
+    headerItem: RowLayout
     {
         anchors.fill: parent
 
@@ -52,8 +52,6 @@ Cura.ExpandableComponent
         {
             source: UM.Theme.getIcon("category_layer_height")
             text: Cura.MachineManager.activeQualityOrQualityChangesName + " " + layerHeight.properties.value + "mm"
-            width: parent.width / 4
-            height: parent.height
 
             UM.SettingPropertyProvider
             {
@@ -68,8 +66,6 @@ Cura.ExpandableComponent
         {
             source: UM.Theme.getIcon("category_infill")
             text: parseInt(infillDensity.properties.value) + "%"
-            width: parent.width / 4
-            height: parent.height
 
             UM.SettingPropertyProvider
             {
@@ -84,8 +80,7 @@ Cura.ExpandableComponent
         {
             source: UM.Theme.getIcon("category_support")
             text: supportEnabled.properties.value == "True" ? enabledText : disabledText
-            width: parent.width / 4
-            height: parent.height
+
 
             UM.SettingPropertyProvider
             {
@@ -100,8 +95,6 @@ Cura.ExpandableComponent
         {
             source: UM.Theme.getIcon("category_adhesion")
             text: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none" ? enabledText : disabledText
-            width: parent.width / 4
-            height: parent.height
 
             UM.SettingPropertyProvider
             {
