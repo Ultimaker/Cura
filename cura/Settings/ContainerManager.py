@@ -422,10 +422,10 @@ class ContainerManager(QObject):
     @pyqtSlot(QUrl, result = "QVariantMap")
     def importProfile(self, file_url: QUrl) -> Dict[str, str]:
         if not file_url.isValid():
-            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + file_url}
+            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + str(file_url)}
         path = file_url.toLocalFile()
         if not path:
-            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + file_url}
+            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + str(file_url)}
         return self._container_registry.importProfile(path)
 
     @pyqtSlot(QObject, QUrl, str)
