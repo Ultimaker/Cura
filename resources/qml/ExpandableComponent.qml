@@ -6,7 +6,7 @@ import UM 1.2 as UM
 // The expandable component has 3 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
 //      * The popupItem; The content that needs to be shown if the component is expanded.
-//      * The Button; The actual button that expands the popup.
+//      * The Icon; An icon that is displayed on the right of the drawer.
 Item
 {
     // The headerItem holds the QML item that is always displayed.
@@ -25,6 +25,18 @@ Item
 
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
+
+    // What icon should be displayed on the right.
+    property alias iconSource: collapseButton.source
+
+    // What is the color of the icon?
+    property alias iconColor: collapseButton.color
+
+    // The icon size (it's always drawn as a square)
+    property alias iconSize: collapseButton.width
+
+    // Is the "drawer" open?
+    readonly property alias expanded: popup.visible
 
     onPopupItemChanged:
     {
@@ -57,17 +69,26 @@ Item
             }
         }
 
-        Button
+        UM.RecolorImage
         {
             id: collapseButton
             anchors
             {
                 right: parent.right
-                top: parent.top
-                bottom: parent.bottom
+                verticalCenter: parent.verticalCenter
                 margins: background.padding
             }
-            text: popup.visible ? "close" : "open"
+            sourceSize.width: width
+            sourceSize.height: height
+            visible: source != ""
+            width: UM.Theme.getSize("section_icon").width
+            height: width
+            color: "black"
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent
             onClicked: popup.visible ? popup.close() : popup.open()
         }
     }

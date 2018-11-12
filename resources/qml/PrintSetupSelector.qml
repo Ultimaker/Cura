@@ -14,7 +14,6 @@ Cura.ExpandableComponent
 {
     id: base
 
-    height: childrenRect.height
     property int currentModeIndex: -1
     property bool hideSettings: PrintInformation.preSliced
 
@@ -24,6 +23,11 @@ Cura.ExpandableComponent
     // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
+
+    height: childrenRect.height
+    iconSource: UM.Theme.getIcon("pencil")
+
+    onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
 
     UM.I18nCatalog
     {
@@ -41,8 +45,6 @@ Cura.ExpandableComponent
 
         onTriggered: base.showTooltip(base, {x: 0, y: item.y}, text)
     }
-
-    onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
 
     headerItem: RowLayout
     {
