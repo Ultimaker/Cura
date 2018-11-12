@@ -15,9 +15,16 @@ import Cura 1.0 as Cura
 Cura.ExpandableComponent
 {
     id: base
+
     Cura.ExtrudersModel
     {
         id: extrudersModel
+    }
+
+    UM.I18nCatalog
+    {
+        id: catalog
+        name: "cura"
     }
 
     headerItem: Item
@@ -132,7 +139,7 @@ Cura.ExpandableComponent
 
                     Label
                     {
-                        text: "Enabled"
+                        text: catalog.i18nc("@label", "Enabled")
                         verticalAlignment: Text.AlignVCenter
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
@@ -154,7 +161,7 @@ Cura.ExpandableComponent
                     height: UM.Theme.getSize("print_setup_item").height
                     Label
                     {
-                        text: "Material"
+                        text: catalog.i18nc("@label", "Material")
                         verticalAlignment: Text.AlignVCenter
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
