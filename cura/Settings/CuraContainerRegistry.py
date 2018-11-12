@@ -5,8 +5,7 @@ import os
 import re
 import configparser
 
-from typing import cast, Optional
-
+from typing import cast, Dict, Optional
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
@@ -161,20 +160,20 @@ class CuraContainerRegistry(ContainerRegistry):
 
     ##  Imports a profile from a file
     #
-    #   \param file_name \type{str} the full path and filename of the profile to import
-    #   \return \type{Dict} dict with a 'status' key containing the string 'ok' or 'error', and a 'message' key
-    #       containing a message for the user
-    def importProfile(self, file_name):
+    #   \param file_name The full path and filename of the profile to import.
+    #   \return Dict with a 'status' key containing the string 'ok' or 'error',
+    #       and a 'message' key containing a message for the user.
+    def importProfile(self, file_name: str) -> Dict[str, str]:
         Logger.log("d", "Attempting to import profile %s", file_name)
         if not file_name:
-            return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "Invalid path")}
+            return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Failed to import profile from <filename>{0}</filename>: {1}", file_name, "Invalid path")}
 
         plugin_registry = PluginRegistry.getInstance()
         extension = file_name.split(".")[-1]
 
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
-            return
+            return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
 
         machine_extruders = []
         for position in sorted(global_stack.extruders):
