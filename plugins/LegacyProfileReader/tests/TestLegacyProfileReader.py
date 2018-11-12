@@ -85,18 +85,6 @@ test_prepareLocalsData = [
         { # Defaults.
             "foo": "bla"
         }
-    ),
-    ( # Section does not exist.
-        { # Parser data.
-            "some_other_name":
-            {
-                "foo": "bar"
-            },
-        },
-        "profile", # Config section.
-        { # Defaults.
-            "foo": "baz"
-        }
     )
 ]
 
@@ -114,3 +102,27 @@ def test_prepareLocals(legacy_profile_reader, parser_data, config_section, defau
             assert output[key] == parser_data[config_section][key] # If overwritten, must be the overwritten value.
         else:
             assert output[key] == defaults[key] # Otherwise must be equal to the default.
+
+test_prepareLocalsNoSectionErrorData = [
+    ( # Section does not exist.
+        { # Parser data.
+            "some_other_name":
+            {
+                "foo": "bar"
+            },
+        },
+        "profile", # Config section.
+        { # Defaults.
+            "foo": "baz"
+        }
+    )
+]
+
+##  Test cases where a key error is expected.
+@pytest.mark.parametrize("parser_data, config_section, defaults", test_prepareLocalsNoSectionErrorData)
+def test_prepareLocalsNoSectionError(legacy_profile_reader, parser_data, config_section, defaults):
+    parser = configparser.ConfigParser()
+    parser.read_dict(parser_data)
+
+    with pytest.raises(configparser.NoSectionError):
+        legacy_profile_reader.prepareLocals(parser, config_section, defaults)
