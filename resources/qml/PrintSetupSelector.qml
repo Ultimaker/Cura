@@ -10,22 +10,14 @@ import Cura 1.0 as Cura
 import "Menus"
 import "Menus/ConfigurationMenu"
 
-Rectangle
+Cura.ExpandableComponent
 {
     id: base
 
     height: childrenRect.height
-
     property int currentModeIndex: -1
     property bool hideSettings: PrintInformation.preSliced
 
-    property variant printDuration: PrintInformation.currentPrintTime
-    property variant printMaterialLengths: PrintInformation.materialLengths
-    property variant printMaterialWeights: PrintInformation.materialWeights
-    property variant printMaterialCosts: PrintInformation.materialCosts
-    property variant printMaterialNames: PrintInformation.materialNames
-
-    color: UM.Theme.getColor("main_background")
     UM.I18nCatalog { id: catalog; name: "cura"}
 
     // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
@@ -46,40 +38,12 @@ Rectangle
         }
     }
 
-    function strPadLeft(string, pad, length)
-    {
-        return (new Array(length + 1).join(pad) + string).slice(-length);
-    }
-
-    function getPrettyTime(time)
-    {
-        var hours = Math.floor(time / 3600)
-        time -= hours * 3600
-        var minutes = Math.floor(time / 60);
-        time -= minutes * 60
-        var seconds = Math.floor(time);
-
-        var finalTime = strPadLeft(hours, "0", 2) + ":" + strPadLeft(minutes, "0", 2) + ":" + strPadLeft(seconds, "0", 2);
-        return finalTime;
-    }
-
-    MouseArea
-    {
-        anchors.fill: parent
-        acceptedButtons: Qt.AllButtons
-
-        onWheel:
-        {
-            wheel.accepted = true;
-        }
-    }
-
     onCurrentModeIndexChanged:
     {
         UM.Preferences.setValue("cura/active_mode", currentModeIndex);
     }
 
-    Label
+    headerItem: Label
     {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
@@ -98,146 +62,149 @@ Rectangle
         color: UM.Theme.getColor("text")
     }
 
-
-    ListView
+    popupItem: Item
     {
-        // Settings mode selection toggle
-        id: settingsModeSelection
-        model: modesListModel
-        width: Math.round(parent.width * 0.55)
-        height: UM.Theme.getSize("print_setup_mode_toggle").height
-        visible: !hideSettings
-
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("thick_margin").width
-        anchors.top: settingsModeLabel.top
-
-        ButtonGroup
+        height: settingsModeSelection.height + sidebarContents.height
+        width: UM.Theme.getSize("print_setup_widget").width
+        ListView
         {
-            id: modeMenuGroup
+            // Settings mode selection toggle
+            id: settingsModeSelection
+            model: modesListModel
+            width: Math.round(parent.width * 0.55)
+            height: UM.Theme.getSize("print_setup_mode_toggle").height
+            visible: !hideSettings
+
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+
+            ButtonGroup
+            {
+                id: modeMenuGroup
+            }
+
+            delegate: Button
+            {
+                id: control
+
+                height: settingsModeSelection.height
+                width: Math.round(parent.width / 2)
+
+                anchors.left: parent.left
+                anchors.leftMargin: model.index * Math.round(settingsModeSelection.width / 2)
+                anchors.verticalCenter: parent.verticalCenter
+
+                ButtonGroup.group: modeMenuGroup
+
+                checkable: true
+                checked: base.currentModeIndex == index
+                onClicked: base.currentModeIndex = index
+
+                onHoveredChanged:
+                {
+                    if (hovered)
+                    {
+                        tooltipDelayTimer.item = settingsModeSelection
+                        tooltipDelayTimer.text = model.tooltipText
+                        tooltipDelayTimer.start()
+                    }
+                    else
+                    {
+                        tooltipDelayTimer.stop()
+                        base.hideTooltip()
+                    }
+                }
+
+                background: Rectangle
+                {
+                    border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
+                    border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") : control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
+
+                    // for some reason, QtQuick decided to use the color of the background property as text color for the contentItem, so here it is
+                    color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+                }
+
+                contentItem: Label
+                {
+                    text: model.text
+                    font: UM.Theme.getFont("default")
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                    elide: Text.ElideRight
+                    color:
+                    {
+                        if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_text");
+                        }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        }
+                        return UM.Theme.getColor("action_button_text");
+                    }
+                }
+            }
         }
 
-        delegate: Button
+        Item
         {
-            id: control
-
-            height: settingsModeSelection.height
-            width: Math.round(parent.width / 2)
-
+            id: sidebarContents
+            anchors.top: settingsModeSelection.bottom
+            anchors.topMargin: UM.Theme.getSize("thick_margin").height
             anchors.left: parent.left
-            anchors.leftMargin: model.index * Math.round(settingsModeSelection.width / 2)
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            height: UM.Theme.getSize("print_setup_widget").height
 
-            ButtonGroup.group: modeMenuGroup
+            visible: !hideSettings
 
-            checkable: true
-            checked: base.currentModeIndex == index
-            onClicked: base.currentModeIndex = index
-
-            onHoveredChanged:
+            // We load both of them at once (instead of using a loader) because the advanced sidebar can take
+            // quite some time to load. So in this case we sacrifice memory for speed.
+            SidebarAdvanced
             {
-                if (hovered)
-                {
-                    tooltipDelayTimer.item = settingsModeSelection
-                    tooltipDelayTimer.text = model.tooltipText
-                    tooltipDelayTimer.start()
-                }
-                else
-                {
-                    tooltipDelayTimer.stop()
-                    base.hideTooltip()
-                }
+                anchors.fill: parent
+                visible: currentModeIndex == 1
+                onShowTooltip: base.showTooltip(item, location, text)
+                onHideTooltip: base.hideTooltip()
             }
 
-            background: Rectangle
+            SidebarSimple
             {
-                border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
-                border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") : control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-
-                // for some reason, QtQuick decided to use the color of the background property as text color for the contentItem, so here it is
-                color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-            }
-
-            contentItem: Label
-            {
-                text: model.text
-                font: UM.Theme.getFont("default")
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                renderType: Text.NativeRendering
-                elide: Text.ElideRight
-                color:
-                {
-                    if(control.pressed)
-                    {
-                        return UM.Theme.getColor("action_button_active_text");
-                    }
-                    else if(control.hovered)
-                    {
-                        return UM.Theme.getColor("action_button_hovered_text");
-                    }
-                    return UM.Theme.getColor("action_button_text");
-                }
+                anchors.fill: parent
+                visible: currentModeIndex != 1
+                onShowTooltip: base.showTooltip(item, location, text)
+                onHideTooltip: base.hideTooltip()
             }
         }
-    }
 
-    Item
-    {
-        id: sidebarContents
-        anchors.top: settingsModeSelection.bottom
-        anchors.topMargin: UM.Theme.getSize("thick_margin").height
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: UM.Theme.getSize("print_setup_widget").height
-
-        visible: !hideSettings
-
-        // We load both of them at once (instead of using a loader) because the advanced sidebar can take
-        // quite some time to load. So in this case we sacrifice memory for speed.
-        SidebarAdvanced
+        // Setting mode: Recommended or Custom
+        ListModel
         {
-            anchors.fill: parent
-            visible: currentModeIndex == 1
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
+            id: modesListModel
         }
 
-        SidebarSimple
+        Component.onCompleted:
         {
-            anchors.fill: parent
-            visible: currentModeIndex != 1
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
-        }
-    }
+            modesListModel.append({
+                text: catalog.i18nc("@title:tab", "Recommended"),
+                tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Recommended Print Setup")).arg(catalog.i18nc("@tooltip", "Print with the recommended settings for the selected printer, material and quality."))
+            })
+            modesListModel.append({
+                text: catalog.i18nc("@title:tab", "Custom"),
+                tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Custom Print Setup")).arg(catalog.i18nc("@tooltip", "Print with finegrained control over every last bit of the slicing process."))
+            })
 
-    // Setting mode: Recommended or Custom
-    ListModel
-    {
-        id: modesListModel
-    }
+            var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
 
-    Component.onCompleted:
-    {
-        modesListModel.append({
-            text: catalog.i18nc("@title:tab", "Recommended"),
-            tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Recommended Print Setup")).arg(catalog.i18nc("@tooltip", "Print with the recommended settings for the selected printer, material and quality."))
-        })
-        modesListModel.append({
-            text: catalog.i18nc("@title:tab", "Custom"),
-            tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Custom Print Setup")).arg(catalog.i18nc("@tooltip", "Print with finegrained control over every last bit of the slicing process."))
-        })
-
-        var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
-
-        if(index != null && !isNaN(index))
-        {
-            currentModeIndex = index;
-        }
-        else
-        {
-            currentModeIndex = 0;
+            if(index != null && !isNaN(index))
+            {
+                currentModeIndex = index;
+            }
+            else
+            {
+                currentModeIndex = 0;
+            }
         }
     }
 }

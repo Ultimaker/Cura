@@ -66,6 +66,7 @@ Item
         Cura.PrintSetupSelector
         {
             width: UM.Theme.getSize("print_setup_widget").width
+            height: prepareMenu.height
             onShowTooltip: prepareMenu.showTooltip(item, location, text)
             onHideTooltip: prepareMenu.hideTooltip()
         }
