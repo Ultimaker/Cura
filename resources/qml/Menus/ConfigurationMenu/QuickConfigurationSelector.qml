@@ -54,7 +54,7 @@ Cura.ExpandableComponent
                     width: height
                 }
 
-                // Label for the human readable material color name
+                // Label for the brand of the material
                 Label
                 {
                     id: brandNameLabel
@@ -71,10 +71,10 @@ Cura.ExpandableComponent
                     }
                 }
 
-                // Label that shows the brand of the material
+                // Label that shows the name of the material
                 Label
                 {
-                    text: model.color_name
+                    text: model.material
                     elide: Text.ElideRight
 
                     anchors
