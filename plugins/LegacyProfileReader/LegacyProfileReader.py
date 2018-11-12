@@ -80,7 +80,6 @@ class LegacyProfileReader(ProfileReader):
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
         container_registry = ContainerRegistry.getInstance()
         profile_id = container_registry.uniqueName("Imported Legacy Profile")
-        profile = InstanceContainer(profile_id)  # Create an empty profile.
 
         input_parser = configparser.ConfigParser(interpolation = None)
         try:
@@ -112,13 +111,11 @@ class LegacyProfileReader(ProfileReader):
         defaults = self.prepareDefaults(dict_of_doom)
         legacy_settings = self.prepareLocals(input_parser, section, defaults) #Gets the settings from the legacy profile.
 
-        #Check the target version in the Dictionary of Doom with this application version.
-        if "target_version" not in dict_of_doom:
-            Logger.log("e", "Dictionary of Doom has no target version. Is it the correct JSON file?")
-            return None
-        if InstanceContainer.Version != dict_of_doom["target_version"]:
-            Logger.log("e", "Dictionary of Doom of legacy profile reader (version %s) is not in sync with the current instance container version (version %s)!", dict_of_doom["target_version"], str(InstanceContainer.Version))
-            return None
+        # Serialised format into version 4.5. Do NOT upgrade this, let the version upgrader handle it.
+        output_parser = configparser.ConfigParser(interpolation = None)
+        output_parser.add_section("general")
+        output_parser.add_section("metadata")
+        output_parser.add_section("values")
 
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
@@ -127,7 +124,7 @@ class LegacyProfileReader(ProfileReader):
         quality_definition = current_printer_definition.getMetaDataEntry("quality_definition")
         if not quality_definition:
             quality_definition = current_printer_definition.getId()
-        profile.setDefinition(quality_definition)
+        output_parser["general"]["definition"] = quality_definition
         for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
@@ -140,37 +137,34 @@ class LegacyProfileReader(ProfileReader):
             definitions = current_printer_definition.findDefinitions(key = new_setting)
             if definitions:
                 if new_value != value_using_defaults and definitions[0].default_value != new_value:  # Not equal to the default in the new Cura OR the default in the legacy Cura.
-                    profile.setProperty(new_setting, "value", new_value)  # Store the setting in the profile!
+                    output_parser["values"][new_setting] = new_value # Store the setting in the profile!
 
-        if len(profile.getAllKeys()) == 0:
+        if len(output_parser["values"]) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
 
-        profile.setMetaDataEntry("type", "profile")
-        # don't know what quality_type it is based on, so use "normal" by default
-        profile.setMetaDataEntry("quality_type", "normal")
-        profile.setName(profile_id)
-        profile.setDirty(True)
+        output_parser["general"]["version"] = "4"
+        output_parser["general"]["name"] = profile_id
+        output_parser["metadata"]["type"] = "quality_changes"
+        output_parser["metadata"]["quality_type"] = "normal" # Don't know what quality_type it is based on, so use "normal" by default.
+        output_parser["metadata"]["position"] = "0" # We only support single extrusion.
+        output_parser["metadata"]["setting_version"] = "5" # What the dictionary of doom is made for.
 
-        #Serialise and deserialise in order to perform the version upgrade.
-        output_parser = configparser.ConfigParser(interpolation = None)
-        data = profile.serialize()
-        output_parser.read_string(data)
-        output_parser["general"]["version"] = "1"
-        if output_parser.has_section("values"):
-            output_parser["settings"] = output_parser["values"]
-            del output_parser["values"]
+        # Serialise in order to perform the version upgrade.
         stream = io.StringIO()
         output_parser.write(stream)
         data = stream.getvalue()
-        profile.deserialize(data)
 
-        # The definition can get reset to fdmprinter during the deserialization's upgrade. Here we set the definition
-        # again.
-        profile.setDefinition(quality_definition)
+        profile = InstanceContainer(profile_id)
+        profile.deserialize(data) # Also performs the version upgrade.
+        profile.setDirty(True)
 
         #We need to return one extruder stack and one global stack.
         global_container_id = container_registry.uniqueName("Global Imported Legacy Profile")
+        # We duplicate the extruder profile into the global stack.
+        # This may introduce some settings that are global in the extruder stack and some settings that are per-extruder in the global stack.
+        # We don't care about that. The engine will ignore them anyway.
         global_profile = profile.duplicate(new_id = global_container_id, new_name = profile_id) #Needs to have the same name as the extruder profile.
+        del global_profile.getMetaData()["position"] # Has no position because it's global.
         global_profile.setDirty(True)
 
         profile_definition = "fdmprinter"
