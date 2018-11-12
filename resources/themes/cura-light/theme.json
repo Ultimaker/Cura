@@ -105,6 +105,8 @@
 
         "action_panel_secondary": [27, 95, 202, 255],
 
+        "toolbar_background": [255, 255, 255, 255],
+
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
         "text_link": [50, 130, 255, 255],
@@ -120,6 +122,11 @@
         "error": [255, 140, 0, 255],
         "warning": [255, 190, 35, 255],
 
+        "toolbar_button_text": [10, 8, 80, 255],
+        "toolbar_button_text_hover": [50, 130, 255, 255],
+        "toolbar_button_text_active": [50, 130, 255, 255],
+        "toolbar_button_text_active_hover": [50, 130, 255, 255],
+
         "button": [31, 36, 39, 255],
         "button_hover": [68, 72, 75, 255],
         "button_active": [68, 72, 75, 255],
@@ -128,8 +135,6 @@
         "button_text_hover": [255, 255, 255, 255],
         "button_text_active": [255, 255, 255, 255],
         "button_text_active_hover": [255, 255, 255, 255],
-        "button_disabled": [31, 36, 39, 255],
-        "button_disabled_text": [255, 255, 255, 101],
 
         "small_button": [0, 0, 0, 0],
         "small_button_hover": [10, 8, 80, 255],

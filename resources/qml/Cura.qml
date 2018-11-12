@@ -186,6 +186,7 @@ UM.MainWindow
                     verticalCenter: parent.verticalCenter
                     left: parent.left
                 }
+                visible: CuraApplication.platformActivity
             }
 
             ObjectsList
@@ -235,6 +236,7 @@ UM.MainWindow
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: UM.Theme.getSize("thick_margin").width
                 anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
+                visible: CuraApplication.platformActivity
             }
 
             Loader
