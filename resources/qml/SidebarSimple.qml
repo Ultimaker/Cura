@@ -33,11 +33,10 @@ Item
         style: UM.Theme.styles.scrollview
         flickableItem.flickableDirection: Flickable.VerticalFlick
 
-        Rectangle
+        Item
         {
             width: childrenRect.width
             height: childrenRect.height
-            color: UM.Theme.getColor("main_background")
 
             //
             // Quality profile
