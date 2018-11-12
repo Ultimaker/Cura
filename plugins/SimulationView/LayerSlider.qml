@@ -21,15 +21,12 @@ Item
     property color lowerHandleColor: UM.Theme.getColor("slider_handle")
     property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
     property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
-    property real handleLabelWidth: UM.Theme.getSize("slider_layerview_background").width
     property var activeHandle: upperHandle
 
     // Track properties
     property real trackThickness: UM.Theme.getSize("slider_groove").width // width of the slider track
-    property real trackRadius: trackThickness / 2
+    property real trackRadius: UM.Theme.getSize("slider_groove_radius").width
     property color trackColor: UM.Theme.getColor("slider_groove")
-    property real trackBorderWidth: 1
-    property color trackBorderColor: UM.Theme.getColor("slider_groove_border")
 
     // value properties
     property real maximumValue: 100
@@ -90,8 +87,6 @@ Item
         radius: sliderRoot.trackRadius
         anchors.centerIn: sliderRoot
         color: sliderRoot.trackColor
-        border.width: sliderRoot.trackBorderWidth
-        border.color: sliderRoot.trackBorderColor
         visible: sliderRoot.layersVisible
     }
 
@@ -140,9 +135,10 @@ Item
 
         Rectangle
         {
-            width: sliderRoot.trackThickness - 2 * sliderRoot.trackBorderWidth
+            width: sliderRoot.trackThickness
             height: parent.height + sliderRoot.handleSize
             anchors.centerIn: parent
+            radius: sliderRoot.trackRadius
             color: sliderRoot.rangeHandleColor
         }
 

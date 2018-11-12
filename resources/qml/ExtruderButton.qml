@@ -15,37 +15,36 @@ Button
 
     text: catalog.i18ncp("@label %1 is filled in with the name of an extruder", "Print Selected Model with %1", "Print Selected Models with %1", UM.Selection.selectionCount).arg(extruder.name)
 
-    style: UM.Theme.styles.tool_button;
+    style: UM.Theme.styles.toolbar_button
     iconSource: UM.Theme.getIcon("extruder_button")
 
     checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
     enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
-
-    property color customColor: base.hovered ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("button");
-
-    Rectangle
-    {
-        anchors.fill: parent
-        anchors.margins: UM.Theme.getSize("default_lining").width;
-
-        color: "transparent"
-
-        border.width: base.checked ? UM.Theme.getSize("default_lining").width : 0;
-        border.color: UM.Theme.getColor("button_text")
-    }
 
     Item
     {
         anchors.centerIn: parent
         width: UM.Theme.getSize("default_margin").width
         height: UM.Theme.getSize("default_margin").height
+        opacity: !base.enabled ? 0.2 : 1.0
 
         Label
         {
-            anchors.centerIn: parent;
-            text: index + 1;
-            color: parent.enabled ? UM.Theme.getColor("button_text") : UM.Theme.getColor("button_disabled_text")
-            font: UM.Theme.getFont("default_bold");
+            anchors.centerIn: parent
+            text: index + 1
+            color:
+            {
+                if (base.checked)
+                {
+                    return UM.Theme.getColor("toolbar_button_text_active")
+                }
+                else if(base.hovered)
+                {
+                    return UM.Theme.getColor("toolbar_button_text_hover")
+                }
+                return UM.Theme.getColor("toolbar_button_text")
+            }
+            font: UM.Theme.getFont("default_bold")
         }
     }
 

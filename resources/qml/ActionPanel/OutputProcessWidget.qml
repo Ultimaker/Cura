@@ -102,6 +102,8 @@ Column
 
         Cura.ActionButton
         {
+            id: previewStageShortcut
+
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("action_panel_button").height
@@ -111,11 +113,12 @@ Column
             textColor: UM.Theme.getColor("primary")
             textHoverColor: UM.Theme.getColor("text")
             onClicked: UM.Controller.setActiveStage("PreviewStage")
+            visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
         }
 
         Cura.OutputDevicesActionButton
         {
-            width: UM.Theme.getSize("action_panel_button").width
+            width: previewStageShortcut.visible ? UM.Theme.getSize("action_panel_button").width : parent.width
             height: UM.Theme.getSize("action_panel_button").height
         }
     }

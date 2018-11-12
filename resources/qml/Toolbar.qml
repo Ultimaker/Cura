@@ -11,75 +11,113 @@ import Cura 1.0 as Cura
 
 Item
 {
-    id: base;
+    id: base
 
-    width: buttons.width;
+    width: buttons.width
     height: buttons.height
     property int activeY
 
-    Column
+    Item
     {
-        id: buttons;
+        id: buttons
+        width: parent.visible ? toolButtons.width : 0
+        height: childrenRect.height
 
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        spacing: UM.Theme.getSize("button_lining").width
+        Behavior on width { NumberAnimation { duration: 100 } }
 
-        Repeater
+        // Used to create a rounded rectangle behind the toolButtons
+        Rectangle
         {
-            id: repeat
+            anchors.fill: toolButtons
+            anchors.leftMargin: -radius
+            radius: UM.Theme.getSize("default_radius").width
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+            color: UM.Theme.getColor("toolbar_background")
+        }
 
-            model: UM.ToolModel { }
-            width: childrenRect.width
-            height: childrenRect.height
-            Button
+        Column
+        {
+            id: toolButtons
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            spacing: UM.Theme.getSize("button_lining").width
+
+            Repeater
             {
-                text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
-                iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
-                checkable: true
-                checked: model.active
-                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
-                style: UM.Theme.styles.tool_button
+                id: repeat
 
-                onCheckedChanged:
+                model: UM.ToolModel { }
+                width: childrenRect.width
+                height: childrenRect.height
+                Button
                 {
-                    if (checked)
-                    {
-                        base.activeY = y;
-                    }
-                }
+                    text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
+                    iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                    checkable: true
+                    checked: model.active
+                    enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
+                    style: UM.Theme.styles.toolbar_button
 
-                //Workaround since using ToolButton's onClicked would break the binding of the checked property, instead
-                //just catch the click so we do not trigger that behaviour.
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
+                    onCheckedChanged:
                     {
-                        forceActiveFocus() //First grab focus, so all the text fields are updated
-                        if(parent.checked)
+                        if (checked)
                         {
-                            UM.Controller.setActiveTool(null);
+                            base.activeY = y;
                         }
-                        else
+                    }
+
+                    //Workaround since using ToolButton's onClicked would break the binding of the checked property, instead
+                    //just catch the click so we do not trigger that behaviour.
+                    MouseArea
+                    {
+                        anchors.fill: parent;
+                        onClicked:
                         {
-                            UM.Controller.setActiveTool(model.id);
+                            forceActiveFocus() //First grab focus, so all the text fields are updated
+                            if(parent.checked)
+                            {
+                                UM.Controller.setActiveTool(null);
+                            }
+                            else
+                            {
+                                UM.Controller.setActiveTool(model.id);
+                            }
                         }
                     }
                 }
             }
         }
 
-        Item { height: UM.Theme.getSize("default_margin").height; width: UM.Theme.getSize("default_lining").width; visible: extruders.count > 0 }
-
-        Repeater
+        // Used to create a rounded rectangle behind the extruderButtons
+        Rectangle
         {
-            id: extruders
-            width: childrenRect.width
-            height: childrenRect.height
-            property var _model: Cura.ExtrudersModel { id: extrudersModel }
-            model: _model.items.length > 1 ? _model : 0
-            ExtruderButton { extruder: model }
+            anchors.fill: extruderButtons
+            anchors.leftMargin: -radius
+            radius: UM.Theme.getSize("default_radius").width
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+            color: UM.Theme.getColor("toolbar_background")
+        }
+
+        Column
+        {
+            id: extruderButtons
+
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.top: toolButtons.bottom
+            anchors.right: parent.right
+
+            Repeater
+            {
+                id: extruders
+                width: childrenRect.width
+                height: childrenRect.height
+                property var _model: Cura.ExtrudersModel { id: extrudersModel }
+                model: _model.items.length > 1 ? _model : 0
+                ExtruderButton { extruder: model }
+            }
         }
     }
 
@@ -91,7 +129,7 @@ Item
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: base.top;
         anchors.topMargin: base.activeY
-        z: buttons.z -1
+        z: buttons.z - 1
 
         target: Qt.point(parent.right, base.activeY +  Math.round(UM.Theme.getSize("button").height/2))
         arrowSize: UM.Theme.getSize("default_arrow").width
