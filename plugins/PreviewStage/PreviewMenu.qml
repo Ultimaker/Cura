@@ -15,88 +15,106 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
+    property real itemHeight: height - 2 * UM.Theme.getSize("default_lining").width
+
     UM.I18nCatalog
     {
         id: catalog
         name: "cura"
     }
 
-    Row
+    Rectangle
     {
-        anchors.horizontalCenter: parent.horizontalCenter
-        spacing: UM.Theme.getSize("default_margin").width
+        anchors.fill: stageMenu
+        anchors.leftMargin: -radius
+        radius: UM.Theme.getSize("default_radius").width
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+        color: UM.Theme.getColor("toolbar_background")
+    }
+
+    Item
+    {
+        id: stageMenu
         height: parent.height
-
-        Rectangle
+        width: childrenRect.width + UM.Theme.getSize("default_margin").width
+        anchors.horizontalCenter: parent.horizontalCenter
+        Row
         {
-            color: UM.Theme.getColor("tool_panel_background")
-            width: viewModeButton.width + 2 * UM.Theme.getSize("default_margin").width
-            height: parent.height
-            ComboBox
+            anchors.centerIn: parent
+            spacing: UM.Theme.getSize("default_margin").width
+            height: parent.height - 2 * UM.Theme.getSize("default_lining").width
+
+            Item
             {
-                // This item contains the views selector, a combobox that is dynamically created from
-                // the list of available Views (packages that create different visualizations of the
-                // scene).
-                id: viewModeButton
-
-                style: UM.Theme.styles.combobox
-                anchors.centerIn: parent
-                model: UM.ViewModel { }
-                textRole: "name"
-
-                // update the model's active index
-                function updateItemActiveFlags()
+                width: viewModeButton.width + 2 * UM.Theme.getSize("default_margin").width
+                height: parent.height
+                ComboBox
                 {
-                    currentIndex = getActiveIndex()
-                    for (var i = 0; i < model.rowCount(); i++)
-                    {
-                        model.getItem(i).active = (i == currentIndex)
-                    }
-                }
+                    // This item contains the views selector, a combobox that is dynamically created from
+                    // the list of available Views (packages that create different visualizations of the
+                    // scene).
+                    id: viewModeButton
 
-                // get the index of the active model item on start
-                function getActiveIndex()
-                {
-                    for (var i = 0; i < model.rowCount(); i++)
+                    style: UM.Theme.styles.combobox
+                    anchors.centerIn: parent
+                    model: UM.ViewModel { }
+                    textRole: "name"
+
+                    // update the model's active index
+                    function updateItemActiveFlags()
                     {
-                        if (model.getItem(i).active)
+                        currentIndex = getActiveIndex()
+                        for (var i = 0; i < model.rowCount(); i++)
                         {
-                            return i;
+                            model.getItem(i).active = (i == currentIndex)
                         }
                     }
-                    return 0
-                }
 
-                onCurrentIndexChanged:
-                {
-                    if (model.getItem(currentIndex).id != undefined)
+                    // get the index of the active model item on start
+                    function getActiveIndex()
                     {
-                        UM.Controller.setActiveView(model.getItem(currentIndex).id)
+                        for (var i = 0; i < model.rowCount(); i++)
+                        {
+                            if (model.getItem(i).active)
+                            {
+                                return i;
+                            }
+                        }
+                        return 0
                     }
+
+                    onCurrentIndexChanged:
+                    {
+                        if (model.getItem(currentIndex).id != undefined)
+                        {
+                            UM.Controller.setActiveView(model.getItem(currentIndex).id)
+                        }
+                    }
+                    currentIndex: getActiveIndex()
                 }
-                currentIndex: getActiveIndex()
             }
-        }
 
-        Loader
-        {
-            // TODO: Make this panel collapsable and ensure it has a standardised background.
-            id: viewPanel
+            Loader
+            {
+                // TODO: Make this panel collapsable and ensure it has a standardised background.
+                id: viewPanel
 
-            property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
+                property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
 
-            height: parent.height
-            width: childrenRect.width
+                height: parent.height
+                width: childrenRect.width
 
-            source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
-        }
+                source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
+            }
 
-        Cura.PrintSetupSelector
-        {
-            width: UM.Theme.getSize("print_setup_widget").width
-            height: parent.height
-            onShowTooltip: previewMenu.showTooltip(item, location, text)
-            onHideTooltip: previewMenu.hideTooltip()
+            Cura.PrintSetupSelector
+            {
+                width: UM.Theme.getSize("print_setup_widget").width
+                height: parent.height
+                onShowTooltip: previewMenu.showTooltip(item, location, text)
+                onHideTooltip: previewMenu.hideTooltip()
+            }
         }
     }
 }

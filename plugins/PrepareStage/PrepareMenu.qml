@@ -23,7 +23,7 @@ Item
     Item
     {
         anchors.horizontalCenter: parent.horizontalCenter
-        width: openFileButton.width + UM.Theme.getSize("default_margin").width + itemRow.width
+        width: openFileButton.width + itemRowBackground.width
         height: parent.height
 
         Button
@@ -36,45 +36,59 @@ Item
             action: Cura.Actions.open
         }
 
-        RowLayout
+        Rectangle
         {
-            id: itemRow
+            id: itemRowBackground
+            radius: UM.Theme.getSize("default_radius").width
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+            color: UM.Theme.getColor("toolbar_background")
+
+            width: itemRow.width + UM.Theme.getSize("default_margin").width
+            height: parent.height
 
             anchors.left: openFileButton.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-            width: 0.9 * prepareMenu.width
-            height: parent.height
-
-            Cura.MachineSelector
+            RowLayout
             {
-                id: machineSelection
-                z: openFileButton.z - 1
+                id: itemRow
 
-                Layout.minimumWidth: 240
-                Layout.maximumWidth: 240
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
+                anchors.centerIn: parent
 
-            Cura.QuickConfigurationSelector
-            {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelector.width
-            }
+                width: 0.9 * prepareMenu.width
+                height: parent.height - 2 * UM.Theme.getSize("default_lining").width
 
-            Cura.PrintSetupSelector
-            {
-                id: printSetupSelector
+                Cura.MachineSelector
+                {
+                    id: machineSelection
+                    z: openFileButton.z - 1
 
-                onShowTooltip: prepareMenu.showTooltip(item, location, text)
-                onHideTooltip: prepareMenu.hideTooltip()
+                    Layout.minimumWidth: 240
+                    Layout.maximumWidth: 240
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
 
-                Layout.minimumWidth: 460
-                Layout.maximumWidth: 460
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                Cura.QuickConfigurationSelector
+                {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelector.width
+                }
+
+                Cura.PrintSetupSelector
+                {
+                    id: printSetupSelector
+
+                    onShowTooltip: prepareMenu.showTooltip(item, location, text)
+                    onHideTooltip: prepareMenu.hideTooltip()
+
+                    Layout.minimumWidth: 460
+                    Layout.maximumWidth: 460
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
             }
         }
     }
