@@ -64,9 +64,11 @@ class BaseMaterialsModel(ListModel):
 
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.disconnect(self._update)
+            self._extruder_stack.approximateMaterialDiameterChanged.disconnect(self._update)
         self._extruder_stack = global_stack.extruders.get(str(self._extruder_position))
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.connect(self._update)
+            self._extruder_stack.approximateMaterialDiameterChanged.connect(self._update)
         # Force update the model when the extruder stack changes
         self._update()
 
@@ -110,7 +112,7 @@ class BaseMaterialsModel(ListModel):
     ## This is another convenience function which is shared by all material
     #  models so it's put here to avoid having so much duplicated code.
     def _createMaterialItem(self, root_material_id, container_node):
-        metadata = container_node.metadata
+        metadata = container_node.getMetadata()
         item = {
             "root_material_id":     root_material_id,
             "id":                   metadata["id"],

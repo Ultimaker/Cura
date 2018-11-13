@@ -10,7 +10,7 @@ Window
 {
     id: base
     property var selection: null
-    title: catalog.i18nc("@title", "Toolbox")
+    title: catalog.i18nc("@title", "Marketplace")
     modality: Qt.ApplicationModal
     flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
@@ -33,6 +33,7 @@ Window
         {
             id: header
         }
+
         Item
         {
             id: mainView
@@ -75,6 +76,7 @@ Window
                 visible: toolbox.viewCategory == "installed"
             }
         }
+
         ToolboxFooter
         {
             id: footer

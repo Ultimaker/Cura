@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
 
 import UM 1.3 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 import "Menus"
 
@@ -21,7 +21,6 @@ UM.MainWindow
     property bool showPrintMonitor: false
 
     backgroundColor: UM.Theme.getColor("viewport_background")
-
     // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
     // It should be phased out in newer plugin versions.
     Connections
@@ -104,11 +103,13 @@ UM.MainWindow
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
                 MenuItem
                 {
+                    id: newProjectMenu
                     action: Cura.Actions.newProject;
                 }
 
                 MenuItem
                 {
+                    id: openMenu
                     action: Cura.Actions.open;
                 }
 
@@ -148,6 +149,7 @@ UM.MainWindow
 
                 MenuItem
                 {
+                    id: exportSelectionMenu
                     text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
@@ -156,7 +158,11 @@ UM.MainWindow
 
                 MenuSeparator { }
 
-                MenuItem { action: Cura.Actions.reloadAll; }
+                MenuItem
+                {
+                    id: reloadAllMenu
+                    action: Cura.Actions.reloadAll;
+                }
 
                 MenuSeparator { }
 
@@ -277,13 +283,14 @@ UM.MainWindow
             Menu
             {
                 id: plugin_menu
-                title: catalog.i18nc("@title:menu menubar:toplevel", "&Toolbox")
+                title: catalog.i18nc("@title:menu menubar:toplevel", "&Marketplace")
 
                 MenuItem { action: Cura.Actions.browsePackages }
             }
 
             Menu
             {
+                id: preferencesMenu
                 title: catalog.i18nc("@title:menu menubar:toplevel","P&references");
 
                 MenuItem { action: Cura.Actions.preferences; }
@@ -291,7 +298,7 @@ UM.MainWindow
 
             Menu
             {
-                //: Help menu
+                id: helpMenu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Help");
 
                 MenuItem { action: Cura.Actions.showProfileFolder; }

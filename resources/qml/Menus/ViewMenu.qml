@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -9,9 +9,8 @@ import Cura 1.0 as Cura
 
 Menu
 {
-    title: catalog.i18nc("@title:menu menubar:toplevel", "&View");
+    title: catalog.i18nc("@title:menu menubar:toplevel", "&View")
     id: base
-    enabled: !PrintInformation.preSliced
 
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
@@ -26,11 +25,15 @@ Menu
             checked: model.active
             exclusiveGroup: group
             onTriggered: UM.Controller.setActiveView(model.id)
+            enabled: !PrintInformation.preSliced
         }
         onObjectAdded: base.insertItem(index, object)
         onObjectRemoved: base.removeItem(object)
     }
-    ExclusiveGroup { id: group }
+    ExclusiveGroup
+    {
+        id: group
+    }
 
     MenuSeparator {}
 
@@ -44,33 +47,47 @@ Menu
         MenuItem { action: Cura.Actions.viewRightSideCamera; }
     }
 
-    MenuSeparator {
+    MenuSeparator
+    {
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
 
     Menu
     {
         id: buildPlateMenu;
-        title: catalog.i18nc("@action:inmenu menubar:view","&Build plate");
+        title: catalog.i18nc("@action:inmenu menubar:view","&Build plate")
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         Instantiator
         {
             model: base.multiBuildPlateModel
-            MenuItem {
+            MenuItem
+            {
                 text: base.multiBuildPlateModel.getItem(index).name;
-                onTriggered: Cura.SceneController.setActiveBuildPlate(base.multiBuildPlateModel.getItem(index).buildPlateNumber);
-                checkable: true;
-                checked: base.multiBuildPlateModel.getItem(index).buildPlateNumber == base.multiBuildPlateModel.activeBuildPlate;
-                exclusiveGroup: buildPlateGroup;
+                onTriggered: Cura.SceneController.setActiveBuildPlate(base.multiBuildPlateModel.getItem(index).buildPlateNumber)
+                checkable: true
+                checked: base.multiBuildPlateModel.getItem(index).buildPlateNumber == base.multiBuildPlateModel.activeBuildPlate
+                exclusiveGroup: buildPlateGroup
                 visible: UM.Preferences.getValue("cura/use_multi_build_plate")
             }
-            onObjectAdded: buildPlateMenu.insertItem(index, object);
+            onObjectAdded: buildPlateMenu.insertItem(index, object)
             onObjectRemoved: buildPlateMenu.removeItem(object)
         }
-        ExclusiveGroup { id: buildPlateGroup; }
+        ExclusiveGroup
+        {
+            id: buildPlateGroup
+        }
     }
 
     MenuSeparator {}
 
-    MenuItem { action: Cura.Actions.expandSidebar; }
+    MenuItem
+    {
+        action: Cura.Actions.expandSidebar
+    }
+
+    MenuSeparator {}
+    MenuItem
+    {
+        action: Cura.Actions.toggleFullScreen
+    }
 }

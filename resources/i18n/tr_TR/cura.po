@@ -5,16 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
+"Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2018-09-19 17:07+0200\n"
-"PO-Revision-Date: 2018-10-01 13:40+0100\n"
+"POT-Creation-Date: 2018-10-29 15:01+0100\n"
+"PO-Revision-Date: 2018-11-06 15:33+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -46,8 +48,8 @@ msgstr "GCodeWriter metin dışı modu desteklemez."
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:73
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:89
 msgctxt "@warning:status"
-msgid "Please generate G-code before saving."
-msgstr "Lütfen kaydetmeden önce G-code oluşturun."
+msgid "Please prepare G-code before exporting."
+msgstr "Lütfen dışa aktarmadan önce G-code'u hazırlayın."
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
@@ -73,6 +75,11 @@ msgctxt "@item:inmenu"
 msgid "Show Changelog"
 msgstr "Değişiklik Günlüğünü Göster"
 
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
+msgctxt "@action"
+msgid "Update Firmware"
+msgstr "Aygıt Yazılımını Güncelle"
+
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
 msgctxt "@item:inmenu"
 msgid "Flatten active settings"
@@ -83,27 +90,27 @@ msgctxt "@info:status"
 msgid "Profile has been flattened & activated."
 msgstr "Profil düzleştirilmiş ve aktifleştirilmiştir."
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:40
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:32
 msgctxt "@item:inmenu"
 msgid "USB printing"
 msgstr "USB yazdırma"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:41
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:33
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
 msgstr "USB ile yazdır"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:42
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:34
 msgctxt "@info:tooltip"
 msgid "Print via USB"
 msgstr "USB ile yazdır"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:83
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:69
 msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "USB ile bağlı"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:103
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:92
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "USB’den yazdırma devam ediyor, Cura’yı kapatmanız bu yazdırma işlemini durduracak. Emin misiniz?"
@@ -135,7 +142,7 @@ msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter yazı modunu desteklemez."
 
-#: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:38
+#: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Ultimaker Biçim Paketi"
@@ -157,7 +164,7 @@ msgid "Save to Removable Drive {0}"
 msgstr "Çıkarılabilir Sürücüye Kaydediliyor {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:64
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:131
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:133
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "Yazılacak dosya biçimleri mevcut değil!"
@@ -166,7 +173,7 @@ msgstr "Yazılacak dosya biçimleri mevcut değil!"
 #, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
-msgstr "Çıkarılabilir Sürücü <filename>{0}</filename> Üzerine Kaydediliyor "
+msgstr "Çıkarılabilir Sürücü <filename>{0}</filename> Üzerine Kaydediliyor"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:94
 msgctxt "@info:title"
@@ -196,7 +203,7 @@ msgstr "Çıkarılabilir aygıta {0} kaydedilemedi: {1}"
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:137
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:133
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:140
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1567
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1607
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Hata"
@@ -225,8 +232,8 @@ msgstr "Çıkarılabilir aygıtı çıkar {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1557
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1651
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1597
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1695
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Uyarı"
@@ -253,141 +260,136 @@ msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Çıkarılabilir Sürücü"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:74
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:86
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:73
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:88
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Ağ üzerinden yazdır"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:75
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:87
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:74
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:89
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Ağ üzerinden yazdır"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:88
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:87
 msgctxt "@info:status"
 msgid "Connected over the network."
 msgstr "Ağ üzerinden bağlandı."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:91
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:90
 msgctxt "@info:status"
 msgid "Connected over the network. Please approve the access request on the printer."
 msgstr "Ağ üzerinden bağlandı. Lütfen yazıcıya erişim isteğini onaylayın."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:93
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:92
 msgctxt "@info:status"
 msgid "Connected over the network. No access to control the printer."
 msgstr "Ağ üzerinden bağlandı. Yazıcıyı kontrol etmek için erişim yok."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:98
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:97
 msgctxt "@info:status"
 msgid "Access to the printer requested. Please approve the request on the printer"
 msgstr "İstenen yazıcıya erişim. Lütfen yazıcı isteğini onaylayın"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:101
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:100
 msgctxt "@info:title"
 msgid "Authentication status"
 msgstr "Kimlik doğrulama durumu"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:103
-msgctxt "@info:status"
-msgid ""
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:104
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:110
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:114
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:102
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:108
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:112
 msgctxt "@info:title"
 msgid "Authentication Status"
 msgstr "Kimlik Doğrulama Durumu"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:105
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:103
 msgctxt "@action:button"
 msgid "Retry"
 msgstr "Yeniden dene"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:106
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:104
 msgctxt "@info:tooltip"
 msgid "Re-send the access request"
 msgstr "Erişim talebini yeniden gönder"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:109
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:107
 msgctxt "@info:status"
 msgid "Access to the printer accepted"
 msgstr "Kabul edilen yazıcıya erişim"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:113
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:111
 msgctxt "@info:status"
 msgid "No access to print with this printer. Unable to send print job."
 msgstr "Bu yazıcıyla yazdırmaya erişim yok. Yazdırma işi gönderilemedi."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:115
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:29
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:73
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:113
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:33
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:70
 msgctxt "@action:button"
 msgid "Request Access"
 msgstr "Erişim Talep Et"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:117
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:28
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:72
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:115
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:34
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:71
 msgctxt "@info:tooltip"
 msgid "Send access request to the printer"
 msgstr "Yazıcıya erişim talebi gönder"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:202
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:200
 msgctxt "@label"
 msgid "Unable to start a new print job."
 msgstr "Yeni bir yazdırma işi başlatılamıyor."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:204
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:202
 msgctxt "@label"
 msgid "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. Please resolve this issues before continuing."
 msgstr "Ultimaker’ın yapılandırmasında yazdırmayı başlatmayı imkansız kılan bir sorun var. Devam etmeden önce lütfen bu sorunu çözün."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:210
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:232
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:208
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:230
 msgctxt "@window:title"
 msgid "Mismatched configuration"
 msgstr "Uyumsuz yapılandırma"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:224
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:222
 msgctxt "@label"
 msgid "Are you sure you wish to print with the selected configuration?"
 msgstr "Seçilen yapılandırma ile yazdırmak istediğinizden emin misiniz?"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:226
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:224
 msgctxt "@label"
 msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
 msgstr "Yazıcı yapılandırması veya kalibrasyonu ile Cura arasında eşleşme sorunu var. En iyi sonucu almak istiyorsanız her zaman PrintCore ve yazıcıya eklenen malzemeler için dilimleme yapın."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:253
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:197
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:251
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:199
 msgctxt "@info:status"
 msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
 msgstr "Yeni işlerin gönderilmesi (geçici olarak) engellenmiştir, hala bir önceki yazdırma işi gönderiliyor."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:260
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:216
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:232
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:258
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:218
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:234
 msgctxt "@info:status"
 msgid "Sending data to printer"
 msgstr "Veriler yazıcıya gönderiliyor"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:261
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:217
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:233
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:259
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:219
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:235
 msgctxt "@info:title"
 msgid "Sending Data"
 msgstr "Veri gönderiliyor"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:262
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:234
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:260
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:236
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:80
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:378
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:92
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:381
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:143
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:188
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:391
@@ -397,78 +399,78 @@ msgctxt "@action:button"
 msgid "Cancel"
 msgstr "İptal Et"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:325
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:323
 #, python-brace-format
 msgctxt "@info:status"
 msgid "No Printcore loaded in slot {slot_number}"
 msgstr "{slot_number} yuvasına Printcore yüklenmedi"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:331
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:329
 #, python-brace-format
 msgctxt "@info:status"
 msgid "No material loaded in slot {slot_number}"
 msgstr "{slot_number} yuvasına malzeme yüklenmedi"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:354
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:352
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
 msgstr "Farklı PrintCore (Cura: {cura_printcore_name}, Yazıcı: ekstruder {extruder_id} için {remote_printcore_name}) seçildi"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:363
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:361
 #, python-brace-format
 msgctxt "@label"
 msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
 msgstr "Farklı malzeme (Cura: {0}, Yazıcı: {1}), ekstrüder {2} için seçildi"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:549
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:547
 msgctxt "@window:title"
 msgid "Sync with your printer"
 msgstr "Yazıcınız ile eşitleyin"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:551
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:549
 msgctxt "@label"
 msgid "Would you like to use your current printer configuration in Cura?"
 msgstr "Cura’da geçerli yazıcı yapılandırmanızı kullanmak istiyor musunuz?"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:553
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:551
 msgctxt "@label"
 msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
 msgstr "Yazıcınızda bulunan PrintCore’lar ve/veya malzemeler geçerli projenizde bulunandan farklı. En iyi sonucu almak istiyorsanız, her zaman PrintCore ve yazıcıya eklenen malzemeler için dilimleme yapın."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:89
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:91
 msgctxt "@info:status"
 msgid "Connected over the network"
-msgstr "Ağ üzerinden bağlandı."
+msgstr "Ağ üzerinden bağlandı"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:310
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:303
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
 msgstr "Yazdırma işi yazıcıya başarıyla gönderildi."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:312
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:305
 msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "Veri Gönderildi"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:313
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:306
 msgctxt "@action:button"
 msgid "View in Monitor"
 msgstr "Monitörde Görüntüle"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:420
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:422
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Printer '{printer_name}' has finished printing '{job_name}'."
 msgstr "{printer_name}, '{job_name}' yazdırmayı tamamladı."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:422
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:424
 #, python-brace-format
 msgctxt "@info:status"
 msgid "The print job '{job_name}' was finished."
 msgstr "Yazdırma işi '{job_name}' tamamlandı."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:423
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:425
 msgctxt "@info:status"
 msgid "Print finished"
 msgstr "Baskı tamamlandı"
@@ -478,49 +480,49 @@ msgctxt "@action"
 msgid "Connect via Network"
 msgstr "Ağ ile Bağlan"
 
-#: /home/ruben/Projects/Cura/plugins/MonitorStage/__init__.py:12
+#: /home/ruben/Projects/Cura/plugins/MonitorStage/__init__.py:13
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Görüntüle"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:68
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:119
+msgctxt "@info"
+msgid "Could not access update information."
+msgstr "Güncelleme bilgilerine erişilemedi."
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:17
 #, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features are available for your {machine_name}! It is recommended to update the firmware on your printer."
 msgstr "{machine_name} adlı cihazınız için yeni özellikler var! Yazıcınızın fabrika yazılımını güncellemeniz önerilir."
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:72
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:21
 #, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s firmware available"
 msgstr "Yeni %s bellenimi mevcut"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:75
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:27
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "Nasıl güncellenir"
-
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:91
-msgctxt "@info"
-msgid "Could not access update information."
-msgstr "Güncelleme bilgilerine erişilemedi."
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Katman görünümü"
 
-#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:102
+#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:113
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled"
-msgstr "Tel Yazma etkinleştirildiğinde, Cura katmanları doğru olarak görüntülemez."
+msgstr "Tel Yazma etkinleştirildiğinde, Cura katmanları doğru olarak görüntülemez"
 
-#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:103
+#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:114
 msgctxt "@info:title"
 msgid "Simulation View"
 msgstr "Simülasyon Görünümü"
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:28
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgid "Modify G-Code"
 msgstr "GCode Değiştir"
 
@@ -534,32 +536,32 @@ msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "Desteklerin yazdırılmadığı bir hacim oluşturun."
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:52
 msgctxt "@info"
 msgid "Cura collects anonymized usage statistics."
 msgstr "Cura anonimleştirilmiş kullanım istatistikleri toplar."
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:46
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:55
 msgctxt "@info:title"
 msgid "Collecting Data"
 msgstr "Veri Toplanıyor"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:48
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:57
 msgctxt "@action:button"
 msgid "More info"
 msgstr "Daha fazla bilgi"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:58
 msgctxt "@action:tooltip"
 msgid "See more information on what data Cura sends."
-msgstr "Cura’nın gönderdiği veriler hakkında daha fazla bilgi alın"
+msgstr "Cura’nın gönderdiği veriler hakkında daha fazla bilgi alın."
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:51
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:60
 msgctxt "@action:button"
 msgid "Allow"
 msgstr "İzin Verme"
 
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:52
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:61
 msgctxt "@action:tooltip"
 msgid "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."
 msgstr "Programın gelecek sürümlerinin iyileştirilmesine yardımcı olmak için Cura’ya anonimleştirilmiş kullanım istatistikleri gönderme izni verin. Tercih ve ayarlarınızın bazıları, Cura sürümü ve dilimlere ayırdığınız modellerin sağlaması gönderilir."
@@ -594,56 +596,56 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF Resmi"
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:333
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:332
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Mevcut malzeme, seçilen makine veya yapılandırma ile uyumlu olmadığından mevcut malzeme ile dilimlenemedi."
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:333
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:364
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:388
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:397
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:406
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:415
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:332
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:363
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:387
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:405
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:414
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "Dilimlenemedi"
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:363
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:362
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "Geçerli ayarlarla dilimlenemiyor. Şu ayarlarda hata var: {0}"
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:387
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:386
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Modele özgü ayarlar nedeniyle dilimlenemedi. Şu ayarlar bir veya daha fazla modelde hataya yol açıyor: {error_labels}"
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:395
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "İlk direk veya ilk konum(lar) geçersiz olduğu için dilimlenemiyor."
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:405
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:404
 #, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Etkisizleştirilmiş Extruder %s ile ilgili nesneler olduğundan dilimleme yapılamıyor."
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:414
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:413
 msgctxt "@info:status"
 msgid "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."
 msgstr "Modeller yapı hacmine sığmadığı için dilimlenecek bir şey yok. Lütfen sığdırmak için modelleri ölçeklendirin veya döndürün."
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:49
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:242
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:255
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "Katmanlar İşleniyor"
 
-#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:242
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:255
 msgctxt "@info:title"
 msgid "Information"
 msgstr "Bilgi"
@@ -651,7 +653,7 @@ msgstr "Bilgi"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:14
 msgctxt "@label"
 msgid "Per Model Settings"
-msgstr "Model Başına Ayarlar "
+msgstr "Model Başına Ayarlar"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:15
 msgctxt "@info:tooltip"
@@ -659,13 +661,13 @@ msgid "Configure Per Model Settings"
 msgstr "Model Başına Ayarları Yapılandır"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:175
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:576
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:575
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "Önerilen Ayarlar"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:177
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:581
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:580
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "Özel"
@@ -677,7 +679,7 @@ msgid "3MF File"
 msgstr "3MF Dosyası"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:190
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:711
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:714
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Nozül"
@@ -703,18 +705,18 @@ msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G Dosyası"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:317
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:324
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-code ayrıştırma"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:319
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:466
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:326
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:474
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-code Ayrıntıları"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:464
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:472
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Dosya göndermeden önce g-code’un yazıcınız ve yazıcı yapılandırmanız için uygun olduğundan emin olun. G-code temsili doğru olmayabilir."
@@ -724,16 +726,6 @@ msgstr "Dosya göndermeden önce g-code’un yazıcınız ve yazıcı yapıland�
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura Profili"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/__init__.py:12
-msgctxt "@item:inmenu"
-msgid "Profile Assistant"
-msgstr "Profil Asistanı"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/__init__.py:17
-msgctxt "@item:inlistbox"
-msgid "Profile Assistant"
-msgstr "Profil Asistanı"
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:26
 msgctxt "@item:inlistbox"
@@ -756,11 +748,6 @@ msgctxt "@action"
 msgid "Select upgrades"
 msgstr "Yükseltmeleri seçin"
 
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.py:12
-msgctxt "@action"
-msgid "Upgrade Firmware"
-msgstr "Aygıt Yazılımını Yükselt"
-
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:14
 msgctxt "@action"
 msgid "Checkup"
@@ -771,79 +758,79 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "Yapı levhasını dengele"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:98
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:82
 msgctxt "@tooltip"
 msgid "Outer Wall"
 msgstr "Dış Duvar"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:99
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:83
 msgctxt "@tooltip"
 msgid "Inner Walls"
 msgstr "İç Duvarlar"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:100
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:84
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "Yüzey Alanı"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:101
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:85
 msgctxt "@tooltip"
 msgid "Infill"
 msgstr "Dolgu"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:102
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:86
 msgctxt "@tooltip"
 msgid "Support Infill"
 msgstr "Destek Dolgusu"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:103
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:87
 msgctxt "@tooltip"
 msgid "Support Interface"
 msgstr "Destek Arayüzü"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:104
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:88
 msgctxt "@tooltip"
 msgid "Support"
 msgstr "Destek"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:105
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:89
 msgctxt "@tooltip"
 msgid "Skirt"
 msgstr "Etek"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:106
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:90
 msgctxt "@tooltip"
 msgid "Travel"
 msgstr "Hareket"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:107
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:91
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "Geri Çekmeler"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:108
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:92
 msgctxt "@tooltip"
 msgid "Other"
 msgstr "Diğer"
 
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:229
-msgctxt "@label unknown material"
-msgid "Unknown"
-msgstr "Bilinmiyor"
-
-#: /home/ruben/Projects/Cura/cura/PrintInformation.py:314
+#: /home/ruben/Projects/Cura/cura/PrintInformation.py:310
 #, python-brace-format
 msgctxt "@label"
 msgid "Pre-sliced file {0}"
 msgstr "Önceden dilimlenmiş dosya {0}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:186
+#: /home/ruben/Projects/Cura/cura/API/Account.py:71
+msgctxt "@info:title"
+msgid "Login failed"
+msgstr "Giriş başarısız"
+
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:201
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "Dosya Zaten Mevcut"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:187
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:202
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
@@ -855,23 +842,23 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "Geçersiz kılınmadı"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:120
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:117
 msgctxt "@info:status"
 msgid "The selected material is incompatible with the selected machine or configuration."
 msgstr "Seçilen malzeme, seçilen makine veya yapılandırma ile uyumlu değil."
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:121
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:118
 msgctxt "@info:title"
 msgid "Incompatible Material"
 msgstr "Uyumsuz Malzeme"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:863
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:866
 #, python-format
 msgctxt "@info:generic"
 msgid "Settings have been changed to match the current availability of extruders: [%s]"
 msgstr "Ayarlar, ekstruderlerin mevcut kullanılabilirliğine uyacak şekilde değiştirildi: [%s]"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:865
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:868
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "Ayarlar güncellendi"
@@ -900,8 +887,6 @@ msgid "Export succeeded"
 msgstr "Dışa aktarma başarılı"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:170
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:313
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>"
@@ -909,58 +894,70 @@ msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısı
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:190
 #, python-brace-format
-msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "<filename>{0}</filename> dosyasında içe aktarılabilecek özel profil yok"
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename>!"
+msgid "Failed to import profile from <filename>{0}</filename>:"
+msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
-msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-msgstr "Bu profil <filename>{0}</filename> yanlış veri içermekte, içeri aktarılamadı."
+msgstr "Bu <filename>{0}</filename> profili yanlış veri içeriyor, içeri aktarılamadı."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
-msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr "<filename>{0}</filename> profilinde tanımlanan makine ({1}), mevcut makinenizle ({2}) eşleşmiyor, içe aktarılamadı."
+msgstr "<filename>{0}</filename> ({1}) profilinde tanımlanan makine, mevcut makineniz ({2}) ile eşleşmiyor, içe aktarılamadı."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:316
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:312
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Failed to import profile from <filename>{0}</filename>:"
+msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu:"
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}"
 msgstr "Profil başarıyla içe aktarıldı {0}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:319
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:318
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "Dosya {0} geçerli bir profil içermemekte."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:322
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:321
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Profil {0} öğesinde bilinmeyen bir dosya türü var veya profil bozuk."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:340
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:339
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "Özel profil"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:356
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:355
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "Profilde eksik bir kalite tipi var."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:370
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:369
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not find a quality type {0} for the current configuration."
 msgstr "Mevcut yapılandırma için bir kalite tipi {0} bulunamıyor."
 
-#: /home/ruben/Projects/Cura/cura/ObjectsModel.py:59
+#: /home/ruben/Projects/Cura/cura/ObjectsModel.py:63
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
@@ -987,12 +984,12 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Tüm Dosyalar (*)"
 
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:609
+#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:636
 msgctxt "@label"
 msgid "Custom Material"
 msgstr "Özel Malzeme"
 
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:610
+#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:637
 msgctxt "@label"
 msgid "Custom"
 msgstr "Özel"
@@ -1007,22 +1004,22 @@ msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "Yapı Disk Bölümü"
 
-#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:97
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:98
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Kullanıcı veri dizininden arşiv oluşturulamadı: {}"
 
-#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:102
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:103
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "Yedekle"
 
-#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:112
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:113
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "Uygun veri veya meta veri olmadan Cura yedeği geri yüklenmeye çalışıldı."
 
-#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:122
+#: /home/ruben/Projects/Cura/cura/Backups/Backup.py:123
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that does not match your current version."
 msgstr "Geçerli sürümünüzle eşleşmeyen bir Cura yedeği geri yüklenmeye çalışıldı."
@@ -1197,40 +1194,40 @@ msgctxt "@action:button"
 msgid "Send report"
 msgstr "Rapor gönder"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:454
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:473
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "Makineler yükleniyor..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:748
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:775
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Görünüm ayarlanıyor..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:784
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:811
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Arayüz yükleniyor..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:997
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1037
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1556
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1596
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Aynı anda yalnızca bir G-code dosyası yüklenebilir. {0} içe aktarma atlandı"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1566
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1606
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-code yüklenirken başka bir dosya açılamaz. {0} içe aktarma atlandı"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1650
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1694
 msgctxt "@info:status"
 msgid "The selected model was too small to load."
 msgstr "Seçilen model yüklenemeyecek kadar küçüktü."
@@ -1261,9 +1258,9 @@ msgstr "X (Genişlik)"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:237
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:386
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:402
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:420
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:432
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:857
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:428
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:440
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:896
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
@@ -1398,22 +1395,32 @@ msgctxt "@tooltip"
 msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
 msgstr "Yazıcı tarafından desteklenen nominal filaman çapı. Tam çap malzeme ve/veya profil tarafından etkisiz kılınacaktır."
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:419
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:427
 msgctxt "@label"
 msgid "Nozzle offset X"
 msgstr "Nozül X ofseti"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:431
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:439
 msgctxt "@label"
 msgid "Nozzle offset Y"
 msgstr "Nozül Y ofseti"
 
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:451
+msgctxt "@label"
+msgid "Cooling Fan Number"
+msgstr "Soğutma Fanı Numarası"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:452
+msgctxt "@label"
+msgid ""
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:472
 msgctxt "@label"
 msgid "Extruder Start G-code"
 msgstr "Ekstruder G-Code'u Başlatma"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:470
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:490
 msgctxt "@label"
 msgid "Extruder End G-code"
 msgstr "Ekstruder G-Code'u Sonlandırma"
@@ -1434,41 +1441,42 @@ msgid "Could not connect to the Cura Package database. Please check your connect
 msgstr "Cura Paket veri tabanına bağlanılamadı. Lütfen bağlantınızı kontrol edin."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:38
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:26
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:28
 msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "Eklentiler"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:75
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:42
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:66
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:544
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:551
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "Malzemeler"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:80
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:79
 msgctxt "@label"
 msgid "Version"
 msgstr "Sürüm"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:86
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:85
 msgctxt "@label"
 msgid "Last updated"
 msgstr "Son güncelleme"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:92
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:91
 msgctxt "@label"
 msgid "Author"
 msgstr "Yazar"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:98
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:97
 msgctxt "@label"
 msgid "Downloads"
 msgstr "İndirmeler"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:117
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:159
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:255
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:116
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:158
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:258
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Bilinmiyor"
@@ -1503,8 +1511,8 @@ msgstr "Geri"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
-msgid "Confirm uninstall "
-msgstr "Kaldırmayı onayla "
+msgid "Confirm uninstall"
+msgstr "Kaldırmayı onayla"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
@@ -1551,7 +1559,7 @@ msgctxt "@label"
 msgid "Generic Materials"
 msgstr "Genel Materyaller"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:54
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:56
 msgctxt "@title:tab"
 msgid "Installed"
 msgstr "Yüklü"
@@ -1633,48 +1641,88 @@ msgid "Changelog"
 msgstr "Değişiklik Günlüğü"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:37
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:84
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:56
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:464
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:508
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:53
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:467
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:514
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:121
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:166
 #: /home/ruben/Projects/Cura/resources/qml/EngineLog.qml:38
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Kapat"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:22
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
+msgctxt "@title"
+msgid "Update Firmware"
+msgstr "Aygıt Yazılımını Güncelle"
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:39
+msgctxt "@label"
+msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
+msgstr "Aygıt yazılımı doğrudan 3B yazıcı üzerinden çalışan bir yazılım parçasıdır. Bu aygıt yazılımı adım motorlarını kontrol eder, sıcaklığı düzenler ve sonunda yazıcının çalışmasını sağlar."
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:46
+msgctxt "@label"
+msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
+msgstr "Yeni yazıcıları olan aygıt yazılımı gönderimi yararlı olmaktadır, ancak yeni sürümler daha fazla özellik ve geliştirmeye eğilimlidir."
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:58
+msgctxt "@action:button"
+msgid "Automatically upgrade Firmware"
+msgstr "Aygıt Yazılımını otomatik olarak yükselt"
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:69
+msgctxt "@action:button"
+msgid "Upload custom Firmware"
+msgstr "Özel Aygıt Yazılımı Yükle"
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:83
+msgctxt "@label"
+msgid "Firmware can not be updated because there is no connection with the printer."
+msgstr "Yazıcı ile bağlantı kurulmadığı için aygıt yazılımı güncellenemiyor."
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:91
+msgctxt "@label"
+msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
+msgstr "Yazıcı bağlantısı aygıt yazılımını yükseltmeyi desteklemediği için aygıt yazılımı güncellenemiyor."
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:98
+msgctxt "@title:window"
+msgid "Select custom firmware"
+msgstr "Özel aygıt yazılımı seçin"
+
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:119
 msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "Aygıt Yazılımı Güncellemesi"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:42
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:143
 msgctxt "@label"
 msgid "Updating firmware."
 msgstr "Aygıt yazılımı güncelleniyor."
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:44
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:145
 msgctxt "@label"
 msgid "Firmware update completed."
 msgstr "Aygıt yazılımı güncellemesi tamamlandı."
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:46
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:147
 msgctxt "@label"
 msgid "Firmware update failed due to an unknown error."
 msgstr "Bilinmeyen bir hata nedeniyle aygıt yazılımı güncellemesi başarısız oldu."
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:48
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:149
 msgctxt "@label"
 msgid "Firmware update failed due to an communication error."
 msgstr "Bir iletişim hatası nedeniyle aygıt yazılımı güncellemesi başarısız oldu."
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:50
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:151
 msgctxt "@label"
 msgid "Firmware update failed due to an input/output error."
 msgstr "Bir girdi/çıktı hatası nedeniyle aygıt yazılımı güncellemesi başarısız oldu."
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:52
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:153
 msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "Eksik aygıt yazılımı nedeniyle aygıt yazılımı güncellemesi başarısız oldu."
@@ -1684,22 +1732,22 @@ msgctxt "@title:window"
 msgid "User Agreement"
 msgstr "Kullanıcı Anlaşması"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:43
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:46
 msgctxt "@window:title"
 msgid "Existing Connection"
 msgstr "Mevcut Bağlantı"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:45
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:48
 msgctxt "@message:text"
 msgid "This printer/group is already added to Cura. Please select another printer/group."
 msgstr "Bu yazıcı/grup Cura’ya zaten eklenmiş. Lütfen başka bir yazıcı/grup seçin."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:62
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:65
 msgctxt "@title:window"
 msgid "Connect to Networked Printer"
 msgstr "Ağ Yazıcısına Bağlan"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:72
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:75
 msgctxt "@label"
 msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
@@ -1710,18 +1758,18 @@ msgstr ""
 "\n"
 "Aşağıdaki listeden yazıcınızı seçin:"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:82
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:85
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:42
 msgctxt "@action:button"
 msgid "Add"
 msgstr "Ekle"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:92
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:95
 msgctxt "@action:button"
 msgid "Edit"
 msgstr "Düzenle"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:103
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:106
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:128
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:48
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:117
@@ -1729,243 +1777,299 @@ msgctxt "@action:button"
 msgid "Remove"
 msgstr "Kaldır"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:111
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:114
 msgctxt "@action:button"
 msgid "Refresh"
 msgstr "Yenile"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:204
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:207
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Yazıcınız listede yoksa <a href='%1'>ağ yazdırma sorun giderme kılavuzunu</a> okuyun"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:231
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:234
 msgctxt "@label"
 msgid "Type"
 msgstr "Tür"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:268
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:271
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "Üretici yazılımı sürümü"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:280
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:283
 msgctxt "@label"
 msgid "Address"
 msgstr "Adres"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:302
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:305
 msgctxt "@label"
 msgid "This printer is not set up to host a group of printers."
 msgstr "Bu yazıcı, bir yazıcı grubunu barındırmak için ayarlı değildir."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:306
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:309
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Bu yazıcı, %1 yazıcı grubunun ana makinesidir."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:316
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:319
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "Bu adresteki yazıcı henüz yanıt vermedi."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:321
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:39
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:324
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:42
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "Bağlan"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:335
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:338
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Yazıcı Adresi"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:358
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
 msgctxt "@alabel"
 msgid "Enter the IP address or hostname of your printer on the network."
 msgstr "IP adresini veya yazıcınızın ağ üzerindeki ana bilgisayar adını girin."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:387
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:390
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:132
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:181
 msgctxt "@action:button"
 msgid "OK"
 msgstr "Tamam"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:34
-msgctxt "@title:window"
-msgid "Print over network"
-msgstr "Ağ üzerinden yazdır"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:65
-msgctxt "@label"
-msgid "Printer selection"
-msgstr "Yazıcı seçimi"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:105
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:44
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Yazdır"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:142
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:47
+msgctxt "@title:window"
+msgid "Print over network"
+msgstr "Ağ üzerinden yazdır"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:79
 msgctxt "@label"
-msgid "Waiting for: Unavailable printer"
-msgstr "Bekleniyor: Kullanım dışı yazıcı"
+msgid "Printer selection"
+msgstr "Yazıcı seçimi"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:144
-msgctxt "@label"
-msgid "Waiting for: First available"
-msgstr "Bekleniyor: İlk mevcut olan"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:148
-msgctxt "@label"
-msgid "Waiting for: "
-msgstr "Bekleniyor: "
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:213
-msgctxt "@label"
-msgid "Move to top"
-msgstr "En üste taşı"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:234
-msgctxt "@window:title"
-msgid "Move print job to top"
-msgstr "Yazdırma işini en üste taşı"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:236
-msgctxt "@label %1 is the name of a print job."
-msgid "Are you sure you want to move %1 to the top of the queue?"
-msgstr "%1 öğesini kuyruğun en üstüne taşımak ister misiniz?"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:245
-msgctxt "@label"
-msgid "Delete"
-msgstr "Sil"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:264
-msgctxt "@window:title"
-msgid "Delete print job"
-msgstr "Yazdırma işini sil"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:266
-msgctxt "@label %1 is the name of a print job."
-msgid "Are you sure you want to delete %1?"
-msgstr "%1 öğesini silmek istediğinizden emin misiniz?"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:32
-msgctxt "@label link to connect manager"
-msgid "Manage queue"
-msgstr "Kuyruğu yönet"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:54
-msgctxt "@label"
-msgid "Queued"
-msgstr "Kuyrukta"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:44
-msgctxt "@label"
-msgid "Printing"
-msgstr "Yazdırma"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:54
-msgctxt "@label link to connect manager"
-msgid "Manage printers"
-msgstr "Yazıcıları yönet"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:212
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCard.qml:173
 msgctxt "@label"
 msgid "Not available"
 msgstr "Mevcut değil"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:215
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCard.qml:175
 msgctxt "@label"
 msgid "Unreachable"
 msgstr "Ulaşılamıyor"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:221
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCard.qml:180
 msgctxt "@label"
 msgid "Available"
 msgstr "Mevcut"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:416
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:37
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:44
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:46
+msgctxt "@label:status"
+msgid "Aborted"
+msgstr "Durduruldu"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:39
+msgctxt "@label:status"
+msgid "Finished"
+msgstr "Tamamlandı"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:42
+msgctxt "@label:status"
+msgid "Preparing"
+msgstr "Hazırlanıyor"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:48
+msgctxt "@label:status"
+msgid "Pausing"
+msgstr "Duraklatılıyor"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:52
+msgctxt "@label:status"
+msgid "Resuming"
+msgstr "Devam ediliyor"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrinterCardProgressBar.qml:54
+msgctxt "@label:status"
+msgid "Action required"
+msgstr "Eylem gerekli"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:213
+msgctxt "@label"
+msgid "Waiting for: Unavailable printer"
+msgstr "Bekleniyor: Kullanım dışı yazıcı"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:215
+msgctxt "@label"
+msgid "Waiting for: First available"
+msgstr "Bekleniyor: İlk mevcut olan"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:217
+msgctxt "@label"
+msgid "Waiting for: "
+msgstr "Bekleniyor: "
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:299
+msgctxt "@label"
+msgid "Configuration change"
+msgstr "Yapılandırma değişikliği"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:365
+msgctxt "@label"
+msgid "The assigned printer, %1, requires the following configuration change(s):"
+msgstr "Atanan yazıcı %1, aşağıdaki yapılandırma değişikliklerini gerektiriyor:"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:367
+msgctxt "@label"
+msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
+msgstr "Yazıcı %1 atandı, fakat iş bilinmeyen bir malzeme yapılandırması içeriyor."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:375
+msgctxt "@label"
+msgid "Change material %1 from %2 to %3."
+msgstr "%2 olan %1 malzemesini %3 yapın."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:378
+msgctxt "@label"
+msgid "Load %3 as material %1 (This cannot be overridden)."
+msgstr "%3 malzemesini %1 malzemesi olarak yükleyin (Bu işlem geçersiz kılınamaz)."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:381
+msgctxt "@label"
+msgid "Change print core %1 from %2 to %3."
+msgstr "%2 olan %1 print core'u %3 yapın."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:384
+msgctxt "@label"
+msgid "Change build plate to %1 (This cannot be overridden)."
+msgstr "Baskı tablasını %1 olarak değiştirin (Bu işlem geçersiz kılınamaz)."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:404
+msgctxt "@label"
+msgid "Override"
+msgstr "Geçersiz kıl"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:432
+msgctxt "@label"
+msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
+msgstr "Bir yazdırma işini uyumsuz bir yapılandırmayla başlatmak 3D yazıcınıza zarar verebilir. Yapılandırmayı geçersiz kılmak ve %1 öğesini yazdırmak istediğinizden emin misiniz?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:435
+msgctxt "@window:title"
+msgid "Override configuration configuration and start print"
+msgstr "Yapılandırmayı geçersiz kıl ve yazdırmayı başlat"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:466
+msgctxt "@label"
+msgid "Glass"
+msgstr "Cam"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:469
+msgctxt "@label"
+msgid "Aluminum"
+msgstr "Alüminyum"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:39
+msgctxt "@label link to connect manager"
+msgid "Manage queue"
+msgstr "Kuyruğu yönet"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:60
+msgctxt "@label"
+msgid "Queued"
+msgstr "Kuyrukta"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:36
+msgctxt "@label"
+msgid "Printing"
+msgstr "Yazdırma"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:49
+msgctxt "@label link to connect manager"
+msgid "Manage printers"
+msgstr "Yazıcıları yönet"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:115
+msgctxt "@label"
+msgid "Move to top"
+msgstr "En üste taşı"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:124
+msgctxt "@label"
+msgid "Delete"
+msgstr "Sil"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:137
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:289
 msgctxt "@label"
 msgid "Resume"
 msgstr "Devam et"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:416
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:137
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:284
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:293
 msgctxt "@label"
 msgid "Pause"
 msgstr "Duraklat"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:444
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:146
 msgctxt "@label"
 msgid "Abort"
 msgstr "Durdur"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:464
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:178
+msgctxt "@label %1 is the name of a print job."
+msgid "Are you sure you want to move %1 to the top of the queue?"
+msgstr "%1 öğesini kuyruğun en üstüne taşımak ister misiniz?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:179
+msgctxt "@window:title"
+msgid "Move print job to top"
+msgstr "Yazdırma işini en üste taşı"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:188
+msgctxt "@label %1 is the name of a print job."
+msgid "Are you sure you want to delete %1?"
+msgstr "%1 öğesini silmek istediğinizden emin misiniz?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:189
+msgctxt "@window:title"
+msgid "Delete print job"
+msgstr "Yazdırma işini sil"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:198
+msgctxt "@label %1 is the name of a print job."
+msgid "Are you sure you want to abort %1?"
+msgstr "%1 öğesini durdurmak istediğinizden emin misiniz?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobContextMenu.qml:199
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:335
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "Yazdırmayı durdur"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:466
-msgctxt "@label %1 is the name of a print job."
-msgid "Are you sure you want to abort %1?"
-msgstr "%1 öğesini durdurmak istediğinizden emin misiniz?"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:665
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:673
-msgctxt "@label:status"
-msgid "Aborted"
-msgstr "Durduruldu"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:667
-msgctxt "@label:status"
-msgid "Finished"
-msgstr "Tamamlandı"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:670
-msgctxt "@label:status"
-msgid "Preparing"
-msgstr "Hazırlanıyor"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:675
-msgctxt "@label:status"
-msgid "Pausing"
-msgstr "Duraklatılıyor"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:677
-msgctxt "@label:status"
-msgid "Paused"
-msgstr "Duraklatıldı"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:679
-msgctxt "@label:status"
-msgid "Resuming"
-msgstr "Devam ediliyor"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterControlItem.qml:681
-msgctxt "@label:status"
-msgid "Action required"
-msgstr "Eylem gerekli"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:38
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:43
 msgctxt "@info:tooltip"
 msgid "Connect to a printer"
 msgstr "Yazıcıya Bağlan"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:117
-msgctxt "@info:tooltip"
-msgid "Load the configuration of the printer into Cura"
-msgstr "Yazıcı yapılandırmasını Cura’ya yükle"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:118
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:121
 msgctxt "@action:button"
 msgid "Activate Configuration"
 msgstr "Yapılandırmayı Etkinleştir"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:122
+msgctxt "@info:tooltip"
+msgid "Load the configuration of the printer into Cura"
+msgstr "Yazıcı yapılandırmasını Cura’ya yükle"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:130
 msgctxt "@label"
@@ -2057,17 +2161,17 @@ msgctxt "@label"
 msgid "Post Processing Scripts"
 msgstr "Son İşleme Dosyaları"
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:225
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:227
 msgctxt "@action"
 msgid "Add a script"
 msgstr "Dosya ekle"
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:271
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:273
 msgctxt "@label"
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:474
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:477
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts"
 msgstr "Etkin son işleme dosyalarını değiştir"
@@ -2155,7 +2259,7 @@ msgstr "Daha koyu olan daha yüksek"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:149
 msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
-msgstr "Resme uygulanacak düzeltme miktarı"
+msgstr "Resme uygulanacak düzeltme miktarı."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:154
 msgctxt "@action:label"
@@ -2192,23 +2296,23 @@ msgctxt "@label"
 msgid "Modify settings for infill of other models"
 msgstr "Diğer modellerle doldurma ayarlarını değiştir"
 
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:341
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:347
 msgctxt "@action:button"
 msgid "Select settings"
 msgstr "Ayarları seçin"
 
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:383
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:389
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "Bu modeli Özelleştirmek için Ayarları seçin"
 
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:431
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:437
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:98
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "Filtrele..."
 
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:445
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:451
 msgctxt "@label:checkbox"
 msgid "Show all"
 msgstr "Tümünü göster"
@@ -2259,6 +2363,7 @@ msgid "Type"
 msgstr "Tür"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:159
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:120
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "Yazıcı Grubu"
@@ -2276,6 +2381,7 @@ msgstr "Profildeki çakışma nasıl çözülmelidir?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:216
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:308
+#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:120
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:220
 msgctxt "@action:label"
 msgid "Name"
@@ -2350,82 +2456,6 @@ msgctxt "@action:button"
 msgid "Open"
 msgstr "Aç"
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorTabControls.qml:34
-msgctxt "@action:button"
-msgid "Previous"
-msgstr "Önceki"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorTabControls.qml:138
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:154
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:152
-msgctxt "@action:button"
-msgid "Export"
-msgstr "Dışa Aktar"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorTabControls.qml:140
-msgctxt "@action:button"
-msgid "Next"
-msgstr "Sonraki"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPageCategoryView.qml:163
-msgctxt "@label"
-msgid "Tip"
-msgstr "İpucu"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:80
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:341
-msgctxt "@label Hours and minutes"
-msgid "00h 00min"
-msgstr "00sa 00dk"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:142
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:441
-msgctxt "@label"
-msgid "Cost specification"
-msgstr "Maliyet koşulları"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:147
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:156
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:446
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:455
-msgctxt "@label m for meter"
-msgid "%1m"
-msgstr "%1 m"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:148
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:157
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:447
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:456
-msgctxt "@label g for grams"
-msgid "%1g"
-msgstr "%1 g"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:155
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:454
-msgctxt "@label"
-msgid "Total:"
-msgstr "Toplam:"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:205
-msgctxt "@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost"
-msgid "%1m / ~ %2g / ~ %4 %3"
-msgstr "%1 m / ~ %2 g / ~ %4 %3"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/CuraPrintProfileCreatorView.qml:210
-msgctxt "@label Print estimates: m for meters, g for grams"
-msgid "%1m / ~ %2g"
-msgstr "%1 m / ~ %2 g"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPage.qml:143
-msgctxt "@label"
-msgid "Print experiment"
-msgstr "Yazdırma denemesi"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPageValidation.qml:26
-msgctxt "@label"
-msgid "Checklist"
-msgstr "Kontrol listesi"
-
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:26
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
 msgctxt "@title"
@@ -2466,36 +2496,6 @@ msgstr "Yapı Levhasını Dengelemeyi Başlat"
 msgctxt "@action:button"
 msgid "Move to Next Position"
 msgstr "Sonraki Konuma Taşı"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:30
-msgctxt "@title"
-msgid "Upgrade Firmware"
-msgstr "Aygıt Yazılımını Yükselt"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:41
-msgctxt "@label"
-msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
-msgstr "Aygıt yazılımı doğrudan 3B yazıcı üzerinden çalışan bir yazılım parçasıdır. Bu aygıt yazılımı adım motorlarını kontrol eder, sıcaklığı düzenler ve sonunda yazıcının çalışmasını sağlar."
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:51
-msgctxt "@label"
-msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
-msgstr "Yeni yazıcıları olan aygıt yazılımı gönderimi yararlı olmaktadır, ancak yeni sürümler daha fazla özellik ve geliştirmeye eğilimlidir."
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:65
-msgctxt "@action:button"
-msgid "Automatically upgrade Firmware"
-msgstr "Aygıt Yazılımını otomatik olarak yükselt"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:75
-msgctxt "@action:button"
-msgid "Upload custom Firmware"
-msgstr "Özel Aygıt Yazılımı Yükle"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:87
-msgctxt "@title:window"
-msgid "Select custom firmware"
-msgstr "Özel aygıt yazılımı seçin"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:37
 msgctxt "@label"
@@ -2642,7 +2642,7 @@ msgstr "Hazırlanıyor..."
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:154
 msgctxt "@label:MonitorStatus"
 msgid "Please remove the print"
-msgstr "Lütfen yazıcıyı çıkarın "
+msgstr "Lütfen yazıcıyı çıkarın"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:325
 msgctxt "@label"
@@ -2684,7 +2684,7 @@ msgid "Customized"
 msgstr "Özelleştirilmiş"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:157
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:639
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:637
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Her zaman sor"
@@ -2832,6 +2832,12 @@ msgctxt "@action:button"
 msgid "Import"
 msgstr "İçe Aktar"
 
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:154
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:152
+msgctxt "@action:button"
+msgid "Export"
+msgstr "Dışa Aktar"
+
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:203
 msgctxt "@action:label"
 msgid "Printer"
@@ -2917,283 +2923,283 @@ msgid "Unit"
 msgstr "Birim"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:15
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:537
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:544
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Genel"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:141
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:142
 msgctxt "@label"
 msgid "Interface"
 msgstr "Arayüz"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:152
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:153
 msgctxt "@label"
 msgid "Language:"
 msgstr "Dil:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:220
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:221
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Para Birimi:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:234
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:235
 msgctxt "@label"
 msgid "Theme:"
 msgstr "Tema:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:294
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:292
 msgctxt "@label"
 msgid "You will need to restart the application for these changes to have effect."
 msgstr "Bu değişikliklerinin geçerli olması için uygulamayı yeniden başlatmanız gerekecektir."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:311
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:309
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "Ayarlar değiştirilirken otomatik olarak dilimle."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:319
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:317
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "Otomatik olarak dilimle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:333
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:331
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "Görünüm şekli"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:341
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:339
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 msgstr "Modelin desteklenmeyen alanlarını kırmızı ile gösterin. Destek alınmadan bu alanlar düzgün bir şekilde yazdırılmayacaktır."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:350
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "Dışarıda kalan alanı göster"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:357
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:355
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
-msgstr "Bir model seçildiğinde bu model görüntünün ortasında kalacak şekilde kamera hareket eder."
+msgstr "Bir model seçildiğinde bu model görüntünün ortasında kalacak şekilde kamera hareket eder"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:362
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:360
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "Öğeyi seçince kamerayı ortalayın"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:369
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "Cura’nın varsayılan yakınlaştırma davranışı tersine çevrilsin mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:374
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "Kamera yakınlaştırma yönünü ters çevir."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:386
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:384
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "Yakınlaştırma farenin hareket yönüne uygun olsun mu?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:389
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Farenin hareket yönüne göre yakınlaştır"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:401
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:399
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "Platformun üzerindeki öğeler kesişmemeleri için hareket ettirilmeli mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:406
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:404
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "Modellerin birbirinden ayrı olduğundan emin olduğundan emin olun"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:415
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:413
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "Platformun üzerindeki modeller yapı levhasına değmeleri için indirilmeli mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:420
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:418
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Modelleri otomatik olarak yapı tahtasına indirin"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:432
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:430
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "G-code okuyucuda uyarı mesajı göster."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:441
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:439
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "G-code okuyucuda uyarı mesajı"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:449
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:447
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "Katman, uyumluluk moduna zorlansın mı?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:454
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:452
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Katman görünümünü uyumluluk moduna zorla (yeniden başlatma gerekir)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:470
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:468
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "Dosyaların açılması ve kaydedilmesi"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:477
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:475
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "Modeller çok büyükse yapı hacmine göre ölçeklendirilmeli mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:482
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:480
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "Büyük modelleri ölçeklendirin"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:492
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:490
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Bir modelin birimi milimetre değil de metre ise oldukça küçük görünebilir. Bu modeller ölçeklendirilmeli mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:497
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "Çok küçük modelleri ölçeklendirin"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:507
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:505
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
 msgstr "Yüklendikten sonra modeller seçilsin mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:512
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:510
 msgctxt "@option:check"
 msgid "Select models when loaded"
 msgstr "Yüklendiğinde modelleri seç"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:520
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "Yazıcı adına bağlı bir ön ek otomatik olarak yazdırma işinin adına eklenmeli mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:527
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:525
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "Makine ön ekini iş adına ekleyin"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:535
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "Bir proje dosyasını kaydederken özet gösterilmeli mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:541
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:539
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Projeyi kaydederken özet iletişim kutusunu göster"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:551
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:549
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "Bir proje dosyası açıldığında varsayılan davranış"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:559
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:557
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "Bir proje dosyası açıldığında varsayılan davranış: "
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:573
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:571
 msgctxt "@option:openProject"
 msgid "Always ask me this"
 msgstr "Her zaman sor"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:574
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:572
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "Her zaman proje olarak aç"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:575
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:573
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "Her zaman modelleri içe aktar"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:611
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:609
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "Bir profil üzerinde değişiklik yapıp farklı bir profile geçtiğinizde, değişikliklerin kaydedilmesini isteyip istemediğinizi soran bir iletişim kutusu açılır. Alternatif olarak bu işleve yönelik varsayılan bir davranış seçebilir ve bu iletişim kutusunun bir daha görüntülenmemesini tercih edebilirsiniz."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:620
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:618
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Profiller"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:625
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:623
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
 msgstr "Farklı bir profile geçerken değişen ayar değerleriyle ilgili varsayılan davranış: "
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:640
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:638
 msgctxt "@option:discardOrKeep"
 msgid "Always discard changed settings"
 msgstr "Değiştirilen ayarları her zaman at"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:641
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:639
 msgctxt "@option:discardOrKeep"
 msgid "Always transfer changed settings to new profile"
 msgstr "Değiştirilen ayarları her zaman yeni profile taşı"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:675
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:673
 msgctxt "@label"
 msgid "Privacy"
 msgstr "Gizlilik"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:683
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:681
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
 msgstr "Cura, program başladığında güncellemeleri kontrol etmeli mi?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:688
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:686
 msgctxt "@option:check"
 msgid "Check for updates on start"
 msgstr "Başlangıçta güncellemeleri kontrol edin"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:697
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "Yazdırmanızdaki anonim veriler Ultimaker’a gönderilmeli mi? Unutmayın; hiçbir model, IP adresi veya diğer kişiye özgü bilgiler gönderilmez veya saklanmaz."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:704
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:702
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "(Anonim) yazdırma bilgisi gönder"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:713
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:711
 msgctxt "@action:button"
 msgid "More information"
 msgstr "Daha fazla bilgi"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:731
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:729
 msgctxt "@label"
 msgid "Experimental"
 msgstr "Deneysel"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:738
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:736
 msgctxt "@info:tooltip"
 msgid "Use multi build plate functionality"
 msgstr "Çok yapılı levha fonksiyonelliğini kullan"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:743
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:741
 msgctxt "@option:check"
 msgid "Use multi build plate functionality (restart required)"
 msgstr "Çok yapılı levha fonksiyonelliğini kullan (yeniden başlatma gerektirir)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:542
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:549
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "Yazıcılar"
@@ -3215,7 +3221,7 @@ msgid "Connection:"
 msgstr "Bağlantı:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:162
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/OutputDeviceHeader.qml:47
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/OutputDeviceHeader.qml:55
 msgctxt "@info:status"
 msgid "The printer is not connected."
 msgstr "Yazıcı bağlı değil."
@@ -3241,7 +3247,7 @@ msgid "Aborting print..."
 msgstr "Yazdırma durduruluyor..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:36
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:546
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:553
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Profiller"
@@ -3322,17 +3328,17 @@ msgid "Global Settings"
 msgstr "Küresel Ayarlar"
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:946
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:953
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Yazıcı Ekle"
 
-#: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:194
+#: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:195
 msgctxt "@label"
 msgid "Printer Name:"
 msgstr "Yazıcı Adı:"
 
-#: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:217
+#: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:219
 msgctxt "@action:button"
 msgid "Add Printer"
 msgstr "Yazıcı Ekle"
@@ -3347,17 +3353,17 @@ msgctxt "@title:window"
 msgid "About Cura"
 msgstr "Cura hakkında"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:43
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:55
 msgctxt "@label"
 msgid "version: %1"
 msgstr "sürüm: %1"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:56
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Kaynaşık filaman 3B yazdırma için kalıcı çözüm."
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:82
 msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
@@ -3366,102 +3372,122 @@ msgstr ""
 "Cura, topluluk iş birliği ile Ultimaker B.V. tarafından geliştirilmiştir.\n"
 "Cura aşağıdaki açık kaynak projelerini gururla kullanmaktadır:"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:132
 msgctxt "@label"
 msgid "Graphical user interface"
 msgstr "Grafik kullanıcı arayüzü"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:119
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:133
 msgctxt "@label"
 msgid "Application framework"
 msgstr "Uygulama çerçevesi"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:120
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:134
 msgctxt "@label"
 msgid "G-code generator"
 msgstr "G-code oluşturucu"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:121
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:135
 msgctxt "@label"
 msgid "Interprocess communication library"
 msgstr "İşlemler arası iletişim kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:123
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:137
 msgctxt "@label"
 msgid "Programming language"
 msgstr "Programlama dili"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:124
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:138
 msgctxt "@label"
 msgid "GUI framework"
 msgstr "GUI çerçevesi"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:125
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:139
 msgctxt "@label"
 msgid "GUI framework bindings"
 msgstr "GUI çerçeve bağlantıları"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:126
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:140
 msgctxt "@label"
 msgid "C/C++ Binding library"
 msgstr "C/C++ Bağlantı kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:127
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:141
 msgctxt "@label"
 msgid "Data interchange format"
 msgstr "Veri değişim biçimi"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:128
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:142
 msgctxt "@label"
 msgid "Support library for scientific computing"
 msgstr "Bilimsel bilgi işlem için destek kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:129
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:143
 msgctxt "@label"
 msgid "Support library for faster math"
 msgstr "Daha hızlı matematik için destek kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:130
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:144
 msgctxt "@label"
 msgid "Support library for handling STL files"
 msgstr "STL dosyalarının işlenmesi için destek kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:131
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:145
+msgctxt "@label"
+msgid "Support library for handling planar objects"
+msgstr "Düzlemsel nesnelerin işlenmesi için destek kitaplığı"
+
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:146
+msgctxt "@label"
+msgid "Support library for handling triangular meshes"
+msgstr "Üçgen birleşimlerin işlenmesi için destek kitaplığı"
+
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:147
+msgctxt "@label"
+msgid "Support library for analysis of complex networks"
+msgstr "Karmaşık ağların analizi için destek kitaplığı"
+
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
 msgctxt "@label"
 msgid "Support library for handling 3MF files"
 msgstr "3MF dosyalarının işlenmesi için destek kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:132
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:149
+msgctxt "@label"
+msgid "Support library for file metadata and streaming"
+msgstr "Dosya meta verileri ve akış için destek kitaplığı"
+
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:150
 msgctxt "@label"
 msgid "Serial communication library"
 msgstr "Seri iletişim kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:133
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:151
 msgctxt "@label"
 msgid "ZeroConf discovery library"
 msgstr "ZeroConf keşif kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:134
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:152
 msgctxt "@label"
 msgid "Polygon clipping library"
 msgstr "Poligon kırpma kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:135
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:153
 msgctxt "@Label"
 msgid "Python HTTP library"
 msgstr "Python HTTP kitaplığı"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:137
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:155
 msgctxt "@label"
 msgid "Font"
 msgstr "Yazı tipi"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:138
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:156
 msgctxt "@label"
 msgid "SVG icons"
 msgstr "SVG simgeleri"
 
-#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:139
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:157
 msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux çapraz-dağıtım uygulama dağıtımı"
@@ -3471,7 +3497,7 @@ msgctxt "@label"
 msgid "Profile:"
 msgstr "Profil:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:103
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:104
 msgctxt "@tooltip"
 msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
@@ -3482,53 +3508,53 @@ msgstr ""
 "\n"
 "Profil yöneticisini açmak için tıklayın."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:199
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:200
 msgctxt "@label:textbox"
 msgid "Search..."
 msgstr "Ara..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:544
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:545
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Değeri tüm ekstruderlere kopyala"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:553
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:554
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Tüm değiştirilmiş değerleri tüm ekstruderlere kopyala"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:590
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:591
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "Bu ayarı gizle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:608
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:609
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "Bu ayarı gösterme"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:612
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:613
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "Bu ayarı görünür yap"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:636
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:416
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:637
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:417
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Görünürlük ayarını yapılandır..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:643
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:644
 msgctxt "@action:inmenu"
 msgid "Collapse All"
 msgstr "Tümünü Daralt"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:648
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:649
 msgctxt "@action:inmenu"
 msgid "Expand All"
 msgstr "Tümünü Genişlet"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:249
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:253
 msgctxt "@label"
 msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
@@ -3549,17 +3575,17 @@ msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr ".........den etkilenir"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:154
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:155
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "Bu ayar her zaman, tüm ekstrüderler arasında paylaşılır. Buradan değiştirildiğinde tüm ekstrüderler için değer değiştirir."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:157
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:158
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
 msgstr "Değer, her bir ekstruder değerinden alınır. "
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:188
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:189
 msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
@@ -3570,7 +3596,7 @@ msgstr ""
 "\n"
 "Profil değerini yenilemek için tıklayın."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:286
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:281
 msgctxt "@label"
 msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
@@ -3725,12 +3751,12 @@ msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Görünüm"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:39
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:42
 msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
 msgstr "&Kamera konumu"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:54
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:58
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
 msgstr "&Yapı levhası"
@@ -3740,12 +3766,12 @@ msgctxt "@action:inmenu"
 msgid "Visible Settings"
 msgstr "Görünür ayarlar"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:43
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:42
 msgctxt "@action:inmenu"
 msgid "Show All Settings"
 msgstr "Tüm Ayarları Göster"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:54
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:53
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
 msgstr "Ayar Görünürlüğünü Yönet..."
@@ -3808,17 +3834,44 @@ msgstr ""
 "Yazdırma Ayarı devre dışı\n"
 "G-code dosyaları üzerinde değişiklik yapılamaz"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:359
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:340
+msgctxt "@label Hours and minutes"
+msgid "00h 00min"
+msgstr "00sa 00dk"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:358
 msgctxt "@tooltip"
 msgid "Time specification"
 msgstr "Zaman Özellikleri"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:577
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:440
+msgctxt "@label"
+msgid "Cost specification"
+msgstr "Maliyet koşulları"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:445
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:454
+msgctxt "@label m for meter"
+msgid "%1m"
+msgstr "%1 m"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:446
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:455
+msgctxt "@label g for grams"
+msgid "%1g"
+msgstr "%1 g"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:453
+msgctxt "@label"
+msgid "Total:"
+msgstr "Toplam:"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:576
 msgctxt "@tooltip"
 msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
 msgstr "<b>Önerilen Yazıcı Ayarları</b><br/><br/>Seçilen yazıcı, malzeme ve kalite için önerilen ayarları kullanarak yazdırın."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:582
+#: /home/ruben/Projects/Cura/resources/qml/PrepareSidebar.qml:581
 msgctxt "@tooltip"
 msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
 msgstr "<b>Özel Yazıcı Ayarları</b><br/><br/>Dilimleme işleminin her bir bölümünü detaylıca kontrol ederek yazdırın."
@@ -3843,223 +3896,223 @@ msgctxt "@label"
 msgid "Estimated time left"
 msgstr "Kalan tahmini süre"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:79
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
 msgstr "Tam Ekrana Geç"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:86
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "&Geri Al"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:95
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:96
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Yinele"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:105
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:106
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "&Çıkış"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:114
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "3 Boyutlu Görünüm"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:120
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:121
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Önden Görünüm"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:127
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:128
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "Yukarıdan Görünüm"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:135
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "Sol Taraftan Görünüm"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:142
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "Sağ Taraftan Görünüm"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:148
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:149
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "Cura’yı yapılandır..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:155
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:156
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "&Yazıcı Ekle..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:161
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Yazıcıları Yönet..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:168
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:169
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Malzemeleri Yönet..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:176
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:177
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "&Profili geçerli ayarlar/geçersiz kılmalar ile güncelle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:184
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:185
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "&Geçerli değişiklikleri iptal et"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:196
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:197
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "G&eçerli ayarlardan/geçersiz kılmalardan profil oluştur..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:203
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Profilleri Yönet..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:209
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:210
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Çevrimiçi Belgeleri Göster"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:217
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:218
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "Hata Bildir"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:225
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:226
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "Hakkında..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:232
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:233
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected Model"
 msgid_plural "Delete Selected Models"
 msgstr[0] "Seçili Modeli Sil"
 msgstr[1] "Seçili Modelleri Sil"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:243
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected Model"
 msgid_plural "Center Selected Models"
 msgstr[0] "Seçili Modeli Ortala"
 msgstr[1] "Seçili Modelleri Ortala"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:251
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Seçili Modeli Çoğalt"
 msgstr[1] "Seçili Modelleri Çoğalt"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:260
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:261
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "Modeli Sil"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:268
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:269
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "Modeli Platformda Ortala"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:274
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "Modelleri Gruplandır"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:294
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:295
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Model Grubunu Çöz"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:304
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:305
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "&Modelleri Birleştir"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:314
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:315
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "&Modeli Çoğalt..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:321
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:322
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "Tüm modelleri Seç"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:332
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Yapı Levhasını Temizle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:341
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:342
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "Tüm Modelleri Yeniden Yükle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:350
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models To All Build Plates"
 msgstr "Tüm Modelleri Tüm Yapı Levhalarına Yerleştir"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:357
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:358
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "Tüm Modelleri Düzenle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:365
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:366
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "Seçimi Düzenle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:372
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:373
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "Tüm Model Konumlarını Sıfırla"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:379
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:380
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "Tüm Model ve Dönüşümleri Sıfırla"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:386
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:387
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "&Dosya Aç..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:394
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:395
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "&Yeni Proje..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:401
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:402
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
 msgstr "Motor Günlüğünü Göster..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:409
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:410
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Yapılandırma Klasörünü Göster"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:423
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:424
 msgctxt "@action:menu"
 msgid "Browse packages..."
 msgstr "Paketlere gözat..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:430
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:431
 msgctxt "@action:inmenu menubar:view"
 msgid "Expand/Collapse Sidebar"
 msgstr "Kenar Çubuğunu Genişlet/Daralt"
@@ -4120,7 +4173,7 @@ msgid "Select the active output device"
 msgstr "Etkin çıkış aygıtını seçin"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:19
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:760
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:767
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Dosya aç"
@@ -4140,145 +4193,145 @@ msgctxt "@title:window"
 msgid "Ultimaker Cura"
 msgstr "Ultimaker Cura"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:104
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:103
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&Dosya"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:120
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:121
 msgctxt "@title:menu menubar:file"
 msgid "&Save..."
 msgstr "&Kaydet..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:141
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:142
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
 msgstr "&Dışa Aktar..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:151
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:153
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "Seçimi Dışa Aktar..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:168
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:174
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "Düz&enle"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:185
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:191
 msgctxt "@title:menu"
 msgid "&View"
 msgstr "&Görünüm"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:190
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:196
 msgctxt "@title:menu"
 msgid "&Settings"
 msgstr "&Ayarlar"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:192
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:198
 msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "&Yazıcı"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:201
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:207
 msgctxt "@title:menu"
 msgid "&Material"
 msgstr "&Malzeme"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:210
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:216
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "Etkin Ekstruder olarak ayarla"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:216
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:222
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:188
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "Ekstruderi Etkinleştir"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:223
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:229
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:194
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "Ekstruderi Devre Dışı Bırak"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:235
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:241
 msgctxt "@title:menu"
 msgid "&Build plate"
 msgstr "&Yapı levhası"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:236
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:242
 msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profil"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:246
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:252
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "Uzantılar"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:280
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:286
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Toolbox"
 msgstr "&Araç kutusu"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:287
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:294
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
 msgstr "Tercihler"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:295
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:302
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "&Yardım"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:341
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:348
 msgctxt "@label"
 msgid "This package will be installed after restarting."
 msgstr "Bu paket yeniden başlatmanın ardından kurulacak."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:370
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:377
 msgctxt "@action:button"
 msgid "Open File"
 msgstr "Dosya Aç"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:540
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:547
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:586
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:593
 msgctxt "@title:window"
 msgid "New project"
 msgstr "Yeni proje"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:587
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:594
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 msgstr "Yeni bir proje başlatmak istediğinizden emin misiniz? Bu işlem yapı levhasını ve kaydedilmemiş tüm ayarları silecektir."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:715
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:722
 msgctxt "@title:window"
 msgid "Closing Cura"
 msgstr "Cura Kapatılıyor"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:716
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:728
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:723
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:735
 msgctxt "@label"
 msgid "Are you sure you want to exit Cura?"
 msgstr "Cura’dan çıkmak istediğinizden emin misiniz?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:861
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:868
 msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Paketi Kur"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:868
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:875
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "Dosya Aç"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:871
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:878
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "Seçtiğiniz dosyalar arasında bir veya daha fazla G-code dosyası bulduk. Tek seferde sadece bir G-code dosyası açabilirsiniz. Bir G-code dosyası açmak istiyorsanız, sadece birini seçiniz."
@@ -4287,11 +4340,6 @@ msgstr "Seçtiğiniz dosyalar arasında bir veya daha fazla G-code dosyası buld
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "Projeyi Kaydet"
-
-#: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:120
-msgctxt "@action:label"
-msgid ""
-msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:137
 msgctxt "@action:label"
@@ -4363,37 +4411,37 @@ msgctxt "@label"
 msgid "Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "Kademeli dolgu, yukarıya doğru dolgu miktarını kademeli olarak yükselecektir."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:789
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:791
 msgctxt "@label"
 msgid "Enable gradual"
 msgstr "Kademeli özelliği etkinleştir"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:856
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:858
 msgctxt "@label"
 msgid "Generate Support"
 msgstr "Oluşturma Desteği"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:890
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:892
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
 msgstr "Modellerin askıda kalan kısımlarını destekleyen yapılar oluşturun. Bu yapılar olmadan, yazdırma sırasında söz konusu kısımlar düşebilir."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:962
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:964
 msgctxt "@label"
 msgid "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."
 msgstr "Destek için kullanacağınız ekstruderi seçin. Bu, modelin havadayken düşmesini veya yazdırılmasını önlemek için modelin altındaki destekleyici yapıları güçlendirir."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:985
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:987
 msgctxt "@label"
 msgid "Build Plate Adhesion"
 msgstr "Yapı Levhası Yapıştırması"
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1040
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1042
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "Bir kenar veya radye yazdırın. Bu nesnenizin etrafına veya altına daha sonra kesilmesi kolay olan düz bir alan sağlayacak."
 
-#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1080
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:1082
 msgctxt "@label"
 msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
 msgstr "Yazıcı çıktılarınızı iyileştirmek için yardıma mı ihtiyacınız var?<br><a href='%1'>Ultimaker Sorun Giderme Kılavuzlarını okuyun</a>"
@@ -4555,6 +4603,16 @@ msgctxt "name"
 msgid "Changelog"
 msgstr "Değişiklik Günlüğü"
 
+#: FirmwareUpdater/plugin.json
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "Aygıt yazılımını güncellemeye yönelik makine eylemleri sağlar."
+
+#: FirmwareUpdater/plugin.json
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "Aygıt Yazılımı Güncelleyici"
+
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattend quality changes profile."
@@ -4578,7 +4636,7 @@ msgstr "USB yazdırma"
 #: UserAgreement/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license."
-msgstr "Kullanıcıya bir kez lisansımızı kabul edip etmediğini sorun"
+msgstr "Kullanıcıya bir kez lisansımızı kabul edip etmediğini sorun."
 
 #: UserAgreement/plugin.json
 msgctxt "name"
@@ -4638,7 +4696,7 @@ msgstr "Çıkarılabilir Sürücü Çıkış Cihazı Eklentisi"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr "Ultimaker 3 yazıcıları için ağ bağlantılarını yönetir"
+msgstr "Ultimaker 3 yazıcıları için ağ bağlantılarını yönetir."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -4905,16 +4963,6 @@ msgctxt "name"
 msgid "Cura Profile Writer"
 msgstr "Cura Profili Yazıcı"
 
-#: CuraPrintProfileCreator/plugin.json
-msgctxt "description"
-msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
-msgstr "Malzeme üreticilerine bir drop-in UI kullanarak yeni malzeme ve kalite profili oluşturma imkanı sunar."
-
-#: CuraPrintProfileCreator/plugin.json
-msgctxt "name"
-msgid "Print Profile Assistant"
-msgstr "Baskı Profili Asistanı"
-
 #: 3MFWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing 3MF files."
@@ -4944,6 +4992,86 @@ msgstr "Cura profillerinin içe aktarılması için destek sağlar."
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Cura Profil Okuyucu"
+
+#~ msgctxt "@warning:status"
+#~ msgid "Please generate G-code before saving."
+#~ msgstr "Lütfen kaydetmeden önce G-code oluşturun."
+
+#~ msgctxt "@item:inmenu"
+#~ msgid "Profile Assistant"
+#~ msgstr "Profil Asistanı"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Profile Assistant"
+#~ msgstr "Profil Asistanı"
+
+#~ msgctxt "@action"
+#~ msgid "Upgrade Firmware"
+#~ msgstr "Aygıt Yazılımını Yükselt"
+
+#~ msgctxt "@label unknown material"
+#~ msgid "Unknown"
+#~ msgstr "Bilinmiyor"
+
+#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+#~ msgid "No custom profile to import in file <filename>{0}</filename>"
+#~ msgstr "<filename>{0}</filename> dosyasında içe aktarılabilecek özel profil yok"
+
+#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+#~ msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
+#~ msgstr "Bu profil <filename>{0}</filename> yanlış veri içermekte, içeri aktarılamadı."
+
+#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+#~ msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
+#~ msgstr "<filename>{0}</filename> profilinde tanımlanan makine ({1}), mevcut makinenizle ({2}) eşleşmiyor, içe aktarılamadı."
+
+#~ msgctxt "@title:window"
+#~ msgid "Confirm uninstall "
+#~ msgstr "Kaldırmayı onayla "
+
+#~ msgctxt "@label:status"
+#~ msgid "Paused"
+#~ msgstr "Duraklatıldı"
+
+#~ msgctxt "@action:button"
+#~ msgid "Previous"
+#~ msgstr "Önceki"
+
+#~ msgctxt "@action:button"
+#~ msgid "Next"
+#~ msgstr "Sonraki"
+
+#~ msgctxt "@label"
+#~ msgid "Tip"
+#~ msgstr "İpucu"
+
+#~ msgctxt "@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost"
+#~ msgid "%1m / ~ %2g / ~ %4 %3"
+#~ msgstr "%1 m / ~ %2 g / ~ %4 %3"
+
+#~ msgctxt "@label Print estimates: m for meters, g for grams"
+#~ msgid "%1m / ~ %2g"
+#~ msgstr "%1 m / ~ %2 g"
+
+#~ msgctxt "@label"
+#~ msgid "Print experiment"
+#~ msgstr "Yazdırma denemesi"
+
+#~ msgctxt "@label"
+#~ msgid "Checklist"
+#~ msgstr "Kontrol listesi"
+
+#~ msgctxt "@title"
+#~ msgid "Upgrade Firmware"
+#~ msgstr "Aygıt Yazılımını Yükselt"
+
+#~ msgctxt "description"
+#~ msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
+#~ msgstr "Malzeme üreticilerine bir drop-in UI kullanarak yeni malzeme ve kalite profili oluşturma imkanı sunar."
+
+#~ msgctxt "name"
+#~ msgid "Print Profile Assistant"
+#~ msgstr "Baskı Profili Asistanı"
 
 #~ msgctxt "@action:button"
 #~ msgid "Print with Doodle3D WiFi-Box"

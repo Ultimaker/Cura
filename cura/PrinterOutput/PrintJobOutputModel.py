@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-
 
 class PrintJobOutputModel(QObject):
     stateChanged = pyqtSignal()
@@ -55,7 +54,7 @@ class PrintJobOutputModel(QObject):
     @pyqtProperty(QUrl, notify=previewImageChanged)
     def previewImageUrl(self):
         self._preview_image_id += 1
-        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
+        # There is an image provider that is called "print_job_preview". In order to ensure that the image qml object, that
         # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
         # as new (instead of relying on cached version and thus forces an update.
         temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key
@@ -91,7 +90,7 @@ class PrintJobOutputModel(QObject):
     def assignedPrinter(self):
         return self._assigned_printer
 
-    def updateAssignedPrinter(self, assigned_printer: "PrinterOutputModel"):
+    def updateAssignedPrinter(self, assigned_printer: Optional["PrinterOutputModel"]) -> None:
         if self._assigned_printer != assigned_printer:
             old_printer = self._assigned_printer
             self._assigned_printer = assigned_printer

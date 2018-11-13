@@ -14,11 +14,19 @@ Item
     implicitHeight: Math.floor(childrenRect.height + UM.Theme.getSize("default_margin").height * 2)
     property var outputDevice: null
 
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged:
+        {
+            outputDevice = Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null;
+        }
+    }
+
     Rectangle
     {
         height: childrenRect.height
         color: UM.Theme.getColor("setting_category")
-        property var activePrinter: outputDevice != null ? outputDevice.activePrinter : null
 
         Label
         {
@@ -28,7 +36,7 @@ Item
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
-            text: outputDevice != null ? activePrinter.name : ""
+            text: outputDevice != null ? outputDevice.activePrinter.name : ""
         }
 
         Label

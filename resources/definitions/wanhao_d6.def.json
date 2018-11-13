@@ -18,9 +18,6 @@
       0,
       -28,
       0
-    ],
-    "supported_actions": [
-      "UpgradeFirmware"
     ]
   },
   "overrides": {

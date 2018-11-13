@@ -75,6 +75,7 @@ Item
     Action
     {
         id:toggleFullScreenAction
+        shortcut: StandardKey.FullScreen;
         text: catalog.i18nc("@action:inmenu","Toggle Full Screen");
         iconName: "view-fullscreen";
     }
@@ -420,7 +421,7 @@ Item
     Action
     {
         id: browsePackagesAction
-        text: catalog.i18nc("@action:menu", "Browse packages...")
+        text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
     }
 

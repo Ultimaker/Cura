@@ -94,6 +94,7 @@ SettingItem
             anchors.verticalCenter: parent.verticalCenter
 
             text: definition.unit
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
             font: UM.Theme.getFont("default")

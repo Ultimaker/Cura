@@ -21,8 +21,10 @@ Item
             left: parent.left
             leftMargin: UM.Theme.getSize("default_margin").width
         }
+
         ToolboxTabButton
         {
+            id: pluginsTabButton
             text: catalog.i18nc("@title:tab", "Plugins")
             active: toolbox.viewCategory == "plugin" && enabled
             enabled: !toolbox.isDownloading && toolbox.viewPage != "loading" && toolbox.viewPage != "errored"
@@ -34,9 +36,9 @@ Item
             }
         }
 
-        /*  // NOTE: Remember to re-enable for v3.6!
         ToolboxTabButton
         {
+            id: materialsTabButton
             text: catalog.i18nc("@title:tab", "Materials")
             active: toolbox.viewCategory == "material" && enabled
             enabled: !toolbox.isDownloading && toolbox.viewPage != "loading" && toolbox.viewPage != "errored"
@@ -47,10 +49,10 @@ Item
                 toolbox.viewPage = "overview"
             }
         }
-        */
     }
     ToolboxTabButton
     {
+        id: installedTabButton
         text: catalog.i18nc("@title:tab", "Installed")
         active: toolbox.viewCategory == "installed"
         enabled: !toolbox.isDownloading
