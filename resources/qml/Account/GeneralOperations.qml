@@ -20,7 +20,7 @@ Row
         hoverColor: UM.Theme.getColor("secondary")
         textColor: UM.Theme.getColor("main_window_header_button_text_active")
         textHoverColor: UM.Theme.getColor("main_window_header_button_text_active")
-        onClicked: Qt.openUrlExternally("https://account.ultimaker.com")
+        onClicked: Qt.openUrlExternally("https://account.ultimaker.com/app/create")
         fixedWidthMode: true
     }
 
