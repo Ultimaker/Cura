@@ -25,7 +25,7 @@ Item
     {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: UM.Theme.getSize("default_margin").width
-
+        height: parent.height
         ComboBox
         {
             // This item contains the views selector, a combobox that is dynamically created from
@@ -87,6 +87,7 @@ Item
         Cura.PrintSetupSelector
         {
             width: UM.Theme.getSize("print_setup_widget").width
+            height: parent.height
             onShowTooltip: previewMenu.showTooltip(item, location, text)
             onHideTooltip: previewMenu.hideTooltip()
         }
