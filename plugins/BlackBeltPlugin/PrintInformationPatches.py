@@ -3,12 +3,12 @@ import re
 class PrintInformationPatches():
     def __init__(self, print_information):
         self._print_information = print_information
-        self._print_information._setAbbreviatedMachineName = self._setAbbreviatedMachineName
+        self._print_information._defineAbbreviatedMachineName = self._defineAbbreviatedMachineName
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
-    #   Copied verbatim from PrintInformation._setAbbreviatedMachineName, with a minor patch to set the abbreviation from settings
-    def _setAbbreviatedMachineName(self):
+    #   Copied verbatim from PrintInformation._defineAbbreviatedMachineName, with a minor patch to set the abbreviation from settings
+    def _defineAbbreviatedMachineName(self) -> None:
         global_container_stack = self._print_information._application.getGlobalContainerStack()
         if not global_container_stack:
             self._print_information._abbr_machine = ""

@@ -411,6 +411,9 @@ class StartSliceJob(Job):
                 raft_speed = stack.getProperty("blackbelt_raft_speed", "value")
                 raft_flow = stack.getProperty("blackbelt_raft_flow", "value") * math.sin(gantry_angle)
 
+            adhesion_extruder_nr = stack.getProperty("adhesion_extruder_nr", "value")
+            support_extruder_nr = stack.getProperty("support_extruder_nr", "value")
+
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
@@ -465,6 +468,7 @@ class StartSliceJob(Job):
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
 
+                    obj.name = object.getName()
                     indices = mesh_data.getIndices()
                     if indices is not None:
                         flat_verts = numpy.take(verts, indices.flatten(), axis=0)
@@ -478,13 +482,15 @@ class StartSliceJob(Job):
                             "wall_line_count": 99999999,
                             "speed_wall_0": raft_speed,
                             "speed_wall_x": raft_speed,
-                            "material_flow": raft_flow
+                            "material_flow": raft_flow,
+                            "extruder_nr": adhesion_extruder_nr
                         })
 
                     elif object.getName() in support_meshes:
                         self._addSettingsMessage(obj, {
                             "support_mesh": "True",
-                            "support_mesh_drop_down": "False"
+                            "support_mesh_drop_down": "False",
+                            "extruder_nr": support_extruder_nr
                         })
 
                     elif object.getName() in bottom_cutting_meshes:
@@ -493,7 +499,8 @@ class StartSliceJob(Job):
                             "wall_line_count": 0,
                             "top_layers": 0,
                             "bottom_layers": 0,
-                            "infill_line_distance": 0
+                            "infill_line_distance": 0,
+                            "extruder_nr": 0
                         })
 
                     else:
@@ -689,8 +696,7 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         # Ensure that the engine is aware what the build extruder is.
-        if stack.getProperty("machine_extruder_count", "value") > 1:
-            changed_setting_keys.add("extruder_nr")
+        changed_setting_keys.add("extruder_nr")
 
         # Get values for all changed settings
         for key in changed_setting_keys:

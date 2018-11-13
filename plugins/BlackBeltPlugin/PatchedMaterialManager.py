@@ -54,6 +54,7 @@ class PatchedMaterialManager(MaterialManager):
         ### END PATCH
 
         material_id_metadata_dict = dict()  # type: Dict[str, MaterialNode]
+        excluded_materials = set()
         for current_node in nodes_to_check:
             if current_node is None:
                 continue
@@ -69,17 +70,21 @@ class PatchedMaterialManager(MaterialManager):
                 ### END PATCH
 
                 if material_id in machine_exclude_materials:
-                    Logger.log("d", "Exclude material [%s] for machine [%s]",
-                               material_id, machine_definition.getId())
+                    excluded_materials.add(material_id)
                     continue
 
                 if material_id not in material_id_metadata_dict:
                     material_id_metadata_dict[material_id] = node
 
+        if excluded_materials:
+            Logger.log("d", "Exclude materials {excluded_materials} for machine {machine_definition_id}".format(excluded_materials = ", ".join(excluded_materials), machine_definition_id = machine_definition_id))
+
         return material_id_metadata_dict
 
     #
     # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
+    #
+    # Returns the ID of the newly created material.
     #
     # Copied verbatim from MaterialManager.createMaterial, with a minor patch to use the preferred material
     # as the template (instead of generic_pla)

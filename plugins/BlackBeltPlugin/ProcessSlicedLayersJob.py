@@ -127,6 +127,7 @@ class ProcessSlicedLayersJob(Job):
             # data. However, if there are empty layers in between, we compute them.
             if layer.id < min_layer_number:
                 continue
+
             # Layers are offset by the minimum layer number. In case the raft (negative layers) is being used,
             # then the absolute layer number is adjusted by removing the empty layers that can be in between raft
             # and the model
