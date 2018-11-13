@@ -249,7 +249,6 @@ UM.MainWindow
                 source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
             }
 
-
             Loader
             {
                 // The stage menu is, as the name implies, a menu that is defined by the active stage.

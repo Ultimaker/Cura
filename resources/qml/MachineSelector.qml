@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
@@ -10,77 +10,117 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
-ToolButton
+
+Cura.ExpandableComponent
 {
-    id: base
+    id: machineSelector
+
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
-    property bool printerConnected: Cura.MachineManager.printerConnected
-    property var printerStatus: Cura.MachineManager.printerConnected ? "connected" : "disconnected"
-    text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
 
-    tooltip: Cura.MachineManager.activeMachineName
-    width: 240
-    style: ButtonStyle
+    iconSource: expanded ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+
+    UM.I18nCatalog
     {
-        background: Rectangle
-        {
-            color:
-            {
-                if (control.pressed) {
-                    return UM.Theme.getColor("machine_selector_active");
-                }
-                else if (control.hovered) {
-                    return UM.Theme.getColor("machine_selector_hover");
-                }
-                else {
-                    return UM.Theme.getColor("machine_selector_bar");
-                }
-            }
-            Behavior on color { ColorAnimation { duration: 50; } }
-
-            UM.RecolorImage
-            {
-                id: downArrow
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                width: UM.Theme.getSize("standard_arrow").width
-                height: UM.Theme.getSize("standard_arrow").height
-                sourceSize.width: width
-                sourceSize.height: width
-                color: UM.Theme.getColor("text_emphasis")
-                source: UM.Theme.getIcon("arrow_bottom")
-            }
-
-            PrinterStatusIcon
-            {
-                id: printerStatusIcon
-                visible: printerConnected || isNetworkPrinter
-                status: printerStatus
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("thick_margin").width
-                }
-            }
-
-            Label
-            {
-                id: sidebarComboBoxLabel
-                color: UM.Theme.getColor("machine_selector_text_active")
-                text: control.text;
-                elide: Text.ElideRight;
-                anchors.left: printerStatusIcon.visible ? printerStatusIcon.right : parent.left;
-                anchors.leftMargin: printerStatusIcon.visible ? UM.Theme.getSize("narrow_margin").width : UM.Theme.getSize("thick_margin").width
-                anchors.right: downArrow.left;
-                anchors.rightMargin: control.rightMargin;
-                anchors.verticalCenter: parent.verticalCenter;
-                font: UM.Theme.getFont("medium_bold")
-            }
-        }
-        label: Label {}
+        id: catalog
+        name: "cura"
     }
 
-    menu: PrinterMenu { }
+    headerItem: Item
+    {
+        Label
+        {
+            text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+            verticalAlignment: Text.AlignVCenter
+            height: parent.height
+        }
+    }
+
+    popupItem: Item
+    {
+        id: popup
+        width: 240
+        height: 200
+
+        ScrollView
+        {
+            anchors.fill: parent
+            contentHeight: column.implicitHeight
+            contentWidth: row.implicitWidth
+            clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            Column
+            {
+                id: column
+                anchors.fill: parent
+                Label
+                {
+                    text: catalog.i18nc("@label", "Networked Printers")
+                    visible: networkedPrintersModel.items.length > 0
+                    height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
+                    font: UM.Theme.getFont("medium_bold")
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Repeater
+                {
+                    id: networkedPrinters
+
+                    model: UM.ContainerStacksModel
+                    {
+                        id: networkedPrintersModel
+                        filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
+                    }
+
+                    delegate: RoundButton
+                    {
+                        text: name
+                        width: parent.width
+
+                        checkable: true
+                        onClicked: Cura.MachineManager.setActiveMachine(model.id)
+                        radius: UM.Theme.getSize("default_radius").width
+
+                        Connections
+                        {
+                            target: Cura.MachineManager
+                            onActiveMachineNetworkGroupNameChanged: checked = Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+                        }
+                    }
+
+                }
+
+                Label
+                {
+                    text: catalog.i18nc("@label", "Virtual Printers")
+                    visible: virtualPrintersModel.items.length > 0
+                    height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
+                    font: UM.Theme.getFont("medium_bold")
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Repeater
+                {
+                    id: virtualPrinters
+
+                    model: UM.ContainerStacksModel
+                    {
+                        id: virtualPrintersModel
+                        filter: {"type": "machine", "um_network_key": null}
+                    }
+
+                    delegate: RoundButton
+                    {
+                        text: name
+                        width: parent.width
+                        checked: Cura.MachineManager.activeMachineId == model.id
+                        checkable: true
+                        onClicked: Cura.MachineManager.setActiveMachine(model.id)
+                        radius: UM.Theme.getSize("default_radius").width
+                    }
+
+                }
+            }
+        }
+    }
 }
