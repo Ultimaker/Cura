@@ -37,7 +37,7 @@ Item
             anchors.top: packageName.bottom
             width: parent.width
             text: model.description
-            maximumLineCount: 3
+            maximumLineCount: 6
             elide: Text.ElideRight
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
