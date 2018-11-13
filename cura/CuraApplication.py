@@ -128,8 +128,9 @@ if TYPE_CHECKING:
 numpy.seterr(all = "ignore")
 
 try:
-    from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
+    from cura.CuraVersion import CuraAppName, CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
 except ImportError:
+    CuraAppName = "cura"
     CuraAppDisplayName = "Ultimaker Cura"
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
@@ -161,7 +162,7 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self, *args, **kwargs):
-        super().__init__(name = "cura",
+        super().__init__(name = CuraAppName,
                          app_display_name = CuraAppDisplayName,
                          version = CuraVersion,
                          api_version = CuraSDKVersion,

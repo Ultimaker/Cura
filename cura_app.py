@@ -26,13 +26,18 @@ parser.add_argument("--trigger-early-crash",
 known_args = vars(parser.parse_known_args()[0])
 
 if not known_args["debug"]:
+    try:
+        from cura.CuraVersion import CuraAppName  # type: ignore
+    except ImportError:
+        CuraAppName = "cura"
+
     def get_cura_dir_path():
         if Platform.isWindows():
-            return os.path.expanduser("~/AppData/Roaming/cura")
+            return os.path.expanduser("~/AppData/Roaming/" + CuraAppName)
         elif Platform.isLinux():
-            return os.path.expanduser("~/.local/share/cura")
+            return os.path.expanduser("~/.local/share/" + CuraAppName)
         elif Platform.isOSX():
-            return os.path.expanduser("~/Library/Logs/cura")
+            return os.path.expanduser("~/Library/Logs/" + CuraAppName)
 
     if hasattr(sys, "frozen"):
         dirpath = get_cura_dir_path()
