@@ -139,7 +139,7 @@ class LegacyProfileReader(ProfileReader):
             definitions = current_printer_definition.findDefinitions(key = new_setting)
             if definitions:
                 if new_value != value_using_defaults and definitions[0].default_value != new_value:  # Not equal to the default in the new Cura OR the default in the legacy Cura.
-                    output_parser["values"][new_setting] = new_value # Store the setting in the profile!
+                    output_parser["values"][new_setting] = str(new_value) # Store the setting in the profile!
 
         if len(output_parser["values"]) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
