@@ -26,49 +26,56 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: UM.Theme.getSize("default_margin").width
         height: parent.height
-        ComboBox
+
+        Rectangle
         {
-            // This item contains the views selector, a combobox that is dynamically created from
-            // the list of available Views (packages that create different visualizations of the
-            // scene).
-            id: viewModeButton
-
-            style: UM.Theme.styles.combobox
-
-            model: UM.ViewModel { }
-            textRole: "name"
-
-            // update the model's active index
-            function updateItemActiveFlags()
+            color: UM.Theme.getColor("tool_panel_background")
+            width: viewModeButton.width + 2 * UM.Theme.getSize("default_margin").width
+            height: parent.height
+            ComboBox
             {
-                currentIndex = getActiveIndex()
-                for (var i = 0; i < model.rowCount(); i++)
-                {
-                    model.getItem(i).active = (i == currentIndex)
-                }
-            }
+                // This item contains the views selector, a combobox that is dynamically created from
+                // the list of available Views (packages that create different visualizations of the
+                // scene).
+                id: viewModeButton
 
-            // get the index of the active model item on start
-            function getActiveIndex()
-            {
-                for (var i = 0; i < model.rowCount(); i++)
+                style: UM.Theme.styles.combobox
+                anchors.centerIn: parent
+                model: UM.ViewModel { }
+                textRole: "name"
+
+                // update the model's active index
+                function updateItemActiveFlags()
                 {
-                    if (model.getItem(i).active)
+                    currentIndex = getActiveIndex()
+                    for (var i = 0; i < model.rowCount(); i++)
                     {
-                        return i;
+                        model.getItem(i).active = (i == currentIndex)
                     }
                 }
-                return 0
-            }
 
-            onCurrentIndexChanged:
-            {
-                if (model.getItem(currentIndex).id != undefined)
+                // get the index of the active model item on start
+                function getActiveIndex()
                 {
-                    UM.Controller.setActiveView(model.getItem(currentIndex).id)
+                    for (var i = 0; i < model.rowCount(); i++)
+                    {
+                        if (model.getItem(i).active)
+                        {
+                            return i;
+                        }
+                    }
+                    return 0
                 }
+
+                onCurrentIndexChanged:
+                {
+                    if (model.getItem(currentIndex).id != undefined)
+                    {
+                        UM.Controller.setActiveView(model.getItem(currentIndex).id)
+                    }
+                }
+                currentIndex: getActiveIndex()
             }
-            currentIndex: getActiveIndex()
         }
 
         Loader
