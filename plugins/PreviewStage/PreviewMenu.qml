@@ -28,8 +28,6 @@ Item
         anchors.fill: stageMenu
         anchors.leftMargin: -radius
         radius: UM.Theme.getSize("default_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("lining")
         color: UM.Theme.getColor("toolbar_background")
     }
 
@@ -43,7 +41,7 @@ Item
         {
             anchors.centerIn: parent
             spacing: UM.Theme.getSize("default_margin").width
-            height: parent.height - 2 * UM.Theme.getSize("default_lining").width
+            height: parent.height
 
             Item
             {

@@ -40,8 +40,7 @@ Item
         {
             id: itemRowBackground
             radius: UM.Theme.getSize("default_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("lining")
+
             color: UM.Theme.getColor("toolbar_background")
 
             width: itemRow.width + UM.Theme.getSize("default_margin").width
@@ -57,7 +56,7 @@ Item
                 anchors.centerIn: parent
 
                 width: 0.9 * prepareMenu.width
-                height: parent.height - 2 * UM.Theme.getSize("default_lining").width
+                height: parent.height
 
                 Cura.MachineSelector
                 {
