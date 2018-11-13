@@ -23,6 +23,7 @@ from . import CuraEngineBackendPatches
 from . import PrintInformationPatches
 from . import PatchedMaterialManager
 from . import USBPrinterOutputDevicePatches
+from . import FlavorParserPatches
 
 from PyQt5.QtQml import qmlRegisterSingletonType
 
@@ -132,6 +133,12 @@ class BlackBeltPlugin(Extension):
         self._application._material_manager.initialize()
 
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
+
+        gcode_reader_plugin = PluginRegistry.getInstance().getPluginObject("GCodeReader")
+        self._flavor_parser_patches = {}
+        if gcode_reader_plugin:
+            for (parser_name, parser_object) in gcode_reader_plugin._flavor_readers_dict.items():
+                self._flavor_parser_patches[parser_name] = FlavorParserPatches.FlavorParserPatches(parser_object)
 
         self._fixVisibilityPreferences(forced = self._force_visibility_update)
         self._force_visibility_update = False
