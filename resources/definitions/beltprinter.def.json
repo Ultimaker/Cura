@@ -378,7 +378,8 @@
                 "quarter_cubic": "Quarter Cubic",
                 "zigzag": "Zig Zag",
                 "cross": "Cross",
-                "cross_3d": "Cross 3D"
+                "cross_3d": "Cross 3D",
+                "gyroid": "Gyroid"
             }
         },
         "infill_angles": {

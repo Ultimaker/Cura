@@ -80,7 +80,6 @@ Added comment generation to indicate which mesh the GCODE after this comment is 
 - Fixed an issue where some support layers don't have support infill.
 
 [3.5.0]
-
 *Monitor page
 The monitor page of Ultimaker Cura has been remodeled for better consistency with the Cura Connect ‘Print jobs’ interface. This means less switching between interfaces, and more control from within Ultimaker Cura.
 
