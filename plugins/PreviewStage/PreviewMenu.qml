@@ -78,7 +78,7 @@ Item
 
             property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
 
-            height: childrenRect.height
+            height: parent.height
             width: childrenRect.width
 
             source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""

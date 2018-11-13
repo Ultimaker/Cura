@@ -47,6 +47,14 @@ Item
         popup.contentItem = popupItem
     }
 
+    Connections
+    {
+        // Since it could be that the popup is dynamically populated, we should also take these changes into account.
+        target: popupItem
+        onWidthChanged: popup.width = popupItem.width + 2 * popup.padding
+        onHeightChanged: popup.height = popupItem.height + 2 * popup.padding
+    }
+
     implicitHeight: 100
     implicitWidth: 400
     Rectangle

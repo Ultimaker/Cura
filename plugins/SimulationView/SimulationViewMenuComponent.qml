@@ -10,19 +10,13 @@ import QtGraphicalEffects 1.0
 import UM 1.0 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+
+Cura.ExpandableComponent
 {
     id: base
 
-    color: UM.Theme.getColor("tool_panel_background")
-    border.width: UM.Theme.getSize("default_lining").width
-    border.color: UM.Theme.getColor("lining")
-
     width: UM.Theme.getSize("layerview_menu_size").width
-
-    height: viewSettings.collapsed ? layerViewTypesLabel.height + 2 * UM.Theme.getSize("default_margin").height  : childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
-
-    Behavior on height { NumberAnimation { duration: 100 } }
+    iconSource: UM.Theme.getIcon("pencil")
 
     property var buttonTarget:
     {
@@ -51,59 +45,21 @@ Rectangle
         }
     }
 
-    Label
+    headerItem: Label
     {
         id: layerViewTypesLabel
-        text: catalog.i18nc("@label","Color scheme")
-        font: UM.Theme.getFont("default");
+        text: catalog.i18nc("@label", "Color scheme")
+        font: UM.Theme.getFont("default")
         visible: !UM.SimulationView.compatibilityMode
         color: UM.Theme.getColor("setting_control_text")
-        height: contentHeight
-        anchors
-        {
-            top: parent.top
-            margins: UM.Theme.getSize("default_margin").height
-            right: collapseButton.left
-            left: parent.left
-        }
+        height: base.height
+        verticalAlignment: Text.AlignVCenter
     }
 
-    Button
-    {
-        id: collapseButton
-
-        anchors
-        {
-            top: parent.top
-            margins: UM.Theme.getSize("default_margin").width
-            right: parent.right
-        }
-
-        width: UM.Theme.getSize("standard_arrow").width
-        height: UM.Theme.getSize("standard_arrow").height
-
-        onClicked: viewSettings.collapsed = !viewSettings.collapsed
-
-        style: ButtonStyle
-        {
-            background: UM.RecolorImage
-            {
-                width: control.width
-                height: control.height
-                sourceSize.width: width
-                sourceSize.height: width
-                color:  UM.Theme.getColor("setting_control_text")
-                source: viewSettings.collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
-            }
-            label: Label{ }
-        }
-    }
-
-    Column
+    popupItem: Column
     {
         id: viewSettings
 
-        property bool collapsed: false
         property var extruder_opacities: UM.Preferences.getValue("layerview/extruder_opacities").split("|")
         property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
         property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
@@ -118,18 +74,10 @@ Rectangle
         property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
         property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
-        anchors
-        {
-            top: layerViewTypesLabel.bottom
-            left: parent.left
-            right: parent.right
-            margins: UM.Theme.getSize("default_margin").height
-
-        }
+        width: UM.Theme.getSize("layerview_menu_size").width
+        height: childrenRect.height
 
         spacing: UM.Theme.getSize("layerview_row_spacing").height
-
-        visible: !collapsed
 
         ListModel  // matches SimulationView.py
         {
