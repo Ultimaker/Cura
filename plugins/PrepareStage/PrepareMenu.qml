@@ -23,18 +23,29 @@ Item
     Item
     {
         anchors.horizontalCenter: parent.horizontalCenter
-        width: openFileButton.width + itemRowBackground.width
+        width: openFileButtonBackground.width + itemRowBackground.width
         height: parent.height
 
-        Button
+        Rectangle
         {
-            id: openFileButton
-            text: catalog.i18nc("@action:button", "Open File")
-            iconSource: UM.Theme.getIcon("load")
-            style: UM.Theme.styles.tool_button
-            tooltip: ""
-            action: Cura.Actions.open
+            id: openFileButtonBackground
+            height: UM.Theme.getSize("stage_menu").height
+            width: UM.Theme.getSize("stage_menu").height
+
+            radius: UM.Theme.getSize("default_radius").width
+            color: UM.Theme.getColor("toolbar_background")
+            Button
+            {
+                id: openFileButton
+                text: catalog.i18nc("@action:button", "Open File")
+                iconSource: UM.Theme.getIcon("load")
+                style: UM.Theme.styles.toolbar_button
+                tooltip: ""
+                action: Cura.Actions.open
+                anchors.centerIn: parent
+            }
         }
+
 
         Rectangle
         {
@@ -46,7 +57,7 @@ Item
             width: itemRow.width + UM.Theme.getSize("default_margin").width
             height: parent.height
 
-            anchors.left: openFileButton.right
+            anchors.left: openFileButtonBackground.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             RowLayout
@@ -57,6 +68,7 @@ Item
 
                 width: 0.9 * prepareMenu.width
                 height: parent.height
+                spacing: 0
 
                 Cura.MachineSelector
                 {
