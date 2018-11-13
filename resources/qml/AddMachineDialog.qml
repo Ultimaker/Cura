@@ -25,7 +25,8 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
-    flags: {
+    flags:
+    {
         var window_flags = Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint;
         if (Cura.MachineManager.activeDefinitionId !== "") //Disallow closing the window if we have no active printer yet. You MUST add a printer.
         {
@@ -48,22 +49,28 @@ UM.Dialog
 
     function getMachineName()
     {
-        return machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).name : "";
+        if (machineList.model.getItem(machineList.currentIndex) != undefined)
+        {
+            return machineList.model.getItem(machineList.currentIndex).name;
+        }
+        return  "";
     }
 
     function getMachineMetaDataEntry(key)
     {
-        var metadata = machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).metadata : undefined;
-        if (metadata)
+        if (machineList.model.getItem(machineList.currentIndex) != undefined)
         {
-            return metadata[key];
+            return machineList.model.getItem(machineList.currentIndex).metadata[key];
         }
-        return undefined;
+        return  "";
     }
-    Label {
+
+    Label
+    {
         id: titleLabel
 
-        anchors {
+        anchors
+        {
             top: parent.top
             left: parent.left
             topMargin: UM.Theme.getSize("default_margin")
@@ -82,7 +89,7 @@ UM.Dialog
             top: titleLabel.bottom
             topMargin: UM.Theme.getSize("default_margin").height
         }
-        text: catalog.i18nc("@title:tab", "Select the printer you want to use from the list below.\n\nIf your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and match adjust the settings to match your printer in the next dialog.")
+        text: catalog.i18nc("@title:tab", "Select the printer you want to use from the list below.\n\nIf your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog.")
         width: parent.width
         wrapMode: Text.WordWrap
     }
@@ -102,7 +109,8 @@ UM.Dialog
         width: Math.round(parent.width * 0.45)
 
         frameVisible: true;
-        Rectangle {
+        Rectangle
+        {
             parent: viewport
             anchors.fill: parent
             color: palette.light
@@ -159,11 +167,14 @@ UM.Dialog
                 onClicked:
                 {
                     base.activeCategory = section;
-                    if (machineList.model.getItem(machineList.currentIndex).section != section) {
+                    if (machineList.model.getItem(machineList.currentIndex).section != section)
+                    {
                         // Find the first machine from this section
-                        for(var i = 0; i < machineList.model.rowCount(); i++) {
+                        for(var i = 0; i < machineList.model.rowCount(); i++)
+                        {
                             var item = machineList.model.getItem(i);
-                            if (item.section == section) {
+                            if (item.section == section)
+                            {
                                 machineList.currentIndex = i;
                                 break;
                             }

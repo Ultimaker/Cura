@@ -140,7 +140,7 @@ class SettingVisibilityPresetsModel(QObject):
         item_to_set = self._active_preset_item
         if matching_preset_item is None:
             # The new visibility setup is "custom" should be custom
-            if self._active_preset_item.presetId == "custom":
+            if self._active_preset_item is None or self._active_preset_item.presetId == "custom":
                 # We are already in custom, just save the settings
                 self._preferences.setValue("cura/custom_visible_settings", visibility_string)
             else:

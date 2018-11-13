@@ -8,13 +8,14 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0000\n"
-"PO-Revision-Date: 2018-10-01 14:10+0100\n"
+"PO-Revision-Date: 2018-11-06 15:03+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -547,7 +548,7 @@ msgstr "Maximale Acceleratie X"
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
-msgstr "De maximale acceleratie van de motor in de X-richting."
+msgstr "De maximale acceleratie van de motor in de X-richting"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y label"
@@ -697,7 +698,7 @@ msgstr "Minimale Doorvoersnelheid"
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate description"
 msgid "The minimal movement speed of the print head."
-msgstr "De minimale bewegingssnelheid van de printkop"
+msgstr "De minimale bewegingssnelheid van de printkop."
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter label"
@@ -747,7 +748,7 @@ msgstr "Lijnbreedte"
 #: fdmprinter.def.json
 msgctxt "line_width description"
 msgid "Width of a single line. Generally, the width of each line should correspond to the width of the nozzle. However, slightly reducing this value could produce better prints."
-msgstr "De breedte van een enkele lijn. Over het algemeen dient de breedte van elke lijn overeen te komen met de breedte van de nozzle. Wanneer deze waarde echter iets wordt verlaagd, resulteert dit in betere prints"
+msgstr "De breedte van een enkele lijn. Over het algemeen dient de breedte van elke lijn overeen te komen met de breedte van de nozzle. Wanneer deze waarde echter iets wordt verlaagd, resulteert dit in betere prints."
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width label"
@@ -1077,7 +1078,7 @@ msgstr "Boven-/onderkant Polygonen Verbinden"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "Verbind skinpaden aan de boven-/onderkant waar ze naast elkaar lopen. Met deze instelling wordt bij concentrische patronen de bewegingstijd aanzienlijk verkort. Dit kan echter ten koste gaan van de kwaliteit van de bovenste laag aangezien de verbindingen in het midden van de vulling kunnen komen te liggen."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1497,7 +1498,7 @@ msgstr "Vulpatroon"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor wordt bespaard op materiaalkosten. De raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden elke laag volledig geprint. Gyroïde, kubische, afgeknotte kubus- en achtvlaksvullingen veranderen elke laag voor een meer gelijke krachtverdeling in elke richting."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1562,7 +1563,7 @@ msgstr "Kruis 3D"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroïde"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1866,7 +1867,7 @@ msgstr "Standaard printtemperatuur"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr "De standaardtemperatuur waarmee wordt geprint. Dit moet overeenkomen met de basistemperatuur van een materiaal. Voor alle andere printtemperaturen moet een offset worden gebruikt die gebaseerd is op deze waarde."
+msgstr "De standaardtemperatuur waarmee wordt geprint. Dit moet overeenkomen met de basistemperatuur van een materiaal. Voor alle andere printtemperaturen moet een offset worden gebruikt die gebaseerd is op deze waarde"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1926,7 +1927,7 @@ msgstr "Standaardtemperatuur platform"
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
-msgstr "De standaardtemperatuur die wordt gebruikt voor het verwarmde platform. Dit moet overeenkomen met de basistemperatuur van een platform. Voor alle andere printtemperaturen moet een offset worden gebruikt die is gebaseerd op deze waarde."
+msgstr "De standaardtemperatuur die wordt gebruikt voor het verwarmde platform. Dit moet overeenkomen met de basistemperatuur van een platform. Voor alle andere printtemperaturen moet een offset worden gebruikt die is gebaseerd op deze waarde"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -2016,7 +2017,7 @@ msgstr "Intrekken bij laagwisseling"
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change description"
 msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "Trek het filament in wanneer de nozzle naar de volgende laag beweegt. "
+msgstr "Trek het filament in wanneer de nozzle naar de volgende laag beweegt."
 
 #: fdmprinter.def.json
 msgctxt "retraction_amount label"
@@ -2386,7 +2387,7 @@ msgstr "Maximale Snelheid voor het Afstemmen van Doorvoer"
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_max description"
 msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
-msgstr "Maximale printsnelheid tijdens het aanpassen van de printsnelheid om de doorvoer af te stemmen"
+msgstr "Maximale printsnelheid tijdens het aanpassen van de printsnelheid om de doorvoer af te stemmen."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled label"
@@ -3271,32 +3272,32 @@ msgstr "Richting van het vulpatroon voor supportstructuren. Het vulpatroon voor 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "Supportbrim inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Genereer een brim binnen de supportvulgebieden van de eerste laag. Deze brim wordt niet rondom maar onder de supportstructuur geprint. Als u deze instelling inschakelt, hecht de supportstructuur beter aan het platform."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "Breedte supportbrim"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "De breedte van de brim die onder de support wordt geprint. Een bredere brim kost meer materiaal, maar hecht beter aan het platform."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "Aantal supportbrimlijnen"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Het aantal lijnen dat voor de supportbrim wordt gebruikt. Meer brimlijnen zorgen voor betere hechting aan het platform, maar kosten wat extra materiaal."
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3870,12 +3871,12 @@ msgstr "Het aantal lijnen dat voor een brim wordt gebruikt. Meer lijnen zorgen v
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "Brim vervangt supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "Dwing af dat de brim rond het model wordt geprint, zelfs als deze ruimte anders door supportstructuur zou worden ingenomen. Hierdoor worden enkele gebieden van de eerste supportlaag vervangen door brimgebieden."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"

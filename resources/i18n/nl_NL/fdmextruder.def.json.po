@@ -169,12 +169,12 @@ msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt terugge
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
-msgstr ""
+msgstr "Printkoelventilator van extruder"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr ""
+msgstr "Het nummer van de bij deze extruder behorende printkoelventilator. Verander de standaardwaarde 0 alleen als u voor elke extruder een andere printkoelventilator hebt."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"

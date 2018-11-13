@@ -590,13 +590,27 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                    origin_name=change["origin_name"]))
         return result
 
-    def _createMaterialOutputModel(self, material_data) -> MaterialOutputModel:
-        containers = ContainerRegistry.getInstance().findInstanceContainers(type="material", GUID=material_data["guid"])
-        if containers:
-            color = containers[0].getMetaDataEntry("color_code")
-            brand = containers[0].getMetaDataEntry("brand")
-            material_type = containers[0].getMetaDataEntry("material")
-            name = containers[0].getName()
+    def _createMaterialOutputModel(self, material_data: Dict[str, Any]) -> "MaterialOutputModel":
+        material_manager = CuraApplication.getInstance().getMaterialManager()
+        material_group_list = material_manager.getMaterialGroupListByGUID(material_data["guid"])
+
+        # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
+        read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
+        non_read_only_material_group_list = list(filter(lambda x: not x.is_read_only, material_group_list))
+        material_group = None
+        if read_only_material_group_list:
+            read_only_material_group_list = sorted(read_only_material_group_list, key = lambda x: x.name)
+            material_group = read_only_material_group_list[0]
+        elif non_read_only_material_group_list:
+            non_read_only_material_group_list = sorted(non_read_only_material_group_list, key = lambda x: x.name)
+            material_group = non_read_only_material_group_list[0]
+
+        if material_group:
+            container = material_group.root_material_node.getContainer()
+            color = container.getMetaDataEntry("color_code")
+            brand = container.getMetaDataEntry("brand")
+            material_type = container.getMetaDataEntry("material")
+            name = container.getName()
         else:
             Logger.log("w",
                        "Unable to find material with guid {guid}. Using data as provided by cluster".format(

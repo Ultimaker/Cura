@@ -8,13 +8,15 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-10-29 15:01+0100\n"
-"PO-Revision-Date: 2018-10-01 11:30+0100\n"
+"PO-Revision-Date: 2018-11-06 15:03+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:22
 msgctxt "@action"
@@ -47,7 +49,7 @@ msgstr "GCodeWriter ondersteunt geen non-tekstmodus."
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:89
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
-msgstr ""
+msgstr "Bereid voorafgaand aan het exporteren G-code voor."
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
@@ -76,7 +78,7 @@ msgstr "Wijzigingenlogboek Weergeven"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
 msgid "Update Firmware"
-msgstr ""
+msgstr "Firmware bijwerken"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
 msgctxt "@item:inmenu"
@@ -439,7 +441,7 @@ msgstr "De PrintCores en/of materialen in de printer wijken af van de PrintCores
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:91
 msgctxt "@info:status"
 msgid "Connected over the network"
-msgstr "Via het netwerk verbonden."
+msgstr "Via het netwerk verbonden"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:303
 msgctxt "@info:status"
@@ -820,7 +822,7 @@ msgstr "Vooraf geslicet bestand {0}"
 #: /home/ruben/Projects/Cura/cura/API/Account.py:71
 msgctxt "@info:title"
 msgid "Login failed"
-msgstr ""
+msgstr "Inloggen mislukt"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:201
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
@@ -894,32 +896,32 @@ msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>: <message>{
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
-msgstr ""
+msgstr "Er is geen aangepast profiel om in het bestand <filename>{0}</filename> te importeren"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-msgstr ""
+msgstr "Dit profiel <filename>{0}</filename> bevat incorrecte gegevens. Kan het profiel niet importeren."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr ""
+msgstr "De machine die is vastgelegd in het profiel <filename>{0}</filename> ({1}), komt niet overeen met uw huidige machine ({2}). Kan het profiel niet importeren."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:312
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
 #, python-brace-format
@@ -1346,7 +1348,7 @@ msgstr "Hoogte rijbrug"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:238
 msgctxt "@tooltip"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
-msgstr "Het hoogteverschil tussen de punt van de nozzle en het rijbrugsysteem (X- en Y-as). Wordt tijdens \"een voor een\"-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en het rijbrugsysteem te voorkomen"
+msgstr "Het hoogteverschil tussen de punt van de nozzle en het rijbrugsysteem (X- en Y-as). Wordt tijdens \"een voor een\"-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en het rijbrugsysteem te voorkomen."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:257
 msgctxt "@label"
@@ -1406,7 +1408,7 @@ msgstr "Nozzle-offset Y"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:451
 msgctxt "@label"
 msgid "Cooling Fan Number"
-msgstr ""
+msgstr "Nummer van koelventilator"
 
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -1525,7 +1527,7 @@ msgstr "Terug"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
-msgstr ""
+msgstr "De-installeren bevestigen"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
@@ -1668,7 +1670,7 @@ msgstr "Sluiten"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
 msgid "Update Firmware"
-msgstr ""
+msgstr "Firmware bijwerken"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:39
 msgctxt "@label"
@@ -1693,12 +1695,12 @@ msgstr "Aangepaste Firmware Uploaden"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:83
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
-msgstr ""
+msgstr "Kan de firmware niet bijwerken omdat er geen verbinding met de printer is."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:91
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
-msgstr ""
+msgstr "Kan de firmware niet bijwerken omdat de verbinding met de printer geen ondersteuning biedt voor het uitvoeren van een firmware-upgrade."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:98
 msgctxt "@title:window"
@@ -1933,62 +1935,62 @@ msgstr "Wachten op: "
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:299
 msgctxt "@label"
 msgid "Configuration change"
-msgstr ""
+msgstr "Configuratiewijziging"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:365
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change(s):"
-msgstr ""
+msgstr "Voor de toegewezen printer, 1%, is/zijn de volgende configuratiewijziging/configuratiewijzigingen vereist:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:367
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr ""
+msgstr "De printer 1% is toegewezen. De taak bevat echter een onbekende materiaalconfiguratie."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:375
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr ""
+msgstr "Wijzig het materiaal %1 van %2 in %3."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:378
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
-msgstr ""
+msgstr "Laad %3 als materiaal %1 (kan niet worden overschreven)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:381
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
-msgstr ""
+msgstr "Wijzig de print core %1 van %2 in %3."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:384
 msgctxt "@label"
 msgid "Change build plate to %1 (This cannot be overridden)."
-msgstr ""
+msgstr "Wijzig het platform naar %1 (kan niet worden overschreven)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:404
 msgctxt "@label"
 msgid "Override"
-msgstr ""
+msgstr "Overschrijven"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:432
 msgctxt "@label"
 msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
-msgstr ""
+msgstr "Als u een printtaak met een incompatibele configuratie start, kan dit leiden tot schade aan de 3D-printer. Weet u zeker dat u de configuratie en print %1 wilt overschrijven?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:435
 msgctxt "@window:title"
 msgid "Override configuration configuration and start print"
-msgstr ""
+msgstr "Configuratie overschrijven en printen starten"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:466
 msgctxt "@label"
 msgid "Glass"
-msgstr ""
+msgstr "Glas"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:469
 msgctxt "@label"
 msgid "Aluminum"
-msgstr ""
+msgstr "Aluminium"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:39
 msgctxt "@label link to connect manager"
@@ -2202,12 +2204,12 @@ msgstr "Cura verzendt anonieme gegevens naar Ultimaker om de printkwaliteit en g
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:101
 msgctxt "@text:window"
 msgid "I don't want to send these data"
-msgstr "Ik wil deze gegevens niet verzenden."
+msgstr "Ik wil deze gegevens niet verzenden"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:111
 msgctxt "@text:window"
 msgid "Allow sending these data to Ultimaker and help us improve Cura"
-msgstr "Verzenden van deze gegevens naar Ultimaker toestaan en ons helpen Cura te verbeteren."
+msgstr "Verzenden van deze gegevens naar Ultimaker toestaan en ons helpen Cura te verbeteren"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -2247,7 +2249,7 @@ msgstr "Breedte (mm)"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:103
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr "De diepte op het platform in millimeters."
+msgstr "De diepte op het platform in millimeters"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:108
 msgctxt "@action:label"
@@ -2478,7 +2480,7 @@ msgstr "Printerupgrades Selecteren"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:38
 msgctxt "@label"
 msgid "Please select any upgrades made to this Ultimaker 2."
-msgstr "Selecteer eventuele upgrades die op deze Ultimaker 2 zijn uitgevoerd"
+msgstr "Selecteer eventuele upgrades die op deze Ultimaker 2 zijn uitgevoerd."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:47
 msgctxt "@label"
@@ -2866,7 +2868,7 @@ msgstr "Verwijderen Bevestigen"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:240
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
-msgstr "Weet u zeker dat u %1 wilt verwijderen? Deze bewerking kan niet ongedaan worden gemaakt."
+msgstr "Weet u zeker dat u %1 wilt verwijderen? Deze bewerking kan niet ongedaan worden gemaakt!"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:277
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:285
@@ -3448,17 +3450,17 @@ msgstr "Ondersteuningsbibliotheek voor het verwerken van STL-bestanden"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:145
 msgctxt "@label"
 msgid "Support library for handling planar objects"
-msgstr ""
+msgstr "Ondersteuningsbibliotheek voor het verwerken van tweedimensionale objecten"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:146
 msgctxt "@label"
 msgid "Support library for handling triangular meshes"
-msgstr ""
+msgstr "Ondersteuningsbibliotheek voor het verwerken van driehoekig rasters"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:147
 msgctxt "@label"
 msgid "Support library for analysis of complex networks"
-msgstr ""
+msgstr "Ondersteuningsbibliotheek voor de analyse van complexe netwerken"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
 msgctxt "@label"
@@ -3468,7 +3470,7 @@ msgstr "Ondersteuningsbibliotheek voor het verwerken van 3MF-bestanden"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:149
 msgctxt "@label"
 msgid "Support library for file metadata and streaming"
-msgstr ""
+msgstr "Ondersteuningsbibliotheek voor bestandsmetadata en streaming"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:150
 msgctxt "@label"
@@ -3591,7 +3593,7 @@ msgstr "Beïnvloed door"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:155
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
-msgstr "Deze instelling wordt altijd door alle extruders gedeeld. Als u hier de instelling wijzigt, wordt de waarde voor alle extruders gewijzigd"
+msgstr "Deze instelling wordt altijd door alle extruders gedeeld. Als u hier de instelling wijzigt, wordt de waarde voor alle extruders gewijzigd."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:158
 msgctxt "@label"
@@ -4539,7 +4541,7 @@ msgstr "Huidig platform schikken"
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "Biedt een manier om de machine-instellingen (zoals bouwvolume, maat nozzle, enz.) te wijzigen"
+msgstr "Biedt een manier om de machine-instellingen (zoals bouwvolume, maat nozzle, enz.) te wijzigen."
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
@@ -4619,12 +4621,12 @@ msgstr "Wijzigingenlogboek"
 #: FirmwareUpdater/plugin.json
 msgctxt "description"
 msgid "Provides a machine actions for updating firmware."
-msgstr ""
+msgstr "Biedt machineacties voor het bijwerken van de firmware."
 
 #: FirmwareUpdater/plugin.json
 msgctxt "name"
 msgid "Firmware Updater"
-msgstr ""
+msgstr "Firmware-updater"
 
 #: ProfileFlattener/plugin.json
 msgctxt "description"
@@ -4649,7 +4651,7 @@ msgstr "USB-printen"
 #: UserAgreement/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license."
-msgstr "Vraag de gebruiker één keer of deze akkoord gaat met de licentie"
+msgstr "Vraag de gebruiker één keer of deze akkoord gaat met de licentie."
 
 #: UserAgreement/plugin.json
 msgctxt "name"
@@ -4709,7 +4711,7 @@ msgstr "Invoegtoepassing voor Verwijderbaar uitvoerapparaat"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr "Hiermee beheert u netwerkverbindingen naar Ultimaker 3-printers"
+msgstr "Hiermee beheert u netwerkverbindingen naar Ultimaker 3-printers."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -4844,7 +4846,7 @@ msgstr "Hiermee worden configuraties bijgewerkt van Cura 2.5 naar Cura 2.6."
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.5 to 2.6"
-msgstr "Versie-upgrade van 2.5 naar 2.6."
+msgstr "Versie-upgrade van 2.5 naar 2.6"
 
 #: VersionUpgrade/VersionUpgrade27to30/plugin.json
 msgctxt "description"
@@ -4884,7 +4886,7 @@ msgstr "Hiermee worden configuraties bijgewerkt van Cura 2.6 naar Cura 2.7."
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.6 to 2.7"
-msgstr "Versie-upgrade van 2.6 naar 2.7."
+msgstr "Versie-upgrade van 2.6 naar 2.7"
 
 #: VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4904,7 +4906,7 @@ msgstr "Hiermee worden configuraties bijgewerkt van Cura 2.2 naar Cura 2.4."
 #: VersionUpgrade/VersionUpgrade22to24/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
-msgstr "Versie-upgrade van 2.2 naar 2.4."
+msgstr "Versie-upgrade van 2.2 naar 2.4"
 
 #: ImageReader/plugin.json
 msgctxt "description"

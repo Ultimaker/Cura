@@ -265,21 +265,25 @@ class Toolbox(QObject, Extension):
             raise Exception("Failed to create Marketplace dialog")
         return dialog
 
-    def _convertPluginMetadata(self, plugin: Dict[str, Any]) -> Dict[str, Any]:
-        formatted = {
-            "package_id": plugin["id"],
-            "package_type": "plugin",
-            "display_name": plugin["plugin"]["name"],
-            "package_version": plugin["plugin"]["version"],
-            "sdk_version": plugin["plugin"]["api"],
-            "author": {
-                "author_id": plugin["plugin"]["author"],
-                "display_name": plugin["plugin"]["author"]
-            },
-            "is_installed": True,
-            "description": plugin["plugin"]["description"]
-        }
-        return formatted
+    def _convertPluginMetadata(self, plugin_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        try:
+            formatted = {
+                "package_id": plugin_data["id"],
+                "package_type": "plugin",
+                "display_name": plugin_data["plugin"]["name"],
+                "package_version": plugin_data["plugin"]["version"],
+                "sdk_version": plugin_data["plugin"]["api"],
+                "author": {
+                    "author_id": plugin_data["plugin"]["author"],
+                    "display_name": plugin_data["plugin"]["author"]
+                },
+                "is_installed": True,
+                "description": plugin_data["plugin"]["description"]
+            }
+            return formatted
+        except:
+            Logger.log("w", "Unable to convert plugin meta data %s", str(plugin_data))
+            return None
 
     @pyqtSlot()
     def _updateInstalledModels(self) -> None:
@@ -299,7 +303,9 @@ class Toolbox(QObject, Extension):
 
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)
                 new_metadata = self._convertPluginMetadata(old_metadata)
-
+                if new_metadata is None:
+                    # Something went wrong converting it.
+                    continue
                 self._old_plugin_ids.add(plugin_id)
                 self._old_plugin_metadata[new_metadata["package_id"]] = new_metadata
 

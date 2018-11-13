@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-29 15:01+0100\n"
-"PO-Revision-Date: 2018-09-28 14:25+0100\n"
+"PO-Revision-Date: 2018-11-06 15:00+0100\n"
 "Last-Translator: Jinbuhm Kim <Jinbuhm.Kim@gmail.com>\n"
 "Language-Team: Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -49,7 +49,7 @@ msgstr "GCodeWriter는 텍스트가 아닌 모드는 지원하지 않습니다."
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:89
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
-msgstr ""
+msgstr "내보내기 전에 G-code를 준비하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
@@ -78,7 +78,7 @@ msgstr "변경 내역 표시"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
 msgid "Update Firmware"
-msgstr ""
+msgstr "펌웨어 업데이트"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
 msgctxt "@item:inmenu"
@@ -822,7 +822,7 @@ msgstr "미리 슬라이싱한 파일 {0}"
 #: /home/ruben/Projects/Cura/cura/API/Account.py:71
 msgctxt "@info:title"
 msgid "Login failed"
-msgstr ""
+msgstr "로그인 실패"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:201
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
@@ -896,32 +896,32 @@ msgstr "<filename>{0}</filename>: <message>{1}</message> 에서 프로파일을 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
-msgstr ""
+msgstr "<filename>{0}</filename>(으)로 가져올 사용자 정의 프로파일이 없습니다"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "<filename>{0}</filename>에서 프로파일을 가져오지 못했습니다:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-msgstr ""
+msgstr "프로파일 <filename>{0}</filename>에는 정확하지 않은 데이터가 포함되어 있으므로, 불러올 수 없습니다."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr ""
+msgstr "프로필 <filename>{0}</filename>({1})에 정의된 제품이 현재 제품({2})과 일치하지 않으므로, 불러올 수 없습니다."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:312
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "<filename>{0}</filename>에서 프로파일을 가져오지 못했습니다:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
 #, python-brace-format
@@ -1408,7 +1408,7 @@ msgstr "노즐 오프셋 Y"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:451
 msgctxt "@label"
 msgid "Cooling Fan Number"
-msgstr ""
+msgstr "냉각 팬 번호"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:452
 msgctxt "@label"
@@ -1512,7 +1512,7 @@ msgstr "뒤로"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
 msgid "Confirm uninstall"
-msgstr ""
+msgstr "제거 확인"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
@@ -1537,7 +1537,7 @@ msgstr "확인"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:17
 msgctxt "@info"
 msgid "You will need to restart Cura before changes in packages have effect."
-msgstr "패키지의 변경 사항이 적용되기 전에 Cura를 다시 시작해야 합니다"
+msgstr "패키지의 변경 사항이 적용되기 전에 Cura를 다시 시작해야 합니다."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxFooter.qml:34
 msgctxt "@info:button"
@@ -1655,7 +1655,7 @@ msgstr "닫기"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
 msgid "Update Firmware"
-msgstr ""
+msgstr "펌웨어 업데이트"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:39
 msgctxt "@label"
@@ -1680,12 +1680,12 @@ msgstr "사용자 정의 펌웨어 업로드"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:83
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
-msgstr ""
+msgstr "프린터와 연결되지 않아 펌웨어를 업데이트할 수 없습니다."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:91
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
-msgstr ""
+msgstr "프린터와 연결이 펌웨어 업그레이드를 지원하지 않아 펌웨어를 업데이트할 수 없습니다."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:98
 msgctxt "@title:window"
@@ -1920,62 +1920,62 @@ msgstr "대기: "
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:299
 msgctxt "@label"
 msgid "Configuration change"
-msgstr ""
+msgstr "구성 변경"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:365
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change(s):"
-msgstr ""
+msgstr "할당된 프린터 %1의 구성을 다음과 같이 변경해야 합니다:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:367
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr ""
+msgstr "프린터 %1이(가) 할당되었으나 작업에 알 수 없는 재료 구성이 포함되어 있습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:375
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr ""
+msgstr "재료 %1을(를) %2에서 %3(으)로 변경합니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:378
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
-msgstr ""
+msgstr "%3을(를) 재료 %1(으)로 로드합니다(이 작업은 무효화할 수 없음)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:381
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
-msgstr ""
+msgstr "PrintCore %1을(를) %2에서 %3(으)로 변경합니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:384
 msgctxt "@label"
 msgid "Change build plate to %1 (This cannot be overridden)."
-msgstr ""
+msgstr "빌드 플레이트를 %1(으)로 변경합니다(이 작업은 무효화할 수 없음)."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:404
 msgctxt "@label"
 msgid "Override"
-msgstr ""
+msgstr "무시하기"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:432
 msgctxt "@label"
 msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
-msgstr ""
+msgstr "호환되지 않는 구성이 있는 인쇄 작업을 시작하면 3D 프린터가 손상될 수 있습니다. 구성을 재정의하고 %1을(를) 인쇄하시겠습니까?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:435
 msgctxt "@window:title"
 msgid "Override configuration configuration and start print"
-msgstr ""
+msgstr "구성 재정의 및 인쇄 시작"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:466
 msgctxt "@label"
 msgid "Glass"
-msgstr ""
+msgstr "유리"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintJobInfoBlock.qml:469
 msgctxt "@label"
 msgid "Aluminum"
-msgstr ""
+msgstr "알루미늄"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/ClusterMonitorItem.qml:39
 msgctxt "@label link to connect manager"
@@ -2204,7 +2204,7 @@ msgstr "이미지 변환 ..."
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:33
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
-msgstr "\"Base\"에서 각 픽셀까지의 최대 거리"
+msgstr "\"Base\"에서 각 픽셀까지의 최대 거리."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:38
 msgctxt "@action:label"
@@ -3433,17 +3433,17 @@ msgstr "STL 파일 처리를 위한 라이브러리"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:145
 msgctxt "@label"
 msgid "Support library for handling planar objects"
-msgstr ""
+msgstr "평면 개체 처리를 위한 지원 라이브러리"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:146
 msgctxt "@label"
 msgid "Support library for handling triangular meshes"
-msgstr ""
+msgstr "삼각형 메쉬 처리를 위한 지원 라이브러리"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:147
 msgctxt "@label"
 msgid "Support library for analysis of complex networks"
-msgstr ""
+msgstr "복잡한 네트워크 분석을 위한 지원 라이브러리"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:148
 msgctxt "@label"
@@ -3453,7 +3453,7 @@ msgstr "3MF 파일 처리를 위한 라이브러리"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:149
 msgctxt "@label"
 msgid "Support library for file metadata and streaming"
-msgstr ""
+msgstr "파일 메타데이터 및 스트리밍을 위한 지원 라이브러리"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:150
 msgctxt "@label"
@@ -4488,7 +4488,7 @@ msgstr "재료"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:543
 msgctxt "@label"
 msgid "Use glue with this material combination"
-msgstr "이 재료 조합과 함께 접착제를 사용하십시오."
+msgstr "이 재료 조합과 함께 접착제를 사용하십시오"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:575
 msgctxt "@label"
@@ -4598,12 +4598,12 @@ msgstr "변경 내역"
 #: FirmwareUpdater/plugin.json
 msgctxt "description"
 msgid "Provides a machine actions for updating firmware."
-msgstr ""
+msgstr "펌웨어 업데이트를 위한 기계 동작을 제공합니다."
 
 #: FirmwareUpdater/plugin.json
 msgctxt "name"
 msgid "Firmware Updater"
-msgstr ""
+msgstr "펌웨어 업데이터"
 
 #: ProfileFlattener/plugin.json
 msgctxt "description"
@@ -4688,7 +4688,7 @@ msgstr "이동식 드라이브 출력 장치 플러그인"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers."
-msgstr "Ultimaker 3 프린터에 대한 네트워크 연결을 관리합니다"
+msgstr "Ultimaker 3 프린터에 대한 네트워크 연결을 관리합니다."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
