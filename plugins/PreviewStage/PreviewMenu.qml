@@ -40,7 +40,7 @@ Item
         Row
         {
             anchors.centerIn: parent
-            spacing: UM.Theme.getSize("default_margin").width
+            //spacing: UM.Theme.getSize("default_margin").width
             height: parent.height
 
             Item
@@ -93,6 +93,14 @@ Item
                 }
             }
 
+            // Separator line
+            Rectangle
+            {
+                height: parent.height
+                width: UM.Theme.getSize("default_lining").width
+                color: UM.Theme.getColor("lining")
+            }
+
             Loader
             {
                 // TODO: Make this panel collapsable and ensure it has a standardised background.
@@ -106,6 +114,13 @@ Item
                 source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
             }
 
+            // Separator line
+            Rectangle
+            {
+                height: parent.height
+                width: UM.Theme.getSize("default_lining").width
+                color: UM.Theme.getColor("lining")
+            }
             Cura.PrintSetupSelector
             {
                 width: UM.Theme.getSize("print_setup_widget").width

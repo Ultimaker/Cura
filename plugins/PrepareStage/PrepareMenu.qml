@@ -69,11 +69,27 @@ Item
                     Layout.fillHeight: true
                 }
 
+                // Separator line
+                Rectangle
+                {
+                    height: parent.height
+                    width: UM.Theme.getSize("default_lining").width
+                    color: UM.Theme.getColor("lining")
+                }
+
                 Cura.QuickConfigurationSelector
                 {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelector.width
+                    Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelector.width - 2 * UM.Theme.getSize("default_lining").width
+                }
+
+                // Separator line
+                Rectangle
+                {
+                    height: parent.height
+                    width: UM.Theme.getSize("default_lining").width
+                    color: UM.Theme.getColor("lining")
                 }
 
                 Cura.PrintSetupSelector
