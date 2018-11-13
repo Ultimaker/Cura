@@ -109,23 +109,6 @@ Cura.ExpandableComponent
         }
     }
 
-
-    /*Label
-    {
-        id: settingsModeLabel
-        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
-        renderType: Text.NativeRendering
-
-        anchors
-        {
-            fill: parent
-        }
-
-        height: contentHeight
-        font: UM.Theme.getFont("large")
-        color: UM.Theme.getColor("text")
-    }*/
-
     popupItem: Item
     {
         height: settingsModeSelection.height + sidebarContents.height
@@ -184,7 +167,7 @@ Cura.ExpandableComponent
                     border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
                     border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") : control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
 
-                    // for some reason, QtQuick decided to use the color of the background property as text color for the contentItem, so here it is
+                    // For some reason, QtQuick decided to use the color of the background property as text color for the contentItem, so here it is
                     color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                 }
 
@@ -200,13 +183,13 @@ Cura.ExpandableComponent
                     {
                         if(control.pressed)
                         {
-                            return UM.Theme.getColor("action_button_active_text");
+                            return UM.Theme.getColor("action_button_active_text")
                         }
                         else if(control.hovered)
                         {
-                            return UM.Theme.getColor("action_button_hovered_text");
+                            return UM.Theme.getColor("action_button_hovered_text")
                         }
-                        return UM.Theme.getColor("action_button_text");
+                        return UM.Theme.getColor("action_button_text")
                     }
                 }
             }
@@ -263,11 +246,11 @@ Cura.ExpandableComponent
 
             if(index != null && !isNaN(index))
             {
-                currentModeIndex = index;
+                currentModeIndex = index
             }
             else
             {
-                currentModeIndex = 0;
+                currentModeIndex = 0
             }
         }
     }
