@@ -19,7 +19,8 @@ Item
     // The background color of the popup
     property color popupBackgroundColor: "white"
 
-    property alias headerBackgroundColor: background.color
+    property color headerBackgroundColor: "white"
+    property color headerHoverColor: "white"
 
     // How much spacing is needed around the popupItem
     property alias popupPadding: popup.padding
@@ -63,7 +64,7 @@ Item
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
 
-        color: "white"
+        color: headerBackgroundColor
         anchors.fill: parent
         Loader
         {
@@ -97,8 +98,12 @@ Item
 
         MouseArea
         {
+            id: mouseArea
             anchors.fill: parent
             onClicked: popup.visible ? popup.close() : popup.open()
+            hoverEnabled: true
+            onEntered: background.color = headerHoverColor
+            onExited: background.color = headerBackgroundColor
         }
     }
 
