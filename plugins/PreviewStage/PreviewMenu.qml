@@ -106,7 +106,10 @@ Item
             Rectangle
             {
                 height: parent.height
-                width: UM.Theme.getSize("default_lining").width
+                // If there is no viewPanel, we only need a single spacer, so hide this one.
+                visible: viewPanel.source != ""
+                width: visible ? UM.Theme.getSize("default_lining").width : 0
+
                 color: UM.Theme.getColor("lining")
             }
 
