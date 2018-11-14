@@ -92,7 +92,7 @@ Cura.ExpandableComponent
 
     popupItem: Item
     {
-        width: base.width
+        width: base.width - 2 * UM.Theme.getSize("default_margin").width
         height: 200
 
         TabBar

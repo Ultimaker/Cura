@@ -121,6 +121,7 @@ Item
                 width: UM.Theme.getSize("default_lining").width
                 color: UM.Theme.getColor("lining")
             }
+
             Cura.PrintSetupSelector
             {
                 width: UM.Theme.getSize("print_setup_widget").width
