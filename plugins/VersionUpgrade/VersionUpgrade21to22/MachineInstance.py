@@ -1,14 +1,15 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-import UM.VersionUpgrade #To indicate that a file is of incorrect format.
-import UM.VersionUpgradeManager #To schedule more files to be upgraded.
-from UM.Resources import Resources #To get the config storage path.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
 import os.path #To get the path to write new user profiles to.
+from typing import List, Optional, Tuple
 import urllib #To serialise the user container file name properly.
+
+import UM.VersionUpgrade #To indicate that a file is of incorrect format.
+import UM.VersionUpgradeManager #To schedule more files to be upgraded.
+from UM.Resources import Resources #To get the config storage path.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.
@@ -18,7 +19,7 @@ import urllib #To serialise the user container file name properly.
 #   extension.
 #   \return A machine instance instance, or None if the file format is
 #   incorrect.
-def importFrom(serialised, filename):
+def importFrom(serialised: str, filename: str) -> Optional["MachineInstance"]:
     try:
         return MachineInstance(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
@@ -32,7 +33,7 @@ class MachineInstance:
     #   \param serialised A string with the contents of a machine instance file,
     #   without extension.
     #   \param filename The supposed file name of this machine instance.
-    def __init__(self, serialised, filename):
+    def __init__(self, serialised: str, filename: str) -> str:
         self._filename = filename
 
         config = configparser.ConfigParser(interpolation = None)
@@ -67,7 +68,7 @@ class MachineInstance:
     #
     #   \return A tuple containing the new filename and a serialised form of
     #   this machine instance, serialised in version 2 of the file format.
-    def export(self):
+    def export(self) -> Tuple[List[str], List[str]]:
         config = configparser.ConfigParser(interpolation = None) # Build a config file in the form of version 2.
 
         config.add_section("general")

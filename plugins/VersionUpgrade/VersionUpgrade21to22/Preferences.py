@@ -1,8 +1,9 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To read config files.
 import io #To output config files to string.
+from typing import List, Optional, Tuple
 
 import UM.VersionUpgrade #To indicate that a file is of the wrong format.
 
@@ -14,7 +15,7 @@ import UM.VersionUpgrade #To indicate that a file is of the wrong format.
 #   extension.
 #   \return A representation of those preferences, or None if the file format is
 #   incorrect.
-def importFrom(serialised, filename):
+def importFrom(serialised: str, filename: str) -> Optional["Preferences"]:
     try:
         return Preferences(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
@@ -28,7 +29,7 @@ class Preferences:
     #   \param serialised A serialised version 2 preferences file.
     #   \param filename The supposed filename of the preferences file, without
     #   extension.
-    def __init__(self, serialised, filename):
+    def __init__(self, serialised: str, filename: str) -> None:
         self._filename = filename
 
         self._config = configparser.ConfigParser(interpolation = None)
@@ -50,7 +51,7 @@ class Preferences:
     #
     #   \return A tuple containing the new filename and a serialised version of
     #   a preferences file in version 3.
-    def export(self):
+    def export(self) -> Tuple[List[str], List[str]]:
         #Reset the cura/categories_expanded property since it works differently now.
         if self._config.has_section("cura") and self._config.has_option("cura", "categories_expanded"):
             self._config.remove_option("cura", "categories_expanded")
