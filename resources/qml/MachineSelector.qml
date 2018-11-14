@@ -25,14 +25,12 @@ Cura.ExpandableComponent
         name: "cura"
     }
 
-    headerItem: Item
+    headerItem: Label
     {
-        Label
-        {
-            text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
-            verticalAlignment: Text.AlignVCenter
-            height: parent.height
-        }
+        text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+        verticalAlignment: Text.AlignVCenter
+        height: parent.height
+        elide: Text.ElideRight
     }
 
     popupItem: Item
