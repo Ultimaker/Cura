@@ -172,18 +172,18 @@ class Toolbox(QObject, Extension):
         self._cloud_api_version = self._getCloudAPIVersion()
         self._cloud_api_root = self._getCloudAPIRoot()
         self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
-            cloud_api_root=self._cloud_api_root,
-            cloud_api_version=self._cloud_api_version,
-            sdk_version=self._sdk_version
+            cloud_api_root = self._cloud_api_root,
+            cloud_api_version = self._cloud_api_version,
+            sdk_version = self._sdk_version
         )
         self._request_urls = {
-            "authors": QUrl("{base_url}/authors".format(base_url=self._api_url)),
-            "packages": QUrl("{base_url}/packages".format(base_url=self._api_url)),
-            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
-            "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url=self._api_url)),
-            "materials_showcase": QUrl("{base_url}/showcase".format(base_url=self._api_url)),
-            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url=self._api_url)),
-            "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url=self._api_url))
+            "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
+            "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
+            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
+            "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url = self._api_url)),
+            "materials_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
+            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url = self._api_url)),
+            "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url = self._api_url))
         }
 
     # Get the API root for the packages API depending on Cura version settings.
@@ -209,11 +209,11 @@ class Toolbox(QObject, Extension):
     # Get the packages version depending on Cura version settings.
     def _getSDKVersion(self) -> Union[int, str]:
         if not hasattr(cura, "CuraVersion"):
-            return self._plugin_registry.APIVersion
+            return self._application.getAPIVersion().getMajor()
         if not hasattr(cura.CuraVersion, "CuraSDKVersion"):  # type: ignore
-            return self._plugin_registry.APIVersion
+            return self._application.getAPIVersion().getMajor()
         if not cura.CuraVersion.CuraSDKVersion:  # type: ignore
-            return self._plugin_registry.APIVersion
+            return self._application.getAPIVersion().getMajor()
         return cura.CuraVersion.CuraSDKVersion  # type: ignore
 
     @pyqtSlot()
@@ -299,7 +299,7 @@ class Toolbox(QObject, Extension):
         for plugin_id in old_plugin_ids:
             # Neither the installed packages nor the packages that are scheduled to remove are old plugins
             if plugin_id not in installed_package_ids and plugin_id not in scheduled_to_remove_package_ids:
-                Logger.log('i', 'Found a plugin that was installed with the old plugin browser: %s', plugin_id)
+                Logger.log("i", "Found a plugin that was installed with the old plugin browser: %s", plugin_id)
 
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)
                 new_metadata = self._convertPluginMetadata(old_metadata)
