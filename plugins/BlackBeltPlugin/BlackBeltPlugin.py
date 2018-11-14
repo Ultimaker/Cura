@@ -320,7 +320,7 @@ class BlackBeltPlugin(Extension):
         if enable_belt_wall:
             belt_wall_flow = global_stack.getProperty("blackbelt_belt_wall_flow", "value") / 100
             belt_wall_speed = global_stack.getProperty("blackbelt_belt_wall_speed", "value") * 60
-            minimum_y = global_stack.extruders["0"].getProperty("wall_line_width_0", "value") / 2
+            minimum_y = global_stack.extruders["0"].getProperty("wall_line_width_0", "value") * 0.6 #  0.5 would be non-tolerant
 
         repetitions = global_stack.getProperty("blackbelt_repetitions", "value") or 1
         if repetitions > 1:
