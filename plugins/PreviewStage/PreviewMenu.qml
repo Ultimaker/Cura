@@ -115,14 +115,9 @@ Item
 
             Loader
             {
-                // TODO: Make this panel collapsable and ensure it has a standardised background.
                 id: viewPanel
-
-                //property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
-
                 height: parent.height
                 width: childrenRect.width
-
                 source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
             }
 
