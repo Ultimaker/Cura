@@ -48,7 +48,7 @@ class VersionUpgrade27to30(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
+        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
     ##  Upgrades a preferences file from version 2.7 to 3.0.
@@ -158,7 +158,7 @@ class VersionUpgrade27to30(VersionUpgrade):
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
     def upgradeOtherContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         # Update the skin pre-shrink settings:
