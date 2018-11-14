@@ -374,7 +374,7 @@
 
         "account_button": [12, 3],
 
-        "print_setup_widget": [35.0, 42.0],
+        "print_setup_widget": [30.0, 42.0],
         "print_setup_mode_toggle": [0.0, 2.0],
         "print_setup_item": [0.0, 2.0],
         "print_setup_extruder_box": [0.0, 6.0],
@@ -386,7 +386,7 @@
         "action_panel_information_widget": [20.0, 0.0],
         "action_panel_button": [15.0, 3.0],
 
-        "machine_selector_widget": [28.0, 4.5],
+        "machine_selector_widget": [16.0, 4.5],
 
         "views_selector": [0.0, 4.0],
 

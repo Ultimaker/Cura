@@ -53,9 +53,8 @@ Item
                 {
                     id: machineSelection
                     z: openFileButtonBackground.z - 1
-
-                    Layout.minimumWidth: 240
-                    Layout.maximumWidth: 240
+                    Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
+                    Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
@@ -90,8 +89,8 @@ Item
                     onShowTooltip: prepareMenu.showTooltip(item, location, text)
                     onHideTooltip: prepareMenu.hideTooltip()
 
-                    Layout.minimumWidth: 460
-                    Layout.maximumWidth: 460
+                    Layout.minimumWidth: UM.Theme.getSize("print_setup_widget").width
+                    Layout.maximumWidth: UM.Theme.getSize("print_setup_widget").width
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
