@@ -3,7 +3,7 @@
 
 import QtQuick 2.7
 
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.4
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -43,53 +43,62 @@ Item
             //spacing: UM.Theme.getSize("default_margin").width
             height: parent.height
 
-            Item
+            Cura.ExpandableComponent
             {
-                width: viewModeButton.width + 2 * UM.Theme.getSize("default_margin").width
+                id: viewSelector
+                iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
                 height: parent.height
-                ComboBox
+
+                property var viewModel: UM.ViewModel { }
+
+                property var activeView:
                 {
-                    // This item contains the views selector, a combobox that is dynamically created from
-                    // the list of available Views (packages that create different visualizations of the
-                    // scene).
-                    id: viewModeButton
-
-                    style: UM.Theme.styles.combobox
-                    anchors.centerIn: parent
-                    model: UM.ViewModel { }
-                    textRole: "name"
-
-                    // update the model's active index
-                    function updateItemActiveFlags()
+                    for (var i = 0; i < viewModel.rowCount(); i++)
                     {
-                        currentIndex = getActiveIndex()
-                        for (var i = 0; i < model.rowCount(); i++)
+                        if(viewModel.getItem(i).active)
                         {
-                            model.getItem(i).active = (i == currentIndex)
+                            return viewModel.getItem(i)
+                        }
+                    }
+                    // Nothing was active, so just return the first one (the list is sorted by priority, so the most
+                    // important one sshould be returned)
+                    return viewModel.getItem(0)
+                }
+
+                // Ensure that the controller is synced with whatever happend here.
+                onActiveViewChanged: UM.Controller.setActiveView(activeView.id)
+
+                headerItem: Label
+                {
+                    text: viewSelector.activeView.name
+                    verticalAlignment: Text.AlignVCenter
+                    height: parent.height
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("default")
+                }
+
+                popupItem: Column
+                {
+                    id: column
+                    width: viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
+
+                    // For some reason the height of the column gets set to 0 if this is not set...
+                    Component.onCompleted: height = implicitHeight
+
+                    Repeater
+                    {
+                        id: networkedPrinters
+                        model: viewSelector.viewModel
+                        RoundButton
+                        {
+                            text: name
+                            radius: UM.Theme.getSize("default_radius").width
+                            checkable: true
+                            checked: active
+                            onClicked: UM.Controller.setActiveView(id)
                         }
                     }
 
-                    // get the index of the active model item on start
-                    function getActiveIndex()
-                    {
-                        for (var i = 0; i < model.rowCount(); i++)
-                        {
-                            if (model.getItem(i).active)
-                            {
-                                return i;
-                            }
-                        }
-                        return 0
-                    }
-
-                    onCurrentIndexChanged:
-                    {
-                        if (model.getItem(currentIndex).id != undefined)
-                        {
-                            UM.Controller.setActiveView(model.getItem(currentIndex).id)
-                        }
-                    }
-                    currentIndex: getActiveIndex()
                 }
             }
 
@@ -106,7 +115,7 @@ Item
                 // TODO: Make this panel collapsable and ensure it has a standardised background.
                 id: viewPanel
 
-                property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
+                //property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
 
                 height: parent.height
                 width: childrenRect.width

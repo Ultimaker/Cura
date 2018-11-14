@@ -31,6 +31,7 @@ Cura.ExpandableComponent
         verticalAlignment: Text.AlignVCenter
         height: parent.height
         elide: Text.ElideRight
+        font: UM.Theme.getFont("default")
     }
 
     popupItem: Item
