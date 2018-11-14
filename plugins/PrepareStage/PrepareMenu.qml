@@ -28,27 +28,6 @@ Item
 
         Rectangle
         {
-            id: openFileButtonBackground
-            height: UM.Theme.getSize("stage_menu").height
-            width: UM.Theme.getSize("stage_menu").height
-
-            radius: UM.Theme.getSize("default_radius").width
-            color: UM.Theme.getColor("toolbar_background")
-            Button
-            {
-                id: openFileButton
-                text: catalog.i18nc("@action:button", "Open File")
-                iconSource: UM.Theme.getIcon("load")
-                style: UM.Theme.styles.toolbar_button
-                tooltip: ""
-                action: Cura.Actions.open
-                anchors.centerIn: parent
-            }
-        }
-
-
-        Rectangle
-        {
             id: itemRowBackground
             radius: UM.Theme.getSize("default_radius").width
 
@@ -73,7 +52,7 @@ Item
                 Cura.MachineSelector
                 {
                     id: machineSelection
-                    z: openFileButton.z - 1
+                    z: openFileButtonBackground.z - 1
 
                     Layout.minimumWidth: 240
                     Layout.maximumWidth: 240
@@ -116,6 +95,26 @@ Item
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
+            }
+        }
+
+        Rectangle
+        {
+            id: openFileButtonBackground
+            height: UM.Theme.getSize("stage_menu").height
+            width: UM.Theme.getSize("stage_menu").height
+
+            radius: UM.Theme.getSize("default_radius").width
+            color: UM.Theme.getColor("toolbar_background")
+            Button
+            {
+                id: openFileButton
+                text: catalog.i18nc("@action:button", "Open File")
+                iconSource: UM.Theme.getIcon("load")
+                style: UM.Theme.styles.toolbar_button
+                tooltip: ""
+                action: Cura.Actions.open
+                anchors.centerIn: parent
             }
         }
     }
