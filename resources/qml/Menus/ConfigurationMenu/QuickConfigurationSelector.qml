@@ -27,7 +27,7 @@ Cura.ExpandableComponent
         name: "cura"
     }
 
-    iconSource: expanded ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+    iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     headerItem: Item
     {

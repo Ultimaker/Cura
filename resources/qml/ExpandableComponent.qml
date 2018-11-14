@@ -109,7 +109,7 @@ Item
         y: headerItemLoader.height + 2 * background.padding
 
         // Make the popup right aligned with the rest. The 3x padding is due to left, right and padding between
-        //the button & text.
+        // the button & text.
         x: -width + collapseButton.width + headerItemLoader.width + 3 * background.padding
         padding: UM.Theme.getSize("default_margin").width
         closePolicy: Popup.CloseOnPressOutsideParent

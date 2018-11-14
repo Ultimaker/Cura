@@ -17,7 +17,7 @@ Cura.ExpandableComponent
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
 
-    iconSource: expanded ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+    iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     UM.I18nCatalog
     {
