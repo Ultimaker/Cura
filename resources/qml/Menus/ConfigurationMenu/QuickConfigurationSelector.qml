@@ -28,7 +28,6 @@ Cura.ExpandableComponent
     }
 
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
-
     headerItem: Item
     {
         // Horizontal list that shows the extruders

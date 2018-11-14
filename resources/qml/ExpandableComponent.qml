@@ -9,6 +9,7 @@ import UM 1.2 as UM
 //      * The Icon; An icon that is displayed on the right of the drawer.
 Item
 {
+    id: base
     // The headerItem holds the QML item that is always displayed.
     property alias headerItem: headerItemLoader.sourceComponent
 
@@ -33,7 +34,7 @@ Item
     property alias iconColor: collapseButton.color
 
     // The icon size (it's always drawn as a square)
-    property alias iconSize: collapseButton.width
+    property alias iconSize: collapseButton.height
 
     // Is the "drawer" open?
     readonly property alias expanded: popup.visible
@@ -89,8 +90,8 @@ Item
             sourceSize.width: width
             sourceSize.height: height
             visible: source != ""
-            width: UM.Theme.getSize("section_icon").width
-            height: width
+            width: height
+            height: 0.2 * base.height
             color: "black"
         }
 
