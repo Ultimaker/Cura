@@ -59,11 +59,11 @@ class Preferences:
         #Translate the setting names in the visible settings.
         if self._config.has_section("machines") and self._config.has_option("machines", "setting_visibility"):
             visible_settings = self._config.get("machines", "setting_visibility")
-            visible_settings = visible_settings.split(",")
+            visible_settings_list = visible_settings.split(",")
             import VersionUpgrade21to22 #Import here to prevent a circular dependency.
-            visible_settings = [VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettingName(setting_name)
-                                for setting_name in visible_settings]
-            visible_settings = ",".join(visible_settings)
+            visible_settings_list = [VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettingName(setting_name)
+                                for setting_name in visible_settings_list]
+            visible_settings = ",".join(visible_settings_list)
             self._config.set("machines", "setting_visibility", value = visible_settings)
 
         #Translate the active_instance key.

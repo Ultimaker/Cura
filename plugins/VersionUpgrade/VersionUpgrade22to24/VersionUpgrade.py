@@ -22,11 +22,11 @@ class VersionUpgrade22to24(VersionUpgrade):
         config.read_string(serialised) # Read the input string as config file.
         if config.get("metadata", "type") == "definition_changes":
             # This is not a container stack, don't upgrade it here
-            return
+            return None
 
         config.set("general", "version", "3")
 
-        container_list = []
+        container_list = [] # type: List[str]
         if config.has_section("containers"):
             for index, container_id in config.items("containers"):
                 container_list.append(container_id)
@@ -37,14 +37,14 @@ class VersionUpgrade22to24(VersionUpgrade):
         user_variants = self.__getUserVariants()
         name_path_dict = {}
         for variant in user_variants:
-            name_path_dict[variant.get("name")] = variant.get("path")
+            name_path_dict[variant["name"]] = variant["path"]
 
         user_variant_names = set(container_list).intersection(name_path_dict.keys())
         if len(user_variant_names):
             # One of the user defined variants appears in the list of containers in the stack.
 
             for variant_name in user_variant_names: # really there should just be one variant to convert.
-                config_name = self.__convertVariant(name_path_dict.get(variant_name))
+                config_name = self.__convertVariant(name_path_dict[variant_name])
 
                 # Change the name of variant and insert empty_variant into the stack.
                 new_container_list = []
@@ -64,8 +64,8 @@ class VersionUpgrade22to24(VersionUpgrade):
 
             config.remove_option("general", "containers")
 
-            for index in range(len(container_list)):
-                config.set("containers", str(index), container_list[index])
+            for idx in range(len(container_list)):
+                config.set("containers", str(idx), container_list[idx])
 
         output = io.StringIO()
         config.write(output)
