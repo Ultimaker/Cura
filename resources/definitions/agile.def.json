@@ -1,0 +1,63 @@
+{
+  "version": 2,
+  "name": "Agile",
+  "inherits": "fdmprinter",
+  "metadata": {
+    "visible": true,
+    "author": "zekes",
+    "manufacturer": "Zekes",
+    "category": "Other",
+    "file_formats": "text/x-gcode",
+    "platform": "zyyx_platform.stl",
+    "has_machine_quality": true,
+    "has_variants": true,
+    "variants_name": "Nozzle",
+    "preferred_variant_name": "0.4 mm",
+    "preferred_material": "pro_pla",
+    "supports_usb_connection": false
+ },
+
+  "overrides": {
+    "machine_name": { "default_value": "Agile" },
+    "machine_start_gcode": {
+      "default_value": "M73 P0; enable build progress \nG21 ; set units to mm \nG28 ; Home extruder \nG29 ; Autolevel axes \nG92 E0 \nM107 ; Turn off fan \nG90 ; Absolute positioning \nM82 ; Extruder in absolute mode {IF_BED} M190 S{BED} ; Activate all used extruder {IF_EXT0}M104 T0 S{TEMP0} \nG92 E0 ; Reset extruder position ; Wait for all used extruders to reach temperature {IF_EXT0}M109 T0 S{TEMP0} \nG1 Z10 F400 \nG1 X145 Z10 F2400 \nG92 E0 \nG1 X145 Z0.5 F400 \nG1 X120 Z0.5 E20 F360"
+    },
+    "machine_end_gcode": {
+      "default_value": "M73 P100 ; end build progress \nG0 X260 Y225 Z200 F1000 ; send Z axis to bottom of machine \nM104 S0 T0 ; cool down extruder \nM127 ; stop blower fan \nM18 ; disable stepper \nM117 Zekes pro Print Finished \nM300 S440 P200"
+    },
+    "gantry_height": { "default_value": 10 },
+    "machine_width": { "default_value": 260 },
+    "machine_height": { "default_value": 200 },
+    "machine_depth": { "default_value": 225 },
+    "machine_center_is_zero": { "default_value": false },
+    "machine_heated_bed": {	"default_value": true },
+    "machine_nozzle_size": { "default_value": 0.4 },
+    "machine_head_with_fans_polygon": { "default_value": [[-37, 50], [25, 50], [25, -40], [-37, -40]] },
+	"machine_steps_per_mm_x": { "default_value": 88.888889 },
+    "machine_steps_per_mm_y": { "default_value": 88.888889 },
+    "machine_steps_per_mm_z": { "default_value": 400 },
+    "machine_steps_per_mm_e": { "default_value": 96.27520187033366 },
+    "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    "retraction_amount": { "default_value": 0.7 },
+    "retraction_speed": { "default_value": 15 },
+    "speed_print": { "default_value": 50 },
+    "speed_wall": { "value": 25 },
+    "speed_wall_x": { "value": 35 },
+    "speed_travel": { "value": 80 },
+    "speed_layer_0": { "value": 15 },
+    "support_interface_enable": { "default_value": true },
+    "support_interface_height": { "default_value": 0.8 },
+    "support_interface_density": { "default_value": 80 },
+    "support_interface_pattern": { "default_value": "grid" },
+    "infill_overlap": { "value": "12 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0" },
+    "retract_at_layer_change": { "default_value": true },
+    "travel_retract_before_outer_wall": { "default_value": true },
+    "material_initial_print_temperature": { "value": "material_print_temperature" },
+    "material_final_print_temperature": { "value": "material_print_temperature" },
+    "travel_avoid_other_parts": { "default_value": false },
+    "raft_airgap": { "default_value": 0.15 },
+    "raft_margin": { "default_value": 6 },
+    "material_diameter": { "default_value": 1.75 }
+    
+  }
+}
