@@ -40,6 +40,8 @@ Item
     // Is the "drawer" open?
     readonly property alias expanded: popup.visible
 
+    property alias expandedHighlightColor: expandedHightlight.color
+
     function togglePopup()
     {
         if(popup.visible)
@@ -51,7 +53,6 @@ Item
             popup.open()
         }
     }
-
 
     onPopupItemChanged:
     {
@@ -79,6 +80,7 @@ Item
 
         color: headerBackgroundColor
         anchors.fill: parent
+
         Loader
         {
             id: headerItemLoader
@@ -90,6 +92,17 @@ Item
                 bottom: parent.bottom
                 margins: background.padding
             }
+        }
+
+        // A highlight that is shown when the popup is expanded
+        Rectangle
+        {
+            id: expandedHightlight
+            width: parent.width
+            height: UM.Theme.getSize("thick_lining").height
+            color: UM.Theme.getColor("primary")
+            visible: expanded
+            anchors.bottom: parent.bottom
         }
 
         UM.RecolorImage
