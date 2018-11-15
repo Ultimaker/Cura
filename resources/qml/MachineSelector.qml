@@ -77,8 +77,12 @@ Cura.ExpandableComponent
                         width: parent.width
 
                         checkable: true
-                        onClicked: Cura.MachineManager.setActiveMachine(model.id)
                         radius: UM.Theme.getSize("default_radius").width
+                        onClicked:
+                        {
+                           togglePopup()
+                           Cura.MachineManager.setActiveMachine(model.id)
+                        }
 
                         Connections
                         {
@@ -114,8 +118,13 @@ Cura.ExpandableComponent
                         width: parent.width
                         checked: Cura.MachineManager.activeMachineId == model.id
                         checkable: true
-                        onClicked: Cura.MachineManager.setActiveMachine(model.id)
+
                         radius: UM.Theme.getSize("default_radius").width
+                        onClicked:
+                        {
+                            togglePopup()
+                            Cura.MachineManager.setActiveMachine(model.id)
+                        }
                     }
 
                 }

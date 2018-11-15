@@ -40,6 +40,19 @@ Item
     // Is the "drawer" open?
     readonly property alias expanded: popup.visible
 
+    function togglePopup()
+    {
+        if(popup.visible)
+        {
+            popup.close()
+        }
+        else
+        {
+            popup.open()
+        }
+    }
+
+
     onPopupItemChanged:
     {
         // Since we want the size of the popup to be set by the size of the content,
@@ -100,7 +113,7 @@ Item
         {
             id: mouseArea
             anchors.fill: parent
-            onClicked: popup.visible ? popup.close() : popup.open()
+            onClicked: togglePopup()
             hoverEnabled: true
             onEntered: background.color = headerHoverColor
             onExited: background.color = headerBackgroundColor
