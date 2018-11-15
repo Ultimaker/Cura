@@ -63,7 +63,8 @@ class PatchedMaterialManager(MaterialManager):
             # Do not exclude other materials that are of the same type.
             for material_id, node in current_node.material_map.items():
                 ### START PATCH
-                if machine_limit_materials and node.getContainer().getId() == material_id:
+                node_container = node.getContainer()
+                if machine_limit_materials and node_container and node_container.getId() == material_id:
                     # For the materials we want Cura creates a variant-specific InstanceContainer
                     # If the InstanceContainer is not variant-specific then we are not interested
                     continue

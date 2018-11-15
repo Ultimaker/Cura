@@ -17,7 +17,7 @@ class FlavorParserPatches():
     def processGCodeStream(self, stream: str) -> Optional[CuraSceneNode]:
         scene_node = self.__processGCodeStream(stream)
         if not scene_node:
-            return
+            return None
 
         root = CuraApplication.getInstance().getController().getScene().getRoot()
         root.callDecoration("calculateTransformData")
