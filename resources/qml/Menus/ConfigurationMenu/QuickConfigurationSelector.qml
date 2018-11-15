@@ -150,8 +150,8 @@ Cura.ExpandableComponent
 
                     OldControls.CheckBox
                     {
-                        checked: Cura.MachineManager.getExtruder(parent.model.index).isEnabled
-                        onClicked: Cura.MachineManager.setExtruderEnabled(parent.model.index, checked)
+                        checked: Cura.MachineManager.getExtruder(tabControl.model.index).isEnabled
+                        onClicked: Cura.MachineManager.setExtruderEnabled(tabControl.model.index, checked)
                         height: UM.Theme.getSize("setting_control").height
                         style: UM.Theme.styles.checkbox
                     }
