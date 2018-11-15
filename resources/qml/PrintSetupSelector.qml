@@ -111,19 +111,22 @@ Cura.ExpandableComponent
 
     popupItem: Item
     {
-        height: settingsModeSelection.height + sidebarContents.height
+        height: settingsModeSelection.height + sidebarContents.height + 2 * UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("print_setup_widget").width
         ListView
         {
             // Settings mode selection toggle
             id: settingsModeSelection
             model: modesListModel
-            width: Math.round(parent.width * 0.55)
             height: UM.Theme.getSize("print_setup_mode_toggle").height
             visible: !hideSettings
 
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+            anchors
+            {
+                right: parent.right
+                left: parent.left
+                margins: UM.Theme.getSize("thick_margin").width
+            }
 
             ButtonGroup
             {
