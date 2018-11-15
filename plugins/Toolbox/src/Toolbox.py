@@ -512,7 +512,9 @@ class Toolbox(QObject, Extension):
         # be upgradable.
         elif remote_version == local_version:
             # First read sdk_version_semver. If that doesn't exist, read just sdk_version (old version system).
-            can_upgrade = local_package.get("sdk_version_semver", local_package.get("sdk_version", 0)) < remote_package.get("sdk_version_semver", remote_package.get("sdk_version", 0))
+            remote_sdk_version = Version(remote_package.get("sdk_version_semver", remote_package.get("sdk_version", 0)))
+            local_sdk_version = Version(local_package.get("sdk_version_semver", local_package.get("sdk_version", 0)))
+            can_upgrade = local_sdk_version < remote_sdk_version
 
         return can_upgrade
 
