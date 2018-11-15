@@ -246,6 +246,8 @@ class StartSliceJob(Job):
                     # Only check if the printing extruder is enabled for printing meshes
                     is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
+                    if extruder_position is None: # raft meshes may not have an extruder position (yet)
+                        extruder_position = "0"
                     if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
                         skip_group = True
                         has_model_with_disabled_extruders = True
