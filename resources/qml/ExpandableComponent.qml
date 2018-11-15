@@ -17,10 +17,10 @@ Item
     property var popupItem
 
     // The background color of the popup
-    property color popupBackgroundColor: "white"
+    property color popupBackgroundColor: UM.Theme.getColor("action_button")
 
-    property color headerBackgroundColor: "white"
-    property color headerHoverColor: "white"
+    property color headerBackgroundColor: UM.Theme.getColor("action_button")
+    property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
 
     // How much spacing is needed around the popupItem
     property alias popupPadding: popup.padding

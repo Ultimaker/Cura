@@ -75,6 +75,7 @@
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [0, 0, 0, 192],
 
+
         "primary": [50, 130, 255, 255],
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
@@ -157,7 +158,7 @@
         "action_button": [255, 255, 255, 255],
         "action_button_text": [0, 0, 0, 255],
         "action_button_border": [127, 127, 127, 255],
-        "action_button_hovered": [255, 255, 255, 255],
+        "action_button_hovered": [232, 242, 252, 255],
         "action_button_hovered_text": [31, 36, 39, 255],
         "action_button_hovered_border": [50, 130, 255, 255],
         "action_button_active": [255, 255, 255, 255],
