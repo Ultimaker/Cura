@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import json  # To understand the list of materials from the printer reply.
+import json  # To decode the list of materials from the printer reply.
 import os  # To walk over material files.
 import os.path  # To filter on material files.
 import urllib.parse  # For getting material IDs from their file names.
@@ -29,9 +29,13 @@ class SendMaterialJob(Job):
         super().__init__()
         self.device = device  # type: ClusterUM3OutputDevice
 
+    ##  Send the request to the printer and register a callback
     def run(self) -> None:
         self.device.get("materials/", on_finished = self.sendMissingMaterials)
 
+    ##  Process the reply from the printer and determine which materials should be updated and sent to the printer
+    #
+    #   \param reply The reply from the printer, a json file
     def sendMissingMaterials(self, reply: QNetworkReply) -> None:
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:  # Got an error from the HTTP request.
             Logger.log("e", "Couldn't request current material storage on printer. Not syncing materials.")
@@ -50,7 +54,7 @@ class SendMaterialJob(Job):
         # Collect local materials
         local_materials_by_guid = self._getLocalMaterials()
 
-        # Find out what materials are new or updated annd must be sent to the printer
+        # Find out what materials are new or updated and must be sent to the printer
         materials_to_send = {
             material.id
             for guid, material in local_materials_by_guid.items()
@@ -61,7 +65,13 @@ class SendMaterialJob(Job):
         # Send materials to the printer
         self.sendMaterialsToPrinter(materials_to_send)
 
-    def sendMaterialsToPrinter(self, materials_to_send):
+    ##  Send the materials to the printer
+    #
+    #   The given materials will be loaded from disk en sent to to printer. The given id's will be mathed with
+    #   filenames of the locally stored materials
+    #
+    #   \param materials_to_send A set with id's of materials that must be sent
+    def sendMaterialsToPrinter(self, materials_to_send) -> None:
         for file_path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.MaterialInstanceContainer):
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(file_path)
@@ -90,7 +100,8 @@ class SendMaterialJob(Job):
             Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
             self.device.postFormWithParts(target = "materials/", parts = parts, on_finished = self.sendingFinished)
 
-    def sendingFinished(self, reply: QNetworkReply):
+    ##  Check a reply from an upload to the printer and log an error when the call failed
+    def sendingFinished(self, reply: QNetworkReply) -> None:
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
             Logger.log("e", "Received error code from printer when syncing material: {code}".format(
                 code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)))
