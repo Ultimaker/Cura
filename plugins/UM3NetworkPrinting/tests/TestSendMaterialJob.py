@@ -26,7 +26,7 @@ def new_log(*args):
     _logentries.append(args)
 
 
-class TestContainerRegistry(ContainerRegistryInterface):
+class ContainerRegistryMock(ContainerRegistryInterface):
     def __init__(self):
         self.containersMetaData = None
 
@@ -156,7 +156,7 @@ class TestSendMaterialJob(TestCase):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTEMATERIAL_WHITE]).encode("ascii"))
 
-        containerRegistry = TestContainerRegistry()
+        containerRegistry = ContainerRegistryMock()
         localMaterialWhiteWithInvalidVersion = self._LOCALMATERIAL_WHITE.copy()
         localMaterialWhiteWithInvalidVersion["version"] = "one"
         containerRegistry.setContainersMetadata([localMaterialWhiteWithInvalidVersion])
@@ -175,7 +175,7 @@ class TestSendMaterialJob(TestCase):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTEMATERIAL_WHITE]).encode("ascii"))
 
-        containerRegistry = TestContainerRegistry()
+        containerRegistry = ContainerRegistryMock()
         localMaterialWhiteWithHigherVersion = self._LOCALMATERIAL_WHITE.copy()
         localMaterialWhiteWithHigherVersion["version"] = "2"
         containerRegistry.setContainersMetadata([self._LOCALMATERIAL_WHITE, localMaterialWhiteWithHigherVersion])
@@ -195,7 +195,7 @@ class TestSendMaterialJob(TestCase):
         reply_mock.readAll.return_value = QByteArray(
             json.dumps([self._REMOTEMATERIAL_WHITE]).encode("ascii"))
 
-        containerRegistry = TestContainerRegistry()
+        containerRegistry = ContainerRegistryMock()
         containerRegistry.setContainersMetadata([self._LOCALMATERIAL_WHITE, self._LOCALMATERIAL_BLACK])
 
         with mock.patch.object(Logger, "log", new=new_log):
@@ -266,7 +266,7 @@ class TestSendMaterialJob(TestCase):
             SendMaterialJob._parseReply(reply_mock)
 
     def test__getLocalMaterials(self):
-        containerRegistry = TestContainerRegistry()
+        containerRegistry = ContainerRegistryMock()
         containerRegistry.setContainersMetadata([self._LOCALMATERIAL_WHITE, self._LOCALMATERIAL_BLACK])
 
         with mock.patch.object(Logger, "log", new=new_log):
@@ -276,7 +276,7 @@ class TestSendMaterialJob(TestCase):
         self.assertTrue(len(local_materials) == 2)
 
     def test__getLocalMaterialsWithMultipleVersions(self):
-        containerRegistry = TestContainerRegistry()
+        containerRegistry = ContainerRegistryMock()
         localMaterialWithNewerVersion = self._LOCALMATERIAL_WHITE.copy()
         localMaterialWithNewerVersion["version"] = 2
         containerRegistry.setContainersMetadata([self._LOCALMATERIAL_WHITE, localMaterialWithNewerVersion])
