@@ -45,7 +45,7 @@ Cura.ExpandableComponent
         {
             anchors.fill: parent
             contentHeight: column.implicitHeight
-            contentWidth: row.implicitWidth
+            contentWidth: column.implicitWidth
             clip: true
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 

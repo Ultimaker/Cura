@@ -111,7 +111,7 @@ Cura.ExpandableComponent
 
                 delegate: TabButton
                 {
-                    width: Math.round(ListView.view.width / extrudersModel.rowCount())
+                    width: ListView.view != null ?  Math.round(ListView.view.width / extrudersModel.rowCount()): 0
                     height: parent.height
                     contentItem: Item
                     {
@@ -156,7 +156,7 @@ Cura.ExpandableComponent
 
                     OldControls.CheckBox
                     {
-                        checked: Cura.MachineManager.getExtruder(tabControl.model.index).isEnabled
+                        checked: tabControl.model != null ? Cura.MachineManager.getExtruder(tabControl.model.index).isEnabled: false
                         onClicked: Cura.MachineManager.setExtruderEnabled(tabControl.model.index, checked)
                         height: UM.Theme.getSize("setting_control").height
                         style: UM.Theme.styles.checkbox
@@ -190,7 +190,7 @@ Cura.ExpandableComponent
                         tooltip: currentRootMaterialName
                         visible: Cura.MachineManager.hasMaterials
 
-                        enabled: !extrudersList.visible || Cura.ExtruderManager.activeExtruderIndex > -1
+                        enabled: Cura.ExtruderManager.activeExtruderIndex > -1
 
                         height: UM.Theme.getSize("setting_control").height
                         width: tabControl.controlWidth

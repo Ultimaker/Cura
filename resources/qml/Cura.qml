@@ -214,22 +214,6 @@ UM.MainWindow
                 }
             }
 
-            Loader
-            {
-                id: viewPanel
-
-                anchors.bottom: viewModeButton.top
-                anchors.topMargin: UM.Theme.getSize("default_margin").height
-                anchors.right: viewModeButton.right
-
-                property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
-
-                height: childrenRect.height
-                width: childrenRect.width
-
-                source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : ""
-            }
-
             Cura.ActionPanelWidget
             {
                 anchors.right: parent.right
