@@ -134,7 +134,7 @@ Cura.ExpandableComponent
             anchors.bottom: parent.bottom
             property var model: extrudersModel.items[tabBar.currentIndex]
             property real textWidth: Math.round(width * 0.3)
-            property real controlWidth: Math.round(width * 0.7)
+            property real controlWidth: width - textWidth
             Column
             {
                 spacing: UM.Theme.getSize("default_margin").height
