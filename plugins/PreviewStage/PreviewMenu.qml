@@ -78,7 +78,7 @@ Item
 
                 popupItem: Column
                 {
-                    id: column
+                    id: viewSelectorPopup
                     width: viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
 
                     // For some reason the height of the column gets set to 0 if this is not set...
@@ -86,7 +86,7 @@ Item
 
                     Repeater
                     {
-                        id: networkedPrinters
+                        id: viewsList
                         model: viewSelector.viewModel
                         RoundButton
                         {

@@ -97,7 +97,7 @@ Item
         // A highlight that is shown when the popup is expanded
         Rectangle
         {
-            id: expandedHightlight
+            id: expandedHighlight
             width: parent.width
             height: UM.Theme.getSize("thick_lining").height
             color: UM.Theme.getColor("primary")
