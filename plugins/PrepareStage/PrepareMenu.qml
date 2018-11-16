@@ -52,7 +52,7 @@ Item
                 Cura.MachineSelector
                 {
                     id: machineSelection
-                    z: openFileButtonBackground.z - 1
+                    z: openFileButtonBackground.z - 1 //Ensure that the tooltip of the open file button stays above the item row.
                     Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
                     Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
                     Layout.fillWidth: true
