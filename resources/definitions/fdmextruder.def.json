@@ -78,7 +78,7 @@
                 "machine_extruder_start_code":
                 {
                     "label": "Extruder Start G-Code",
-                    "description": "Start g-code to execute whenever turning the extruder on.",
+                    "description": "Start g-code to execute whenever this extruder is switched to.",
                     "type": "str",
                     "default_value": "",
                     "settable_per_mesh": false,
