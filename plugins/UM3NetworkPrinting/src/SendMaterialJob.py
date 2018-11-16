@@ -30,7 +30,7 @@ class SendMaterialJob(Job):
         self.device = device  # type: ClusterUM3OutputDevice
 
     def run(self) -> None:
-        self.device.get("materials/", on_finished=self.sendMissingMaterials)
+        self.device.get("materials/", on_finished = self.sendMissingMaterials)
 
     def sendMissingMaterials(self, reply: QNetworkReply) -> None:
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:  # Got an error from the HTTP request.
@@ -77,23 +77,23 @@ class SendMaterialJob(Job):
             parts = []
             with open(file_path, "rb") as f:
                 parts.append(
-                    self.device._createFormPart("name=\"file\"; filename=\"{file_name}\"".format(file_name=file_name),
+                    self.device._createFormPart("name=\"file\"; filename=\"{file_name}\"".format(file_name = file_name),
                                                 f.read()))
             signature_file_path = file_path + ".sig"
             if os.path.exists(signature_file_path):
                 _, signature_file_name = os.path.split(signature_file_path)
                 with open(signature_file_path, "rb") as f:
                     parts.append(self.device._createFormPart(
-                        "name=\"signature_file\"; filename=\"{file_name}\"".format(file_name=signature_file_name),
+                        "name=\"signature_file\"; filename=\"{file_name}\"".format(file_name = signature_file_name),
                         f.read()))
 
-            Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id=material_id))
-            self.device.postFormWithParts(target="materials/", parts=parts, on_finished=self.sendingFinished)
+            Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
+            self.device.postFormWithParts(target = "materials/", parts = parts, on_finished = self.sendingFinished)
 
     def sendingFinished(self, reply: QNetworkReply):
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
             Logger.log("e", "Received error code from printer when syncing material: {code}".format(
-                code=reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)))
+                code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)))
             Logger.log("e", reply.readAll().data().decode("utf-8"))
 
     ##  Parse the reply from the printer
@@ -116,7 +116,7 @@ class SendMaterialJob(Job):
     @classmethod
     def _getLocalMaterials(cls):
         result = {}
-        for material in ContainerRegistry.getInstance().findContainersMetadata(type="material"):
+        for material in ContainerRegistry.getInstance().findContainersMetadata(type = "material"):
             try:
                 localMaterial = LocalMaterial(**material)
 
@@ -124,6 +124,6 @@ class SendMaterialJob(Job):
                     result[localMaterial.GUID] = localMaterial
             except (ValueError):
                 Logger.log("e", "Material {material_id} has invalid version number {number}.".format(
-                    material_id=material["id"], number=material["version"]))
+                    material_id = material["id"], number = material["version"]))
 
         return result
