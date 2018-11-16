@@ -32,6 +32,7 @@ Cura.ExpandableComponent
         height: parent.height
         elide: Text.ElideRight
         font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
     }
 
     popupItem: Item
@@ -58,6 +59,7 @@ Cura.ExpandableComponent
                     visible: networkedPrintersModel.items.length > 0
                     height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
                     font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -99,6 +101,7 @@ Cura.ExpandableComponent
                     visible: virtualPrintersModel.items.length > 0
                     height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
                     font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
                 }
 

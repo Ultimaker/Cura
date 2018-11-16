@@ -38,7 +38,7 @@ Item
     // Is the "drawer" open?
     readonly property alias expanded: popup.visible
 
-    property alias expandedHighlightColor: expandedHightlight.color
+    property alias expandedHighlightColor: expandedHighlight.color
 
     function togglePopup()
     {

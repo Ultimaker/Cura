@@ -74,6 +74,8 @@ Item
                     height: parent.height
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+
                 }
 
                 popupItem: Column
