@@ -80,8 +80,8 @@ Cura.ExpandableComponent
                         radius: UM.Theme.getSize("default_radius").width
                         onClicked:
                         {
-                           togglePopup()
-                           Cura.MachineManager.setActiveMachine(model.id)
+                            togglePopup()
+                            Cura.MachineManager.setActiveMachine(model.id)
                         }
 
                         Connections
