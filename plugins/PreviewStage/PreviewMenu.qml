@@ -75,7 +75,6 @@ Item
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
-
                 }
 
                 popupItem: Column
@@ -96,7 +95,11 @@ Item
                             radius: UM.Theme.getSize("default_radius").width
                             checkable: true
                             checked: active
-                            onClicked: UM.Controller.setActiveView(id)
+                            onClicked:
+                            {
+                                viewSelector.togglePopup()
+                                UM.Controller.setActiveView(id)
+                            }
                         }
                     }
 
