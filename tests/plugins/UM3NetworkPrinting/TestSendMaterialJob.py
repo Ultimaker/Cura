@@ -212,28 +212,15 @@ class TestSendMaterialJob(TestCase):
                               suffixes=["xml.fdm_material"]))
     @patch("UM.Resources.Resources.getAllResourcesOfType", lambda _: ["/materials/generic_pla_white.xml.fdm_material"])
     @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    def test_sendMaterialsToPrinter(self, device):
+    def test_sendMaterialsToPrinter(self, device_mock):
+        device_mock._createFormPart.return_value = "_xXx_"
         with mock.patch.object(Logger, "log", new=new_log):
-            SendMaterialJob(device).sendMaterialsToPrinter({'generic_pla_white'})
+            job = SendMaterialJob(device_mock)
+            job.sendMaterialsToPrinter({'generic_pla_white'})
 
         self._assertLogEntries([("d", "Syncing material generic_pla_white with cluster.")], _logentries)
-
-    @patch("PyQt5.QtNetwork.QNetworkReply")
-    def xtest_sendMissingMaterials(self, reply_mock):
-        reply_mock.attribute.return_value = 200
-        reply_mock.readAll.return_value = QByteArray(
-            json.dumps([self._REMOTEMATERIAL_WHITE], self._REMOTEMATERIAL_BLACK).encode("ascii"))
-
-        containerRegistry = TestContainerRegistry()
-        containerRegistry.setContainersMetadata([self._LOCALMATERIAL_WHITE, self._LOCALMATERIAL_BLACK])
-
-        with mock.patch.object(Logger, "log", new=new_log):
-            with mock.patch.object(ContainerRegistry, "getInstance", lambda: containerRegistry):
-                SendMaterialJob(None).sendMissingMaterials(reply_mock)
-
-        reply_mock.attribute.assert_called_with(0)
-        self.assertEqual(reply_mock.method_calls, [call.attribute(0), call.readAll()])
-        self._assertLogEntries([], _logentries)
+        self.assertEqual([call._createFormPart('name="file"; filename="generic_pla_white.xml.fdm_material"', '<xml></xml>'),
+                          call.postFormWithParts(on_finished=job.sendingFinished, parts = ["_xXx_"], target = "materials/")], device_mock.method_calls)
 
     @patch("PyQt5.QtNetwork.QNetworkReply")
     def test_sendingFinished_success(self, reply_mock) -> None:
