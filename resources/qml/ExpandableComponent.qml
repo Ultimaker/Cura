@@ -16,7 +16,6 @@ Item
     // The popupItem holds the QML item that is shown when the "open" button is pressed
     property var popupItem
 
-    // The background color of the popup
     property color popupBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
@@ -31,7 +30,6 @@ Item
     // What icon should be displayed on the right.
     property alias iconSource: collapseButton.source
 
-    // What is the color of the icon?
     property alias iconColor: collapseButton.color
 
     // The icon size (it's always drawn as a square)
