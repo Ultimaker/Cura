@@ -64,7 +64,6 @@ def test_FirmwareUpdateCheckerLookup(id, name):
 def test_FirmwareUpdateCheckerJob_getCurrentVersion(name, version):
     machine_data = json_data.get(name)
     job = FirmwareUpdateCheckerJob(False, name, machine_data, dummyCallback)
-    job._lookups = FirmwareUpdateCheckerLookup(name, machine_data)
     job._headers = {"User-Agent": "Cura-UnitTests 0"}
 
     assert job.getCurrentVersion() == version

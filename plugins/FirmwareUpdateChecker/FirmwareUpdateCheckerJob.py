@@ -32,7 +32,7 @@ class FirmwareUpdateCheckerJob(Job):
 
         self._machine_name = machine_name
         self._metadata = metadata
-        self._lookups = None  # type:Optional[FirmwareUpdateCheckerLookup]
+        self._lookups = FirmwareUpdateCheckerLookup(self._machine_name, self._metadata)
         self._headers = {}  # type:Dict[str, str]  # Don't set headers yet.
 
     def getUrlResponse(self, url: str) -> str:
@@ -69,9 +69,6 @@ class FirmwareUpdateCheckerJob(Job):
         return max_version
 
     def run(self):
-        if self._lookups is None:
-            self._lookups = FirmwareUpdateCheckerLookup(self._machine_name, self._metadata)
-
         try:
             # Initialize a Preference that stores the last version checked for this printer.
             Application.getInstance().getPreferences().addPreference(
