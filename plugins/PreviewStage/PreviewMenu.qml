@@ -40,7 +40,6 @@ Item
         Row
         {
             anchors.centerIn: parent
-            //spacing: UM.Theme.getSize("default_margin").width
             height: parent.height
 
             Cura.ExpandableComponent
