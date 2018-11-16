@@ -76,7 +76,7 @@ class FirmwareUpdateChecker(Extension):
             Logger.log("i", "No machine with name {0} in list of firmware to check.".format(container_name))
             return
 
-        self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
+        self._check_job = FirmwareUpdateCheckerJob(silent = silent,
                                                    machine_name = container_name, metadata = metadata,
                                                    callback = self._onActionTriggered)
         self._check_job.start()
