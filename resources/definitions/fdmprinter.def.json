@@ -4139,6 +4139,20 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
                 },
+                "minimum_support_area": 
+                {
+                    "label": "Minimum Support Area",
+                    "description": "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated.",
+                    "unit": "mm²",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value": "0",
+                    "enabled": "support_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true,
+                    "fabricate_enabled": true,
+                    "intermediate_enabled": true
+                },
                 "support_interface_enable":
                 {
                     "label": "Enable Support Interface",
@@ -4371,6 +4385,94 @@
                             },
                             "default_value": "concentric",
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_pattern')",
+                            "limit_to_extruder": "support_bottom_extruder_nr",
+                            "enabled": "support_bottom_enable and (support_enable or support_tree_enable)",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "minimum_interface_area": 
+                {
+                    "label": "Minimum Support Interface Area",
+                    "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated.",
+                    "unit": "mm²",
+                    "type": "float",
+                    "default_value": 1.0,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "minimum_support_area",
+                    "limit_to_extruder": "support_interface_extruder_nr",
+                    "enabled": "support_interface_enable and support_enable",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "minimum_roof_area": 
+                        {
+                            "label": "Minimum Support Roof Area",
+                            "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated.",
+                            "unit": "mm²",
+                            "type": "float",
+                            "default_value": 1.0,
+                            "value": "extruderValue(support_roof_extruder_nr, 'minimum_interface_area')",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "minimum_support_area",
+                            "limit_to_extruder": "support_roof_extruder_nr",
+                            "enabled": "support_roof_enable and support_enable",
+                            "settable_per_mesh": true
+                        },
+                        "minimum_bottom_area": 
+                        {
+                            "label": "Minimum Support Floor Area",
+                            "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated.",
+                            "unit": "mm²",
+                            "type": "float",
+                            "default_value": 1.0,
+                            "value": "extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "minimum_support_area",
+                            "limit_to_extruder": "support_bottom_extruder_nr",
+                            "enabled": "support_bottom_enable and support_enable",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
+                "support_interface_offset": 
+                {
+                    "label": "Support Interface Horizontal Expansion",
+                    "description": "Amount of offset applied to the support interface polygons.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
+                    "limit_to_extruder": "support_interface_extruder_nr",
+                    "enabled": "support_interface_enable and (support_enable or support_tree_enable)",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_roof_offset": 
+                        {
+                            "label": "Support Roof Horizontal Expansion",
+                            "description": "Amount of offset applied to the roofs of the support.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.0,
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_offset')",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
+                            "limit_to_extruder": "support_roof_extruder_nr",
+                            "enabled": "support_roof_enable and (support_enable or support_tree_enable)",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_bottom_offset": 
+                        {
+                            "label": "Support Floor Horizontal Expansion",
+                            "description": "Amount of offset applied to the floors of the support.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.0,
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_offset')",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_tree_enable)",
                             "settable_per_mesh": false,

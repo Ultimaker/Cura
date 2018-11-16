@@ -419,13 +419,13 @@ class ContainerManager(QObject):
             self._container_name_filters[name_filter] = entry
 
     ##  Import single profile, file_url does not have to end with curaprofile
-    @pyqtSlot(QUrl, result="QVariantMap")
-    def importProfile(self, file_url: QUrl):
+    @pyqtSlot(QUrl, result = "QVariantMap")
+    def importProfile(self, file_url: QUrl) -> Dict[str, str]:
         if not file_url.isValid():
-            return
+            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + str(file_url)}
         path = file_url.toLocalFile()
         if not path:
-            return
+            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + str(file_url)}
         return self._container_registry.importProfile(path)
 
     @pyqtSlot(QObject, QUrl, str)

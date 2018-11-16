@@ -120,7 +120,7 @@ class AuthorizationService:
             "redirect_uri": self._settings.CALLBACK_URL,
             "scope": self._settings.CLIENT_SCOPES,
             "response_type": "code",
-            "state": "CuraDriveIsAwesome",
+            "state": "(.Y.)",
             "code_challenge": challenge_code,
             "code_challenge_method": "S512"
         })
