@@ -18,17 +18,17 @@ class ClusterMaterial(BaseModel):
         self.version = int(self.version)
         self.density = float(self.density)
 
-    guid: None  # type: Optional[str]
+    guid = None  # type: Optional[str]
 
-    material: None  # type: Optional[str]
+    material = None  # type: Optional[str]
 
-    brand: None  # type: Optional[str]
+    brand = None  # type: Optional[str]
 
     version = None  # type: Optional[int]
 
-    color: None  # type: Optional[str]
+    color = None  # type: Optional[str]
 
-    density: None  # type: Optional[float]
+    density = None  # type: Optional[float]
 
 
 class LocalMaterialProperties(BaseModel):
@@ -38,11 +38,11 @@ class LocalMaterialProperties(BaseModel):
         self.diameter = float(self.diameter)
         self.weight = float(self.weight)
 
-    density: None  # type: Optional[float]
+    density = None  # type: Optional[float]
 
-    diameter: None  # type: Optional[float]
+    diameter = None  # type: Optional[float]
 
-    weight: None  # type: Optional[int]
+    weight = None  # type: Optional[int]
 
 
 class LocalMaterial(BaseModel):
@@ -52,36 +52,36 @@ class LocalMaterial(BaseModel):
         self.approximate_diameter = float(self.approximate_diameter)
         self.version = int(self.version)
 
-    GUID: None  # type: Optional[str]
+    GUID = None  # type: Optional[str]
 
-    id: None  # type: Optional[str]
+    id = None  # type: Optional[str]
 
-    type: None  # type: Optional[str]
+    type = None  # type: Optional[str]
 
-    status: None  # type: Optional[str]
+    status = None  # type: Optional[str]
 
-    base_file: None  # type: Optional[str]
+    base_file = None  # type: Optional[str]
 
-    setting_version: None  # type: Optional[str]
+    setting_version = None  # type: Optional[str]
 
     version = None  # type: Optional[int]
 
-    name: None  # type: Optional[str]
+    name = None  # type: Optional[str]
 
-    brand: None  # type: Optional[str]
+    brand = None  # type: Optional[str]
 
-    material: None  # type: Optional[str]
+    material = None  # type: Optional[str]
 
-    color_name: None  # type: Optional[str]
+    color_name = None  # type: Optional[str]
 
-    description: None  # type: Optional[str]
+    description = None  # type: Optional[str]
 
-    adhesion_info: None  # type: Optional[str]
+    adhesion_info = None  # type: Optional[str]
 
-    approximate_diameter: None  # type: Optional[float]
+    approximate_diameter = None  # type: Optional[float]
 
-    properties: None  # type: LocalMaterialProperties
+    properties = None  # type: LocalMaterialProperties
 
-    definition: None  # type: Optional[str]
+    definition = None  # type: Optional[str]
 
-    compatible: None  # type: Optional[bool]
+    compatible = None  # type: Optional[bool]
