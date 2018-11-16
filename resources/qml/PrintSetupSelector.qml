@@ -24,7 +24,7 @@ Cura.ExpandableComponent
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    implicitWidth: 200
+    implicitWidth: 200 * screenScaleFactor
     height: childrenRect.height
     iconSource: UM.Theme.getIcon("pencil")
 

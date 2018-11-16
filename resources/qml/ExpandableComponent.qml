@@ -6,7 +6,7 @@ import UM 1.2 as UM
 // The expandable component has 3 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
 //      * The popupItem; The content that needs to be shown if the component is expanded.
-//      * The Icon; An icon that is displayed on the right of the drawer.
+//      * The icon; An icon that is displayed on the right of the drawer.
 Item
 {
     id: base
@@ -69,8 +69,8 @@ Item
         onHeightChanged: popup.height = popupItem.height + 2 * popup.padding
     }
 
-    implicitHeight: 100
-    implicitWidth: 400
+    implicitHeight: 100 * screenScaleFactor
+    implicitWidth: 400 * screenScaleFactor
     Rectangle
     {
         id: background
