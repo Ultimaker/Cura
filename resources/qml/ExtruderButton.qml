@@ -23,6 +23,7 @@ Button
     {
         width: UM.Theme.getSize("button_icon").width
         materialColor: model.color
+        extruderEnabled: extruder.stack.isEnabled
         property int index: extruder.index
     }
 

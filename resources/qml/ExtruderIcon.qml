@@ -13,9 +13,9 @@ Item
     implicitHeight: implicitWidth
 
     property bool checked: true
-    property alias materialColor: mainIcon.color
+    property color materialColor
     property alias textColor: extruderNumberText.color
-
+    property bool extruderEnabled: true
     UM.RecolorImage
     {
         id: mainIcon
@@ -24,6 +24,7 @@ Item
         sourceSize.width: parent.width
         sourceSize.height: parent.width
         source: UM.Theme.getIcon("extruder_button")
+        color: extruderEnabled ? materialColor: "gray"
     }
 
     Rectangle
@@ -31,9 +32,9 @@ Item
         id: extruderNumberCircle
 
         width: height
-        height: parent.height / 2
+        height: Math.round(parent.height / 2)
         radius: Math.round(width / 2)
-        color: "white"
+        color: UM.Theme.getColor("toolbar_background")
 
         anchors
         {
@@ -51,6 +52,19 @@ Item
             font: UM.Theme.getFont("default")
             width: contentWidth
             height: contentHeight
+            visible: extruderEnabled
+        }
+
+        UM.RecolorImage
+        {
+            id: disabledIcon
+            anchors.fill: parent
+            anchors.margins: UM.Theme.getSize("thick_lining").width
+            sourceSize.width: width
+            sourceSize.height: width
+            source: UM.Theme.getIcon("cross1")
+            visible: !extruderEnabled
+            color: "black"
         }
     }
 }

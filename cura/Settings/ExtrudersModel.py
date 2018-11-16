@@ -24,8 +24,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     ##  Human-readable name of the extruder.
     NameRole = Qt.UserRole + 2
-    ##  Is the extruder enabled?
-    EnabledRole = Qt.UserRole + 9
 
     ##  Colour of the material loaded in the extruder.
     ColorRole = Qt.UserRole + 3
@@ -49,6 +47,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     MaterialBrandRole = Qt.UserRole + 9
     ColorNameRole = Qt.UserRole + 10
+
+    ##  Is the extruder enabled?
+    EnabledRole = Qt.UserRole + 11
 
     ##  List of colours to display if there is no material or the material has no known
     #   colour.

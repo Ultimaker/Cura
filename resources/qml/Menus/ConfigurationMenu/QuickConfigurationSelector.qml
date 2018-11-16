@@ -49,6 +49,7 @@ Cura.ExpandableComponent
                 {
                     id: extruderIcon
                     materialColor: model.color
+                    extruderEnabled: model.enabled
                     height: parent.height
                     width: height
                 }
@@ -118,6 +119,7 @@ Cura.ExpandableComponent
                         {
                             anchors.horizontalCenter: parent.horizontalCenter
                             materialColor: model.color
+                            extruderEnabled: model.enabled
                             width: parent.height
                             height: parent.height
                         }
