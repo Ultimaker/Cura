@@ -85,7 +85,7 @@ Item
             anchors
             {
                 left: parent.left
-                right: collapseButton.left
+                right: collapseButton.visible ? collapseButton.left : parent.right
                 top: parent.top
                 bottom: parent.bottom
                 margins: background.padding
