@@ -35,10 +35,11 @@ Item
     {
         id: stageMenu
         height: parent.height
-        width: childrenRect.width + UM.Theme.getSize("default_margin").width
+        width: stageMenuRow.width + UM.Theme.getSize("default_margin").width
         anchors.horizontalCenter: parent.horizontalCenter
         Row
         {
+            id: stageMenuRow
             anchors.centerIn: parent
             height: parent.height
 
