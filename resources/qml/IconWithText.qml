@@ -21,7 +21,7 @@ Item
 
     // These properties can be used in combination with layouts.
     readonly property real contentWidth: icon.width + margin + label.contentWidth
-    readonly property real minContentWidth: icon.width + margin + 0.5 * label.contentWidth
+    readonly property real minContentWidth: Math.round(icon.width + margin + 0.5 * label.contentWidth)
 
     Layout.minimumWidth: minContentWidth
     Layout.preferredWidth: contentWidth
