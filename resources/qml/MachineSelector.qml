@@ -38,7 +38,7 @@ Cura.ExpandableComponent
     popupItem: Item
     {
         id: popup
-        width: 240
+        width: machineSelector.width - 2 * UM.Theme.getSize("default_margin").width
         height: 200
 
         ScrollView
