@@ -83,8 +83,12 @@ Item
                     id: viewSelectorPopup
                     width: viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
 
-                    // For some reason the height of the column gets set to 0 if this is not set...
-                    Component.onCompleted: height = implicitHeight
+                    // For some reason the height/width of the column gets set to 0 if this is not set...
+                    Component.onCompleted:
+                    {
+                        height = implicitHeight
+                        width = viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
+                    }
 
                     Repeater
                     {
