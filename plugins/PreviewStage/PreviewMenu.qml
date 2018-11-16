@@ -54,13 +54,13 @@ Item
                 {
                     for (var i = 0; i < viewModel.rowCount(); i++)
                     {
-                        if(viewModel.getItem(i).active)
+                        if (viewModel.getItem(i).active)
                         {
                             return viewModel.getItem(i)
                         }
                     }
                     // Nothing was active, so just return the first one (the list is sorted by priority, so the most
-                    // important one sshould be returned)
+                    // important one should be returned)
                     return viewModel.getItem(0)
                 }
 
