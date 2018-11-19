@@ -175,10 +175,7 @@ class SendMaterialJob(Job):
                 material = LocalMaterial(**m)
                 if material.GUID not in result or material.version > result.get(material.GUID).version:
                     result[material.GUID] = material
-            except ValueError as e:
-                Logger.log("w", "Local material {material_id} has invalid values: {e}".format(
-                    material_id = m["id"],
-                    e = e
-                ))
+            except ValueError:
+                Logger.logException("w", "Local material {} has invalid values.".format(m["id"]))
 
         return result
