@@ -1,16 +1,15 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import configparser
-import pytest
 
-from plugins.VersionUpgrade.VersionUpgrade25to26 import VersionUpgrade25to26
+import configparser #To check whether the appropriate exceptions are raised.
+import pytest #To register tests with.
 
+import VersionUpgrade25to26 #The module we're testing.
 
 ##  Creates an instance of the upgrader to test with.
 @pytest.fixture
 def upgrader():
     return VersionUpgrade25to26.VersionUpgrade25to26()
-
 
 test_cfg_version_good_data = [
     {
@@ -60,7 +59,6 @@ setting_version = -3
         "version": 999997
     }
 ]
-
 
 ##  Tests the technique that gets the version number from CFG files.
 #
@@ -118,7 +116,6 @@ version = 1.2
     }
 ]
 
-
 ##  Tests whether getting a version number from bad CFG files gives an
 #   exception.
 #
@@ -157,7 +154,6 @@ foo = bar
 """
     }
 ]
-
 
 ##  Tests whether the settings that should be removed are removed for the 2.6
 #   version of preferences.
@@ -203,7 +199,6 @@ type = instance_container
 """
     }
 ]
-
 
 ##  Tests whether the settings that should be removed are removed for the 2.6
 #   version of instance containers.

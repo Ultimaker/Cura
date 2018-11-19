@@ -1,15 +1,15 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import configparser
-import pytest
 
-from plugins.VersionUpgrade.VersionUpgrade27to30.VersionUpgrade27to30 import VersionUpgrade27to30
+import configparser #To parse the resulting config files.
+import pytest #To register tests with.
 
+import VersionUpgrade27to30 #The module we're testing.
 
 ##  Creates an instance of the upgrader to test with.
 @pytest.fixture
 def upgrader():
-    return VersionUpgrade27to30()
+    return VersionUpgrade27to30.VersionUpgrade27to30()
 
 test_cfg_version_good_data = [
     {
