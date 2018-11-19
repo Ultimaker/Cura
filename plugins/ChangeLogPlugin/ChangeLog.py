@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
@@ -29,6 +29,7 @@ class ChangeLog(Extension, QObject,):
         self._change_logs = None
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
         Application.getInstance().getPreferences().addPreference("general/latest_version_changelog_shown", "2.0.0") #First version of CURA with uranium
+        self.setMenuName(catalog.i18nc("@item:inmenu", "Changelog"))
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Show Changelog"), self.showChangelog)
 
     def getChangeLogs(self):
