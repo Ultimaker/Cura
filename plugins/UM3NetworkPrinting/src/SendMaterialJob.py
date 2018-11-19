@@ -32,7 +32,7 @@ class SendMaterialJob(Job):
 
     ##  Send the request to the printer and register a callback
     def run(self) -> None:
-        self.device.get("materials/", on_finished = self.sendMissingMaterials)
+        self.device.get("materials/", on_finished = self._onGetRemoteMaterials)
 
     ##  Process the materials reply from the printer.
     #
