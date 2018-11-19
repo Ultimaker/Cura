@@ -12,6 +12,10 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 
 
+/**
+ * Menu that allows you to select the configuration of the current printer, such
+ * as the nozzle sizes and materials in each extruder.
+ */
 Cura.ExpandableComponent
 {
     id: base
@@ -99,10 +103,27 @@ Cura.ExpandableComponent
         width: base.width - 2 * UM.Theme.getSize("default_margin").width
         height: 200
 
+        Label
+        {
+            id: customHeader
+            text: catalog.i18nc("@header", "Custom")
+            font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
+
+            anchors
+            {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+            }
+        }
+
         TabBar
         {
             id: tabBar
             onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
+            anchors.top: customHeader.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             height: 50
             Repeater
