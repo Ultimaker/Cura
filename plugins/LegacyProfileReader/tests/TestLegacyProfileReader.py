@@ -1,8 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 import configparser # An input for some functions we're testing.
-import os.path # To find the integration test .ini files.
+import os # To find the integration test .ini files.
 import pytest # To register tests with.
 import unittest.mock # To mock the application, plug-in and container registry out.
 
@@ -11,12 +10,14 @@ import UM.PluginRegistry # To mock the plug-in registry out.
 import UM.Settings.ContainerRegistry # To mock the container registry out.
 import UM.Settings.InstanceContainer # To intercept the serialised data from the read() function.
 
-import LegacyProfileReader as LegacyProfileReaderModule # To get the directory of the module.
-from LegacyProfileReader import LegacyProfileReader # The module we're testing.
+import plugins.LegacyProfileReader.LegacyProfileReader as LegacyProfileReaderModule
+from plugins.LegacyProfileReader.LegacyProfileReader import LegacyProfileReader
+
 
 @pytest.fixture
 def legacy_profile_reader():
     return LegacyProfileReader()
+
 
 test_prepareDefaultsData = [
     {
