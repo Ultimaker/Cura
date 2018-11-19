@@ -23,14 +23,13 @@ from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOut
 #   Note that this device represents a single remote cluster, not a list of multiple clusters.
 #
 #   TODO: figure our how the QML interface for the cluster networking should operate with this limited functionality.
-#   TODO: figure out how to pair remote clusters, local networked clusters and local cura printer presets.
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
     
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
-    # The cloud URL to use for remote clusters.
-    API_ROOT_PATH_FORMAT = "https://api.ultimaker.com/connect/v1/clusters/{cluster_id}"
+    # The cloud URL to use for this remote cluster.
+    API_ROOT_PATH_FORMAT = "https://api-staging.ultimaker.com/connect/v1/clusters/{cluster_id}"
     
     # Signal triggered when the printers in the remote cluster were changed.
     printersChanged = pyqtSignal()
@@ -79,8 +78,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
-        
-        # TODO: actually implement this
         self._addPrintJobToQueue()
 
     ##  Get remote printers.
@@ -102,6 +99,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         super()._update()
         self.get("/status", on_finished = self._onStatusCallFinished)
 
+    ##  Method called when HTTP request to status endpoint is finished.
+    #   Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, reply: QNetworkReply) -> None:
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if status_code != 200:

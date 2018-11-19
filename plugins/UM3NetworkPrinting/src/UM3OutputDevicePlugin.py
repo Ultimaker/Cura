@@ -40,6 +40,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf = None
         self._zero_conf_browser = None
 
+        # Create a cloud output device manager that abstract all cloud connection logic away.
+        self._cloud_output_device_manager = CloudOutputDeviceManager(self._application)
+
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
@@ -76,9 +79,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._service_changed_request_event = Event()
         self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
         self._service_changed_request_thread.start()
-        
-        # Create a cloud output device manager that abstract all cloud connection logic away.
-        self._cloud_output_device_manager = CloudOutputDeviceManager(self._application)
 
     def getDiscoveredDevices(self):
         return self._discovered_devices
