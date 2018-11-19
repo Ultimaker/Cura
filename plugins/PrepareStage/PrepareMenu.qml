@@ -68,7 +68,7 @@ Item
                     color: UM.Theme.getColor("lining")
                 }
 
-                Cura.QuickConfigurationSelector
+                Cura.ConfigurationMenu
                 {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
