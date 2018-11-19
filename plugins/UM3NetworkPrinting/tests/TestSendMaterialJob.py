@@ -97,7 +97,7 @@ class TestSendMaterialJob(TestCase):
 
         # We expect the error string to be retrieved and the device not to be called for any follow up.
         self.assertEqual([call.attribute(0), call.errorString()], reply_mock.method_calls)
-        self.assertEqual(0, device_mock.call_count)
+        self.assertEqual(0, device_mock.createFormPart.call_count)
 
     @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
     @patch("PyQt5.QtNetwork.QNetworkReply")
@@ -110,7 +110,7 @@ class TestSendMaterialJob(TestCase):
         # We expect the reply to be called once to try to get the printers from the list (readAll()).
         # Given that the parsing there fails we do no expect the device to be called for any follow up.
         self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
-        self.assertEqual(0, device_mock.call_count)
+        self.assertEqual(0, device_mock.createFormPart.call_count)
 
     # @patch("PyQt5.QtNetwork.QNetworkReply")
     # def test_sendMissingMaterials_withMissingGuid(self, reply_mock):
