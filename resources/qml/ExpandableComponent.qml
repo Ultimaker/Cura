@@ -17,6 +17,8 @@ Item
     property var popupItem
 
     property color popupBackgroundColor: UM.Theme.getColor("action_button")
+    property int popupBorderWidth: UM.Theme.getSize("default_lining").width
+    property color popupBorderColor: UM.Theme.getColor("lining")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
     property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
@@ -147,6 +149,8 @@ Item
         background: Rectangle
         {
             color: popupBackgroundColor
+            border.width: popupBorderWidth
+            border.color: popupBorderColor
         }
     }
 }
