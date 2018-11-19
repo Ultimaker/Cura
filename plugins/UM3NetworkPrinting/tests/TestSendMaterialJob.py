@@ -97,7 +97,7 @@ class TestSendMaterialJob(TestCase):
 
         # We expect the error string to be retrieved and the device not to be called for any follow up.
         self.assertEqual([call.attribute(0), call.errorString()], reply_mock.method_calls)
-        self.assertEqual([], device_mock.method_calls)
+        self.assertEqual(0, device_mock.call_count)
 
     @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
     @patch("PyQt5.QtNetwork.QNetworkReply")
@@ -110,7 +110,7 @@ class TestSendMaterialJob(TestCase):
         # We expect the reply to be called once to try to get the printers from the list (readAll()).
         # Given that the parsing there fails we do no expect the device to be called for any follow up.
         self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
-        self.assertEqual([], device_mock.method_calls)
+        self.assertEqual(0, device_mock.call_count)
 
     # @patch("PyQt5.QtNetwork.QNetworkReply")
     # def test_sendMissingMaterials_withMissingGuid(self, reply_mock):
@@ -274,19 +274,3 @@ class TestSendMaterialJob(TestCase):
     #
     #     self.assertTrue(len(local_materials) == 1)
     #     self.assertTrue(list(local_materials.values())[0].version == 2)
-    #
-    # def _assertLogEntries(self, first, second):
-    #     """
-    #     Inspects the two sets of log entry tuples and fails when they are not the same
-    #     :param first: The first set of tuples
-    #     :param second: The second set of tuples
-    #     """
-    #     self.assertEqual(len(first), len(second))
-    #
-    #     while len(first) > 0:
-    #         e1, m1 = first[0]
-    #         e2, m2 = second[0]
-    #         self.assertEqual(e1, e2)
-    #         self.assertEqual(m1, m2)
-    #         first.pop(0)
-    #         second.pop(0)
