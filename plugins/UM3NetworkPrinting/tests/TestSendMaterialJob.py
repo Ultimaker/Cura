@@ -1,5 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import json
+
 from typing import Any, List
 from unittest import TestCase
 from unittest.mock import patch, call
@@ -108,26 +110,25 @@ class TestSendMaterialJob(TestCase):
         job._onGetRemoteMaterials(reply_mock)
 
         # We expect the reply to be called once to try to get the printers from the list (readAll()).
-        # Given that the parsing there fails we do no expect the device to be called for any follow up.
+        # Given that the parsing fails we do no expect the device to be called for any follow up.
         self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    # @patch("PyQt5.QtNetwork.QNetworkReply")
-    # def test_sendMissingMaterials_withMissingGuid(self, reply_mock):
-    #     reply_mock.attribute.return_value = 200
-    #     remoteMaterialWithoutGuid = self._REMOTEMATERIAL_WHITE.copy()
-    #     del remoteMaterialWithoutGuid["guid"]
-    #     reply_mock.readAll.return_value = QByteArray(json.dumps([remoteMaterialWithoutGuid]).encode("ascii"))
-    #
-    #     with mock.patch.object(Logger, "log", new=new_log):
-    #         SendMaterialJob(None).sendMissingMaterials(reply_mock)
-    #
-    #     reply_mock.attribute.assert_called_with(0)
-    #     self.assertEqual(reply_mock.method_calls, [call.attribute(0), call.readAll()])
-    #     self._assertLogEntries(
-    #         [("e", "Request material storage on printer: Printer"s answer was missing GUIDs.")],
-    #         _logentries)
-    #
+    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
+    @patch("PyQt5.QtNetwork.QNetworkReply")
+    def test_sendMissingMaterials_withMissingGuid(self, reply_mock, device_mock):
+        reply_mock.attribute.return_value = 200
+        remote_material_without_guid = self._REMOTE_MATERIAL_WHITE.copy()
+        del remote_material_without_guid["guid"]
+        reply_mock.readAll.return_value = QByteArray(json.dumps([remote_material_without_guid]).encode("ascii"))
+        job = SendMaterialJob(device_mock)
+        job._onGetRemoteMaterials(reply_mock)
+
+        # We expect the reply to be called once to try to get the printers from the list (readAll()).
+        # Given that parsing fails we do not expect the device to be called for any follow up.
+        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
+        self.assertEqual(1, device_mock.createFormPart.call_count)
+
     # @patch("UM.Resources.Resources.getAllResourcesOfType", lambda _: [])
     # @patch("PyQt5.QtNetwork.QNetworkReply")
     # def test_sendMissingMaterials_WithInvalidVersionInLocalMaterial(self, reply_mock):

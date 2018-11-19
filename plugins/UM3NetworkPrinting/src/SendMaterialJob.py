@@ -156,8 +156,8 @@ class SendMaterialJob(Job):
     #   \throw KeyError Raised when on of the materials does not include a valid guid
     @classmethod
     def _parseReply(cls, reply: QNetworkReply) -> Dict[str, ClusterMaterial]:
-        remote_materials_list = json.loads(reply.readAll().data().decode("utf-8"))
-        return {material["guid"]: ClusterMaterial(**material) for material in remote_materials_list}
+        remote_materials = json.loads(reply.readAll().data().decode("utf-8"))
+        return {material["id"]: ClusterMaterial(**material) for material in remote_materials}
 
     ##  Retrieves a list of local materials
     #
@@ -170,12 +170,12 @@ class SendMaterialJob(Job):
         material_containers = container_registry.findContainersMetadata(type = "material")
 
         # Find the latest version of all material containers in the registry.
-        for m in material_containers:
+        local_materials = {}  # type: Dict[str, LocalMaterial]
+        for material in material_containers:
             try:
-                material = LocalMaterial(**m)
+                material = LocalMaterial(**material)
                 if material.GUID not in result or material.version > result.get(material.GUID).version:
-                    result[material.GUID] = material
+                    local_materials[material.GUID] = material
             except ValueError:
-                Logger.logException("w", "Local material {} has invalid values.".format(m["id"]))
-
+                Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
         return result
