@@ -29,7 +29,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     I18N_CATALOG = i18nCatalog("cura")
 
     # The cloud URL to use for remote clusters.
-    API_ROOT_PATH_FORMAT = "https://api.ultimaker.com/connect/clusters/{cluster_id}"
+    API_ROOT_PATH_FORMAT = "https://api.ultimaker.com/connect/v1/clusters/{cluster_id}"
     
     # Signal triggered when the printers in the remote cluster were changed.
     printersChanged = pyqtSignal()
