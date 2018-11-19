@@ -60,6 +60,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             # TODO: show message to user to sign in
             self.setAuthenticationState(AuthState.NotAuthenticated)
         else:
+            # TODO: not execute call at all when not signed in?
             self.setAuthenticationState(AuthState.Authenticated)
             request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
 
