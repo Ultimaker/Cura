@@ -12,7 +12,10 @@ if TYPE_CHECKING:
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
 #   Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
 #
+#   API spec is available on https://api.ultimaker.com/docs/connect/spec/.
+#
 #   TODO: figure out how to pair remote clusters, local networked clusters and local cura printer presets.
+#   TODO: for now we just have multiple output devices if the cluster is available both locally and remote.
 class CloudOutputDeviceManager:
     
     # The cloud URL to use for remote clusters.
@@ -32,17 +35,20 @@ class CloudOutputDeviceManager:
         # Fetch all remote clusters for the authenticated user.
         self._getRemoteClusters()
         
+    ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self):
         # TODO: get list of remote clusters and create an output device for each.
         # For testing we add a dummy device:
         self._addCloudOutputDevice({"cluster_id": "LJ0tciiuZZjarrXAvFLEZ6ox4Cvx8FvtXUlQv4vIhV6w"})
     
+    ##  Adds a CloudOutputDevice for each entry in the remote cluster list from the API.
     def _addCloudOutputDevice(self, cluster_data: Dict[str, any]):
         # TODO: use model or named tuple for cluster_data
         device = CloudOutputDevice(cluster_data["cluster_id"])
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster_data["cluster_id"]] = device
     
+    ##  Callback for when the active machine was changed by the user.
     def _activeMachineChanged(self):
         active_machine = self._application.getGlobalContainerStack()
         if not active_machine:
