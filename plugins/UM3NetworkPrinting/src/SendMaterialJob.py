@@ -157,6 +157,7 @@ class SendMaterialJob(Job):
     @classmethod
     def _parseReply(cls, reply: QNetworkReply) -> Dict[str, ClusterMaterial]:
         remote_materials_list = json.loads(reply.readAll().data().decode("utf-8"))
+        print("remote_materials_list", remote_materials_list)
         return {material["guid"]: ClusterMaterial(**material) for material in remote_materials_list}
 
     ##  Retrieves a list of local materials

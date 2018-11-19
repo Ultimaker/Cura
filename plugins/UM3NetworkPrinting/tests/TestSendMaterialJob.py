@@ -90,26 +90,33 @@ class TestSendMaterialJob(TestCase):
     def test_run(self, device_mock):
         job = SendMaterialJob(device_mock)
         job.run()
+
+        # We expect the materials endpoint to be called when the job runs.
         device_mock.get.assert_called_with("materials/", on_finished=job._onGetRemoteMaterials)
 
     @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
     @patch("PyQt5.QtNetwork.QNetworkReply")
     def test_sendMissingMaterials_withFailedRequest(self, reply_mock, device_mock):
         reply_mock.attribute.return_value = 404
-        SendMaterialJob(device_mock).run()
-        reply_mock.attribute.assert_called_with(0)
-        self.assertEqual(reply_mock.method_calls, [call.attribute(0)])
-        self.assertEqual(device_mock._onGetRemoteMaterials.method_calls, [])
+        job = SendMaterialJob(device_mock)
+        job._onGetRemoteMaterials(reply_mock)
+
+        # We expect the error string to be retrieved and the device not to be called for any follow up.
+        self.assertEqual([call.attribute(0), call.errorString()], reply_mock.method_calls)
+        self.assertEqual([], device_mock.method_calls)
 
     @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
     @patch("PyQt5.QtNetwork.QNetworkReply")
     def test_sendMissingMaterials_withBadJsonAnswer(self, reply_mock, device_mock):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(b'Six sick hicks nick six slick bricks with picks and sticks.')
-        SendMaterialJob(device_mock).run()
-        reply_mock.attribute.assert_called_with(0)
-        self.assertEqual(reply_mock.method_calls, [call.attribute(0), call.readAll()])
-        self.assertEqual(device_mock._onGetRemoteMaterials.method_calls, [])
+        job = SendMaterialJob(device_mock)
+        job._onGetRemoteMaterials(reply_mock)
+
+        # We expect the reply to be called once to try to get the printers from the list (readAll()).
+        # Given that the parsing there fails we do no expect the device to be called for any follow up.
+        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
+        self.assertEqual([], device_mock.method_calls)
 
     # @patch("PyQt5.QtNetwork.QNetworkReply")
     # def test_sendMissingMaterials_withMissingGuid(self, reply_mock):
