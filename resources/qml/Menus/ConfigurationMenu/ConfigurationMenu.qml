@@ -6,8 +6,6 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.11
 
-import QtQuick.Controls 1.1 as OldControls
-
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
@@ -100,163 +98,98 @@ Cura.ExpandableComponent
 
     popupItem: Item
     {
+        id: popup
         width: base.width - 2 * UM.Theme.getSize("default_margin").width
         height: 200
 
-        Label
-        {
-            id: customHeader
-            text: catalog.i18nc("@header", "Custom")
-            font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
+        property var configuration_method: "auto"
 
+        AutoConfiguration
+        {
+            id: autoConfiguration
+            visible: popup.configuration_method === "auto"
+            anchors.top: header.bottom
+            height: visible ? childrenRect.height : 0
+        }
+
+        CustomConfiguration
+        {
+            id: customConfiguration
+            visible: popup.configuration_method === "custom"
+            anchors.top: header.bottom
+            height: visible ? childrenRect.height : 0
+        }
+
+        Rectangle
+        {
+            id: separator
             anchors
             {
-                top: parent.top
                 left: parent.left
                 right: parent.right
+                bottom: buttonBar.top
+                bottomMargin: UM.Theme.getSize("default_margin").height
             }
+            height: UM.Theme.getSize("default_lining").height
+            color: UM.Theme.getColor("lining")
         }
 
-        TabBar
+        Rectangle
         {
-            id: tabBar
-            onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
-            anchors.top: customHeader.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            width: parent.width
-            height: 50
-            Repeater
+            id: buttonBar
+            anchors
             {
-                model: extrudersModel
-
-                delegate: TabButton
-                {
-                    width: ListView.view != null ?  Math.round(ListView.view.width / extrudersModel.rowCount()): 0
-                    height: parent.height
-                    contentItem: Item
-                    {
-                        Cura.ExtruderIcon
-                        {
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            materialColor: model.color
-                            extruderEnabled: model.enabled
-                            width: parent.height
-                            height: parent.height
-                        }
-                    }
-                }
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
             }
-        }
+            height: childrenRect.height
 
-        Item
-        {
-            id: tabControl
-            width: parent.width
-            anchors.top: tabBar.bottom
-            anchors.bottom: parent.bottom
-            property var model: extrudersModel.items[tabBar.currentIndex]
-            property real textWidth: Math.round(width * 0.3)
-            property real controlWidth: width - textWidth
-            Column
+            Cura.ActionButton
             {
-                spacing: UM.Theme.getSize("default_margin").height
-                Row
+                id: goToCustom
+                visible: popup.configuration_method === "auto"
+                text: catalog.i18nc("@label", "Custom")
+
+                anchors
                 {
-                    height: UM.Theme.getSize("print_setup_item").height
-
-                    Label
-                    {
-                        text: catalog.i18nc("@label", "Enabled")
-                        verticalAlignment: Text.AlignVCenter
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        height: parent.height
-                        width: tabControl.textWidth
-                    }
-
-                    OldControls.CheckBox
-                    {
-                        checked: tabControl.model != null ? Cura.MachineManager.getExtruder(tabControl.model.index).isEnabled: false
-                        onClicked: Cura.MachineManager.setExtruderEnabled(tabControl.model.index, checked)
-                        height: UM.Theme.getSize("setting_control").height
-                        style: UM.Theme.styles.checkbox
-                    }
+                    right: parent.right
+                    bottom: parent.bottom
                 }
 
-                Row
-                {
-                    height: UM.Theme.getSize("print_setup_item").height
-                    Label
-                    {
-                        text: catalog.i18nc("@label", "Material")
-                        verticalAlignment: Text.AlignVCenter
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        height: parent.height
-                        width: tabControl.textWidth
-                    }
+                color: UM.Theme.getColor("secondary")
+                hoverColor: UM.Theme.getColor("secondary")
+                textColor: UM.Theme.getColor("primary")
+                textHoverColor: UM.Theme.getColor("text")
+                height: UM.Theme.getSize("action_panel_button").height
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
 
-                    OldControls.ToolButton
-                    {
-                        id: materialSelection
-
-                        property var activeExtruder: Cura.MachineManager.activeStack
-                        property var hasActiveExtruder: activeExtruder != null
-                        property var currentRootMaterialName: hasActiveExtruder ? activeExtruder.material.name : ""
-                        property var valueError: hasActiveExtruder ? Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible", "") != "True" : true
-                        property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
-
-                        text: currentRootMaterialName
-                        tooltip: currentRootMaterialName
-                        visible: Cura.MachineManager.hasMaterials
-
-                        enabled: Cura.ExtruderManager.activeExtruderIndex > -1
-
-                        height: UM.Theme.getSize("setting_control").height
-                        width: tabControl.controlWidth
-
-                        style: UM.Theme.styles.sidebar_header_button
-                        activeFocusOnPress: true
-                        menu: Cura.MaterialMenu
-                        {
-                            extruderIndex: Cura.ExtruderManager.activeExtruderIndex
-                        }
-
-                    }
-                }
-
-                Row
-                {
-                    height: UM.Theme.getSize("print_setup_item").height
-
-                    Label
-                    {
-                        text: Cura.MachineManager.activeDefinitionVariantsName
-                        verticalAlignment: Text.AlignVCenter
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        height: parent.height
-                        width: tabControl.textWidth
-                    }
-
-                    OldControls.ToolButton
-                    {
-                        id: variantSelection
-                        text: Cura.MachineManager.activeVariantName
-                        tooltip: Cura.MachineManager.activeVariantName;
-                        visible: Cura.MachineManager.hasVariants
-
-                        height: UM.Theme.getSize("setting_control").height
-                        width: tabControl.controlWidth
-                        style: UM.Theme.styles.sidebar_header_button
-                        activeFocusOnPress: true;
-
-                        menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
-                    }
-                }
+                onClicked: popup.configuration_method = "custom"
             }
 
+            Cura.ActionButton
+            {
+                id: goToAuto
+                visible: popup.configuration_method === "custom"
+                text: catalog.i18nc("@label", "Configurations")
+
+                anchors
+                {
+                    left: parent.left
+                    bottom: parent.bottom
+                }
+
+                color: UM.Theme.getColor("secondary")
+                hoverColor: UM.Theme.getColor("secondary")
+                textColor: UM.Theme.getColor("primary")
+                textHoverColor: UM.Theme.getColor("text")
+                height: UM.Theme.getSize("action_panel_button").height
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
+
+                onClicked: popup.configuration_method = "auto"
+            }
         }
     }
 }
