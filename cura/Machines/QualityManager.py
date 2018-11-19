@@ -11,6 +11,7 @@ from UM.Util import parseBool
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Settings.ExtruderStack import ExtruderStack
+from cura.Settings.ExtruderManager import ExtruderManager
 
 from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
@@ -202,8 +203,23 @@ class QualityManager(QObject):
     def getQualityGroups(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
-        # This determines if we should only get the global qualities for the global stack and skip the global qualities for the extruder stacks
-        has_machine_specific_qualities = machine.getHasMachineQuality()
+        # For Custom FROM printers update machine defintion id
+        if machine_definition_id is "fdmprinter":
+            position = ExtruderManager.getInstance().activeExtruderIndex
+
+            material = machine.extruders[str(position)].material
+            material_id = material.getMetaDataEntry("id")
+
+            new_machine_flag = False
+            for machine_definition_id_temp, quality_node in self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.items():
+
+                for quality_type in quality_node.children_map:
+                    if material_id == quality_type:
+                        machine_definition_id = machine_definition_id_temp
+                        new_machine_flag = True
+                        break
+                if new_machine_flag:
+                    break
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
