@@ -1,0 +1,98 @@
+{
+	"id": "BIBO2 single E1",
+	"version": 2,
+	"name": "BIBO2 single E1",
+	"inherits": "fdmprinter",
+	"metadata": {
+		"visible": true,
+		"author": "na",
+		"manufacturer": "BIBO",
+		"category": "Other",
+		"file_formats": "text/x-gcode",
+		"has_materials": true,
+		"machine_extruder_trains": {
+			"0": "bibo2_single_extruder_0_0",
+			"1": "bibo2_single_extruder_0_1"
+		},
+		"first_start_actions": [
+			"MachineSettingsAction"
+		]
+	},
+	"overrides": {
+		"machine_name": {
+			"default_value": "BIBO2 single Extruder 1 (right)"
+		},
+		"machine_width": {
+			"default_value": 214
+		},
+		"machine_height": {
+			"default_value": 160
+		},
+		"machine_depth": {
+			"default_value": 186
+		},
+		"machine_center_is_zero": {
+			"default_value": true
+		},
+		"machine_heated_bed": {
+			"default_value": true
+		},
+		"machine_nozzle_size": {
+			"default_value": 0.4
+		},
+		"machine_nozzle_heat_up_speed": {
+			"default_value": 2
+		},
+		"machine_nozzle_cool_down_speed": {
+			"default_value": 2
+		},
+		"machine_head_with_fans_polygon": {
+			"default_value": [
+				[
+					-68.18,
+					64.63
+				],
+				[
+					-68.18,
+					-47.38
+				],
+				[
+					35.18,
+					64.63
+				],
+				[
+					35.18,
+					-47.38
+				]
+			]
+		},
+		"material_diameter": {
+			"default_value": 1.75
+		},
+		"gantry_height": {
+			"default_value": 12
+		},
+		"machine_use_extruder_offset_to_offset_coords": {
+			"default_value": true
+		},
+		"machine_gcode_flavor": {
+			"default_value": "RepRap (Marlin/Sprinter)"
+		},
+		"machine_start_gcode": {
+			"default_value": ";Startcode BIBO printers\nM109 T1 S170  ;preheat the other extruder, so it will not knock or ruin the print\nG90 ; absolute mode\nG21 ; metric values\nM82 ; Extruder in absolute mode\nM107\nG28\nG1 Z2 F400\nT0\nG90\nG92 E0\nG28\nG1 Y0 F1200 E0\nG92 E0\nG1 X-15.0 Y-92.9 Z0.3 F2400.0\t\t; move to start-line position\nG1 X15.0 Y-92.9 Z0.3 F1000.0 E2\t\t; draw 1st line\nG1 X15.0 Y-92.6 Z0.3 F3000.0\t\t; move to side a little\nG1 X-15.0 Y-92.6 Z0.3 F1000.0 E4\t\t; draw 2nd line\nG1 X-15.0 Y-92.3 Z0.3 F3000.0\t\t; move to side a little\nG1 X15.0 Y-92.3 Z0.3 F1000.0 E6\t\t; draw 3rd line\nG1 X15.0 Y-92 Z0.3 F3000.0\t\t; move to side a little\nG1 X-15.0 Y-92 Z0.3 F1000.0 E8\t\t; draw 4th line\nG1 X-16.0 Y-91.7 Z0.3 F3000.0\t\t; move to side a little\nG1 X16.0 Y-91.7 Z0.3 F1000.0 E10\t\t; draw 5th line\nG1 X16.0 Y-91.4 Z0.3 F3000.0\t\t; move to side a little\nG1 X-16.0 Y-91.4 Z0.3 F1000.0 E12\t\t; draw 5th line\nG1 E11.5 F2400\t\t\t\t; retract filament 0.5mm\nG92 E0\nM117 BIBO Printing..."
+		},
+		"machine_end_gcode": {
+			"default_value": ";BIBO End GCode\nM107\nG91 ; Relative positioning\nG1 Z1 F100\nM104 T0 S0\nM104 T1 S0\nG1 X-20 Y-20 F3000\nG28 X0 Y0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM140 S0 ; Disable heated bed\nM84 ; Turn steppers off\nM117 BIBO Print complete\n                        "
+		},
+		"machine_extruder_count": {
+			"default_value": 2
+		},
+		"prime_tower_position_x": {
+			"default_value": 50
+		},
+		"prime_tower_position_y": {
+			"default_value": 50
+		}
+	}
+}
+
