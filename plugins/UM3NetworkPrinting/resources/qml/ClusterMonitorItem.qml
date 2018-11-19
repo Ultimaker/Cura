@@ -6,13 +6,15 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.3 as UM
 import Cura 1.0 as Cura
+import QtGraphicalEffects 1.0
 
 Component {
+    
     Rectangle {
         id: monitorFrame;
         property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight");
         property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width;
-        color: UM.Theme.getColor("viewport_background");
+        color: transparent
         height: maximumHeight;
         onVisibleChanged: {
             if (monitorFrame != null && !monitorFrame.visible) {
@@ -20,6 +22,14 @@ Component {
             }
         }
         width: maximumWidth;
+
+        LinearGradient {
+            anchors.fill: parent
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#f6f6f6" }
+                GradientStop { position: 1.0; color: "#ffffff" }
+            }
+        }
 
         UM.I18nCatalog {
             id: catalog;
@@ -60,39 +70,6 @@ Component {
             text: catalog.i18nc("@label", "Queued");
         }
 
-        Column {
-            id: skeletonLoader;
-            anchors {
-                bottom: parent.bottom;
-                bottomMargin: UM.Theme.getSize("default_margin").height;
-                horizontalCenter: parent.horizontalCenter;
-                top: queuedLabel.bottom;
-                topMargin: UM.Theme.getSize("default_margin").height;
-            }
-            visible: !queuedPrintJobs.visible;
-            width: Math.min(800 * screenScaleFactor, maximumWidth);
-
-            PrintJobInfoBlock {
-                anchors {
-                    left: parent.left;
-                    leftMargin: UM.Theme.getSize("default_margin").width;
-                    right: parent.right;
-                    rightMargin: UM.Theme.getSize("default_margin").width;
-                }
-                printJob: null; // Use as skeleton
-            }
-
-            PrintJobInfoBlock {
-                anchors {
-                    left: parent.left;
-                    leftMargin: UM.Theme.getSize("default_margin").width;
-                    right: parent.right;
-                    rightMargin: UM.Theme.getSize("default_margin").width;
-                }
-                printJob: null; // Use as skeleton
-            }
-        }
-
         ScrollView {
             id: queuedPrintJobs;
             anchors {
@@ -104,12 +81,12 @@ Component {
             }
             style: UM.Theme.styles.scrollview;
             visible: OutputDevice.receivedPrintJobs;
-            width: Math.min(800 * screenScaleFactor, maximumWidth);
+            width: Math.min(834 * screenScaleFactor, maximumWidth);
 
             ListView {
                 id: printJobList;
                 anchors.fill: parent;
-                delegate: PrintJobInfoBlock {
+                delegate: MonitorPrintJobCard {
                     anchors {
                         left: parent.left;
                         leftMargin: UM.Theme.getSize("default_margin").width;
@@ -119,7 +96,7 @@ Component {
                     printJob: modelData;
                 }
                 model: OutputDevice.queuedPrintJobs;
-                spacing: UM.Theme.getSize("default_margin").height - 2 * UM.Theme.getSize("monitor_shadow_radius").width;
+                spacing: 6;
             }
         }
 
@@ -129,4 +106,5 @@ Component {
             visible: OutputDevice.activeCameraUrl != "";
         }
     }
+    
 }
