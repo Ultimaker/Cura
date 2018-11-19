@@ -3,13 +3,14 @@
 import json
 from typing import List, Optional, Dict
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QUrl
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM import i18nCatalog
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
@@ -37,18 +38,33 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
     
-    def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], parent: QObject = None):
-        super().__init__(device_id = device_id, address = address, properties = properties, parent = parent)
+    def __init__(self, device_id: str, parent: QObject = None):
+        super().__init__(device_id = device_id, address = "", properties = {}, parent = parent)
         self._setInterfaceElements()
         
-        # The API prefix is automatically added when doing any HTTP call on the device.
-        self._api_prefix = self.API_ROOT_PATH_FORMAT.format(device_id)  # TODO: verify we can use device_id here
-        self._authentication_state = AuthState.Authenticated  # TODO: use cura.API.Account to set this?
+        self._device_id = device_id
+        self._account = CuraApplication.getInstance().getCuraAPI().account
         
         # Properties to populate later on with received cloud data.
         self._printers = []
         self._print_jobs = []
         self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
+    
+    ##  We need to override _createEmptyRequest to work for the cloud.
+    def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
+        url = QUrl(self.API_ROOT_PATH_FORMAT.format(cluster_id = self._device_id) + path)
+        request = QNetworkRequest(url)
+        request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
+        request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
+        
+        if not self._account.isLoggedIn:
+            # TODO: show message to user to sign in
+            self.setAuthenticationState(AuthState.NotAuthenticated)
+        else:
+            self.setAuthenticationState(AuthState.Authenticated)
+            request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
+
+        return request
     
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self):
@@ -90,7 +106,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if status_code != 200:
             Logger.log("w", "Got unexpected response while trying to get cloud cluster data: {}, {}"
-                       .format(status_code, reply.getErrorString()))
+                       .format(status_code, reply.readAll()))
             return
         
         data = self._parseStatusResponse(reply)

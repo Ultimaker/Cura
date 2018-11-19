@@ -17,6 +17,7 @@ from enum import IntEnum
 import os  # To get the username
 import gzip
 
+
 class AuthState(IntEnum):
     NotAuthenticated = 1
     AuthenticationRequested = 2
