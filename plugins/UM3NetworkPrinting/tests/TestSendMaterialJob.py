@@ -46,21 +46,21 @@ class MockOutputDevice(ClusterUM3OutputDevice):
 
 class TestSendMaterialJob(TestCase):
 
-    _LOCAL_MATERIAL_WHITE = {'type': 'material', 'status': 'unknown', 'id': 'generic_pla_white',
-                             'base_file': 'generic_pla_white', 'setting_version': 5, 'name': 'White PLA',
-                             'brand': 'Generic', 'material': 'PLA', 'color_name': 'White',
-                             'GUID': 'badb0ee7-87c8-4f3f-9398-938587b67dce', 'version': '1', 'color_code': '#ffffff',
-                             'description': 'Test PLA White', 'adhesion_info': 'Use glue.', 'approximate_diameter': '3',
-                             'properties': {'density': '1.00', 'diameter': '2.85', 'weight': '750'},
-                             'definition': 'fdmprinter', 'compatible': True}
+    _LOCAL_MATERIAL_WHITE = {"type": "material", "status": "unknown", "id": "generic_pla_white",
+                             "base_file": "generic_pla_white", "setting_version": 5, "name": "White PLA",
+                             "brand": "Generic", "material": "PLA", "color_name": "White",
+                             "GUID": "badb0ee7-87c8-4f3f-9398-938587b67dce", "version": "1", "color_code": "#ffffff",
+                             "description": "Test PLA White", "adhesion_info": "Use glue.", "approximate_diameter": "3",
+                             "properties": {"density": "1.00", "diameter": "2.85", "weight": "750"},
+                             "definition": "fdmprinter", "compatible": True}
 
-    _LOCAL_MATERIAL_BLACK = {'type': 'material', 'status': 'unknown', 'id': 'generic_pla_black',
-                             'base_file': 'generic_pla_black', 'setting_version': 5, 'name': 'Yellow CPE',
-                             'brand': 'Ultimaker', 'material': 'CPE', 'color_name': 'Black',
-                             'GUID': '5fbb362a-41f9-4818-bb43-15ea6df34aa4', 'version': '1', 'color_code': '#000000',
-                             'description': 'Test PLA Black', 'adhesion_info': 'Use glue.', 'approximate_diameter': '3',
-                             'properties': {'density': '1.01', 'diameter': '2.85', 'weight': '750'},
-                             'definition': 'fdmprinter', 'compatible': True}
+    _LOCAL_MATERIAL_BLACK = {"type": "material", "status": "unknown", "id": "generic_pla_black",
+                             "base_file": "generic_pla_black", "setting_version": 5, "name": "Yellow CPE",
+                             "brand": "Ultimaker", "material": "CPE", "color_name": "Black",
+                             "GUID": "5fbb362a-41f9-4818-bb43-15ea6df34aa4", "version": "1", "color_code": "#000000",
+                             "description": "Test PLA Black", "adhesion_info": "Use glue.", "approximate_diameter": "3",
+                             "properties": {"density": "1.01", "diameter": "2.85", "weight": "750"},
+                             "definition": "fdmprinter", "compatible": True}
 
     _REMOTE_MATERIAL_WHITE = {
         "guid": "badb0ee7-87c8-4f3f-9398-938587b67dce",
@@ -103,7 +103,7 @@ class TestSendMaterialJob(TestCase):
     @patch("PyQt5.QtNetwork.QNetworkReply")
     def test_sendMissingMaterials_withBadJsonAnswer(self, reply_mock, device_mock):
         reply_mock.attribute.return_value = 200
-        reply_mock.readAll.return_value = QByteArray(b'Six sick hicks nick six slick bricks with picks and sticks.')
+        reply_mock.readAll.return_value = QByteArray(b"Six sick hicks nick six slick bricks with picks and sticks.")
         job = SendMaterialJob(device_mock)
         job._onGetRemoteMaterials(reply_mock)
 
@@ -119,13 +119,13 @@ class TestSendMaterialJob(TestCase):
     #     del remoteMaterialWithoutGuid["guid"]
     #     reply_mock.readAll.return_value = QByteArray(json.dumps([remoteMaterialWithoutGuid]).encode("ascii"))
     #
-    #     with mock.patch.object(Logger, 'log', new=new_log):
+    #     with mock.patch.object(Logger, "log", new=new_log):
     #         SendMaterialJob(None).sendMissingMaterials(reply_mock)
     #
     #     reply_mock.attribute.assert_called_with(0)
     #     self.assertEqual(reply_mock.method_calls, [call.attribute(0), call.readAll()])
     #     self._assertLogEntries(
-    #         [('e', "Request material storage on printer: Printer's answer was missing GUIDs.")],
+    #         [("e", "Request material storage on printer: Printer"s answer was missing GUIDs.")],
     #         _logentries)
     #
     # @patch("UM.Resources.Resources.getAllResourcesOfType", lambda _: [])
@@ -145,7 +145,7 @@ class TestSendMaterialJob(TestCase):
     #
     #     reply_mock.attribute.assert_called_with(0)
     #     self.assertEqual(reply_mock.method_calls, [call.attribute(0), call.readAll()])
-    #     self._assertLogEntries([('e', "Material generic_pla_white has invalid version number one.")], _logentries)
+    #     self._assertLogEntries([("e", "Material generic_pla_white has invalid version number one.")], _logentries)
     #
     # @patch("UM.Resources.Resources.getAllResourcesOfType", lambda _: [])
     # @patch("PyQt5.QtNetwork.QNetworkReply")
@@ -194,16 +194,16 @@ class TestSendMaterialJob(TestCase):
     #     device_mock._createFormPart.return_value = "_xXx_"
     #     with mock.patch.object(Logger, "log", new=new_log):
     #         job = SendMaterialJob(device_mock)
-    #         job.sendMaterialsToPrinter({'generic_pla_white'})
+    #         job.sendMaterialsToPrinter({"generic_pla_white"})
     #
     #     self._assertLogEntries([("d", "Syncing material generic_pla_white with cluster.")], _logentries)
-    #     self.assertEqual([call._createFormPart('name="file"; filename="generic_pla_white.xml.fdm_material"', '<xml></xml>'),
+    #     self.assertEqual([call._createFormPart("name="file"; filename="generic_pla_white.xml.fdm_material"", "<xml></xml>"),
     #                       call.postFormWithParts(on_finished=job.sendingFinished, parts = ["_xXx_"], target = "materials/")], device_mock.method_calls)
     #
     # @patch("PyQt5.QtNetwork.QNetworkReply")
     # def test_sendingFinished_success(self, reply_mock) -> None:
     #     reply_mock.attribute.return_value = 200
-    #     with mock.patch.object(Logger, 'log', new=new_log):
+    #     with mock.patch.object(Logger, "log", new=new_log):
     #         SendMaterialJob(None).sendingFinished(reply_mock)
     #
     #     reply_mock.attribute.assert_called_once_with(0)
@@ -212,9 +212,9 @@ class TestSendMaterialJob(TestCase):
     # @patch("PyQt5.QtNetwork.QNetworkReply")
     # def test_sendingFinished_failed(self, reply_mock) -> None:
     #     reply_mock.attribute.return_value = 404
-    #     reply_mock.readAll.return_value = QByteArray(b'Six sick hicks nick six slick bricks with picks and sticks.')
+    #     reply_mock.readAll.return_value = QByteArray(b"Six sick hicks nick six slick bricks with picks and sticks.")
     #
-    #     with mock.patch.object(Logger, 'log', new=new_log):
+    #     with mock.patch.object(Logger, "log", new=new_log):
     #         SendMaterialJob(None).sendingFinished(reply_mock)
     #
     #     reply_mock.attribute.assert_called_with(0)
