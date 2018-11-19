@@ -1,19 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import io
-import json
 from typing import Any, List
-from unittest import TestCase, mock
+from unittest import TestCase
 from unittest.mock import patch, call
 
 from PyQt5.QtCore import QByteArray
 
-from UM.Logger import Logger
-from UM.MimeTypeDatabase import MimeType
-from UM.Settings.ContainerRegistry import ContainerInterface, ContainerRegistryInterface, \
-    DefinitionContainerInterface, ContainerRegistry
+from UM.Settings.ContainerRegistry import ContainerInterface, ContainerRegistryInterface, DefinitionContainerInterface
 from plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice import ClusterUM3OutputDevice
-from plugins.UM3NetworkPrinting.src.Models import ClusterMaterial
 from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
 
 
@@ -45,7 +39,7 @@ class ContainerRegistryMock(ContainerRegistryInterface):
         return self.containersMetaData
 
 
-class FakeDevice(ClusterUM3OutputDevice):
+class MockOutputDevice(ClusterUM3OutputDevice):
     def _createFormPart(self, content_header, data, content_type=None):
         return "xxx"
 
@@ -53,20 +47,20 @@ class FakeDevice(ClusterUM3OutputDevice):
 class TestSendMaterialJob(TestCase):
 
     _LOCAL_MATERIAL_WHITE = {'type': 'material', 'status': 'unknown', 'id': 'generic_pla_white',
-                            'base_file': 'generic_pla_white', 'setting_version': 5, 'name': 'White PLA',
-                            'brand': 'Generic', 'material': 'PLA', 'color_name': 'White',
-                            'GUID': 'badb0ee7-87c8-4f3f-9398-938587b67dce', 'version': '1', 'color_code': '#ffffff',
-                            'description': 'Test PLA White', 'adhesion_info': 'Use glue.', 'approximate_diameter': '3',
-                            'properties': {'density': '1.00', 'diameter': '2.85', 'weight': '750'},
-                            'definition': 'fdmprinter', 'compatible': True}
+                             'base_file': 'generic_pla_white', 'setting_version': 5, 'name': 'White PLA',
+                             'brand': 'Generic', 'material': 'PLA', 'color_name': 'White',
+                             'GUID': 'badb0ee7-87c8-4f3f-9398-938587b67dce', 'version': '1', 'color_code': '#ffffff',
+                             'description': 'Test PLA White', 'adhesion_info': 'Use glue.', 'approximate_diameter': '3',
+                             'properties': {'density': '1.00', 'diameter': '2.85', 'weight': '750'},
+                             'definition': 'fdmprinter', 'compatible': True}
 
     _LOCAL_MATERIAL_BLACK = {'type': 'material', 'status': 'unknown', 'id': 'generic_pla_black',
-                            'base_file': 'generic_pla_black', 'setting_version': 5, 'name': 'Yellow CPE',
-                            'brand': 'Ultimaker', 'material': 'CPE', 'color_name': 'Black',
-                            'GUID': '5fbb362a-41f9-4818-bb43-15ea6df34aa4', 'version': '1', 'color_code': '#000000',
-                            'description': 'Test PLA Black', 'adhesion_info': 'Use glue.', 'approximate_diameter': '3',
-                            'properties': {'density': '1.01', 'diameter': '2.85', 'weight': '750'},
-                            'definition': 'fdmprinter', 'compatible': True}
+                             'base_file': 'generic_pla_black', 'setting_version': 5, 'name': 'Yellow CPE',
+                             'brand': 'Ultimaker', 'material': 'CPE', 'color_name': 'Black',
+                             'GUID': '5fbb362a-41f9-4818-bb43-15ea6df34aa4', 'version': '1', 'color_code': '#000000',
+                             'description': 'Test PLA Black', 'adhesion_info': 'Use glue.', 'approximate_diameter': '3',
+                             'properties': {'density': '1.01', 'diameter': '2.85', 'weight': '750'},
+                             'definition': 'fdmprinter', 'compatible': True}
 
     _REMOTE_MATERIAL_WHITE = {
         "guid": "badb0ee7-87c8-4f3f-9398-938587b67dce",

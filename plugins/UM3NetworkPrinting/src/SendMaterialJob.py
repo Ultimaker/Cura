@@ -48,10 +48,10 @@ class SendMaterialJob(Job):
         try:
             remote_materials_by_guid = self._parseReply(reply)
             self._sendMissingMaterials(remote_materials_by_guid)
-        except json.JSONDecodeError as e:
-            Logger.log("e", "Error parsing materials from printer: %s", e)
-        except KeyError as e:
-            Logger.log("e", "Error parsing materials from printer: %s", e)
+        except json.JSONDecodeError:
+            Logger.logException("w", "Error parsing materials from printer")
+        except KeyError:
+            Logger.logException("w", "Error parsing materials from printer")
 
     ##  Determine which materials should be updated and send them to the printer.
     #
@@ -157,7 +157,6 @@ class SendMaterialJob(Job):
     @classmethod
     def _parseReply(cls, reply: QNetworkReply) -> Dict[str, ClusterMaterial]:
         remote_materials_list = json.loads(reply.readAll().data().decode("utf-8"))
-        print("remote_materials_list", remote_materials_list)
         return {material["guid"]: ClusterMaterial(**material) for material in remote_materials_list}
 
     ##  Retrieves a list of local materials
