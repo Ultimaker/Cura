@@ -40,6 +40,7 @@ UM.MainWindow
         tooltip.hide();
     }
 
+
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
@@ -249,6 +250,16 @@ UM.MainWindow
 
                 height: UM.Theme.getSize("stage_menu").height
                 source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
+
+                // The printSetupSelector is defined here so that the setting list doesn't need to get re-instantiated
+                // Every time the stage is changed.
+                property var printSetupSelector: Cura.PrintSetupSelector
+                {
+                    onShowTooltip: base.showTooltip(item, location, text)
+                    onHideTooltip: base.hideTooltip()
+                    width: UM.Theme.getSize("print_setup_widget").width
+                    height: UM.Theme.getSize("stage_menu").height
+                }
             }
 
             UM.MessageStack

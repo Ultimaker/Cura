@@ -138,12 +138,14 @@ Item
                 color: UM.Theme.getColor("lining")
             }
 
-            Cura.PrintSetupSelector
+            Item
             {
-                width: UM.Theme.getSize("print_setup_widget").width
-                height: parent.height
-                onShowTooltip: previewMenu.showTooltip(item, location, text)
-                onHideTooltip: previewMenu.hideTooltip()
+                id: printSetupSelectorItem
+                // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+                // a stage switch is done.
+                children: [printSetupSelector]
+                height: childrenRect.height
+                width: childrenRect.width
             }
         }
     }

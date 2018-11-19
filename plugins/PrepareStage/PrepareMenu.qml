@@ -13,6 +13,7 @@ Item
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
+
     UM.I18nCatalog
     {
         id: catalog
@@ -71,7 +72,7 @@ Item
                 {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelector.width - 2 * UM.Theme.getSize("default_lining").width
+                    Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
                 }
 
                 // Separator line
@@ -82,17 +83,14 @@ Item
                     color: UM.Theme.getColor("lining")
                 }
 
-                Cura.PrintSetupSelector
+                Item
                 {
-                    id: printSetupSelector
-
-                    onShowTooltip: prepareMenu.showTooltip(item, location, text)
-                    onHideTooltip: prepareMenu.hideTooltip()
-
-                    Layout.minimumWidth: UM.Theme.getSize("print_setup_widget").width
-                    Layout.maximumWidth: UM.Theme.getSize("print_setup_widget").width
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+                    id: printSetupSelectorItem
+                    // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+                    // a stage switch is done.
+                    children: [printSetupSelector]
+                    height: childrenRect.height
+                    width: childrenRect.width
                 }
             }
         }
