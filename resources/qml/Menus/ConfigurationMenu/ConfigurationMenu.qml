@@ -171,7 +171,6 @@ Cura.ExpandableComponent
                 hoverColor: UM.Theme.getColor("secondary")
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
-                height: UM.Theme.getSize("action_button").height
 
                 onClicked: popupItem.configuration_method = "custom"
             }
@@ -192,7 +191,6 @@ Cura.ExpandableComponent
                 hoverColor: UM.Theme.getColor("secondary")
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
-                height: UM.Theme.getSize("action_button").height
 
                 onClicked: popupItem.configuration_method = "auto"
             }

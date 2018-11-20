@@ -31,6 +31,7 @@ Button
 
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
+    height: UM.Theme.getSize("action_button").height
 
     contentItem: Row
     {
