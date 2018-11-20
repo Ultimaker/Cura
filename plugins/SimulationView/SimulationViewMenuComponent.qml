@@ -65,7 +65,7 @@ Cura.ExpandableComponent
         property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
         width: UM.Theme.getSize("layerview_menu_size").width - 2 * UM.Theme.getSize("default_margin").width
-        height: childrenRect.height
+        height: implicitHeight
 
         spacing: UM.Theme.getSize("layerview_row_spacing").height
 
