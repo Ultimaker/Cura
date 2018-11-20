@@ -84,8 +84,9 @@ class SendMaterialJob(Job):
     def _determineMaterialsToSend(local_materials: Dict[str, LocalMaterial],
                                   remote_materials: Dict[str, ClusterMaterial]) -> Set[str]:
         return {
-            material.id for guid, material in local_materials.items()
-            if guid not in remote_materials or material.version > remote_materials[guid].version
+            material.id
+            for guid, material in local_materials.items()
+            if guid not in remote_materials or int(material.version) > remote_materials[guid].version
         }
 
     ##  Send the materials to the printer.
