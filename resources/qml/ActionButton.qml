@@ -41,7 +41,7 @@ Button
         {
             id: buttonIconLeft
             source: ""
-            height: Math.round(0.6 * parent.height)
+            height: buttonText.height
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
@@ -69,13 +69,13 @@ Button
         {
             id: buttonIconRight
             source: buttonIconLeft.source
-            height: Math.round(0.6 * parent.height)
+            height: buttonText.height
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
-            color: button.hovered ? button.textHoverColor : button.textColor
+            color: buttonIconLeft.color
             visible: source != "" && button.iconOnRightSide
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: buttonIconLeft.verticalCenter
         }
     }
 
