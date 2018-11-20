@@ -2,14 +2,10 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Dialogs 1.1
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Styles 1.4
-import QtGraphicalEffects 1.0
-import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
+// TODO: Documentation!
 Item
 {
     id: printJobPreview
