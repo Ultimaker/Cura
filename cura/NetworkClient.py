@@ -195,7 +195,7 @@ class NetworkClient:
     ##  Does a POST request with form parts to the given URL.
     def postFormWithParts(self, target: str, parts: List[QHttpPart],
                           on_finished: Optional[Callable[[QNetworkReply], None]],
-                          on_progress: Callable = None) -> QNetworkReply:
+                          on_progress: Callable = None) -> Optional[QNetworkReply]:
         self._validateManager()
         
         request = self._createEmptyRequest(target, content_type = None)
