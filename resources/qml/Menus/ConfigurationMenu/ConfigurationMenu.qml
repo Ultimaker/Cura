@@ -98,31 +98,37 @@ Cura.ExpandableComponent
 
     popupItem: Item
     {
-        id: popup
+        id: popupItem
         width: base.width - 2 * UM.Theme.getSize("default_margin").width
         height: 200
 
-        property var configuration_method: "auto"
+        property var is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
+        onVisibleChanged:
+        {
+            is_connected = Cura.MachineManager.activeMachineNetworkKey != "" && Cura.MachineManager.printerConnected //Re-evaluate.
+        }
+
+        property var configuration_method: buttonBar.visible ? "auto" : "custom" //Auto if connected to a printer at start-up, or Custom if not.
 
         AutoConfiguration
         {
             id: autoConfiguration
-            visible: popup.configuration_method === "auto"
-            anchors.top: header.bottom
-            height: visible ? childrenRect.height : 0
+            visible: popupItem.configuration_method === "auto"
+            anchors.top: parent.top
         }
 
         CustomConfiguration
         {
             id: customConfiguration
-            visible: popup.configuration_method === "custom"
-            anchors.top: header.bottom
-            height: visible ? childrenRect.height : 0
+            visible: popupItem.configuration_method === "custom"
+            anchors.top: parent.top
         }
 
         Rectangle
         {
             id: separator
+            visible: buttonBar.visible
+
             anchors
             {
                 left: parent.left
@@ -131,12 +137,16 @@ Cura.ExpandableComponent
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
             height: UM.Theme.getSize("default_lining").height
+
             color: UM.Theme.getColor("lining")
         }
 
+        //Allow switching between custom and auto.
         Rectangle
         {
             id: buttonBar
+            visible: popupItem.is_connected //Switching only makes sense if the "auto" part is possible.
+
             anchors
             {
                 left: parent.left
@@ -148,7 +158,7 @@ Cura.ExpandableComponent
             Cura.ActionButton
             {
                 id: goToCustom
-                visible: popup.configuration_method === "auto"
+                visible: popupItem.configuration_method === "auto"
                 text: catalog.i18nc("@label", "Custom")
 
                 anchors
@@ -165,13 +175,13 @@ Cura.ExpandableComponent
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
 
-                onClicked: popup.configuration_method = "custom"
+                onClicked: popupItem.configuration_method = "custom"
             }
 
             Cura.ActionButton
             {
                 id: goToAuto
-                visible: popup.configuration_method === "custom"
+                visible: popupItem.configuration_method === "custom"
                 text: catalog.i18nc("@label", "Configurations")
 
                 anchors
@@ -188,7 +198,7 @@ Cura.ExpandableComponent
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
 
-                onClicked: popup.configuration_method = "auto"
+                onClicked: popupItem.configuration_method = "auto"
             }
         }
     }
