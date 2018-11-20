@@ -6,6 +6,8 @@ include(CMakeParseArguments)
 
 find_package(PythonInterp 3.5.0 REQUIRED)
 
+add_custom_target(test-verbose COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
+
 function(cura_add_test)
     set(_single_args NAME DIRECTORY PYTHONPATH)
     cmake_parse_arguments("" "" "${_single_args}" "" ${ARGN})
