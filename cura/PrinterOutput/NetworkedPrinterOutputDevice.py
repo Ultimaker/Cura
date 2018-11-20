@@ -5,6 +5,7 @@ from UM.FileHandler.FileHandler import FileHandler #For typing.
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode #For typing.
 from cura.CuraApplication import CuraApplication
+from cura.NetworkClient import NetworkClient
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
@@ -26,35 +27,29 @@ class AuthState(IntEnum):
     AuthenticationReceived = 5
 
 
-class NetworkedPrinterOutputDevice(PrinterOutputDevice):
+class NetworkedPrinterOutputDevice(PrinterOutputDevice, NetworkClient):
     authenticationStateChanged = pyqtSignal()
 
     def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, parent = parent)
-        self._manager = None    # type: Optional[QNetworkAccessManager]
-        self._last_manager_create_time = None       # type: Optional[float]
-        self._recreate_network_manager_time = 30
-        self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
-
-        self._last_response_time = None     # type: Optional[float]
-        self._last_request_time = None      # type: Optional[float]
-
+        PrinterOutputDevice.__init__(self, device_id = device_id, parent = parent)
+        NetworkClient.__init__(self)
+        
         self._api_prefix = ""
         self._address = address
         self._properties = properties
-        self._user_agent = "%s/%s " % (CuraApplication.getInstance().getApplicationName(), CuraApplication.getInstance().getVersion())
-
-        self._onFinishedCallbacks = {}      # type: Dict[str, Callable[[QNetworkReply], None]]
         self._authentication_state = AuthState.NotAuthenticated
-
-        # QHttpMultiPart objects need to be kept alive and not garbage collected during the
-        # HTTP which uses them. We hold references to these QHttpMultiPart objects here.
-        self._kept_alive_multiparts = {}        # type: Dict[QNetworkReply, QHttpMultiPart]
-
         self._sending_gcode = False
         self._compressing_gcode = False
         self._gcode = []                    # type: List[str]
+        
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
+        self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
+        self._recreate_network_manager_time = 30
+        
+    ##  Override creating empty request to compile the full URL.
+    #   Needed to keep NetworkedPrinterOutputDevice backwards compatible after refactoring NetworkClient out of it.
+    def _createEmptyRequest(self, target: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
+        return super()._createEmptyRequest("http://" + self._address + self._api_prefix + target, content_type)
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -140,30 +135,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                 self.setConnectionState(self._connection_state_before_timeout)
                 self._connection_state_before_timeout = None
 
-    def _createEmptyRequest(self, target: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
-        url = QUrl("http://" + self._address + self._api_prefix + target)
-        request = QNetworkRequest(url)
-        if content_type is not None:
-            request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
-        request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
-        return request
-
-    def createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
-        return self._createFormPart(content_header, data, content_type)
-
-    def _createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
-        part = QHttpPart()
-
-        if not content_header.startswith("form-data;"):
-            content_header = "form_data; " + content_header
-        part.setHeader(QNetworkRequest.ContentDispositionHeader, content_header)
-
-        if content_type is not None:
-            part.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
-
-        part.setBody(data)
-        return part
-
     ##  Convenience function to get the username from the OS.
     #   The code was copied from the getpass module, as we try to use as little dependencies as possible.
     def _getUserName(self) -> str:
@@ -173,130 +144,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                 return user
         return "Unknown User"  # Couldn't find out username.
 
-    def _clearCachedMultiPart(self, reply: QNetworkReply) -> None:
-        if reply in self._kept_alive_multiparts:
-            del self._kept_alive_multiparts[reply]
-
-    def _validateManager(self) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
-        assert (self._manager is not None)
-
-    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.put(request, data.encode())
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
-
-    def delete(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.deleteResource(request)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
-
-    def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.get(request)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
-
-    def post(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
-        self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.post(request, data.encode())
-            if on_progress is not None:
-                reply.uploadProgress.connect(on_progress)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
-
-    def postFormWithParts(self, target: str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
-        self._validateManager()
-        request = self._createEmptyRequest(target, content_type=None)
-        multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
-        for part in parts:
-            multi_post_part.append(part)
-
-        self._last_request_time = time()
-
-        if self._manager is not None:
-            reply = self._manager.post(request, multi_post_part)
-
-            self._kept_alive_multiparts[reply] = multi_post_part
-
-            if on_progress is not None:
-                reply.uploadProgress.connect(on_progress)
-            self._registerOnFinishedCallback(reply, on_finished)
-
-            return reply
-        else:
-            Logger.log("e", "Could not find manager.")
-
-    def postForm(self, target: str, header_data: str, body_data: bytes, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
-        post_part = QHttpPart()
-        post_part.setHeader(QNetworkRequest.ContentDispositionHeader, header_data)
-        post_part.setBody(body_data)
-
-        self.postFormWithParts(target, [post_part], on_finished, on_progress)
-
-    def _onAuthenticationRequired(self, reply: QNetworkReply, authenticator: QAuthenticator) -> None:
-        Logger.log("w", "Request to {url} required authentication, which was not implemented".format(url = reply.url().toString()))
-
-    def _createNetworkManager(self) -> None:
-        Logger.log("d", "Creating network manager")
-        if self._manager:
-            self._manager.finished.disconnect(self.__handleOnFinished)
-            self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
-
-        self._manager = QNetworkAccessManager()
-        self._manager.finished.connect(self.__handleOnFinished)
-        self._last_manager_create_time = time()
-        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
-
-        if self._properties.get(b"temporary", b"false") != b"true":
-            CuraApplication.getInstance().getMachineManager().checkCorrectGroupName(self.getId(), self.name)
-
-    def _registerOnFinishedCallback(self, reply: QNetworkReply, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        if on_finished is not None:
-            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = on_finished
-
-    def __handleOnFinished(self, reply: QNetworkReply) -> None:
-        # Due to garbage collection, we need to cache certain bits of post operations.
-        # As we don't want to keep them around forever, delete them if we get a reply.
-        if reply.operation() == QNetworkAccessManager.PostOperation:
-            self._clearCachedMultiPart(reply)
-
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
-            # No status code means it never even reached remote.
-            return
-
-        self._last_response_time = time()
-
-        if self._connection_state == ConnectionState.connecting:
-            self.setConnectionState(ConnectionState.connected)
-
-        callback_key = reply.url().toString() + str(reply.operation())
-        try:
-            if callback_key in self._onFinishedCallbacks:
-                self._onFinishedCallbacks[callback_key](reply)
-        except Exception:
-            Logger.logException("w", "something went wrong with callback")
-
-    @pyqtSlot(str, result=str)
+    @pyqtSlot(str, result = str)
     def getProperty(self, key: str) -> str:
         bytes_key = key.encode("utf-8")
         if bytes_key in self._properties:
@@ -332,7 +180,14 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def printerType(self) -> str:
         return self._properties.get(b"printer_type", b"Unknown").decode("utf-8")
 
-    ## IP adress of this printer
+    ## IP address of this printer
     @pyqtProperty(str, constant = True)
     def ipAddress(self) -> str:
         return self._address
+
+    def __handleOnFinished(self, reply: QNetworkReply) -> None:
+        super().__handleOnFinished(reply)
+        
+        # Since we got a reply from the network manager we can now be sure we are actually connected.
+        if self._connection_state == ConnectionState.connecting:
+            self.setConnectionState(ConnectionState.connected)

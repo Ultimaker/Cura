@@ -3,10 +3,10 @@
 import json
 from typing import TYPE_CHECKING, Dict, Optional
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
+from cura.NetworkClient import NetworkClient
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDevice import CloudOutputDevice
 
 
@@ -21,19 +21,16 @@ if TYPE_CHECKING:
 #
 #   TODO: figure out how to pair remote clusters, local networked clusters and local cura printer presets.
 #   TODO: for now we just have multiple output devices if the cluster is available both locally and remote.
-class CloudOutputDeviceManager:
+class CloudOutputDeviceManager(NetworkClient):
     
     # The cloud URL to use for remote clusters.
     API_ROOT_PATH = "https://api.ultimaker.com/connect/v1"
     
     def __init__(self, application: "CuraApplication"):
-        self._application = application
+        super().__init__(application)
+        
         self._output_device_manager = application.getOutputDeviceManager()
         self._account = application.getCuraAPI().account
-        
-        # Network manager for getting the cluster list.
-        self._network_manager = QNetworkAccessManager()
-        self._network_manager.finished.connect(self._onNetworkRequestFinished)
         
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
@@ -44,27 +41,24 @@ class CloudOutputDeviceManager:
         # Fetch all remote clusters for the authenticated user.
         # TODO: update remote clusters periodically
         self._account.loginStateChanged.connect(self._getRemoteClusters)
+
+    ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
+    def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
+        request = super()._createEmptyRequest(self.API_ROOT_PATH + path, content_type = content_type)
+        if self._account.isLoggedIn:
+            # TODO: add correct scopes to OAuth2 client to use remote connect API.
+            # TODO: don't create the client when not signed in?
+            request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
+        return request
         
     ##  Gets all remote clusters from the API.
-    def _getRemoteClusters(self):
-        url = QUrl("{}/clusters".format(self.API_ROOT_PATH))
-        request = QNetworkRequest(url)
-        request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
-        
-        if not self._account.isLoggedIn:
-            # TODO: show message to user to sign in
-            Logger.log("w", "User is not signed in, cannot get remote print clusters")
-            return
-        
-        request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
-        self._network_manager.get(request)
+    def _getRemoteClusters(self) -> None:
+        self.get("/clusters", on_finished = self._onGetRemoteClustersFinished)
 
-    ##  Callback for network requests.
-    def _onNetworkRequestFinished(self, reply: QNetworkReply):
-        # TODO: right now we assume that each reply is from /clusters, we should fix this
+    ##  Callback for when the request for getting the clusters. is finished.
+    def _onGetRemoteClustersFinished(self, reply: QNetworkReply) -> None:
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if status_code != 200:
-            # TODO: add correct scopes to OAuth2 client to use remote connect API.
             Logger.log("w", "Got unexpected response while trying to get cloud cluster data: {}, {}"
                        .format(status_code, reply.readAll()))
             return
@@ -86,7 +80,6 @@ class CloudOutputDeviceManager:
     def _parseStatusResponse(reply: QNetworkReply) -> Optional[dict]:
         try:
             result = json.loads(bytes(reply.readAll()).decode("utf-8"))
-            print("result=====", result)
             # TODO: use model or named tuple here.
             return result.data
         except json.decoder.JSONDecodeError:
