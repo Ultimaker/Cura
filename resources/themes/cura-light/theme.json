@@ -528,6 +528,11 @@
         "monitor_thick_lining": [0.16, 0.16],
         "monitor_corner_radius": [0.3, 0.3],
         "monitor_shadow_radius": [0.4, 0.4],
-        "monitor_shadow_offset": [0.15, 0.15]
+        "monitor_shadow_offset": [0.15, 0.15],
+
+        "print_setup_selector_margin": [0.5, 0.5],
+        "print_setup_action_button": [13, 5],
+        "print_setup_tap_bar": [4, 4],
+        "print_setup_content_top_margin": [3, 3]
     }
 }

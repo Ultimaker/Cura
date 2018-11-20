@@ -12,6 +12,7 @@ Button
     id: button
     property alias cursorShape: mouseArea.cursorShape
     property alias iconSource: buttonIcon.source
+    property alias iconSourceRight: buttonIconRight.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
@@ -29,7 +30,8 @@ Button
     // we elide the text to the right so the text will be cut off with the three dots at the end.
     property var fixedWidthMode: false
 
-    contentItem: Row
+    width: buttonIcon.width + buttonText.width + buttonIconRight.width
+    contentItem: Item
     {
         UM.RecolorImage
         {
@@ -56,6 +58,20 @@ Button
             width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : undefined
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
+        }
+
+        UM.RecolorImage
+        {
+            id: buttonIconRight
+            source: ""
+            height: Math.round(0.6 * parent.height)
+            width: height
+            sourceSize.width: width
+            sourceSize.height: height
+            color: button.hovered ? button.textHoverColor : button.textColor
+            visible: source != ""
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: source != "" ? parent.right : undefined
         }
     }
 

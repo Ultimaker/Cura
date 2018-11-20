@@ -28,7 +28,14 @@ Cura.ExpandableComponent
     height: childrenRect.height
     iconSource: UM.Theme.getIcon("pencil")
 
+    popupPadding : 0
+
     onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
+
+    Component.onCompleted:
+    {
+        popupItemWrapper.width = base.width
+    }
 
     UM.I18nCatalog
     {
@@ -109,142 +116,242 @@ Cura.ExpandableComponent
         }
     }
 
-    popupItem: Item
+
+    Cura.ExtrudersModel
     {
-        height: settingsModeSelection.height + sidebarContents.height + 2 * UM.Theme.getSize("default_margin").height
-        width: UM.Theme.getSize("print_setup_widget").width
-        ListView
-        {
-            // Settings mode selection toggle
-            id: settingsModeSelection
-            model: modesListModel
-            height: UM.Theme.getSize("print_setup_mode_toggle").height
-            visible: !hideSettings
+        id: extrudersModel
+    }
 
-            anchors
-            {
-                right: parent.right
-                left: parent.left
-                margins: UM.Theme.getSize("thick_margin").width
-            }
+    popupItem: Rectangle
+    {
+        property var total_height: popupItemHeader.height + popupItemContent.height + 10 + separator_footer.height
+        id: popupItemWrapper
+        height: total_height
 
-            ButtonGroup
-            {
-                id: modeMenuGroup
-            }
-
-            delegate: Button
-            {
-                id: control
-
-                height: settingsModeSelection.height
-                width: Math.round(parent.width / 2)
-
-                anchors.left: parent.left
-                anchors.leftMargin: model.index * Math.round(settingsModeSelection.width / 2)
-                anchors.verticalCenter: parent.verticalCenter
-
-                ButtonGroup.group: modeMenuGroup
-
-                checkable: true
-                checked: base.currentModeIndex == index
-                onClicked: base.currentModeIndex = index
-
-                onHoveredChanged:
-                {
-                    if (hovered)
-                    {
-                        tooltipDelayTimer.item = settingsModeSelection
-                        tooltipDelayTimer.text = model.tooltipText
-                        tooltipDelayTimer.start()
-                    }
-                    else
-                    {
-                        tooltipDelayTimer.stop()
-                        base.hideTooltip()
-                    }
-                }
-
-                background: Rectangle
-                {
-                    border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
-                    border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") : control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-
-                    // For some reason, QtQuick decided to use the color of the background property as text color for the contentItem, so here it is
-                    color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-                }
-
-                contentItem: Label
-                {
-                    text: model.text
-                    font: UM.Theme.getFont("default")
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
-                    elide: Text.ElideRight
-                    color:
-                    {
-                        if(control.pressed)
-                        {
-                            return UM.Theme.getColor("action_button_active_text")
-                        }
-                        else if(control.hovered)
-                        {
-                            return UM.Theme.getColor("action_button_hovered_text")
-                        }
-                        return UM.Theme.getColor("action_button_text")
-                    }
-                }
-            }
-        }
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
 
         Item
         {
-            id: sidebarContents
-            anchors.top: settingsModeSelection.bottom
-            anchors.topMargin: UM.Theme.getSize("thick_margin").height
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: UM.Theme.getSize("print_setup_widget").height
+            id: popupItemHeader
+            height: 36
 
-            visible: !hideSettings
-
-            // We load both of them at once (instead of using a loader) because the advanced sidebar can take
-            // quite some time to load. So in this case we sacrifice memory for speed.
-            SidebarAdvanced
+            anchors
             {
-                anchors.fill: parent
-                visible: currentModeIndex == 1
-                onShowTooltip: base.showTooltip(item, location, text)
-                onHideTooltip: base.hideTooltip()
+                top: parent.top
+                right: parent.right
+                left: parent.left
             }
 
-            SidebarSimple
+            Label
             {
-                anchors.fill: parent
-                visible: currentModeIndex != 1
-                onShowTooltip: base.showTooltip(item, location, text)
-                onHideTooltip: base.hideTooltip()
+                id: popupItemHeaderText
+                text: catalog.i18nc("@label", "Print settings");
+                font: UM.Theme.getFont("default")
+                verticalAlignment: Text.AlignVCenter
+                color: UM.Theme.getColor("text")
+                height: parent.height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("print_setup_selector_margin").height
+            }
+
+            Rectangle
+            {
+                width: parent.width
+                height: UM.Theme.getSize("default_lining").height
+                anchors.top: popupItemHeaderText.bottom
+                color: UM.Theme.getColor("action_button_border")
+
+
             }
         }
 
-        // Setting mode: Recommended or Custom
-        ListModel
+        Rectangle
         {
-            id: modesListModel
+            id: popupItemContent
+            width: parent.width
+            height: tabBar.height + sidebarContents.height
+            anchors
+            {
+                top: popupItemHeader.bottom
+                topMargin: 10
+                right: parent.right
+                left: parent.left
+                leftMargin: 5
+                rightMargin: 5
+            }
+
+
+            TabBar
+            {
+                id: tabBar
+                onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
+                width: parent.width
+                height: UM.Theme.getSize("print_setup_tap_bar").width
+                z: 1
+                Repeater
+                {
+                    id: extruder_model_repeater
+                    model: extrudersModel
+
+                    delegate: TabButton
+                    {
+                        z: 2
+                        width: ListView.view != null ?  Math.round(ListView.view.width / extrudersModel.rowCount()): 0
+                        implicitHeight: parent.height
+
+                        contentItem: Rectangle
+                        {
+                            z: 2
+                            Cura.ExtruderIcon
+                            {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                materialColor: model.color
+                                extruderEnabled: model.enabled
+                                width: parent.height
+                                height: parent.height
+                            }
+
+                        }
+
+                        background: Rectangle
+                        {
+
+                            width: parent.width
+                            z: 1
+                            border.width: UM.Theme.getSize("default_lining").width * 2
+                            border.color: UM.Theme.getColor("action_button_border")
+
+                            visible:
+                            {
+                                return index == tabBar.currentIndex
+                            }
+
+                            // overlap bottom border
+                            Rectangle
+                            {
+                                width: parent.width - 4
+                                height: 4
+                                anchors.bottom: parent.bottom
+                                anchors.bottomMargin: -2
+                                anchors.leftMargin: 2
+                                anchors.left: parent.left
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            Rectangle
+            {
+                id: sidebarContents
+                anchors.top: tabBar.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: UM.Theme.getSize("print_setup_widget").height
+
+
+                border.width: UM.Theme.getSize("default_lining").width * 2
+                border.color: UM.Theme.getColor("action_button_border")
+
+                SidebarSimple
+                {
+                    anchors.topMargin: UM.Theme.getSize("print_setup_content_top_margin").height
+                    id: sidebar_simple_id
+                    anchors.fill: parent
+                    visible: currentModeIndex != 1
+                    onShowTooltip: base.showTooltip(item, location, text)
+                    onHideTooltip: base.hideTooltip()
+                }
+
+                SidebarAdvanced
+                {
+                    anchors.topMargin: UM.Theme.getSize("print_setup_content_top_margin").height
+                    anchors.bottomMargin: 2 //does not overlap bottom border
+                    anchors.fill: parent
+                    visible: currentModeIndex == 1
+                    onShowTooltip: base.showTooltip(item, location, text)
+                    onHideTooltip: base.hideTooltip()
+                }
+
+            }
         }
 
+
+        Item
+        {
+            id: separator_footer
+            anchors.top: popupItemContent.bottom
+            anchors.topMargin: 10
+            width: parent.width
+            height: settingControlButton.height + 4
+
+            Rectangle
+            {
+                width: parent.width
+                height: UM.Theme.getSize("default_lining").height
+                color: UM.Theme.getColor("action_button_border")
+            }
+
+            Cura.ActionButton
+            {
+                id: settingControlButton
+
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
+                height: UM.Theme.getSize("action_panel_button").height
+                text: catalog.i18nc("@button", "Custom")
+                color: UM.Theme.getColor("secondary")
+                hoverColor: UM.Theme.getColor("secondary")
+                textColor: UM.Theme.getColor("primary")
+                textHoverColor: UM.Theme.getColor("text")
+                iconSourceRight: UM.Theme.getIcon("arrow_right")
+                width: UM.Theme.getSize("print_setup_action_button").width
+                fixedWidthMode: true
+                visible: currentModeIndex == 0
+                anchors
+                {
+                    top: parent.top
+                    topMargin: 10
+                    bottomMargin: 10
+                    right: parent.right
+                    rightMargin: 5
+                }
+
+                onClicked: currentModeIndex = 1
+            }
+
+            Cura.ActionButton
+            {
+                height: UM.Theme.getSize("action_panel_button").height
+                text: catalog.i18nc("@button", "Recommended")
+                color: UM.Theme.getColor("secondary")
+                hoverColor: UM.Theme.getColor("secondary")
+                textColor: UM.Theme.getColor("primary")
+                textHoverColor: UM.Theme.getColor("text")
+                iconSource: UM.Theme.getIcon("arrow_left")
+                width: UM.Theme.getSize("print_setup_action_button").width
+
+
+                fixedWidthMode: true
+                visible: currentModeIndex == 1
+                anchors
+                {
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("print_setup_selector_margin").height * 2
+                    bottomMargin: UM.Theme.getSize("print_setup_selector_margin").height * 2
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("print_setup_selector_margin").height
+                }
+
+                onClicked: currentModeIndex = 0
+            }
+        }
         Component.onCompleted:
         {
-            modesListModel.append({
-                text: catalog.i18nc("@title:tab", "Recommended"),
-                tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Recommended Print Setup")).arg(catalog.i18nc("@tooltip", "Print with the recommended settings for the selected printer, material and quality."))
-            })
-            modesListModel.append({
-                text: catalog.i18nc("@title:tab", "Custom"),
-                tooltipText: "<b>%1</b><br/><br/>%2".arg(catalog.i18nc("@tooltip:title", "Custom Print Setup")).arg(catalog.i18nc("@tooltip", "Print with finegrained control over every last bit of the slicing process."))
-            })
-
             var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
 
             if(index != null && !isNaN(index))
