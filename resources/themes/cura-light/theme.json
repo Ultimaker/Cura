@@ -123,9 +123,9 @@
         "warning": [255, 190, 35, 255],
 
         "toolbar_button_text": [10, 8, 80, 255],
-        "toolbar_button_text_hover": [50, 130, 255, 255],
-        "toolbar_button_text_active": [50, 130, 255, 255],
-        "toolbar_button_text_active_hover": [50, 130, 255, 255],
+        "toolbar_button_hover": [232, 242, 252, 255],
+        "toolbar_button_active": [232, 242, 252, 255],
+        "toolbar_button_active_hover": [232, 242, 252, 255],
 
         "button": [31, 36, 39, 255],
         "button_hover": [68, 72, 75, 255],

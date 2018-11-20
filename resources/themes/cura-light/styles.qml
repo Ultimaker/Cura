@@ -175,11 +175,68 @@ QtObject
     {
         ButtonStyle
         {
-            background: Item
+            background: Rectangle
             {
-                implicitWidth: Theme.getSize("button").width;
-                implicitHeight: Theme.getSize("button").height;
+                implicitWidth: Theme.getSize("button").width
+                implicitHeight: Theme.getSize("button").height
+                color:
+                {
+                    if (control.checked && control.hovered)
+                    {
+                        return Theme.getColor("toolbar_button_active_hover")
+                    }
+                    else if (control.checked)
+                    {
+                        return Theme.getColor("toolbar_button_active")
+                    }
+                    else if(control.hovered)
+                    {
+                        return Theme.getColor("toolbar_button_hover")
+                    }
+                    return Theme.getColor("toolbar_background")
+                }
+                radius: UM.Theme.getSize("default_radius").width
 
+                Rectangle
+                {
+                    id: topSquare
+                    anchors
+                    {
+                        left: parent.left
+                        right: parent.right
+                        top: parent.top
+                    }
+                    height: parent.radius
+                    color: control.isFirstElement ? "transparent" : parent.color
+                }
+
+                Rectangle
+                {
+                    id: bottomSquare
+                    anchors
+                    {
+                        left: parent.left
+                        right: parent.right
+                        bottom: parent.bottom
+                    }
+                    height: parent.radius
+                    color: control.isLastElement ? "transparent" : parent.color
+                }
+
+                Rectangle
+                {
+                    id: leftSquare
+                    anchors
+                    {
+                        left: parent.left
+                        top: parent.top
+                        bottom: parent.bottom
+                    }
+                    width: parent.radius
+                    color: parent.color
+                }
+
+                // This is the tooltip
                 UM.PointingRectangle
                 {
                     id: button_tooltip
@@ -223,22 +280,7 @@ QtObject
                     source: control.iconSource;
                     width: Theme.getSize("button_icon").width;
                     height: Theme.getSize("button_icon").height;
-                    color:
-                    {
-                        if (control.checked && control.hovered)
-                        {
-                            return Theme.getColor("toolbar_button_text_active_hover");
-                        }
-                        else if (control.checked)
-                        {
-                            return Theme.getColor("toolbar_button_text_active");
-                        }
-                        else if(control.hovered)
-                        {
-                            return Theme.getColor("toolbar_button_text_hover");
-                        }
-                        return Theme.getColor("toolbar_button_text");
-                    }
+                    color: Theme.getColor("toolbar_button_text");
 
                     sourceSize: Theme.getSize("button_icon")
                 }
