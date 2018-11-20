@@ -23,6 +23,7 @@ LocalMaterial = namedtuple('LocalMaterial', [
     'brand',
     'material',
     'color_name',
+    'color_code',
     'description',
     'adhesion_info',
     'approximate_diameter',

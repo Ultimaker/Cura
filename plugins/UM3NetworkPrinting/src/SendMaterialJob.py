@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import os
+import re
 import urllib.parse
 from typing import Dict, TYPE_CHECKING, Set
 
@@ -18,7 +19,6 @@ from .Models import ClusterMaterial, LocalMaterial
 
 if TYPE_CHECKING:
     from .ClusterUM3OutputDevice import ClusterUM3OutputDevice
-
 
 ##  Asynchronous job to send material profiles to the printer.
 #
@@ -50,7 +50,7 @@ class SendMaterialJob(Job):
             self._sendMissingMaterials(remote_materials_by_guid)
         except json.JSONDecodeError:
             Logger.logException("w", "Error parsing materials from printer")
-        except KeyError:
+        except TypeError:
             Logger.logException("w", "Error parsing materials from printer")
 
     ##  Determine which materials should be updated and send them to the printer.
@@ -75,7 +75,8 @@ class SendMaterialJob(Job):
 
     ##  From the local and remote materials, determine which ones should be synchronized.
     #
-    #   Makes a Set containing only the materials that are not on the printer yet or the ones that are newer in Cura.
+    #   Makes a Set of id's containing only the id's of the materials that are not on the printer yet or the ones that
+    #   are newer in Cura.
     #
     #   \param local_materials The local materials by GUID.
     #   \param remote_materials The remote materials by GUID.
@@ -157,7 +158,7 @@ class SendMaterialJob(Job):
     @classmethod
     def _parseReply(cls, reply: QNetworkReply) -> Dict[str, ClusterMaterial]:
         remote_materials = json.loads(reply.readAll().data().decode("utf-8"))
-        return {material["id"]: ClusterMaterial(**material) for material in remote_materials}
+        return {material["guid"]: ClusterMaterial(**material) for material in remote_materials}
 
     ##  Retrieves a list of local materials
     #
@@ -170,12 +171,19 @@ class SendMaterialJob(Job):
         material_containers = container_registry.findContainersMetadata(type = "material")
 
         # Find the latest version of all material containers in the registry.
-        local_materials = {}  # type: Dict[str, LocalMaterial]
         for material in material_containers:
             try:
                 material = LocalMaterial(**material)
+
+                # material version must be an int
+                if not re.match("\d+", material.version):
+                    Logger.logException("w", "Local material {} has invalid version '{}'."
+                                        .format(material["id"], material.version))
+                    continue
+
                 if material.GUID not in result or material.version > result.get(material.GUID).version:
-                    local_materials[material.GUID] = material
+                    result[material.GUID] = material
             except ValueError:
                 Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
+
         return result
