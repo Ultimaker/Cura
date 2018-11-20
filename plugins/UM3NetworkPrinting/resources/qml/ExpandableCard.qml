@@ -6,6 +6,7 @@ import QtQuick.Controls 2.0
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
+// TODO: Theme & documentation!
 // The expandable component has 3 major sub components:
 //      * The headerItem Always visible and should hold some info about what happens if the component is expanded
 //      * The popupItem The content that needs to be shown if the component is expanded.

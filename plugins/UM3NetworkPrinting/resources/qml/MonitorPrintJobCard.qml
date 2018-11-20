@@ -47,7 +47,7 @@ Item
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.verticalCenter: parent.verticalCenter
-                width: 216 * screenScaleFactor // TODO: Theme!
+                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
 
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
@@ -61,42 +61,72 @@ Item
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.verticalCenter: parent.verticalCenter
-                width: 216 * screenScaleFactor // TODO: Theme!
+                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
 
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
             }
 
-            Label
+            Item
             {
-                color: "#374355"
-                elide: Text.ElideRight
-                font: UM.Theme.getFont("medium") // 14pt, regular
-                text: {
-                    if (printJob !== null) {
-                        if (printJob.assignedPrinter == null)
-                        {
-                            if (printJob.state == "error")
-                            {
-                                return catalog.i18nc("@label", "Waiting for: Unavailable printer")
-                            }
-                            return catalog.i18nc("@label", "Waiting for: First available")
-                        }
-                        else
-                        {
-                            return catalog.i18nc("@label", "Waiting for: ") + printJob.assignedPrinter.name
-                        }
-                    }
-                    return ""
-                }
-                visible: printJob
                 anchors.verticalCenter: parent.verticalCenter
-                width: 216 * screenScaleFactor // TODO: Theme!
+                height: childrenRect.height
+                width: childrenRect.width
 
-                // FIXED-LINE-HEIGHT:
-                height: 18 * screenScaleFactor // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
+                Label
+                {
+                    id: printerAssignmentLabel
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "#374355"
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("medium") // 14pt, regular
+                    text: {
+                        if (printJob !== null) {
+                            if (printJob.assignedPrinter == null)
+                            {
+                                if (printJob.state == "error")
+                                {
+                                    return catalog.i18nc("@label", "Unavailable printer")
+                                }
+                                return catalog.i18nc("@label", "First available")
+                            }
+                            else
+                            {
+                                return printJob.assignedPrinter.name
+                            }
+                        }
+                        return ""
+                    }
+                    visible: printJob
+
+                    // FIXED-LINE-HEIGHT:
+                    height: 18 * screenScaleFactor // TODO: Theme!
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Row
+                {
+                    id: printerFamilyPills
+                    anchors
+                    {
+                        left: printerAssignmentLabel.right;
+                        leftMargin: 12 // TODO: Theme!
+                        verticalCenter: parent.verticalCenter
+                    }
+                    height: childrenRect.height
+                    spacing: 6 // TODO: Theme!
+
+                    Repeater
+                    {
+                        id: compatiblePills
+                        delegate: MonitorPrinterPill
+                        {
+                            text: modelData
+                        }
+                        model: printJob ? printJob.compatibleMachineFamilies : []
+                    }
+                }
             }
         }
         drawerItem: Row
@@ -106,14 +136,17 @@ Item
                 left: parent.left
                 leftMargin: 74 * screenScaleFactor // TODO: Theme!
             }
-            height: 96 * screenScaleFactor // TODO: Theme!
+            height: 108 * screenScaleFactor // TODO: Theme!
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
             MonitorPrinterConfiguration
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                printJob: base.printJob
+                buildplate: "Glass"
+                config0: base.printJob.configuration.extruderConfigurations[0]
+                config1: base.printJob.configuration.extruderConfigurations[1]
+                height: 72 * screenScaleFactor // TODO: Theme!
             }
             Label {
                 text: printJob && printJob.owner ? printJob.owner : ""
@@ -127,5 +160,20 @@ Item
                 verticalAlignment: Text.AlignVCenter
             }
         }
+    }
+
+    PrintJobContextMenu
+    {
+        id: contextButton
+        anchors
+        {
+            right: parent.right;
+            rightMargin: 8 * screenScaleFactor // TODO: Theme!
+            top: parent.top
+            topMargin: 8 * screenScaleFactor // TODO: Theme!
+        }
+        printJob: base.printJob
+        width: 32 * screenScaleFactor // TODO: Theme!
+        height: 32 * screenScaleFactor // TODO: Theme!
     }
 }

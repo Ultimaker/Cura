@@ -41,7 +41,6 @@ Item
                 id: buildplateIcon
                 anchors.centerIn: parent
                 color: "#0a0850" // TODO: Theme! (Standard purple)
-                elide: Text.ElideRight
                 height: parent.height
                 source: "../svg/icons/buildplate.svg"
                 width: height
@@ -52,6 +51,7 @@ Item
         {
             id: buildplateLabel
             color: "#191919" // TODO: Theme!
+            elide: Text.ElideRight
             font: UM.Theme.getFont("very_small") // 12pt, regular
             text: ""
 
