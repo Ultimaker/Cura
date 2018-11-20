@@ -85,7 +85,7 @@ Column
     {
         id: prepareButton
         width: parent.width
-        height: UM.Theme.getSize("action_panel_button").height
+        height: UM.Theme.getSize("action_button").height
         fixedWidthMode: true
         text:
         {

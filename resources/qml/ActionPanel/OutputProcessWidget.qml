@@ -104,7 +104,7 @@ Column
         {
             id: previewStageShortcut
 
-            height: UM.Theme.getSize("action_panel_button").height
+            height: UM.Theme.getSize("action_button").height
             text: catalog.i18nc("@button", "Preview")
             color: UM.Theme.getColor("secondary")
             hoverColor: UM.Theme.getColor("secondary")
@@ -116,8 +116,8 @@ Column
 
         Cura.OutputDevicesActionButton
         {
-            width: previewStageShortcut.visible ? UM.Theme.getSize("action_panel_button").width : parent.width
-            height: UM.Theme.getSize("action_panel_button").height
+            width: previewStageShortcut.visible ? UM.Theme.getSize("action_button").width : parent.width
+            height: UM.Theme.getSize("action_button").height
         }
     }
 }

@@ -385,7 +385,6 @@
 
         "action_panel_widget": [25.0, 0.0],
         "action_panel_information_widget": [20.0, 0.0],
-        "action_panel_button": [15.0, 3.0],
 
         "machine_selector_widget": [16.0, 4.5],
 
@@ -431,6 +430,9 @@
         "button": [4, 4],
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
+
+        "action_button": [15.0, 3.0],
+        "action_button_radius": [0.15, 0.15],
 
         "small_button": [2, 2],
         "small_button_icon": [1.5, 1.5],
@@ -519,8 +521,6 @@
         "toolbox_loader": [2.0, 2.0],
 
         "avatar_image": [6.8, 6.8],
-
-        "action_button_radius": [0.15, 0.15],
 
         "monitor_config_override_box": [1.0, 14.0],
         "monitor_extruder_circle": [2.75, 2.75],
