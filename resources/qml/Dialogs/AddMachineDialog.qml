@@ -73,7 +73,7 @@ UM.Dialog
         {
             top: parent.top
             left: parent.left
-            topMargin: UM.Theme.getSize("default_margin").height
+            topMargin: UM.Theme.getSize("default_margin")
         }
         text: catalog.i18nc("@title:tab", "Add a printer to Cura")
 
