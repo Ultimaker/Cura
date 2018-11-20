@@ -172,6 +172,9 @@ Cura.ExpandableComponent
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
 
+                iconSource: UM.Theme.icons.arrow_right
+                iconOnRightSide: true
+
                 onClicked: popupItem.configuration_method = "custom"
             }
 
@@ -191,6 +194,8 @@ Cura.ExpandableComponent
                 hoverColor: UM.Theme.getColor("secondary")
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
+
+                iconSource: UM.Theme.icons.arrow_left
 
                 onClicked: popupItem.configuration_method = "auto"
             }

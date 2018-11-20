@@ -11,7 +11,8 @@ Button
 {
     id: button
     property alias cursorShape: mouseArea.cursorShape
-    property alias iconSource: buttonIcon.source
+    property alias iconSource: buttonIconLeft.source
+    property var iconOnRightSide: false
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
@@ -35,16 +36,17 @@ Button
 
     contentItem: Row
     {
+        //Icon if displayed on the left side.
         UM.RecolorImage
         {
-            id: buttonIcon
+            id: buttonIconLeft
             source: ""
             height: Math.round(0.6 * parent.height)
-            width: height
+            width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != ""
+            visible: source != "" && !button.iconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -60,6 +62,20 @@ Button
             width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : undefined
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
+        }
+
+        //Icon if displayed on the right side.
+        UM.RecolorImage
+        {
+            id: buttonIconRight
+            source: buttonIconLeft.source
+            height: Math.round(0.6 * parent.height)
+            width: visible ? height : 0
+            sourceSize.width: width
+            sourceSize.height: height
+            color: button.hovered ? button.textHoverColor : button.textColor
+            visible: source != "" && button.iconOnRightSide
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 
