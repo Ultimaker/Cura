@@ -448,7 +448,7 @@
 
         "progressbar": [26.0, 0.75],
         "progressbar_radius": [0.15, 0.15],
-        "progressbar_control": [8.0, 0.4],
+        "progressbar_control": [8.0, 0.75],
 
         "scrollbar": [0.75, 0.5],
 
