@@ -172,8 +172,6 @@ Cura.ExpandableComponent
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
                 height: UM.Theme.getSize("action_panel_button").height
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
 
                 onClicked: popupItem.configuration_method = "custom"
             }
@@ -195,8 +193,6 @@ Cura.ExpandableComponent
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
                 height: UM.Theme.getSize("action_panel_button").height
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
 
                 onClicked: popupItem.configuration_method = "auto"
             }

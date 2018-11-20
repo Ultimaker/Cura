@@ -29,6 +29,9 @@ Button
     // we elide the text to the right so the text will be cut off with the three dots at the end.
     property var fixedWidthMode: false
 
+    leftPadding: UM.Theme.getSize("default_margin").width
+    rightPadding: UM.Theme.getSize("default_margin").width
+
     contentItem: Row
     {
         UM.RecolorImage

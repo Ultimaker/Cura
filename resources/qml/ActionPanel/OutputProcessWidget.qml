@@ -104,8 +104,6 @@ Column
         {
             id: previewStageShortcut
 
-            leftPadding: UM.Theme.getSize("default_margin").width
-            rightPadding: UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("action_panel_button").height
             text: catalog.i18nc("@button", "Preview")
             color: UM.Theme.getColor("secondary")
