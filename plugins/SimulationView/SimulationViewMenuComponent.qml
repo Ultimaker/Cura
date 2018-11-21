@@ -132,6 +132,7 @@ Cura.ExpandableComponent
             visible: UM.SimulationView.compatibilityMode
             height: UM.Theme.getSize("layerview_row").height
             width: parent.width
+            renderType: Text.NativeRendering
         }
 
         Item  // Spacer
@@ -188,7 +189,7 @@ Cura.ExpandableComponent
                         leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width / 2)
                         rightMargin: UM.Theme.getSize("default_margin").width * 2
                     }
-
+                    renderType: Text.NativeRendering
                 }
             }
         }
@@ -254,6 +255,7 @@ Cura.ExpandableComponent
                     text: label
                     font: UM.Theme.getFont("default")
                     elide: Text.ElideRight
+                    renderType: Text.NativeRendering
                     color: UM.Theme.getColor("setting_control_text")
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: legendModelCheckBox.left
@@ -310,7 +312,7 @@ Cura.ExpandableComponent
                 width: parent.width
                 color: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default")
-
+                renderType: Text.NativeRendering
                 Rectangle
                 {
                     anchors.verticalCenter: parent.verticalCenter
@@ -357,6 +359,7 @@ Cura.ExpandableComponent
                 anchors.left: parent.left
                 color: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
             }
 
             Label

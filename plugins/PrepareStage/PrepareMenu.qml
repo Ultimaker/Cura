@@ -34,7 +34,7 @@ Item
             anchors.left: openFileButtonBackground.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-            width: 0.9 * prepareMenu.width
+            width: Math.round(0.9 * prepareMenu.width)
             height: parent.height
             spacing: 0
 

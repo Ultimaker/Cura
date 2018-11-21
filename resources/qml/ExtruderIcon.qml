@@ -53,6 +53,7 @@ Item
             width: contentWidth
             height: contentHeight
             visible: extruderEnabled
+            renderType: Text.NativeRendering
         }
 
         UM.RecolorImage
