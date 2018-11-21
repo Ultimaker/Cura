@@ -34,7 +34,7 @@ Item
             id: viewSelector
             iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             height: parent.height
-            headerCornerSide: 2 // Show corners on the left side
+            headerCornerSide: Cura.RoundedRectangle.Direction.Left
 
             property var viewModel: UM.ViewModel { }
 

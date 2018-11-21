@@ -42,7 +42,7 @@ Item
             {
                 id: machineSelection
                 z: openFileButtonBackground.z - 1 //Ensure that the tooltip of the open file button stays above the item row.
-                headerCornerSide: 2 // Show corners on the left.
+                headerCornerSide: Cura.RoundedRectangle.Direction.Left
                 Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
                 Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
                 Layout.fillWidth: true
