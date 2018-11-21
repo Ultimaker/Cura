@@ -164,7 +164,7 @@ Cura.ExpandableComponent
                 anchors
                 {
                     right: parent.right
-                    bottom: parent.bottom
+                    top: parent.top
                 }
 
                 color: UM.Theme.getColor("secondary")
@@ -187,7 +187,7 @@ Cura.ExpandableComponent
                 anchors
                 {
                     left: parent.left
-                    bottom: parent.bottom
+                    top: parent.top
                 }
 
                 color: UM.Theme.getColor("secondary")
