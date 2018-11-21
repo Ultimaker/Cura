@@ -9,8 +9,8 @@ Item
 {
     id: extruderIconItem
 
-    implicitWidth: UM.Theme.getSize("button").width
-    implicitHeight: implicitWidth
+    implicitWidth: UM.Theme.getSize("extruder_icon").width
+    implicitHeight: UM.Theme.getSize("extruder_icon").height
 
     property bool checked: true
     property color materialColor
@@ -22,7 +22,7 @@ Item
         anchors.fill: parent
 
         sourceSize.width: parent.width
-        sourceSize.height: parent.width
+        sourceSize.height: parent.height
         source: UM.Theme.getIcon("extruder_button")
         color: extruderEnabled ? materialColor: "gray"
     }
@@ -49,11 +49,13 @@ Item
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("extruder_icon")
             width: contentWidth
             height: contentHeight
             visible: extruderEnabled
             renderType: Text.NativeRendering
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
 
         UM.RecolorImage

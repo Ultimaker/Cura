@@ -50,8 +50,7 @@ Cura.ExpandableComponent
                     id: extruderIcon
                     materialColor: model.color
                     extruderEnabled: model.enabled
-                    height: parent.height
-                    width: height
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Label for the brand of the material
@@ -152,6 +151,7 @@ Cura.ExpandableComponent
                         color: UM.Theme.getColor("text")
                         height: parent.height
                         width: tabControl.textWidth
+                        renderType: Text.NativeRendering
                     }
 
                     OldControls.CheckBox
@@ -174,6 +174,7 @@ Cura.ExpandableComponent
                         color: UM.Theme.getColor("text")
                         height: parent.height
                         width: tabControl.textWidth
+                        renderType: Text.NativeRendering
                     }
 
                     OldControls.ToolButton
@@ -217,6 +218,7 @@ Cura.ExpandableComponent
                         color: UM.Theme.getColor("text")
                         height: parent.height
                         width: tabControl.textWidth
+                        renderType: Text.NativeRendering
                     }
 
                     OldControls.ToolButton
