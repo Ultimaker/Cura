@@ -1,33 +1,33 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from collections import namedtuple
+from typing import NamedTuple
 
-ClusterMaterial = namedtuple('ClusterMaterial', [
-    'guid',
-    'material',
-    'brand',
-    'version',
-    'color',
-    'density'
+ClusterMaterial = NamedTuple("ClusterMaterial", [
+    ("guid", str),
+    ("material", str),
+    ("brand", str),
+    ("version", int),
+    ("color", str),
+    ("density", str),
 ])
 
-LocalMaterial = namedtuple('LocalMaterial', [
-    'GUID',
-    'id',
-    'type',
-    'status',
-    'base_file',
-    'setting_version',
-    'version',
-    'name',
-    'brand',
-    'material',
-    'color_name',
-    'color_code',
-    'description',
-    'adhesion_info',
-    'approximate_diameter',
-    'properties',
-    'definition',
-    'compatible'
+LocalMaterial = NamedTuple("LocalMaterial", [
+    ("GUID", str),
+    ("id", str),
+    ("type", str),
+    ("status", str),
+    ("base_file", str),
+    ("setting_version", int),
+    ("version", int),
+    ("name", str),
+    ("brand", str),
+    ("material", str),
+    ("color_name", str),
+    ("color_code", str),
+    ("description", str),
+    ("adhesion_info", str),
+    ("approximate_diameter", str),
+    ("properties", str),
+    ("definition", str),
+    ("compatible", str),
 ])

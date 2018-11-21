@@ -19,7 +19,7 @@ from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
 @patch("UM.Resources.Resources.getAllResourcesOfType", lambda _: ["/materials/generic_pla_white.xml.fdm_material"])
 class TestSendMaterialJob(TestCase):
     _LOCAL_MATERIAL_WHITE = {"type": "material", "status": "unknown", "id": "generic_pla_white",
-                             "base_file": "generic_pla_white", "setting_version": 5, "name": "White PLA",
+                             "base_file": "generic_pla_white", "setting_version": "5", "name": "White PLA",
                              "brand": "Generic", "material": "PLA", "color_name": "White",
                              "GUID": "badb0ee7-87c8-4f3f-9398-938587b67dce", "version": "1", "color_code": "#ffffff",
                              "description": "Test PLA White", "adhesion_info": "Use glue.", "approximate_diameter": "3",
@@ -27,7 +27,7 @@ class TestSendMaterialJob(TestCase):
                              "definition": "fdmprinter", "compatible": True}
 
     _LOCAL_MATERIAL_BLACK = {"type": "material", "status": "unknown", "id": "generic_pla_black",
-                             "base_file": "generic_pla_black", "setting_version": 5, "name": "Yellow CPE",
+                             "base_file": "generic_pla_black", "setting_version": "5", "name": "Yellow CPE",
                              "brand": "Ultimaker", "material": "CPE", "color_name": "Black",
                              "GUID": "5fbb362a-41f9-4818-bb43-15ea6df34aa4", "version": "1", "color_code": "#000000",
                              "description": "Test PLA Black", "adhesion_info": "Use glue.", "approximate_diameter": "3",

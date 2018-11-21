@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import os
-import re
 import urllib.parse
 from typing import Dict, TYPE_CHECKING, Set
 
@@ -13,12 +12,12 @@ from UM.Logger import Logger
 from UM.MimeTypeDatabase import MimeTypeDatabase
 from UM.Resources import Resources
 from cura.CuraApplication import CuraApplication
-
 # Absolute imports don't work in plugins
 from .Models import ClusterMaterial, LocalMaterial
 
 if TYPE_CHECKING:
     from .ClusterUM3OutputDevice import ClusterUM3OutputDevice
+
 
 ##  Asynchronous job to send material profiles to the printer.
 #
@@ -86,7 +85,7 @@ class SendMaterialJob(Job):
         return {
             material.id
             for guid, material in local_materials.items()
-            if guid not in remote_materials or int(material.version) > remote_materials[guid].version
+            if guid not in remote_materials or material.version > remote_materials[guid].version
         }
 
     ##  Send the materials to the printer.
@@ -122,23 +121,23 @@ class SendMaterialJob(Job):
     #   \param material_id The ID of the material in the file.
     def _sendMaterialFile(self, file_path: str, file_name: str, material_id: str) -> None:
 
-            parts = []
+        parts = []
 
-            # Add the material file.
-            with open(file_path, "rb") as f:
-                parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\""
-                                                        .format(file_name = file_name), f.read()))
+        # Add the material file.
+        with open(file_path, "rb") as f:
+            parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\""
+                                                    .format(file_name = file_name), f.read()))
 
-            # Add the material signature file if needed.
-            signature_file_path = "{}.sig".format(file_path)
-            if os.path.exists(signature_file_path):
-                signature_file_name = os.path.basename(signature_file_path)
-                with open(signature_file_path, "rb") as f:
-                    parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\""
-                                                            .format(file_name = signature_file_name), f.read()))
+        # Add the material signature file if needed.
+        signature_file_path = "{}.sig".format(file_path)
+        if os.path.exists(signature_file_path):
+            signature_file_name = os.path.basename(signature_file_path)
+            with open(signature_file_path, "rb") as f:
+                parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\""
+                                                        .format(file_name = signature_file_name), f.read()))
 
-            Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
-            self.device.postFormWithParts(target = "materials/", parts = parts, on_finished = self.sendingFinished)
+        Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
+        self.device.postFormWithParts(target = "materials/", parts = parts, on_finished = self.sendingFinished)
 
     ##  Check a reply from an upload to the printer and log an error when the call failed
     @staticmethod
@@ -174,16 +173,18 @@ class SendMaterialJob(Job):
         # Find the latest version of all material containers in the registry.
         for material in material_containers:
             try:
-                material = LocalMaterial(**material)
-
                 # material version must be an int
-                if not re.match("\d+", material.version):
-                    Logger.logException("w", "Local material {} has invalid version '{}'."
-                                        .format(material["id"], material.version))
-                    continue
+                material["version"] = int(material["version"])
 
-                if material.GUID not in result or material.version > result.get(material.GUID).version:
-                    result[material.GUID] = material
+                # Create a new local material
+                local_material = LocalMaterial(**material)
+
+                if local_material.GUID not in result or \
+                        local_material.version > result.get(local_material.GUID).version:
+                    result[local_material.GUID] = local_material
+
+            except KeyError:
+                Logger.logException("w", "Local material {} has missing values.".format(material["id"]))
             except ValueError:
                 Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
 
