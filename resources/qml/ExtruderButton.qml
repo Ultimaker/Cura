@@ -21,6 +21,9 @@ Button
     checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
     enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
 
+    property bool isFirstElement: extrudersModel.getItem(0).name == model.name
+    property bool isLastElement: extrudersModel.getItem(extrudersModel.rowCount() - 1).name == model.name
+
     Item
     {
         anchors.centerIn: parent
@@ -32,18 +35,7 @@ Button
         {
             anchors.centerIn: parent
             text: index + 1
-            color:
-            {
-                if (base.checked)
-                {
-                    return UM.Theme.getColor("toolbar_button_text_active")
-                }
-                else if(base.hovered)
-                {
-                    return UM.Theme.getColor("toolbar_button_text_hover")
-                }
-                return UM.Theme.getColor("toolbar_button_text")
-            }
+            color: UM.Theme.getColor("toolbar_button_text")
             font: UM.Theme.getFont("default_bold")
         }
     }
