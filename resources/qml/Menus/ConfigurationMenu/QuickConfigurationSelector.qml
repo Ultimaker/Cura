@@ -152,6 +152,7 @@ Cura.ExpandableComponent
                         color: UM.Theme.getColor("text")
                         height: parent.height
                         width: tabControl.textWidth
+                        renderType: Text.NativeRendering
                     }
 
                     OldControls.CheckBox
@@ -174,6 +175,7 @@ Cura.ExpandableComponent
                         color: UM.Theme.getColor("text")
                         height: parent.height
                         width: tabControl.textWidth
+                        renderType: Text.NativeRendering
                     }
 
                     OldControls.ToolButton
@@ -217,6 +219,7 @@ Cura.ExpandableComponent
                         color: UM.Theme.getColor("text")
                         height: parent.height
                         width: tabControl.textWidth
+                        renderType: Text.NativeRendering
                     }
 
                     OldControls.ToolButton
