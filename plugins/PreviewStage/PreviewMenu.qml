@@ -22,135 +22,122 @@ Item
         name: "cura"
     }
 
-    Rectangle
-    {
-        anchors.fill: stageMenu
-        anchors.leftMargin: -radius
-        radius: UM.Theme.getSize("default_radius").width
-        color: UM.Theme.getColor("toolbar_background")
-    }
 
-    Item
+    Row
     {
-        id: stageMenu
+        id: stageMenuRow
+        anchors.centerIn: parent
         height: parent.height
-        width: stageMenuRow.width + UM.Theme.getSize("default_margin").width
-        anchors.horizontalCenter: parent.horizontalCenter
-        Row
+
+        Cura.ExpandableComponent
         {
-            id: stageMenuRow
-            anchors.centerIn: parent
+            id: viewSelector
+            iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             height: parent.height
+            headerCornerSide: 2 // Show corners on the left side
 
-            Cura.ExpandableComponent
+            property var viewModel: UM.ViewModel { }
+
+            property var activeView:
             {
-                id: viewSelector
-                iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
-                height: parent.height
-
-                property var viewModel: UM.ViewModel { }
-
-                property var activeView:
+                for (var i = 0; i < viewModel.rowCount(); i++)
                 {
-                    for (var i = 0; i < viewModel.rowCount(); i++)
+                    if (viewModel.items[i].active)
                     {
-                        if (viewModel.items[i].active)
-                        {
-                            return viewModel.items[i]
-                        }
+                        return viewModel.items[i]
                     }
-                    return null
                 }
+                return null
+            }
 
+            Component.onCompleted:
+            {
+                // Nothing was active, so just return the first one (the list is sorted by priority, so the most
+                // important one should be returned)
+                if(activeView == null)
+                {
+                    UM.Controller.setActiveView(viewModel.getItem(0).id)
+                }
+            }
+
+            headerItem: Label
+            {
+                text: viewSelector.activeView ? viewSelector.activeView.name : ""
+                verticalAlignment: Text.AlignVCenter
+                height: parent.height
+                elide: Text.ElideRight
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+            }
+
+            popupItem: Column
+            {
+                id: viewSelectorPopup
+                width: viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
+
+                // For some reason the height/width of the column gets set to 0 if this is not set...
                 Component.onCompleted:
                 {
-                    // Nothing was active, so just return the first one (the list is sorted by priority, so the most
-                    // important one should be returned)
-                    if(activeView == null)
-                    {
-                        UM.Controller.setActiveView(viewModel.getItem(0).id)
-                    }
+                    height = implicitHeight
+                    width = viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
                 }
 
-                headerItem: Label
+                Repeater
                 {
-                    text: viewSelector.activeView ? viewSelector.activeView.name : ""
-                    verticalAlignment: Text.AlignVCenter
-                    height: parent.height
-                    elide: Text.ElideRight
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                }
-
-                popupItem: Column
-                {
-                    id: viewSelectorPopup
-                    width: viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
-
-                    // For some reason the height/width of the column gets set to 0 if this is not set...
-                    Component.onCompleted:
+                    id: viewsList
+                    model: viewSelector.viewModel
+                    RoundButton
                     {
-                        height = implicitHeight
-                        width = viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
-                    }
-
-                    Repeater
-                    {
-                        id: viewsList
-                        model: viewSelector.viewModel
-                        RoundButton
+                        text: name
+                        radius: UM.Theme.getSize("default_radius").width
+                        checkable: true
+                        checked: viewSelector.activeView != null ? viewSelector.activeView.id == id : false
+                        onClicked:
                         {
-                            text: name
-                            radius: UM.Theme.getSize("default_radius").width
-                            checkable: true
-                            checked: viewSelector.activeView != null ? viewSelector.activeView.id == id : false
-                            onClicked:
-                            {
-                                viewSelector.togglePopup()
-                                UM.Controller.setActiveView(id)
-                            }
+                            viewSelector.togglePopup()
+                            UM.Controller.setActiveView(id)
                         }
                     }
-
                 }
-            }
 
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                // If there is no viewPanel, we only need a single spacer, so hide this one.
-                visible: viewPanel.source != ""
-                width: visible ? UM.Theme.getSize("default_lining").width : 0
-
-                color: UM.Theme.getColor("lining")
             }
+        }
 
-            Loader
-            {
-                id: viewPanel
-                height: parent.height
-                width: childrenRect.width
-                source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
-            }
+        // Separator line
+        Rectangle
+        {
+            height: parent.height
+            // If there is no viewPanel, we only need a single spacer, so hide this one.
+            visible: viewPanel.source != ""
+            width: visible ? UM.Theme.getSize("default_lining").width : 0
 
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
-            }
+            color: UM.Theme.getColor("lining")
+        }
 
-            Item
-            {
-                id: printSetupSelectorItem
-                // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
-                // a stage switch is done.
-                children: [printSetupSelector]
-                height: childrenRect.height
-                width: childrenRect.width
-            }
+        Loader
+        {
+            id: viewPanel
+            height: parent.height
+            width: childrenRect.width
+            source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
+        }
+
+        // Separator line
+        Rectangle
+        {
+            height: parent.height
+            width: UM.Theme.getSize("default_lining").width
+            color: UM.Theme.getColor("lining")
+        }
+
+        Item
+        {
+            id: printSetupSelectorItem
+            // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+            // a stage switch is done.
+            children: [printSetupSelector]
+            height: childrenRect.height
+            width: childrenRect.width
         }
     }
 }
