@@ -46,6 +46,7 @@ Cura.ExpandableComponent
 
         ScrollView
         {
+            id: scroll
             width: parent.width
             anchors.top: parent.top
             anchors.bottom: separator.top
@@ -54,16 +55,20 @@ Cura.ExpandableComponent
             Column
             {
                 id: column
-                anchors.fill: parent
+
+                // Can't use parent.width since the parent is the flickable component and not the ScrollView
+                width: scroll.width - 2 * UM.Theme.getSize("default_lining").width
+                x: UM.Theme.getSize("default_lining").width
 
                 Label
                 {
                     text: catalog.i18nc("@label", "Network connected printers")
                     visible: networkedPrintersModel.items.length > 0
+                    leftPadding: UM.Theme.getSize("default_margin").width
                     height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
                     renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("medium_bold")
-                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text_medium")
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -77,12 +82,19 @@ Cura.ExpandableComponent
                         filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
                     }
 
-                    delegate: Button
+                    delegate: Cura.ActionButton
                     {
                         text: model.metadata["connect_group_name"]
                         width: parent.width
+                        height: UM.Theme.getSize("action_button").height
                         checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
                         checkable: true
+
+                        color: "transparent"
+                        hoverColor: UM.Theme.getColor("action_button_hovered")
+                        textColor: UM.Theme.getColor("text")
+                        textHoverColor: UM.Theme.getColor("text")
+                        outlineColor: checked ? UM.Theme.getColor("primary") : "transparent"
 
                         onClicked:
                         {
@@ -102,10 +114,11 @@ Cura.ExpandableComponent
                 {
                     text: catalog.i18nc("@label", "Preset printers")
                     visible: virtualPrintersModel.items.length > 0
+                    leftPadding: UM.Theme.getSize("default_margin").width
                     height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
                     renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("medium_bold")
-                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text_medium")
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -119,12 +132,19 @@ Cura.ExpandableComponent
                         filter: {"type": "machine", "um_network_key": null}
                     }
 
-                    delegate: Button
+                    delegate: Cura.ActionButton
                     {
                         text: model.name
                         width: parent.width
+                        height: UM.Theme.getSize("action_button").height
                         checked: Cura.MachineManager.activeMachineId == model.id
                         checkable: true
+
+                        color: "transparent"
+                        hoverColor: UM.Theme.getColor("action_button_hovered")
+                        textColor: UM.Theme.getColor("text")
+                        textHoverColor: UM.Theme.getColor("text")
+                        outlineColor: checked ? UM.Theme.getColor("primary") : "transparent"
 
                         onClicked:
                         {

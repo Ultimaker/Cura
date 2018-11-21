@@ -91,7 +91,7 @@ Item
 
             radius: UM.Theme.getSize("default_radius").width
             color: UM.Theme.getColor("toolbar_background")
-            
+
             Button
             {
                 id: openFileButton

@@ -521,6 +521,7 @@
 
         "avatar_image": [6.8, 6.8],
 
+        "action_button": [15.0, 3.0],
         "action_button_radius": [0.15, 0.15],
 
         "monitor_config_override_box": [1.0, 14.0],
