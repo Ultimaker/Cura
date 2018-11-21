@@ -54,7 +54,7 @@ Item
             {
                 // Nothing was active, so just return the first one (the list is sorted by priority, so the most
                 // important one should be returned)
-                if(activeView == null)
+                if (activeView == null)
                 {
                     UM.Controller.setActiveView(viewModel.getItem(0).id)
                 }
@@ -68,6 +68,7 @@ Item
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
 
             popupItem: Column

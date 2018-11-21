@@ -36,6 +36,7 @@ Cura.ExpandableComponent
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
+        renderType: Text.NativeRendering
     }
 
     popupItem: Item
@@ -64,6 +65,7 @@ Cura.ExpandableComponent
                     renderType: Text.NativeRendering
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -107,6 +109,7 @@ Cura.ExpandableComponent
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Repeater
