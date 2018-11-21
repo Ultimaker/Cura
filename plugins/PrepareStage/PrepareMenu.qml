@@ -24,74 +24,62 @@ Item
     Item
     {
         anchors.horizontalCenter: parent.horizontalCenter
-        width: openFileButtonBackground.width + itemRowBackground.width
+        width: openFileButtonBackground.width + itemRow.width + UM.Theme.getSize("default_margin").width
         height: parent.height
 
-        Rectangle
+        RowLayout
         {
-            id: itemRowBackground
-            radius: UM.Theme.getSize("default_radius").width
-
-            color: UM.Theme.getColor("toolbar_background")
-
-            width: itemRow.width + UM.Theme.getSize("default_margin").width
-            height: parent.height
+            id: itemRow
 
             anchors.left: openFileButtonBackground.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-            RowLayout
+            width: Math.round(0.9 * prepareMenu.width)
+            height: parent.height
+            spacing: 0
+
+            Cura.MachineSelector
             {
-                id: itemRow
+                id: machineSelection
+                z: openFileButtonBackground.z - 1 //Ensure that the tooltip of the open file button stays above the item row.
+                headerCornerSide: Cura.RoundedRectangle.Direction.Left
+                Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
+                Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
 
-                anchors.centerIn: parent
-
-                width: Math.round(0.9 * prepareMenu.width)
+            // Separator line
+            Rectangle
+            {
                 height: parent.height
-                spacing: 0
+                width: UM.Theme.getSize("default_lining").width
+                color: UM.Theme.getColor("lining")
+            }
 
-                Cura.MachineSelector
-                {
-                    id: machineSelection
-                    z: openFileButtonBackground.z - 1 //Ensure that the tooltip of the open file button stays above the item row.
-                    Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
-                    Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
+            Cura.QuickConfigurationSelector
+            {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
+            }
 
-                // Separator line
-                Rectangle
-                {
-                    height: parent.height
-                    width: UM.Theme.getSize("default_lining").width
-                    color: UM.Theme.getColor("lining")
-                }
+            // Separator line
+            Rectangle
+            {
+                height: parent.height
+                width: UM.Theme.getSize("default_lining").width
+                color: UM.Theme.getColor("lining")
+            }
 
-                Cura.QuickConfigurationSelector
-                {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
-                }
-
-                // Separator line
-                Rectangle
-                {
-                    height: parent.height
-                    width: UM.Theme.getSize("default_lining").width
-                    color: UM.Theme.getColor("lining")
-                }
-
-                Item
-                {
-                    id: printSetupSelectorItem
-                    // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
-                    // a stage switch is done.
-                    children: [printSetupSelector]
-                    height: childrenRect.height
-                    width: childrenRect.width
-                }
+            Item
+            {
+                id: printSetupSelectorItem
+                // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+                // a stage switch is done.
+                children: [printSetupSelector]
+                height: childrenRect.height
+                width: childrenRect.width
             }
         }
 
@@ -103,6 +91,7 @@ Item
 
             radius: UM.Theme.getSize("default_radius").width
             color: UM.Theme.getColor("toolbar_background")
+            
             Button
             {
                 id: openFileButton

@@ -259,6 +259,7 @@ UM.MainWindow
                     onHideTooltip: base.hideTooltip()
                     width: UM.Theme.getSize("print_setup_widget").width
                     height: UM.Theme.getSize("stage_menu").height
+                    headerCornerSide: RoundedRectangle.Direction.Right
                 }
             }
 
