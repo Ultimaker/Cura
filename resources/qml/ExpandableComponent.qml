@@ -52,7 +52,6 @@ Item
 
     function togglePopup()
     {
-//        print(popupAlignment, popupAlignment == PopupAlignment.AlignRight)
         if(popup.visible)
         {
             popup.close()
@@ -149,8 +148,8 @@ Item
         // Ensure that the popup is located directly below the headerItem
         y: headerItemLoader.height + 2 * background.padding
 
-        // Make the popup right aligned with the rest. The 3x padding is due to left, right and padding between
-        // the button & text.
+        // Make the popup aligned with the rest, using the property popupAlignment to decide whether is right or left.
+        // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
         x: popupAlignment == ExpandableComponent.PopupAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
         padding: UM.Theme.getSize("default_margin").width
         closePolicy: Popup.CloseOnPressOutsideParent
@@ -160,6 +159,7 @@ Item
             color: popupBackgroundColor
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
+            radius: UM.Theme.getSize("default_radius").width
         }
     }
 }

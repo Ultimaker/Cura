@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -46,7 +46,9 @@ Cura.ExpandableComponent
 
         ScrollView
         {
-            anchors.fill: parent
+            width: parent.width
+            anchors.top: parent.top
+            anchors.bottom: separator.top
             clip: true
 
             Column
@@ -80,7 +82,7 @@ Cura.ExpandableComponent
                         text: name
                         width: parent.width
                         checkable: true
-                        
+
                         onClicked:
                         {
                             togglePopup()
@@ -130,6 +132,50 @@ Cura.ExpandableComponent
                         }
                     }
                 }
+            }
+        }
+
+        Rectangle
+        {
+            id: separator
+
+            anchors.bottom: buttonRow.top
+            width: parent.width
+            height: UM.Theme.getSize("default_lining").height
+            color: UM.Theme.getColor("lining")
+        }
+
+        Row
+        {
+            id: buttonRow
+
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            padding: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("default_margin").width
+
+            Cura.ActionButton
+            {
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@button", "Add printer")
+                color: UM.Theme.getColor("secondary")
+                hoverColor: UM.Theme.getColor("secondary")
+                textColor: UM.Theme.getColor("primary")
+                textHoverColor: UM.Theme.getColor("text")
+                onClicked: Cura.Actions.addMachine.trigger()
+            }
+
+            Cura.ActionButton
+            {
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@button", "Manage printers")
+                color: UM.Theme.getColor("secondary")
+                hoverColor: UM.Theme.getColor("secondary")
+                textColor: UM.Theme.getColor("primary")
+                textHoverColor: UM.Theme.getColor("text")
+                onClicked: Cura.Actions.configureMachines.trigger()
             }
         }
     }
