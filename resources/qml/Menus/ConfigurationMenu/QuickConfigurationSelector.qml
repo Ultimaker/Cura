@@ -50,8 +50,7 @@ Cura.ExpandableComponent
                     id: extruderIcon
                     materialColor: model.color
                     extruderEnabled: model.enabled
-                    height: parent.height
-                    width: height
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
                 // Label for the brand of the material
