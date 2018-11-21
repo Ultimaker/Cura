@@ -54,22 +54,27 @@ Item
                 {
                     for (var i = 0; i < viewModel.rowCount(); i++)
                     {
-                        if (viewModel.getItem(i).active)
+                        if (viewModel.items[i].active)
                         {
-                            return viewModel.getItem(i)
+                            return viewModel.items[i]
                         }
                     }
-                    // Nothing was active, so just return the first one (the list is sorted by priority, so the most
-                    // important one should be returned)
-                    return viewModel.getItem(0)
+                    return null
                 }
 
-                // Ensure that the controller is synced with whatever happend here.
-                onActiveViewChanged: UM.Controller.setActiveView(activeView.id)
+                Component.onCompleted:
+                {
+                    // Nothing was active, so just return the first one (the list is sorted by priority, so the most
+                    // important one should be returned)
+                    if(activeView == null)
+                    {
+                        UM.Controller.setActiveView(viewModel.getItem(0).id)
+                    }
+                }
 
                 headerItem: Label
                 {
-                    text: viewSelector.activeView.name
+                    text: viewSelector.activeView ? viewSelector.activeView.name : ""
                     verticalAlignment: Text.AlignVCenter
                     height: parent.height
                     elide: Text.ElideRight
@@ -98,7 +103,7 @@ Item
                             text: name
                             radius: UM.Theme.getSize("default_radius").width
                             checkable: true
-                            checked: active
+                            checked: viewSelector.activeView != null ? viewSelector.activeView.id == id : false
                             onClicked:
                             {
                                 viewSelector.togglePopup()
