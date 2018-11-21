@@ -34,6 +34,9 @@ class QualityGroup(QObject):
     def getName(self) -> str:
         return self.name
 
+    def setName(self, new_name: str) -> None:
+        self.name = new_name
+
     def getAllKeys(self) -> Set[str]:
         result = set()  # type: Set[str]
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):

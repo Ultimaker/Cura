@@ -335,6 +335,12 @@ class QualityManager(QObject):
                             quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
                             quality_group_dict[quality_type] = quality_group
 
+                        new_name = quality_node.getMetaDataEntry("name", quality_group_dict[quality_type].getName())
+
+                        #Special case, if the quality has Experimental word in the name then override it
+                        if new_name is not None and new_name[-12:] == "Experimental":
+                            quality_group_dict[quality_type].setName(new_name)
+
                         quality_group = quality_group_dict[quality_type]
                         if position not in quality_group.nodes_for_extruders:
                             quality_group.nodes_for_extruders[position] = quality_node
