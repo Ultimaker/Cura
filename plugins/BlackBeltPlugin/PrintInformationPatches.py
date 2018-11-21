@@ -1,9 +1,36 @@
+from cura.CuraApplication import CuraApplication
 import re
 
+from typing import Any, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
+
 class PrintInformationPatches():
-    def __init__(self, print_information):
+    def __init__(self, print_information) -> None:
         self._print_information = print_information
         self._print_information._defineAbbreviatedMachineName = self._defineAbbreviatedMachineName
+
+        self._global_stack = None # type: Optional[GlobalStack]
+        CuraApplication.getInstance().getMachineManager().globalContainerChanged.connect(self._onMachineChanged)
+        self._onMachineChanged()
+
+    def _onMachineChanged(self) -> None:
+        if self._global_stack:
+            definition_container = self._global_stack.getBottom()
+            if definition_container.getId() == "blackbelt":
+                self._global_stack.containersChanged.disconnect(self._onContainersChanged)
+
+        self._global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+
+        if self._global_stack:
+            definition_container = self._global_stack.getBottom()
+            if definition_container.getId() == "blackbelt":
+                self._global_stack.containersChanged.connect(self._onContainersChanged)
+
+    def _onContainersChanged(self, container: Any) -> None:
+        self._print_information._updateJobName()
+
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
