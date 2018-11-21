@@ -17,6 +17,8 @@ Cura.ExpandableComponent
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
 
+    popupPadding: 0
+    popupAlignment: ExpandableComponent.PopupAlignment.AlignLeft
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     UM.I18nCatalog
@@ -31,6 +33,7 @@ Cura.ExpandableComponent
         verticalAlignment: Text.AlignVCenter
         height: parent.height
         elide: Text.ElideRight
+        renderType: Text.NativeRendering
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
     }
@@ -38,26 +41,25 @@ Cura.ExpandableComponent
     popupItem: Item
     {
         id: popup
-        width: machineSelector.width - 2 * UM.Theme.getSize("default_margin").width
-        height: 200
+        width: UM.Theme.getSize("machine_selector_widget_content").width
+        height: UM.Theme.getSize("machine_selector_widget_content").height
 
         ScrollView
         {
             anchors.fill: parent
-            contentHeight: column.implicitHeight
-            contentWidth: column.implicitWidth
             clip: true
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
             Column
             {
                 id: column
                 anchors.fill: parent
+
                 Label
                 {
-                    text: catalog.i18nc("@label", "Networked Printers")
+                    text: catalog.i18nc("@label", "Network connected printers")
                     visible: networkedPrintersModel.items.length > 0
                     height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
+                    renderType: Text.NativeRendering
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
@@ -73,13 +75,12 @@ Cura.ExpandableComponent
                         filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
                     }
 
-                    delegate: RoundButton
+                    delegate: Button
                     {
                         text: name
                         width: parent.width
-
                         checkable: true
-                        radius: UM.Theme.getSize("default_radius").width
+                        
                         onClicked:
                         {
                             togglePopup()
@@ -92,14 +93,14 @@ Cura.ExpandableComponent
                             onActiveMachineNetworkGroupNameChanged: checked = Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
                         }
                     }
-
                 }
 
                 Label
                 {
-                    text: catalog.i18nc("@label", "Virtual Printers")
+                    text: catalog.i18nc("@label", "Preset printers")
                     visible: virtualPrintersModel.items.length > 0
                     height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
+                    renderType: Text.NativeRendering
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
@@ -115,21 +116,19 @@ Cura.ExpandableComponent
                         filter: {"type": "machine", "um_network_key": null}
                     }
 
-                    delegate: RoundButton
+                    delegate: Button
                     {
                         text: name
                         width: parent.width
                         checked: Cura.MachineManager.activeMachineId == model.id
                         checkable: true
 
-                        radius: UM.Theme.getSize("default_radius").width
                         onClicked:
                         {
                             togglePopup()
                             Cura.MachineManager.setActiveMachine(model.id)
                         }
                     }
-
                 }
             }
         }

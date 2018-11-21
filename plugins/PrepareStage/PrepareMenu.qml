@@ -46,7 +46,7 @@ Item
 
                 anchors.centerIn: parent
 
-                width: 0.9 * prepareMenu.width
+                width: Math.round(0.9 * prepareMenu.width)
                 height: parent.height
                 spacing: 0
 
