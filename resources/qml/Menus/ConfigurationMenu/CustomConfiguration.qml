@@ -10,6 +10,8 @@ import UM 1.3 as UM
 
 Item
 {
+    width: parent.width
+
     Label
     {
         id: header
