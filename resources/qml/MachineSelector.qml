@@ -79,8 +79,9 @@ Cura.ExpandableComponent
 
                     delegate: Button
                     {
-                        text: name
+                        text: model.metadata["connect_group_name"]
                         width: parent.width
+                        checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
                         checkable: true
 
                         onClicked:
@@ -120,7 +121,7 @@ Cura.ExpandableComponent
 
                     delegate: Button
                     {
-                        text: name
+                        text: model.name
                         width: parent.width
                         checked: Cura.MachineManager.activeMachineId == model.id
                         checkable: true
