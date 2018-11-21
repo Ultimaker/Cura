@@ -54,8 +54,8 @@ Item
             height: contentHeight
             visible: extruderEnabled
             renderType: Text.NativeRendering
-            horizontalAlignment: Text.alignHCenter
-            verticalAlignment: Text.alignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
 
         UM.RecolorImage
