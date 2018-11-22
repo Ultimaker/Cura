@@ -15,15 +15,17 @@ Button
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
-    property var color: UM.Theme.getColor("primary")
-    property var hoverColor: UM.Theme.getColor("primary_hover")
-    property var disabledColor: color
-    property var textColor: UM.Theme.getColor("button_text")
-    property var textHoverColor: UM.Theme.getColor("button_text_hover")
-    property var textDisabledColor: textColor
-    property var outlineColor: color
-    property var outlineHoverColor: hoverColor
-    property var outlineDisabledColor: outlineColor
+
+    property color color: UM.Theme.getColor("primary")
+    property color hoverColor: UM.Theme.getColor("primary_hover")
+    property color disabledColor: color
+    property color textColor: UM.Theme.getColor("button_text")
+    property color textHoverColor: UM.Theme.getColor("button_text_hover")
+    property color textDisabledColor: textColor
+    property color outlineColor: color
+    property color outlineHoverColor: hoverColor
+    property color outlineDisabledColor: outlineColor
+
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
     // we elide the text to the right so the text will be cut off with the three dots at the end.
@@ -80,6 +82,7 @@ Button
     {
         id: mouseArea
         anchors.fill: parent
+        // Ensure that the button will still accept the clicks on it's own.
         onPressed: mouse.accepted = false
         hoverEnabled: true
     }
