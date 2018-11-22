@@ -6,7 +6,6 @@
         "author": "Unimatech",
         "manufacturer": "Unimatech",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2.png",
         "machine_extruder_trains":
         {
             "0": "uniqbot_one_extruder_0"

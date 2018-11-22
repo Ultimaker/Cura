@@ -12,7 +12,7 @@ from UM.Qt.ListModel import ListModel
 from .ConfigsModel import ConfigsModel
 
 
-##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
+##  Model that holds Cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -70,7 +70,7 @@ class PackagesModel(ListModel):
 
                 # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
                 # to process.
-                link_list = package['data']['links'] if 'links' in package['data'] else []
+                link_list = package["data"]["links"] if "links" in package["data"] else []
                 links_dict = {d["title"]: d["url"] for d in link_list}
 
             if "author_id" not in package["author"] or "display_name" not in package["author"]:

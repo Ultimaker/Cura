@@ -16,7 +16,7 @@ from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
 
 if TYPE_CHECKING:
-    from UM.Settings.DefinitionContainer import DefinitionContainer
+    from UM.Settings.Interfaces import DefinitionContainerInterface
     from cura.Settings.GlobalStack import GlobalStack
     from .QualityChangesGroup import QualityChangesGroup
     from cura.CuraApplication import CuraApplication
@@ -538,7 +538,7 @@ class QualityManager(QObject):
 #      Example: for an Ultimaker 3 Extended, it has "quality_definition = ultimaker3". This means Ultimaker 3 Extended
 #               shares the same set of qualities profiles as Ultimaker 3.
 #
-def getMachineDefinitionIDForQualitySearch(machine_definition: "DefinitionContainer",
+def getMachineDefinitionIDForQualitySearch(machine_definition: "DefinitionContainerInterface",
                                            default_definition_id: str = "fdmprinter") -> str:
     machine_definition_id = default_definition_id
     if parseBool(machine_definition.getMetaDataEntry("has_machine_quality", False)):
