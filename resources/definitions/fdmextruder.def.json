@@ -189,7 +189,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
-                    "setttable_globally": false
+                    "settable_globally": false
                }
             }
         },
