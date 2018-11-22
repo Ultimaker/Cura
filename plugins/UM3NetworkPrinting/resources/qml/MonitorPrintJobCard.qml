@@ -91,10 +91,7 @@ Item
                                 }
                                 return catalog.i18nc("@label", "First available")
                             }
-                            else
-                            {
-                                return printJob.assignedPrinter.name
-                            }
+                            return printJob.assignedPrinter.name
                         }
                         return ""
                     }
