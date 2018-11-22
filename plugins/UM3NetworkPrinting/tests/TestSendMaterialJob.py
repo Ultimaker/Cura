@@ -17,6 +17,8 @@ from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
        lambda _: MimeType(name = "application/x-ultimaker-material-profile", comment = "Ultimaker Material Profile",
                           suffixes = ["xml.fdm_material"]))
 @patch("UM.Resources.Resources.getAllResourcesOfType", lambda _: ["/materials/generic_pla_white.xml.fdm_material"])
+@patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
+@patch("PyQt5.QtNetwork.QNetworkReply")
 class TestSendMaterialJob(TestCase):
     _LOCAL_MATERIAL_WHITE = {"type": "material", "status": "unknown", "id": "generic_pla_white",
                              "base_file": "generic_pla_white", "setting_version": "5", "name": "White PLA",
@@ -52,16 +54,13 @@ class TestSendMaterialJob(TestCase):
         "density": 1.00
     }
 
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    def test_run(self, device_mock):
+    def test_run(self, device_mock, reply_mock):
         job = SendMaterialJob(device_mock)
         job.run()
 
         # We expect the materials endpoint to be called when the job runs.
         device_mock.get.assert_called_with("materials/", on_finished = job._onGetRemoteMaterials)
 
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    @patch("PyQt5.QtNetwork.QNetworkReply")
     def test__onGetRemoteMaterials_withFailedRequest(self, reply_mock, device_mock):
         reply_mock.attribute.return_value = 404
         job = SendMaterialJob(device_mock)
@@ -71,8 +70,6 @@ class TestSendMaterialJob(TestCase):
         self.assertEqual([call.attribute(0), call.errorString()], reply_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    @patch("PyQt5.QtNetwork.QNetworkReply")
     def test__onGetRemoteMaterials_withBadJsonAnswer(self, reply_mock, device_mock):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(b"Six sick hicks nick six slick bricks with picks and sticks.")
@@ -84,8 +81,6 @@ class TestSendMaterialJob(TestCase):
         self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    @patch("PyQt5.QtNetwork.QNetworkReply")
     def test__onGetRemoteMaterials_withMissingGuidInRemoteMaterial(self, reply_mock, device_mock):
         reply_mock.attribute.return_value = 200
         remote_material_without_guid = self._REMOTE_MATERIAL_WHITE.copy()
@@ -101,10 +96,8 @@ class TestSendMaterialJob(TestCase):
 
     @patch("cura.Settings.CuraContainerRegistry")
     @patch("cura.CuraApplication")
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    @patch("PyQt5.QtNetwork.QNetworkReply")
-    def test__onGetRemoteMaterials_withInvalidVersionInLocalMaterial(self, reply_mock, device_mock, application_mock,
-                                                                     container_registry_mock):
+    def test__onGetRemoteMaterials_withInvalidVersionInLocalMaterial(self, application_mock, container_registry_mock,
+                                                                     reply_mock, device_mock):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("ascii"))
 
@@ -125,10 +118,8 @@ class TestSendMaterialJob(TestCase):
 
     @patch("cura.Settings.CuraContainerRegistry")
     @patch("cura.CuraApplication")
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    @patch("PyQt5.QtNetwork.QNetworkReply")
-    def test__onGetRemoteMaterials_withNoUpdate(self, reply_mock, device_mock, application_mock,
-                                                container_registry_mock):
+    def test__onGetRemoteMaterials_withNoUpdate(self, application_mock, container_registry_mock, reply_mock,
+                                                device_mock):
         application_mock.getContainerRegistry.return_value = container_registry_mock
 
         device_mock.createFormPart.return_value = "_xXx_"
@@ -150,10 +141,8 @@ class TestSendMaterialJob(TestCase):
 
     @patch("cura.Settings.CuraContainerRegistry")
     @patch("cura.CuraApplication")
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    @patch("PyQt5.QtNetwork.QNetworkReply")
-    def test__onGetRemoteMaterials_withUpdatedMaterial(self, reply_mock, device_mock, application_mock,
-                                                       container_registry_mock):
+    def test__onGetRemoteMaterials_withUpdatedMaterial(self, application_mock, container_registry_mock, reply_mock,
+                                                       device_mock):
         application_mock.getContainerRegistry.return_value = container_registry_mock
 
         device_mock.createFormPart.return_value = "_xXx_"
@@ -181,10 +170,8 @@ class TestSendMaterialJob(TestCase):
 
     @patch("cura.Settings.CuraContainerRegistry")
     @patch("cura.CuraApplication")
-    @patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-    @patch("PyQt5.QtNetwork.QNetworkReply")
-    def test__onGetRemoteMaterials_withNewMaterial(self, reply_mock, device_mock, application_mock,
-                                                   container_registry_mock):
+    def test__onGetRemoteMaterials_withNewMaterial(self, application_mock, container_registry_mock, reply_mock,
+                                                   device_mock):
         application_mock.getContainerRegistry.return_value = container_registry_mock
 
         device_mock.createFormPart.return_value = "_xXx_"
