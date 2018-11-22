@@ -17,7 +17,7 @@ Component
         property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
         property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width
 
-        color: transparent
+        color: "transparent"
         height: maximumHeight
         onVisibleChanged:
         {
@@ -83,7 +83,7 @@ Component
                 UM.RecolorImage
                 {
                     id: externalLinkIcon
-                    anchors.verticalCenter: externalLinkIcon.verticalCenter
+                    anchors.verticalCenter: manageQueueLabel.verticalCenter
                     color: UM.Theme.getColor("primary")
                     source: "../svg/icons/external_link.svg"
                     width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
