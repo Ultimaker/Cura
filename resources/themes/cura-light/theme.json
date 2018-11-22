@@ -397,7 +397,7 @@
         "machine_selector_widget": [20.0, 4.0],
         "machine_selector_widget_content": [25.0, 32.0],
 
-        "views_selector": [0.0, 4.0],
+        "views_selector": [16.0, 4.5],
 
         "printer_type_label": [3.5, 1.5],
 
