@@ -395,7 +395,7 @@
 
         "machine_selector_widget": [16.0, 4.5],
 
-        "views_selector": [0.0, 4.0],
+        "views_selector": [16.0, 4.5],
 
         "default_radius": [0.25, 0.25],
 
