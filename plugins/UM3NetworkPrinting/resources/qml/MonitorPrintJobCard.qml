@@ -71,7 +71,7 @@ Item
             Item
             {
                 anchors.verticalCenter: parent.verticalCenter
-                height: childrenRect.height
+                height: 18 * screenScaleFactor // TODO: This should be childrenRect.height but QML throws warnings
                 width: childrenRect.width
 
                 Label
