@@ -96,32 +96,36 @@ Cura.ExpandableComponent
         }
     }
 
-    popupItem: Item
+    popupItem: Column
     {
         id: popupItem
         width: base.width - 2 * UM.Theme.getSize("default_margin").width
-        height: 200
+        height: implicitHeight //Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
+        spacing: UM.Theme.getSize("default_margin").height
 
         property var is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineNetworkKey != "" && Cura.MachineManager.printerConnected //Re-evaluate.
+            is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected //Re-evaluate.
         }
 
-        property var configuration_method: buttonBar.visible ? "auto" : "custom" //Auto if connected to a printer at start-up, or Custom if not.
+        property var configuration_method: is_connected ? "auto" : "custom" //Auto if connected to a printer at start-up, or Custom if not.
 
-        AutoConfiguration
+        Item
         {
-            id: autoConfiguration
-            visible: popupItem.configuration_method === "auto"
-            anchors.top: parent.top
-        }
+            width: parent.width
+            height: childrenRect.height
+            AutoConfiguration
+            {
+                id: autoConfiguration
+                visible: popupItem.configuration_method === "auto"
+            }
 
-        CustomConfiguration
-        {
-            id: customConfiguration
-            visible: popupItem.configuration_method === "custom"
-            anchors.top: parent.top
+            CustomConfiguration
+            {
+                id: customConfiguration
+                visible: popupItem.configuration_method === "custom"
+            }
         }
 
         Rectangle
@@ -129,30 +133,19 @@ Cura.ExpandableComponent
             id: separator
             visible: buttonBar.visible
 
-            anchors
-            {
-                left: parent.left
-                right: parent.right
-                bottom: buttonBar.top
-                bottomMargin: UM.Theme.getSize("default_margin").height
-            }
+            width: parent.width
             height: UM.Theme.getSize("default_lining").height
 
             color: UM.Theme.getColor("lining")
         }
 
         //Allow switching between custom and auto.
-        Rectangle
+        Item
         {
             id: buttonBar
             visible: popupItem.is_connected //Switching only makes sense if the "auto" part is possible.
 
-            anchors
-            {
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-            }
+            width: parent.width
             height: childrenRect.height
 
             Cura.ActionButton

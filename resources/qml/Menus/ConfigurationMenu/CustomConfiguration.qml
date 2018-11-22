@@ -11,6 +11,7 @@ import UM 1.3 as UM
 Item
 {
     width: parent.width
+    height: visible ? childrenRect.height : 0
 
     Label
     {
@@ -18,6 +19,7 @@ Item
         text: catalog.i18nc("@header", "Custom")
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
+        height: contentHeight
 
         anchors
         {
@@ -62,14 +64,15 @@ Item
     {
         id: tabControl
         width: parent.width
+        height: childrenRect.height
         anchors.top: tabBar.bottom
-        anchors.bottom: parent.bottom
         property var model: extrudersModel.items[tabBar.currentIndex]
         property real textWidth: Math.round(width * 0.3)
         property real controlWidth: width - textWidth
         Column
         {
             spacing: UM.Theme.getSize("default_margin").height
+
             Row
             {
                 height: UM.Theme.getSize("print_setup_item").height
@@ -165,6 +168,5 @@ Item
                 }
             }
         }
-
     }
 }

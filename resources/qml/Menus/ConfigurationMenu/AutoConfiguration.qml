@@ -8,12 +8,16 @@ import UM 1.3 as UM
 
 Item
 {
+    width: parent.width
+    height: visible ? childrenRect.height : 0
+
     Label
     {
         id: header
         text: catalog.i18nc("@header", "Configurations")
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
+        height: contentHeight
 
         anchors
         {
