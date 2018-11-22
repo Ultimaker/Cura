@@ -10,3 +10,4 @@ NozzleMenu 1.0 NozzleMenu.qml
 ActionPanelWidget 1.0 ActionPanelWidget.qml
 IconLabel 1.0 IconLabel.qml
 OutputDevicesActionButton 1.0 OutputDevicesActionButton.qml
+ExpandableComponent 1.0 ExpandableComponent.qml

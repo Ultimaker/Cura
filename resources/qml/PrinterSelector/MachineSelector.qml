@@ -8,8 +8,6 @@ import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
-import "Menus"
-
 
 Cura.ExpandableComponent
 {
@@ -18,7 +16,7 @@ Cura.ExpandableComponent
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
 
     popupPadding: 0
-    popupAlignment: ExpandableComponent.PopupAlignment.AlignLeft
+    popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     UM.I18nCatalog
@@ -82,25 +80,10 @@ Cura.ExpandableComponent
                         filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
                     }
 
-                    delegate: Cura.ActionButton
+                    delegate: MachineSelectorButton
                     {
                         text: model.metadata["connect_group_name"]
-                        width: parent.width
-                        height: UM.Theme.getSize("action_button").height
                         checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
-                        checkable: true
-
-                        color: "transparent"
-                        hoverColor: UM.Theme.getColor("action_button_hovered")
-                        textColor: UM.Theme.getColor("text")
-                        textHoverColor: UM.Theme.getColor("text")
-                        outlineColor: checked ? UM.Theme.getColor("primary") : "transparent"
-
-                        onClicked:
-                        {
-                            togglePopup()
-                            Cura.MachineManager.setActiveMachine(model.id)
-                        }
 
                         Connections
                         {
@@ -132,25 +115,10 @@ Cura.ExpandableComponent
                         filter: {"type": "machine", "um_network_key": null}
                     }
 
-                    delegate: Cura.ActionButton
+                    delegate: MachineSelectorButton
                     {
                         text: model.name
-                        width: parent.width
-                        height: UM.Theme.getSize("action_button").height
                         checked: Cura.MachineManager.activeMachineId == model.id
-                        checkable: true
-
-                        color: "transparent"
-                        hoverColor: UM.Theme.getColor("action_button_hovered")
-                        textColor: UM.Theme.getColor("text")
-                        textHoverColor: UM.Theme.getColor("text")
-                        outlineColor: checked ? UM.Theme.getColor("primary") : "transparent"
-
-                        onClicked:
-                        {
-                            togglePopup()
-                            Cura.MachineManager.setActiveMachine(model.id)
-                        }
                     }
                 }
             }
