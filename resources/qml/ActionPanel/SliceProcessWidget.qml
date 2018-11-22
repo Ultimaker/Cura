@@ -44,6 +44,7 @@ Column
     {
         id: message
         width: parent.width
+        height: childrenRect.height
         visible: widget.backendState == UM.Backend.Error
 
         text: catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")

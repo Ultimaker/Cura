@@ -14,6 +14,7 @@ Cura.ExpandableComponent
     id: machineSelector
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
     popupPadding: 0
     popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
@@ -25,15 +26,24 @@ Cura.ExpandableComponent
         name: "cura"
     }
 
-    headerItem: Label
+    headerItem: Cura.IconLabel
     {
         text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
-        verticalAlignment: Text.AlignVCenter
-        height: parent.height
-        elide: Text.ElideRight
-        renderType: Text.NativeRendering
-        font: UM.Theme.getFont("default")
+        source:
+        {
+            if (isNetworkPrinter && machineSelector.outputDevice != null)
+            {
+                if (machineSelector.outputDevice.clusterSize > 1)
+                {
+                    return UM.Theme.getIcon("printer_group")
+                }
+                return UM.Theme.getIcon("printer_single")
+            }
+            return ""
+        }
+        font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("text")
+        iconSize: UM.Theme.getSize("machine_selector_icon").width
     }
 
     popupItem: Item

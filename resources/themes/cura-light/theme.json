@@ -396,6 +396,7 @@
 
         "machine_selector_widget": [20.0, 4.0],
         "machine_selector_widget_content": [25.0, 32.0],
+        "machine_selector_icon": [2.66, 2.66],
 
         "views_selector": [16.0, 4.5],
 

@@ -47,6 +47,7 @@ Column
             {
                 id: estimatedTime
                 width: parent.width
+                height: childrenRect.height
 
                 text: PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
@@ -57,6 +58,7 @@ Column
             {
                 id: estimatedCosts
                 width: parent.width
+                height: childrenRect.height
 
                 property var printMaterialLengths: PrintInformation.materialLengths
                 property var printMaterialWeights: PrintInformation.materialWeights
