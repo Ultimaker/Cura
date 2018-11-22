@@ -12,6 +12,8 @@ Item
     property alias color: background.color
     property var extruderModel
     property var position: index
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
     implicitWidth: parent.width
     implicitHeight: UM.Theme.getSize("print_setup_extruder_box").height
 
