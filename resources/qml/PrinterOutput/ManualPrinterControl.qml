@@ -1,12 +1,12 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick 2.10
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 import "."
@@ -14,8 +14,10 @@ import "."
 
 Item
 {
-    property var printerModel
+    property var printerModel: null
     property var activePrintJob: printerModel != null ? printerModel.activePrintJob : null
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
     implicitWidth: parent.width
     implicitHeight: childrenRect.height
 
@@ -388,7 +390,7 @@ Item
                         if (printerModel == null) {
                             return false // Can't send custom commands if not connected.
                         }
-                        if (!connectedPrinter.acceptsCommands) {
+                        if (connectedPrinter == null || !connectedPrinter.acceptsCommands) {
                             return false // Not allowed to do anything
                         }
                         if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline") {
