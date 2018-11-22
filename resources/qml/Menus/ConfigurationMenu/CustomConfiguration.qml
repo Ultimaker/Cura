@@ -29,22 +29,19 @@ Item
         }
     }
 
-    TabBar
+    UM.TabRow
     {
         id: tabBar
-        onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
         anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width
-        height: 50
+
+        onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
+
         Repeater
         {
             model: extrudersModel
-
-            delegate: TabButton
+            delegate: UM.TabRowButton
             {
-                width: ListView.view != null ?  Math.round(ListView.view.width / extrudersModel.rowCount()): 0
-                height: parent.height
                 contentItem: Item
                 {
                     Cura.ExtruderIcon
