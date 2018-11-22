@@ -21,7 +21,7 @@ Row
     {
         iconSource: UM.Theme.getIcon("view_3d")
         style: UM.Theme.styles.small_tool_button
-        onClicked:UM.Controller.rotateView("3d", 0)
+        onClicked: UM.Controller.rotateView("3d", 0)
     }
 
     // #2 Front view

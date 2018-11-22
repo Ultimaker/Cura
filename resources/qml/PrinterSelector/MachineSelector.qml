@@ -84,6 +84,7 @@ Cura.ExpandableComponent
                     {
                         text: model.metadata["connect_group_name"]
                         checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+                        outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
                         Connections
                         {

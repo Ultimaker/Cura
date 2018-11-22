@@ -17,7 +17,7 @@ Button
     leftPadding: Math.round(1.5 * UM.Theme.getSize("default_margin").width)
     checkable: true
 
-    property var outputDevice: Cura.MachineManager.printerOutputDevices[0]
+    property var outputDevice: null
     property var printerTypesList: []
 
     function setPrinterTypesList()
@@ -63,9 +63,27 @@ Button
             Repeater
             {
                 model: printerTypesList
-                delegate: Label
+                delegate: Item
                 {
-                    text: modelData
+                    width: UM.Theme.getSize("printer_type_label").width
+                    height: UM.Theme.getSize("printer_type_label").height
+
+                    Rectangle
+                    {
+                        anchors.fill: parent
+                        color: UM.Theme.getColor("printer_type_label_background")
+                    }
+
+                    Label
+                    {
+                        id: printerTypeLabel
+                        text: modelData
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        renderType: Text.NativeRendering
+                        font: UM.Theme.getFont("very_small")
+                        color: UM.Theme.getColor("text")
+                    }
                 }
             }
         }

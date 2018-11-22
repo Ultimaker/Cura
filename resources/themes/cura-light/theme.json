@@ -81,7 +81,6 @@
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [0, 0, 0, 192],
 
-
         "primary": [50, 130, 255, 255],
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
@@ -113,6 +112,8 @@
         "action_panel_secondary": [27, 95, 202, 255],
 
         "toolbar_background": [255, 255, 255, 255],
+
+        "printer_type_label_background": [171, 171, 191, 255],
 
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
@@ -397,6 +398,8 @@
         "machine_selector_widget_content": [25.0, 32.0],
 
         "views_selector": [0.0, 4.0],
+
+        "printer_type_label": [3.5, 1.5],
 
         "default_radius": [0.25, 0.25],
 
