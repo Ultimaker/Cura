@@ -1,14 +1,16 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
+
 import "Menus"
 import "Menus/ConfigurationMenu"
+
 
 Rectangle
 {
@@ -85,7 +87,7 @@ Rectangle
         }
     }
 
-    MachineSelection
+    MachineSelector
     {
         id: machineSelection
         width: base.width - configSelection.width - separator.width
@@ -104,7 +106,7 @@ Rectangle
         anchors.left: machineSelection.right
     }
 
-    ConfigurationSelection
+    CustomConfigurationSelector
     {
         id: configSelection
         visible: isNetworkPrinter && printerConnected
@@ -112,7 +114,6 @@ Rectangle
         height: UM.Theme.getSize("stage_menu").height
         anchors.top: base.top
         anchors.right: parent.right
-        panelWidth: base.width
     }
 
     Loader
