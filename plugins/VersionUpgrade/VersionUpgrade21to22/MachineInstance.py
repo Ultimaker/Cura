@@ -6,6 +6,7 @@ import io #To write config files to strings as if they were files.
 import os.path #To get the path to write new user profiles to.
 from typing import Dict, List, Optional, Set, Tuple
 import urllib #To serialise the user container file name properly.
+import urllib.parse
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
 import UM.VersionUpgradeManager #To schedule more files to be upgraded.
