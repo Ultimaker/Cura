@@ -184,7 +184,11 @@ Cura.ExpandableComponent
                 hoverColor: UM.Theme.getColor("secondary")
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
-                onClicked: Cura.Actions.addMachine.trigger()
+                onClicked:
+                {
+                    togglePopup()
+                    Cura.Actions.addMachine.trigger()
+                }
             }
 
             Cura.ActionButton
@@ -196,7 +200,11 @@ Cura.ExpandableComponent
                 hoverColor: UM.Theme.getColor("secondary")
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
-                onClicked: Cura.Actions.configureMachines.trigger()
+                onClicked:
+                {
+                    togglePopup()
+                    Cura.Actions.configureMachines.trigger()
+                }
             }
         }
     }
