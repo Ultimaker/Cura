@@ -91,6 +91,7 @@ Component
                 }
                 Label
                 {
+                    id: manageQueueText
                     anchors
                     {
                         left: externalLinkIcon.right
@@ -110,8 +111,14 @@ Component
                 anchors.fill: manageQueueLabel
                 hoverEnabled: true
                 onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
-                onEntered: manageQueueLabel.font.underline = true
-                onExited: manageQueueLabel.font.underline = false
+                onEntered:
+                {
+                    manageQueueText.font.underline = true
+                }
+                onExited:
+                {
+                    manageQueueText.font.underline = false
+                }
             }
 
             Row
