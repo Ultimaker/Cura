@@ -141,8 +141,11 @@ Item
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
                 buildplate: "Glass"
-                config0: base.printJob.configuration.extruderConfigurations[0]
-                config1: base.printJob.configuration.extruderConfigurations[1]
+                configurations:
+                [
+                    base.printJob.configuration.extruderConfigurations[0],
+                    base.printJob.configuration.extruderConfigurations[1]
+                ]
                 height: 72 * screenScaleFactor // TODO: Theme!
             }
             Label {

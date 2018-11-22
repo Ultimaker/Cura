@@ -18,11 +18,8 @@ Item
     // Extracted buildplate configuration
     property alias buildplate: buildplateConfig.buildplate
 
-    // Extracted extruder configuration for position 0
-    property var config0: null
-
-    // Extracted extruder configuration for position 1
-    property var config1: null
+    // Array of extracted extruder configurations
+    property var configurations: null
 
     // Default size, but should be stretched to fill parent
     height: 72 * parent.height
@@ -30,30 +27,25 @@ Item
 
     Row
     {
+        id: extruderConfigurationRow
         spacing: 18 * screenScaleFactor // TODO: Theme!
 
-        MonitorExtruderConfiguration
+        Repeater
         {
-            color: config0 && config0.activeMaterial ? config0.activeMaterial.color : "#eeeeee" // TODO: Theme!
-            material: config0 && config0.activeMaterial ? config0.activeMaterial.name : ""
-            position: config0.position
-            printCore: config0 ? config0.hotendID : ""
-            visible: config0
+            id: extruderConfigurationRepeater
+            model: configurations
 
-            // Keep things responsive!
-            width: Math.floor((base.width - parent.spacing) / 2)
-        }
+            MonitorExtruderConfiguration
+            {
+                color: modelData.activeMaterial ? modelData.activeMaterial.color : "#eeeeee" // TODO: Theme!
+                material: modelData.activeMaterial ? modelData.activeMaterial.name : ""
+                position: modelData.position
+                printCore: modelData.hotendID
 
-        MonitorExtruderConfiguration
-        {
-            color: config1 && config1.activeMaterial ? config1.activeMaterial.color : "#eeeeee" // TODO: Theme!
-            material: config1 && config1.activeMaterial ? config1.activeMaterial.name : ""
-            position: config1.position
-            printCore: config1 ? config1.hotendID : ""
-            visible: config1
+                // Keep things responsive!
+                width: Math.floor((base.width - (configurations.length - 1) * extruderConfigurationRow.spacing) / configurations.length)
+            }
 
-            // Keep things responsive!
-            width: Math.floor((base.width - parent.spacing) / 2)
         }
     }
 
