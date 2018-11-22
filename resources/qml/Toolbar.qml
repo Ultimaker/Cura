@@ -28,12 +28,16 @@ Item
         // Used to create a rounded rectangle behind the toolButtons
         Rectangle
         {
-            anchors.fill: toolButtons
-            anchors.leftMargin: -radius
+            anchors
+            {
+                fill: toolButtons
+                leftMargin: -radius - border.width
+                rightMargin: -border.width
+                topMargin: -border.width
+                bottomMargin: -border.width
+            }
             radius: UM.Theme.getSize("default_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("lining")
-            color: UM.Theme.getColor("toolbar_background")
+            color: UM.Theme.getColor("lining")
         }
 
         Column
@@ -42,13 +46,13 @@ Item
 
             anchors.top: parent.top
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("button_lining").width
+            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
                 id: repeat
 
-                model: UM.ToolModel { }
+                model: UM.ToolModel { id: toolsModel }
                 width: childrenRect.width
                 height: childrenRect.height
                 Button
@@ -59,6 +63,9 @@ Item
                     checked: model.active
                     enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
                     style: UM.Theme.styles.toolbar_button
+
+                    property bool isFirstElement: toolsModel.getItem(0).id == model.id
+                    property bool isLastElement: toolsModel.getItem(toolsModel.rowCount() - 1).id == model.id
 
                     onCheckedChanged:
                     {
@@ -93,12 +100,16 @@ Item
         // Used to create a rounded rectangle behind the extruderButtons
         Rectangle
         {
-            anchors.fill: extruderButtons
-            anchors.leftMargin: -radius
+            anchors
+            {
+                fill: extruderButtons
+                leftMargin: -radius - border.width
+                rightMargin: -border.width
+                topMargin: -border.width
+                bottomMargin: -border.width
+            }
             radius: UM.Theme.getSize("default_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("lining")
-            color: UM.Theme.getColor("toolbar_background")
+            color: UM.Theme.getColor("lining")
         }
 
         Column
@@ -108,6 +119,7 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: toolButtons.bottom
             anchors.right: parent.right
+            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
