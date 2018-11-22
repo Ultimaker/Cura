@@ -14,7 +14,7 @@ Item
 {
     id: base
 
-    property var expanded: false
+    property bool expanded: false
     property var borderWidth: 1
     property color borderColor: "#EAEAEC"
     property color headerBackgroundColor: "white"
