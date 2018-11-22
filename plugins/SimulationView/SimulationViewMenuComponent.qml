@@ -40,7 +40,6 @@ Cura.ExpandableComponent
         id: layerViewTypesLabel
         text: catalog.i18nc("@label", "Color scheme")
         font: UM.Theme.getFont("default")
-        visible: !UM.SimulationView.compatibilityMode
         color: UM.Theme.getColor("setting_control_text")
         height: base.height
         verticalAlignment: Text.AlignVCenter
@@ -273,6 +272,7 @@ Cura.ExpandableComponent
             text: catalog.i18nc("@label", "Only Show Top Layers")
             visible: UM.SimulationView.compatibilityMode
             style: UM.Theme.styles.checkbox
+            width: parent.width
         }
 
         CheckBox
@@ -280,6 +280,7 @@ Cura.ExpandableComponent
             checked: viewSettings.top_layer_count == 5
             onClicked: UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1)
             text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
+            width: parent.width
             visible: UM.SimulationView.compatibilityMode
             style: UM.Theme.styles.checkbox
         }
