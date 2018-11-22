@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.3
 
 import UM 1.1 as UM
 import Cura 1.0 as Cura
@@ -15,6 +14,7 @@ Button
     width: parent.width
     height: UM.Theme.getSize("action_button").height
     leftPadding: Math.round(1.5 * UM.Theme.getSize("default_margin").width)
+    rightPadding: Math.round(1.5 * UM.Theme.getSize("default_margin").width)
     checkable: true
 
     property var outputDevice: null
@@ -63,27 +63,9 @@ Button
             Repeater
             {
                 model: printerTypesList
-                delegate: Item
+                delegate: Cura.PrinterTypeLabel
                 {
-                    width: UM.Theme.getSize("printer_type_label").width
-                    height: UM.Theme.getSize("printer_type_label").height
-
-                    Rectangle
-                    {
-                        anchors.fill: parent
-                        color: UM.Theme.getColor("printer_type_label_background")
-                    }
-
-                    Label
-                    {
-                        id: printerTypeLabel
-                        text: modelData
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        renderType: Text.NativeRendering
-                        font: UM.Theme.getFont("very_small")
-                        color: UM.Theme.getColor("text")
-                    }
+                    text: modelData
                 }
             }
         }
