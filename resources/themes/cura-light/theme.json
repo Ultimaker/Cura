@@ -173,6 +173,8 @@
         "action_button_disabled": [245, 245, 245, 255],
         "action_button_disabled_text": [127, 127, 127, 255],
         "action_button_disabled_border": [245, 245, 245, 255],
+        "action_button_shadow": [64, 47, 205, 255],
+        "action_button_disabled_shadow": [228, 228, 228, 255],
 
         "print_button_ready": [50, 130, 255, 255],
         "print_button_ready_border": [50, 130, 255, 255],

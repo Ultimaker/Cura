@@ -5,6 +5,8 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
+import QtGraphicalEffects 1.0 // For the dropshadow
+
 import UM 1.1 as UM
 
 Button
@@ -25,6 +27,9 @@ Button
     property color outlineColor: color
     property color outlineHoverColor: hoverColor
     property color outlineDisabledColor: outlineColor
+
+    property alias shadowColor: shadow.color
+    property alias shadowEnabled: shadow.visible
 
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
@@ -68,6 +73,19 @@ Button
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
+    }
+
+    DropShadow
+    {
+        id: shadow
+        // Don't blur the shadow
+        radius: 0
+        anchors.fill: backgroundRect
+        source: backgroundRect
+        verticalOffset: 2
+        visible: false
+        // Should always be drawn behind the background.
+        z: backgroundRect.z - 1
     }
 
     ToolTip
