@@ -10,14 +10,13 @@ import QtGraphicalEffects 1.0
 
 Component
 {
-    Rectangle
+    Item
     {
         id: monitorFrame
 
         property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
         property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width
 
-        color: "transparent"
         height: maximumHeight
         onVisibleChanged:
         {
@@ -48,13 +47,44 @@ Component
             }
         }
 
+        ScrollView
+        {
+            id: printers
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+                topMargin: 48 * screenScaleFactor // TODO: Theme!
+            }
+            height: 264 * screenScaleFactor // TODO: Theme!
+            Row
+            {
+                spacing: 60 * screenScaleFactor // TODO: Theme!
+                
+                Repeater
+                {
+                    model: OutputDevice.printers
+
+                    MonitorPrinterCard
+                    {
+                        printer: modelData
+                    }
+                }
+            }
+        }
+
         Item
         {
             id: queue
 
-            anchors.fill: parent
-            anchors.top: parent.top
-            anchors.topMargin: 400 * screenScaleFactor // TODO: Insert carousel here
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+                top: printers.bottom
+                topMargin: 48
+            }
 
             Label
             {
