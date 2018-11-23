@@ -102,7 +102,7 @@ Column
 
         color: isSlicing ? UM.Theme.getColor("secondary"): UM.Theme.getColor("primary")
         textColor: isSlicing ? UM.Theme.getColor("primary"): UM.Theme.getColor("button_text")
-
+        outlineColor: "transparent"
         disabledColor: UM.Theme.getColor("action_button_disabled")
         textDisabledColor: UM.Theme.getColor("action_button_disabled_text")
         shadowEnabled: true
