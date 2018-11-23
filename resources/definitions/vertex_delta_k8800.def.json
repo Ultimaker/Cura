@@ -30,25 +30,7 @@
     "machine_shape": {
       "default_value": "elliptic"
     },
-    "machine_head_shape_min_x": {
-      "default_value": 0
-    },
-    "machine_head_shape_min_y": {
-      "default_value": 0
-    },
-    "machine_head_shape_max_x": {
-      "default_value": 0
-    },
-    "machine_head_shape_max_y": {
-      "default_value": 0
-    },
     "gantry_height": {
-      "default_value": 0
-    },
-    "machine_nozzle_offset_x_1": {
-      "default_value": 0
-    },
-    "machine_nozzle_offset_y_1": {
       "default_value": 0
     },
     "machine_gcode_flavor": {
