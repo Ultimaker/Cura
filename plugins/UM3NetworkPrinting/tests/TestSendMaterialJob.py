@@ -1,4 +1,5 @@
 # Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
 import json
@@ -66,8 +67,7 @@ class TestSendMaterialJob(TestCase):
         job = SendMaterialJob(device_mock)
         job._onGetRemoteMaterials(reply_mock)
 
-        # We expect the error string to be retrieved and the device not to be called for any follow up.
-        self.assertEqual([call.attribute(0), call.errorString()], reply_mock.method_calls)
+        # We expect the device not to be called for any follow up.
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
     def test__onGetRemoteMaterials_withWrongEncoding(self, reply_mock, device_mock):
@@ -76,9 +76,7 @@ class TestSendMaterialJob(TestCase):
         job = SendMaterialJob(device_mock)
         job._onGetRemoteMaterials(reply_mock)
 
-        # We expect the reply to be called once to try to get the printers from the list (readAll()).
         # Given that the parsing fails we do no expect the device to be called for any follow up.
-        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
     def test__onGetRemoteMaterials_withBadJsonAnswer(self, reply_mock, device_mock):
@@ -87,9 +85,7 @@ class TestSendMaterialJob(TestCase):
         job = SendMaterialJob(device_mock)
         job._onGetRemoteMaterials(reply_mock)
 
-        # We expect the reply to be called once to try to get the printers from the list (readAll()).
         # Given that the parsing fails we do no expect the device to be called for any follow up.
-        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
     def test__onGetRemoteMaterials_withMissingGuidInRemoteMaterial(self, reply_mock, device_mock):
@@ -100,9 +96,7 @@ class TestSendMaterialJob(TestCase):
         job = SendMaterialJob(device_mock)
         job._onGetRemoteMaterials(reply_mock)
 
-        # We expect the reply to be called once to try to get the printers from the list (readAll()).
         # Given that parsing fails we do not expect the device to be called for any follow up.
-        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
     @patch("cura.Settings.CuraContainerRegistry")
@@ -122,9 +116,6 @@ class TestSendMaterialJob(TestCase):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 
-        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
-        self.assertEqual([call.getContainerRegistry()], application_mock.method_calls)
-        self.assertEqual([call.findContainersMetadata(type = "material")], container_registry_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
     @patch("cura.Settings.CuraContainerRegistry")
@@ -144,9 +135,6 @@ class TestSendMaterialJob(TestCase):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 
-        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
-        self.assertEqual([call.getContainerRegistry()], application_mock.method_calls)
-        self.assertEqual([call.findContainersMetadata(type = "material")], container_registry_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
         self.assertEqual(0, device_mock.postFormWithParts.call_count)
 
@@ -169,9 +157,6 @@ class TestSendMaterialJob(TestCase):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 
-        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
-        self.assertEqual([call.getContainerRegistry()], application_mock.method_calls)
-        self.assertEqual([call.findContainersMetadata(type = "material")], container_registry_mock.method_calls)
         self.assertEqual(1, device_mock.createFormPart.call_count)
         self.assertEqual(1, device_mock.postFormWithParts.call_count)
         self.assertEquals(
@@ -197,9 +182,6 @@ class TestSendMaterialJob(TestCase):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 
-        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
-        self.assertEqual([call.getContainerRegistry()], application_mock.method_calls)
-        self.assertEqual([call.findContainersMetadata(type = "material")], container_registry_mock.method_calls)
         self.assertEqual(1, device_mock.createFormPart.call_count)
         self.assertEqual(1, device_mock.postFormWithParts.call_count)
         self.assertEquals(
