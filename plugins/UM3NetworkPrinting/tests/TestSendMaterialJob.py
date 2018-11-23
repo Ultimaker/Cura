@@ -8,7 +8,7 @@ from unittest.mock import patch, call
 from PyQt5.QtCore import QByteArray
 
 from UM.MimeTypeDatabase import MimeType
-from cura.CuraApplication import CuraApplication
+from UM.Application import Application
 from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
 
 
@@ -70,6 +70,17 @@ class TestSendMaterialJob(TestCase):
         self.assertEqual([call.attribute(0), call.errorString()], reply_mock.method_calls)
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
+    def test__onGetRemoteMaterials_withWrongEncoding(self, reply_mock, device_mock):
+        reply_mock.attribute.return_value = 200
+        reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("cp500"))
+        job = SendMaterialJob(device_mock)
+        job._onGetRemoteMaterials(reply_mock)
+
+        # We expect the reply to be called once to try to get the printers from the list (readAll()).
+        # Given that the parsing fails we do no expect the device to be called for any follow up.
+        self.assertEqual([call.attribute(0), call.readAll()], reply_mock.method_calls)
+        self.assertEqual(0, device_mock.createFormPart.call_count)
+
     def test__onGetRemoteMaterials_withBadJsonAnswer(self, reply_mock, device_mock):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(b"Six sick hicks nick six slick bricks with picks and sticks.")
@@ -95,7 +106,7 @@ class TestSendMaterialJob(TestCase):
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
     @patch("cura.Settings.CuraContainerRegistry")
-    @patch("cura.CuraApplication")
+    @patch("UM.Application")
     def test__onGetRemoteMaterials_withInvalidVersionInLocalMaterial(self, application_mock, container_registry_mock,
                                                                      reply_mock, device_mock):
         reply_mock.attribute.return_value = 200
@@ -107,7 +118,7 @@ class TestSendMaterialJob(TestCase):
 
         application_mock.getContainerRegistry.return_value = container_registry_mock
 
-        with mock.patch.object(CuraApplication, "getInstance", new = lambda: application_mock):
+        with mock.patch.object(Application, "getInstance", new = lambda: application_mock):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 
@@ -117,7 +128,7 @@ class TestSendMaterialJob(TestCase):
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
     @patch("cura.Settings.CuraContainerRegistry")
-    @patch("cura.CuraApplication")
+    @patch("UM.Application")
     def test__onGetRemoteMaterials_withNoUpdate(self, application_mock, container_registry_mock, reply_mock,
                                                 device_mock):
         application_mock.getContainerRegistry.return_value = container_registry_mock
@@ -129,7 +140,7 @@ class TestSendMaterialJob(TestCase):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("ascii"))
 
-        with mock.patch.object(CuraApplication, "getInstance", new = lambda: application_mock):
+        with mock.patch.object(Application, "getInstance", new = lambda: application_mock):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 
@@ -140,7 +151,7 @@ class TestSendMaterialJob(TestCase):
         self.assertEqual(0, device_mock.postFormWithParts.call_count)
 
     @patch("cura.Settings.CuraContainerRegistry")
-    @patch("cura.CuraApplication")
+    @patch("UM.Application")
     def test__onGetRemoteMaterials_withUpdatedMaterial(self, application_mock, container_registry_mock, reply_mock,
                                                        device_mock):
         application_mock.getContainerRegistry.return_value = container_registry_mock
@@ -154,7 +165,7 @@ class TestSendMaterialJob(TestCase):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("ascii"))
 
-        with mock.patch.object(CuraApplication, "getInstance", new = lambda: application_mock):
+        with mock.patch.object(Application, "getInstance", new = lambda: application_mock):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 
@@ -169,7 +180,7 @@ class TestSendMaterialJob(TestCase):
             device_mock.method_calls)
 
     @patch("cura.Settings.CuraContainerRegistry")
-    @patch("cura.CuraApplication")
+    @patch("UM.Application")
     def test__onGetRemoteMaterials_withNewMaterial(self, application_mock, container_registry_mock, reply_mock,
                                                    device_mock):
         application_mock.getContainerRegistry.return_value = container_registry_mock
@@ -182,7 +193,7 @@ class TestSendMaterialJob(TestCase):
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_BLACK]).encode("ascii"))
 
-        with mock.patch.object(CuraApplication, "getInstance", new = lambda: application_mock):
+        with mock.patch.object(Application, "getInstance", new = lambda: application_mock):
             job = SendMaterialJob(device_mock)
             job._onGetRemoteMaterials(reply_mock)
 

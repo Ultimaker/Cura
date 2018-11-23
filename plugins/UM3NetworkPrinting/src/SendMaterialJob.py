@@ -7,6 +7,7 @@ from typing import Dict, TYPE_CHECKING, Set
 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
+from UM.Application import Application
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.MimeTypeDatabase import MimeTypeDatabase
@@ -27,7 +28,6 @@ class SendMaterialJob(Job):
     def __init__(self, device: "ClusterUM3OutputDevice") -> None:
         super().__init__()
         self.device = device  # type: ClusterUM3OutputDevice
-        self._application = CuraApplication.getInstance()  # type: CuraApplication
 
     ##  Send the request to the printer and register a callback
     def run(self) -> None:
@@ -44,12 +44,9 @@ class SendMaterialJob(Job):
             return
 
         # Collect materials from the printer's reply and send the missing ones if needed.
-        try:
-            remote_materials_by_guid = self._parseReply(reply)
-            if remote_materials_by_guid:
-                self._sendMissingMaterials(remote_materials_by_guid)
-        except TypeError:
-            Logger.logException("w", "Error parsing materials from printer")
+        remote_materials_by_guid = self._parseReply(reply)
+        if remote_materials_by_guid:
+            self._sendMissingMaterials(remote_materials_by_guid)
 
     ##  Determine which materials should be updated and send them to the printer.
     #
@@ -158,8 +155,12 @@ class SendMaterialJob(Job):
         try:
             remote_materials = json.loads(reply.readAll().data().decode("utf-8"))
             return {material["guid"]: ClusterMaterial(**material) for material in remote_materials}
+        except UnicodeDecodeError:
+            Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
         except json.JSONDecodeError:
-            Logger.logException("w", "Error parsing materials from printer")
+            Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
+        except TypeError:
+            Logger.log("e", "Request material storage on printer: Printer's answer was missing GUIDs.")
 
     ##  Retrieves a list of local materials
     #
@@ -168,7 +169,7 @@ class SendMaterialJob(Job):
     #   \return a dictionary of LocalMaterial objects by GUID
     def _getLocalMaterials(self) -> Dict[str, LocalMaterial]:
         result = {}  # type: Dict[str, LocalMaterial]
-        container_registry = self._application.getContainerRegistry()
+        container_registry = Application.getInstance().getContainerRegistry()
         material_containers = container_registry.findContainersMetadata(type = "material")
 
         # Find the latest version of all material containers in the registry.
