@@ -81,35 +81,40 @@ Column
         }
     }
 
-    Cura.ActionButton
-    {
-        id: prepareButton
-        width: parent.width
-        height: UM.Theme.getSize("action_panel_button").height
-        fixedWidthMode: true
 
+    Item
+    {
+        id: prepareButtons
         // Get the current value from the preferences
         property bool autoSlice: UM.Preferences.getValue("general/auto_slice")
         // Disable the slice process when
-        property bool disabledSlice: [UM.Backend.Done, UM.Backend.Error].indexOf(widget.backendState) != -1
 
-        property bool isSlicing: [UM.Backend.NotStarted, UM.Backend.Error].indexOf(widget.backendState) == -1
-
-        text: isSlicing ? catalog.i18nc("@button", "Cancel") : catalog.i18nc("@button", "Slice")
-
-        enabled: !autoSlice && !disabledSlice
+        width: parent.width
+        height: UM.Theme.getSize("action_panel_button").height
         visible: !autoSlice
+        Cura.PrimaryButton
+        {
+            id: sliceButton
+            fixedWidthMode: true
+            anchors.fill: parent
+            text: catalog.i18nc("@button", "Slice")
+            enabled: !autoSlice && widget.backendState != UM.Backend.Error
+            visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
+            onClicked: sliceOrStopSlicing()
+        }
 
-        color: isSlicing ? UM.Theme.getColor("secondary"): UM.Theme.getColor("primary")
-        textColor: isSlicing ? UM.Theme.getColor("primary"): UM.Theme.getColor("button_text")
-        outlineColor: "transparent"
-        disabledColor: UM.Theme.getColor("action_button_disabled")
-        textDisabledColor: UM.Theme.getColor("action_button_disabled_text")
-        shadowEnabled: true
-        shadowColor: isSlicing ? UM.Theme.getColor("secondary_shadow") : enabled ? UM.Theme.getColor("action_button_shadow"): UM.Theme.getColor("action_button_disabled_shadow")
-
-        onClicked: sliceOrStopSlicing()
+        Cura.SecondaryButton
+        {
+            id: cancelButton
+            fixedWidthMode: true
+            anchors.fill: parent
+            text: catalog.i18nc("@button", "Cancel")
+            enabled: sliceButton.enabled
+            visible: !sliceButton.visible
+            onClicked: sliceOrStopSlicing()
+        }
     }
+
 
     // React when the user changes the preference of having the auto slice enabled
     Connections
@@ -118,7 +123,7 @@ Column
         onPreferenceChanged:
         {
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
-            prepareButton.autoSlice = autoSlice
+            prepareButtons.autoSlice = autoSlice
         }
     }
 
