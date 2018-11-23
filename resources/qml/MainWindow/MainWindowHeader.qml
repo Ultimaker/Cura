@@ -2,6 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
+import QtQuick.Controls 2.0 as Controls2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.1
 
@@ -73,25 +74,35 @@ Rectangle
     }
 
     // Shortcut button to quick access the Toolbox
-    Cura.ActionButton
+    Controls2.Button
     {
+        id: marketplaceButton
+        text: catalog.i18nc("@action:button", "Marketplace")
+        height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
+        onClicked: Cura.Actions.browsePackages.trigger()
+
+        background: Rectangle
+        {
+            radius: UM.Theme.getSize("action_button_radius").width
+            color: "transparent"
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("primary_text")
+        }
+
+        contentItem: Label
+        {
+            id: label
+            text: marketplaceButton.text
+            color: UM.Theme.getColor("primary_text")
+            width: contentWidth
+        }
+
         anchors
         {
             right: accountWidget.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
-        leftPadding: UM.Theme.getSize("default_margin").width
-        rightPadding: UM.Theme.getSize("default_margin").width
-        text: catalog.i18nc("@action:button", "Marketplace")
-        height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
-        color: UM.Theme.getColor("main_window_header_secondary_button_background_active")
-        hoverColor: UM.Theme.getColor("main_window_header_secondary_button_background_hovered")
-        outlineColor: UM.Theme.getColor("main_window_header_secondary_button_outline_active")
-        outlineHoverColor: UM.Theme.getColor("main_window_header_secondary_button_outline_hovered")
-        textColor: UM.Theme.getColor("main_window_header_secondary_button_text_active")
-        textHoverColor: UM.Theme.getColor("main_window_header_secondary_button_text_hovered")
-        onClicked: Cura.Actions.browsePackages.trigger()
     }
 
     AccountWidget
