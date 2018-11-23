@@ -26,11 +26,11 @@ class CloudOutputDeviceManager(NetworkClient):
     # The cloud URL to use for remote clusters.
     API_ROOT_PATH = "https://api.ultimaker.com/connect/v1"
     
-    def __init__(self, application: "CuraApplication"):
-        super().__init__(application)
+    def __init__(self):
+        super().__init__()
         
-        self._output_device_manager = application.getOutputDeviceManager()
-        self._account = application.getCuraAPI().account
+        self._output_device_manager = self._application.getOutputDeviceManager()
+        self._account = self._application.getCuraAPI().account
         
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
