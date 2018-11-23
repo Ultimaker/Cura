@@ -12,7 +12,6 @@ import UM 1.1 as UM
 Button
 {
     id: button
-    property alias cursorShape: mouseArea.cursorShape
     property alias iconSource: buttonIcon.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
@@ -22,11 +21,13 @@ Button
     property color hoverColor: UM.Theme.getColor("primary_hover")
     property color disabledColor: color
     property color textColor: UM.Theme.getColor("button_text")
-    property color textHoverColor: UM.Theme.getColor("button_text_hover")
+    property color textHoverColor: textColor
     property color textDisabledColor: textColor
     property color outlineColor: color
     property color outlineHoverColor: hoverColor
     property color outlineDisabledColor: outlineColor
+
+    hoverEnabled: true
 
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
@@ -94,14 +95,5 @@ Button
         text: ""
         delay: 500
         visible: text != "" && button.hovered
-    }
-
-    MouseArea
-    {
-        id: mouseArea
-        anchors.fill: parent
-        // Ensure that the button will still accept the clicks on it's own.
-        onPressed: mouse.accepted = false
-        hoverEnabled: true
     }
 }
