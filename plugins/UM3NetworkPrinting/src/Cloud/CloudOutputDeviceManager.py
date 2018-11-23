@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import Dict, Optional
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
