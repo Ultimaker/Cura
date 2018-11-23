@@ -19,4 +19,12 @@
         <glob-deleteall/>
         <glob pattern="*.obj"/>
     </mime-type>
+    <mime-type type="text/x-gcode">
+        <sub-class-of type="text/plain"/>
+        <comment>Gcode file</comment>
+        <icon name="unknown"/>
+        <glob-deleteall/>
+        <glob pattern="*.gcode"/>
+        <glob pattern="*.g"/>
+    </mime-type>
 </mime-info>
