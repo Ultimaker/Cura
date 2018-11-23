@@ -1,22 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from UM.FileHandler.FileHandler import FileHandler #For typing.
-from UM.Logger import Logger
-from UM.Scene.SceneNode import SceneNode #For typing.
-from cura.CuraApplication import CuraApplication
-from cura.NetworkClient import NetworkClient
-
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
-
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
+import os
+import gzip
 from time import time
-from typing import Any, Callable, Dict, List, Optional
+from typing import Dict, List, Optional
 from enum import IntEnum
 
-import os  # To get the username
-import gzip
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QCoreApplication
+
+from UM.FileHandler.FileHandler import FileHandler
+from UM.Scene.SceneNode import SceneNode
+from cura.NetworkClient import NetworkClient
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 
 class AuthState(IntEnum):

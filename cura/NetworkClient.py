@@ -15,10 +15,10 @@ from cura.CuraApplication import CuraApplication
 #   This was originally part of NetworkedPrinterOutputDevice but was moved out for re-use in other classes.
 class NetworkClient:
     
-    def __init__(self, application: CuraApplication = None):
+    def __init__(self) -> None:
         
         # Use the given application instance or get the singleton instance.
-        self._application = application or CuraApplication.getInstance()
+        self._application = CuraApplication.getInstance()
         
         # Network manager instance to use for this client.
         self._manager = None  # type: Optional[QNetworkAccessManager]
@@ -89,7 +89,7 @@ class NetworkClient:
     def _validateManager(self) -> None:
         if self._manager is None:
             self._createNetworkManager()
-        assert (self._manager is not None)
+        assert self._manager is not None
 
     ##  Callback for when the network manager detects that authentication is required but was not given.
     @staticmethod
