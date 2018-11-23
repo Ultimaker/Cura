@@ -14,6 +14,7 @@ Cura.ExpandableComponent
     id: machineSelector
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
     popupPadding: 0
@@ -31,9 +32,9 @@ Cura.ExpandableComponent
         text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
         source:
         {
-            if (isNetworkPrinter && machineSelector.outputDevice != null)
+            if (isNetworkPrinter)
             {
-                if (machineSelector.outputDevice.clusterSize > 1)
+                if (machineSelector.outputDevice != null && machineSelector.outputDevice.clusterSize > 1)
                 {
                     return UM.Theme.getIcon("printer_group")
                 }
@@ -44,6 +45,37 @@ Cura.ExpandableComponent
         font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("text")
         iconSize: UM.Theme.getSize("machine_selector_icon").width
+
+        UM.RecolorImage
+        {
+            id: icon
+
+            anchors.bottom: parent.bottom
+            x: UM.Theme.getSize("thick_margin").width
+
+            source: UM.Theme.getIcon("printer_connected")
+            width: UM.Theme.getSize("printer_status_icon").width
+            height: UM.Theme.getSize("printer_status_icon").height
+
+            sourceSize.width: width
+            sourceSize.height: height
+
+            color: UM.Theme.getColor("primary")
+            visible: isNetworkPrinter && isPrinterConnected
+
+            // Make a themable circle in the background so we can change it in other themes
+            Rectangle
+            {
+                id: iconBackground
+                anchors.centerIn: parent
+                // Make it a bit bigger so there is an outline
+                width: parent.width + 2
+                height: parent.height + 2
+                radius: Math.round(width / 2)
+                color: UM.Theme.getColor("main_background")
+                z: parent.z - 1
+            }
+        }
     }
 
     popupItem: Item

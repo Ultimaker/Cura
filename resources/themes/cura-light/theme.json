@@ -449,7 +449,7 @@
         "favorites_button": [2, 2],
         "favorites_button_icon": [1.2, 1.2],
 
-        "printer_status_icon": [1.8, 1.8],
+        "printer_status_icon": [1.0, 1.0],
         "printer_sync_icon": [1.2, 1.2],
 
         "button_tooltip": [1.0, 1.3],
