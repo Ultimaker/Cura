@@ -348,6 +348,7 @@ Cura.ExpandableComponent
                 }
             }
         }
+        
         Component.onCompleted:
         {
             var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
