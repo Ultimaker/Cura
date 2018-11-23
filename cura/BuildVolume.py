@@ -489,7 +489,9 @@ class BuildVolume(SceneNode):
 
     def _updateRaftThickness(self):
         old_raft_thickness = self._raft_thickness
-        self._adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
+        if self._global_container_stack.extruders:
+            # This might be called before the extruder stacks have initialised, in which case getting the adhesion_type fails
+            self._adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
         self._raft_thickness = 0.0
         if self._adhesion_type == "raft":
             self._raft_thickness = (

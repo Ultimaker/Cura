@@ -40,6 +40,12 @@ Item
 
     property alias expandedHighlightColor: expandedHighlight.color
 
+    // What should the radius of the header be. This is also influenced by the headerCornerSide
+    property alias headerRadius: background.radius
+
+    // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
+    property alias headerCornerSide: background.cornerSide
+
     function togglePopup()
     {
         if(popup.visible)
@@ -71,7 +77,8 @@ Item
 
     implicitHeight: 100 * screenScaleFactor
     implicitWidth: 400 * screenScaleFactor
-    Rectangle
+
+    RoundedRectangle
     {
         id: background
         property real padding: UM.Theme.getSize("default_margin").width

@@ -5,6 +5,7 @@ from typing import Any, List, Optional, TYPE_CHECKING
 
 from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 from UM.Settings.SettingFunction import SettingFunction
+from UM.Logger import Logger
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -38,7 +39,11 @@ class CuraFormulaFunctions:
             extruder_position = int(machine_manager.defaultExtruderPosition)
 
         global_stack = machine_manager.activeMachine
-        extruder_stack = global_stack.extruders[str(extruder_position)]
+        try:
+            extruder_stack = global_stack.extruders[str(extruder_position)]
+        except KeyError:
+            Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available" % (property_key, extruder_position))
+            return None
 
         value = extruder_stack.getRawProperty(property_key, "value", context = context)
         if isinstance(value, SettingFunction):

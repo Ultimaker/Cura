@@ -33,6 +33,7 @@ Cura.ExpandableComponent
         elide: Text.ElideRight
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
+        renderType: Text.NativeRendering
     }
 
     popupItem: Item
@@ -60,6 +61,7 @@ Cura.ExpandableComponent
                     height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -103,6 +105,7 @@ Cura.ExpandableComponent
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Repeater
