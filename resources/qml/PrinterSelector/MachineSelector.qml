@@ -82,87 +82,24 @@ Cura.ExpandableComponent
     {
         id: popup
         width: UM.Theme.getSize("machine_selector_widget_content").width
-        height: UM.Theme.getSize("machine_selector_widget_content").height
 
         ScrollView
         {
             id: scroll
             width: parent.width
-            anchors.top: parent.top
-            anchors.bottom: separator.top
             clip: true
 
-            Column
+            MachineSelectorList
             {
-                id: column
-
                 // Can't use parent.width since the parent is the flickable component and not the ScrollView
                 width: scroll.width - 2 * UM.Theme.getSize("default_lining").width
                 x: UM.Theme.getSize("default_lining").width
+                property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
 
-                Label
+                onHeightChanged:
                 {
-                    text: catalog.i18nc("@label", "Network connected printers")
-                    visible: networkedPrintersModel.items.length > 0
-                    leftPadding: UM.Theme.getSize("default_margin").width
-                    height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
-                    renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text_medium")
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Repeater
-                {
-                    id: networkedPrinters
-
-                    model: UM.ContainerStacksModel
-                    {
-                        id: networkedPrintersModel
-                        filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
-                    }
-
-                    delegate: MachineSelectorButton
-                    {
-                        text: model.metadata["connect_group_name"]
-                        checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
-                        outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-
-                        Connections
-                        {
-                            target: Cura.MachineManager
-                            onActiveMachineNetworkGroupNameChanged: checked = Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
-                        }
-                    }
-                }
-
-                Label
-                {
-                    text: catalog.i18nc("@label", "Preset printers")
-                    visible: virtualPrintersModel.items.length > 0
-                    leftPadding: UM.Theme.getSize("default_margin").width
-                    height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
-                    renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text_medium")
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Repeater
-                {
-                    id: virtualPrinters
-
-                    model: UM.ContainerStacksModel
-                    {
-                        id: virtualPrintersModel
-                        filter: {"type": "machine", "um_network_key": null}
-                    }
-
-                    delegate: MachineSelectorButton
-                    {
-                        text: model.name
-                        checked: Cura.MachineManager.activeMachineId == model.id
-                    }
+                    scroll.height = Math.min(height, maximumHeight)
+                    popup.height = scroll.height + buttonRow.height
                 }
             }
         }
@@ -171,7 +108,7 @@ Cura.ExpandableComponent
         {
             id: separator
 
-            anchors.bottom: buttonRow.top
+            anchors.top: scroll.bottom
             width: parent.width
             height: UM.Theme.getSize("default_lining").height
             color: UM.Theme.getColor("lining")
@@ -181,7 +118,8 @@ Cura.ExpandableComponent
         {
             id: buttonRow
 
-            anchors.bottom: parent.bottom
+            // The separator is inside the buttonRow. This is to avoid some weird behaviours with the scroll bar.
+            anchors.top: separator.top
             anchors.horizontalCenter: parent.horizontalCenter
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
