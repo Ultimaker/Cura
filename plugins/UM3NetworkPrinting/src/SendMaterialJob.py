@@ -7,12 +7,12 @@ from typing import Dict, TYPE_CHECKING, Set
 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
+from UM.Application import Application
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.MimeTypeDatabase import MimeTypeDatabase
 from UM.Resources import Resources
 from cura.CuraApplication import CuraApplication
-
 # Absolute imports don't work in plugins
 from .Models import ClusterMaterial, LocalMaterial
 
@@ -28,7 +28,6 @@ class SendMaterialJob(Job):
     def __init__(self, device: "ClusterUM3OutputDevice") -> None:
         super().__init__()
         self.device = device  # type: ClusterUM3OutputDevice
-        self._application = CuraApplication.getInstance()  # type: CuraApplication
 
     ##  Send the request to the printer and register a callback
     def run(self) -> None:
@@ -45,13 +44,9 @@ class SendMaterialJob(Job):
             return
 
         # Collect materials from the printer's reply and send the missing ones if needed.
-        try:
-            remote_materials_by_guid = self._parseReply(reply)
+        remote_materials_by_guid = self._parseReply(reply)
+        if remote_materials_by_guid:
             self._sendMissingMaterials(remote_materials_by_guid)
-        except json.JSONDecodeError:
-            Logger.logException("w", "Error parsing materials from printer")
-        except KeyError:
-            Logger.logException("w", "Error parsing materials from printer")
 
     ##  Determine which materials should be updated and send them to the printer.
     #
@@ -75,7 +70,8 @@ class SendMaterialJob(Job):
 
     ##  From the local and remote materials, determine which ones should be synchronized.
     #
-    #   Makes a Set containing only the materials that are not on the printer yet or the ones that are newer in Cura.
+    #   Makes a Set of id's containing only the id's of the materials that are not on the printer yet or the ones that
+    #   are newer in Cura.
     #
     #   \param local_materials The local materials by GUID.
     #   \param remote_materials The remote materials by GUID.
@@ -83,7 +79,8 @@ class SendMaterialJob(Job):
     def _determineMaterialsToSend(local_materials: Dict[str, LocalMaterial],
                                   remote_materials: Dict[str, ClusterMaterial]) -> Set[str]:
         return {
-            material.id for guid, material in local_materials.items()
+            material.id
+            for guid, material in local_materials.items()
             if guid not in remote_materials or material.version > remote_materials[guid].version
         }
 
@@ -120,23 +117,23 @@ class SendMaterialJob(Job):
     #   \param material_id The ID of the material in the file.
     def _sendMaterialFile(self, file_path: str, file_name: str, material_id: str) -> None:
 
-            parts = []
+        parts = []
 
-            # Add the material file.
-            with open(file_path, "rb") as f:
-                parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\""
-                                                        .format(file_name = file_name), f.read()))
+        # Add the material file.
+        with open(file_path, "rb") as f:
+            parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\""
+                                                    .format(file_name = file_name), f.read()))
 
-            # Add the material signature file if needed.
-            signature_file_path = "{}.sig".format(file_path)
-            if os.path.exists(signature_file_path):
-                signature_file_name = os.path.basename(signature_file_path)
-                with open(signature_file_path, "rb") as f:
-                    parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\""
-                                                            .format(file_name = signature_file_name), f.read()))
+        # Add the material signature file if needed.
+        signature_file_path = "{}.sig".format(file_path)
+        if os.path.exists(signature_file_path):
+            signature_file_name = os.path.basename(signature_file_path)
+            with open(signature_file_path, "rb") as f:
+                parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\""
+                                                        .format(file_name = signature_file_name), f.read()))
 
-            Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
-            self.device.postFormWithParts(target = "materials/", parts = parts, on_finished = self.sendingFinished)
+        Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
+        self.device.postFormWithParts(target = "materials/", parts = parts, on_finished = self.sendingFinished)
 
     ##  Check a reply from an upload to the printer and log an error when the call failed
     @staticmethod
@@ -152,12 +149,18 @@ class SendMaterialJob(Job):
     #   Parses the reply to a "/materials" request to the printer
     #
     #   \return a dictionary of ClusterMaterial objects by GUID
-    #   \throw json.JSONDecodeError Raised when the reply does not contain a valid json string
     #   \throw KeyError Raised when on of the materials does not include a valid guid
     @classmethod
     def _parseReply(cls, reply: QNetworkReply) -> Dict[str, ClusterMaterial]:
-        remote_materials = json.loads(reply.readAll().data().decode("utf-8"))
-        return {material["id"]: ClusterMaterial(**material) for material in remote_materials}
+        try:
+            remote_materials = json.loads(reply.readAll().data().decode("utf-8"))
+            return {material["guid"]: ClusterMaterial(**material) for material in remote_materials}
+        except UnicodeDecodeError:
+            Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
+        except json.JSONDecodeError:
+            Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
+        except TypeError:
+            Logger.log("e", "Request material storage on printer: Printer's answer was missing GUIDs.")
 
     ##  Retrieves a list of local materials
     #
@@ -166,16 +169,25 @@ class SendMaterialJob(Job):
     #   \return a dictionary of LocalMaterial objects by GUID
     def _getLocalMaterials(self) -> Dict[str, LocalMaterial]:
         result = {}  # type: Dict[str, LocalMaterial]
-        container_registry = self._application.getContainerRegistry()
+        container_registry = Application.getInstance().getContainerRegistry()
         material_containers = container_registry.findContainersMetadata(type = "material")
 
         # Find the latest version of all material containers in the registry.
-        local_materials = {}  # type: Dict[str, LocalMaterial]
         for material in material_containers:
             try:
-                material = LocalMaterial(**material)
-                if material.GUID not in result or material.version > result.get(material.GUID).version:
-                    local_materials[material.GUID] = material
+                # material version must be an int
+                material["version"] = int(material["version"])
+
+                # Create a new local material
+                local_material = LocalMaterial(**material)
+
+                if local_material.GUID not in result or \
+                        local_material.version > result.get(local_material.GUID).version:
+                    result[local_material.GUID] = local_material
+
+            except KeyError:
+                Logger.logException("w", "Local material {} has missing values.".format(material["id"]))
             except ValueError:
                 Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
+
         return result
