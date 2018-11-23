@@ -115,6 +115,9 @@ Column
             textHoverColor: UM.Theme.getColor("text")
             onClicked: UM.Controller.setActiveStage("PreviewStage")
             visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
+
+            shadowEnabled: true
+            shadowColor: UM.Theme.getColor("action_button_disabled_shadow")
         }
 
         Cura.OutputDevicesActionButton

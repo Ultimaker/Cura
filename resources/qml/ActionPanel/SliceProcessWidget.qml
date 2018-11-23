@@ -93,21 +93,20 @@ Column
         // Disable the slice process when
         property bool disabledSlice: [UM.Backend.Done, UM.Backend.Error].indexOf(widget.backendState) != -1
 
-        text:
-        {
-            if ([UM.Backend.NotStarted, UM.Backend.Error].indexOf(widget.backendState) != -1)
-            {
-                return catalog.i18nc("@button", "Slice")
-            }
-            return catalog.i18nc("@button", "Cancel")
-        }
+        property bool isSlicing: [UM.Backend.NotStarted, UM.Backend.Error].indexOf(widget.backendState) == -1
+
+        text: isSlicing ? catalog.i18nc("@button", "Cancel") : catalog.i18nc("@button", "Slice")
+
         enabled: !autoSlice && !disabledSlice
         visible: !autoSlice
+
+        color: isSlicing ? UM.Theme.getColor("secondary"): UM.Theme.getColor("primary")
+        textColor: isSlicing ? UM.Theme.getColor("primary"): UM.Theme.getColor("button_text")
 
         disabledColor: UM.Theme.getColor("action_button_disabled")
         textDisabledColor: UM.Theme.getColor("action_button_disabled_text")
         shadowEnabled: true
-        shadowColor: enabled ? UM.Theme.getColor("action_button_shadow"): UM.Theme.getColor("action_button_disabled_shadow")
+        shadowColor: isSlicing ? UM.Theme.getColor("secondary_shadow") : enabled ? UM.Theme.getColor("action_button_shadow"): UM.Theme.getColor("action_button_disabled_shadow")
 
         onClicked: sliceOrStopSlicing()
     }

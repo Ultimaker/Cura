@@ -17,7 +17,8 @@ Item
         id: saveToButton
         height: parent.height
         fixedWidthMode: true
-
+        shadowEnabled: true
+        shadowColor: UM.Theme.getColor("primary_shadow")
         anchors
         {
             top: parent.top
@@ -41,6 +42,9 @@ Item
     {
         id: deviceSelectionMenu
         height: parent.height
+
+        shadowEnabled: true
+        shadowColor: UM.Theme.getColor("primary_shadow")
 
         anchors
         {
