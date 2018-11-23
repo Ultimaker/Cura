@@ -187,12 +187,11 @@ Item
                     }
                 }
 
-                Label
+                IconWithText
                 {
                     id: qualityRowTitle
+                    source: UM.Theme.getIcon("category_layer_height")
                     text: catalog.i18nc("@label", "Layer Height")
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                 }
 
                 // Show titles for the each quality slider ticks
@@ -532,17 +531,19 @@ Item
 
                 width: Math.round(UM.Theme.getSize("print_setup_widget").width * .45) - UM.Theme.getSize("thick_margin").width
 
-                Label
+                IconWithText
                 {
                     id: infillLabel
-                    text: catalog.i18nc("@label", "Infill")
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
+                    source: UM.Theme.getIcon("category_infill")
+                    text: catalog.i18nc("@label", "Infill") + " (%)"
 
-                    anchors.top: parent.top
-                    anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.7)
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("thick_margin").width
+                    anchors
+                    {
+                        top: parent.top
+                        topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.7)
+                        left: parent.left
+                        leftMargin: UM.Theme.getSize("thick_margin").width
+                    }
                 }
             }
 
@@ -855,23 +856,23 @@ Item
             //
             //  Enable support
             //
-            Label
+            IconWithText
             {
                 id: enableSupportLabel
                 visible: enableSupportCheckBox.visible
+                source: UM.Theme.getIcon("category_support")
+                text: catalog.i18nc("@label", "Support")
 
-                anchors.top: infillCellRight.bottom
-                anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.5)
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("thick_margin").width
-                anchors.right: infillCellLeft.right
-                anchors.rightMargin: UM.Theme.getSize("thick_margin").width
-                anchors.verticalCenter: enableSupportCheckBox.verticalCenter
-
-                text: catalog.i18nc("@label", "Generate Support")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                elide: Text.ElideRight
+                anchors
+                {
+                    top: infillCellRight.bottom
+                    topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.5)
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("thick_margin").width
+                    right: infillCellLeft.right
+                    rightMargin: UM.Theme.getSize("thick_margin").width
+                    verticalCenter: enableSupportCheckBox.verticalCenter
+                }
             }
 
             CheckBox
@@ -980,15 +981,12 @@ Item
 
             }
 
-            Label
+            IconWithText
             {
                 id: adhesionHelperLabel
                 visible: adhesionCheckBox.visible
-
-                text: catalog.i18nc("@label", "Build Plate Adhesion")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                elide: Text.ElideRight
+                source: UM.Theme.getIcon("category_adhesion")
+                text: catalog.i18nc("@label", "Adhesion")
 
                 anchors
                 {
