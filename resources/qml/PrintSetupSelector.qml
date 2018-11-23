@@ -151,7 +151,7 @@ Cura.ExpandableComponent
                 color: UM.Theme.getColor("text")
                 height: parent.height
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+//                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("print_setup_selector_margin").height
             }
@@ -164,6 +164,37 @@ Cura.ExpandableComponent
                 color: UM.Theme.getColor("action_button_border")
 
 
+            }
+
+            Button
+            {
+                id: closeButton;
+                width: UM.Theme.getSize("message_close").width;
+                height: UM.Theme.getSize("message_close").height;
+
+                anchors
+                {
+                    right: parent.right;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
+                    top: parent.top;
+                    topMargin: 10
+                }
+
+                UM.RecolorImage
+                {
+                    anchors.fill: parent;
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: UM.Theme.getColor("message_text")
+                    source: UM.Theme.getIcon("cross1")
+                }
+
+                onClicked: base.model.hideMessage(model.id)
+
+                background: Rectangle
+                {
+                    color: UM.Theme.getColor("message_background")
+                }
             }
         }
 
