@@ -8,10 +8,6 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from UM.Logger import Logger
 from cura.NetworkClient import NetworkClient
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDevice import CloudOutputDevice
-
-
-if TYPE_CHECKING:
-    from cura.CuraApplication import CuraApplication
     
 
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
