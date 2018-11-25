@@ -18,6 +18,8 @@ Item
     property alias font: label.font
     property alias iconSize: icon.width
 
+    implicitHeight: icon.height
+
     UM.RecolorImage
     {
         id: icon
