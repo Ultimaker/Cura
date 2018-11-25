@@ -37,15 +37,35 @@ Cura.ExpandableComponent
         }
     }
 
-    headerItem: Label
+    headerItem: Item
     {
-        text: viewSelector.activeView ? viewSelector.activeView.name : ""
-        verticalAlignment: Text.AlignVCenter
-        height: parent.height
-        elide: Text.ElideRight
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
+        Label
+        {
+            id: title
+            text: catalog.i18nc("@button", "View types")
+            verticalAlignment: Text.AlignVCenter
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_medium")
+            renderType: Text.NativeRendering
+        }
+
+        Label
+        {
+            text: viewSelector.activeView ? viewSelector.activeView.name : ""
+            verticalAlignment: Text.AlignVCenter
+            anchors
+            {
+                left: title.right
+                leftMargin: UM.Theme.getSize("default_margin").width
+            }
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
+        }
     }
 
     popupItem: Column
