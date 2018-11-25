@@ -15,7 +15,7 @@ Cura.ExpandableComponent
     property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-    popupPadding: 0
+    popupPadding: UM.Theme.getSize("default_lining").width
     popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
@@ -90,8 +90,7 @@ Cura.ExpandableComponent
             MachineSelectorList
             {
                 // Can't use parent.width since the parent is the flickable component and not the ScrollView
-                width: scroll.width - 2 * UM.Theme.getSize("default_lining").width
-                x: UM.Theme.getSize("default_lining").width
+                width: scroll.width
                 property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
 
                 onHeightChanged:

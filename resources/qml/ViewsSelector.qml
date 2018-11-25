@@ -11,6 +11,8 @@ Cura.ExpandableComponent
 {
     id: viewSelector
 
+    popupPadding: UM.Theme.getSize("default_lining").width
+    popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     property var viewModel: UM.ViewModel { }
@@ -71,25 +73,51 @@ Cura.ExpandableComponent
     popupItem: Column
     {
         id: viewSelectorPopup
-        width: viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
+        width: viewSelector.width - 2 * viewSelector.popupPadding
 
         // For some reason the height/width of the column gets set to 0 if this is not set...
         Component.onCompleted:
         {
             height = implicitHeight
-            width = viewSelector.width - 2 * UM.Theme.getSize("default_margin").width
+            width = viewSelector.width - 2 * viewSelector.popupPadding
         }
 
         Repeater
         {
             id: viewsList
             model: viewSelector.viewModel
-            RoundButton
+
+            delegate: Button
             {
-                text: name
-                radius: UM.Theme.getSize("default_radius").width
+                id: viewsSelectorButton
+                text: model.name
+                width: parent.width
+                height: UM.Theme.getSize("action_button").height
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
                 checkable: true
                 checked: viewSelector.activeView != null ? viewSelector.activeView.id == id : false
+
+                contentItem: Label
+                {
+                    id: buttonText
+                    text: viewsSelectorButton.text
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("action_button")
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+
+                background: Rectangle
+                {
+                    id: backgroundRect
+                    color: viewsSelectorButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+                    radius: UM.Theme.getSize("action_button_radius").width
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: viewsSelectorButton.checked ? UM.Theme.getColor("primary") : "transparent"
+                }
+
                 onClicked:
                 {
                     viewSelector.togglePopup()
@@ -97,6 +125,5 @@ Cura.ExpandableComponent
                 }
             }
         }
-
     }
 }
