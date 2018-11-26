@@ -592,7 +592,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _createMaterialOutputModel(self, material_data: Dict[str, Any]) -> "MaterialOutputModel":
         material_manager = CuraApplication.getInstance().getMaterialManager()
-        material_group_list = material_manager.getMaterialGroupListByGUID(material_data["guid"])
+        material_group_list = material_manager.getMaterialGroupListByGUID(material_data["guid"]) or []
 
         # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
         read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
