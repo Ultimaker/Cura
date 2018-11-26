@@ -43,7 +43,7 @@ Item
         anchors.verticalCenter: icon.verticalCenter
         text: "Empty label"
         color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 }

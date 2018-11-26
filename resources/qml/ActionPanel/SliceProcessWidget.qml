@@ -49,7 +49,7 @@ Column
         text: catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")
         source: UM.Theme.getIcon("warning")
         color: UM.Theme.getColor("warning")
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob

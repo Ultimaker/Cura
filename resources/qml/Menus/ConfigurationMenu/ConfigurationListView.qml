@@ -46,7 +46,7 @@ Column
             section.delegate: Label
             {
                 text: section
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("configuration_item_text")
                 bottomPadding: UM.Theme.getSize("default_margin").height
             }

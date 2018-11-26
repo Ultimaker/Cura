@@ -50,7 +50,7 @@ Column
 
                 text: PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
-                font: UM.Theme.getFont("small")
+                font: UM.Theme.getFont("default_bold")
             }
 
             Cura.IconLabel
@@ -79,7 +79,7 @@ Column
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
             }
         }
 

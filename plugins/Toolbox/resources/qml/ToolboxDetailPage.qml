@@ -82,25 +82,25 @@ Item
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
             Label
             {
                 text: catalog.i18nc("@label", "Last updated") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
             Label
             {
                 text: catalog.i18nc("@label", "Author") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
             Label
             {
                 text: catalog.i18nc("@label", "Downloads") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
         }
@@ -119,7 +119,7 @@ Item
             Label
             {
                 text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }
             Label
@@ -133,7 +133,7 @@ Item
                     var date = new Date(details.last_updated)
                     return date.toLocaleString(UM.Preferences.getValue("general/language"))
                 }
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }
             Label
@@ -153,7 +153,7 @@ Item
                         return "<a href=\"" + details.website + "\">" + details.author_name + "</a>"
                     }
                 }
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
@@ -161,7 +161,7 @@ Item
             Label
             {
                 text: details === null ? "" : (details.download_count || catalog.i18nc("@label", "Unknown"))
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }
         }

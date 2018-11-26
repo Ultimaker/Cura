@@ -81,7 +81,7 @@ Item
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: UM.Theme.getColor("text_medium")
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
             }
         }
     }

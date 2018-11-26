@@ -124,7 +124,7 @@ Item {
         }
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
-        font: UM.Theme.getFont("small")
+        font: UM.Theme.getFont("default_bold")
         color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
     }
