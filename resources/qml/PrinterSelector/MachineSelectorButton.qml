@@ -20,7 +20,7 @@ Button
     property var outputDevice: null
     property var printerTypesList: []
 
-    function setPrinterTypesList()
+    function updatePrinterTypesList()
     {
         printerTypesList = (checked && (outputDevice != null)) ? outputDevice.uniquePrinterTypes : []
     }
@@ -97,14 +97,14 @@ Button
     Connections
     {
         target: outputDevice
-        onUniqueConfigurationsChanged: setPrinterTypesList()
+        onUniqueConfigurationsChanged: updatePrinterTypesList()
     }
 
     Connections
     {
         target: Cura.MachineManager
-        onOutputDevicesChanged: setPrinterTypesList()
+        onOutputDevicesChanged: updatePrinterTypesList()
     }
 
-    Component.onCompleted: setPrinterTypesList()
+    Component.onCompleted: updatePrinterTypesList()
 }
