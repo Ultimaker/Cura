@@ -66,6 +66,9 @@ Item
 
             function generateActiveQualityText () {
                 var result = Cura.MachineManager.activeQualityOrQualityChangesName;
+                if (Cura.MachineManager.isActiveQualityExperimental) {
+                    result += " (Experimental)";
+                }
 
                 if (Cura.MachineManager.isActiveQualitySupported) {
                     if (Cura.MachineManager.activeQualityLayerHeight > 0) {
