@@ -71,8 +71,8 @@ Cura.ExpandableComponent
                 id: iconBackground
                 anchors.centerIn: parent
                 // Make it a bit bigger so there is an outline
-                width: parent.width + 2
-                height: parent.height + 2
+                width: parent.width + 2 * UM.Theme.getSize("default_lining").width
+                height: parent.height + 2 * UM.Theme.getSize("default_lining").height
                 radius: Math.round(width / 2)
                 color: UM.Theme.getColor("main_background")
                 z: parent.z - 1
