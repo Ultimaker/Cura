@@ -12,7 +12,6 @@ Column
 {
     id: base
     property var outputDevice: null
-    property var computedHeight: container.height + configurationListHeading.height + 3 * padding
     height: childrenRect.height + 2 * padding
     padding: UM.Theme.getSize("default_margin").width
     spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
@@ -25,15 +24,6 @@ Column
         {
             configurationList.model = outputDevice.uniqueConfigurations
         }
-    }
-
-    Label
-    {
-        id: configurationListHeading
-        text: catalog.i18nc("@label:header configurations", "Available configurations")
-        font: UM.Theme.getFont("large")
-        width: parent.width - 2 * parent.padding
-        color: UM.Theme.getColor("configuration_item_text")
     }
 
     Component
