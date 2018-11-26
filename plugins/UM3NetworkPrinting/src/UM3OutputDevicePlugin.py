@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import TYPE_CHECKING
-
+from UM.Application import Application
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
@@ -20,9 +19,6 @@ from time import time
 
 import json
 
-if TYPE_CHECKING:
-    from cura.CuraApplication import CuraApplication
-
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -33,21 +29,20 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     removeDeviceSignal = Signal()
     discoveredDevicesChanged = Signal()
 
-    def __init__(self, application: "CuraApplication"):
+    def __init__(self):
         super().__init__()
-        self._application = application
         
         self._zero_conf = None
         self._zero_conf_browser = None
 
         # Create a cloud output device manager that abstract all cloud connection logic away.
-        # self._cloud_output_device_manager = CloudOutputDeviceManager()
+        self._cloud_output_device_manager = CloudOutputDeviceManager()
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
-        application.globalContainerStackChanged.connect(self.reCheckConnections)
+        Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
         self._discovered_devices = {}
         
@@ -62,7 +57,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
 
         # Get list of manual instances from preferences
-        self._preferences = self._application.getPreferences()
+        self._preferences = Application.getInstance().getPreferences()
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 
@@ -113,7 +108,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.resetLastManualDevice()
 
     def reCheckConnections(self):
-        active_machine = self._application.getGlobalContainerStack()
+        active_machine = Application.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
 
@@ -138,7 +133,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             return
         if self._discovered_devices[key].isConnected():
             # Sometimes the status changes after changing the global container and maybe the device doesn't belong to this machine
-            um_network_key = self._application.getGlobalContainerStack().getMetaDataEntry("um_network_key")
+            um_network_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
             if key == um_network_key:
                 self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
         else:
@@ -290,7 +285,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
-        global_container_stack = self._application.getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
@@ -308,7 +303,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._service_changed_request_event.wait(timeout = 5.0)
 
             # Stop if the application is shutting down
-            if self._application.isShuttingDown():
+            if Application.getInstance().isShuttingDown():
                 return
 
             self._service_changed_request_event.clear()

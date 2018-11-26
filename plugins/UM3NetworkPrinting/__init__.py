@@ -10,6 +10,6 @@ def getMetaData():
 
 def register(app):
     return {
-        "output_device": UM3OutputDevicePlugin.UM3OutputDevicePlugin(app),
+        "output_device": UM3OutputDevicePlugin.UM3OutputDevicePlugin(),
         "machine_action": DiscoverUM3Action.DiscoverUM3Action()
     }

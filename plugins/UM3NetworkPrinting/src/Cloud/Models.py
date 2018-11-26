@@ -1,11 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from collections import namedtuple
+from plugins.UM3NetworkPrinting.src.Models import BaseModel
 
-Cluster = namedtuple("Cluster", [
-    "cluster_id",            # Type: str
-    "host_guid",             # Type: str
-    "host_name",             # Type: str
-    "host_version",          # Type: str
-    "status",                # Type: str
-])
+
+##  Class representing a cloud connected cluster.
+class CloudCluster(BaseModel):
+    def __init__(self, **kwargs):
+        self.cluster_id = None  # type: str
+        self.host_guid = None  # type: str
+        self.host_name = None  # type: str
+        self.host_version = None  # type: str
+        self.status = None  # type: str
+        super().__init__(**kwargs)
+
+    def validate(self):
+        if not self.cluster_id:
+            raise ValueError("cluster_id is required on CloudCluster")

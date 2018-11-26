@@ -9,7 +9,7 @@ from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 from cura.NetworkClient import NetworkClient
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDevice import CloudOutputDevice
-from .Models import Cluster
+from .Models import CloudCluster
 
 
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
@@ -78,23 +78,20 @@ class CloudOutputDeviceManager(NetworkClient):
     @staticmethod
     def _parseStatusResponse(reply: QNetworkReply) -> Optional[Cluster]:
         try:
-            return [Cluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))]
+            return [CloudCluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))]
+        except UnicodeDecodeError:
+            Logger.log("w", "Unable to read server response")
         except json.decoder.JSONDecodeError:
             Logger.logException("w", "Unable to decode JSON from reply.")
-            return None
-        except UnicodeDecodeError:
-            Logger.log("e", "Unable to read server response")
-        except json.JSONDecodeError:
-            Logger.logException("w", "Unable to decode JSON from reply.")
-
+        except ValueError:
+            Logger.logException("w", "Response was missing values.")
         return None
 
     ##  Adds a CloudOutputDevice for each entry in the remote cluster list from the API.
-    def _addCloudOutputDevice(self, cluster: Cluster):
-        print("cluster_data====", cluster)
-        device = CloudOutputDevice(cluster["cluster_id"])
+    def _addCloudOutputDevice(self, cluster: CloudCluster):
+        device = CloudOutputDevice(cluster.cluster_id)
         self._output_device_manager.addOutputDevice(device)
-        self._remote_clusters[cluster["cluster_id"]] = device
+        self._remote_clusters[cluster.cluster_id] = device
     
     ##  Callback for when the active machine was changed by the user.
     def _activeMachineChanged(self):
