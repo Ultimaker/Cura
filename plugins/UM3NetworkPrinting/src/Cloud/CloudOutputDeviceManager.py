@@ -8,7 +8,8 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 from cura.NetworkClient import NetworkClient
-from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDevice import CloudOutputDevice
+
+from .CloudOutputDevice import CloudOutputDevice
 from .Models import CloudCluster
 
 

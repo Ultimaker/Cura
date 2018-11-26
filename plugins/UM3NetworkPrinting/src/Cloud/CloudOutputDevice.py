@@ -13,8 +13,8 @@ from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
-from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from .CloudOutputController import CloudOutputController
+from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 
 ##  The cloud output device is a network output device that works remotely but has limited functionality.
