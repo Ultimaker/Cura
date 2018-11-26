@@ -11,20 +11,16 @@ Row
 {
     spacing: UM.Theme.getSize("default_margin").width
 
-    Cura.ActionButton
+    Cura.SecondaryButton
     {
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
         text: catalog.i18nc("@button", "Create account")
-        color: UM.Theme.getColor("secondary")
-        hoverColor: UM.Theme.getColor("secondary")
-        textColor: UM.Theme.getColor("main_window_header_button_text_active")
-        textHoverColor: UM.Theme.getColor("main_window_header_button_text_active")
         onClicked: Qt.openUrlExternally("https://account.ultimaker.com/app/create")
         fixedWidthMode: true
     }
 
-    Cura.ActionButton
+    Cura.PrimaryButton
     {
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height

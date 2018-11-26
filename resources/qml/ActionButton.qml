@@ -3,27 +3,34 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.3
+
+import QtGraphicalEffects 1.0 // For the dropshadow
 
 import UM 1.1 as UM
 
 Button
 {
     id: button
-    property alias cursorShape: mouseArea.cursorShape
     property alias iconSource: buttonIcon.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
-    property var color: UM.Theme.getColor("primary")
-    property var hoverColor: UM.Theme.getColor("primary_hover")
-    property var disabledColor: color
-    property var textColor: UM.Theme.getColor("button_text")
-    property var textHoverColor: UM.Theme.getColor("button_text_hover")
-    property var textDisabledColor: textColor
-    property var outlineColor: color
-    property var outlineHoverColor: hoverColor
-    property var outlineDisabledColor: outlineColor
+
+    property color color: UM.Theme.getColor("primary")
+    property color hoverColor: UM.Theme.getColor("primary_hover")
+    property color disabledColor: color
+    property color textColor: UM.Theme.getColor("button_text")
+    property color textHoverColor: textColor
+    property color textDisabledColor: textColor
+    property color outlineColor: color
+    property color outlineHoverColor: hoverColor
+    property color outlineDisabledColor: outlineColor
+
+    hoverEnabled: true
+
+    property alias shadowColor: shadow.color
+    property alias shadowEnabled: shadow.visible
+
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
     // we elide the text to the right so the text will be cut off with the three dots at the end.
@@ -68,19 +75,24 @@ Button
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
     }
 
+    DropShadow
+    {
+        id: shadow
+        // Don't blur the shadow
+        radius: 0
+        anchors.fill: backgroundRect
+        source: backgroundRect
+        verticalOffset: 2
+        visible: false
+        // Should always be drawn behind the background.
+        z: backgroundRect.z - 1
+    }
+
     ToolTip
     {
         id: tooltip
         text: ""
         delay: 500
         visible: text != "" && button.hovered
-    }
-
-    MouseArea
-    {
-        id: mouseArea
-        anchors.fill: parent
-        onPressed: mouse.accepted = false
-        hoverEnabled: true
     }
 }
