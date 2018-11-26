@@ -1,23 +1,22 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import json
+from queue import Queue
+from threading import Event, Thread
+from time import time
+
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtCore import QUrl
+
 from UM.Application import Application
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Version import Version
-from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
-
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import QUrl
-
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
-from queue import Queue
-from threading import Event, Thread
-from time import time
-
-import json
+from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
