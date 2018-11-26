@@ -38,7 +38,10 @@ Item
         anchors.bottom: parent.bottom
         anchors.left: parent.left
 
-        width: parent.width * 0.7
+        // If the sidebar is not set, the view should take the complete space.
+        property var widthFactor: monitorSidebarComponent.source == "" ? 1.0 : 0.7
+
+        width: Math.round(parent.width * widthFactor)
         height: parent.height
 
         property real maximumWidth: parent.width
