@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
@@ -76,7 +76,7 @@ class CloudOutputDeviceManager(NetworkClient):
         # self._addCloudOutputDevice({ "cluster_id": "LJ0tciiuZZjarrXAvFLEZ6ox4Cvx8FvtXUlQv4vIhV6w" })
 
     @staticmethod
-    def _parseStatusResponse(reply: QNetworkReply) -> Optional[Cluster]:
+    def _parseStatusResponse(reply: QNetworkReply) -> List[CloudCluster]:
         try:
             return [CloudCluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))]
         except UnicodeDecodeError:
@@ -85,7 +85,7 @@ class CloudOutputDeviceManager(NetworkClient):
             Logger.logException("w", "Unable to decode JSON from reply.")
         except ValueError:
             Logger.logException("w", "Response was missing values.")
-        return None
+        return []
 
     ##  Adds a CloudOutputDevice for each entry in the remote cluster list from the API.
     def _addCloudOutputDevice(self, cluster: CloudCluster):
