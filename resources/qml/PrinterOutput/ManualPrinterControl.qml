@@ -21,11 +21,6 @@ Item
     implicitWidth: parent.width
     implicitHeight: childrenRect.height
 
-    MonitorButtonStyle
-    {
-        id: monitorButtonStyle
-    }
-
     Column
     {
         enabled:
@@ -108,7 +103,7 @@ Item
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_top");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -125,7 +120,7 @@ Item
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_left");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -142,7 +137,7 @@ Item
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_right");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -159,7 +154,7 @@ Item
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_bottom");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -176,7 +171,7 @@ Item
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("home");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -206,7 +201,7 @@ Item
                 Button
                 {
                     iconSource: UM.Theme.getIcon("arrow_top");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -219,7 +214,7 @@ Item
                 Button
                 {
                     iconSource: UM.Theme.getIcon("home");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -232,7 +227,7 @@ Item
                 Button
                 {
                     iconSource: UM.Theme.getIcon("arrow_bottom");
-                    style: monitorButtonStyle
+                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
