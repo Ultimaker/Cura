@@ -50,7 +50,7 @@ class Backup:
             preferences_file_name = self._application.getApplicationName()
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
-            if not os.path.samefile(preferences_file, backup_preferences_file):
+            if os.path.exists(preferences_file) and (not os.path.exists(backup_preferences_file) or not os.path.samefile(preferences_file, backup_preferences_file)):
                 Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
                 shutil.copyfile(preferences_file, backup_preferences_file)
 
