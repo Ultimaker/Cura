@@ -13,7 +13,6 @@ Column
     id: base
     property var outputDevice: null
     height: childrenRect.height + 2 * padding
-    padding: UM.Theme.getSize("default_margin").width
     spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
     function forceModelUpdate()
