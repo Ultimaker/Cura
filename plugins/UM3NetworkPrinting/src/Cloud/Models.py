@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from plugins.UM3NetworkPrinting.src.Models import BaseModel
+from ..Models import BaseModel
 
 
 ##  Class representing a cloud connected cluster.
