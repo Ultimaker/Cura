@@ -125,15 +125,11 @@ Cura.ExpandableComponent
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
 
-            Cura.ActionButton
+            Cura.SecondaryButton
             {
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Add printer")
-                color: UM.Theme.getColor("secondary")
-                hoverColor: UM.Theme.getColor("secondary")
-                textColor: UM.Theme.getColor("primary")
-                textHoverColor: UM.Theme.getColor("text")
                 onClicked:
                 {
                     togglePopup()
@@ -141,15 +137,11 @@ Cura.ExpandableComponent
                 }
             }
 
-            Cura.ActionButton
+            Cura.SecondaryButton
             {
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Manage printers")
-                color: UM.Theme.getColor("secondary")
-                hoverColor: UM.Theme.getColor("secondary")
-                textColor: UM.Theme.getColor("primary")
-                textHoverColor: UM.Theme.getColor("text")
                 onClicked:
                 {
                     togglePopup()
