@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.0
+import QtQuick 2.6
 import QtQuick.Controls 2.0
 import QtQuick.Controls 1.1 as OldControls
 
@@ -33,7 +33,7 @@ Item
     {
         id: tabBar
         anchors.top: header.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height + header.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
 
         onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
 
@@ -57,17 +57,46 @@ Item
         }
     }
 
-    Item
+    Rectangle
     {
         id: tabControl
         width: parent.width
         height: childrenRect.height
         anchors.top: tabBar.bottom
+
+        radius: UM.Theme.getSize("default_radius").width
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+        color: UM.Theme.getColor("secondary")
+
+        //Remove rounding and lining at the top.
+        Rectangle
+        {
+            width: parent.width
+            height: parent.radius
+            anchors.top: parent.top
+            color: UM.Theme.getColor("lining")
+            Rectangle
+            {
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: parent.parent.border.width
+                    right: parent.right
+                    rightMargin: parent.parent.border.width
+                    top: parent.top
+                }
+                height: parent.parent.radius
+                color: parent.parent.color
+            }
+        }
+
         property var model: extrudersModel.items[tabBar.currentIndex]
         property real textWidth: Math.round(width * 0.3)
         property real controlWidth: width - textWidth
         Column
         {
+            padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").height
 
             Row
