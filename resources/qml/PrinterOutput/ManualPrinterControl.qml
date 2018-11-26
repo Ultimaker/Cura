@@ -279,72 +279,7 @@ Item
                         checked: distancesRow.currentDistance == model.value
                         onClicked: distancesRow.currentDistance = model.value
 
-                        style: ButtonStyle {
-                            background: Rectangle {
-                                border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
-                                border.color:
-                                {
-                                    if(!control.enabled)
-                                    {
-                                        return UM.Theme.getColor("action_button_disabled_border");
-                                    }
-                                    else if (control.checked || control.pressed)
-                                    {
-                                        return UM.Theme.getColor("action_button_active_border");
-                                    }
-                                    else if(control.hovered)
-                                    {
-                                        return UM.Theme.getColor("action_button_hovered_border");
-                                    }
-                                    return UM.Theme.getColor("action_button_border");
-                                }
-                                color:
-                                {
-                                    if(!control.enabled)
-                                    {
-                                        return UM.Theme.getColor("action_button_disabled");
-                                    }
-                                    else if (control.checked || control.pressed)
-                                    {
-                                        return UM.Theme.getColor("action_button_active");
-                                    }
-                                    else if (control.hovered)
-                                    {
-                                        return UM.Theme.getColor("action_button_hovered");
-                                    }
-                                    return UM.Theme.getColor("action_button");
-                                }
-                                Behavior on color { ColorAnimation { duration: 50; } }
-                                Label {
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
-                                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
-                                    color:
-                                    {
-                                        if(!control.enabled)
-                                        {
-                                            return UM.Theme.getColor("action_button_disabled_text");
-                                        }
-                                        else if (control.checked || control.pressed)
-                                        {
-                                            return UM.Theme.getColor("action_button_active_text");
-                                        }
-                                        else if (control.hovered)
-                                        {
-                                            return UM.Theme.getColor("action_button_hovered_text");
-                                        }
-                                        return UM.Theme.getColor("action_button_text");
-                                    }
-                                    font: UM.Theme.getFont("default")
-                                    text: control.text
-                                    horizontalAlignment: Text.AlignHCenter
-                                    elide: Text.ElideMiddle
-                                }
-                            }
-                            label: Item { }
-                        }
+                        style: UM.Theme.styles.monitor_checkable_button_style
                     }
                 }
             }
