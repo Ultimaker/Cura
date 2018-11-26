@@ -298,7 +298,6 @@ UM.Dialog
                 id: machineName
                 text: getMachineName()
                 width: Math.floor(parent.width * 0.75)
-                implicitWidth: UM.Theme.getSize("standard_list_input").width
                 maximumLength: 40
                 //validator: Cura.MachineNameValidator { } //TODO: Gives a segfault in PyQt5.6. For now, we must use a signal on text changed.
                 validator: RegExpValidator

@@ -6,7 +6,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.0 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -55,11 +55,16 @@ Item
 
     }
 
-    Button
+    UM.SimpleButton
     {
         id: playButton
         iconSource: !is_simulation_playing ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
-        style: UM.Theme.styles.small_tool_button
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
+        hoverBackgroundColor: UM.Theme.getColor("small_button_hover")
+        hoverColor: UM.Theme.getColor("small_button_text_hover")
+        color: UM.Theme.getColor("small_button_text")
+        iconMargin: 0.5 * UM.Theme.getSize("wide_lining").width
         visible: !UM.SimulationView.compatibilityMode
 
         Connections
