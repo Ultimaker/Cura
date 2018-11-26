@@ -68,7 +68,7 @@ Item
 
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
-            contentItem: Column
+            contentItem: ColumnLayout
             {
                 Repeater
                 {
@@ -80,7 +80,7 @@ Item
                         color: "transparent"
                         cornerRadius: 0
                         hoverColor: UM.Theme.getColor("primary")
-
+                        Layout.fillWidth: true
                         onClicked:
                         {
                             UM.OutputDeviceManager.setActiveDevice(model.id)
