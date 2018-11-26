@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 // The expandable component has 3 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
@@ -162,8 +163,9 @@ Item
         padding: UM.Theme.getSize("default_margin").width
         closePolicy: Popup.CloseOnPressOutsideParent
 
-        background: Rectangle
+        background: Cura.RoundedRectangle
         {
+            cornerSide: Cura.RoundedRectangle.Direction.Down
             color: popupBackgroundColor
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
