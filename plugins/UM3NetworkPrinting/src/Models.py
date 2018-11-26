@@ -1,33 +1,42 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from collections import namedtuple
 
-ClusterMaterial = namedtuple("ClusterMaterial", [
-    "guid",      # Type: str
-    "material",              # Type: str
-    "brand",                 # Type: str
-    "version",               # Type: int
-    "color",                 # Type: str
-    "density"                # Type: str
-])
 
-LocalMaterial = namedtuple("LocalMaterial", [
-    "GUID",                  # Type: str
-    "id",                    # Type: str
-    "type",                  # Type: str
-    "status",                # Type: str
-    "base_file",             # Type: str
-    "setting_version",       # Type: int
-    "version",               # Type: int
-    "name",                  # Type: str
-    "brand",                 # Type: str
-    "material",              # Type: str
-    "color_name",            # Type: str
-    "color_code",            # Type: str
-    "description",           # Type: str
-    "adhesion_info",         # Type: str
-    "approximate_diameter",  # Type: str
-    "properties",            # Type: str
-    "definition",            # Type: str
-    "compatible"             # Type: str
-])
+## Base model that maps kwargs to instance attributes.
+class BaseModel:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+
+##  Class representing a material that was fetched from the cluster API.
+class ClusterMaterial(BaseModel):
+    def __init__(self, **kwargs):
+        self.guid = None  # type: str
+        self.material = None  # type: str
+        self.brand = None  # type: str
+        self.version = None  # type: int
+        self.color = None  # type: str
+        self.density = None  # type: str
+        super().__init__(**kwargs)
+
+
+##  Class representing a local material that was fetched from the container registry.
+class LocalMaterial(BaseModel):
+    def __init__(self, **kwargs):
+        self.GUID = None  # type: str
+        self.id = None  # type: str
+        self.type = None  # type: str
+        self.status = None  # type: str
+        self.base_file = None  # type: str
+        self.setting_version = None  # type: int
+        self.version = None  # type: int
+        self.brand = None  # type: str
+        self.material = None  # type: str
+        self.color_name = None  # type: str
+        self.color_code = None  # type: str
+        self.description = None  # type: str
+        self.adhesion_info = None  # type: str
+        self.approximate_diameter = None  # type: str
+        self.definition = None  # type: str
+        self.compatible = None  # type: bool
+        super().__init__(**kwargs)
