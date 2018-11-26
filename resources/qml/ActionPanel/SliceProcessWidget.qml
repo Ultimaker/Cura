@@ -42,7 +42,7 @@ Column
 
     Cura.IconLabel
     {
-        id: message
+        id: unableToSliceMessage
         width: parent.width
         visible: widget.backendState == UM.Backend.Error
 
@@ -98,7 +98,7 @@ Column
             fixedWidthMode: true
             anchors.fill: parent
             text: catalog.i18nc("@button", "Slice")
-            enabled: !autoSlice && widget.backendState != UM.Backend.Error
+            enabled: widget.backendState != UM.Backend.Error
             visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
             onClicked: sliceOrStopSlicing()
         }
