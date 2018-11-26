@@ -81,10 +81,12 @@ Rectangle
         height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         onClicked: Cura.Actions.browsePackages.trigger()
 
+        hoverEnabled: true
+
         background: Rectangle
         {
             radius: UM.Theme.getSize("action_button_radius").width
-            color: "transparent"
+            color: marketplaceButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("primary_text")
         }
@@ -93,7 +95,7 @@ Rectangle
         {
             id: label
             text: marketplaceButton.text
-            color: UM.Theme.getColor("primary_text")
+            color: marketplaceButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
             width: contentWidth
         }
 
