@@ -33,7 +33,7 @@ Item
     {
         id: tabBar
         anchors.top: header.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height + header.height
 
         onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
 
@@ -114,7 +114,7 @@ Item
                     property var hasActiveExtruder: activeExtruder != null
                     property var currentRootMaterialName: hasActiveExtruder ? activeExtruder.material.name : ""
                     property var valueError: hasActiveExtruder ? Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible", "") != "True" : true
-                    property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
+                    property var valueWarning: !Cura.MachineManager.isActiveQualitySupported
 
                     text: currentRootMaterialName
                     tooltip: currentRootMaterialName
@@ -131,7 +131,6 @@ Item
                     {
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                     }
-
                 }
             }
 
