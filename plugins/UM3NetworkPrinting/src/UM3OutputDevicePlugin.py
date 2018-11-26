@@ -41,7 +41,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf_browser = None
 
         # Create a cloud output device manager that abstract all cloud connection logic away.
-        self._cloud_output_device_manager = CloudOutputDeviceManager()
+        # self._cloud_output_device_manager = CloudOutputDeviceManager()
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addDeviceSignal.connect(self._onAddDevice)

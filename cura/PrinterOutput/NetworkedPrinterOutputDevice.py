@@ -36,7 +36,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice, NetworkClient):
         self._authentication_state = AuthState.NotAuthenticated
         self._sending_gcode = False
         self._compressing_gcode = False
-        self._gcode = []                    # type: List[str]
+        self._gcode = []  # type: List[str]
         
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
@@ -182,8 +182,10 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice, NetworkClient):
         return self._address
 
     def __handleOnFinished(self, reply: QNetworkReply) -> None:
-        super().__handleOnFinished(reply)
         
-        # Since we got a reply from the network manager we can now be sure we are actually connected.
-        if self._connection_state == ConnectionState.connecting:
+        # Since we got a 200 reply from the network manager we can now be sure we are actually connected.
+        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200 and \
+                self._connection_state == ConnectionState.connecting:
             self.setConnectionState(ConnectionState.connected)
+
+        super().__handleOnFinished(reply)
