@@ -6,6 +6,7 @@ from typing import Dict, Optional
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
+from cura.CuraApplication import CuraApplication
 from cura.NetworkClient import NetworkClient
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDevice import CloudOutputDevice
 from .Models import Cluster
@@ -25,15 +26,16 @@ class CloudOutputDeviceManager(NetworkClient):
     
     def __init__(self):
         super().__init__()
-        
-        self._output_device_manager = self._application.getOutputDeviceManager()
-        self._account = self._application.getCuraAPI().account
-        
+
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
+
+        application = CuraApplication.getInstance()
+        self._output_device_manager = application.getOutputDeviceManager()
+        self._account = application.getCuraAPI().account
         
         # When switching machines we check if we have to activate a remote cluster.
-        self._application.globalContainerStackChanged.connect(self._activeMachineChanged)
+        application.globalContainerStackChanged.connect(self._activeMachineChanged)
 
         # Fetch all remote clusters for the authenticated user.
         # TODO: update remote clusters periodically
@@ -96,7 +98,7 @@ class CloudOutputDeviceManager(NetworkClient):
     
     ##  Callback for when the active machine was changed by the user.
     def _activeMachineChanged(self):
-        active_machine = self._application.getGlobalContainerStack()
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
     

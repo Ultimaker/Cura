@@ -7,8 +7,8 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QHttpMultiPart, QNetworkRequest, QHttpPart, \
     QAuthenticator
 
+from UM.Application import Application
 from UM.Logger import Logger
-from cura.CuraApplication import CuraApplication
 
 
 ##  Abstraction of QNetworkAccessManager for easier networking in Cura.
@@ -16,9 +16,6 @@ from cura.CuraApplication import CuraApplication
 class NetworkClient:
     
     def __init__(self) -> None:
-        
-        # Use the given application instance or get the singleton instance.
-        self._application = CuraApplication.getInstance()
         
         # Network manager instance to use for this client.
         self._manager = None  # type: Optional[QNetworkAccessManager]
@@ -29,7 +26,8 @@ class NetworkClient:
         self._last_request_time = None  # type: Optional[float]
         
         # The user agent of Cura.
-        self._user_agent = "%s/%s " % (self._application.getApplicationName(), self._application.getVersion())
+        application = Application.getInstance()
+        self._user_agent = "%s/%s " % (application.getApplicationName(), application.getVersion())
 
         # Uses to store callback methods for finished network requests.
         # This allows us to register network calls with a callback directly instead of having to dissect the reply.
