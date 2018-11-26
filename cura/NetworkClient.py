@@ -206,7 +206,7 @@ class NetworkClient:
         
         if not self._manager:
             Logger.log("e", "No network manager was created to execute the POST call with.")
-            return
+            return None
 
         reply = self._manager.post(request, multi_post_part)
 
