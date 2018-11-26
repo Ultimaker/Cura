@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
@@ -325,13 +325,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     ##  Handler for zeroConf detection.
     #   Return True or False indicating if the process succeeded.
-    #   Note that this function can take over 3 seconds to complete. Be carefull calling it from the main thread.
+    #   Note that this function can take over 3 seconds to complete. Be careful
+    #   calling it from the main thread.
     def _onServiceChanged(self, zero_conf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
-            Logger.log("d", "Bonjour service added: %s" % name)
-
             # First try getting info from zero-conf cache
-            info = ServiceInfo(service_type, name, properties={})
+            info = ServiceInfo(service_type, name, properties = {})
             for record in zero_conf.cache.entries_with_name(name.lower()):
                 info.update_record(zero_conf, time(), record)
 
