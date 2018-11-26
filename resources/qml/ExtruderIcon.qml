@@ -49,7 +49,7 @@ Item
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
-            font: UM.Theme.getFont("extruder_icon")
+            font: UM.Theme.getFont("very_small")
             width: contentWidth
             height: contentHeight
             visible: extruderEnabled

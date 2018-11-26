@@ -41,12 +41,12 @@
             "family": "Noto Sans"
         },
         "small": {
-            "size": 1.0,
-            "weight": 63,
+            "size": 0.85,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "very_small": {
-            "size": 1.0,
+            "size": 0.7,
             "weight": 50,
             "family": "Noto Sans"
         },
@@ -62,12 +62,6 @@
         },
         "action_button": {
             "size": 1.15,
-            "weight": 50,
-            "family": "Noto Sans"
-        },
-        "extruder_icon":
-        {
-            "size": 0.7,
             "weight": 50,
             "family": "Noto Sans"
         }
