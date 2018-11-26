@@ -4,17 +4,17 @@
 
 ## Base model that maps kwargs to instance attributes.
 class BaseModel:
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         self.__dict__.update(kwargs)
         self.validate()
 
-    def validate(self):
+    def validate(self) -> None:
         pass
 
 
 ##  Class representing a material that was fetched from the cluster API.
 class ClusterMaterial(BaseModel):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         self.guid = None  # type: str
         self.material = None  # type: str
         self.brand = None  # type: str
@@ -23,14 +23,14 @@ class ClusterMaterial(BaseModel):
         self.density = None  # type: str
         super().__init__(**kwargs)
 
-    def validate(self):
+    def validate(self) -> None:
         if not self.guid:
             raise ValueError("guid is required on ClusterMaterial")
 
 
 ##  Class representing a local material that was fetched from the container registry.
 class LocalMaterial(BaseModel):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         self.GUID = None  # type: str
         self.id = None  # type: str
         self.type = None  # type: str
@@ -49,7 +49,7 @@ class LocalMaterial(BaseModel):
         self.compatible = None  # type: bool
         super().__init__(**kwargs)
 
-    def validate(self):
+    def validate(self) -> None:
         if not self.GUID:
             raise ValueError("guid is required on LocalMaterial")
         if not self.id:
