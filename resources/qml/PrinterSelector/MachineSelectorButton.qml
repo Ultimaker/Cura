@@ -13,8 +13,8 @@ Button
 
     width: parent.width
     height: UM.Theme.getSize("action_button").height
-    leftPadding: Math.round(1.5 * UM.Theme.getSize("default_margin").width)
-    rightPadding: Math.round(1.5 * UM.Theme.getSize("default_margin").width)
+    leftPadding: UM.Theme.getSize("thick_margin").width
+    rightPadding: UM.Theme.getSize("thick_margin").width
     checkable: true
 
     property var outputDevice: null

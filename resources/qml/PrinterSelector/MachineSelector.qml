@@ -48,8 +48,12 @@ Cura.ExpandableComponent
         {
             id: icon
 
-            anchors.bottom: parent.bottom
-            x: UM.Theme.getSize("thick_margin").width
+            anchors
+            {
+                bottom: parent.bottom
+                left: parent.left
+                leftMargin: UM.Theme.getSize("thick_margin").width
+            }
 
             source: UM.Theme.getIcon("printer_connected")
             width: UM.Theme.getSize("printer_status_icon").width
