@@ -72,8 +72,8 @@ class CloudOutputDeviceManager(NetworkClient):
         for cluster in clusters:
             self._addCloudOutputDevice(cluster)
         
-        # # For testing we add a dummy device:
-        # self._addCloudOutputDevice({ "cluster_id": "LJ0tciiuZZjarrXAvFLEZ6ox4Cvx8FvtXUlQv4vIhV6w" })
+        # For testing we add a dummy device:
+        # self._addCloudOutputDevice(CloudCluster(cluster_id = "LJ0tciiuZZjarrXAvFLEZ6ox4Cvx8FvtXUlQv4vIhV6w"))
 
     @staticmethod
     def _parseStatusResponse(reply: QNetworkReply) -> List[CloudCluster]:
