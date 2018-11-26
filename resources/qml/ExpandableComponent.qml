@@ -12,7 +12,8 @@ Item
     id: base
 
     // Enumeration with the different possible alignments of the popup with respect of the headerItem
-    enum PopupAlignment {
+    enum PopupAlignment 
+    {
         AlignLeft,
         AlignRight
     }
