@@ -8,7 +8,8 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from UM.Logger import Logger
 from cura.NetworkClient import NetworkClient
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDevice import CloudOutputDevice
-    
+from .Models import Cluster
+
 
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
 #   Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
@@ -60,35 +61,38 @@ class CloudOutputDeviceManager(NetworkClient):
             return
 
         # Parse the response (returns the "data" field from the body).
-        clusters_data = self._parseStatusResponse(reply)
-        if not clusters_data:
+        clusters = self._parseStatusResponse(reply)
+        if not clusters:
             return
         
         # Add an output device for each remote cluster.
         # The clusters are an array of objects in a field called "data".
-        for cluster in clusters_data:
+        for cluster in clusters:
             self._addCloudOutputDevice(cluster)
         
         # # For testing we add a dummy device:
         # self._addCloudOutputDevice({ "cluster_id": "LJ0tciiuZZjarrXAvFLEZ6ox4Cvx8FvtXUlQv4vIhV6w" })
 
     @staticmethod
-    def _parseStatusResponse(reply: QNetworkReply) -> Optional[dict]:
+    def _parseStatusResponse(reply: QNetworkReply) -> Optional[Cluster]:
         try:
-            result = json.loads(bytes(reply.readAll()).decode("utf-8"))
-            # TODO: use model or named tuple here.
-            return result.data
+            return [Cluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))]
         except json.decoder.JSONDecodeError:
             Logger.logException("w", "Unable to decode JSON from reply.")
             return None
-    
+        except UnicodeDecodeError:
+            Logger.log("e", "Unable to read server response")
+        except json.JSONDecodeError:
+            Logger.logException("w", "Unable to decode JSON from reply.")
+
+        return None
+
     ##  Adds a CloudOutputDevice for each entry in the remote cluster list from the API.
-    def _addCloudOutputDevice(self, cluster_data: Dict[str, any]):
-        # TODO: use model or named tuple for cluster_data
-        print("cluster_data====", cluster_data)
-        device = CloudOutputDevice(cluster_data["cluster_id"])
+    def _addCloudOutputDevice(self, cluster: Cluster):
+        print("cluster_data====", cluster)
+        device = CloudOutputDevice(cluster["cluster_id"])
         self._output_device_manager.addOutputDevice(device)
-        self._remote_clusters[cluster_data["cluster_id"]] = device
+        self._remote_clusters[cluster["cluster_id"]] = device
     
     ##  Callback for when the active machine was changed by the user.
     def _activeMachineChanged(self):
