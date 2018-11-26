@@ -182,6 +182,7 @@ Cura.ExpandableComponent
                     verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
                     elide: Text.ElideRight
+
                     color:
                     {
                         if(control.pressed)

@@ -99,6 +99,7 @@ Column
     {
         id: buttonRow
         spacing: UM.Theme.getSize("default_margin").width
+        width: parent.width
 
         Cura.ActionButton
         {

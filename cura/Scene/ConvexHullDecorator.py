@@ -272,7 +272,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         head_and_fans = self._getHeadAndFans().intersectionConvexHulls(mirrored)
 
         # Min head hull is used for the push free
-        convex_hull = self._compute2DConvexHeadFull()
+        convex_hull = self._compute2DConvexHull()
         if convex_hull:
             return convex_hull.getMinkowskiHull(head_and_fans)
         return None

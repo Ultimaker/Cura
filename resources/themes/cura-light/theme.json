@@ -64,6 +64,12 @@
             "size": 1.15,
             "weight": 50,
             "family": "Noto Sans"
+        },
+        "extruder_icon":
+        {
+            "size": 0.7,
+            "weight": 50,
+            "family": "Noto Sans"
         }
     },
 
@@ -124,9 +130,9 @@
         "warning": [255, 190, 35, 255],
 
         "toolbar_button_text": [10, 8, 80, 255],
-        "toolbar_button_text_hover": [50, 130, 255, 255],
-        "toolbar_button_text_active": [50, 130, 255, 255],
-        "toolbar_button_text_active_hover": [50, 130, 255, 255],
+        "toolbar_button_hover": [232, 242, 252, 255],
+        "toolbar_button_active": [232, 242, 252, 255],
+        "toolbar_button_active_hover": [232, 242, 252, 255],
 
         "button": [31, 36, 39, 255],
         "button_hover": [68, 72, 75, 255],
@@ -388,7 +394,7 @@
 
         "machine_selector_widget": [16.0, 4.5],
 
-        "views_selector": [0.0, 4.0],
+        "views_selector": [16.0, 4.5],
 
         "default_radius": [0.25, 0.25],
 
@@ -405,8 +411,7 @@
         "thin_margin": [0.71, 0.71],
         "narrow_margin": [0.5, 0.5],
 
-        "extruder_button_material_margin": [0.70, 0.9],
-        "extruder_button_material": [0.75, 0.75],
+        "extruder_icon": [1.8, 1.8],
 
         "simple_mode_infill_caption": [0.0, 5.0],
         "simple_mode_infill_height": [0.0, 8.0],
@@ -451,7 +456,7 @@
 
         "progressbar": [26.0, 0.75],
         "progressbar_radius": [0.15, 0.15],
-        "progressbar_control": [8.0, 0.4],
+        "progressbar_control": [8.0, 0.75],
 
         "scrollbar": [0.75, 0.5],
 
