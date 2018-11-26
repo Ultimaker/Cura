@@ -59,7 +59,6 @@ Item
 
     Rectangle
     {
-        id: tabControl
         width: parent.width
         height: childrenRect.height
         anchors.top: tabBar.bottom
@@ -91,13 +90,17 @@ Item
             }
         }
 
-        property var model: extrudersModel.items[tabBar.currentIndex]
-        property real textWidth: Math.round(width * 0.3)
-        property real controlWidth: width - textWidth
         Column
         {
+            id: selectors
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").height
+
+            property var model: extrudersModel.items[tabBar.currentIndex]
+
+            readonly property real paddedWidth: parent.width - padding * 2
+            property real textWidth: Math.round(paddedWidth * 0.3)
+            property real controlWidth: paddedWidth - textWidth
 
             Row
             {
@@ -110,13 +113,13 @@ Item
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     height: parent.height
-                    width: tabControl.textWidth
+                    width: selectors.textWidth
                 }
 
                 OldControls.CheckBox
                 {
-                    checked: tabControl.model != null ? Cura.MachineManager.getExtruder(tabControl.model.index).isEnabled: false
-                    onClicked: Cura.MachineManager.setExtruderEnabled(tabControl.model.index, checked)
+                    checked: selectors.model != null ? Cura.MachineManager.getExtruder(selectors.model.index).isEnabled: false
+                    onClicked: Cura.MachineManager.setExtruderEnabled(selectors.model.index, checked)
                     height: UM.Theme.getSize("setting_control").height
                     style: UM.Theme.styles.checkbox
                 }
@@ -132,7 +135,7 @@ Item
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     height: parent.height
-                    width: tabControl.textWidth
+                    width: selectors.textWidth
                 }
 
                 OldControls.ToolButton
@@ -152,7 +155,7 @@ Item
                     enabled: Cura.ExtruderManager.activeExtruderIndex > -1
 
                     height: UM.Theme.getSize("setting_control").height
-                    width: tabControl.controlWidth
+                    width: selectors.controlWidth
 
                     style: UM.Theme.styles.sidebar_header_button
                     activeFocusOnPress: true
@@ -174,7 +177,7 @@ Item
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     height: parent.height
-                    width: tabControl.textWidth
+                    width: selectors.textWidth
                 }
 
                 OldControls.ToolButton
@@ -185,7 +188,7 @@ Item
                     visible: Cura.MachineManager.hasVariants
 
                     height: UM.Theme.getSize("setting_control").height
-                    width: tabControl.controlWidth
+                    width: selectors.controlWidth
                     style: UM.Theme.styles.sidebar_header_button
                     activeFocusOnPress: true;
 
