@@ -181,14 +181,6 @@
         "action_button_shadow": [64, 47, 205, 255],
         "action_button_disabled_shadow": [228, 228, 228, 255],
 
-        "print_button_ready": [50, 130, 255, 255],
-        "print_button_ready_border": [50, 130, 255, 255],
-        "print_button_ready_text": [255, 255, 255, 255],
-        "print_button_ready_hovered": [30, 186, 245, 243],
-        "print_button_ready_hovered_border": [30, 186, 245, 243],
-        "print_button_ready_pressed": [30, 186, 245, 243],
-        "print_button_ready_pressed_border": [30, 186, 245, 243],
-
         "scrollbar_background": [255, 255, 255, 255],
         "scrollbar_handle": [31, 36, 39, 255],
         "scrollbar_handle_hover": [12, 159, 227, 255],
