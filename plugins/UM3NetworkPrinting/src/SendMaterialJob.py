@@ -159,8 +159,8 @@ class SendMaterialJob(Job):
             Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
         except json.JSONDecodeError:
             Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
-        except TypeError:
-            Logger.log("e", "Request material storage on printer: Printer's answer was missing GUIDs.")
+        except ValueError:
+            Logger.log("e", "Request material storage on printer: Printer's answer was missing a value.")
 
     ##  Retrieves a list of local materials
     #
