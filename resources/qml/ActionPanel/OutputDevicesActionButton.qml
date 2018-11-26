@@ -94,10 +94,7 @@ Item
             {
                 opacity: visible ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
-                radius: UM.Theme.getSize("default_radius").width
                 color: UM.Theme.getColor("action_panel_secondary")
-                border.color: UM.Theme.getColor("lining")
-                border.width: UM.Theme.getSize("default_lining").width
             }
         }
     }
