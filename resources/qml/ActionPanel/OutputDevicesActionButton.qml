@@ -12,7 +12,7 @@ Item
 {
     id: widget
 
-    Cura.ActionButton
+    Cura.PrimaryButton
     {
         id: saveToButton
         height: parent.height
@@ -42,6 +42,9 @@ Item
         id: deviceSelectionMenu
         height: parent.height
 
+        shadowEnabled: true
+        shadowColor: UM.Theme.getColor("primary_shadow")
+
         anchors
         {
             top: parent.top
@@ -65,7 +68,7 @@ Item
 
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
-            contentItem: Column
+            contentItem: ColumnLayout
             {
                 Repeater
                 {
@@ -77,7 +80,7 @@ Item
                         color: "transparent"
                         cornerRadius: 0
                         hoverColor: UM.Theme.getColor("primary")
-
+                        Layout.fillWidth: true
                         onClicked:
                         {
                             UM.OutputDeviceManager.setActiveDevice(model.id)
@@ -91,10 +94,7 @@ Item
             {
                 opacity: visible ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
-                radius: UM.Theme.getSize("default_radius").width
                 color: UM.Theme.getColor("action_panel_secondary")
-                border.color: UM.Theme.getColor("lining")
-                border.width: UM.Theme.getSize("default_lining").width
             }
         }
     }
