@@ -30,7 +30,10 @@ Column
         model: UM.ContainerStacksModel
         {
             id: networkedPrintersModel
-            filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
+            filter:
+            {
+                "type": "machine", "um_network_key": "*", "hidden": "False"
+            }
         }
 
         delegate: MachineSelectorButton
@@ -66,7 +69,10 @@ Column
         model: UM.ContainerStacksModel
         {
             id: virtualPrintersModel
-            filter: {"type": "machine", "um_network_key": null}
+            filter:
+            {
+                "type": "machine", "um_network_key": null
+            }
         }
 
         delegate: MachineSelectorButton
