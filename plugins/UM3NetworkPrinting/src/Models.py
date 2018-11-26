@@ -6,6 +6,10 @@
 class BaseModel:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
+        self.validate()
+
+    def validate(self):
+        pass
 
 
 ##  Class representing a material that was fetched from the cluster API.
@@ -18,6 +22,10 @@ class ClusterMaterial(BaseModel):
         self.color = None  # type: str
         self.density = None  # type: str
         super().__init__(**kwargs)
+
+    def validate(self):
+        if not self.guid:
+            raise ValueError("guid is required on ClusterMaterial")
 
 
 ##  Class representing a local material that was fetched from the container registry.
@@ -40,3 +48,9 @@ class LocalMaterial(BaseModel):
         self.definition = None  # type: str
         self.compatible = None  # type: bool
         super().__init__(**kwargs)
+
+    def validate(self):
+        if not self.GUID:
+            raise ValueError("guid is required on LocalMaterial")
+        if not self.id:
+            raise ValueError("id is required on LocalMaterial")
