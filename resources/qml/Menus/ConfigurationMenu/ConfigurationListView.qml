@@ -25,21 +25,6 @@ Column
         }
     }
 
-    Component
-    {
-        id: sectionHeading
-        Rectangle
-        {
-            height: childrenRect.height + UM.Theme.getSize("default_margin").height
-            Label
-            {
-                text: section
-                font: UM.Theme.getFont("default_bold")
-                color: UM.Theme.getColor("configuration_item_text")
-            }
-        }
-    }
-
     ScrollView
     {
         id: container
@@ -58,7 +43,13 @@ Column
 
             section.property: "modelData.printerType"
             section.criteria: ViewSection.FullString
-            section.delegate: sectionHeading
+            section.delegate: Label
+            {
+                text: section
+                font: UM.Theme.getFont("default_bold")
+                color: UM.Theme.getColor("configuration_item_text")
+                bottomPadding: UM.Theme.getSize("default_margin").height
+            }
 
             model: (outputDevice != null) ? outputDevice.uniqueConfigurations : []
             delegate: ConfigurationItem
