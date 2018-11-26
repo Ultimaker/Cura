@@ -40,6 +40,18 @@ Column
         }
     }
 
+    Label
+    {
+        id: autoSlicingLabel
+        width: parent.width
+        visible: prepareButtons.autoSlice && widget.backendState == UM.Backend.Processing
+
+        text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
+        color: UM.Theme.getColor("text")
+        font: UM.Theme.getFont("very_small")
+        renderType: Text.NativeRendering
+    }
+
     Cura.IconLabel
     {
         id: unableToSliceMessage
