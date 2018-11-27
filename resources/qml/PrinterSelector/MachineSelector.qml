@@ -90,11 +90,13 @@ Cura.ExpandableComponent
             id: scroll
             width: parent.width
             clip: true
+            leftPadding: UM.Theme.getSize("default_lining").width
+            rightPadding: UM.Theme.getSize("default_lining").width
 
             MachineSelectorList
             {
                 // Can't use parent.width since the parent is the flickable component and not the ScrollView
-                width: scroll.width
+                width: scroll.width - scroll.leftPadding - scroll.rightPadding
                 property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
 
                 onHeightChanged:
