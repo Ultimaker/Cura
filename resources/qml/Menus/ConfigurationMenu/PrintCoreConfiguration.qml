@@ -37,7 +37,7 @@ Column
         {
             width: UM.Theme.getSize("section_icon").width
             height: UM.Theme.getSize("section_icon").height
-            materialColor: mainColor
+            materialColor: printCoreConfiguration.material.color
             anchors.left: extruderLabel.right
             anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
         }
