@@ -24,6 +24,7 @@ Row
         {
             materialColor: printCoreConfiguration.material.color
             anchors.verticalCenter: parent.verticalCenter
+            extruderEnabled: printCoreConfiguration.material.name !== "" && printCoreConfiguration.hotendID !== ""
         }
     }
 
