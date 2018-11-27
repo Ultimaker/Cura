@@ -593,6 +593,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _createMaterialOutputModel(self, material_data: Dict[str, Any]) -> "MaterialOutputModel":
         material_manager = CuraApplication.getInstance().getMaterialManager()
         material_group_list = material_manager.getMaterialGroupListByGUID(material_data["guid"])
+        # This can happen if the connected machine has no material in one or more extruders, so we should return an
+        # "empty" material model.
+        if material_group_list is None:
+            return MaterialOutputModel(guid = material_data["guid"],
+                                       type = material_data.get("type", ""),
+                                       color = material_data.get("color", ""),
+                                       brand = material_data.get("brand", ""),
+                                       name = material_data.get("name", "Empty")
+                                       )
 
         # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
         read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
