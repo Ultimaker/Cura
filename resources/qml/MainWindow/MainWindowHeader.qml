@@ -122,6 +122,8 @@ Rectangle
             text: marketplaceButton.text
             color: marketplaceButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
             width: contentWidth
+            verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
         }
 
         anchors
