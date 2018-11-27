@@ -15,6 +15,9 @@ Button
     signal activateConfiguration()
 
     height: childrenRect.height
+    padding: 0 //Stupid QML button has spacing by default.
+    rightPadding: 0
+    leftPadding: 0
 
     property var textColor: checked ? UM.Theme.getColor("configuration_item_text_active") : UM.Theme.getColor("configuration_item_text")
 
@@ -73,7 +76,8 @@ Button
                 height: childrenRect.height
                 visible: configuration.buildplateConfiguration != ""
 
-                UM.RecolorImage {
+                UM.RecolorImage
+                {
                     id: buildplateIcon
                     anchors.left: parent.left
                     width: UM.Theme.getSize("main_window_header_button_icon").width
