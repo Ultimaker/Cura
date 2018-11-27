@@ -64,7 +64,7 @@ Cura.ExpandableComponent
                     text: model.material_brand
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
+                    color: UM.Theme.getColor("text_inactive")
 
                     anchors
                     {
