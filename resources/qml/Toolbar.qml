@@ -2,9 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -68,7 +66,6 @@ Item
 
                     toolItem: UM.RecolorImage
                     {
-                        opacity: parent.enabled ? 1.0 : 0.2
                         source: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("toolbar_button_text")
 

@@ -29,7 +29,7 @@ Button
             }
             else if (base.checked)
             {
-                return "red" //UM.Theme.getColor("toolbar_button_active")
+                return UM.Theme.getColor("toolbar_button_active")
             }
             else if(base.hovered)
             {
@@ -81,6 +81,7 @@ Button
 
     contentItem: Item
     {
+        opacity: parent.enabled ? 1.0 : 0.2
         Loader
         {
             id: contentItemLoader
