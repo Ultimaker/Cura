@@ -25,6 +25,7 @@ Button
         color: parent.checked ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
         border.color: parent.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("lining")
         border.width: parent.hovered ? UM.Theme.getSize("thick_lining").width : UM.Theme.getSize("default_lining").width
+        radius: UM.Theme.getSize("default_radius").width
 
         Column
         {
