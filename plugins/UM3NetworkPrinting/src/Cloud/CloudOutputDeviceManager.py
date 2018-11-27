@@ -43,11 +43,7 @@ class CloudOutputDeviceManager(NetworkClient):
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._activeMachineChanged)
 
-        # Fetch all remote clusters for the authenticated user.
-        # TODO: update remote clusters periodically
-        self._account.loginStateChanged.connect(self._getRemoteClusters)
-
-        # Periodically check the cloud for an update on the clusters connected to the user's account
+        # Periodically check all remote clusters for the authenticated user.
         self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
         self._update_clusters_thread.start()
 
