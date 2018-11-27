@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 
 import UM 1.2 as UM
-
+import Cura 1.0 as Cura
 
 Column
 {
@@ -33,37 +33,13 @@ Column
             color: mainColor
         }
 
-        // Rounded item to show the extruder number
-        Item
+        Cura.ExtruderIcon
         {
-            id: extruderIconItem
-            anchors.verticalCenter: extruderLabel.verticalCenter
-            anchors.left: extruderLabel.right
-            anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
-
             width: UM.Theme.getSize("section_icon").width
             height: UM.Theme.getSize("section_icon").height
-
-            UM.RecolorImage {
-                id: mainCircle
-                anchors.fill: parent
-
-                anchors.centerIn: parent
-                sourceSize.width: parent.width
-                sourceSize.height: parent.height
-                source: UM.Theme.getIcon("extruder_button")
-                color: mainColor
-            }
-
-            Label
-            {
-                id: extruderNumberText
-                anchors.centerIn: parent
-                text: printCoreConfiguration.position + 1
-                renderType: Text.NativeRendering
-                font: UM.Theme.getFont("default")
-                color: mainColor
-            }
+            materialColor: mainColor
+            anchors.left: extruderLabel.right
+            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
         }
     }
 
