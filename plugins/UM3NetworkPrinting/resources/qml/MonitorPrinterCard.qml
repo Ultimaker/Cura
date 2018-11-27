@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.3
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
 
@@ -50,12 +50,18 @@ Item
             }
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
-            Rectangle
+            Image
             {
                 id: printerImage
-                color: "#eeeeee"
-                width: 108
-                height: 108
+                width: 108 * screenScaleFactor // TODO: Theme!
+                height: 108 * screenScaleFactor // TODO: Theme!
+                fillMode: Image.PreserveAspectFit
+                source:
+                {
+                    console.log(printer)
+                    return "../png/ultimaker_s5.png"
+                }
+                mipmap: true
             }
 
             Item
@@ -111,16 +117,28 @@ Item
         PrintJobContextMenu
         {
             id: contextButton
-            // anchors
-            // {
-            //     right: parent.right
-            //     rightMargin: 8 * screenScaleFactor // TODO: Theme!
-            //     top: parent.top
-            //     topMargin: 8 * screenScaleFactor // TODO: Theme!
-            // }
-            printJob: base.printJob
-            width: 32 * screenScaleFactor // TODO: Theme!
-            height: 32 * screenScaleFactor // TODO: Theme!
+            anchors
+            {
+                right: parent.right
+                rightMargin: 12 * screenScaleFactor // TODO: Theme!
+                top: parent.top
+                topMargin: 12 * screenScaleFactor // TODO: Theme!
+            }
+            printJob: printer.activePrintJob
+            width: 36 * screenScaleFactor // TODO: Theme!
+            height: 36 * screenScaleFactor // TODO: Theme!
+        }
+        CameraButton
+        {
+            id: cameraButton;
+            anchors
+            {
+                right: parent.right
+                rightMargin: 20 * screenScaleFactor // TODO: Theme!
+                bottom: parent.bottom
+                bottomMargin: 20 * screenScaleFactor // TODO: Theme!
+            }
+            iconSource: "../svg/camera-icon.svg"
         }
     }
 
