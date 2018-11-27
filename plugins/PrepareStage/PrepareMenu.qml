@@ -8,6 +8,7 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
+import QtGraphicalEffects 1.0 // For the dropshadow
 
 Item
 {
@@ -107,11 +108,25 @@ Item
 
             background: Rectangle
             {
+                id: background
                 height: UM.Theme.getSize("stage_menu").height
                 width: UM.Theme.getSize("stage_menu").height
 
                 radius: UM.Theme.getSize("default_radius").width
                 color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+            }
+            DropShadow
+            {
+                id: shadow
+                // Don't blur the shadow
+                radius: 0
+                anchors.fill: background
+                source: background
+                verticalOffset: 2
+                visible: true
+                color: UM.Theme.getColor("action_button_shadow")
+                // Should always be drawn behind the background.
+                z: background.z - 1
             }
         }
     }
