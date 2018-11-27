@@ -95,16 +95,21 @@ Item
             onClicked: Cura.Actions.open.trigger()
             hoverEnabled: true
 
-            contentItem: UM.RecolorImage
+            contentItem: Item
             {
-                id: buttonIcon
-                source: UM.Theme.getIcon("load")
-                width: UM.Theme.getSize("button_icon").width
-                height: UM.Theme.getSize("button_icon").height
-                color: UM.Theme.getColor("toolbar_button_text")
+                anchors.fill: parent
+                UM.RecolorImage
+                {
+                    id: buttonIcon
+                    anchors.centerIn: parent
+                    source: UM.Theme.getIcon("load")
+                    width: UM.Theme.getSize("button_icon").width
+                    height: UM.Theme.getSize("button_icon").height
+                    color: UM.Theme.getColor("toolbar_button_text")
 
-                sourceSize.width: width
-                sourceSize.height: height
+                    sourceSize.width: width
+                    sourceSize.height: height
+                }
             }
 
             background: Rectangle
