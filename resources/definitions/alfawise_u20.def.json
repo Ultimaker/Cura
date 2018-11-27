@@ -83,7 +83,7 @@
         "support_enable": {
             "default_value": true
         },
-                "retraction_enable": {
+        "retraction_enable": {
             "default_value": true
         },
         "retraction_amount": {
