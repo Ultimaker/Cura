@@ -16,6 +16,7 @@ Button
     leftPadding: UM.Theme.getSize("thick_margin").width
     rightPadding: UM.Theme.getSize("thick_margin").width
     checkable: true
+    hoverEnabled: true
 
     property var outputDevice: null
     property var printerTypesList: []
@@ -84,14 +85,6 @@ Button
     {
         togglePopup()
         Cura.MachineManager.setActiveMachine(model.id)
-    }
-
-    MouseArea
-    {
-        id: mouseArea
-        anchors.fill: parent
-        onPressed: mouse.accepted = false
-        hoverEnabled: true
     }
 
     Connections
