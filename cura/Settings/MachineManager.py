@@ -3,6 +3,8 @@
 
 import collections
 import time
+import re
+import unicodedata
 from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
@@ -909,20 +911,14 @@ class MachineManager(QObject):
         # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
         global_user_container = self._global_container_stack.userChanges
 
-        # Make sure extruder_stacks exists
-        extruder_stacks = [] #type: List[ExtruderStack]
-
-        if previous_extruder_count == 1:
-            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-            global_user_container = self._global_container_stack.userChanges
-
         for setting_instance in global_user_container.findInstances():
             setting_key = setting_instance.definition.key
             settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
 
             if settable_per_extruder:
                 limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
-                extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
+                extruder_position = str(max(0, limit_to_extruder))
+                extruder_stack = self._global_container_stack.extruders[extruder_position]
                 extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
                 global_user_container.removeInstance(setting_key)
 
@@ -1537,3 +1533,22 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()
+
+    ##  This function will translate any printer type name to an abbreviated printer type name
+    @pyqtSlot(str, result = str)
+    def getAbbreviatedMachineName(self, machine_type_name: str) -> str:
+        abbr_machine = ""
+        for word in re.findall(r"[\w']+", machine_type_name):
+            if word.lower() == "ultimaker":
+                abbr_machine += "UM"
+            elif word.isdigit():
+                abbr_machine += word
+            else:
+                stripped_word = ''.join(char for char in unicodedata.normalize('NFD', word.upper()) if unicodedata.category(char) != 'Mn')
+                # - use only the first character if the word is too long (> 3 characters)
+                # - use the whole word if it's not too long (<= 3 characters)
+                if len(stripped_word) > 3:
+                    stripped_word = stripped_word[0]
+                abbr_machine += stripped_word
+
+        return abbr_machine

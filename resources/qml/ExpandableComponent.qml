@@ -2,6 +2,9 @@ import QtQuick 2.7
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
+
+import QtGraphicalEffects 1.0 // For the dropshadow
 
 // The expandable component has 3 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
@@ -10,6 +13,14 @@ import UM 1.2 as UM
 Item
 {
     id: base
+
+    // Enumeration with the different possible alignments of the popup with respect of the headerItem
+    enum PopupAlignment 
+    {
+        AlignLeft,
+        AlignRight
+    }
+
     // The headerItem holds the QML item that is always displayed.
     property alias headerItem: headerItemLoader.sourceComponent
 
@@ -17,11 +28,12 @@ Item
     property var popupItem
 
     property color popupBackgroundColor: UM.Theme.getColor("action_button")
-    property int popupBorderWidth: UM.Theme.getSize("default_lining").width
-    property color popupBorderColor: UM.Theme.getColor("lining")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
     property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
+
+    // Defines the alignment of the popup with respect of the headerItem, by default to the right
+    property int popupAlignment: ExpandableComponent.PopupAlignment.AlignRight
 
     // How much spacing is needed around the popupItem
     property alias popupPadding: popup.padding
@@ -47,6 +59,12 @@ Item
 
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
+
+    property alias headerShadowColor: shadow.color
+
+    property alias enableHeaderShadow: shadow.visible
+
+    property int shadowOffset: 2
 
     function togglePopup()
     {
@@ -125,8 +143,8 @@ Item
             sourceSize.height: height
             visible: source != ""
             width: height
-            height: 0.2 * base.height
-            color: "black"
+            height: Math.round(0.2 * base.height)
+            color: UM.Theme.getColor("text")
         }
 
         MouseArea
@@ -139,25 +157,40 @@ Item
             onExited: background.color = headerBackgroundColor
         }
     }
+    DropShadow
+    {
+        id: shadow
+        // Don't blur the shadow
+        radius: 0
+        anchors.fill: background
+        source: background
+        verticalOffset: base.shadowOffset
+        visible: true
+        color: UM.Theme.getColor("action_button_shadow")
+        // Should always be drawn behind the background.
+        z: background.z - 1
+    }
 
     Popup
     {
         id: popup
 
         // Ensure that the popup is located directly below the headerItem
-        y: headerItemLoader.height + 2 * background.padding
+        y: headerItemLoader.height + 2 * background.padding + base.shadowOffset
 
-        // Make the popup right aligned with the rest. The 3x padding is due to left, right and padding between
-        // the button & text.
-        x: -width + collapseButton.width + headerItemLoader.width + 3 * background.padding
+        // Make the popup aligned with the rest, using the property popupAlignment to decide whether is right or left.
+        // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
+        x: popupAlignment == ExpandableComponent.PopupAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
         padding: UM.Theme.getSize("default_margin").width
         closePolicy: Popup.CloseOnPressOutsideParent
 
-        background: Rectangle
+        background: Cura.RoundedRectangle
         {
+            cornerSide: Cura.RoundedRectangle.Direction.Down
             color: popupBackgroundColor
-            border.width: popupBorderWidth
-            border.color: popupBorderColor
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+            radius: UM.Theme.getSize("default_radius").width
         }
     }
 }

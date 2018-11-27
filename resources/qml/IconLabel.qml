@@ -16,32 +16,37 @@ Item
     property alias source: icon.source
     property alias color: label.color
     property alias font: label.font
+    property alias iconSize: icon.width
 
-    height: childrenRect.height
+    implicitHeight: icon.height
 
     UM.RecolorImage
     {
         id: icon
 
         anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
 
-        source: UM.Theme.getIcon("dot")
+        source: ""
         width: UM.Theme.getSize("section_icon").width
-        height: UM.Theme.getSize("section_icon").height
+        height: width
 
         sourceSize.width: width
         sourceSize.height: height
 
         color: label.color
+        visible: source != ""
     }
 
     Label
     {
         id: label
-        anchors.left: icon.right
+        anchors.left: icon.visible ? icon.right : parent.left
+        anchors.right: parent.right
         anchors.leftMargin: UM.Theme.getSize("thin_margin").width
         anchors.verticalCenter: icon.verticalCenter
         text: "Empty label"
+        elide: Text.ElideRight
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering

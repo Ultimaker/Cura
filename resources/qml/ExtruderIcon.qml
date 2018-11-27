@@ -16,6 +16,7 @@ Item
     property color materialColor
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
+
     UM.RecolorImage
     {
         id: mainIcon
