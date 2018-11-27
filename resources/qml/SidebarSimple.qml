@@ -192,13 +192,15 @@ Item
                     id: qualityRowTitle
                     source: UM.Theme.getIcon("category_layer_height")
                     text: catalog.i18nc("@label", "Layer Height")
+                    anchors.bottom: speedSlider.bottom
+
                 }
 
                 // Show titles for the each quality slider ticks
                 Item
                 {
-                    y: -5;
                     anchors.left: speedSlider.left
+                    anchors.top: speedSlider.bottom
                     Repeater
                     {
                         model: qualityModel
@@ -206,8 +208,7 @@ Item
                         Label
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.top: parent.top
-                            anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2)
+                            anchors.top: parent.bottom
                             color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
@@ -258,7 +259,7 @@ Item
                 }
 
                 //Print speed slider
-                Item
+                Rectangle
                 {
                     id: speedSlider
                     width: Math.round(base.width * 0.55)
@@ -367,12 +368,12 @@ Item
 
                         Rectangle
                         {
-                            anchors.verticalCenter: parent.verticalCenter
                             color: Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                            width: 1 * screenScaleFactor
-                            height: 6 * screenScaleFactor
-                            y: 0
+                            implicitWidth: 5 * screenScaleFactor
+                            implicitHeight: implicitWidth
+                            anchors.verticalCenter: qualitySlider.verticalCenter
                             x: Math.round(qualityModel.qualitySliderStepWidth * index)
+                            radius: Math.round(implicitWidth / 2)
                         }
                     }
 
@@ -451,42 +452,6 @@ Item
                         }
                         onExited: base.hideTooltip()
                     }
-                }
-
-                Label
-                {
-                    id: speedLabel
-                    anchors.top: speedSlider.bottom
-
-                    anchors.left: parent.left
-
-                    text: catalog.i18nc("@label", "Print Speed")
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    width: Math.round(UM.Theme.getSize("print_setup_widget").width * 0.35)
-                    elide: Text.ElideRight
-                }
-
-                Label
-                {
-                    anchors.bottom: speedLabel.bottom
-                    anchors.left: speedSlider.left
-
-                    text: catalog.i18nc("@label", "Slower")
-                    font: UM.Theme.getFont("default")
-                    color: (qualityModel.availableTotalTicks > 1) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                Label
-                {
-                    anchors.bottom: speedLabel.bottom
-                    anchors.right: speedSlider.right
-
-                    text: catalog.i18nc("@label", "Faster")
-                    font: UM.Theme.getFont("default")
-                    color: (qualityModel.availableTotalTicks > 1) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                    horizontalAlignment: Text.AlignRight
                 }
 
                 UM.SimpleButton
