@@ -8,6 +8,7 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
+import QtGraphicalEffects 1.0
 
 import "../Account"
 
@@ -17,7 +18,31 @@ Rectangle
 
     implicitHeight: UM.Theme.getSize("main_window_header").height
     implicitWidth: UM.Theme.getSize("main_window_header").width
-    color: UM.Theme.getColor("main_window_header_background")
+
+    LinearGradient
+    {
+        anchors.fill: parent
+        start: Qt.point(0, 0)
+        end: Qt.point(parent.width, 0)
+        gradient: Gradient
+        {
+            GradientStop
+            {
+                position: 0.0
+                color: UM.Theme.getColor("main_window_header_background")
+            }
+            GradientStop
+            {
+                position: 0.5
+                color: UM.Theme.getColor("main_window_header_background_gradient")
+            }
+            GradientStop
+            {
+                position: 1.0
+                color: UM.Theme.getColor("main_window_header_background")
+            }
+        }
+    }
 
     Image
     {

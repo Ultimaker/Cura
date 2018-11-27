@@ -100,6 +100,7 @@
         "secondary_button_text": [30, 102, 215, 255],
 
         "main_window_header_background": [10, 8, 80, 255],
+        "main_window_header_background_gradient": [25, 23, 91, 255],
         "main_window_header_button_text_active": [10, 8, 80, 255],
         "main_window_header_button_text_inactive": [255, 255, 255, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
