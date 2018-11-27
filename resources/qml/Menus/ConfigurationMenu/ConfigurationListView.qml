@@ -46,21 +46,11 @@ Column
             section.criteria: ViewSection.FullString
             section.delegate: Item
             {
-                height: printerTypeLabelBox.height + UM.Theme.getSize("default_margin").height
-                Rectangle
+                height: printerTypeLabel.height + UM.Theme.getSize("default_margin").height
+                Cura.PrinterTypeLabel
                 {
-                    id: printerTypeLabelBox
-                    color: UM.Theme.getColor("text_detail")
-                    width: childrenRect.width
-                    height: childrenRect.height
-
-                    Label
-                    {
-                        text: section
-                        font: UM.Theme.getFont("small")
-                        color: UM.Theme.getColor("text")
-                        padding: UM.Theme.getSize("narrow_margin").width
-                    }
+                    id: printerTypeLabel
+                    text: Cura.MachineManager.getAbbreviatedMachineName(section)
                 }
             }
 
