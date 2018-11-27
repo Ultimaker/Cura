@@ -58,7 +58,7 @@ Column
                     {
                         text: section
                         font: UM.Theme.getFont("small")
-                        color: UM.Theme.getColor("configuration_item_text")
+                        color: UM.Theme.getColor("text")
                         padding: UM.Theme.getSize("narrow_margin").width
                     }
                 }

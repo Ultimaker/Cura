@@ -319,8 +319,6 @@
 
         "configuration_item": [255, 255, 255, 0],
         "configuration_item_active": [12, 169, 227, 32],
-        "configuration_item_text": [0, 0, 0, 255],
-        "configuration_item_text_active": [0, 0, 0, 255],
         "configuration_item_border": [127, 127, 127, 255],
         "configuration_item_border_active": [12, 169, 227, 32],
         "configuration_item_border_hover": [50, 130, 255, 255],

@@ -19,8 +19,6 @@ Button
     rightPadding: 0
     leftPadding: 0
 
-    property var textColor: checked ? UM.Theme.getColor("configuration_item_text_active") : UM.Theme.getColor("configuration_item_text")
-
     contentItem: Rectangle
     {
         height: childrenRect.height
@@ -53,7 +51,7 @@ Button
                     {
                         width: Math.round(parent.width / 2)
                         printCoreConfiguration: modelData
-                        mainColor: textColor
+                        mainColor: UM.Theme.getColor("text")
                     }
                 }
             }
@@ -66,7 +64,7 @@ Button
                 visible: buildplateInformation.visible
                 width: parent.width - 2 * parent.padding
                 height: visible ? Math.round(UM.Theme.getSize("thick_lining").height / 2) : 0
-                color: textColor
+                color: UM.Theme.getColor("text")
             }
 
             Item
@@ -85,7 +83,7 @@ Button
                     sourceSize.width: width
                     sourceSize.height: height
                     source: UM.Theme.getIcon("buildplate")
-                    color: textColor
+                    color: UM.Theme.getColor("text")
                 }
 
                 Label
@@ -96,7 +94,7 @@ Button
                     anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").height / 2)
                     text: configuration.buildplateConfiguration
                     renderType: Text.NativeRendering
-                    color: textColor
+                    color: UM.Theme.getColor("text")
                 }
             }
         }
