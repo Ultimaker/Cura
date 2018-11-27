@@ -317,12 +317,6 @@
         "layerview_support_interface": [64, 192, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
-        "configuration_item": [255, 255, 255, 0],
-        "configuration_item_active": [12, 169, 227, 32],
-        "configuration_item_border": [127, 127, 127, 255],
-        "configuration_item_border_active": [12, 169, 227, 32],
-        "configuration_item_border_hover": [50, 130, 255, 255],
-
         "tab_status_connected": [50, 130, 255, 255],
         "tab_status_disconnected": [200, 200, 200, 255],
 
