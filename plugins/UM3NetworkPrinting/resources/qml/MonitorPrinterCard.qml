@@ -58,8 +58,8 @@ Item
                 fillMode: Image.PreserveAspectFit
                 source:
                 {
-                    console.log(printer)
-                    return "../png/ultimaker_s5.png"
+                    console.log(printer.type)
+                    return "../png/"+printer.type+".png"
                 }
                 mipmap: true
             }
