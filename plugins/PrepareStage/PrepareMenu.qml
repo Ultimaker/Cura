@@ -93,6 +93,7 @@ Item
             height: UM.Theme.getSize("stage_menu").height
             width: UM.Theme.getSize("stage_menu").height
             onClicked: Cura.Actions.open.trigger()
+            hoverEnabled: true
 
             contentItem: UM.RecolorImage
             {
@@ -115,6 +116,7 @@ Item
                 radius: UM.Theme.getSize("default_radius").width
                 color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
             }
+
             DropShadow
             {
                 id: shadow
