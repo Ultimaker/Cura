@@ -55,17 +55,25 @@ Item
                 model: UM.ToolModel { id: toolsModel }
                 width: childrenRect.width
                 height: childrenRect.height
-                Button
+
+                delegate: ToolbarButton
                 {
                     text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
-                    iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                     checkable: true
                     checked: model.active
                     enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
-                    style: UM.Theme.styles.toolbar_button
 
-                    property bool isFirstElement: toolsModel.getItem(0).id == model.id
-                    property bool isLastElement: toolsModel.getItem(toolsModel.rowCount() - 1).id == model.id
+                    topElement: toolsModel.getItem(0).id == model.id
+                    bottomElement: toolsModel.getItem(toolsModel.rowCount() - 1).id == model.id
+
+                    toolItem: UM.RecolorImage
+                    {
+                        opacity: parent.enabled ? 1.0 : 0.2
+                        source: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                        color: UM.Theme.getColor("toolbar_button_text")
+
+                        sourceSize: UM.Theme.getSize("button_icon")
+                    }
 
                     onCheckedChanged:
                     {
@@ -128,11 +136,12 @@ Item
                 height: childrenRect.height
                 property var _model: Cura.ExtrudersModel { id: extrudersModel }
                 model: _model.items.length > 1 ? _model : 0
-                ExtruderButton
+
+                delegate: ExtruderButton
                 {
                     extruder: model
-                    height: UM.Theme.getSize("button").width
-                    width: UM.Theme.getSize("button").width
+                    topElement: extrudersModel.getItem(0).id == model.id
+                    bottomElement: extrudersModel.getItem(extrudersModel.rowCount() - 1).id == model.id
                 }
             }
         }
