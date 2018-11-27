@@ -911,20 +911,14 @@ class MachineManager(QObject):
         # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
         global_user_container = self._global_container_stack.userChanges
 
-        # Make sure extruder_stacks exists
-        extruder_stacks = [] #type: List[ExtruderStack]
-
-        if previous_extruder_count == 1:
-            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-            global_user_container = self._global_container_stack.userChanges
-
         for setting_instance in global_user_container.findInstances():
             setting_key = setting_instance.definition.key
             settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
 
             if settable_per_extruder:
                 limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
-                extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
+                extruder_position = str(max(0, limit_to_extruder))
+                extruder_stack = self._global_container_stack.extruders[extruder_position]
                 extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
                 global_user_container.removeInstance(setting_key)
 

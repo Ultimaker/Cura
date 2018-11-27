@@ -54,12 +54,12 @@ Cura.ExpandableComponent
         IconWithText
         {
             source: UM.Theme.getIcon("category_layer_height")
-            text: Cura.MachineManager.activeQualityOrQualityChangesName + " " + layerHeight.properties.value + "mm"
+            text: Cura.MachineManager.activeStack ? Cura.MachineManager.activeQualityOrQualityChangesName + " " + layerHeight.properties.value + "mm" : ""
 
             UM.SettingPropertyProvider
             {
                 id: layerHeight
-                containerStackId: Cura.MachineManager.activeStackId
+                containerStack: Cura.MachineManager.activeStack
                 key: "layer_height"
                 watchedProperties: ["value"]
             }
@@ -68,12 +68,12 @@ Cura.ExpandableComponent
         IconWithText
         {
             source: UM.Theme.getIcon("category_infill")
-            text: parseInt(infillDensity.properties.value) + "%"
+            text: Cura.MachineManager.activeStack ? parseInt(infillDensity.properties.value) + "%" : "0%"
 
             UM.SettingPropertyProvider
             {
                 id: infillDensity
-                containerStackId: Cura.MachineManager.activeStackId
+                containerStack: Cura.MachineManager.activeStack
                 key: "infill_sparse_density"
                 watchedProperties: ["value"]
             }
