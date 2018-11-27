@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, cast
 
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
@@ -61,8 +61,10 @@ class CuraActions(QObject):
         operation = GroupedOperation()
         for node in Selection.getAllSelectedObjects():
             current_node = node
-            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
-                current_node = current_node.getParent()
+            parent_node = current_node.getParent()
+            while parent_node and parent_node.callDecoration("isGroup"):
+                current_node = parent_node
+                parent_node = current_node.getParent()
 
             #   This was formerly done with SetTransformOperation but because of
             #   unpredictable matrix deconstruction it was possible that mirrors
@@ -150,13 +152,13 @@ class CuraActions(QObject):
 
         root = cura.CuraApplication.CuraApplication.getInstance().getController().getScene().getRoot()
 
-        nodes_to_change = []
+        nodes_to_change = []  # type: List[SceneNode]
         for node in Selection.getAllSelectedObjects():
             parent_node = node  # Find the parent node to change instead
             while parent_node.getParent() != root:
-                parent_node = parent_node.getParent()
+                parent_node = cast(SceneNode, parent_node.getParent())
 
-            for single_node in BreadthFirstIterator(parent_node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+            for single_node in BreadthFirstIterator(parent_node):  # type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                 nodes_to_change.append(single_node)
 
         if not nodes_to_change:
