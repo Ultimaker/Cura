@@ -14,6 +14,7 @@ Button
     anchors.right: parent.right
     anchors.leftMargin: UM.Theme.getSize("thick_margin").width
     anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+    hoverEnabled: true
     background: Rectangle
     {
         id: backgroundRectangle
