@@ -22,7 +22,7 @@ Button
     contentItem: Rectangle
     {
         height: childrenRect.height
-        color: parent.checked ? UM.Theme.getColor("configuration_item_active") : UM.Theme.getColor("configuration_item")
+        color: parent.checked ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
         border.color: (parent.checked || parent.hovered) ? UM.Theme.getColor("primary") : UM.Theme.getColor("lining")
         border.width: UM.Theme.getSize("default_lining").width
 
