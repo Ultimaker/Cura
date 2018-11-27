@@ -33,7 +33,7 @@ Row
         id: information
         Label
         {
-            text: printCoreConfiguration.material.brand
+            text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.brand : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("default")
@@ -41,7 +41,7 @@ Row
         }
         Label
         {
-            text: printCoreConfiguration.material.name
+            text: printCoreConfiguration.material.name ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("default")
@@ -49,7 +49,7 @@ Row
         }
         Label
         {
-            text: printCoreConfiguration.hotendID
+            text: printCoreConfiguration.hotendID ? printCoreConfiguration.hotendID : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("default")
