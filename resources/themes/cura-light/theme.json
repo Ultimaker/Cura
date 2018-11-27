@@ -402,7 +402,7 @@
         "thin_margin": [0.71, 0.71],
         "narrow_margin": [0.5, 0.5],
 
-        "extruder_icon": [1.8, 1.8],
+        "extruder_icon": [2.33, 2.33],
 
         "section": [0.0, 2.2],
         "section_icon": [1.6, 1.6],

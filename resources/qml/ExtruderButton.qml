@@ -19,12 +19,16 @@ Button
     enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
 
     background: Item {}
-    contentItem: ExtruderIcon
+    contentItem: Item
     {
-        width: UM.Theme.getSize("button_icon").width
-        materialColor: model.color
-        extruderEnabled: extruder.stack.isEnabled
-        property int index: extruder.index
+        // For some reason if the extruder icon is not enclosed to the item, the size changes to fill the size of the button
+        ExtruderIcon
+        {
+            anchors.centerIn: parent
+            materialColor: model.color
+            extruderEnabled: extruder.stack.isEnabled
+            property int index: extruder.index
+        }
     }
 
     onClicked:
