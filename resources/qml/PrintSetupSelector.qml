@@ -216,8 +216,8 @@ Cura.ExpandableComponent
                 topMargin: UM.Theme.getSize("narrow_margin").height
                 right: parent.right
                 left: parent.left
-                leftMargin: UM.Theme.getSize("thick_margin").width / 1.5
-                rightMargin: UM.Theme.getSize("thick_margin").width / 1.5
+                leftMargin: UM.Theme.getSize("default_margin").width
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             UM.TabRow

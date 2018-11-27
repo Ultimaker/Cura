@@ -38,6 +38,8 @@ Item
             width: childrenRect.width
             height: childrenRect.height
 
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             //
             // Quality profile
             //
@@ -48,7 +50,6 @@ Item
                 height: UM.Theme.getSize("thick_margin").height
                 anchors.topMargin: UM.Theme.getSize("thick_margin").height
                 anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("thick_margin").width
                 anchors.right: parent.right
 
                 Timer
@@ -193,7 +194,6 @@ Item
                     source: UM.Theme.getIcon("category_layer_height")
                     text: catalog.i18nc("@label", "Layer Height")
                     anchors.bottom: speedSlider.bottom
-
                 }
 
                 // Show titles for the each quality slider ticks
@@ -507,7 +507,6 @@ Item
                         top: parent.top
                         topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.7)
                         left: parent.left
-                        leftMargin: UM.Theme.getSize("thick_margin").width
                     }
                 }
             }
@@ -526,9 +525,7 @@ Item
                 Label {
                     id: selectedInfillRateText
 
-                    //anchors.top: parent.top
                     anchors.left: infillSlider.left
-                    anchors.leftMargin: Math.round((infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor)
                     anchors.right: parent.right
 
                     text: parseInt(infillDensity.properties.value) + "%"
@@ -833,7 +830,6 @@ Item
                     top: infillCellRight.bottom
                     topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.5)
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("thick_margin").width
                     right: infillCellLeft.right
                     rightMargin: UM.Theme.getSize("thick_margin").width
                     verticalCenter: enableSupportCheckBox.verticalCenter
@@ -956,7 +952,6 @@ Item
                 anchors
                 {
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("thick_margin").width
                     right: infillCellLeft.right
                     rightMargin: UM.Theme.getSize("thick_margin").width
                     verticalCenter: adhesionCheckBox.verticalCenter
@@ -1037,7 +1032,6 @@ Item
                 {
                     id: tipsText
                     anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("thick_margin").width
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("thick_margin").width
                     anchors.top: parent.top
