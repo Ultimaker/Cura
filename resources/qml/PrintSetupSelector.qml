@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.3 as UM
 import Cura 1.0 as Cura
 import "Menus"
 import "Menus/ConfigurationMenu"
@@ -217,25 +217,18 @@ Cura.ExpandableComponent
                 rightMargin: 5
             }
 
-
-            TabBar
+            UM.TabRow
             {
                 id: tabBar
+                anchors.top: popupItemHeader.bottom
+                anchors.topMargin: UM.Theme.getSize("default_margin").height
                 onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
-                width: parent.width
-                height: UM.Theme.getSize("print_setup_tap_bar").width
                 z: 1
                 Repeater
                 {
-                    id: extruder_model_repeater
                     model: extrudersModel
-
-                    delegate: TabButton
+                    delegate: UM.TabRowButton
                     {
-                        z: 2
-                        width: ListView.view != null ?  Math.round(ListView.view.width / extrudersModel.rowCount()): 0
-                        implicitHeight: parent.height
-
                         contentItem: Rectangle
                         {
                             z: 2

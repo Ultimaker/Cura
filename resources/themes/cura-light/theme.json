@@ -381,7 +381,7 @@
 
         "account_button": [12, 3],
 
-        "print_setup_widget": [30.0, 42.0],
+        "print_setup_widget": [38.0, 42.0],
         "print_setup_mode_toggle": [0.0, 2.0],
         "print_setup_item": [0.0, 2.0],
         "print_setup_extruder_box": [0.0, 6.0],
