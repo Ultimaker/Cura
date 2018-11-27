@@ -136,6 +136,7 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
+                    visible: materialSelection.visible
                 }
 
                 OldControls.ToolButton
@@ -178,6 +179,7 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
+                    visible: variantSelection.visible
                 }
 
                 OldControls.ToolButton
