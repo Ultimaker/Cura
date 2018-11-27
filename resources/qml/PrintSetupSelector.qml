@@ -29,6 +29,7 @@ Cura.ExpandableComponent
     iconSource: UM.Theme.getIcon("pencil")
 
     popupPadding : 0
+    popupSpacingY: 10
 
     onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
 
@@ -150,10 +151,13 @@ Cura.ExpandableComponent
                 verticalAlignment: Text.AlignVCenter
                 color: UM.Theme.getColor("text")
                 height: parent.height
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-//                anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("print_setup_selector_margin").height
+
+                anchors
+                {
+                    topMargin: UM.Theme.getSize("sidebar_margin").height
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("print_setup_selector_margin").height
+                }
             }
 
             Rectangle

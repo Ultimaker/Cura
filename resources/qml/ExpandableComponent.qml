@@ -24,6 +24,9 @@ Item
     // How much spacing is needed around the popupItem
     property alias popupPadding: popup.padding
 
+    // How much spacing is needed for the popupItem by Y coordinate
+    property var popupSpacingY: 0
+
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
 
@@ -143,7 +146,7 @@ Item
         id: popup
 
         // Ensure that the popup is located directly below the headerItem
-        y: headerItemLoader.height + 2 * background.padding
+        y: headerItemLoader.height + 2 * background.padding + popupSpacingY
 
         // Make the popup right aligned with the rest. The 3x padding is due to left, right and padding between
         // the button & text.
