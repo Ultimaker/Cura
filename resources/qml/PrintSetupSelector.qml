@@ -148,6 +148,7 @@ Cura.ExpandableComponent
                 id: popupItemHeaderText
                 text: catalog.i18nc("@label", "Print settings");
                 font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter
                 color: UM.Theme.getColor("text")
                 height: parent.height
