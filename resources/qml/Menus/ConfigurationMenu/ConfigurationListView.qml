@@ -2,8 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -31,8 +30,10 @@ Column
         width: parent.width - parent.padding
         height: Math.min(configurationList.contentHeight, 350 * screenScaleFactor)
 
-        style: UM.Theme.styles.scrollview
-        __wheelAreaScrollSpeed: 75 // Scroll three lines in one scroll event
+        ButtonGroup
+        {
+            buttons: configurationList.children
+        }
 
         ListView
         {
@@ -64,6 +65,7 @@ Column
             }
 
             model: (outputDevice != null) ? outputDevice.uniqueConfigurations : []
+
             delegate: ConfigurationItem
             {
                 width: parent.width - UM.Theme.getSize("default_margin").width
