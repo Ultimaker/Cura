@@ -29,7 +29,9 @@ Cura.ExpandableComponent
     iconSource: UM.Theme.getIcon("pencil")
 
     popupPadding : 0
-    popupSpacingY: 10
+    popupSpacingY: UM.Theme.getSize("narrow_margin").width
+
+    popupClosePolicy: Popup.CloseOnEscape
 
     onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
 
@@ -124,7 +126,7 @@ Cura.ExpandableComponent
 
     popupItem: Rectangle
     {
-        property var total_height: popupItemHeader.height + popupItemContent.height + footerControll.height + UM.Theme.getSize("print_setup_selector_margin").height * 2
+        property var total_height: popupItemHeader.height + popupItemContent.height + footerControll.height + UM.Theme.getSize("narrow_margin").height * 2
         id: popupItemWrapper
         height: total_height
 
@@ -157,7 +159,7 @@ Cura.ExpandableComponent
                 {
                     topMargin: UM.Theme.getSize("sidebar_margin").height
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("print_setup_selector_margin").height
+                    leftMargin: UM.Theme.getSize("narrow_margin").height
                 }
             }
 
@@ -194,7 +196,7 @@ Cura.ExpandableComponent
                     source: UM.Theme.getIcon("cross1")
                 }
 
-                onClicked: base.model.hideMessage(model.id)
+                onClicked: base.togglePopup() // Will hide the popup item
 
                 background: Rectangle
                 {
@@ -211,17 +213,16 @@ Cura.ExpandableComponent
             anchors
             {
                 top: popupItemHeader.bottom
-                topMargin: UM.Theme.getSize("print_setup_selector_margin").height
+                topMargin: UM.Theme.getSize("narrow_margin").height
                 right: parent.right
                 left: parent.left
-                leftMargin: 5
-                rightMargin: 5
+                leftMargin: UM.Theme.getSize("thick_margin").width / 1.5
+                rightMargin: UM.Theme.getSize("thick_margin").width / 1.5
             }
 
             UM.TabRow
             {
                 id: tabBar
-                anchors.top: popupItemHeader.bottom
                 anchors.topMargin: UM.Theme.getSize("default_margin").height
                 onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
                 z: 1
@@ -309,7 +310,7 @@ Cura.ExpandableComponent
         {
             id: footerControll
             anchors.top: popupItemContent.bottom
-            anchors.topMargin: UM.Theme.getSize("print_setup_selector_margin").height * 2
+            anchors.topMargin: UM.Theme.getSize("narrow_margin").height * 2
             width: parent.width
             height: settingControlButton.height + UM.Theme.getSize("default_lining").height * 4
             Rectangle
@@ -337,10 +338,10 @@ Cura.ExpandableComponent
                 anchors
                 {
                     top: parent.top
-                    topMargin: UM.Theme.getSize("print_setup_selector_margin").height * 2
-                    bottomMargin: UM.Theme.getSize("print_setup_selector_margin").height * 2
+                    topMargin: UM.Theme.getSize("narrow_margin").height * 2
+                    bottomMargin: UM.Theme.getSize("narrow_margin").height * 2
                     right: parent.right
-                    rightMargin: UM.Theme.getSize("print_setup_selector_margin").height
+                    rightMargin: UM.Theme.getSize("narrow_margin").height
                 }
 
                 onClicked: currentModeIndex = 1
@@ -361,19 +362,15 @@ Cura.ExpandableComponent
                 anchors
                 {
                     top: parent.top
-                    topMargin: UM.Theme.getSize("print_setup_selector_margin").height * 2
-                    bottomMargin: UM.Theme.getSize("print_setup_selector_margin").height * 2
+                    topMargin: UM.Theme.getSize("narrow_margin").height * 2
+                    bottomMargin: UM.Theme.getSize("narrow_margin").height * 2
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("print_setup_selector_margin").height
+                    leftMargin: UM.Theme.getSize("narrow_margin").height
                 }
 
-//                onClicked: currentModeIndex = 0
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: {
-                        currentModeIndex = 0
-
-                    }
+                    onClicked: currentModeIndex = 0
                 }
             }
         }

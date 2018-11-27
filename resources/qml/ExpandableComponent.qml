@@ -49,6 +49,9 @@ Item
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
 
+    // Change the popupItem close behaviour
+    property alias popupClosePolicy : popup.closePolicy
+
     function togglePopup()
     {
         if(popup.visible)
