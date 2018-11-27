@@ -15,11 +15,8 @@ Button
     signal activateConfiguration()
 
     height: childrenRect.height
-    padding: 0 //Stupid QML button has spacing by default.
-    rightPadding: 0
-    leftPadding: 0
 
-    contentItem: Rectangle
+    background: Rectangle
     {
         height: childrenRect.height
         color: parent.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
