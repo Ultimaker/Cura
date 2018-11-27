@@ -70,11 +70,6 @@ Column
             {
                 width: parent.width - UM.Theme.getSize("default_margin").width
                 configuration: modelData
-                onActivateConfiguration:
-                {
-                    switchPopupState()
-                    Cura.MachineManager.applyRemoteConfiguration(configuration)
-                }
             }
         }
     }

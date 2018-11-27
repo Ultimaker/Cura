@@ -12,7 +12,6 @@ Button
     id: configurationItem
 
     property var configuration: null
-    signal activateConfiguration()
 
     height: childrenRect.height
 
@@ -110,5 +109,10 @@ Button
         {
             configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
         }
+    }
+
+    onClicked:
+    {
+        Cura.MachineManager.applyRemoteConfiguration(configuration)
     }
 }
