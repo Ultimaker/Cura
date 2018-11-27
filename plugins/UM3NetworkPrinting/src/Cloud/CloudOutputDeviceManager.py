@@ -47,7 +47,6 @@ class CloudOutputDeviceManager(NetworkClient):
         self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
         self._update_clusters_thread.start()
 
-
     ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         request = super()._createEmptyRequest(self.API_ROOT_PATH + path, content_type = content_type)
@@ -81,14 +80,14 @@ class CloudOutputDeviceManager(NetworkClient):
             return
 
         known_cluster_ids = set(self._remote_clusters.keys())
-        found_clusters_ids = set(found_clusters.keys())
+        found_cluster_ids = set(found_clusters.keys())
 
         # Add an output device for each new remote cluster.
-        for cluster_id in found_clusters_ids.difference(known_cluster_ids):
+        for cluster_id in found_cluster_ids.difference(known_cluster_ids):
             self._addCloudOutputDevice(found_clusters[cluster_id])
 
         # Remove output devices that are gone
-        for cluster_id in known_cluster_ids.difference(found_clusters_ids):
+        for cluster_id in known_cluster_ids.difference(found_cluster_ids):
             self._removeCloudOutputDevice(found_clusters[cluster_id])
 
         # For testing we add a dummy device:
@@ -97,7 +96,7 @@ class CloudOutputDeviceManager(NetworkClient):
     @staticmethod
     def _parseStatusResponse(reply: QNetworkReply) -> Dict[str, CloudCluster]:
         try:
-            return {c["guid"]: CloudCluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))}
+            return {c["cluster_id"]: CloudCluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))}
         except UnicodeDecodeError:
             Logger.log("w", "Unable to read server response")
         except json.decoder.JSONDecodeError:
