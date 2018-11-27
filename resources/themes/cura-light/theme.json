@@ -178,7 +178,7 @@
         "action_button_disabled": [245, 245, 245, 255],
         "action_button_disabled_text": [127, 127, 127, 255],
         "action_button_disabled_border": [245, 245, 245, 255],
-        "action_button_shadow": [64, 47, 205, 255],
+        "action_button_shadow": [223, 223, 223, 255],
         "action_button_disabled_shadow": [228, 228, 228, 255],
 
         "scrollbar_background": [255, 255, 255, 255],
