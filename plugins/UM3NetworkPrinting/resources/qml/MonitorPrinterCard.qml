@@ -138,7 +138,7 @@ Item
                 bottom: parent.bottom
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
-            iconSource: "../svg/camera-icon.svg"
+            iconSource: "../svg/icons/camera.svg"
         }
     }
 
