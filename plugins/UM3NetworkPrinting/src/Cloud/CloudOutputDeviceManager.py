@@ -81,14 +81,14 @@ class CloudOutputDeviceManager(NetworkClient):
             return
 
         known_cluster_ids = set(self._remote_clusters.keys())
-        found_clusters_ids = set(found_clusters.keys())
+        found_cluster_ids = set(found_clusters.keys())
 
         # Add an output device for each new remote cluster.
-        for cluster_id in found_clusters_ids.difference(known_cluster_ids):
+        for cluster_id in found_cluster_ids.difference(known_cluster_ids):
             self._addCloudOutputDevice(found_clusters[cluster_id])
 
         # Remove output devices that are gone
-        for cluster_id in known_cluster_ids.difference(found_clusters_ids):
+        for cluster_id in known_cluster_ids.difference(found_cluster_ids):
             self._removeCloudOutputDevice(found_clusters[cluster_id])
 
         # For testing we add a dummy device:
@@ -122,6 +122,11 @@ class CloudOutputDeviceManager(NetworkClient):
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
+
+        local_device_id = active_machine.getMetaDataEntry("um_network_key")
+        if local_device_id:
+            active_output_device = CuraApplication.getInstance().getOutputDeviceManager().getActiveDevice()
+            active_output_device.id
     
         stored_cluster_id = active_machine.getMetaDataEntry("um_cloud_cluster_id")
         if stored_cluster_id not in self._remote_clusters.keys():
