@@ -915,9 +915,12 @@ class MachineManager(QObject):
 
             if settable_per_extruder:
                 limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
-                extruder_position = str(max(0, limit_to_extruder))
-                extruder_stack = self._global_container_stack.extruders[extruder_position]
-                extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                extruder_position = max(0, limit_to_extruder)
+                extruder_stack = self.getExtruder(extruder_position)
+                if extruder_stack:
+                    extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                else:
+                    Logger.log("e", "Unable to find extruder on position %s", extruder_position)
                 global_user_container.removeInstance(setting_key)
 
         # Signal that the global stack has changed
@@ -926,10 +929,9 @@ class MachineManager(QObject):
 
     @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int) -> Optional[ExtruderStack]:
-        extruder = None
         if self._global_container_stack:
-            extruder = self._global_container_stack.extruders.get(str(position))
-        return extruder
+            return self._global_container_stack.extruders.get(str(position))
+        return None
 
     def updateDefaultExtruder(self) -> None:
         if self._global_container_stack is None:
