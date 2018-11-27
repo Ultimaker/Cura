@@ -48,7 +48,6 @@ Button
                     {
                         width: Math.round(parent.width / 2)
                         printCoreConfiguration: modelData
-                        mainColor: UM.Theme.getColor("text")
                     }
                 }
             }
