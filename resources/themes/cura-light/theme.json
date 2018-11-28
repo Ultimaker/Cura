@@ -372,6 +372,7 @@
         "print_setup_mode_toggle": [0.0, 2.0],
         "print_setup_item": [0.0, 2.0],
         "print_setup_extruder_box": [0.0, 6.0],
+        "print_setup_widget_header": [0.0, 3.0],
 
         "configuration_selector_mode_tabs": [0.0, 3.0],
 

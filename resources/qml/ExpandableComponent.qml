@@ -74,7 +74,7 @@ Item
 
     function togglePopup()
     {
-        if(popup.visible)
+        if (popup.visible)
         {
             popup.close()
         }

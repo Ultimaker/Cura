@@ -11,7 +11,6 @@ Cura.ExpandableComponent
 {
     id: base
 
-    property int currentModeIndex: -1
     property bool hideSettings: PrintInformation.preSliced
 
     property string enabledText: catalog.i18nc("@label:Should be short", "On")
@@ -26,13 +25,6 @@ Cura.ExpandableComponent
     popupSpacingY: UM.Theme.getSize("narrow_margin").width
 
     popupClosePolicy: Popup.CloseOnEscape
-
-    onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
-
-    Component.onCompleted:
-    {
-        popupItemWrapper.width = base.width
-    }
 
     UM.I18nCatalog
     {
@@ -61,8 +53,5 @@ Cura.ExpandableComponent
         id: extrudersModel
     }
 
-    popupItem: PrintSetupSelectorContents
-    {
-
-    }
+    popupItem: PrintSetupSelectorContents {}
 }

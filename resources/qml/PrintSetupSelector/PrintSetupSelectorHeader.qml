@@ -10,7 +10,7 @@ import Cura 1.0 as Cura
 
 RowLayout
 {
-    Cura.IconLabel
+    Cura.IconWithText
     {
         source: UM.Theme.getIcon("category_layer_height")
         text: Cura.MachineManager.activeStack ? Cura.MachineManager.activeQualityOrQualityChangesName + " " + layerHeight.properties.value + "mm" : ""
@@ -24,7 +24,7 @@ RowLayout
         }
     }
 
-    Cura.IconLabel
+    Cura.IconWithText
     {
         source: UM.Theme.getIcon("category_infill")
         text: Cura.MachineManager.activeStack ? parseInt(infillDensity.properties.value) + "%" : "0%"
@@ -38,7 +38,7 @@ RowLayout
         }
     }
 
-    Cura.IconLabel
+    Cura.IconWithText
     {
         source: UM.Theme.getIcon("category_support")
         text: supportEnabled.properties.value == "True" ? enabledText : disabledText
@@ -53,7 +53,7 @@ RowLayout
         }
     }
 
-    Cura.IconLabel
+    Cura.IconWithText
     {
         source: UM.Theme.getIcon("category_adhesion")
         text: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none" ? enabledText : disabledText
