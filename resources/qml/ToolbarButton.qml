@@ -12,8 +12,12 @@ Button
     id: base
 
     property alias toolItem: contentItemLoader.sourceComponent
-    property bool topElement: false
-    property bool bottomElement: false
+
+    // These two properties indicate whether the toolbar button is at the top of the toolbar column or at the bottom.
+    // If it is somewhere in the middle, then both has to be false. If there is only one element in the column, then
+    // both properties have to be set to true. This is used to create a rounded corner.
+    property bool isTopElement: false
+    property bool isBottomElement: false
 
     hoverEnabled: true
 
@@ -49,7 +53,7 @@ Button
                 top: parent.top
             }
             height: parent.radius
-            color: base.topElement ? "transparent" : parent.color
+            color: base.isTopElement ? "transparent" : parent.color
         }
 
         Rectangle
@@ -62,7 +66,7 @@ Button
                 bottom: parent.bottom
             }
             height: parent.radius
-            color: base.bottomElement ? "transparent" : parent.color
+            color: base.isBottomElement ? "transparent" : parent.color
         }
 
         Rectangle

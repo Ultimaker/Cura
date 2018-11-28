@@ -61,8 +61,8 @@ Item
                     checked: model.active
                     enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
 
-                    topElement: toolsModel.getItem(0).id == model.id
-                    bottomElement: toolsModel.getItem(toolsModel.rowCount() - 1).id == model.id
+                    isTopElement: toolsModel.getItem(0).id == model.id
+                    isBottomElement: toolsModel.getItem(toolsModel.rowCount() - 1).id == model.id
 
                     toolItem: UM.RecolorImage
                     {
@@ -137,8 +137,8 @@ Item
                 delegate: ExtruderButton
                 {
                     extruder: model
-                    topElement: extrudersModel.getItem(0).id == model.id
-                    bottomElement: extrudersModel.getItem(extrudersModel.rowCount() - 1).id == model.id
+                    isTopElement: extrudersModel.getItem(0).id == model.id
+                    isBottomElement: extrudersModel.getItem(extrudersModel.rowCount() - 1).id == model.id
                 }
             }
         }
