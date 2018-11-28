@@ -66,7 +66,7 @@ Item
 
                     toolItem: UM.RecolorImage
                     {
-                        source: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                        source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("toolbar_button_text")
 
                         sourceSize: UM.Theme.getSize("button_icon")
