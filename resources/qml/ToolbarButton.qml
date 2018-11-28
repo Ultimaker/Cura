@@ -54,7 +54,7 @@ Button
             }
             height: parent.radius
             color: parent.color
-            visible: base.isTopElement
+            visible: !base.isTopElement
         }
 
         Rectangle
@@ -68,7 +68,7 @@ Button
             }
             height: parent.radius
             color: parent.color
-            visible: base.isBottomElement
+            visible: !base.isBottomElement
         }
 
         Rectangle
