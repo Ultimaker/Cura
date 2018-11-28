@@ -1,4 +1,59 @@
 {
+    "BlackBeltPlugin": {
+        "package_info": {
+            "package_id": "BlackBeltPlugin",
+            "package_type": "plugin",
+            "display_name": "BlackBelt plugin",
+            "description": "Adds support for BlackBelt and other printers with slanted gantries.",
+            "package_version": "3.6.0",
+            "sdk_version": 5,
+            "website": "https://blackbelt-3d.com",
+            "author": {
+                "author_id": "Blackbelt3d",
+                "display_name": "BLACKBELT 3D",
+                "email": "info@blackbelt-3d.com",
+                "website": "https://blackbelt-3d.com"
+            }
+        }
+    },
+
+    "OctoPrintPlugin": {
+        "package_info": {
+            "package_id": "OctoPrintPlugin",
+            "package_type": "plugin",
+            "display_name": "OctoPrint Connection",
+            "description": "Enables networked printing and monitoring with OctoPrint.",
+            "package_version": "3.5.3",
+            "sdk_version": 5,
+            "website": "https://github.com/fieldOfView/OctoPrintPlugin",
+            "author": {
+                "author_id": "fieldofview",
+                "display_name": "fieldOfView",
+                "email": "aldo@fieldofview.com",
+                "website": "http://fieldofview.com"
+            }
+        }
+    },
+
+    "CustomSupports": {
+        "package_info": {
+            "package_id": "CustomSupports",
+            "package_type": "plugin",
+            "display_name": "Custom Supports",
+            "description": "Cura plugin which enables you to add custom supports!",
+            "package_version": "0.0.3",
+            "sdk_version": 5,
+
+            "author": {
+                "author_id": "lokster",
+                "display_name": "Krasimir Stefanov",
+                "email": "lokiisyourmaster@gmail.com",
+                "website": "http://lokspace.eu"
+            }
+        }
+    },
+
+
     "3MFReader": {
         "package_info": {
             "package_id": "3MFReader",
