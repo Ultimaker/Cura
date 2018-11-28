@@ -97,16 +97,19 @@ Item
                 id: progressItem;
                 color:
                 {
-                    var state = printJob.state
-                    var inactiveStates = [
-                        "pausing",
-                        "paused",
-                        "resuming",
-                        "wait_cleanup"
-                    ]
-                    if (inactiveStates.indexOf(state) > -1 && remainingTime > 0)
+                    if (printJob)
                     {
-                        return UM.Theme.getColor("monitor_progress_fill_inactive")
+                        var state = printJob.state
+                        var inactiveStates = [
+                            "pausing",
+                            "paused",
+                            "resuming",
+                            "wait_cleanup"
+                        ]
+                        if (inactiveStates.indexOf(state) > -1 && remainingTime > 0)
+                        {
+                            return UM.Theme.getColor("monitor_progress_fill_inactive")
+                        }
                     }
                     return "#0a0850" // TODO: Theme!
                 }
