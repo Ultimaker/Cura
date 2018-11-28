@@ -56,11 +56,7 @@ Item
                 width: 108 * screenScaleFactor // TODO: Theme!
                 height: 108 * screenScaleFactor // TODO: Theme!
                 fillMode: Image.PreserveAspectFit
-                source:
-                {
-                    console.log(printer.type)
-                    return "../png/"+printer.type+".png"
-                }
+                source: "../png/" + printer.type + ".png"
                 mipmap: true
             }
 
