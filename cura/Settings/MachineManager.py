@@ -616,6 +616,14 @@ class MachineManager(QObject):
                 is_supported = self._current_quality_group.is_available
         return is_supported
 
+    @pyqtProperty(bool, notify = activeQualityGroupChanged)
+    def isActiveQualityExperimental(self) -> bool:
+        is_experimental = False
+        if self._global_container_stack:
+            if self._current_quality_group:
+                is_experimental = self._current_quality_group.is_experimental
+        return is_experimental
+
     ##  Returns whether there is anything unsupported in the current set-up.
     #
     #   The current set-up signifies the global stack and all extruder stacks,
