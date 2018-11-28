@@ -188,7 +188,7 @@ Item
                     }
                 }
 
-                IconWithText
+                Cura.IconLabel
                 {
                     id: qualityRowTitle
                     source: UM.Theme.getIcon("category_layer_height")
@@ -496,7 +496,7 @@ Item
 
                 width: Math.round(UM.Theme.getSize("print_setup_widget").width * .45) - UM.Theme.getSize("thick_margin").width
 
-                IconWithText
+                Cura.IconLabel
                 {
                     id: infillLabel
                     source: UM.Theme.getIcon("category_infill")
@@ -818,7 +818,7 @@ Item
             //
             //  Enable support
             //
-            IconWithText
+            Cura.IconLabel
             {
                 id: enableSupportLabel
                 visible: enableSupportCheckBox.visible
@@ -942,7 +942,7 @@ Item
 
             }
 
-            IconWithText
+            Cura.IconLabel
             {
                 id: adhesionHelperLabel
                 visible: adhesionCheckBox.visible
