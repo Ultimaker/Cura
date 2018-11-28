@@ -1,22 +1,17 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
-
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-
 import QtGraphicalEffects 1.0 // For the dropshadow
-
 import UM 1.1 as UM
-
 Button
 {
     id: button
-    property alias iconSource: buttonIcon.source
-    property alias iconSourceRight: buttonIconRight.source
+    property alias iconSource: buttonIconLeft.source
+    property var iconOnRightSide: false
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
-
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
     property color disabledColor: color
@@ -26,33 +21,31 @@ Button
     property color outlineColor: color
     property color outlineHoverColor: hoverColor
     property color outlineDisabledColor: outlineColor
-
     hoverEnabled: true
-
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
-
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
     // we elide the text to the right so the text will be cut off with the three dots at the end.
     property var fixedWidthMode: false
-
-    width: buttonIcon.width + buttonText.width + buttonIconRight.width
-    contentItem: Item
+    leftPadding: UM.Theme.getSize("default_margin").width
+    rightPadding: UM.Theme.getSize("default_margin").width
+    height: UM.Theme.getSize("action_button").height
+    contentItem: Row
     {
+        //Icon if displayed on the left side.
         UM.RecolorImage
         {
-            id: buttonIcon
+            id: buttonIconLeft
             source: ""
-            height: Math.round(0.6 * parent.height)
-            width: height
+            height: buttonText.height
+            width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != ""
+            visible: source != "" && !button.iconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
         }
-
         Label
         {
             id: buttonText
@@ -66,22 +59,21 @@ Button
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
         }
-
+        //Icon if displayed on the right side.
         UM.RecolorImage
         {
             id: buttonIconRight
-            source: ""
-            height: Math.round(0.6 * parent.height)
-            width: height
+            source: buttonIconLeft.source
+            anchors.right: parent.right
+            height: buttonText.height
+            width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
-            color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != ""
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: source != "" ? parent.right : undefined
+            color: buttonIconLeft.color
+            visible: source != "" && button.iconOnRightSide
+            anchors.verticalCenter: buttonIconLeft.verticalCenter
         }
     }
-
     background: Rectangle
     {
         id: backgroundRect
@@ -90,7 +82,6 @@ Button
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
     }
-
     DropShadow
     {
         id: shadow
@@ -103,7 +94,6 @@ Button
         // Should always be drawn behind the background.
         z: backgroundRect.z - 1
     }
-
     ToolTip
     {
         id: tooltip

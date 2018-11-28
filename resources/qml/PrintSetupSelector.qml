@@ -323,18 +323,9 @@ Cura.ExpandableComponent
             Cura.ActionButton
             {
                 id: settingControlButton
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
-                height: UM.Theme.getSize("action_panel_button").height
-                text: catalog.i18nc("@button", "Custom")
-                color: UM.Theme.getColor("secondary")
-                hoverColor: UM.Theme.getColor("secondary")
-                textColor: UM.Theme.getColor("primary")
-                textHoverColor: UM.Theme.getColor("text")
-                iconSourceRight: UM.Theme.getIcon("arrow_right")
-                width: UM.Theme.getSize("print_setup_action_button").width
-                fixedWidthMode: true
                 visible: currentModeIndex == 0
+                text: catalog.i18nc("@button", "Custom")
+                width: UM.Theme.getSize("print_setup_action_button").width
                 anchors
                 {
                     top: parent.top
@@ -344,6 +335,13 @@ Cura.ExpandableComponent
                     rightMargin: UM.Theme.getSize("narrow_margin").height
                 }
 
+                color: UM.Theme.getColor("secondary")
+                hoverColor: UM.Theme.getColor("secondary")
+                textColor: UM.Theme.getColor("primary")
+                textHoverColor: UM.Theme.getColor("text")
+                iconSource: UM.Theme.getIcon("arrow_right")
+                iconOnRightSide: true
+
                 onClicked: currentModeIndex = 1
             }
 
@@ -351,13 +349,17 @@ Cura.ExpandableComponent
             {
                 height: UM.Theme.getSize("action_panel_button").height
                 text: catalog.i18nc("@button", "Recommended")
+
                 color: UM.Theme.getColor("secondary")
                 hoverColor: UM.Theme.getColor("secondary")
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
+
                 iconSource: UM.Theme.getIcon("arrow_left")
+
                 width: UM.Theme.getSize("print_setup_action_button").width
                 fixedWidthMode: true
+
                 visible: currentModeIndex == 1
                 anchors
                 {
