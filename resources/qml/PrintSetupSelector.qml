@@ -126,7 +126,9 @@ Cura.ExpandableComponent
 
     popupItem: Rectangle
     {
-        property var total_height: popupItemHeader.height + popupItemContent.height + footerControll.height + UM.Theme.getSize("narrow_margin").height * 2
+
+        property var totalMargins: UM.Theme.getSize("narrow_margin").height * 11
+        property var total_height: popupItemHeader.height + popupItemContent.height + totalMargins
         id: popupItemWrapper
         height: total_height
 
@@ -157,9 +159,9 @@ Cura.ExpandableComponent
 
                 anchors
                 {
-                    topMargin: UM.Theme.getSize("sidebar_margin").height
+                    //topMargin: UM.Theme.getSize("sidebar_margin").height
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("narrow_margin").height
+                    leftMargin: UM.Theme.getSize("narrow_margin").height * 2
                 }
             }
 
@@ -169,8 +171,6 @@ Cura.ExpandableComponent
                 height: UM.Theme.getSize("default_lining").height
                 anchors.top: popupItemHeaderText.bottom
                 color: UM.Theme.getColor("action_button_border")
-
-
             }
 
             Button
@@ -209,21 +209,33 @@ Cura.ExpandableComponent
         {
             id: popupItemContent
             width: parent.width
-            height: tabBar.height + sidebarContents.height
+            height:  globalProfileRow.height  + tabBar.height + UM.Theme.getSize("print_setup_widget").height - UM.Theme.getSize("print_setup_item").height
             anchors
             {
                 top: popupItemHeader.bottom
-                topMargin: UM.Theme.getSize("narrow_margin").height
+                topMargin: UM.Theme.getSize("default_margin").height * 1.5
                 right: parent.right
                 left: parent.left
                 leftMargin: UM.Theme.getSize("default_margin").width
                 rightMargin: UM.Theme.getSize("default_margin").width
             }
 
+            GlobalProfileButton
+            {
+                id: globalProfileRow
+                anchors
+                {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                }
+            }
+
             UM.TabRow
             {
                 id: tabBar
-                anchors.topMargin: UM.Theme.getSize("default_margin").height
+                anchors.top: globalProfileRow.bottom
+                anchors.topMargin: UM.Theme.getSize("default_margin").height * 1.5
                 onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
                 z: 1
                 Repeater
@@ -280,8 +292,6 @@ Cura.ExpandableComponent
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
-                height: UM.Theme.getSize("print_setup_widget").height
-
                 border.width: UM.Theme.getSize("default_lining").width * 2
                 border.color: UM.Theme.getColor("action_button_border")
 
@@ -296,8 +306,8 @@ Cura.ExpandableComponent
 
                 SidebarAdvanced
                 {
-                    anchors.topMargin: UM.Theme.getSize("print_setup_content_top_margin").height
-                    anchors.bottomMargin: 2 //don't overlap bottom border
+                    anchors.topMargin: Math.round(UM.Theme.getSize("wide_margin").height / 1.7)
+                    anchors.bottomMargin: 2 //prevent bottom line overlapping
                     anchors.fill: parent
                     visible: currentModeIndex == 1
                     onShowTooltip: base.showTooltip(item, location, text)
@@ -312,7 +322,6 @@ Cura.ExpandableComponent
             anchors.top: popupItemContent.bottom
             anchors.topMargin: UM.Theme.getSize("narrow_margin").height * 2
             width: parent.width
-            height: settingControlButton.height + UM.Theme.getSize("default_lining").height * 4
             Rectangle
             {
                 width: parent.width
@@ -330,9 +339,8 @@ Cura.ExpandableComponent
                 {
                     top: parent.top
                     topMargin: UM.Theme.getSize("narrow_margin").height * 2
-                    bottomMargin: UM.Theme.getSize("narrow_margin").height * 2
                     right: parent.right
-                    rightMargin: UM.Theme.getSize("narrow_margin").height
+                    rightMargin: UM.Theme.getSize("narrow_margin").height * 2
                 }
 
                 color: UM.Theme.getColor("secondary")
@@ -349,14 +357,11 @@ Cura.ExpandableComponent
             {
                 height: UM.Theme.getSize("action_panel_button").height
                 text: catalog.i18nc("@button", "Recommended")
-
                 color: UM.Theme.getColor("secondary")
                 hoverColor: UM.Theme.getColor("secondary")
                 textColor: UM.Theme.getColor("primary")
                 textHoverColor: UM.Theme.getColor("text")
-
                 iconSource: UM.Theme.getIcon("arrow_left")
-
                 width: UM.Theme.getSize("print_setup_action_button").width
                 fixedWidthMode: true
 
@@ -365,9 +370,8 @@ Cura.ExpandableComponent
                 {
                     top: parent.top
                     topMargin: UM.Theme.getSize("narrow_margin").height * 2
-                    bottomMargin: UM.Theme.getSize("narrow_margin").height * 2
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("narrow_margin").height
+                    leftMargin: UM.Theme.getSize("narrow_margin").height * 2
                 }
 
                 MouseArea {
@@ -376,7 +380,7 @@ Cura.ExpandableComponent
                 }
             }
         }
-        
+
         Component.onCompleted:
         {
             var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
