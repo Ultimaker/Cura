@@ -52,12 +52,13 @@ Component
             id: printers
             anchors
             {
-                left: parent.left
-                right: parent.right
+                left: queue.left
+                right: queue.right
                 top: parent.top
                 topMargin: 48 * screenScaleFactor // TODO: Theme!
             }
             height: 264 * screenScaleFactor // TODO: Theme!
+
             Row
             {
                 spacing: 60 * screenScaleFactor // TODO: Theme!
@@ -77,13 +78,13 @@ Component
         Item
         {
             id: queue
+            width: Math.min(834 * screenScaleFactor, maximumWidth)
 
             anchors {
                 bottom: parent.bottom
-                left: parent.left
-                right: parent.right
+                horizontalCenter: parent.horizontalCenter
                 top: printers.bottom
-                topMargin: 48
+                topMargin: 48 * screenScaleFactor // TODO: Theme!
             }
 
             Label
@@ -134,7 +135,6 @@ Component
                     text: catalog.i18nc("@label link to connect manager", "Manage queue in Cura Connect")
                 }
             }
-            
 
             MouseArea
             {
@@ -217,7 +217,7 @@ Component
                 }
                 style: UM.Theme.styles.scrollview
                 visible: OutputDevice.receivedPrintJobs
-                width: Math.min(834 * screenScaleFactor, maximumWidth)
+                width: parent.width
 
                 ListView
                 {
@@ -244,5 +244,4 @@ Component
             visible: OutputDevice.activeCameraUrl != ""
         }
     }
-    
 }
