@@ -1663,7 +1663,9 @@ class CuraApplication(QtApplication):
             is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
 
             if is_non_sliceable:
-                self.callLater(lambda: self.getController().setActiveView("SimulationView"))
+                # Need to switch first to the preview stage and then to layer view
+                self.callLater(lambda: (self.getController().setActiveStage("PreviewStage"),
+                                        self.getController().setActiveView("SimulationView")))
 
                 block_slicing_decorator = BlockSlicingDecorator()
                 node.addDecorator(block_slicing_decorator)

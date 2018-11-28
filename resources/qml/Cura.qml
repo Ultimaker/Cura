@@ -212,7 +212,7 @@ UM.MainWindow
                     verticalCenter: parent.verticalCenter
                     left: parent.left
                 }
-                visible: CuraApplication.platformActivity
+                visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
             ObjectsList
