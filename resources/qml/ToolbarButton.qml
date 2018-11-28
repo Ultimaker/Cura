@@ -53,7 +53,8 @@ Button
                 top: parent.top
             }
             height: parent.radius
-            color: base.isTopElement ? "transparent" : parent.color
+            color: parent.color
+            visible: base.isTopElement
         }
 
         Rectangle
