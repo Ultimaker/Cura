@@ -40,9 +40,21 @@ Column
         }
     }
 
+    Label
+    {
+        id: autoSlicingLabel
+        width: parent.width
+        visible: prepareButtons.autoSlice && widget.backendState == UM.Backend.Processing
+
+        text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
+        color: UM.Theme.getColor("text")
+        font: UM.Theme.getFont("very_small")
+        renderType: Text.NativeRendering
+    }
+
     Cura.IconLabel
     {
-        id: message
+        id: unableToSliceMessage
         width: parent.width
         visible: widget.backendState == UM.Backend.Error
 
@@ -81,37 +93,40 @@ Column
         }
     }
 
-    Cura.ActionButton
-    {
-        id: prepareButton
-        width: parent.width
-        height: UM.Theme.getSize("action_panel_button").height
-        fixedWidthMode: true
-        text:
-        {
-            if ([UM.Backend.NotStarted, UM.Backend.Error].indexOf(widget.backendState) != -1)
-            {
-                return catalog.i18nc("@button", "Slice")
-            }
-            if (autoSlice)
-            {
-                return catalog.i18nc("@button", "Auto slicing...")
-            }
-            return catalog.i18nc("@button", "Cancel")
-        }
-        enabled: !autoSlice && !disabledSlice
 
+    Item
+    {
+        id: prepareButtons
         // Get the current value from the preferences
         property bool autoSlice: UM.Preferences.getValue("general/auto_slice")
         // Disable the slice process when
-        property bool disabledSlice: [UM.Backend.Done, UM.Backend.Error].indexOf(widget.backendState) != -1
 
-        disabledColor: disabledSlice ? UM.Theme.getColor("action_button_disabled") : "transparent"
-        textDisabledColor: disabledSlice ?  UM.Theme.getColor("action_button_disabled_text") : UM.Theme.getColor("primary")
-        outlineDisabledColor: disabledSlice ? UM.Theme.getColor("action_button_disabled_border") : "transparent"
+        width: parent.width
+        height: UM.Theme.getSize("action_panel_button").height
+        visible: !autoSlice
+        Cura.PrimaryButton
+        {
+            id: sliceButton
+            fixedWidthMode: true
+            anchors.fill: parent
+            text: catalog.i18nc("@button", "Slice")
+            enabled: widget.backendState != UM.Backend.Error
+            visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
+            onClicked: sliceOrStopSlicing()
+        }
 
-        onClicked: sliceOrStopSlicing()
+        Cura.SecondaryButton
+        {
+            id: cancelButton
+            fixedWidthMode: true
+            anchors.fill: parent
+            text: catalog.i18nc("@button", "Cancel")
+            enabled: sliceButton.enabled
+            visible: !sliceButton.visible
+            onClicked: sliceOrStopSlicing()
+        }
     }
+
 
     // React when the user changes the preference of having the auto slice enabled
     Connections
@@ -120,7 +135,7 @@ Column
         onPreferenceChanged:
         {
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
-            prepareButton.autoSlice = autoSlice
+            prepareButtons.autoSlice = autoSlice
         }
     }
 

@@ -133,7 +133,6 @@
         "slider_groove_border": [127, 127, 127, 255],
         "slider_groove_fill": [245, 245, 245, 255],
         "slider_handle": [255, 255, 255, 255],
-        "slider_handle_hover": [77, 182, 226, 255],
         "slider_handle_active": [68, 192, 255, 255],
         "slider_text_background": [255, 255, 255, 255],
 
@@ -209,9 +208,6 @@
 
         "quality_slider_unavailable": [179, 179, 179, 255],
         "quality_slider_available": [255, 255, 255, 255],
-        "quality_slider_handle": [255, 255, 255, 255],
-        "quality_slider_handle_hover": [127, 127, 127, 255],
-        "quality_slider_text": [255, 255, 255, 255],
 
         "toolbox_header_button_text_active": [255, 255, 255, 255],
         "toolbox_header_button_text_inactive": [128, 128, 128, 255],
