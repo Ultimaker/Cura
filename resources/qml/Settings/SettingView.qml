@@ -81,10 +81,9 @@ Item
 
         anchors
         {
-            //top: globalProfileRow.bottom
             topMargin: UM.Theme.getSize("thick_margin").height
             left: parent.left
-            leftMargin: UM.Theme.getSize("thick_margin").width
+            leftMargin: UM.Theme.getSize("default_margin").width
             right: settingVisibilityMenu.left
             rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
         }
@@ -202,6 +201,7 @@ Item
         anchors.right: parent.right;
         anchors.left: parent.left;
         anchors.topMargin: UM.Theme.getSize("thick_margin").height
+        anchors.rightMargin: UM.Theme.getSize("narrow_margin").height / 3
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
