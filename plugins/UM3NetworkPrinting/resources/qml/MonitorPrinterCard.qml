@@ -180,12 +180,12 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 width: printerImage.width
-                height: childrenRect.height
+                height: 60 * screenScaleFactor // TODO: Theme!
                 MonitorPrintJobPreview
                 {
                     anchors.centerIn: parent
                     printJob: base.printer.activePrintJob
-                    size: 60 * screenScaleFactor // TODO: Theme!
+                    size: parent.height
                 }
             }
 
