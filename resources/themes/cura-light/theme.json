@@ -480,7 +480,7 @@
         "toolbox_footer_button": [8.0, 2.5],
         "toolbox_showcase_spacing": [1.0, 1.0],
         "toolbox_header_tab": [8.0, 4.0],
-        "toolbox_detail_header": [1.0, 14.0],https://github.com/Ultimaker/Cura/pull/4883
+        "toolbox_detail_header": [1.0, 14.0],
         "toolbox_detail_tile": [1.0, 8.0],
         "toolbox_back_column": [6.0, 1.0],
         "toolbox_back_button": [4.0, 2.0],
