@@ -108,7 +108,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIndentation ? Math.round((UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round((UM.Theme.getSize("section_icon_column").width / 1.2) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
@@ -290,7 +290,7 @@ Item {
             enabled: propertyProvider.isValueUsed
 
             anchors.right: parent.right;
-            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width * 3
             anchors.verticalCenter: parent.verticalCenter;
             width: UM.Theme.getSize("setting_control").width;
             height: UM.Theme.getSize("setting_control").height

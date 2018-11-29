@@ -3,19 +3,18 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-
 import QtGraphicalEffects 1.0 // For the dropshadow
-
 import UM 1.1 as UM
+
 
 Button
 {
     id: button
-    property alias iconSource: buttonIcon.source
+    property alias iconSource: buttonIconLeft.source
+    property var iconOnRightSide: false
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
-
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
     property color disabledColor: color
@@ -25,12 +24,9 @@ Button
     property color outlineColor: color
     property color outlineHoverColor: hoverColor
     property color outlineDisabledColor: outlineColor
-
     hoverEnabled: true
-
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
-
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
     // we elide the text to the right so the text will be cut off with the three dots at the end.
@@ -38,16 +34,17 @@ Button
 
     contentItem: Row
     {
+        //Icon if displayed on the left side.
         UM.RecolorImage
         {
-            id: buttonIcon
+            id: buttonIconLeft
             source: ""
-            height: Math.round(0.6 * parent.height)
-            width: height
+            height: buttonText.height
+            width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != ""
+            visible: source != "" && !button.iconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -63,6 +60,20 @@ Button
             width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : undefined
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
+        }
+
+        //Icon if displayed on the right side.
+        UM.RecolorImage
+        {
+            id: buttonIconRight
+            source: buttonIconLeft.source
+            height: buttonText.height
+            width: visible ? height : 0
+            sourceSize.width: width
+            sourceSize.height: height
+            color: buttonIconLeft.color
+            visible: source != "" && button.iconOnRightSide
+            anchors.verticalCenter: buttonIconLeft.verticalCenter
         }
     }
 

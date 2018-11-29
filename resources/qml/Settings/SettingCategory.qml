@@ -12,8 +12,8 @@ Button
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.leftMargin: UM.Theme.getSize("thick_margin").width
-    anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+    anchors.rightMargin: UM.Theme.getSize("default_margin").width * 3
     hoverEnabled: true
 
     background: Rectangle
