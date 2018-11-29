@@ -160,7 +160,9 @@ class SendMaterialJob(Job):
         except json.JSONDecodeError:
             Logger.log("e", "Request material storage on printer: I didn't understand the printer's answer.")
         except ValueError:
-            Logger.log("e", "Request material storage on printer: Printer's answer was missing a value.")
+            Logger.log("e", "Request material storage on printer: Printer's answer had an incorrect value.")
+        except TypeError:
+            Logger.log("e", "Request material storage on printer: Printer's answer was missing a required value.")
 
     ##  Retrieves a list of local materials
     #
@@ -188,6 +190,8 @@ class SendMaterialJob(Job):
             except KeyError:
                 Logger.logException("w", "Local material {} has missing values.".format(material["id"]))
             except ValueError:
+                Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
+            except TypeError:
                 Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
 
         return result

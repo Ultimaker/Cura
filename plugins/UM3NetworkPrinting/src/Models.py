@@ -14,7 +14,7 @@ class BaseModel:
 
 ##  Class representing a material that was fetched from the cluster API.
 class ClusterMaterial(BaseModel):
-    def __init__(self, guid = str, version = str, **kwargs) -> None:
+    def __init__(self, guid: str, version: int, **kwargs) -> None:
         self.guid = guid  # type: str
         self.version = version  # type: int
         super().__init__(**kwargs)
@@ -28,7 +28,7 @@ class ClusterMaterial(BaseModel):
 
 ##  Class representing a local material that was fetched from the container registry.
 class LocalMaterial(BaseModel):
-    def __init__(self, GUID = str, id = str, version = str, **kwargs) -> None:
+    def __init__(self, GUID: str, id: str, version: int, **kwargs) -> None:
         self.GUID = GUID  # type: str
         self.id = id  # type: str
         self.version = version  # type: int

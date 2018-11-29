@@ -47,7 +47,6 @@ class CloudOutputDeviceManager(NetworkClient):
         self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
         self._update_clusters_thread.start()
 
-
     ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         request = super()._createEmptyRequest(self.API_ROOT_PATH + path, content_type = content_type)
@@ -97,7 +96,7 @@ class CloudOutputDeviceManager(NetworkClient):
     @staticmethod
     def _parseStatusResponse(reply: QNetworkReply) -> Dict[str, CloudCluster]:
         try:
-            return {c["guid"]: CloudCluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))}
+            return {c["cluster_id"]: CloudCluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))}
         except UnicodeDecodeError:
             Logger.log("w", "Unable to read server response")
         except json.decoder.JSONDecodeError:
