@@ -14,7 +14,11 @@
     "variants_name": "Nozzle",
     "preferred_variant_name": "0.4 mm",
     "preferred_material": "pro_pla",
-    "supports_usb_connection": false
+    "supports_usb_connection": false,
+    "machine_extruder_trains":
+       {
+            "0": "agile_extruder_0"
+        }
  },
 
   "overrides": {
