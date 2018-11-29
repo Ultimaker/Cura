@@ -94,39 +94,9 @@ Item
         anchors
         {
             top: header.bottom
-            leftMargin: UM.Theme.getSize("default_margin").width
-            rightMargin: UM.Theme.getSize("default_margin").width
         }
         sourceComponent: currentModeIndex == 0 ? recommendedPrintSetup : customPrintSetup
     }
-
-//    Item
-//    {
-//        id: content
-//        width: parent.width
-//        height: 100
-//////        height: tabBar.height + sidebarContents.height
-////
-//        anchors
-//        {
-//            top: header.bottom
-//            leftMargin: UM.Theme.getSize("default_margin").width
-//            rightMargin: UM.Theme.getSize("default_margin").width
-//        }
-////
-////        Rectangle
-////        {
-////            id: sidebarContents
-////            anchors.top: tabBar.bottom
-////            anchors.bottom: parent.bottom
-////            anchors.left: parent.left
-////            anchors.right: parent.right
-////            height: UM.Theme.getSize("print_setup_widget").height
-////
-////            border.width: UM.Theme.getSize("default_lining").width * 2
-////            border.color: UM.Theme.getColor("action_button_border")
-////        }
-//    }
 
     Rectangle
     {
@@ -195,7 +165,6 @@ Item
 
     Component.onCompleted:
     {
-        print(height, "!!!!!!!!!!!!!!!!!!!!!!!")
         var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
 
         if(index != null && !isNaN(index))

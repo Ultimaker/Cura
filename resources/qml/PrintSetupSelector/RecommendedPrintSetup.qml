@@ -8,17 +8,22 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Item
+Column
 {
     id: base
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
-    height: childrenRect.height
+    height: childrenRect.height + 2 * padding
+
+    padding: UM.Theme.getSize("thick_margin").width
+    spacing: UM.Theme.getSize("default_margin").height
 
     property Action configureSettings
 
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
+    property real labelColumnWidth: Math.round(width / 3)
+    property real settingsColumnWidth: width - labelColumnWidth
 
     UM.I18nCatalog
     {
@@ -33,10 +38,9 @@ Item
     {
         id: qualityRow
 
-        height: UM.Theme.getSize("thick_margin").height
-        anchors.topMargin: UM.Theme.getSize("thick_margin").height
         anchors.left: parent.left
         anchors.right: parent.right
+        height: childrenRect.height
 
         Timer
         {
@@ -145,14 +149,14 @@ Item
 
             function calculateSliderStepWidth (totalTicks)
             {
-                qualityModel.qualitySliderStepWidth = totalTicks != 0 ? Math.round((base.width * 0.55) / (totalTicks)) : 0
+                qualityModel.qualitySliderStepWidth = totalTicks != 0 ? Math.round((settingsColumnWidth) / (totalTicks)) : 0
             }
 
             function calculateSliderMargins (availableMin, availableMax, totalTicks)
             {
                 if (availableMin == -1 || (availableMin == 0 && availableMax == 0))
                 {
-                    qualityModel.qualitySliderMarginRight = Math.round(base.width * 0.55)
+                    qualityModel.qualitySliderMarginRight = Math.round(settingsColumnWidth)
                 }
                 else if (availableMin == availableMax)
                 {
@@ -180,6 +184,7 @@ Item
             source: UM.Theme.getIcon("category_layer_height")
             text: catalog.i18nc("@label", "Layer Height")
             anchors.bottom: speedSlider.bottom
+            width: labelColumnWidth
         }
 
         // Show titles for the each quality slider ticks
@@ -187,6 +192,7 @@ Item
         {
             anchors.left: speedSlider.left
             anchors.top: speedSlider.bottom
+
             Repeater
             {
                 model: qualityModel
@@ -194,7 +200,7 @@ Item
                 Label
                 {
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.top: parent.bottom
+                    anchors.top: parent.top
                     color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     text:
                     {
@@ -225,19 +231,19 @@ Item
                         if (qualityModel.totalTicks == 0)
                         {
                             // If there is only one tick, align it centrally
-                            return Math.round(((base.width * 0.55) - width) / 2)
+                            return Math.round(((settingsColumnWidth) - width) / 2)
                         }
                         else if (index == 0)
                         {
-                            return Math.round(base.width * 0.55 / qualityModel.totalTicks) * index
+                            return Math.round(settingsColumnWidth / qualityModel.totalTicks) * index
                         }
                         else if (index == qualityModel.totalTicks)
                         {
-                            return Math.round(base.width * 0.55 / qualityModel.totalTicks) * index - width
+                            return Math.round(settingsColumnWidth / qualityModel.totalTicks) * index - width
                         }
                         else
                         {
-                            return Math.round((base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2))
+                            return Math.round((settingsColumnWidth / qualityModel.totalTicks) * index - (width / 2))
                         }
                     }
                 }
@@ -248,126 +254,127 @@ Item
         Rectangle
         {
             id: speedSlider
-            width: Math.round(base.width * 0.55)
-            height: UM.Theme.getSize("thick_margin").height
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("thick_margin").height
+
+            anchors
+            {
+                left: qualityRowTitle.right
+                right: parent.right
+            }
 
             // This Item is used only for tooltip, for slider area which is unavailable
-            Item
-            {
-                function showTooltip (showTooltip)
-                {
-                    if (showTooltip)
-                    {
-                        var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
-                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), content)
-                    }
-                    else
-                    {
-                        base.hideTooltip()
-                    }
-                }
-
-                id: unavailableLineToolTip
-                height: 20 * screenScaleFactor // hovered area height
-                z: parent.z + 1 // should be higher, otherwise the area can be hovered
-                x: 0
-                anchors.verticalCenter: qualitySlider.verticalCenter
-
-                Rectangle
-                {
-                    id: leftArea
-                    width:
-                    {
-                        if (qualityModel.availableTotalTicks == 0)
-                        {
-                            return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
-                        }
-                        return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
-                    }
-                    height: parent.height
-                    color: "transparent"
-
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
-                        onEntered: unavailableLineToolTip.showTooltip(true)
-                        onExited: unavailableLineToolTip.showTooltip(false)
-                    }
-                }
-
-                Item
-                {
-                    id: rightArea
-                    width:
-                    {
-                        if(qualityModel.availableTotalTicks == 0)
-                            return 0
-
-                        return qualityModel.qualitySliderMarginRight - 10
-                    }
-                    height: parent.height
-                    x:
-                    {
-                        if (qualityModel.availableTotalTicks == 0)
-                        {
-                            return 0
-                        }
-
-                        var leftUnavailableArea = qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin
-                        var totalGap = qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks -1) + leftUnavailableArea + 10
-
-                        return totalGap
-                    }
-
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
-                        onEntered: unavailableLineToolTip.showTooltip(true)
-                        onExited: unavailableLineToolTip.showTooltip(false)
-                    }
-                }
-            }
+//            Item
+//            {
+//                function showTooltip (showTooltip)
+//                {
+//                    if (showTooltip)
+//                    {
+//                        var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
+//                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), content)
+//                    }
+//                    else
+//                    {
+//                        base.hideTooltip()
+//                    }
+//                }
+//
+//                id: unavailableLineToolTip
+//                height: 20 * screenScaleFactor // hovered area height
+//                z: parent.z + 1 // should be higher, otherwise the area can be hovered
+//                x: 0
+//                anchors.verticalCenter: qualitySlider.verticalCenter
+//
+//                Rectangle
+//                {
+//                    id: leftArea
+//                    width:
+//                    {
+//                        if (qualityModel.availableTotalTicks == 0)
+//                        {
+//                            return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
+//                        }
+//                        return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
+//                    }
+//                    height: parent.height
+//                    color: "transparent"
+//
+//                    MouseArea
+//                    {
+//                        anchors.fill: parent
+//                        hoverEnabled: true
+//                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
+//                        onEntered: unavailableLineToolTip.showTooltip(true)
+//                        onExited: unavailableLineToolTip.showTooltip(false)
+//                    }
+//                }
+//
+//                Item
+//                {
+//                    id: rightArea
+//                    width:
+//                    {
+//                        if(qualityModel.availableTotalTicks == 0)
+//                            return 0
+//
+//                        return qualityModel.qualitySliderMarginRight - 10
+//                    }
+//                    height: parent.height
+//                    x:
+//                    {
+//                        if (qualityModel.availableTotalTicks == 0)
+//                        {
+//                            return 0
+//                        }
+//
+//                        var leftUnavailableArea = qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin
+//                        var totalGap = qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks -1) + leftUnavailableArea + 10
+//
+//                        return totalGap
+//                    }
+//
+//                    MouseArea
+//                    {
+//                        anchors.fill: parent
+//                        hoverEnabled: true
+//                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
+//                        onEntered: unavailableLineToolTip.showTooltip(true)
+//                        onExited: unavailableLineToolTip.showTooltip(false)
+//                    }
+//                }
+//            }
 
             // Draw Unavailable line
             Rectangle
             {
                 id: groovechildrect
-                width: Math.round(base.width * 0.55)
+                width: parent.width
                 height: 2 * screenScaleFactor
                 color: UM.Theme.getColor("quality_slider_unavailable")
                 anchors.verticalCenter: qualitySlider.verticalCenter
-                x: 0
-            }
 
-            // Draw ticks
-            Repeater
-            {
-                id: qualityRepeater
-                model: qualityModel.totalTicks > 0 ? qualityModel : 0
-
-                Rectangle
+                // Draw ticks
+                Repeater
                 {
-                    color: Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                    implicitWidth: 5 * screenScaleFactor
-                    implicitHeight: implicitWidth
-                    anchors.verticalCenter: qualitySlider.verticalCenter
-                    x: Math.round(qualityModel.qualitySliderStepWidth * index)
-                    radius: Math.round(implicitWidth / 2)
+                    id: qualityRepeater
+                    model: qualityModel.totalTicks > 0 ? qualityModel : 0
+
+                    Rectangle
+                    {
+                        color: Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                        implicitWidth: 4 * screenScaleFactor
+                        implicitHeight: implicitWidth
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: Math.round(qualityModel.qualitySliderStepWidth * index)
+                        radius: Math.round(implicitWidth / 2)
+                    }
                 }
             }
 
+            // Draw available slider
             Slider
             {
                 id: qualitySlider
                 height: UM.Theme.getSize("thick_margin").height
-                anchors.bottom: speedSlider.bottom
+                anchors.bottom: parent.bottom
                 enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
                 visible: qualityModel.availableTotalTicks > 0
                 updateValueWhileDragging : false
@@ -394,18 +401,15 @@ Item
                         color: UM.Theme.getColor("quality_slider_available")
                         radius: Math.round(height / 2)
                     }
-                    handle: Item
+
+                    handle: Rectangle
                     {
-                        Rectangle
-                        {
-                            id: qualityhandleButton
-                            anchors.centerIn: parent
-                            color: UM.Theme.getColor("quality_slider_available")
-                            implicitWidth: 10 * screenScaleFactor
-                            implicitHeight: implicitWidth
-                            radius: Math.round(implicitWidth / 2)
-                            visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
-                        }
+                        id: qualityhandleButton
+                        color: UM.Theme.getColor("quality_slider_available")
+                        implicitWidth: 12 * screenScaleFactor
+                        implicitHeight: implicitWidth
+                        radius: Math.round(implicitWidth / 2)
+                        visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
                     }
                 }
 
@@ -433,7 +437,7 @@ Item
 
                 onEntered:
                 {
-                    var content = catalog.i18nc("@tooltip","A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
+                    var content = catalog.i18nc("@tooltip", "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
                     base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
                 }
                 onExited: base.hideTooltip()
@@ -474,329 +478,319 @@ Item
     //
     Item
     {
-        id: infillCellLeft
-
-        anchors.top: qualityRow.bottom
-        anchors.topMargin: UM.Theme.getSize("thick_margin").height * 2
         anchors.left: parent.left
-
-        width: Math.round(UM.Theme.getSize("print_setup_widget").width * .45) - UM.Theme.getSize("thick_margin").width
+        anchors.right: parent.right
+        height: childrenRect.height
 
         Cura.IconWithText
         {
-            id: infillLabel
+            id: infillRowTitle
             source: UM.Theme.getIcon("category_infill")
             text: catalog.i18nc("@label", "Infill") + " (%)"
-
-            anchors
-            {
-                top: parent.top
-                topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.7)
-                left: parent.left
-            }
+            anchors.bottom: parent.bottom
+            width: labelColumnWidth
         }
-    }
 
-    Item
-    {
-        id: infillCellRight
+        Item
+        {
+            id: infillCellRight
 
-        height: infillSlider.height + UM.Theme.getSize("thick_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("thick_margin").height)
-        width: Math.round(UM.Theme.getSize("print_setup_widget").width * .55)
+            height: infillSlider.height + UM.Theme.getSize("thick_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("thick_margin").height)
 
-        anchors.left: infillCellLeft.right
-        anchors.top: infillCellLeft.top
-        anchors.topMargin: UM.Theme.getSize("thick_margin").height
-
-        Label {
-            id: selectedInfillRateText
-
-            anchors.left: infillSlider.left
+            anchors.left: infillRowTitle.right
             anchors.right: parent.right
-
-            text: parseInt(infillDensity.properties.value) + "%"
-            horizontalAlignment: Text.AlignLeft
-
-            color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-        }
-
-        // We use a binding to make sure that after manually setting infillSlider.value it is still bound to the property provider
-        Binding
-        {
-            target: infillSlider
-            property: "value"
-            value: parseInt(infillDensity.properties.value)
-        }
-
-        Slider
-        {
-            id: infillSlider
-
-            anchors.top: selectedInfillRateText.bottom
-            anchors.left: parent.left
-            anchors.right: infillIcon.left
-            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
-
-            height: UM.Theme.getSize("thick_margin").height
-            width: parseInt(infillCellRight.width - UM.Theme.getSize("thick_margin").width - style.handleWidth)
-
-            minimumValue: 0
-            maximumValue: 100
-            stepSize: 1
-            tickmarksEnabled: true
-
-            // disable slider when gradual support is enabled
-            enabled: parseInt(infillSteps.properties.value) == 0
-
-            // set initial value from stack
-            value: parseInt(infillDensity.properties.value)
-
-            onValueChanged:
-            {
-
-                // Don't round the value if it's already the same
-                if (parseInt(infillDensity.properties.value) == infillSlider.value)
-                {
-                    return
-                }
-
-                // Round the slider value to the nearest multiple of 10 (simulate step size of 10)
-                var roundedSliderValue = Math.round(infillSlider.value / 10) * 10
-
-                // Update the slider value to represent the rounded value
-                infillSlider.value = roundedSliderValue
-
-                // Update value only if the Recomended mode is Active,
-                // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
-                // same operation
-                var active_mode = UM.Preferences.getValue("cura/active_mode")
-
-                if (active_mode == 0 || active_mode == "simple")
-                {
-                    Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
-                    Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
-                }
-            }
-
-            style: SliderStyle
-            {
-                groove: Rectangle
-                {
-                    id: groove
-                    implicitWidth: 200 * screenScaleFactor
-                    implicitHeight: 2 * screenScaleFactor
-                    color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                    radius: 1
-                }
-
-                handle: Item
-                {
-                    Rectangle
-                    {
-                        id: handleButton
-                        anchors.centerIn: parent
-                        color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                        implicitWidth: 10 * screenScaleFactor
-                        implicitHeight: 10 * screenScaleFactor
-                        radius: 10 * screenScaleFactor
-                    }
-                }
-
-                tickmarks: Repeater
-                {
-                    id: repeater
-                    model: control.maximumValue / control.stepSize + 1
-
-                    // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
-                    function shouldShowTick (index)
-                    {
-                        if (index % 10 == 0)
-                        {
-                            return true
-                        }
-                        return false
-                    }
-
-                    Rectangle
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                        width: 1 * screenScaleFactor
-                        height: 6 * screenScaleFactor
-                        x: Math.round(styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1)))
-                        visible: shouldShowTick(index)
-                    }
-                }
-            }
-        }
-
-        Rectangle
-        {
-            id: infillIcon
-
-            width: Math.round((parent.width / 5) - (UM.Theme.getSize("thick_margin").width))
-            height: width
-
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2)
-
-            // we loop over all density icons and only show the one that has the current density and steps
-            Repeater
-            {
-                id: infillIconList
-                model: infillModel
-                anchors.fill: parent
-
-                function activeIndex ()
-                {
-                    for (var i = 0; i < infillModel.count; i++)
-                    {
-                        var density = Math.round(infillDensity.properties.value)
-                        var steps = Math.round(infillSteps.properties.value)
-                        var infillModelItem = infillModel.get(i)
-
-                        if (infillModelItem != "undefined"
-                            && density >= infillModelItem.percentageMin
-                            && density <= infillModelItem.percentageMax
-                            && steps >= infillModelItem.stepsMin
-                            && steps <= infillModelItem.stepsMax)
-                        {
-                            return i
-                        }
-                    }
-                    return -1
-                }
-
-                Rectangle
-                {
-                    anchors.fill: parent
-                    visible: infillIconList.activeIndex() == index
-
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("quality_slider_unavailable")
-
-                    UM.RecolorImage
-                    {
-                        anchors.fill: parent
-                        anchors.margins: 2 * screenScaleFactor
-                        sourceSize.width: width
-                        sourceSize.height: width
-                        source: UM.Theme.getIcon(model.icon)
-                        color: UM.Theme.getColor("quality_slider_unavailable")
-                    }
-                }
-            }
-        }
-
-        //  Gradual Support Infill Checkbox
-        CheckBox
-        {
-            id: enableGradualInfillCheckBox
-            property alias _hovered: enableGradualInfillMouseArea.containsMouse
-
-            anchors.top: infillSlider.bottom
-            anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2) // closer to slider since it belongs to the same category
-            anchors.left: infillCellRight.left
-
-            style: UM.Theme.styles.checkbox
-            enabled: base.settingsEnabled
-            visible: infillSteps.properties.enabled == "True"
-            checked: parseInt(infillSteps.properties.value) > 0
-
-            MouseArea
-            {
-                id: enableGradualInfillMouseArea
-
-                anchors.fill: parent
-                hoverEnabled: true
-                enabled: true
-
-                property var previousInfillDensity: parseInt(infillDensity.properties.value)
-
-                onClicked:
-                {
-                    // Set to 90% only when enabling gradual infill
-                    var newInfillDensity;
-                    if (parseInt(infillSteps.properties.value) == 0)
-                    {
-                        previousInfillDensity = parseInt(infillDensity.properties.value)
-                        newInfillDensity = 90
-                    } else {
-                        newInfillDensity = previousInfillDensity
-                    }
-                    Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(newInfillDensity))
-
-                    var infill_steps_value = 0
-                    if (parseInt(infillSteps.properties.value) == 0)
-                    {
-                        infill_steps_value = 5
-                    }
-
-                    Cura.MachineManager.setSettingForAllExtruders("gradual_infill_steps", "value", infill_steps_value)
-                }
-
-                onEntered: base.showTooltip(enableGradualInfillCheckBox, Qt.point(-infillCellRight.x, 0),
-                        catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."))
-
-                onExited: base.hideTooltip()
-
-            }
 
             Label
             {
-                id: gradualInfillLabel
-                height: parent.height
-                anchors.left: enableGradualInfillCheckBox.right
-                anchors.leftMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
-                verticalAlignment: Text.AlignVCenter;
-                text: catalog.i18nc("@label", "Enable gradual")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-            }
-        }
+                id: selectedInfillRateText
 
-        //  Infill list model for mapping icon
-        ListModel
-        {
-            id: infillModel
-            Component.onCompleted:
+                anchors.left: infillSlider.left
+                anchors.right: parent.right
+
+                text: parseInt(infillDensity.properties.value) + "%"
+                horizontalAlignment: Text.AlignLeft
+
+                color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+            }
+
+            // We use a binding to make sure that after manually setting infillSlider.value it is still bound to the property provider
+            Binding
             {
-                infillModel.append({
-                    percentageMin: -1,
-                    percentageMax: 0,
-                    stepsMin: -1,
-                    stepsMax: 0,
-                    icon: "hollow"
-                })
-                infillModel.append({
-                    percentageMin: 0,
-                    percentageMax: 40,
-                    stepsMin: -1,
-                    stepsMax: 0,
-                    icon: "sparse"
-                })
-                infillModel.append({
-                    percentageMin: 40,
-                    percentageMax: 89,
-                    stepsMin: -1,
-                    stepsMax: 0,
-                    icon: "dense"
-                })
-                infillModel.append({
-                    percentageMin: 90,
-                    percentageMax: 9999999999,
-                    stepsMin: -1,
-                    stepsMax: 0,
-                    icon: "solid"
-                })
-                infillModel.append({
-                    percentageMin: 0,
-                    percentageMax: 9999999999,
-                    stepsMin: 1,
-                    stepsMax: 9999999999,
-                    icon: "gradual"
-                })
+                target: infillSlider
+                property: "value"
+                value: parseInt(infillDensity.properties.value)
+            }
+
+            Slider
+            {
+                id: infillSlider
+
+                anchors.top: selectedInfillRateText.bottom
+                anchors.left: parent.left
+                anchors.right: infillIcon.left
+                anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+
+                height: UM.Theme.getSize("thick_margin").height
+                width: parseInt(infillCellRight.width - UM.Theme.getSize("thick_margin").width - style.handleWidth)
+
+                minimumValue: 0
+                maximumValue: 100
+                stepSize: 1
+                tickmarksEnabled: true
+
+                // disable slider when gradual support is enabled
+                enabled: parseInt(infillSteps.properties.value) == 0
+
+                // set initial value from stack
+                value: parseInt(infillDensity.properties.value)
+
+                onValueChanged:
+                {
+
+                    // Don't round the value if it's already the same
+                    if (parseInt(infillDensity.properties.value) == infillSlider.value)
+                    {
+                        return
+                    }
+
+                    // Round the slider value to the nearest multiple of 10 (simulate step size of 10)
+                    var roundedSliderValue = Math.round(infillSlider.value / 10) * 10
+
+                    // Update the slider value to represent the rounded value
+                    infillSlider.value = roundedSliderValue
+
+                    // Update value only if the Recomended mode is Active,
+                    // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
+                    // same operation
+                    var active_mode = UM.Preferences.getValue("cura/active_mode")
+
+                    if (active_mode == 0 || active_mode == "simple")
+                    {
+                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
+                        Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
+                    }
+                }
+
+                style: SliderStyle
+                {
+                    groove: Rectangle
+                    {
+                        id: groove
+                        implicitWidth: 200 * screenScaleFactor
+                        implicitHeight: 2 * screenScaleFactor
+                        color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                        radius: 1
+                    }
+
+                    handle: Item
+                    {
+                        Rectangle
+                        {
+                            id: handleButton
+                            anchors.centerIn: parent
+                            color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            implicitWidth: 10 * screenScaleFactor
+                            implicitHeight: 10 * screenScaleFactor
+                            radius: 10 * screenScaleFactor
+                        }
+                    }
+
+                    tickmarks: Repeater
+                    {
+                        id: repeater
+                        model: control.maximumValue / control.stepSize + 1
+
+                        // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
+                        function shouldShowTick (index)
+                        {
+                            if (index % 10 == 0)
+                            {
+                                return true
+                            }
+                            return false
+                        }
+
+                        Rectangle
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            width: 1 * screenScaleFactor
+                            height: 6 * screenScaleFactor
+                            x: Math.round(styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1)))
+                            visible: shouldShowTick(index)
+                        }
+                    }
+                }
+            }
+
+            Rectangle
+            {
+                id: infillIcon
+
+                width: Math.round((parent.width / 5) - (UM.Theme.getSize("thick_margin").width))
+                height: width
+
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2)
+
+                // we loop over all density icons and only show the one that has the current density and steps
+                Repeater
+                {
+                    id: infillIconList
+                    model: infillModel
+                    anchors.fill: parent
+
+                    function activeIndex ()
+                    {
+                        for (var i = 0; i < infillModel.count; i++)
+                        {
+                            var density = Math.round(infillDensity.properties.value)
+                            var steps = Math.round(infillSteps.properties.value)
+                            var infillModelItem = infillModel.get(i)
+
+                            if (infillModelItem != "undefined"
+                                && density >= infillModelItem.percentageMin
+                                && density <= infillModelItem.percentageMax
+                                && steps >= infillModelItem.stepsMin
+                                && steps <= infillModelItem.stepsMax)
+                            {
+                                return i
+                            }
+                        }
+                        return -1
+                    }
+
+                    Rectangle
+                    {
+                        anchors.fill: parent
+                        visible: infillIconList.activeIndex() == index
+
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("quality_slider_unavailable")
+
+                        UM.RecolorImage
+                        {
+                            anchors.fill: parent
+                            anchors.margins: 2 * screenScaleFactor
+                            sourceSize.width: width
+                            sourceSize.height: width
+                            source: UM.Theme.getIcon(model.icon)
+                            color: UM.Theme.getColor("quality_slider_unavailable")
+                        }
+                    }
+                }
+            }
+
+            //  Gradual Support Infill Checkbox
+            CheckBox
+            {
+                id: enableGradualInfillCheckBox
+                property alias _hovered: enableGradualInfillMouseArea.containsMouse
+
+                anchors.top: infillSlider.bottom
+                anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2) // closer to slider since it belongs to the same category
+                anchors.left: infillCellRight.left
+
+                style: UM.Theme.styles.checkbox
+                enabled: base.settingsEnabled
+                visible: infillSteps.properties.enabled == "True"
+                checked: parseInt(infillSteps.properties.value) > 0
+
+                MouseArea
+                {
+                    id: enableGradualInfillMouseArea
+
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    enabled: true
+
+                    property var previousInfillDensity: parseInt(infillDensity.properties.value)
+
+                    onClicked:
+                    {
+                        // Set to 90% only when enabling gradual infill
+                        var newInfillDensity;
+                        if (parseInt(infillSteps.properties.value) == 0)
+                        {
+                            previousInfillDensity = parseInt(infillDensity.properties.value)
+                            newInfillDensity = 90
+                        } else {
+                            newInfillDensity = previousInfillDensity
+                        }
+                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(newInfillDensity))
+
+                        var infill_steps_value = 0
+                        if (parseInt(infillSteps.properties.value) == 0)
+                        {
+                            infill_steps_value = 5
+                        }
+
+                        Cura.MachineManager.setSettingForAllExtruders("gradual_infill_steps", "value", infill_steps_value)
+                    }
+
+                    onEntered: base.showTooltip(enableGradualInfillCheckBox, Qt.point(-infillCellRight.x, 0),
+                            catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."))
+
+                    onExited: base.hideTooltip()
+
+                }
+
+                Label
+                {
+                    id: gradualInfillLabel
+                    height: parent.height
+                    anchors.left: enableGradualInfillCheckBox.right
+                    anchors.leftMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
+                    verticalAlignment: Text.AlignVCenter;
+                    text: catalog.i18nc("@label", "Enable gradual")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                }
+            }
+
+            //  Infill list model for mapping icon
+            ListModel
+            {
+                id: infillModel
+                Component.onCompleted:
+                {
+                    infillModel.append({
+                        percentageMin: -1,
+                        percentageMax: 0,
+                        stepsMin: -1,
+                        stepsMax: 0,
+                        icon: "hollow"
+                    })
+                    infillModel.append({
+                        percentageMin: 0,
+                        percentageMax: 40,
+                        stepsMin: -1,
+                        stepsMax: 0,
+                        icon: "sparse"
+                    })
+                    infillModel.append({
+                        percentageMin: 40,
+                        percentageMax: 89,
+                        stepsMin: -1,
+                        stepsMax: 0,
+                        icon: "dense"
+                    })
+                    infillModel.append({
+                        percentageMin: 90,
+                        percentageMax: 9999999999,
+                        stepsMin: -1,
+                        stepsMax: 0,
+                        icon: "solid"
+                    })
+                    infillModel.append({
+                        percentageMin: 0,
+                        percentageMax: 9999999999,
+                        stepsMin: 1,
+                        stepsMax: 9999999999,
+                        icon: "gradual"
+                    })
+                }
             }
         }
     }
@@ -804,191 +798,177 @@ Item
     //
     //  Enable support
     //
-    Cura.IconWithText
+    Row
     {
-        id: enableSupportLabel
-        visible: enableSupportCheckBox.visible
-        source: UM.Theme.getIcon("category_support")
-        text: catalog.i18nc("@label", "Support")
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: childrenRect.height
 
-        anchors
+        Cura.IconWithText
         {
-            top: infillCellRight.bottom
-            topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 1.5)
-            left: parent.left
-            right: infillCellLeft.right
-            rightMargin: UM.Theme.getSize("thick_margin").width
-            verticalCenter: enableSupportCheckBox.verticalCenter
-        }
-    }
-
-    CheckBox
-    {
-        id: enableSupportCheckBox
-        property alias _hovered: enableSupportMouseArea.containsMouse
-
-        anchors.top: enableSupportLabel.top
-        anchors.left: infillCellRight.left
-
-        style: UM.Theme.styles.checkbox
-        enabled: base.settingsEnabled
-
-        visible: supportEnabled.properties.enabled == "True"
-        checked: supportEnabled.properties.value == "True"
-
-        MouseArea
-        {
-            id: enableSupportMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: supportEnabled.setPropertyValue("value", supportEnabled.properties.value != "True")
-
-            onEntered: base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
-                    catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."))
-
-            onExited: base.hideTooltip()
-
-        }
-    }
-
-    ComboBox
-    {
-        id: supportExtruderCombobox
-        visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
-        model: extruderModel
-
-        property string color_override: ""  // for manually setting values
-        property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
-        {
-            var current_extruder = extruderModel.get(currentIndex);
-            color_override = "";
-            if (current_extruder === undefined) return ""
-            return (current_extruder.color) ? current_extruder.color : "";
+            id: enableSupportLabel
+            visible: enableSupportCheckBox.visible
+            source: UM.Theme.getIcon("category_support")
+            text: catalog.i18nc("@label", "Support")
+            width: labelColumnWidth
         }
 
-        textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
-
-        anchors.top: enableSupportCheckBox.top
-
-        anchors.left: enableSupportCheckBox.right
-        anchors.leftMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
-
-        width: Math.round(UM.Theme.getSize("print_setup_widget").width * .55) - Math.round(UM.Theme.getSize("thick_margin").width / 2) - enableSupportCheckBox.width
-        height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
-
-        Behavior on height { NumberAnimation { duration: 100 } }
-
-        style: UM.Theme.styles.combobox_color
-        enabled: base.settingsEnabled
-        property alias _hovered: supportExtruderMouseArea.containsMouse
-
-        currentIndex:
+        CheckBox
         {
-            if (supportExtruderNr.properties == null)
+            id: enableSupportCheckBox
+            property alias _hovered: enableSupportMouseArea.containsMouse
+
+            style: UM.Theme.styles.checkbox
+            enabled: base.settingsEnabled
+
+            visible: supportEnabled.properties.enabled == "True"
+            checked: supportEnabled.properties.value == "True"
+
+            MouseArea
             {
-                return Cura.MachineManager.defaultExtruderPosition
+                id: enableSupportMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: supportEnabled.setPropertyValue("value", supportEnabled.properties.value != "True")
+
+                onEntered: base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
+                        catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."))
+
+                onExited: base.hideTooltip()
+
             }
-            else
+        }
+
+        ComboBox
+        {
+            id: supportExtruderCombobox
+            visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
+            model: extruderModel
+
+            property string color_override: ""  // for manually setting values
+            property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
             {
-                var extruder = parseInt(supportExtruderNr.properties.value)
-                if ( extruder === -1)
+                var current_extruder = extruderModel.get(currentIndex);
+                color_override = "";
+                if (current_extruder === undefined) return ""
+                return (current_extruder.color) ? current_extruder.color : "";
+            }
+
+            textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
+
+            width: Math.round(UM.Theme.getSize("print_setup_widget").width * .55) - Math.round(UM.Theme.getSize("thick_margin").width / 2) - enableSupportCheckBox.width
+            height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
+
+            Behavior on height { NumberAnimation { duration: 100 } }
+
+            style: UM.Theme.styles.combobox_color
+            enabled: base.settingsEnabled
+            property alias _hovered: supportExtruderMouseArea.containsMouse
+
+            currentIndex:
+            {
+                if (supportExtruderNr.properties == null)
                 {
                     return Cura.MachineManager.defaultExtruderPosition
                 }
-                return extruder;
-            }
-        }
-
-        onActivated: supportExtruderNr.setPropertyValue("value", String(index))
-
-        MouseArea
-        {
-            id: supportExtruderMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            enabled: base.settingsEnabled
-            acceptedButtons: Qt.NoButton
-            onEntered:
-            {
-                base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
-                    catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
-            }
-            onExited: base.hideTooltip()
-
-        }
-
-        function updateCurrentColor()
-        {
-            var current_extruder = extruderModel.get(currentIndex)
-            if (current_extruder !== undefined)
-            {
-                supportExtruderCombobox.color_override = current_extruder.color
-            }
-        }
-
-    }
-
-    Cura.IconWithText
-    {
-        id: adhesionHelperLabel
-        visible: adhesionCheckBox.visible
-        source: UM.Theme.getIcon("category_adhesion")
-        text: catalog.i18nc("@label", "Adhesion")
-
-        anchors
-        {
-            left: parent.left
-            right: infillCellLeft.right
-            rightMargin: UM.Theme.getSize("thick_margin").width
-            verticalCenter: adhesionCheckBox.verticalCenter
-        }
-    }
-
-    CheckBox
-    {
-        id: adhesionCheckBox
-        property alias _hovered: adhesionMouseArea.containsMouse
-
-        anchors.top: enableSupportCheckBox.bottom
-        anchors.topMargin: UM.Theme.getSize("thick_margin").height
-        anchors.left: infillCellRight.left
-
-        //: Setting enable printing build-plate adhesion helper checkbox
-        style: UM.Theme.styles.checkbox
-        enabled: base.settingsEnabled
-
-        visible: platformAdhesionType.properties.enabled == "True"
-        checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
-
-        MouseArea
-        {
-            id: adhesionMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            enabled: base.settingsEnabled
-            onClicked:
-            {
-                var adhesionType = "skirt"
-                if(!parent.checked)
+                else
                 {
-                    // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
-                    platformAdhesionType.removeFromContainer(0)
-                    adhesionType = platformAdhesionType.properties.value
-                    if(adhesionType == "skirt" || adhesionType == "none")
+                    var extruder = parseInt(supportExtruderNr.properties.value)
+                    if ( extruder === -1)
                     {
-                        // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
-                        adhesionType = "brim"
+                        return Cura.MachineManager.defaultExtruderPosition
                     }
+                    return extruder;
                 }
-                platformAdhesionType.setPropertyValue("value", adhesionType)
             }
-            onEntered:
-            {
-                base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x, 0),
-                    catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
-            }
-            onExited: base.hideTooltip()
 
+            onActivated: supportExtruderNr.setPropertyValue("value", String(index))
+
+            MouseArea
+            {
+                id: supportExtruderMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                enabled: base.settingsEnabled
+                acceptedButtons: Qt.NoButton
+                onEntered:
+                {
+                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
+                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited: base.hideTooltip()
+
+            }
+
+            function updateCurrentColor()
+            {
+                var current_extruder = extruderModel.get(currentIndex)
+                if (current_extruder !== undefined)
+                {
+                    supportExtruderCombobox.color_override = current_extruder.color
+                }
+            }
+
+        }
+    }
+
+    // Adhesion
+    Row
+    {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: childrenRect.height
+
+        Cura.IconWithText
+        {
+            id: adhesionHelperLabel
+            visible: adhesionCheckBox.visible
+            source: UM.Theme.getIcon("category_adhesion")
+            text: catalog.i18nc("@label", "Adhesion")
+            width: labelColumnWidth
+        }
+
+        CheckBox
+        {
+            id: adhesionCheckBox
+            property alias _hovered: adhesionMouseArea.containsMouse
+
+            //: Setting enable printing build-plate adhesion helper checkbox
+            style: UM.Theme.styles.checkbox
+            enabled: base.settingsEnabled
+
+            visible: platformAdhesionType.properties.enabled == "True"
+            checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
+
+            MouseArea
+            {
+                id: adhesionMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                enabled: base.settingsEnabled
+                onClicked:
+                {
+                    var adhesionType = "skirt"
+                    if(!parent.checked)
+                    {
+                        // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
+                        platformAdhesionType.removeFromContainer(0)
+                        adhesionType = platformAdhesionType.properties.value
+                        if(adhesionType == "skirt" || adhesionType == "none")
+                        {
+                            // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
+                            adhesionType = "brim"
+                        }
+                    }
+                    platformAdhesionType.setPropertyValue("value", adhesionType)
+                }
+                onEntered:
+                {
+                    base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x, 0),
+                        catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
+                }
+                onExited: base.hideTooltip()
+            }
         }
     }
 
@@ -1003,31 +983,6 @@ Item
     {
         id: extruders
         onModelChanged: populateExtruderModel()
-    }
-
-    Item
-    {
-        id: tipsCell
-        anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-        anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height * 2)
-        anchors.left: parent.left
-        width: parent.width
-        height: tipsText.contentHeight * tipsText.lineCount
-
-        Label
-        {
-            id: tipsText
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
-            anchors.top: parent.top
-            wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting")
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-            linkColor: UM.Theme.getColor("text_link")
-            onLinkActivated: Qt.openUrlExternally(link)
-        }
     }
 
     UM.SettingPropertyProvider
@@ -1096,8 +1051,8 @@ Item
 
     function populateExtruderModel()
     {
-        extruderModel.clear();
-        for(var extruderNumber = 0; extruderNumber < extruders.rowCount() ; extruderNumber++)
+        extruderModel.clear()
+        for (var extruderNumber = 0; extruderNumber < extruders.rowCount(); extruderNumber++)
         {
             extruderModel.append({
                 text: extruders.getItem(extruderNumber).name,
