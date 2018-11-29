@@ -72,7 +72,7 @@ class GcodeStartEndFormatter(Formatter):
         # "-1" is global stack, and if the setting value exists in the global stack, use it as the fallback value.
         if key in kwargs["-1"]:
             value = kwargs["-1"]
-        if key in kwargs[str(extruder_nr)]:
+        if str(extruder_nr) in kwargs and key in kwargs[str(extruder_nr)]:
             value = kwargs[str(extruder_nr)][key]
 
         if value == default_value_str:
