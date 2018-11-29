@@ -11,7 +11,7 @@ Item
 {
     id: popup
 
-    width: UM.Theme.getSize("print_setup_widget").width
+    width: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
     height: childrenRect.height
 
     property int currentModeIndex: -1
@@ -87,22 +87,50 @@ Item
         color: UM.Theme.getColor("lining")
     }
 
-    Loader
+    Item
     {
-        id: loader
-        width: parent.width
+        id: contents
+        height: childrenRect.height
+
         anchors
         {
             top: header.bottom
+            left: parent.left
+            right: parent.right
         }
-        sourceComponent: currentModeIndex == 0 ? recommendedPrintSetup : customPrintSetup
+
+        RecommendedPrintSetup
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+            }
+            onShowTooltip: base.showTooltip(item, location, text)
+            onHideTooltip: base.hideTooltip()
+            visible: currentModeIndex == 0
+        }
+
+        CustomPrintSetup
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+            }
+            onShowTooltip: base.showTooltip(item, location, text)
+            onHideTooltip: base.hideTooltip()
+            visible: currentModeIndex == 1
+        }
     }
 
     Rectangle
     {
         id: buttonsSeparator
 
-        anchors.top: loader.bottom
+        anchors.top: contents.bottom
         width: parent.width
         height: UM.Theme.getSize("default_lining").height
         color: UM.Theme.getColor("lining")
@@ -111,7 +139,8 @@ Item
     Item
     {
         id: buttonRow
-        height: childrenRect.height
+        property real padding: UM.Theme.getSize("default_margin").width
+        height: childrenRect.height + 2 * padding
 
         // The buttonsSeparator is inside the buttonRow. This is to avoid some weird behaviours with the scroll bar.
         anchors
@@ -123,45 +152,31 @@ Item
 
         Cura.SecondaryButton
         {
+            anchors.top: parent.top
             anchors.left: parent.left
+            anchors.margins: parent.padding
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Recommended")
+            iconSource: UM.Theme.getIcon("arrow_left")
             visible: currentModeIndex == 1
             onClicked: currentModeIndex = 0
         }
 
         Cura.SecondaryButton
         {
+            anchors.top: parent.top
             anchors.right: parent.right
+            anchors.margins: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Custom")
+            iconSource: UM.Theme.getIcon("arrow_right")
+            iconOnRightSide: true
             visible: currentModeIndex == 0
             onClicked: currentModeIndex = 1
         }
     }
-
-    Component
-    {
-        id: recommendedPrintSetup
-        RecommendedPrintSetup
-        {
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
-        }
-    }
-
-    Component
-    {
-        id: customPrintSetup
-        CustomPrintSetup
-        {
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
-        }
-    }
-
 
     Component.onCompleted:
     {

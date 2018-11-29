@@ -163,6 +163,7 @@ Item
             onExited: background.color = headerBackgroundColor
         }
     }
+
     DropShadow
     {
         id: shadow
@@ -182,7 +183,7 @@ Item
         id: popup
 
         // Ensure that the popup is located directly below the headerItem
-        y: headerItemLoader.height + 2 * background.padding + base.shadowOffset + popupSpacingY
+        y: background.height + base.shadowOffset + popupSpacingY
 
         // Make the popup aligned with the rest, using the property popupAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
