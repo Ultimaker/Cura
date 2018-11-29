@@ -16,6 +16,7 @@ Item
     property color materialColor
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
+
     UM.RecolorImage
     {
         id: mainIcon
@@ -50,8 +51,6 @@ Item
             anchors.centerIn: parent
             text: index + 1
             font: UM.Theme.getFont("extruder_icon")
-            width: contentWidth
-            height: contentHeight
             visible: extruderEnabled
             renderType: Text.NativeRendering
             horizontalAlignment: Text.AlignHCenter

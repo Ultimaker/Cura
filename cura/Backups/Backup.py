@@ -46,12 +46,13 @@ class Backup:
 
         # We copy the preferences file to the user data directory in Linux as it's in a different location there.
         # When restoring a backup on Linux, we move it back.
-        if Platform.isLinux():
+        if Platform.isLinux(): #TODO: This should check for the config directory not being the same as the data directory, rather than hard-coding that to Linux systems.
             preferences_file_name = self._application.getApplicationName()
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
-            Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
-            shutil.copyfile(preferences_file, backup_preferences_file)
+            if os.path.exists(preferences_file) and (not os.path.exists(backup_preferences_file) or not os.path.samefile(preferences_file, backup_preferences_file)):
+                Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
+                shutil.copyfile(preferences_file, backup_preferences_file)
 
         # Create an empty buffer and write the archive to it.
         buffer = io.BytesIO()

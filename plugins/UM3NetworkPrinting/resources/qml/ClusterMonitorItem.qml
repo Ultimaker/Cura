@@ -10,14 +10,13 @@ import QtGraphicalEffects 1.0
 
 Component
 {
-    Rectangle
+    Item
     {
         id: monitorFrame
 
         property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
         property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width
 
-        color: "transparent"
         height: maximumHeight
         onVisibleChanged:
         {
@@ -48,13 +47,45 @@ Component
             }
         }
 
+        ScrollView
+        {
+            id: printers
+            anchors
+            {
+                left: queue.left
+                right: queue.right
+                top: parent.top
+                topMargin: 48 * screenScaleFactor // TODO: Theme!
+            }
+            height: 264 * screenScaleFactor // TODO: Theme!
+
+            Row
+            {
+                spacing: 60 * screenScaleFactor // TODO: Theme!
+                
+                Repeater
+                {
+                    model: OutputDevice.printers
+
+                    MonitorPrinterCard
+                    {
+                        printer: modelData
+                    }
+                }
+            }
+        }
+
         Item
         {
             id: queue
+            width: Math.min(834 * screenScaleFactor, maximumWidth)
 
-            anchors.fill: parent
-            anchors.top: parent.top
-            anchors.topMargin: 400 * screenScaleFactor // TODO: Insert carousel here
+            anchors {
+                bottom: parent.bottom
+                horizontalCenter: parent.horizontalCenter
+                top: printers.bottom
+                topMargin: 48 * screenScaleFactor // TODO: Theme!
+            }
 
             Label
             {
@@ -104,7 +135,6 @@ Component
                     text: catalog.i18nc("@label link to connect manager", "Manage queue in Cura Connect")
                 }
             }
-            
 
             MouseArea
             {
@@ -187,7 +217,7 @@ Component
                 }
                 style: UM.Theme.styles.scrollview
                 visible: OutputDevice.receivedPrintJobs
-                width: Math.min(834 * screenScaleFactor, maximumWidth)
+                width: parent.width
 
                 ListView
                 {
@@ -214,5 +244,4 @@ Component
             visible: OutputDevice.activeCameraUrl != ""
         }
     }
-    
 }

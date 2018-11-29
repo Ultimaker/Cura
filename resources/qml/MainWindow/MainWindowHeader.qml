@@ -2,11 +2,13 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
+import QtQuick.Controls 2.0 as Controls2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
+import QtGraphicalEffects 1.0
 
 import "../Account"
 
@@ -16,7 +18,31 @@ Rectangle
 
     implicitHeight: UM.Theme.getSize("main_window_header").height
     implicitWidth: UM.Theme.getSize("main_window_header").width
-    color: UM.Theme.getColor("main_window_header_background")
+
+    LinearGradient
+    {
+        anchors.fill: parent
+        start: Qt.point(0, 0)
+        end: Qt.point(parent.width, 0)
+        gradient: Gradient
+        {
+            GradientStop
+            {
+                position: 0.0
+                color: UM.Theme.getColor("main_window_header_background")
+            }
+            GradientStop
+            {
+                position: 0.5
+                color: UM.Theme.getColor("main_window_header_background_gradient")
+            }
+            GradientStop
+            {
+                position: 1.0
+                color: UM.Theme.getColor("main_window_header_background")
+            }
+        }
+    }
 
     Image
     {
@@ -73,25 +99,39 @@ Rectangle
     }
 
     // Shortcut button to quick access the Toolbox
-    Cura.ActionButton
+    Controls2.Button
     {
+        id: marketplaceButton
+        text: catalog.i18nc("@action:button", "Marketplace")
+        height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
+        onClicked: Cura.Actions.browsePackages.trigger()
+
+        hoverEnabled: true
+
+        background: Rectangle
+        {
+            radius: UM.Theme.getSize("action_button_radius").width
+            color: marketplaceButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("primary_text")
+        }
+
+        contentItem: Label
+        {
+            id: label
+            text: marketplaceButton.text
+            color: marketplaceButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+            width: contentWidth
+            verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
+        }
+
         anchors
         {
             right: accountWidget.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
-        leftPadding: UM.Theme.getSize("default_margin").width
-        rightPadding: UM.Theme.getSize("default_margin").width
-        text: catalog.i18nc("@action:button", "Marketplace")
-        height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
-        color: UM.Theme.getColor("main_window_header_secondary_button_background_active")
-        hoverColor: UM.Theme.getColor("main_window_header_secondary_button_background_hovered")
-        outlineColor: UM.Theme.getColor("main_window_header_secondary_button_outline_active")
-        outlineHoverColor: UM.Theme.getColor("main_window_header_secondary_button_outline_hovered")
-        textColor: UM.Theme.getColor("main_window_header_secondary_button_text_active")
-        textHoverColor: UM.Theme.getColor("main_window_header_secondary_button_text_hovered")
-        onClicked: Cura.Actions.browsePackages.trigger()
     }
 
     AccountWidget

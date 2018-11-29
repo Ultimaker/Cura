@@ -18,6 +18,7 @@ Column
     id: widget
 
     spacing: UM.Theme.getSize("thin_margin").height
+    property bool preSlicedData: PrintInformation.preSliced
 
     UM.I18nCatalog
     {
@@ -48,7 +49,7 @@ Column
                 id: estimatedTime
                 width: parent.width
 
-                text: PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
+                text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
                 font: UM.Theme.getFont("small")
             }
@@ -63,6 +64,10 @@ Column
 
                 text:
                 {
+                    if (preSlicedData)
+                    {
+                        return catalog.i18nc("@label", "No cost estimation available")
+                    }
                     var totalLengths = 0
                     var totalWeights = 0
                     if (printMaterialLengths)
@@ -86,6 +91,7 @@ Column
         PrintInformationWidget
         {
             id: printInformationPanel
+            visible: !preSlicedData
 
             anchors
             {
@@ -101,20 +107,18 @@ Column
         spacing: UM.Theme.getSize("default_margin").width
         width: parent.width
 
-        Cura.ActionButton
+        Cura.SecondaryButton
         {
             id: previewStageShortcut
 
-            leftPadding: UM.Theme.getSize("default_margin").width
-            rightPadding: UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("action_panel_button").height
             text: catalog.i18nc("@button", "Preview")
-            color: UM.Theme.getColor("secondary")
-            hoverColor: UM.Theme.getColor("secondary")
-            textColor: UM.Theme.getColor("primary")
-            textHoverColor: UM.Theme.getColor("text")
+
             onClicked: UM.Controller.setActiveStage("PreviewStage")
             visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
+
+            shadowEnabled: true
+            shadowColor: UM.Theme.getColor("action_button_disabled_shadow")
         }
 
         Cura.OutputDevicesActionButton

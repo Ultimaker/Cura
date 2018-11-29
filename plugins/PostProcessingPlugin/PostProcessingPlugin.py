@@ -55,14 +55,14 @@ class PostProcessingPlugin(QObject, Extension):
     def selectedScriptDefinitionId(self) -> Optional[str]:
         try:
             return self._script_list[self._selected_script_index].getDefinitionId()
-        except:
+        except IndexError:
             return ""
 
     @pyqtProperty(str, notify=selectedIndexChanged)
     def selectedScriptStackId(self) -> Optional[str]:
         try:
             return self._script_list[self._selected_script_index].getStackId()
-        except:
+        except IndexError:
             return ""
 
     ##  Execute all post-processing scripts on the gcode.

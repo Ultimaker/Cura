@@ -6,6 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
+import QtGraphicalEffects 1.0
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -153,7 +154,31 @@ UM.MainWindow
                 }
                 visible: stageMenu.source != ""
                 height: Math.round(UM.Theme.getSize("stage_menu").height / 2)
-                color: UM.Theme.getColor("main_window_header_background")
+
+                LinearGradient
+                {
+                    anchors.fill: parent
+                    start: Qt.point(0, 0)
+                    end: Qt.point(parent.width, 0)
+                    gradient: Gradient
+                    {
+                        GradientStop
+                        {
+                            position: 0.0
+                            color: UM.Theme.getColor("main_window_header_background")
+                        }
+                        GradientStop
+                        {
+                            position: 0.5
+                            color: UM.Theme.getColor("main_window_header_background_gradient")
+                        }
+                        GradientStop
+                        {
+                            position: 1.0
+                            color: UM.Theme.getColor("main_window_header_background")
+                        }
+                    }
+                }
             }
 
             Connections
@@ -187,7 +212,7 @@ UM.MainWindow
                     verticalCenter: parent.verticalCenter
                     left: parent.left
                 }
-                visible: CuraApplication.platformActivity
+                visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
             ObjectsList
