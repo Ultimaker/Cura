@@ -52,8 +52,6 @@ class ExtruderStack(CuraContainerStack):
         return super().getNextStack()
 
     def setEnabled(self, enabled: bool) -> None:
-        if "enabled" not in self._metadata:
-            self.setMetaDataEntry("enabled", "True")
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
