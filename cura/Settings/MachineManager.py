@@ -993,10 +993,6 @@ class MachineManager(QObject):
         self.updateNumberExtrudersEnabled()
         self.correctExtruderSettings()
 
-        # In case this extruder is being disabled and it's the currently selected one, switch to the default extruder
-        if not enabled and position == ExtruderManager.getInstance().activeExtruderIndex:
-            ExtruderManager.getInstance().setActiveExtruderIndex(int(self._default_extruder_position))
-
         # ensure that the quality profile is compatible with current combination, or choose a compatible one if available
         self._updateQualityWithMaterial()
         self.extruderChanged.emit()

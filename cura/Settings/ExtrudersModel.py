@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QTimer
@@ -177,7 +177,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
 
             for extruder in Application.getInstance().getExtruderManager().getActiveExtruderStacks():
-                position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
+                position = extruder.getMetaDataEntry("position", default = "0")
                 try:
                     position = int(position)
                 except ValueError:
