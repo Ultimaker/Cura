@@ -163,7 +163,6 @@ Item
         id: qualityRowTitle
         source: UM.Theme.getIcon("category_layer_height")
         text: catalog.i18nc("@label", "Layer Height")
-//        anchors.bottom: speedSlider.bottom
         width: labelColumnWidth
     }
 
@@ -232,9 +231,10 @@ Item
 //    }
 //
     //Print speed slider
-    Rectangle
+    Item
     {
         id: speedSlider
+        height: childrenRect.height
 
         anchors
         {
@@ -242,122 +242,11 @@ Item
             right: parent.right
         }
 
-        color: "green"
-        height: childrenRect.height
-
-        // This Item is used only for tooltip, for slider area which is unavailable
-//            Item
-//            {
-//                function showTooltip (showTooltip)
-//                {
-//                    if (showTooltip)
-//                    {
-//                        var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
-//                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), content)
-//                    }
-//                    else
-//                    {
-//                        base.hideTooltip()
-//                    }
-//                }
-//
-//                id: unavailableLineToolTip
-//                height: 20 * screenScaleFactor // hovered area height
-//                z: parent.z + 1 // should be higher, otherwise the area can be hovered
-//                x: 0
-//                anchors.verticalCenter: qualitySlider.verticalCenter
-//
-//                Rectangle
-//                {
-//                    id: leftArea
-//                    width:
-//                    {
-//                        if (qualityModel.availableTotalTicks == 0)
-//                        {
-//                            return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
-//                        }
-//                        return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
-//                    }
-//                    height: parent.height
-//                    color: "transparent"
-//
-//                    MouseArea
-//                    {
-//                        anchors.fill: parent
-//                        hoverEnabled: true
-//                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
-//                        onEntered: unavailableLineToolTip.showTooltip(true)
-//                        onExited: unavailableLineToolTip.showTooltip(false)
-//                    }
-//                }
-//
-//                Item
-//                {
-//                    id: rightArea
-//                    width:
-//                    {
-//                        if(qualityModel.availableTotalTicks == 0)
-//                            return 0
-//
-//                        return qualityModel.qualitySliderMarginRight - 10
-//                    }
-//                    height: parent.height
-//                    x:
-//                    {
-//                        if (qualityModel.availableTotalTicks == 0)
-//                        {
-//                            return 0
-//                        }
-//
-//                        var leftUnavailableArea = qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin
-//                        var totalGap = qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks -1) + leftUnavailableArea + 10
-//
-//                        return totalGap
-//                    }
-//
-//                    MouseArea
-//                    {
-//                        anchors.fill: parent
-//                        hoverEnabled: true
-//                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
-//                        onEntered: unavailableLineToolTip.showTooltip(true)
-//                        onExited: unavailableLineToolTip.showTooltip(false)
-//                    }
-//                }
-//            }
-
-//        // Draw Unavailable line
-//        Rectangle
-//        {
-//            id: groovechildrect
-//            width: parent.width
-//            height: 2 * UM.Theme.getSize("default_lining").height
-//            color: UM.Theme.getColor("quality_slider_unavailable")
-//            anchors.verticalCenter: qualitySlider.verticalCenter
-//
-//            // Draw ticks
-//            Repeater
-//            {
-//                id: qualityRepeater
-//                model: qualityModel.totalTicks > 0 ? qualityModel : 0
-//
-//                Rectangle
-//                {
-//                    color: Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-//                    implicitWidth: 4 * screenScaleFactor
-//                    implicitHeight: implicitWidth
-//                    anchors.verticalCenter: parent.verticalCenter
-//                    x: Math.round(qualityModel.qualitySliderStepWidth * index)
-//                    radius: Math.round(implicitWidth / 2)
-//                }
-//            }
-//        }
-
         // Draw unavailable slider
         Slider
         {
             id: unavailableSlider
-            height: UM.Theme.getSize("thick_margin").height
+            height: qualitySlider.height // Same height as the slider that is on top
             updateValueWhileDragging : false
             tickmarksEnabled: true
 
@@ -404,13 +293,27 @@ Item
                     }
                 }
             }
+
+            // Create a mouse area on top of the unavailable profiles to show a specific tooltip
+            MouseArea
+            {
+                anchors.fill: parent
+                hoverEnabled: true
+                enabled: !Cura.SimpleModeSettingsManager.isProfileUserCreated
+                onEntered:
+                {
+                    var tooltipContent: catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
+                    base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), unavailableSlider.tooltipContent)
+                }
+                onExited: base.hideTooltip()
+            }
         }
 
         // Draw available slider
         Slider
         {
             id: qualitySlider
-            height: UM.Theme.getSize("thick_margin").height
+            height: UM.Theme.getSize("print_setup_slider_handle").height // The handle is the widest element of the slider
             enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
             visible: qualityModel.availableTotalTicks > 0
             updateValueWhileDragging : false
@@ -469,49 +372,58 @@ Item
                     }
                 }
             }
+
+            // This mouse area is only used to capture the onHover state and don't propagate it to the unavailable mouse area
+            MouseArea
+            {
+                anchors.fill: parent
+                hoverEnabled: true
+                enabled: !Cura.SimpleModeSettingsManager.isProfileUserCreated
+            }
         }
 
-//        MouseArea
-//        {
-//            id: speedSliderMouseArea
-//            anchors.fill: parent
-//            hoverEnabled: true
-//            enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated
-//
-//            onEntered:
-//            {
-//                var content = catalog.i18nc("@tooltip", "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
-//                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
-//            }
-//            onExited: base.hideTooltip()
-//        }
+        // This mouse area will only take the mouse events and show a tooltip when the profile in use is
+        // a user created profile
+        MouseArea
+        {
+            anchors.fill: parent
+            hoverEnabled: true
+            visible: Cura.SimpleModeSettingsManager.isProfileUserCreated
+
+            onEntered:
+            {
+                var content = catalog.i18nc("@tooltip", "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
+                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
+            }
+            onExited: base.hideTooltip()
+        }
     }
-//
-//    UM.SimpleButton
-//    {
-//        id: customisedSettings
-//
-//        visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
-//        height: Math.round(speedSlider.height * 0.8)
-//        width: Math.round(speedSlider.height * 0.8)
-//
-//        anchors.verticalCenter: speedSlider.verticalCenter
-//        anchors.right: speedSlider.left
-//        anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
-//
-//        color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
-//        iconSource: UM.Theme.getIcon("reset");
-//
-//        onClicked:
-//        {
-//            // if the current profile is user-created, switch to a built-in quality
-//            Cura.MachineManager.resetToUseDefaultQuality()
-//        }
-//        onEntered:
-//        {
-//            var content = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
-//            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
-//        }
-//        onExited: base.hideTooltip()
-//    }
+
+    UM.SimpleButton
+    {
+        id: customisedSettings
+
+        visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
+        height: Math.round(speedSlider.height * 0.8)
+        width: Math.round(speedSlider.height * 0.8)
+
+        anchors.verticalCenter: speedSlider.verticalCenter
+        anchors.right: speedSlider.left
+        anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
+
+        color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+        iconSource: UM.Theme.getIcon("reset");
+
+        onClicked:
+        {
+            // if the current profile is user-created, switch to a built-in quality
+            Cura.MachineManager.resetToUseDefaultQuality()
+        }
+        onEntered:
+        {
+            var content = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
+            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
+        }
+        onExited: base.hideTooltip()
+    }
 }

@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: base
 
@@ -16,8 +16,6 @@ Rectangle
     signal hideTooltip()
 //    width: parent.width
     height: childrenRect.height + 2 * padding
-    color: "red"
-    opacity: 0.5
 
     property Action configureSettings
 
