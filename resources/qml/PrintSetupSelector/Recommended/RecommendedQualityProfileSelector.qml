@@ -124,22 +124,27 @@ Item
 
         function calculateSliderStepWidth (totalTicks)
         {
-            qualityModel.qualitySliderStepWidth = totalTicks != 0 ? Math.round((settingsColumnWidth) / (totalTicks)) : 0
+            // Do not use Math.round otherwise the tickmarks won't be aligned
+            qualityModel.qualitySliderStepWidth = totalTicks != 0 ?
+                    ((settingsColumnWidth - UM.Theme.getSize("print_setup_slider_handle").width) / (totalTicks)) : 0
         }
 
         function calculateSliderMargins (availableMin, availableMax, totalTicks)
         {
             if (availableMin == -1 || (availableMin == 0 && availableMax == 0))
             {
-                qualityModel.qualitySliderMarginRight = Math.round(settingsColumnWidth)
+                // Do not use Math.round otherwise the tickmarks won't be aligned
+                qualityModel.qualitySliderMarginRight = settingsColumnWidth
             }
             else if (availableMin == availableMax)
             {
-                qualityModel.qualitySliderMarginRight = Math.round((totalTicks - availableMin) * qualitySliderStepWidth)
+                // Do not use Math.round otherwise the tickmarks won't be aligned
+                qualityModel.qualitySliderMarginRight = (totalTicks - availableMin) * qualitySliderStepWidth
             }
             else
             {
-                qualityModel.qualitySliderMarginRight = Math.round((totalTicks - availableMax) * qualitySliderStepWidth)
+                // Do not use Math.round otherwise the tickmarks won't be aligned
+                qualityModel.qualitySliderMarginRight = (totalTicks - availableMax) * qualitySliderStepWidth
             }
         }
 
@@ -162,20 +167,6 @@ Item
         width: labelColumnWidth
     }
 
-    //Print speed slider
-    Rectangle
-    {
-        id: speedSlider
-
-        anchors
-        {
-            left: qualityRowTitle.right
-            right: parent.right
-        }
-
-        color: "green"
-        height: 20
-    }
 //
 //    // Show titles for the each quality slider ticks
 //    Item
@@ -240,104 +231,107 @@ Item
 //        }
 //    }
 //
-//    //Print speed slider
-//    Rectangle
-//    {
-//        id: speedSlider
+    //Print speed slider
+    Rectangle
+    {
+        id: speedSlider
+
+        anchors
+        {
+            left: qualityRowTitle.right
+            right: parent.right
+        }
+
+        color: "green"
+        height: childrenRect.height
+
+        // This Item is used only for tooltip, for slider area which is unavailable
+//            Item
+//            {
+//                function showTooltip (showTooltip)
+//                {
+//                    if (showTooltip)
+//                    {
+//                        var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
+//                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), content)
+//                    }
+//                    else
+//                    {
+//                        base.hideTooltip()
+//                    }
+//                }
 //
-//        anchors
-//        {
-//            left: qualityRowTitle.right
-//            right: parent.right
-//        }
+//                id: unavailableLineToolTip
+//                height: 20 * screenScaleFactor // hovered area height
+//                z: parent.z + 1 // should be higher, otherwise the area can be hovered
+//                x: 0
+//                anchors.verticalCenter: qualitySlider.verticalCenter
 //
-//        // This Item is used only for tooltip, for slider area which is unavailable
-////            Item
-////            {
-////                function showTooltip (showTooltip)
-////                {
-////                    if (showTooltip)
-////                    {
-////                        var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
-////                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), content)
-////                    }
-////                    else
-////                    {
-////                        base.hideTooltip()
-////                    }
-////                }
-////
-////                id: unavailableLineToolTip
-////                height: 20 * screenScaleFactor // hovered area height
-////                z: parent.z + 1 // should be higher, otherwise the area can be hovered
-////                x: 0
-////                anchors.verticalCenter: qualitySlider.verticalCenter
-////
-////                Rectangle
-////                {
-////                    id: leftArea
-////                    width:
-////                    {
-////                        if (qualityModel.availableTotalTicks == 0)
-////                        {
-////                            return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
-////                        }
-////                        return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
-////                    }
-////                    height: parent.height
-////                    color: "transparent"
-////
-////                    MouseArea
-////                    {
-////                        anchors.fill: parent
-////                        hoverEnabled: true
-////                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
-////                        onEntered: unavailableLineToolTip.showTooltip(true)
-////                        onExited: unavailableLineToolTip.showTooltip(false)
-////                    }
-////                }
-////
-////                Item
-////                {
-////                    id: rightArea
-////                    width:
-////                    {
-////                        if(qualityModel.availableTotalTicks == 0)
-////                            return 0
-////
-////                        return qualityModel.qualitySliderMarginRight - 10
-////                    }
-////                    height: parent.height
-////                    x:
-////                    {
-////                        if (qualityModel.availableTotalTicks == 0)
-////                        {
-////                            return 0
-////                        }
-////
-////                        var leftUnavailableArea = qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin
-////                        var totalGap = qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks -1) + leftUnavailableArea + 10
-////
-////                        return totalGap
-////                    }
-////
-////                    MouseArea
-////                    {
-////                        anchors.fill: parent
-////                        hoverEnabled: true
-////                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
-////                        onEntered: unavailableLineToolTip.showTooltip(true)
-////                        onExited: unavailableLineToolTip.showTooltip(false)
-////                    }
-////                }
-////            }
+//                Rectangle
+//                {
+//                    id: leftArea
+//                    width:
+//                    {
+//                        if (qualityModel.availableTotalTicks == 0)
+//                        {
+//                            return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
+//                        }
+//                        return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
+//                    }
+//                    height: parent.height
+//                    color: "transparent"
 //
+//                    MouseArea
+//                    {
+//                        anchors.fill: parent
+//                        hoverEnabled: true
+//                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
+//                        onEntered: unavailableLineToolTip.showTooltip(true)
+//                        onExited: unavailableLineToolTip.showTooltip(false)
+//                    }
+//                }
+//
+//                Item
+//                {
+//                    id: rightArea
+//                    width:
+//                    {
+//                        if(qualityModel.availableTotalTicks == 0)
+//                            return 0
+//
+//                        return qualityModel.qualitySliderMarginRight - 10
+//                    }
+//                    height: parent.height
+//                    x:
+//                    {
+//                        if (qualityModel.availableTotalTicks == 0)
+//                        {
+//                            return 0
+//                        }
+//
+//                        var leftUnavailableArea = qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin
+//                        var totalGap = qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks -1) + leftUnavailableArea + 10
+//
+//                        return totalGap
+//                    }
+//
+//                    MouseArea
+//                    {
+//                        anchors.fill: parent
+//                        hoverEnabled: true
+//                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
+//                        onEntered: unavailableLineToolTip.showTooltip(true)
+//                        onExited: unavailableLineToolTip.showTooltip(false)
+//                    }
+//                }
+//            }
+
 //        // Draw Unavailable line
 //        Rectangle
 //        {
 //            id: groovechildrect
 //            width: parent.width
-//            height: 2 * screenScaleFactor
+//            height: 2 * UM.Theme.getSize("default_lining").height
 //            color: UM.Theme.getColor("quality_slider_unavailable")
 //            anchors.verticalCenter: qualitySlider.verticalCenter
 //
@@ -358,66 +352,125 @@ Item
 //                }
 //            }
 //        }
-//
-//        // Draw available slider
-//        Slider
-//        {
-//            id: qualitySlider
-//            height: UM.Theme.getSize("thick_margin").height
-//            anchors.bottom: parent.bottom
-//            enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
-//            visible: qualityModel.availableTotalTicks > 0
-//            updateValueWhileDragging : false
-//
-//            minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
-//            // maximumValue must be greater than minimumValue to be able to see the handle. While the value is strictly
-//            // speaking not always correct, it seems to have the correct behavior (switching from 0 available to 1 available)
-//            maximumValue: qualityModel.qualitySliderAvailableMax >= 1 ? qualityModel.qualitySliderAvailableMax : 1
-//            stepSize: 1
-//
-//            value: qualityModel.qualitySliderActiveIndex
-//
-//            width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1)
-//
-//            anchors.right: parent.right
-//            anchors.rightMargin: qualityModel.qualitySliderMarginRight
-//
-//            style: SliderStyle
-//            {
-//                //Draw Available line
-//                groove: Rectangle
-//                {
-//                    implicitHeight: 2 * screenScaleFactor
-//                    color: UM.Theme.getColor("quality_slider_available")
-//                    radius: Math.round(height / 2)
-//                }
-//
-//                handle: Rectangle
-//                {
-//                    id: qualityhandleButton
-//                    color: UM.Theme.getColor("quality_slider_available")
-//                    implicitWidth: 12 * screenScaleFactor
-//                    implicitHeight: implicitWidth
-//                    radius: Math.round(implicitWidth / 2)
-//                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
-//                }
-//            }
-//
-//            onValueChanged:
-//            {
-//                // only change if an active machine is set and the slider is visible at all.
-//                if (Cura.MachineManager.activeMachine != null && visible)
-//                {
-//                    // prevent updating during view initializing. Trigger only if the value changed by user
-//                    if (qualitySlider.value != qualityModel.qualitySliderActiveIndex && qualityModel.qualitySliderActiveIndex != -1)
-//                    {
-//                        // start updating with short delay
-//                        qualitySliderChangeTimer.start()
-//                    }
-//                }
-//            }
-//        }
-//
+
+        // Draw unavailable slider
+        Slider
+        {
+            id: unavailableSlider
+            height: UM.Theme.getSize("thick_margin").height
+            updateValueWhileDragging : false
+            tickmarksEnabled: true
+
+            minimumValue: 0
+            // maximumValue must be greater than minimumValue to be able to see the handle. While the value is strictly
+            // speaking not always correct, it seems to have the correct behavior (switching from 0 available to 1 available)
+            maximumValue: qualityModel.totalTicks
+            stepSize: 1
+
+            width: parent.width
+
+            style: SliderStyle
+            {
+                //Draw Unvailable line
+                groove: Item
+                {
+                    Rectangle
+                    {
+                        height: UM.Theme.getSize("print_setup_slider_groove").height
+                        width: control.width - UM.Theme.getSize("print_setup_slider_handle").width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: UM.Theme.getColor("quality_slider_unavailable")
+                    }
+                }
+
+                handle: Item {}
+
+                tickmarks: Repeater
+                {
+                    id: qualityRepeater
+                    model: qualityModel.totalTicks > 0 ? qualityModel : 0
+
+                    Rectangle
+                    {
+                        color: Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                        implicitWidth: UM.Theme.getSize("print_setup_slider_tickmarks").width
+                        implicitHeight: UM.Theme.getSize("print_setup_slider_tickmarks").height
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        // Do not use Math.round otherwise the tickmarks won't be aligned
+                        x: ((UM.Theme.getSize("print_setup_slider_handle").width / 2) - (UM.Theme.getSize("print_setup_slider_tickmarks").width / 2) + (qualityModel.qualitySliderStepWidth * index))
+                        radius: Math.round(implicitWidth / 2)
+                    }
+                }
+            }
+        }
+
+        // Draw available slider
+        Slider
+        {
+            id: qualitySlider
+            height: UM.Theme.getSize("thick_margin").height
+            enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
+            visible: qualityModel.availableTotalTicks > 0
+            updateValueWhileDragging : false
+
+            minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
+            // maximumValue must be greater than minimumValue to be able to see the handle. While the value is strictly
+            // speaking not always correct, it seems to have the correct behavior (switching from 0 available to 1 available)
+            maximumValue: qualityModel.qualitySliderAvailableMax >= 1 ? qualityModel.qualitySliderAvailableMax : 1
+            stepSize: 1
+
+            value: qualityModel.qualitySliderActiveIndex
+
+            width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1) + UM.Theme.getSize("print_setup_slider_handle").width
+
+            anchors.right: parent.right
+            anchors.rightMargin: qualityModel.qualitySliderMarginRight
+
+            style: SliderStyle
+            {
+                // Draw Available line
+                groove: Item
+                {
+                    Rectangle
+                    {
+                        height: UM.Theme.getSize("print_setup_slider_groove").height
+                        width: control.width - UM.Theme.getSize("print_setup_slider_handle").width
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        // Do not use Math.round otherwise the tickmarks won't be aligned
+                        x: UM.Theme.getSize("print_setup_slider_handle").width / 2
+                        color: UM.Theme.getColor("quality_slider_available")
+                    }
+                }
+
+                handle: Rectangle
+                {
+                    id: qualityhandleButton
+                    color: UM.Theme.getColor("primary")
+                    implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
+                    implicitHeight: implicitWidth
+                    radius: Math.round(implicitWidth / 2)
+                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
+                }
+            }
+
+            onValueChanged:
+            {
+                // only change if an active machine is set and the slider is visible at all.
+                if (Cura.MachineManager.activeMachine != null && visible)
+                {
+                    // prevent updating during view initializing. Trigger only if the value changed by user
+                    if (qualitySlider.value != qualityModel.qualitySliderActiveIndex && qualityModel.qualitySliderActiveIndex != -1)
+                    {
+                        // start updating with short delay
+                        qualitySliderChangeTimer.start()
+                    }
+                }
+            }
+        }
+
 //        MouseArea
 //        {
 //            id: speedSliderMouseArea
@@ -432,7 +485,7 @@ Item
 //            }
 //            onExited: base.hideTooltip()
 //        }
-//    }
+    }
 //
 //    UM.SimpleButton
 //    {

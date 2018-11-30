@@ -114,19 +114,20 @@ Item
             onHideTooltip: base.hideTooltip()
             visible: currentModeIndex == 0
         }
-//
-//        CustomPrintSetup
-//        {
-//            anchors
-//            {
-//                left: parent.left
-//                right: parent.right
-//                top: parent.top
-//            }
-//            onShowTooltip: base.showTooltip(item, location, text)
-//            onHideTooltip: base.hideTooltip()
-//            visible: currentModeIndex == 1
-//        }
+
+        CustomPrintSetup
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+            }
+            height: 500
+            onShowTooltip: base.showTooltip(item, location, text)
+            onHideTooltip: base.hideTooltip()
+            visible: currentModeIndex == 1
+        }
     }
 
     Rectangle

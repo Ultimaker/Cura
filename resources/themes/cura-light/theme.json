@@ -373,6 +373,9 @@
         "print_setup_item": [0.0, 2.0],
         "print_setup_extruder_box": [0.0, 6.0],
         "print_setup_widget_header": [0.0, 3.0],
+        "print_setup_slider_groove": [0.16, 0.16],
+        "print_setup_slider_handle": [1.0, 1.0],
+        "print_setup_slider_tickmarks": [0.32, 0.32],
 
         "configuration_selector_mode_tabs": [0.0, 3.0],
 
@@ -521,9 +524,6 @@
         "monitor_thick_lining": [0.16, 0.16],
         "monitor_corner_radius": [0.3, 0.3],
         "monitor_shadow_radius": [0.4, 0.4],
-        "monitor_shadow_offset": [0.15, 0.15],
-
-        "print_setup_action_button": [13, 5],
-        "print_setup_content_top_margin": [3, 3]
+        "monitor_shadow_offset": [0.15, 0.15]
     }
 }
