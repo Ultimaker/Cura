@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -25,13 +25,15 @@ Item
     {
         id: settingVisibilityMenu
 
+        property var toolButtonIconColor: UM.Theme.getColor("setting_category_text")
+
         width: height
         height: UM.Theme.getSize("setting_control").height
         anchors
         {
             topMargin: UM.Theme.getSize("thick_margin").height
-            right: parent.right
-            rightMargin: UM.Theme.getSize("thick_margin").width
+            left: filterContainer.right
+            leftMargin: UM.Theme.getSize("default_margin").width
         }
         style: ButtonStyle
         {
@@ -39,12 +41,12 @@ Item
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
+                    width: Math.round(parent.width * 0.6)
+                    height: Math.round(parent.height * 0.6)
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: control.enabled ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_category_disabled_text")
-                    source: UM.Theme.getIcon("menu")
+                    color: settingVisibilityMenu.toolButtonIconColor
+                    source: UM.Theme.getIcon("settings")
                 }
             }
             label: Label{}
@@ -56,6 +58,15 @@ Item
                 definitionsModel.setAllVisible(true);
                 filter.updateDefinitionModel();
             }
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.RightButton
+            onEntered: settingVisibilityMenu.toolButtonIconColor = UM.Theme.getColor("setting_control_button_hover")
+            onExited: settingVisibilityMenu.toolButtonIconColor = UM.Theme.getColor("setting_category_text")
         }
     }
 
@@ -84,8 +95,8 @@ Item
             topMargin: UM.Theme.getSize("thick_margin").height
             left: parent.left
             leftMargin: UM.Theme.getSize("default_margin").width
-            right: settingVisibilityMenu.left
-            rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+            right: scrollView.right
+            rightMargin: Math.floor(UM.Theme.getSize("wide_margin").width * 2)
         }
         height: UM.Theme.getSize("setting_control").height
         Timer
@@ -196,6 +207,7 @@ Item
 
     ScrollView
     {
+        id: scrollView
         anchors.top: filterContainer.bottom;
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
