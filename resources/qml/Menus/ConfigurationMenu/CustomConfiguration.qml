@@ -35,7 +35,7 @@ Item
         anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-        onCurrentIndexChanged: Cura.ExtruderManager.setActiveExtruderIndex(currentIndex)
+        currentIndex: Math.max(Cura.ExtruderManager.activeExtruderIndex, 0)
 
         Repeater
         {
@@ -52,6 +52,10 @@ Item
                         width: parent.height
                         height: parent.height
                     }
+                }
+                onClicked:
+                {
+                    Cura.ExtruderManager.setActiveExtruderIndex(tabBar.currentIndex)
                 }
             }
         }
