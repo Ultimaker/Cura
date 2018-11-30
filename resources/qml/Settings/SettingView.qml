@@ -105,12 +105,12 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
-            placeholderText: catalog.i18nc("@label:textbox", "Search...")
+            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("search") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "search settings")
 
             style: TextFieldStyle
             {
                 textColor: UM.Theme.getColor("setting_control_text");
-                placeholderTextColor: UM.Theme.getColor("setting_control_text")
+                placeholderTextColor: UM.Theme.getColor("setting_filter_field")
                 font: UM.Theme.getFont("default");
                 background: Item {}
             }
