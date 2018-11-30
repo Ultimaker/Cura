@@ -89,7 +89,7 @@ Item
         radius: UM.Theme.getSize("default_radius").width
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
-        color: UM.Theme.getColor("secondary")
+        color: UM.Theme.getColor("main_background")
 
         //Remove rounding and lining at the top.
         Rectangle
