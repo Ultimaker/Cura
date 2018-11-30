@@ -221,6 +221,7 @@
         "setting_validation_warning_background": [255, 145, 62, 255],
         "setting_validation_warning": [127, 127, 127, 255],
         "setting_validation_ok": [255, 255, 255, 255],
+        "setting_filter_field" : [153, 153, 153, 255],
 
         "material_compatibility_warning": [0, 0, 0, 255],
 
