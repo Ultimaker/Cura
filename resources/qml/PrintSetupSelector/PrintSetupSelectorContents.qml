@@ -7,6 +7,9 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
+import "Recommended"
+import "Custom"
+
 Item
 {
     id: popup
@@ -22,7 +25,7 @@ Item
     {
         id: header
         height: UM.Theme.getSize("print_setup_widget_header").height
-        color: UM.Theme.getColor("action_button_hovered")  // TODO: It's not clear the color that we need to use here
+        color: "transparent" //UM.Theme.getColor("action_button_hovered")  // TODO: It's not clear the color that we need to use here
 
         anchors
         {
@@ -111,19 +114,19 @@ Item
             onHideTooltip: base.hideTooltip()
             visible: currentModeIndex == 0
         }
-
-        CustomPrintSetup
-        {
-            anchors
-            {
-                left: parent.left
-                right: parent.right
-                top: parent.top
-            }
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
-            visible: currentModeIndex == 1
-        }
+//
+//        CustomPrintSetup
+//        {
+//            anchors
+//            {
+//                left: parent.left
+//                right: parent.right
+//                top: parent.top
+//            }
+//            onShowTooltip: base.showTooltip(item, location, text)
+//            onHideTooltip: base.hideTooltip()
+//            visible: currentModeIndex == 1
+//        }
     }
 
     Rectangle

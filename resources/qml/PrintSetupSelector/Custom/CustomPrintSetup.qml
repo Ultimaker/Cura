@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import "../Settings"
+import Cura 1.0 as Cura
 
-SettingView {
+Cura.SettingView {
 }
