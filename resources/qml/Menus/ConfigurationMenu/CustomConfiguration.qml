@@ -167,8 +167,6 @@ Item
                     tooltip: text
                     visible: Cura.MachineManager.hasMaterials
 
-                    enabled: Cura.ExtruderManager.activeExtruderIndex > -1
-
                     height: UM.Theme.getSize("setting_control").height
                     width: selectors.controlWidth
 
