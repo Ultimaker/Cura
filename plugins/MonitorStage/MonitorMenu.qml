@@ -11,4 +11,13 @@ Item
 {
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
+
+    Cura.MachineSelector
+    {
+        id: machineSelection
+        headerCornerSide: Cura.RoundedRectangle.Direction.All
+        width: UM.Theme.getSize("machine_selector_widget").width
+        height: parent.height
+        anchors.centerIn: parent
+    }
 }
