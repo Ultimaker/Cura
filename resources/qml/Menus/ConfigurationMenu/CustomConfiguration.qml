@@ -39,6 +39,7 @@ Item
 
         Repeater
         {
+            id: repeater
             model: extrudersModel
             delegate: UM.TabRowButton
             {
@@ -57,6 +58,18 @@ Item
                 {
                     Cura.ExtruderManager.setActiveExtruderIndex(tabBar.currentIndex)
                 }
+            }
+        }
+
+        //When the model of the extruders is rebuilt, the list of extruders is briefly emptied and rebuilt.
+        //This causes the currentIndex of the tab to be in an invalid position which resets it to 0.
+        //Therefore we need to change it back to what it was: The active extruder index.
+        Connections
+        {
+            target: repeater.model
+            onModelChanged:
+            {
+                tabBar.currentIndex = Math.max(Cura.ExtruderManager.activeExtruderIndex, 0)
             }
         }
     }
