@@ -135,7 +135,7 @@ Item
 
                 OldControls.CheckBox
                 {
-                    checked: selectors.model != null ? Cura.MachineManager.getExtruder(selectors.model.index).isEnabled: false
+                    checked: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.isEnabled : false
                     onClicked: Cura.MachineManager.setExtruderEnabled(selectors.model.index, checked)
                     height: UM.Theme.getSize("setting_control").height
                     style: UM.Theme.styles.checkbox
@@ -160,14 +160,11 @@ Item
                 {
                     id: materialSelection
 
-                    property var activeExtruder: Cura.MachineManager.activeStack
-                    property var hasActiveExtruder: activeExtruder != null
-                    property var currentRootMaterialName: hasActiveExtruder ? activeExtruder.material.name : ""
-                    property var valueError: hasActiveExtruder ? Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible", "") != "True" : true
+                    property var valueError: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") != "True" : true
                     property var valueWarning: !Cura.MachineManager.isActiveQualitySupported
 
-                    text: currentRootMaterialName
-                    tooltip: currentRootMaterialName
+                    text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
+                    tooltip: text
                     visible: Cura.MachineManager.hasMaterials
 
                     enabled: Cura.ExtruderManager.activeExtruderIndex > -1
