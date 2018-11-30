@@ -10,6 +10,12 @@ import UM 1.3 as UM
 
 Item
 {
+    UM.I18nCatalog
+    {
+        id: catalog
+        name: "cura"
+    }
+
     width: parent.width
     height: visible ? childrenRect.height : 0
 
@@ -136,6 +142,7 @@ Item
                 OldControls.CheckBox
                 {
                     checked: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.isEnabled : false
+                    enabled: !checked || Cura.MachineManager.numberExtrudersEnabled > 1 //Disable if it's the last enabled extruder.
                     height: UM.Theme.getSize("setting_control").height
                     style: UM.Theme.styles.checkbox
 
@@ -148,6 +155,7 @@ Item
                     {
                         anchors.fill: parent
                         onClicked: Cura.MachineManager.setExtruderEnabled(Cura.ExtruderManager.activeExtruderIndex, !parent.checked)
+                        enabled: parent.enabled
                     }
                 }
             }
