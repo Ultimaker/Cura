@@ -67,7 +67,7 @@
                     "description": "The distance between the part and the conveyor belt. Adjust the gap to the belt to control adhesion between the print and the belt. Smaller gap means more adhesion, a bigger gap means less adhesion.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.2,
+                    "default_value": 0.25,
                     "minimum_value": "0",
                     "maximum_value": "5",
                     "settable_per_mesh": false,
@@ -271,6 +271,15 @@
             "value": "100"
         },
 
+        "machine_max_acceleration_x": {
+            "value": "1000"
+        },
+        "machine_max_acceleration_y": {
+            "value": "1000"
+        },
+        "jerk_print": {
+            "value": "15"
+        },
 
         "blackbelt_raft_gap": {
             "value": "0.2"
