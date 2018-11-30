@@ -22,6 +22,25 @@ Component
             {
                 anchors.fill: parent
             }
+
+            Rectangle
+            {
+                id: footerSeparator
+                width: parent.width
+                height: UM.Theme.getSize("wide_lining").height
+                color: UM.Theme.getColor("wide_lining")
+                anchors.bottom: monitorButton.top
+                anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
+            }
+
+            // MonitorButton is actually the bottom footer panel.
+            Cura.MonitorButton
+            {
+                id: monitorButton
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+            }
         }
     }
 }
