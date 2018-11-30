@@ -646,7 +646,7 @@ QtObject
                 implicitWidth:  Theme.getSize("checkbox").width
                 implicitHeight: Theme.getSize("checkbox").height
 
-                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox")
+                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : (control.enabled ? Theme.getColor("checkbox") : Theme.getColor("checkbox_disabled"))
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : 0
