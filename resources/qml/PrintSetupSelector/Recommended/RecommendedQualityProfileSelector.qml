@@ -231,6 +231,8 @@ Item
 //    }
 //
     //Print speed slider
+    // Two sliders are created, one at the bottom with the unavailable qualities
+    // and the other at the top with the available quality profiles and so the handle to select them.
     Item
     {
         id: speedSlider
@@ -302,8 +304,8 @@ Item
                 enabled: !Cura.SimpleModeSettingsManager.isProfileUserCreated
                 onEntered:
                 {
-                    var tooltipContent: catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
-                    base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), unavailableSlider.tooltipContent)
+                    var tooltipContent = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
+                    base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), tooltipContent)
                 }
                 onExited: base.hideTooltip()
             }
@@ -378,6 +380,7 @@ Item
             {
                 anchors.fill: parent
                 hoverEnabled: true
+                acceptedButtons: Qt.NoButton
                 enabled: !Cura.SimpleModeSettingsManager.isProfileUserCreated
             }
         }
@@ -392,8 +395,8 @@ Item
 
             onEntered:
             {
-                var content = catalog.i18nc("@tooltip", "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
-                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
+                var tooltipContent = catalog.i18nc("@tooltip", "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
+                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  tooltipContent)
             }
             onExited: base.hideTooltip()
         }
@@ -421,8 +424,8 @@ Item
         }
         onEntered:
         {
-            var content = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
-            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  content)
+            var tooltipContent = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
+            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  tooltipContent)
         }
         onExited: base.hideTooltip()
     }
