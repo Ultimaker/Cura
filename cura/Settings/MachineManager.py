@@ -866,7 +866,7 @@ class MachineManager(QObject):
             caution_message = Message(catalog.i18nc(
                 "@info:generic",
                 "Settings have been changed to match the current availability of extruders: [%s]" % ", ".join(add_user_changes)),
-                lifetime=0,
+                lifetime = 0,
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
 
