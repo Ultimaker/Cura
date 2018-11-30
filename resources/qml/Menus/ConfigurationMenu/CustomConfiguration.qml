@@ -136,9 +136,19 @@ Item
                 OldControls.CheckBox
                 {
                     checked: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.isEnabled : false
-                    onClicked: Cura.MachineManager.setExtruderEnabled(selectors.model.index, checked)
                     height: UM.Theme.getSize("setting_control").height
                     style: UM.Theme.styles.checkbox
+
+                    /* Use a MouseArea to process the click on this checkbox.
+                       This is necessary because actually clicking the checkbox
+                       causes the "checked" property to be overwritten. After
+                       it's been overwritten, the original link that made it
+                       depend on the active extruder stack is broken. */
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: Cura.MachineManager.setExtruderEnabled(Cura.ExtruderManager.activeExtruderIndex, !parent.checked)
+                    }
                 }
             }
 
