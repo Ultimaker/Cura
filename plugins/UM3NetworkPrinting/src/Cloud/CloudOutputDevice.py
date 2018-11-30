@@ -1,25 +1,27 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import io
 import json
 import os
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, cast
 
 from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM import i18nCatalog
+from UM.FileHandler import FileWriter
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
+from UM.OutputDevice import OutputDeviceError
 from UM.Scene.SceneNode import SceneNode
-from UM.Settings import ContainerRegistry
+from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput import PrinterOutputController, PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from .Models import CloudClusterPrinter, CloudClusterPrinterConfiguration, CloudClusterPrinterConfigurationMaterial, CloudClusterPrintJob, CloudClusterPrintJobConstraint
-
-from .CloudOutputController import CloudOutputController
+from .Models import CloudClusterPrinter, CloudClusterPrinterConfiguration, CloudClusterPrinterConfigurationMaterial, \
+    CloudClusterPrintJob, CloudClusterPrintJobConstraint, JobUploadRequest
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 
@@ -36,8 +38,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The cloud URL to use for this remote cluster.
     # TODO: Make sure that this url goes to the live api before release
-    API_ROOT_PATH_FORMAT = "https://api-staging.ultimaker.com/connect/v1/clusters/{cluster_id}"
-    
+    ROOT_PATH= "https://api-staging.ultimaker.com"
+    CLUSTER_API_ROOT = "{}/connect/v1/".format(ROOT_PATH)
+    CURA_API_ROOT = "{}/cura/v1/".format(ROOT_PATH)
+    CURA_DRIVE_API_ROOT = "{}/cura-drive/v1/".format(ROOT_PATH)
+
     # Signal triggered when the printers in the remote cluster were changed.
     printersChanged = pyqtSignal()
 
@@ -64,7 +69,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     
     ##  We need to override _createEmptyRequest to work for the cloud.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
-        url = QUrl(self.API_ROOT_PATH_FORMAT.format(cluster_id = self._device_id) + path)
+        #url = QUrl(self.CLUSTER_API_ROOT_PATH_FORMAT.format(cluster_id = self._device_id) + path)
+        url = QUrl(path)
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
@@ -92,7 +98,72 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
-        self._addPrintJobToQueue()
+        file_format = self._determineFileFormat(file_handler)
+        writer = self._determineWriter(file_format)
+
+        # This function pauses with the yield, waiting on instructions on which printer it needs to print with.
+        if not writer:
+            Logger.log("e", "Missing file or mesh writer!")
+            return
+
+        stream = io.BytesIO()  # type: Union[io.BytesIO, io.StringIO]# Binary mode.
+        if file_format["mode"] == FileWriter.OutputMode.TextMode:
+            stream = io.StringIO()
+
+        writer.write(stream, nodes)
+
+        stream.seek(0, io.SEEK_END)
+        size = stream.tell()
+        stream.seek(0, io.SEEK_SET)
+
+        request = JobUploadRequest()
+        request.job_name = file_name
+        request.file_size = size
+
+        self._addPrintJobToQueue(stream, request)
+
+    # TODO: This is yanked right out of ClusterUM3OoutputDevice, great candidate for a utility or base class
+    def _determineFileFormat(self, file_handler) -> None:
+        # Formats supported by this application (file types that we can actually write).
+        if file_handler:
+            file_formats = file_handler.getSupportedFileTypesWrite()
+        else:
+            file_formats = CuraApplication.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
+
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        # Create a list from the supported file formats string.
+        if not global_stack:
+            Logger.log("e", "Missing global stack!")
+            return
+
+        machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
+        machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
+        # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
+        if "application/x-ufp" not in machine_file_formats and Version(self.firmwareVersion) >= Version("4.4"):
+            machine_file_formats = ["application/x-ufp"] + machine_file_formats
+
+        # Take the intersection between file_formats and machine_file_formats.
+        format_by_mimetype = {format["mime_type"]: format for format in file_formats}
+        file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
+
+        if len(file_formats) == 0:
+            Logger.log("e", "There are no file formats available to write with!")
+            raise OutputDeviceError.WriteRequestFailedError(self.I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!"))
+        return file_formats[0]
+
+    # TODO: This is yanked right out of ClusterUM3OoutputDevice, great candidate for a utility or base class
+    def _determineWriter(self, file_handler, file_format):
+        # Just take the first file format available.
+        if file_handler is not None:
+            writer = file_handler.getWriterByMimeType(cast(str, file_format["mime_type"]))
+        else:
+            writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(cast(str, file_format["mime_type"]))
+
+        if not writer:
+            Logger.log("e", "Unexpected error when trying to get the FileWriter")
+            return
+
+        return writer
 
     ##  Get remote printers.
     @pyqtProperty("QVariantList", notify = printersChanged)
@@ -111,7 +182,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  Called when the network data should be updated.
     def _update(self) -> None:
         super()._update()
-        self.get("/status", on_finished = self._onStatusCallFinished)
+        self.get("{root}/cluster/{cluster_id}/status".format(self.CLUSTER_API_ROOT, self._device_id),
+                 on_finished = self._onStatusCallFinished)
+
 
     ##  Method called when HTTP request to status endpoint is finished.
     #   Contains both printers and print jobs statuses in a single response.
@@ -201,7 +274,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
                                   firmware_version=printer.firmware_version)
 
     def _updatePrinter(self, guid : str, printer : CloudClusterPrinter):
-        model = self._printers[guid]
         self._printers[guid] = self._updatePrinterOutputModel(self, printer)
 
     def _updatePrinterOutputModel(self, printer: CloudClusterPrinter, model : PrinterOutputModel) -> PrinterOutputModel:
@@ -299,6 +371,28 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _removePrintJob(self, guid:str):
         del self._print_jobs[guid]
 
-    def _addPrintJobToQueue(self):
-        # TODO: implement this
+    def _addPrintJobToQueue(self, stream, request:JobUploadRequest):
+        self.put("{}/jobs/upload".format(self.CURA_API_ROOT), data = json.dumps(request.__dict__),
+                 on_finished = lambda reply: self._onAddPrintJobToQueueFinished(stream, reply))
+
+    def _onAddPrintJobToQueueFinished(self, stream, reply: QNetworkReply) -> None:
+        s = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+        self.put()
+
+        # try:
+        #     r = requests.put(self._job.output_url, data=data)
+        #     if r.status_code == 200:
+        #         Logger.log("d", "Finished writing %s to remote URL %s", "", self._job.output_url)
+        #         self.onWriteSuccess.emit(r.text)
+        #     else:
+        #         Logger.log("d", "Error writing %s to remote URL %s", "", self._job.output_url)
+        #         self.onWriteFailed.emit("Failed to export G-code to remote URL: {}".format(r.text))
+        # except requests.ConnectionError as e:
+        #     Logger.log("e", "There was a connection error when uploading the G-code to a remote URL: %s", e)
+        #     self.onWriteFailed.emit("Failed to export G-code to remote URL: {}".format(e))
+        # except requests.HTTPError as e:
+        #     Logger.log("e", "There was an HTTP error when uploading the G-code to a remote URL: %s", e)
+        #     self.onWriteFailed.emit("Failed to export G-code to remote URL: {}".format(e))
+
         pass
