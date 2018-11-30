@@ -1,11 +1,11 @@
 {
-    "name": "Cocoon Create ModelMaker & Wanhao Duplicator i3 Mini",
+    "name": "Cocoon Create ModelMaker",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Samuel Pinches",
-        "manufacturer": "Cocoon Create / Wanhao",
+        "manufacturer": "Cocoon Create",
         "file_formats": "text/x-gcode",
         "preferred_quality_type": "fine",
         "machine_extruder_trains":
@@ -15,7 +15,7 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "Cocoon Create ModelMaker & Wanhao Duplicator i3 Mini"
+            "default_value": "Cocoon Create ModelMaker"
         },
         "machine_start_gcode": {
             "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28                     ;home all axis\nG92 E0                  ;zero the extruded length\nG1 Z1 F1000             ;move up slightly\nG1 X60.0 Z0 E9.0 F1000.0;intro line\nG1 X100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\n; -- end of START GCODE --"
