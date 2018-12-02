@@ -36,12 +36,19 @@ Item
         var pg_name = "printingGuidelines"
         return (pg_name in packageData.links) ? packageData.links[pg_name] : undefined
     }
+
+    property var materialWebsiteUrl:
+    {
+        var pg_name = "website"
+        return (pg_name in packageData.links) ? packageData.links[pg_name] : undefined
+    }
     anchors.topMargin: UM.Theme.getSize("default_margin").height
     height: visible ? childrenRect.height : 0
 
     visible: packageData.type == "material" &&
         (packageData.has_configs || technicalDataSheetUrl !== undefined ||
-            safetyDataSheetUrl !== undefined || printingGuidelinesUrl !== undefined)
+            safetyDataSheetUrl !== undefined || printingGuidelinesUrl !== undefined ||
+            materialWebsiteUrl !== undefined)
 
     Item
     {
@@ -180,7 +187,8 @@ Item
         anchors.top: combatibilityItem.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
         visible: base.technicalDataSheetUrl !== undefined ||
-            base.safetyDataSheetUrl !== undefined || base.printingGuidelinesUrl !== undefined
+            base.safetyDataSheetUrl !== undefined || base.printingGuidelinesUrl !== undefined ||
+            base.materialWebsiteUrl !== undefined
         height: visible ? contentHeight : 0
         text:
         {
@@ -208,6 +216,16 @@ Item
                 var pg_name = catalog.i18nc("@action:label", "Printing Guidelines")
                 result += "<a href='%1'>%2</a>".arg(base.printingGuidelinesUrl).arg(pg_name)
             }
+            if (base.materialWebsiteUrl !== undefined)
+            {
+                if (result.length > 0)
+                {
+                    result += "<br/>"
+                }
+                var pg_name = catalog.i18nc("@action:label", "Website")
+                result += "<a href='%1'>%2</a>".arg(base.materialWebsiteUrl).arg(pg_name)
+            }
+
             return result
         }
         font: UM.Theme.getFont("very_small")
