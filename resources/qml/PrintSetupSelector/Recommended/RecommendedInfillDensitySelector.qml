@@ -189,7 +189,7 @@ Item
 
         text: catalog.i18nc("@label", "Gradual infill")
         style: UM.Theme.styles.checkbox
-        enabled: base.settingsEnabled
+        enabled: recommendedPrintSettup.settingsEnabled
         visible: infillSteps.properties.enabled == "True"
         checked: parseInt(infillSteps.properties.value) > 0
 

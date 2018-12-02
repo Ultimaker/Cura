@@ -32,7 +32,7 @@ Item
     Item
     {
         id: enableAdhesionContainer
-        height: childrenRect.height
+        height: enableAdhesionCheckBox.height
 
         anchors
         {
@@ -46,9 +46,11 @@ Item
             id: enableAdhesionCheckBox
             anchors.verticalCenter: parent.verticalCenter
 
+            property alias _hovered: adhesionMouseArea.containsMouse
+
             //: Setting enable printing build-plate adhesion helper checkbox
             style: UM.Theme.styles.checkbox
-            enabled: base.settingsEnabled
+            enabled: recommendedPrintSettup.settingsEnabled
 
             visible: platformAdhesionType.properties.enabled == "True"
             checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
@@ -58,7 +60,6 @@ Item
                 id: adhesionMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-                enabled: base.settingsEnabled
 
                 onClicked:
                 {

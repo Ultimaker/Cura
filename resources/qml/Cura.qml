@@ -181,13 +181,6 @@ UM.MainWindow
                 }
             }
 
-            Connections
-            {
-                target: stageMenu.item
-                onShowTooltip: base.showTooltip(item, location, text)
-                onHideTooltip: base.hideTooltip()
-            }
-
             JobSpecs
             {
                 id: jobSpecs
@@ -280,8 +273,6 @@ UM.MainWindow
                 // Every time the stage is changed.
                 property var printSetupSelector: Cura.PrintSetupSelector
                 {
-                    onShowTooltip: base.showTooltip(item, location, text)
-                    onHideTooltip: base.hideTooltip()
                     width: UM.Theme.getSize("print_setup_widget").width
                     height: UM.Theme.getSize("stage_menu").height
                     headerCornerSide: RoundedRectangle.Direction.Right

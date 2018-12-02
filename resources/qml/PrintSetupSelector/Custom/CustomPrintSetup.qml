@@ -6,5 +6,16 @@ import QtQuick.Controls 2.0
 
 import Cura 1.0 as Cura
 
-Cura.SettingView {
+
+Item
+{
+    id: customPrintSetup
+
+    // TODO: Hardcoded now but UX has to decide about the height of this item
+    height: 500
+
+    Cura.SettingView
+    {
+        anchors.fill: parent
+    }
 }

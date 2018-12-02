@@ -13,13 +13,11 @@ import "../Menus"
 
 Item
 {
-    id: base;
+    id: settingsView
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
     property Action configureSettings
     property bool findingSettings
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
 
     ToolButton
     {
@@ -359,7 +357,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: Math.round(delegate.height / 2) }, text)
+                    onShowTooltip: base.showTooltip(delegate, Qt.point(- UM.Theme.getSize("default_arrow").width, 0), text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {

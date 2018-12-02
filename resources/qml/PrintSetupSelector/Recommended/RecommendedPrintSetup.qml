@@ -10,12 +10,9 @@ import Cura 1.0 as Cura
 
 Item
 {
-    id: base
+    id: recommendedPrintSettup
 
     height: childrenRect.height + 2 * padding
-
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
 
     property Action configureSettings
 

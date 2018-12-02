@@ -93,7 +93,7 @@ Item
     Item
     {
         id: contents
-        height: childrenRect.height
+        height: currentModeIndex == 0 ? recommendedPrintSetup.height : customPrintSetup.height
 
         anchors
         {
@@ -104,28 +104,25 @@ Item
 
         RecommendedPrintSetup
         {
+            id: recommendedPrintSetup
             anchors
             {
                 left: parent.left
                 right: parent.right
                 top: parent.top
             }
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
             visible: currentModeIndex == 0
         }
 
         CustomPrintSetup
         {
+            id: customPrintSetup
             anchors
             {
                 left: parent.left
                 right: parent.right
                 top: parent.top
             }
-            height: 500
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
             visible: currentModeIndex == 1
         }
     }

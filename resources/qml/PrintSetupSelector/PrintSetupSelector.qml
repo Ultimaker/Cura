@@ -9,16 +9,12 @@ import Cura 1.0 as Cura
 
 Cura.ExpandableComponent
 {
-    id: base
+    id: printSetupSelector
 
     property bool hideSettings: PrintInformation.preSliced
 
     property string enabledText: catalog.i18nc("@label:Should be short", "On")
     property string disabledText: catalog.i18nc("@label:Should be short", "Off")
-
-    // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
 
     iconSource: UM.Theme.getIcon("pencil")
     popupPadding: UM.Theme.getSize("default_lining").width
@@ -30,17 +26,6 @@ Cura.ExpandableComponent
     {
         id: catalog
         name: "cura"
-    }
-
-    Timer
-    {
-        id: tooltipDelayTimer
-        interval: 500
-        repeat: false
-        property var item
-        property string text
-
-        onTriggered: base.showTooltip(base, {x: 0, y: item.y}, text)
     }
 
     headerItem: PrintSetupSelectorHeader
