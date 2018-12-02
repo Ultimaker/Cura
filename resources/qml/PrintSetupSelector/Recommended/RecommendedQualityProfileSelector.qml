@@ -17,6 +17,9 @@ Item
     id: qualityRow
     height: childrenRect.height
 
+    property real labelColumnWidth: Math.round(width / 3)
+    property real settingsColumnWidth: width - labelColumnWidth
+
     Timer
     {
         id: qualitySliderChangeTimer
@@ -158,79 +161,121 @@ Item
         }
     }
 
-    Cura.IconWithText
+    // Here are the elements that are shown in the left column
+    Item
     {
-        id: qualityRowTitle
-        source: UM.Theme.getIcon("category_layer_height")
-        text: catalog.i18nc("@label", "Layer Height")
+        id: titleRow
         width: labelColumnWidth
+        height: childrenRect.height
+
+        Cura.IconWithText
+        {
+            id: qualityRowTitle
+            source: UM.Theme.getIcon("category_layer_height")
+            text: catalog.i18nc("@label", "Layer Height")
+            anchors.left: parent.left
+            anchors.right: customisedSettings.left
+        }
+
+        UM.SimpleButton
+        {
+            id: customisedSettings
+
+            visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
+            height: visible ? Math.round(0.8 * qualityRowTitle.height) : 0
+            width: height
+            anchors
+            {
+                right: parent.right
+                rightMargin: UM.Theme.getSize("default_margin").width
+                leftMargin: UM.Theme.getSize("default_margin").width
+                verticalCenter: parent.verticalCenter
+            }
+
+            color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+            iconSource: UM.Theme.getIcon("reset")
+
+            onClicked:
+            {
+                // if the current profile is user-created, switch to a built-in quality
+                Cura.MachineManager.resetToUseDefaultQuality()
+            }
+            onEntered:
+            {
+                var tooltipContent = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
+                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  tooltipContent)
+            }
+            onExited: base.hideTooltip()
+        }
     }
 
-//
-//    // Show titles for the each quality slider ticks
-//    Item
-//    {
-//        anchors.left: speedSlider.left
-//        anchors.top: speedSlider.bottom
-//
-//        Repeater
-//        {
-//            model: qualityModel
-//
-//            Label
-//            {
-//                anchors.verticalCenter: parent.verticalCenter
-//                anchors.top: parent.top
-//                color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-//                text:
-//                {
-//                    var result = ""
-//                    if(Cura.MachineManager.activeMachine != null)
-//                    {
-//                        result = Cura.QualityProfilesDropDownMenuModel.getItem(index).layer_height
-//
-//                        if(result == undefined)
-//                        {
-//                            result = "";
-//                        }
-//                        else
-//                        {
-//                            result = Number(Math.round(result + "e+2") + "e-2"); //Round to 2 decimals. Javascript makes this difficult...
-//                            if (result == undefined || result != result) //Parse failure.
-//                            {
-//                                result = "";
-//                            }
-//                        }
-//                    }
-//                    return result
-//                }
-//
-//                x:
-//                {
-//                    // Make sure the text aligns correctly with each tick
-//                    if (qualityModel.totalTicks == 0)
-//                    {
-//                        // If there is only one tick, align it centrally
-//                        return Math.round(((settingsColumnWidth) - width) / 2)
-//                    }
-//                    else if (index == 0)
-//                    {
-//                        return Math.round(settingsColumnWidth / qualityModel.totalTicks) * index
-//                    }
-//                    else if (index == qualityModel.totalTicks)
-//                    {
-//                        return Math.round(settingsColumnWidth / qualityModel.totalTicks) * index - width
-//                    }
-//                    else
-//                    {
-//                        return Math.round((settingsColumnWidth / qualityModel.totalTicks) * index - (width / 2))
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-    //Print speed slider
+    // Show titles for the each quality slider ticks
+    Item
+    {
+        anchors.left: speedSlider.left
+        anchors.top: speedSlider.bottom
+        height: childrenRect.height
+
+        Repeater
+        {
+            model: qualityModel
+
+            Label
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.top: parent.top
+                // The height has to be set manually, otherwise it's not automatically calculated in the repeater
+                height: UM.Theme.getSize("default_margin").height
+                color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                text:
+                {
+                    var result = ""
+                    if(Cura.MachineManager.activeMachine != null)
+                    {
+                        result = Cura.QualityProfilesDropDownMenuModel.getItem(index).layer_height
+
+                        if(result == undefined)
+                        {
+                            result = "";
+                        }
+                        else
+                        {
+                            result = Number(Math.round(result + "e+2") + "e-2"); //Round to 2 decimals. Javascript makes this difficult...
+                            if (result == undefined || result != result) //Parse failure.
+                            {
+                                result = "";
+                            }
+                        }
+                    }
+                    return result
+                }
+
+                x:
+                {
+                    // Make sure the text aligns correctly with each tick
+                    if (qualityModel.totalTicks == 0)
+                    {
+                        // If there is only one tick, align it centrally
+                        return Math.round(((settingsColumnWidth) - width) / 2)
+                    }
+                    else if (index == 0)
+                    {
+                        return Math.round(settingsColumnWidth / qualityModel.totalTicks) * index
+                    }
+                    else if (index == qualityModel.totalTicks)
+                    {
+                        return Math.round(settingsColumnWidth / qualityModel.totalTicks) * index - width
+                    }
+                    else
+                    {
+                        return Math.round((settingsColumnWidth / qualityModel.totalTicks) * index - (width / 2))
+                    }
+                }
+            }
+        }
+    }
+
+    // Print speed slider
     // Two sliders are created, one at the bottom with the unavailable qualities
     // and the other at the top with the available quality profiles and so the handle to select them.
     Item
@@ -240,14 +285,17 @@ Item
 
         anchors
         {
-            left: qualityRowTitle.right
+            left: titleRow.right
             right: parent.right
+            verticalCenter: titleRow.verticalCenter
         }
 
         // Draw unavailable slider
         Slider
         {
             id: unavailableSlider
+
+            width: parent.width
             height: qualitySlider.height // Same height as the slider that is on top
             updateValueWhileDragging : false
             tickmarksEnabled: true
@@ -257,8 +305,6 @@ Item
             // speaking not always correct, it seems to have the correct behavior (switching from 0 available to 1 available)
             maximumValue: qualityModel.totalTicks
             stepSize: 1
-
-            width: parent.width
 
             style: SliderStyle
             {
@@ -290,7 +336,7 @@ Item
                         anchors.verticalCenter: parent.verticalCenter
 
                         // Do not use Math.round otherwise the tickmarks won't be aligned
-                        x: ((UM.Theme.getSize("print_setup_slider_handle").width / 2) - (UM.Theme.getSize("print_setup_slider_tickmarks").width / 2) + (qualityModel.qualitySliderStepWidth * index))
+                        x: ((UM.Theme.getSize("print_setup_slider_handle").width / 2) - (implicitWidth / 2) + (qualityModel.qualitySliderStepWidth * index))
                         radius: Math.round(implicitWidth / 2)
                     }
                 }
@@ -315,10 +361,18 @@ Item
         Slider
         {
             id: qualitySlider
+
+            width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1) + UM.Theme.getSize("print_setup_slider_handle").width
             height: UM.Theme.getSize("print_setup_slider_handle").height // The handle is the widest element of the slider
             enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
             visible: qualityModel.availableTotalTicks > 0
             updateValueWhileDragging : false
+
+            anchors
+            {
+                right: parent.right
+                rightMargin: qualityModel.qualitySliderMarginRight
+            }
 
             minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
             // maximumValue must be greater than minimumValue to be able to see the handle. While the value is strictly
@@ -327,11 +381,6 @@ Item
             stepSize: 1
 
             value: qualityModel.qualitySliderActiveIndex
-
-            width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1) + UM.Theme.getSize("print_setup_slider_handle").width
-
-            anchors.right: parent.right
-            anchors.rightMargin: qualityModel.qualitySliderMarginRight
 
             style: SliderStyle
             {
@@ -400,33 +449,5 @@ Item
             }
             onExited: base.hideTooltip()
         }
-    }
-
-    UM.SimpleButton
-    {
-        id: customisedSettings
-
-        visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
-        height: Math.round(speedSlider.height * 0.8)
-        width: Math.round(speedSlider.height * 0.8)
-
-        anchors.verticalCenter: speedSlider.verticalCenter
-        anchors.right: speedSlider.left
-        anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
-
-        color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
-        iconSource: UM.Theme.getIcon("reset");
-
-        onClicked:
-        {
-            // if the current profile is user-created, switch to a built-in quality
-            Cura.MachineManager.resetToUseDefaultQuality()
-        }
-        onEntered:
-        {
-            var tooltipContent = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
-            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  tooltipContent)
-        }
-        onExited: base.hideTooltip()
     }
 }

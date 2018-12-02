@@ -25,7 +25,7 @@ Item
     {
         id: header
         height: UM.Theme.getSize("print_setup_widget_header").height
-        color: "transparent" //UM.Theme.getColor("action_button_hovered")  // TODO: It's not clear the color that we need to use here
+        color: UM.Theme.getColor("action_button_hovered")  // TODO: It's not clear the color that we need to use here
 
         anchors
         {
