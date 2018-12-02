@@ -19,6 +19,42 @@ Item
 
     property real labelColumnWidth: Math.round(width / 3)
 
+    // Create a binding to update the icon when the infill density changes
+    Binding
+    {
+        target: infillRowTitle
+        property: "source"
+        value:
+        {
+            var density = parseInt(infillDensity.properties.value)
+            if (parseInt(infillSteps.properties.value) != 0)
+            {
+                return UM.Theme.getIcon("gradual")
+            }
+            if (density <= 0)
+            {
+                return UM.Theme.getIcon("hollow")
+            }
+            if (density < 40)
+            {
+                return UM.Theme.getIcon("sparse")
+            }
+            if (density < 90)
+            {
+                return UM.Theme.getIcon("dense")
+            }
+            return UM.Theme.getIcon("solid")
+        }
+    }
+
+    // We use a binding to make sure that after manually setting infillSlider.value it is still bound to the property provider
+    Binding
+    {
+        target: infillSlider
+        property: "value"
+        value: parseInt(infillDensity.properties.value)
+    }
+
     // Here are the elements that are shown in the left column
     Cura.IconWithText
     {
@@ -28,13 +64,6 @@ Item
         source: UM.Theme.getIcon("category_infill")
         text: catalog.i18nc("@label", "Infill") + " (%)"
         width: labelColumnWidth
-    }
-
-    Rectangle
-    {
-        anchors.fill: infillSliderContainer
-        color: "red"
-        opacity: 0.5
     }
 
     Item
@@ -158,6 +187,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.left: infillSliderContainer.left
 
+        text: catalog.i18nc("@label", "Gradual infill")
         style: UM.Theme.styles.checkbox
         enabled: base.settingsEnabled
         visible: infillSteps.properties.enabled == "True"
@@ -200,123 +230,7 @@ Item
 
             onExited: base.hideTooltip()
         }
-
-        Label
-        {
-            id: gradualInfillLabel
-            height: parent.height
-            anchors.left: enableGradualInfillCheckBox.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            verticalAlignment: Text.AlignVCenter
-            text: catalog.i18nc("@label", "Enable gradual")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
-        }
     }
-
-//        Rectangle
-//        {
-//            id: infillIcon
-//
-//            width: Math.round((parent.width / 5) - (UM.Theme.getSize("thick_margin").width))
-//            height: width
-//
-//            anchors.right: parent.right
-//            anchors.top: parent.top
-//            anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2)
-//
-//            // we loop over all density icons and only show the one that has the current density and steps
-//            Repeater
-//            {
-//                id: infillIconList
-//                model: infillModel
-//                anchors.fill: parent
-//
-//                function activeIndex ()
-//                {
-//                    for (var i = 0; i < infillModel.count; i++)
-//                    {
-//                        var density = Math.round(infillDensity.properties.value)
-//                        var steps = Math.round(infillSteps.properties.value)
-//                        var infillModelItem = infillModel.get(i)
-//
-//                        if (infillModelItem != "undefined"
-//                            && density >= infillModelItem.percentageMin
-//                            && density <= infillModelItem.percentageMax
-//                            && steps >= infillModelItem.stepsMin
-//                            && steps <= infillModelItem.stepsMax)
-//                        {
-//                            return i
-//                        }
-//                    }
-//                    return -1
-//                }
-//
-//                Rectangle
-//                {
-//                    anchors.fill: parent
-//                    visible: infillIconList.activeIndex() == index
-//
-//                    border.width: UM.Theme.getSize("default_lining").width
-//                    border.color: UM.Theme.getColor("quality_slider_unavailable")
-//
-//                    UM.RecolorImage
-//                    {
-//                        anchors.fill: parent
-//                        anchors.margins: 2 * screenScaleFactor
-//                        sourceSize.width: width
-//                        sourceSize.height: width
-//                        source: UM.Theme.getIcon(model.icon)
-//                        color: UM.Theme.getColor("quality_slider_unavailable")
-//                    }
-//                }
-//            }
-//        }
-//
-//        //  Infill list model for mapping icon
-//        ListModel
-//        {
-//            id: infillModel
-//            Component.onCompleted:
-//            {
-//                infillModel.append({
-//                    percentageMin: -1,
-//                    percentageMax: 0,
-//                    stepsMin: -1,
-//                    stepsMax: 0,
-//                    icon: "hollow"
-//                })
-//                infillModel.append({
-//                    percentageMin: 0,
-//                    percentageMax: 40,
-//                    stepsMin: -1,
-//                    stepsMax: 0,
-//                    icon: "sparse"
-//                })
-//                infillModel.append({
-//                    percentageMin: 40,
-//                    percentageMax: 89,
-//                    stepsMin: -1,
-//                    stepsMax: 0,
-//                    icon: "dense"
-//                })
-//                infillModel.append({
-//                    percentageMin: 90,
-//                    percentageMax: 9999999999,
-//                    stepsMin: -1,
-//                    stepsMax: 0,
-//                    icon: "solid"
-//                })
-//                infillModel.append({
-//                    percentageMin: 0,
-//                    percentageMax: 9999999999,
-//                    stepsMin: 1,
-//                    stepsMax: 9999999999,
-//                    icon: "gradual"
-//                })
-//            }
-//        }
 
     UM.SettingPropertyProvider
     {

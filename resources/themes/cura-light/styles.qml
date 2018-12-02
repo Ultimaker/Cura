@@ -532,7 +532,7 @@ QtObject
                 color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox")
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : 0
+                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : UM.Theme.getSize("checkbox_radius").width
 
                 border.width: Theme.getSize("default_lining").width
                 border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border")
@@ -557,6 +557,7 @@ QtObject
                 color: Theme.getColor("checkbox_text")
                 font: Theme.getFont("default")
                 elide: Text.ElideRight
+                renderType: Text.NativeRendering
             }
         }
     }
