@@ -23,9 +23,18 @@ Item
     Cura.IconWithText
     {
         id: infillRowTitle
+        anchors.top: parent.top
+        anchors.left: parent.left
         source: UM.Theme.getIcon("category_infill")
         text: catalog.i18nc("@label", "Infill") + " (%)"
         width: labelColumnWidth
+    }
+
+    Rectangle
+    {
+        anchors.fill: infillSliderContainer
+        color: "red"
+        opacity: 0.5
     }
 
     Item
@@ -80,7 +89,6 @@ Item
                     implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
                     implicitHeight: implicitWidth
                     radius: Math.round(implicitWidth / 2)
-                    opacity: 0.5
                 }
 
                 tickmarks: Repeater
@@ -138,6 +146,74 @@ Item
                 }
             }
         }
+    }
+
+    //  Gradual Support Infill Checkbox
+    CheckBox
+    {
+        id: enableGradualInfillCheckBox
+        property alias _hovered: enableGradualInfillMouseArea.containsMouse
+
+        anchors.top: infillSliderContainer.bottom
+        anchors.topMargin: UM.Theme.getSize("wide_margin").height
+        anchors.left: infillSliderContainer.left
+
+        style: UM.Theme.styles.checkbox
+        enabled: base.settingsEnabled
+        visible: infillSteps.properties.enabled == "True"
+        checked: parseInt(infillSteps.properties.value) > 0
+
+        MouseArea
+        {
+            id: enableGradualInfillMouseArea
+
+            anchors.fill: parent
+            hoverEnabled: true
+            enabled: true
+
+            property var previousInfillDensity: parseInt(infillDensity.properties.value)
+
+            onClicked:
+            {
+                // Set to 90% only when enabling gradual infill
+                var newInfillDensity;
+                if (parseInt(infillSteps.properties.value) == 0)
+                {
+                    previousInfillDensity = parseInt(infillDensity.properties.value)
+                    newInfillDensity = 90
+                } else {
+                    newInfillDensity = previousInfillDensity
+                }
+                Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(newInfillDensity))
+
+                var infill_steps_value = 0
+                if (parseInt(infillSteps.properties.value) == 0)
+                {
+                    infill_steps_value = 5
+                }
+
+                Cura.MachineManager.setSettingForAllExtruders("gradual_infill_steps", "value", infill_steps_value)
+            }
+
+            onEntered: base.showTooltip(enableGradualInfillCheckBox, Qt.point(-infillSliderContainer.x - UM.Theme.getSize("thick_margin").width, 0),
+                    catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."))
+
+            onExited: base.hideTooltip()
+        }
+
+        Label
+        {
+            id: gradualInfillLabel
+            height: parent.height
+            anchors.left: enableGradualInfillCheckBox.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            verticalAlignment: Text.AlignVCenter
+            text: catalog.i18nc("@label", "Enable gradual")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
+        }
+    }
 
 //        Rectangle
 //        {
@@ -198,73 +274,6 @@ Item
 //            }
 //        }
 //
-//        //  Gradual Support Infill Checkbox
-//        CheckBox
-//        {
-//            id: enableGradualInfillCheckBox
-//            property alias _hovered: enableGradualInfillMouseArea.containsMouse
-//
-//            anchors.top: infillSlider.bottom
-//            anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 2) // closer to slider since it belongs to the same category
-//            anchors.left: infillSliderContainer.left
-//
-//            style: UM.Theme.styles.checkbox
-//            enabled: base.settingsEnabled
-//            visible: infillSteps.properties.enabled == "True"
-//            checked: parseInt(infillSteps.properties.value) > 0
-//
-//            MouseArea
-//            {
-//                id: enableGradualInfillMouseArea
-//
-//                anchors.fill: parent
-//                hoverEnabled: true
-//                enabled: true
-//
-//                property var previousInfillDensity: parseInt(infillDensity.properties.value)
-//
-//                onClicked:
-//                {
-//                    // Set to 90% only when enabling gradual infill
-//                    var newInfillDensity;
-//                    if (parseInt(infillSteps.properties.value) == 0)
-//                    {
-//                        previousInfillDensity = parseInt(infillDensity.properties.value)
-//                        newInfillDensity = 90
-//                    } else {
-//                        newInfillDensity = previousInfillDensity
-//                    }
-//                    Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(newInfillDensity))
-//
-//                    var infill_steps_value = 0
-//                    if (parseInt(infillSteps.properties.value) == 0)
-//                    {
-//                        infill_steps_value = 5
-//                    }
-//
-//                    Cura.MachineManager.setSettingForAllExtruders("gradual_infill_steps", "value", infill_steps_value)
-//                }
-//
-//                onEntered: base.showTooltip(enableGradualInfillCheckBox, Qt.point(-infillSliderContainer.x, 0),
-//                        catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."))
-//
-//                onExited: base.hideTooltip()
-//
-//            }
-//
-//            Label
-//            {
-//                id: gradualInfillLabel
-//                height: parent.height
-//                anchors.left: enableGradualInfillCheckBox.right
-//                anchors.leftMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
-//                verticalAlignment: Text.AlignVCenter;
-//                text: catalog.i18nc("@label", "Enable gradual")
-//                font: UM.Theme.getFont("default")
-//                color: UM.Theme.getColor("text")
-//            }
-//        }
-//
 //        //  Infill list model for mapping icon
 //        ListModel
 //        {
@@ -308,7 +317,6 @@ Item
 //                })
 //            }
 //        }
-    }
 
     UM.SettingPropertyProvider
     {
