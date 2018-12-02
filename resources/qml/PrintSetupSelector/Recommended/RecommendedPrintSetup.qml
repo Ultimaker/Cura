@@ -12,10 +12,10 @@ Item
 {
     id: base
 
+    height: childrenRect.height + 2 * padding
+
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
-//    width: parent.width
-    height: childrenRect.height + 2 * padding
 
     property Action configureSettings
 
@@ -28,24 +28,11 @@ Item
         name: "cura"
     }
 
-//    Rectangle
-//    {
-//        width: parent.width - 2 * parent.padding
-//        anchors
-//        {
-//            left: parent.left
-//            right: parent.right
-//            top: parent.top
-//            margins: parent.padding
-//        }
-//        color: "blue"
-//        height: 50
-//    }
-
     Column
     {
         width: parent.width - 2 * parent.padding
-        spacing: UM.Theme.getSize("default_margin").height
+        spacing: UM.Theme.getSize("wide_margin").height
+
         anchors
         {
             left: parent.left
@@ -55,33 +42,27 @@ Item
         }
 
         // TODO
-        property real labelColumnWidth: Math.round(width / 3)
-        property real settingsColumnWidth: width - labelColumnWidth
+        property real firstColumnWidth: Math.round(width / 3)
 
         RecommendedQualityProfileSelector
         {
             width: parent.width
             // TODO Create a reusable component with these properties to not define them separately for each component
-            property real labelColumnWidth: parent.labelColumnWidth
-            property real settingsColumnWidth: parent.settingsColumnWidth
+            labelColumnWidth: parent.firstColumnWidth
         }
 
-//        RecommendedInfillDensitySelector
-//        {
-//            width: parent.width
-//            height: childrenRect.height
-//            // TODO Create a reusable component with these properties to not define them separately for each component
-//            property real labelColumnWidth: parent.labelColumnWidth
-//            property real settingsColumnWidth: parent.settingsColumnWidth
-//        }
+        RecommendedInfillDensitySelector
+        {
+            width: parent.width
+            // TODO Create a reusable component with these properties to not define them separately for each component
+            labelColumnWidth: parent.firstColumnWidth
+        }
 //
 //        RecommendedSupportSelector
 //        {
 //            width: parent.width
-//            height: childrenRect.height
 //            // TODO Create a reusable component with these properties to not define them separately for each component
-//            property real labelColumnWidth: parent.labelColumnWidth
-//            property real settingsColumnWidth: parent.settingsColumnWidth
+//            property real firstColumnWidth: parent.labelColumnWidth
 //        }
 
 

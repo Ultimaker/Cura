@@ -17,6 +17,9 @@ Item
     id: qualityRow
     height: childrenRect.height
 
+    property real labelColumnWidth: Math.round(width / 3)
+    property real settingsColumnWidth: width - labelColumnWidth
+
     Timer
     {
         id: qualitySliderChangeTimer
@@ -158,6 +161,7 @@ Item
         }
     }
 
+    // Here are the elements that are shown in the left column
     Item
     {
         id: titleRow
@@ -210,6 +214,7 @@ Item
     {
         anchors.left: speedSlider.left
         anchors.top: speedSlider.bottom
+        height: childrenRect.height
 
         Repeater
         {
@@ -219,6 +224,8 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.top: parent.top
+                // The height has to be set manually, otherwise it's not automatically calculated in the repeater
+                height: UM.Theme.getSize("default_margin").height
                 color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                 text:
                 {
@@ -268,7 +275,7 @@ Item
         }
     }
 
-    //Print speed slider
+    // Print speed slider
     // Two sliders are created, one at the bottom with the unavailable qualities
     // and the other at the top with the available quality profiles and so the handle to select them.
     Item
@@ -287,6 +294,8 @@ Item
         Slider
         {
             id: unavailableSlider
+
+            width: parent.width
             height: qualitySlider.height // Same height as the slider that is on top
             updateValueWhileDragging : false
             tickmarksEnabled: true
@@ -296,8 +305,6 @@ Item
             // speaking not always correct, it seems to have the correct behavior (switching from 0 available to 1 available)
             maximumValue: qualityModel.totalTicks
             stepSize: 1
-
-            width: parent.width
 
             style: SliderStyle
             {
@@ -329,7 +336,7 @@ Item
                         anchors.verticalCenter: parent.verticalCenter
 
                         // Do not use Math.round otherwise the tickmarks won't be aligned
-                        x: ((UM.Theme.getSize("print_setup_slider_handle").width / 2) - (UM.Theme.getSize("print_setup_slider_tickmarks").width / 2) + (qualityModel.qualitySliderStepWidth * index))
+                        x: ((UM.Theme.getSize("print_setup_slider_handle").width / 2) - (implicitWidth / 2) + (qualityModel.qualitySliderStepWidth * index))
                         radius: Math.round(implicitWidth / 2)
                     }
                 }
@@ -354,10 +361,18 @@ Item
         Slider
         {
             id: qualitySlider
+
+            width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1) + UM.Theme.getSize("print_setup_slider_handle").width
             height: UM.Theme.getSize("print_setup_slider_handle").height // The handle is the widest element of the slider
             enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
             visible: qualityModel.availableTotalTicks > 0
             updateValueWhileDragging : false
+
+            anchors
+            {
+                right: parent.right
+                rightMargin: qualityModel.qualitySliderMarginRight
+            }
 
             minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
             // maximumValue must be greater than minimumValue to be able to see the handle. While the value is strictly
@@ -366,11 +381,6 @@ Item
             stepSize: 1
 
             value: qualityModel.qualitySliderActiveIndex
-
-            width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1) + UM.Theme.getSize("print_setup_slider_handle").width
-
-            anchors.right: parent.right
-            anchors.rightMargin: qualityModel.qualitySliderMarginRight
 
             style: SliderStyle
             {
