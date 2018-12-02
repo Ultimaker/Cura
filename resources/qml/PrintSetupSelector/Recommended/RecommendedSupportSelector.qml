@@ -33,7 +33,7 @@ Item
     Item
     {
         id: enableSupportContainer
-        height: childrenRect.height
+        height: enableSupportCheckBox.height
 
         anchors
         {

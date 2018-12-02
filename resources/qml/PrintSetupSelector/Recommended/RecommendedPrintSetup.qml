@@ -65,76 +65,11 @@ Item
             labelColumnWidth: parent.firstColumnWidth
         }
 
-
-//
-//    // Adhesion
-//    Row
-//    {
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        height: childrenRect.height
-//
-//        Cura.IconWithText
-//        {
-//            id: adhesionHelperLabel
-//            visible: adhesionCheckBox.visible
-//            source: UM.Theme.getIcon("category_adhesion")
-//            text: catalog.i18nc("@label", "Adhesion")
-//            width: labelColumnWidth
-//        }
-//
-//        CheckBox
-//        {
-//            id: adhesionCheckBox
-//            property alias _hovered: adhesionMouseArea.containsMouse
-//
-//            //: Setting enable printing build-plate adhesion helper checkbox
-//            style: UM.Theme.styles.checkbox
-//            enabled: base.settingsEnabled
-//
-//            visible: platformAdhesionType.properties.enabled == "True"
-//            checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
-//
-//            MouseArea
-//            {
-//                id: adhesionMouseArea
-//                anchors.fill: parent
-//                hoverEnabled: true
-//                enabled: base.settingsEnabled
-//                onClicked:
-//                {
-//                    var adhesionType = "skirt"
-//                    if(!parent.checked)
-//                    {
-//                        // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
-//                        platformAdhesionType.removeFromContainer(0)
-//                        adhesionType = platformAdhesionType.properties.value
-//                        if(adhesionType == "skirt" || adhesionType == "none")
-//                        {
-//                            // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
-//                            adhesionType = "brim"
-//                        }
-//                    }
-//                    platformAdhesionType.setPropertyValue("value", adhesionType)
-//                }
-//                onEntered:
-//                {
-//                    base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x, 0),
-//                        catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
-//                }
-//                onExited: base.hideTooltip()
-//            }
-//        }
-//    }
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: platformAdhesionType
-        containerStack: Cura.MachineManager.activeMachine
-        removeUnusedValue: false //Doesn't work with settings that are resolved.
-        key: "adhesion_type"
-        watchedProperties: [ "value", "enabled" ]
-        storeIndex: 0
+        RecommendedAdhesionSelector
+        {
+            width: parent.width
+            // TODO Create a reusable component with these properties to not define them separately for each component
+            labelColumnWidth: parent.firstColumnWidth
+        }
     }
 }
