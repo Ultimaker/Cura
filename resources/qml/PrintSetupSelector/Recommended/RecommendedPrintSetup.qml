@@ -57,13 +57,13 @@ Item
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
         }
-//
-//        RecommendedSupportSelector
-//        {
-//            width: parent.width
-//            // TODO Create a reusable component with these properties to not define them separately for each component
-//            property real firstColumnWidth: parent.labelColumnWidth
-//        }
+
+        RecommendedSupportSelector
+        {
+            width: parent.width
+            // TODO Create a reusable component with these properties to not define them separately for each component
+            labelColumnWidth: parent.firstColumnWidth
+        }
 
 
 //
@@ -127,7 +127,6 @@ Item
 //        }
 //    }
     }
-
 
     UM.SettingPropertyProvider
     {

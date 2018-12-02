@@ -8,114 +8,142 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+
 //
 //  Enable support
 //
-Row
+Item
 {
+    id: enableSupportRow
+    height: childrenRect.height
+
+    property real labelColumnWidth: Math.round(width / 3)
 
     Cura.IconWithText
     {
-        id: enableSupportLabel
+        id: enableSupportRowTitle
+        anchors.top: parent.top
+        anchors.left: parent.left
         visible: enableSupportCheckBox.visible
         source: UM.Theme.getIcon("category_support")
         text: catalog.i18nc("@label", "Support")
         width: labelColumnWidth
     }
 
-    CheckBox
+    Item
     {
-        id: enableSupportCheckBox
-        property alias _hovered: enableSupportMouseArea.containsMouse
+        id: enableSupportContainer
+        height: childrenRect.height
 
-        style: UM.Theme.styles.checkbox
-        enabled: base.settingsEnabled
-
-        visible: supportEnabled.properties.enabled == "True"
-        checked: supportEnabled.properties.value == "True"
-
-        MouseArea
+        anchors
         {
-            id: enableSupportMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: supportEnabled.setPropertyValue("value", supportEnabled.properties.value != "True")
-
-            onEntered: base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
-                    catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."))
-
-            onExited: base.hideTooltip()
-
-        }
-    }
-
-    ComboBox
-    {
-        id: supportExtruderCombobox
-        visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
-        model: extruderModel
-
-        property string color_override: ""  // for manually setting values
-        property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
-        {
-            var current_extruder = extruderModel.get(currentIndex);
-            color_override = "";
-            if (current_extruder === undefined) return ""
-            return (current_extruder.color) ? current_extruder.color : "";
+            left: enableSupportRowTitle.right
+            right: parent.right
+            verticalCenter: enableSupportRowTitle.verticalCenter
         }
 
-        textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
-
-        width: Math.round(UM.Theme.getSize("print_setup_widget").width * .55) - Math.round(UM.Theme.getSize("thick_margin").width / 2) - enableSupportCheckBox.width
-        height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
-
-        Behavior on height { NumberAnimation { duration: 100 } }
-
-        style: UM.Theme.styles.combobox_color
-        enabled: base.settingsEnabled
-        property alias _hovered: supportExtruderMouseArea.containsMouse
-
-        currentIndex:
+        CheckBox
         {
-            if (supportExtruderNr.properties == null)
+            id: enableSupportCheckBox
+            anchors.verticalCenter: parent.verticalCenter
+
+            property alias _hovered: enableSupportMouseArea.containsMouse
+
+            style: UM.Theme.styles.checkbox
+            enabled: base.settingsEnabled
+
+            visible: supportEnabled.properties.enabled == "True"
+            checked: supportEnabled.properties.value == "True"
+
+            MouseArea
             {
-                return Cura.MachineManager.defaultExtruderPosition
+                id: enableSupportMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: supportEnabled.setPropertyValue("value", supportEnabled.properties.value != "True")
+
+                onEntered:
+                {
+                    base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportContainer.x - UM.Theme.getSize("thick_margin").width, 0),
+                        catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."))
+                }
+                onExited: base.hideTooltip()
             }
-            else
+        }
+
+        ComboBox
+        {
+            id: supportExtruderCombobox
+
+            height: UM.Theme.getSize("print_setup_support_extruder_selector").height
+            anchors
             {
-                var extruder = parseInt(supportExtruderNr.properties.value)
-                if ( extruder === -1)
+                left: enableSupportCheckBox.right
+                right: parent.right
+                leftMargin: UM.Theme.getSize("thick_margin").width
+                rightMargin: UM.Theme.getSize("thick_margin").width
+                verticalCenter: parent.verticalCenter
+            }
+
+            style: UM.Theme.styles.combobox_color
+            enabled: base.settingsEnabled
+            visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
+            textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
+
+            model: extruderModel
+
+            property alias _hovered: supportExtruderMouseArea.containsMouse
+            property string color_override: ""  // for manually setting values
+            property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
+            {
+                var current_extruder = extruderModel.get(currentIndex);
+                color_override = "";
+                if (current_extruder === undefined) return ""
+                return (current_extruder.color) ? current_extruder.color : "";
+            }
+
+            currentIndex:
+            {
+                if (supportExtruderNr.properties == null)
                 {
                     return Cura.MachineManager.defaultExtruderPosition
                 }
-                return extruder;
+                else
+                {
+                    var extruder = parseInt(supportExtruderNr.properties.value)
+                    if ( extruder === -1)
+                    {
+                        return Cura.MachineManager.defaultExtruderPosition
+                    }
+                    return extruder;
+                }
             }
-        }
 
-        onActivated: supportExtruderNr.setPropertyValue("value", String(index))
+            onActivated: supportExtruderNr.setPropertyValue("value", String(index))
 
-        MouseArea
-        {
-            id: supportExtruderMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            enabled: base.settingsEnabled
-            acceptedButtons: Qt.NoButton
-            onEntered:
+            MouseArea
             {
-                base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
-                    catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                id: supportExtruderMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                enabled: base.settingsEnabled
+                acceptedButtons: Qt.NoButton
+                onEntered:
+                {
+                    base.showTooltip(supportExtruderCombobox, Qt.point(-enableSupportContainer.x - supportExtruderCombobox.x - UM.Theme.getSize("thick_margin").width, 0),
+                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited: base.hideTooltip()
+
             }
-            onExited: base.hideTooltip()
 
-        }
-
-        function updateCurrentColor()
-        {
-            var current_extruder = extruderModel.get(currentIndex)
-            if (current_extruder !== undefined)
+            function updateCurrentColor()
             {
-                supportExtruderCombobox.color_override = current_extruder.color
+                var current_extruder = extruderModel.get(currentIndex)
+                if (current_extruder !== undefined)
+                {
+                    supportExtruderCombobox.color_override = current_extruder.color
+                }
             }
         }
     }
@@ -157,6 +185,15 @@ Row
         containerStack: Cura.MachineManager.activeMachine
         key: "support_extruder_nr"
         watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+        containerStack: Cura.MachineManager.activeMachine
+        key: "machine_extruder_count"
+        watchedProperties: ["value"]
         storeIndex: 0
     }
 

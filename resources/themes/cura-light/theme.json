@@ -206,11 +206,11 @@
         "setting_control": [255, 255, 255, 255],
         "setting_control_selected": [31, 36, 39, 255],
         "setting_control_highlight": [255, 255, 255, 255],
-        "setting_control_border": [127, 127, 127, 255],
+        "setting_control_border": [199, 199, 199, 255],
         "setting_control_border_highlight": [50, 130, 255, 255],
-        "setting_control_text": [27, 27, 27, 255],
-        "setting_control_depth_line": [127, 127, 127, 255],
-        "setting_control_button": [127, 127, 127, 255],
+        "setting_control_text": [35, 35, 35, 255],
+        "setting_control_depth_line": [199, 199, 199, 255],
+        "setting_control_button": [199, 199, 199, 255],
         "setting_control_button_hover": [70, 84, 113, 255],
         "setting_control_disabled": [245, 245, 245, 255],
         "setting_control_disabled_text": [127, 127, 127, 255],
@@ -377,6 +377,7 @@
         "print_setup_slider_groove": [0.16, 0.16],
         "print_setup_slider_handle": [1.0, 1.0],
         "print_setup_slider_tickmarks": [0.32, 0.32],
+        "print_setup_support_extruder_selector": [18.2, 2.5],
 
         "configuration_selector_mode_tabs": [0.0, 3.0],
 
@@ -415,6 +416,7 @@
 
         "setting": [25.0, 1.8],
         "setting_control": [10.0, 2.0],
+        "setting_control_radius": [0.15, 0.15],
         "setting_control_depth_margin": [1.4, 0.0],
         "setting_preferences_button_margin": [4, 0.0],
         "setting_control_margin": [0.0, 0.0],
