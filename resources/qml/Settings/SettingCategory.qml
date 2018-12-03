@@ -45,32 +45,6 @@ Button
             return UM.Theme.getColor("setting_category")
         }
         Behavior on color { ColorAnimation { duration: 50; } }
-        Rectangle
-        {
-            id: backgroundLiningRectangle
-            height: UM.Theme.getSize("default_lining").height
-            width: parent.width
-            anchors.bottom: parent.bottom
-            color:
-            {
-                if (!base.enabled)
-                {
-                    return UM.Theme.getColor("setting_category_disabled_border")
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
-                {
-                    return UM.Theme.getColor("setting_category_active_hover_border")
-                } else if (base.pressed || (base.checkable && base.checked))
-                {
-                    return UM.Theme.getColor("setting_category_active_border")
-                } else if (base.hovered || base.activeFocus)
-                {
-                    return UM.Theme.getColor("setting_category_hover_border")
-                } else
-                {
-                    return UM.Theme.getColor("setting_category_border")
-                }
-            }
-        }
     }
 
     signal showTooltip(string text)

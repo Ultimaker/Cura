@@ -393,7 +393,7 @@ QtObject
                 implicitWidth: Theme.getSize("scrollbar").width
                 radius: Math.round(implicitWidth / 2)
 
-                color: styleData.pressed ? Theme.getColor("scrollbar_handle_down") : styleData.hovered ? Theme.getColor("scrollbar_handle_hover") : Theme.getColor("scrollbar_handle");
+                color: styleData.pressed ? Theme.getColor("scrollbar_handle_down") : styleData.hovered ? Theme.getColor("scrollbar_handle_hover") : Theme.getColor("scrollbar_handle")
                 Behavior on color { ColorAnimation { duration: 50; } }
             }
         }

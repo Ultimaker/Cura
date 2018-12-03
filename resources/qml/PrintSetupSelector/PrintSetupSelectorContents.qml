@@ -25,7 +25,7 @@ Item
     {
         id: header
         height: UM.Theme.getSize("print_setup_widget_header").height
-        color: UM.Theme.getColor("action_button_hovered")  // TODO: It's not clear the color that we need to use here
+        color: UM.Theme.getColor("secondary")
 
         anchors
         {
@@ -46,9 +46,9 @@ Item
 
             anchors
             {
-                topMargin: UM.Theme.getSize("sidebar_margin").height
+                topMargin: UM.Theme.getSize("default_margin").height
                 left: parent.left
-                leftMargin: UM.Theme.getSize("narrow_margin").height
+                leftMargin: UM.Theme.getSize("default_margin").height
             }
         }
 
