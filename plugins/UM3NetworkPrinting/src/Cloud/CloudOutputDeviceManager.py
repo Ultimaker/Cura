@@ -132,7 +132,7 @@ class CloudOutputDeviceManager(NetworkClient):
         local_device_id = active_machine.getMetaDataEntry("um_network_key")
         if local_device_id:
             active_output_device = self._output_device_manager.getActiveDevice()
-            # We must find a match for the active machine and a cloud device
+            # TODO: We must find a match for the active machine and a cloud device
 
         stored_cluster_id = active_machine.getMetaDataEntry("um_cloud_cluster_id")
         if stored_cluster_id not in self._remote_clusters.keys():
