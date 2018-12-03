@@ -101,7 +101,7 @@ Column
         // Disable the slice process when
 
         width: parent.width
-        height: UM.Theme.getSize("action_panel_button").height
+        height: UM.Theme.getSize("action_button").height
         visible: !autoSlice
         Cura.PrimaryButton
         {

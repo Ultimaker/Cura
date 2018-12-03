@@ -111,7 +111,7 @@ Column
         {
             id: previewStageShortcut
 
-            height: UM.Theme.getSize("action_panel_button").height
+            height: UM.Theme.getSize("action_button").height
             text: catalog.i18nc("@button", "Preview")
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
