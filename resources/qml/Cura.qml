@@ -146,6 +146,7 @@ UM.MainWindow
 
             Rectangle
             {
+                id: stageMenuBackground
                 anchors
                 {
                     left: parent.left
@@ -153,7 +154,7 @@ UM.MainWindow
                     top: parent.top
                 }
                 visible: stageMenu.source != ""
-                height: Math.round(UM.Theme.getSize("stage_menu").height / 2)
+                height: visible ? Math.round(UM.Theme.getSize("stage_menu").height / 2) : 0
 
                 LinearGradient
                 {
@@ -212,7 +213,7 @@ UM.MainWindow
                     verticalCenter: parent.verticalCenter
                     left: parent.left
                 }
-                visible: CuraApplication.platformActivity
+                visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
             ObjectsList
@@ -254,7 +255,13 @@ UM.MainWindow
                 // A stage can control this area. If nothing is set, it will therefore show the 3D view.
                 id: main
 
-                anchors.fill: parent
+                anchors
+                {
+                    top: stageMenuBackground.bottom
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
 
                 source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
             }

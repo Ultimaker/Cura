@@ -45,8 +45,8 @@ Item
             text: (outputDevice != null && outputDevice.address != null) ? outputDevice.address : ""
             font: UM.Theme.getFont("default_bold")
             color: UM.Theme.getColor("text_inactive")
-            anchors.top: parent.top
-            anchors.right: parent.right
+            anchors.top: outputDeviceNameLabel.bottom
+            anchors.left: parent.left
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
 

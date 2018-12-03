@@ -17,18 +17,21 @@ Menu
 
         MenuItem
         {
-            text: (model.layer_height != "") ? model.name + " - " + model.layer_height + model.layer_height_unit : model.name
+            text:
+            {
+                var full_text = (model.layer_height != "") ? model.name + " - " + model.layer_height + model.layer_height_unit : model.name
+                full_text += model.is_experimental ? " - Experimental" : ""
+                return full_text
+            }
             checkable: true
             checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
-            onTriggered: {
-                Cura.MachineManager.setQualityGroup(model.quality_group)
-            }
+            onTriggered: Cura.MachineManager.setQualityGroup(model.quality_group)
             visible: model.available
         }
 
-        onObjectAdded: menu.insertItem(index, object);
-        onObjectRemoved: menu.removeItem(object);
+        onObjectAdded: menu.insertItem(index, object)
+        onObjectRemoved: menu.removeItem(object)
     }
 
     MenuSeparator

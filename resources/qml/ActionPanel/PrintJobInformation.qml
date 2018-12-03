@@ -21,7 +21,6 @@ Column
     Column
     {
         id: timeSpecification
-        spacing: UM.Theme.getSize("thin_margin").width
         width: parent.width
         topPadding: UM.Theme.getSize("default_margin").height
         leftPadding: UM.Theme.getSize("default_margin").width
@@ -71,7 +70,6 @@ Column
     Column
     {
         id: materialSpecification
-        spacing: UM.Theme.getSize("thin_margin").width
         width: parent.width
         bottomPadding: UM.Theme.getSize("default_margin").height
         leftPadding: UM.Theme.getSize("default_margin").width

@@ -7,7 +7,7 @@ import QtQuick.Controls 2.0
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Button
+Cura.ToolbarButton
 {
     id: base
 
@@ -18,11 +18,9 @@ Button
     checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
     enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
 
-    background: Item {}
-    contentItem: ExtruderIcon
+    toolItem: ExtruderIcon
     {
-        width: UM.Theme.getSize("button_icon").width
-        materialColor: model.color
+        materialColor: extruder.color
         extruderEnabled: extruder.stack.isEnabled
         property int index: extruder.index
     }
@@ -30,6 +28,6 @@ Button
     onClicked:
     {
         forceActiveFocus() //First grab focus, so all the text fields are updated
-        CuraActions.setExtruderForSelection(extruder.id);
+        CuraActions.setExtruderForSelection(extruder.id)
     }
 }

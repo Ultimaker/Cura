@@ -151,7 +151,6 @@ UM.PreferencesPage
                 {
                     id: languageLabel
                     text: catalog.i18nc("@label","Language:")
-                    anchors.verticalCenter: languageComboBox.verticalCenter
                 }
 
                 ComboBox
@@ -219,7 +218,6 @@ UM.PreferencesPage
                 {
                     id: currencyLabel
                     text: catalog.i18nc("@label","Currency:")
-                    anchors.verticalCenter: currencyField.verticalCenter
                 }
 
                 TextField
@@ -233,7 +231,6 @@ UM.PreferencesPage
                 {
                     id: themeLabel
                     text: catalog.i18nc("@label","Theme:")
-                    anchors.verticalCenter: themeComboBox.verticalCenter
                 }
 
                 ComboBox

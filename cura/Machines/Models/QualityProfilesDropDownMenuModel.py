@@ -21,6 +21,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
     AvailableRole = Qt.UserRole + 5
     QualityGroupRole = Qt.UserRole + 6
     QualityChangesGroupRole = Qt.UserRole + 7
+    IsExperimentalRole = Qt.UserRole + 8
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -32,6 +33,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.AvailableRole, "available") #Whether the quality profile is available in our current nozzle + material.
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
+        self.addRoleName(self.IsExperimentalRole, "is_experimental")
 
         self._application = Application.getInstance()
         self._machine_manager = self._application.getMachineManager()
@@ -74,7 +76,8 @@ class QualityProfilesDropDownMenuModel(ListModel):
                     "layer_height": layer_height,
                     "layer_height_unit": self._layer_height_unit,
                     "available": quality_group.is_available,
-                    "quality_group": quality_group}
+                    "quality_group": quality_group,
+                    "is_experimental": quality_group.is_experimental}
 
             item_list.append(item)
 

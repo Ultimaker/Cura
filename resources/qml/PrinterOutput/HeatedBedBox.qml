@@ -1,10 +1,10 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick 2.10
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -14,6 +14,7 @@ Item
     implicitWidth: parent.width
     height: visible ? UM.Theme.getSize("print_setup_extruder_box").height : 0
     property var printerModel
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
     Rectangle
     {
@@ -114,7 +115,7 @@ Item
                 {
                     return false; //Can't preheat if not connected.
                 }
-                if (!connectedPrinter.acceptsCommands)
+                if (connectedPrinter == null || !connectedPrinter.acceptsCommands)
                 {
                     return false; //Not allowed to do anything.
                 }
