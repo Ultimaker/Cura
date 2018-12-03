@@ -213,28 +213,6 @@ UM.Dialog
 
                     PropertyChanges { target: machineButton; opacity: 0; height: 0; }
                 }
-
-                transitions:
-                [
-                    Transition
-                    {
-                        to: "collapsed";
-                        SequentialAnimation
-                        {
-                            NumberAnimation { property: "opacity"; duration: 75; }
-                            NumberAnimation { property: "height"; duration: 75; }
-                        }
-                    },
-                    Transition
-                    {
-                        from: "collapsed";
-                        SequentialAnimation
-                        {
-                            NumberAnimation { property: "height"; duration: 75; }
-                            NumberAnimation { property: "opacity"; duration: 75; }
-                        }
-                    }
-                ]
             }
         }
     }

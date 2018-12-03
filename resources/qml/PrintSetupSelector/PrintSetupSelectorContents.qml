@@ -7,6 +7,9 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
+import "Recommended"
+import "Custom"
+
 Item
 {
     id: popup
@@ -90,7 +93,7 @@ Item
     Item
     {
         id: contents
-        height: childrenRect.height
+        height: currentModeIndex == 0 ? recommendedPrintSetup.height : customPrintSetup.height
 
         anchors
         {
@@ -101,27 +104,25 @@ Item
 
         RecommendedPrintSetup
         {
+            id: recommendedPrintSetup
             anchors
             {
                 left: parent.left
                 right: parent.right
                 top: parent.top
             }
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
             visible: currentModeIndex == 0
         }
 
         CustomPrintSetup
         {
+            id: customPrintSetup
             anchors
             {
                 left: parent.left
                 right: parent.right
                 top: parent.top
             }
-            onShowTooltip: base.showTooltip(item, location, text)
-            onHideTooltip: base.hideTooltip()
             visible: currentModeIndex == 1
         }
     }

@@ -13,10 +13,6 @@ import QtGraphicalEffects 1.0 // For the dropshadow
 Item
 {
     id: prepareMenu
-    // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
-
 
     UM.I18nCatalog
     {

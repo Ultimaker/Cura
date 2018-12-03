@@ -144,10 +144,6 @@ Item
                     {
                         return ""
                     }
-                    if (details.author_email)
-                    {
-                        return "<a href=\"mailto:" + details.author_email+"?Subject=Cura: " + details.name + "\">" + details.author_name + "</a>"
-                    }
                     else
                     {
                         return "<a href=\"" + details.website + "\">" + details.author_name + "</a>"

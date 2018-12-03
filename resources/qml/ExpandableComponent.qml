@@ -27,6 +27,9 @@ Item
     // The popupItem holds the QML item that is shown when the "open" button is pressed
     property var popupItem
 
+    // The popupItem holds the QML item that is shown when the "open" button is pressed
+    property var componentItem
+
     property color popupBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
