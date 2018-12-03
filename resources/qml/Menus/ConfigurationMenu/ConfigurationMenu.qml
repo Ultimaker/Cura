@@ -44,7 +44,7 @@ Cura.ExpandableComponent
             delegate: Item
             {
                 height: parent.height
-                width: Math.round(ListView.view.width / extrudersModel.rowCount())
+                width: Math.round(ListView.view.width / extrudersModel.count)
 
                 // Extruder icon. Shows extruder index and has the same color as the active material.
                 Cura.ExtruderIcon

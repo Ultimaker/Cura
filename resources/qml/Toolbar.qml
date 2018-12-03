@@ -65,7 +65,7 @@ Item
                     style: UM.Theme.styles.toolbar_button
 
                     property bool isFirstElement: toolsModel.getItem(0).id == model.id
-                    property bool isLastElement: toolsModel.getItem(toolsModel.rowCount() - 1).id == model.id
+                    property bool isLastElement: toolsModel.getItem(toolsModel.count - 1).id == model.id
 
                     onCheckedChanged:
                     {

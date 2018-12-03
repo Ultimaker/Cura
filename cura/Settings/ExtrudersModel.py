@@ -165,7 +165,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     def __updateExtruders(self):
         extruders_changed = False
 
-        if self.rowCount() != 0:
+        if self.count != 0:
             extruders_changed = True
 
         items = []

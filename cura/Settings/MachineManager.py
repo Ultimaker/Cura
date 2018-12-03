@@ -1540,7 +1540,7 @@ class MachineManager(QObject):
             elif word.isdigit():
                 abbr_machine += word
             else:
-                stripped_word = ''.join(char for char in unicodedata.normalize('NFD', word.upper()) if unicodedata.category(char) != 'Mn')
+                stripped_word = "".join(char for char in unicodedata.normalize("NFD", word.upper()) if unicodedata.category(char) != "Mn")
                 # - use only the first character if the word is too long (> 3 characters)
                 # - use the whole word if it's not too long (<= 3 characters)
                 if len(stripped_word) > 3:

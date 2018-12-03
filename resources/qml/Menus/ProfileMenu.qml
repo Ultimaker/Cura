@@ -34,7 +34,7 @@ Menu
     MenuSeparator
     {
         id: customSeparator
-        visible: Cura.CustomQualityProfilesDropDownMenuModel.rowCount > 0
+        visible: Cura.CustomQualityProfilesDropDownMenuModel.count > 0
     }
 
     Instantiator
@@ -45,7 +45,7 @@ Menu
         Connections
         {
             target: Cura.CustomQualityProfilesDropDownMenuModel
-            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesDropDownMenuModel.rowCount() > 0
+            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesDropDownMenuModel.count > 0
         }
 
         MenuItem
@@ -59,12 +59,12 @@ Menu
 
         onObjectAdded:
         {
-            customSeparator.visible = model.rowCount() > 0;
+            customSeparator.visible = model.count > 0;
             menu.insertItem(index, object);
         }
         onObjectRemoved:
         {
-            customSeparator.visible = model.rowCount() > 0;
+            customSeparator.visible = model.count > 0;
             menu.removeItem(object);
         }
     }

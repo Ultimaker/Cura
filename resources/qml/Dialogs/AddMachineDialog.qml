@@ -170,7 +170,7 @@ UM.Dialog
                     if (machineList.model.getItem(machineList.currentIndex).section != section)
                     {
                         // Find the first machine from this section
-                        for(var i = 0; i < machineList.model.rowCount(); i++)
+                        for(var i = 0; i < machineList.model.count; i++)
                         {
                             var item = machineList.model.getItem(i);
                             if (item.section == section)
