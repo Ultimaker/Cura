@@ -11,7 +11,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
 from time import time
-from typing import Any, Callable, Dict, List, Optional
+from typing import Callable, Dict, List, Optional, Union
 from enum import IntEnum
 
 import os  # To get the username
@@ -180,12 +180,12 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             self._createNetworkManager()
         assert (self._manager is not None)
 
-    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+    def put(self, target: str, data: Union[str, bytes], on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         if self._manager is not None:
-            reply = self._manager.put(request, data.encode())
+            reply = self._manager.put(request, data if isinstance(data, bytes) else data.encode())
             self._registerOnFinishedCallback(reply, on_finished)
         else:
             Logger.log("e", "Could not find manager.")
@@ -210,12 +210,13 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         else:
             Logger.log("e", "Could not find manager.")
 
-    def post(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
+    def post(self, target: str, data: Union[str, bytes], on_finished: Optional[Callable[[QNetworkReply], None]],
+             on_progress: Callable = None) -> None:
         self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         if self._manager is not None:
-            reply = self._manager.post(request, data.encode())
+            reply = self._manager.post(request, data if isinstance(data, bytes) else data.encode())
             if on_progress is not None:
                 reply.uploadProgress.connect(on_progress)
             self._registerOnFinishedCallback(reply, on_finished)

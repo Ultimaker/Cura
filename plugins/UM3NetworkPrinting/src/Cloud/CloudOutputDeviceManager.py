@@ -25,9 +25,9 @@ from .Models import CloudCluster
 class CloudOutputDeviceManager(NetworkClient):
     
     # The cloud URL to use for remote clusters.
-    API_ROOT_PATH = "https://api.ultimaker.com/connect/v1"
+    API_ROOT_PATH = "https://api-staging.ultimaker.com/connect/v1"
 
-    # The interval with wich the remote clusters are checked
+    # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 5  # seconds
     
     def __init__(self):
@@ -39,13 +39,14 @@ class CloudOutputDeviceManager(NetworkClient):
         application = CuraApplication.getInstance()
         self._output_device_manager = application.getOutputDeviceManager()
         self._account = application.getCuraAPI().account
+        self._account.loginStateChanged.connect(self._getRemoteClusters)
         
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._activeMachineChanged)
 
         # Periodically check all remote clusters for the authenticated user.
-        self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
-        self._update_clusters_thread.start()
+        # self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
+        # self._update_clusters_thread.start()
 
     ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
@@ -64,18 +65,22 @@ class CloudOutputDeviceManager(NetworkClient):
         
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
+        Logger.log("i", "Retrieving remote clusters")
         self.get("/clusters", on_finished = self._onGetRemoteClustersFinished)
 
     ##  Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, reply: QNetworkReply) -> None:
+        Logger.log("i", "Received remote clusters")
+
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-        if status_code != 200:
+        if status_code > 204:
             Logger.log("w", "Got unexpected response while trying to get cloud cluster data: {}, {}"
                        .format(status_code, reply.readAll()))
             return
 
         # Parse the response (returns the "data" field from the body).
         found_clusters = self._parseStatusResponse(reply)
+        Logger.log("i", "Parsed remote clusters to %s", found_clusters)
         if not found_clusters:
             return
 
@@ -96,7 +101,8 @@ class CloudOutputDeviceManager(NetworkClient):
     @staticmethod
     def _parseStatusResponse(reply: QNetworkReply) -> Dict[str, CloudCluster]:
         try:
-            return {c["cluster_id"]: CloudCluster(**c) for c in json.loads(reply.readAll().data().decode("utf-8"))}
+            response = bytes(reply.readAll()).decode()
+            return {c["cluster_id"]: CloudCluster(**c) for c in json.loads(response)["data"]}
         except UnicodeDecodeError:
             Logger.log("w", "Unable to read server response")
         except json.decoder.JSONDecodeError:
@@ -110,6 +116,7 @@ class CloudOutputDeviceManager(NetworkClient):
         device = CloudOutputDevice(cluster.cluster_id)
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
+        device.connect()  # TODO: Only connect the current device
 
     ##  Remove a CloudOutputDevice
     def _removeCloudOutputDevice(self, cluster: CloudCluster):

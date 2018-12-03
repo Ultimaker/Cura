@@ -36,7 +36,7 @@ class CloudClusterPrinterConfiguration(BaseModel):
         self.extruder_index = None  # type: str
         self.material = None  # type: CloudClusterPrinterConfigurationMaterial
         self.nozzle_diameter = None  # type: str
-        self.printer_core_id = None  # type: str
+        self.print_core_id = None  # type: str
         super().__init__(**kwargs)
 
 
@@ -98,4 +98,12 @@ class JobUploadResponse(BaseModel):
         self.slicing_details = None  # type: str
         self.status = None  # type: str
         self.upload_url = None  # type: str
+        super().__init__(**kwargs)
+
+
+class PrintResponse(BaseModel):
+    def __init__(self, **kwargs):
+        self.cluster_job_id: str = None
+        self.job_id: str = None
+        self.status: str = None
         super().__init__(**kwargs)
