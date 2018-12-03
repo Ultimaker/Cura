@@ -138,19 +138,20 @@ Button
                 if (!base.enabled)
                 {
                     return UM.Theme.getColor("setting_category_disabled_text")
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
+                }
+                else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
                 {
                     return UM.Theme.getColor("setting_category_active_hover_text")
-                } else if (base.pressed || (base.checkable && base.checked))
+                }
+                else if (base.pressed || (base.checkable && base.checked))
                 {
                     return UM.Theme.getColor("setting_category_active_text")
-                } else if (base.hovered || base.activeFocus)
+                }
+                else if (base.hovered || base.activeFocus)
                 {
                     return UM.Theme.getColor("setting_category_hover_text")
-                } else
-                {
-                    return UM.Theme.getColor("setting_category_text")
                 }
+                return UM.Theme.getColor("setting_category_text")
             }
             source: base.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         }
@@ -161,25 +162,26 @@ Button
         id: icon
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("thin_margin").width
         color:
         {
             if (!base.enabled)
             {
                 return UM.Theme.getColor("setting_category_disabled_text")
-            } else if((base.hovered || base.activeFocus) && base.checkable && base.checked)
+            }
+            else if((base.hovered || base.activeFocus) && base.checkable && base.checked)
             {
                 return UM.Theme.getColor("setting_category_active_hover_text")
-            } else if(base.pressed || (base.checkable && base.checked))
+            }
+            else if(base.pressed || (base.checkable && base.checked))
             {
                 return UM.Theme.getColor("setting_category_active_text")
-            } else if(base.hovered || base.activeFocus)
+            }
+            else if(base.hovered || base.activeFocus)
             {
                 return UM.Theme.getColor("setting_category_hover_text")
-            } else
-            {
-                return UM.Theme.getColor("setting_category_text")
             }
+            return UM.Theme.getColor("setting_category_text")
         }
         source: UM.Theme.getIcon(definition.icon)
         width: UM.Theme.getSize("section_icon").width
@@ -196,7 +198,9 @@ Button
         if (definition.expanded)
         {
             settingDefinitionsModel.collapse(definition.key)
-        } else {
+        }
+        else
+        {
             settingDefinitionsModel.expandRecursive(definition.key)
         }
         //Set focus so that tab navigation continues from this point on.
@@ -205,7 +209,7 @@ Button
     }
     onActiveFocusChanged:
     {
-        if(activeFocus)
+        if (activeFocus)
         {
             base.focusReceived()
         }
