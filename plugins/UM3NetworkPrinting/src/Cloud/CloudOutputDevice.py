@@ -13,6 +13,7 @@ from UM import i18nCatalog
 from UM.FileHandler.FileWriter import FileWriter
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
 from UM.Scene.SceneNode import SceneNode
 from UM.Version import Version
@@ -389,3 +390,17 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         print_response = PrintResponse(**response["data"])
         Logger.log("i", "Print job requested successfully: %s", print_response.__dict__)
         self.writeFinished.emit()
+
+    def _showUploadErrorMessage(self):
+        message = Message(self.I18N_CATALOG.i18nc(
+            "@info:status", "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+        message.show()
+
+    def _showOrUpdateUploadProgressMessage(self, new_progress = 0):
+        # TODO: implement this
+        # See ClusterUM3OutputDevice for inspiration
+        pass
+
+    def _showUploadSuccessMessage(self):
+        # TODO: implement this
+        pass
