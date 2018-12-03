@@ -40,7 +40,7 @@ Item
         id: tabBar
         anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        visible: Cura.MachineManager.numberExtrudersEnabled > 1
+        visible: extrudersModel.count > 1
 
         currentIndex: Math.max(Cura.ExtruderManager.activeExtruderIndex, 0)
 
@@ -138,6 +138,7 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
+                    visible: extrudersModel.count > 1
                 }
 
                 OldControls.CheckBox
@@ -146,6 +147,7 @@ Item
                     enabled: !checked || Cura.MachineManager.numberExtrudersEnabled > 1 //Disable if it's the last enabled extruder.
                     height: UM.Theme.getSize("setting_control").height
                     style: UM.Theme.styles.checkbox
+                    visible: extrudersModel.count > 1
 
                     /* Use a MouseArea to process the click on this checkbox.
                        This is necessary because actually clicking the checkbox
