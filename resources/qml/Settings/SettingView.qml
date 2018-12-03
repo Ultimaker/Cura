@@ -19,70 +19,22 @@ Item
     property Action configureSettings
     property bool findingSettings
 
-    ToolButton
-    {
-        id: settingVisibilityMenu
-
-        property var toolButtonIconColor: UM.Theme.getColor("setting_category_text")
-
-        width: height
-        height: UM.Theme.getSize("setting_control").height
-        anchors
-        {
-            topMargin: UM.Theme.getSize("thick_margin").height
-            left: filterContainer.right
-            leftMargin: UM.Theme.getSize("default_margin").width
-        }
-        style: ButtonStyle
-        {
-            background: Item {
-                UM.RecolorImage {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: Math.round(parent.width * 0.6)
-                    height: Math.round(parent.height * 0.6)
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    color: settingVisibilityMenu.toolButtonIconColor
-                    source: UM.Theme.getIcon("settings")
-                }
-            }
-            label: Label{}
-        }
-        menu: SettingVisibilityPresetsMenu
-        {
-            onShowAllSettings:
-            {
-                definitionsModel.setAllVisible(true);
-                filter.updateDefinitionModel();
-            }
-        }
-
-        MouseArea
-        {
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.RightButton
-            onEntered: settingVisibilityMenu.toolButtonIconColor = UM.Theme.getColor("setting_control_button_hover")
-            onExited: settingVisibilityMenu.toolButtonIconColor = UM.Theme.getColor("setting_category_text")
-        }
-    }
-
     Rectangle
     {
         id: filterContainer
         visible: true
 
+        radius: UM.Theme.getSize("setting_control_radius").width
         border.width: Math.round(UM.Theme.getSize("default_lining").width)
         border.color:
         {
-            if(hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
+            if (hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
             {
-                return UM.Theme.getColor("setting_control_border_highlight");
+                return UM.Theme.getColor("setting_control_border_highlight")
             }
             else
             {
-                return UM.Theme.getColor("setting_control_border");
+                return UM.Theme.getColor("setting_control_border")
             }
         }
 
@@ -90,13 +42,12 @@ Item
 
         anchors
         {
-            topMargin: UM.Theme.getSize("thick_margin").height
+            top: parent.top
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
-            right: scrollView.right
-            rightMargin: Math.floor(UM.Theme.getSize("wide_margin").width * 2)
+            right: settingVisibilityMenu.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
-        height: UM.Theme.getSize("setting_control").height
+        height: UM.Theme.getSize("print_setup_big_item").height
         Timer
         {
             id: settingsSearchTimer
@@ -108,7 +59,7 @@ Item
 
         TextField
         {
-            id: filter;
+            id: filter
             height: parent.height
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
@@ -118,9 +69,9 @@ Item
 
             style: TextFieldStyle
             {
-                textColor: UM.Theme.getColor("setting_control_text");
+                textColor: UM.Theme.getColor("setting_control_text")
                 placeholderTextColor: UM.Theme.getColor("setting_filter_field")
-                font: UM.Theme.getFont("default");
+                font: UM.Theme.getFont("default_italic")
                 background: Item {}
             }
 
@@ -134,38 +85,38 @@ Item
 
             onEditingFinished:
             {
-                definitionsModel.filter = {"i18n_label": "*" + text};
-                findingSettings = (text.length > 0);
-                if(findingSettings != lastFindingSettings)
+                definitionsModel.filter = {"i18n_label": "*" + text}
+                findingSettings = (text.length > 0)
+                if (findingSettings != lastFindingSettings)
                 {
-                    updateDefinitionModel();
-                    lastFindingSettings = findingSettings;
+                    updateDefinitionModel()
+                    lastFindingSettings = findingSettings
                 }
             }
 
             Keys.onEscapePressed:
             {
-                filter.text = "";
+                filter.text = ""
             }
 
             function updateDefinitionModel()
             {
-                if(findingSettings)
+                if (findingSettings)
                 {
-                    expandedCategories = definitionsModel.expanded.slice();
-                    definitionsModel.expanded = [""]; // keep categories closed while to prevent render while making settings visible one by one
-                    definitionsModel.showAncestors = true;
-                    definitionsModel.showAll = true;
-                    definitionsModel.expanded = ["*"];
+                    expandedCategories = definitionsModel.expanded.slice()
+                    definitionsModel.expanded = [""]  // keep categories closed while to prevent render while making settings visible one by one
+                    definitionsModel.showAncestors = true
+                    definitionsModel.showAll = true
+                    definitionsModel.expanded = ["*"]
                 }
                 else
                 {
-                    if(expandedCategories)
+                    if (expandedCategories)
                     {
-                        definitionsModel.expanded = expandedCategories;
+                        definitionsModel.expanded = expandedCategories
                     }
-                    definitionsModel.showAncestors = false;
-                    definitionsModel.showAll = false;
+                    definitionsModel.showAncestors = false
+                    definitionsModel.showAll = false
                 }
             }
         }
@@ -197,8 +148,45 @@ Item
 
             onClicked:
             {
-                filter.text = "";
-                filter.forceActiveFocus();
+                filter.text = ""
+                filter.forceActiveFocus()
+            }
+        }
+    }
+
+    ToolButton
+    {
+        id: settingVisibilityMenu
+
+        anchors
+        {
+            top: filterContainer.top
+            bottom: filterContainer.bottom
+            right: parent.right
+        }
+
+        style: ButtonStyle
+        {
+            background: Item {
+                UM.RecolorImage {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: UM.Theme.getSize("standard_arrow").width
+                    height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    color: control.enabled ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_category_disabled_text")
+                    source: UM.Theme.getIcon("menu")
+                }
+            }
+            label: Label{}
+        }
+        menu: SettingVisibilityPresetsMenu
+        {
+            onShowAllSettings:
+            {
+                definitionsModel.setAllVisible(true)
+                filter.updateDefinitionModel()
             }
         }
     }
@@ -206,33 +194,35 @@ Item
     ScrollView
     {
         id: scrollView
-        anchors.top: filterContainer.bottom;
-        anchors.bottom: parent.bottom;
-        anchors.right: parent.right;
-        anchors.left: parent.left;
-        anchors.topMargin: UM.Theme.getSize("thick_margin").height
-        anchors.rightMargin: UM.Theme.getSize("narrow_margin").height / 3
+        anchors
+        {
+            top: filterContainer.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
+            bottom: parent.bottom
+            right: parent.right
+            left: parent.left
+        }
 
-        style: UM.Theme.styles.scrollview;
-        flickableItem.flickableDirection: Flickable.VerticalFlick;
-        __wheelAreaScrollSpeed: 75; // Scroll three lines in one scroll event
+        style: UM.Theme.styles.scrollview
+        flickableItem.flickableDirection: Flickable.VerticalFlick
+        __wheelAreaScrollSpeed: 75  // Scroll three lines in one scroll event
 
         ListView
         {
             id: contents
-            spacing: Math.round(UM.Theme.getSize("default_lining").height);
-            cacheBuffer: 1000000;   // Set a large cache to effectively just cache every list item.
+            spacing: Math.round(UM.Theme.getSize("default_lining").height)
+            cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
             model: UM.SettingDefinitionsModel
             {
-                id: definitionsModel;
+                id: definitionsModel
                 containerId: Cura.MachineManager.activeDefinitionId
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
                 exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
-                    if(!findingSettings)
+                    if (!findingSettings)
                     {
                         // Do not change expandedCategories preference while filtering settings
                         // because all categories are expanded while filtering
@@ -248,7 +238,7 @@ Item
             {
                 id: delegate
 
-                width: Math.round(UM.Theme.getSize("print_setup_widget").width);
+                width: scrollView.width
                 height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled == "True" ? 1 : 0
@@ -318,17 +308,17 @@ Item
                         // machine gets changed.
                         var activeMachineId = Cura.MachineManager.activeMachineId;
 
-                        if(!model.settable_per_extruder)
+                        if (!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
                             return activeMachineId;
                         }
-                        if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                        if (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
                             return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                         }
-                        if(Cura.ExtruderManager.activeExtruderStackId)
+                        if (Cura.ExtruderManager.activeExtruderStackId)
                         {
                             //We're on an extruder tab. Pick the current extruder.
                             return Cura.ExtruderManager.activeExtruderStackId;
@@ -390,14 +380,14 @@ Item
                     }
                     onSetActiveFocusToNextSetting:
                     {
-                        if(forward == undefined || forward)
+                        if (forward == undefined || forward)
                         {
                             contents.currentIndex = contents.indexWithFocus + 1;
                             while(contents.currentItem && contents.currentItem.height <= 0)
                             {
                                 contents.currentIndex++;
                             }
-                            if(contents.currentItem)
+                            if (contents.currentItem)
                             {
                                 contents.currentItem.item.focusItem.forceActiveFocus();
                             }
@@ -409,7 +399,7 @@ Item
                             {
                                 contents.currentIndex--;
                             }
-                            if(contents.currentItem)
+                            if (contents.currentItem)
                             {
                                 contents.currentItem.item.focusItem.forceActiveFocus();
                             }

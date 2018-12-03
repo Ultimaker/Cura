@@ -377,7 +377,7 @@
         "print_setup_slider_groove": [0.16, 0.16],
         "print_setup_slider_handle": [1.0, 1.0],
         "print_setup_slider_tickmarks": [0.32, 0.32],
-        "print_setup_big_dropdown": [28, 2.5],
+        "print_setup_big_item": [28, 2.5],
         "print_setup_icon": [1.2, 1.2],
 
         "configuration_selector_mode_tabs": [0.0, 3.0],
@@ -425,7 +425,7 @@
         "setting_text_maxwidth": [40.0, 0.0],
 
         "standard_list_lineheight": [1.5, 1.5],
-        "standard_arrow": [0.8, 0.8],
+        "standard_arrow": [1.0, 1.0],
 
         "button": [4, 4],
         "button_icon": [2.5, 2.5],

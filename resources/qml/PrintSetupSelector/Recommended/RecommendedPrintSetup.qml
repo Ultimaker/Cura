@@ -69,4 +69,13 @@ Item
             labelColumnWidth: parent.firstColumnWidth
         }
     }
+
+    UM.SettingPropertyProvider
+    {
+        id: extrudersEnabledCount
+        containerStack: Cura.MachineManager.activeMachine
+        key: "extruders_enabled_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
 }

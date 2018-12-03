@@ -35,8 +35,8 @@ Item
         id: globalProfileSelection
 
         text: generateActiveQualityText()
-        width: UM.Theme.getSize("print_setup_big_dropdown").width
-        height: UM.Theme.getSize("print_setup_big_dropdown").height
+        width: UM.Theme.getSize("print_setup_big_item").width
+        height: UM.Theme.getSize("print_setup_big_item").height
         anchors
         {
             top: parent.top

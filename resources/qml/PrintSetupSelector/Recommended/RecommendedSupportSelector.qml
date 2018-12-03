@@ -76,7 +76,7 @@ Item
         {
             id: supportExtruderCombobox
 
-            height: UM.Theme.getSize("print_setup_big_dropdown").height
+            height: UM.Theme.getSize("print_setup_big_item").height
             anchors
             {
                 left: enableSupportCheckBox.right
@@ -168,15 +168,6 @@ Item
         containerStack: Cura.MachineManager.activeMachine
         key: "support_enable"
         watchedProperties: [ "value", "enabled", "description" ]
-        storeIndex: 0
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: extrudersEnabledCount
-        containerStack: Cura.MachineManager.activeMachine
-        key: "extruders_enabled_count"
-        watchedProperties: [ "value" ]
         storeIndex: 0
     }
 
