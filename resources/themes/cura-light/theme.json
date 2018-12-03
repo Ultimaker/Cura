@@ -35,7 +35,7 @@
             "family": "Noto Sans"
         },
         "default_italic": {
-            "size": 1.15,
+            "size": 1.0,
             "weight": 50,
             "italic": true,
             "family": "Noto Sans"
