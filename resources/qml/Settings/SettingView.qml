@@ -163,6 +163,7 @@ Item
             top: filterContainer.top
             bottom: filterContainer.bottom
             right: parent.right
+            rightMargin: UM.Theme.getSize("wide_margin").width
         }
 
         style: ButtonStyle
@@ -210,7 +211,7 @@ Item
         ListView
         {
             id: contents
-            spacing: Math.round(UM.Theme.getSize("default_lining").height)
+            spacing: UM.Theme.getSize("default_lining").height
             cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
             model: UM.SettingDefinitionsModel

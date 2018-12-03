@@ -12,8 +12,8 @@ Button
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-    anchors.rightMargin: UM.Theme.getSize("default_margin").width * 3
+    // To avoid overlaping with the scrollBars
+    anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
     hoverEnabled: true
 
     background: Rectangle
@@ -25,22 +25,24 @@ Button
             if (base.color)
             {
                 return base.color
-            } else if (!base.enabled)
+            }
+            else if (!base.enabled)
             {
                 return UM.Theme.getColor("setting_category_disabled")
-            } else if (base.hovered && base.checkable && base.checked)
+            }
+            else if (base.hovered && base.checkable && base.checked)
             {
                 return UM.Theme.getColor("setting_category_active_hover")
-            } else if (base.pressed || (base.checkable && base.checked))
+            }
+            else if (base.pressed || (base.checkable && base.checked))
             {
                 return UM.Theme.getColor("setting_category_active")
-            } else if (base.hovered)
+            }
+            else if (base.hovered)
             {
                 return UM.Theme.getColor("setting_category_hover")
-            } else
-            {
-                return UM.Theme.getColor("setting_category")
             }
+            return UM.Theme.getColor("setting_category")
         }
         Behavior on color { ColorAnimation { duration: 50; } }
         Rectangle

@@ -384,13 +384,13 @@ QtObject
             {
                 implicitWidth: Theme.getSize("scrollbar").width
                 radius: Math.round(implicitWidth / 2)
-                color: Theme.getColor("scrollbar_background");
+                color: Theme.getColor("scrollbar_background")
             }
 
             handle: Rectangle
             {
                 id: scrollViewHandle
-                implicitWidth: Theme.getSize("scrollbar").width;
+                implicitWidth: Theme.getSize("scrollbar").width
                 radius: Math.round(implicitWidth / 2)
 
                 color: styleData.pressed ? Theme.getColor("scrollbar_handle_down") : styleData.hovered ? Theme.getColor("scrollbar_handle_hover") : Theme.getColor("scrollbar_handle");

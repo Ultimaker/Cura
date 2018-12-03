@@ -10,8 +10,9 @@ import Cura 1.0 as Cura
 
 import "."
 
-Item {
-    id: base;
+Item
+{
+    id: base
 
     height: UM.Theme.getSize("section").height
 
@@ -105,11 +106,11 @@ Item {
 
         Label
         {
-            id: label;
+            id: label
 
-            anchors.left: parent.left;
+            anchors.left: parent.left
             anchors.leftMargin: doDepthIndentation ? Math.round((UM.Theme.getSize("section_icon_column").width / 1.2) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
-            anchors.right: settingControls.left;
+            anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 
             text: definition.label

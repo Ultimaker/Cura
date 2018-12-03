@@ -91,17 +91,36 @@ Item
         }
     }
 
-    Cura.SettingView
+    Rectangle
     {
         anchors
         {
             top: tabBar.visible ? tabBar.bottom : globalProfileRow.bottom
-            topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
             leftMargin: parent.padding
             right: parent.right
             rightMargin: parent.padding
             bottom: parent.bottom
+            topMargin: -UM.Theme.getSize("default_lining").width
+            bottomMargin: -UM.Theme.getSize("default_lining").width
+        }
+        z: tabBar.z - 1
+        // Don't show the border when only one extruder
+        border.color: tabBar.visible ? UM.Theme.getColor("lining") : "transparent"
+        border.width: UM.Theme.getSize("default_lining").width
+
+        Cura.SettingView
+        {
+            anchors
+            {
+                fill: parent
+                topMargin: UM.Theme.getSize("default_margin").height
+                leftMargin: UM.Theme.getSize("default_margin").width
+                // Small space for the scrollbar
+                rightMargin: UM.Theme.getSize("narrow_margin").width
+                // Compensate for the negative margin in the parent
+                bottomMargin: UM.Theme.getSize("default_lining").width
+            }
         }
     }
 }
