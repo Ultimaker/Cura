@@ -37,7 +37,7 @@ Item
                 leftMargin: UM.Theme.getSize("wide_margin").width
                 topMargin: UM.Theme.getSize("wide_margin").height
             }
-            color: white //Always a white background for image (regardless of theme).
+            color: "white" //Always a white background for image (regardless of theme).
             Image
             {
                 anchors.fill: parent
@@ -143,10 +143,6 @@ Item
                     if (details === null)
                     {
                         return ""
-                    }
-                    if (details.author_email)
-                    {
-                        return "<a href=\"mailto:" + details.author_email+"?Subject=Cura: " + details.name + "\">" + details.author_name + "</a>"
                     }
                     else
                     {

@@ -24,16 +24,15 @@ Item
     Item
     {
         id: globalProfileRow
-        height: UM.Theme.getSize("sidebar_setup").height
-        visible: !sidebar.hideSettings
+        height: UM.Theme.getSize("print_setup_item").height
 
         anchors
         {
             top: parent.top
             left: parent.left
-            leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
+            leftMargin: Math.round(UM.Theme.getSize("thick_margin").width)
             right: parent.right
-            rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
+            rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
         }
 
         Label
@@ -41,7 +40,7 @@ Item
             id: globalProfileLabel
             text: catalog.i18nc("@label","Profile:")
             textFormat: Text.PlainText
-            width: Math.round(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
+            width: Math.round(parent.width * 0.45 - UM.Theme.getSize("thick_margin").width - 2)
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
@@ -54,7 +53,6 @@ Item
             id: globalProfileSelection
 
             text: generateActiveQualityText()
-            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
             width: Math.round(parent.width * 0.55)
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
@@ -64,11 +62,18 @@ Item
             activeFocusOnPress: true
             menu: ProfileMenu { }
 
-            function generateActiveQualityText () {
-                var result = Cura.MachineManager.activeQualityOrQualityChangesName;
+            function generateActiveQualityText ()
+            {
+                var result = Cura.MachineManager.activeQualityOrQualityChangesName
+                if (Cura.MachineManager.isActiveQualityExperimental)
+                {
+                    result += " (Experimental)"
+                }
 
-                if (Cura.MachineManager.isActiveQualitySupported) {
-                    if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                if (Cura.MachineManager.isActiveQualitySupported)
+                {
+                    if (Cura.MachineManager.activeQualityLayerHeight > 0)
+                    {
                         result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
                         result += " - "
                         result += Cura.MachineManager.activeQualityLayerHeight + "mm"
@@ -89,7 +94,7 @@ Item
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.rightMargin: Math.round(UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width)
+                anchors.rightMargin: Math.round(UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("thick_margin").width)
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                 iconSource: UM.Theme.getIcon("star");
@@ -102,7 +107,7 @@ Item
                 onEntered:
                 {
                     var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
-                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("thick_margin").width, 0),  content)
                 }
                 onExited: base.hideTooltip()
             }
@@ -118,9 +123,9 @@ Item
         anchors
         {
             top: globalProfileRow.bottom
-            topMargin: UM.Theme.getSize("sidebar_margin").height
+            topMargin: UM.Theme.getSize("thick_margin").height
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
+            rightMargin: UM.Theme.getSize("thick_margin").width
         }
         style: ButtonStyle
         {
@@ -171,15 +176,13 @@ Item
         anchors
         {
             top: globalProfileRow.bottom
-            topMargin: UM.Theme.getSize("sidebar_margin").height
+            topMargin: UM.Theme.getSize("thick_margin").height
             left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            leftMargin: UM.Theme.getSize("thick_margin").width
             right: settingVisibilityMenu.left
             rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
         }
-        height: visible ? UM.Theme.getSize("setting_control").height : 0
-        Behavior on height { NumberAnimation { duration: 100 } }
-
+        height: UM.Theme.getSize("setting_control").height
         Timer
         {
             id: settingsSearchTimer
@@ -195,7 +198,7 @@ Item
             height: parent.height
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
+            anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
             placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
@@ -292,8 +295,7 @@ Item
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
-        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("sidebar_margin").height : 0
-        Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
+        anchors.topMargin: UM.Theme.getSize("thick_margin").height
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
@@ -330,7 +332,7 @@ Item
             {
                 id: delegate
 
-                width: Math.round(UM.Theme.getSize("sidebar").width);
+                width: Math.round(UM.Theme.getSize("print_setup_widget").width);
                 height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled == "True" ? 1 : 0

@@ -42,15 +42,15 @@ Button
             {
                 if(control.pressed)
                 {
-                    return UM.Theme.getColor("sidebar_header_active");
+                    return UM.Theme.getColor("machine_selector_active");
                 }
                 else if(control.hovered)
                 {
-                    return UM.Theme.getColor("sidebar_header_hover");
+                    return UM.Theme.getColor("machine_selector_hover");
                 }
                 else
                 {
-                    return UM.Theme.getColor("sidebar_header_bar");
+                    return UM.Theme.getColor("machine_selector_bar");
                 }
             }
             Behavior on color { ColorAnimation { duration: 50; } }
