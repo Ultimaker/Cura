@@ -224,8 +224,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._updatePrintJobs(status.print_jobs)
 
     def _updatePrinters(self, printers: List[CloudClusterPrinter]) -> None:
-        remote_printers: Dict[str, CloudClusterPrinter] = {p.uuid: p for p in printers}
-        current_printers: Dict[str, PrinterOutputModel] = {p.key: p for p in self._printers}
+        remote_printers = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
+        current_printers = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
 
         removed_printer_ids = set(current_printers).difference(remote_printers)
         new_printer_ids = set(remote_printers).difference(current_printers)
@@ -302,8 +302,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         return MaterialOutputModel(guid=material.guid, type=material_type, brand=brand, color=color, name=name)
 
     def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
-        remote_jobs: Dict[str, CloudClusterPrintJob] = {j.uuid: j for j in jobs}
-        current_jobs: Dict[str, UM3PrintJobOutputModel] = {j.key: j for j in self._print_jobs}
+        remote_jobs = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
+        current_jobs = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
 
         removed_job_ids = set(current_jobs).difference(set(remote_jobs))
         new_job_ids = set(remote_jobs.keys()).difference(set(current_jobs))

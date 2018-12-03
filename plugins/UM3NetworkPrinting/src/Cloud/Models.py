@@ -8,11 +8,11 @@ from ..Models import BaseModel
 ##  Class representing a cloud connected cluster.
 class CloudCluster(BaseModel):
     def __init__(self, **kwargs):
-        self.cluster_id: str = None
-        self.host_guid: str = None
-        self.host_name: str = None
-        self.host_version: str = None
-        self.status: str = None
+        self.cluster_id = None  # type: str
+        self.host_guid = None  # type: str
+        self.host_name = None  # type: str
+        self.host_version = None  # type: str
+        self.status = None  # type: str
         super().__init__(**kwargs)
 
     def validate(self):
@@ -23,20 +23,20 @@ class CloudCluster(BaseModel):
 ##  Class representing a cloud cluster printer configuration
 class CloudClusterPrinterConfigurationMaterial(BaseModel):
     def __init__(self, **kwargs):
-        self.guid: str = None
-        self.brand: str = None
-        self.color: str = None
-        self.material: str = None
+        self.guid = None  # type: str
+        self.brand = None  # type: str
+        self.color = None  # type: str
+        self.material = None  # type: str
         super().__init__(**kwargs)
 
 
 ##  Class representing a cloud cluster printer configuration
 class CloudClusterPrinterConfiguration(BaseModel):
     def __init__(self, **kwargs):
-        self.extruder_index: str = None
-        self.material: CloudClusterPrinterConfigurationMaterial = None
-        self.nozzle_diameter: str = None
-        self.print_core_id: str = None
+        self.extruder_index = None  # type: str
+        self.material = None  # type: CloudClusterPrinterConfigurationMaterial
+        self.nozzle_diameter = None  # type: str
+        self.print_core_id = None  # type: str
         super().__init__(**kwargs)
 
         if isinstance(self.material, dict):
@@ -46,15 +46,15 @@ class CloudClusterPrinterConfiguration(BaseModel):
 ##  Class representing a cluster printer
 class CloudClusterPrinter(BaseModel):
     def __init__(self, **kwargs):
-        self.configuration: List[CloudClusterPrinterConfiguration] = []
-        self.enabled: str = None
-        self.firmware_version: str = None
-        self.friendly_name: str = None
-        self.ip_address: str = None
-        self.machine_variant: str = None
-        self.status: str = None
-        self.unique_name: str = None
-        self.uuid: str = None
+        self.configuration = []  # type: List[CloudClusterPrinterConfiguration]
+        self.enabled = None  # type: str
+        self.firmware_version = None  # type: str
+        self.friendly_name = None  # type: str
+        self.ip_address = None  # type: str
+        self.machine_variant = None  # type: str
+        self.status = None  # type: str
+        self.unique_name = None  # type: str
+        self.uuid = None  # type: str
         super().__init__(**kwargs)
 
         self.configuration = [CloudClusterPrinterConfiguration(**c)
@@ -64,29 +64,29 @@ class CloudClusterPrinter(BaseModel):
 ## Class representing a cloud cluster print job constraint
 class CloudClusterPrintJobConstraint(BaseModel):
     def __init__(self, **kwargs):
-        self.require_printer_name: str = None
+        self.require_printer_name = None  # type: str
         super().__init__(**kwargs)
 
 
 ##  Class representing a print job
 class CloudClusterPrintJob(BaseModel):
     def __init__(self, **kwargs):
-        self.assigned_to: str = None
-        self.configuration: List[CloudClusterPrinterConfiguration] = []
-        self.constraints: List[CloudClusterPrintJobConstraint] = []
-        self.created_at: str = None
-        self.force: str = None
-        self.last_seen: str = None
-        self.machine_variant: str = None
-        self.name: str = None
-        self.network_error_count: int = None
-        self.owner: str = None
-        self.printer_uuid: str = None
-        self.started: str = None
-        self.status: str = None
-        self.time_elapsed: str = None
-        self.time_total: str = None
-        self.uuid: str = None
+        self.assigned_to = None  # type: str
+        self.configuration = []  # type: List[CloudClusterPrinterConfiguration]
+        self.constraints = []  # type: List[CloudClusterPrintJobConstraint]
+        self.created_at = None  # type: str
+        self.force = None  # type: str
+        self.last_seen = None  # type: str
+        self.machine_variant = None  # type: str
+        self.name = None  # type: str
+        self.network_error_count = None  # type: int
+        self.owner = None  # type: str
+        self.printer_uuid = None  # type: str
+        self.started = None  # type: str
+        self.status = None  # type: str
+        self.time_elapsed = None  # type: str
+        self.time_total = None  # type: str
+        self.uuid = None  # type: str
         super().__init__(**kwargs)
         self.printers = [CloudClusterPrinterConfiguration(**c) if isinstance(c, dict) else c
                          for c in self.configuration]
@@ -96,8 +96,8 @@ class CloudClusterPrintJob(BaseModel):
 
 class CloudClusterStatus(BaseModel):
     def __init__(self, **kwargs):
-        self.printers: List[CloudClusterPrinter] = []
-        self.print_jobs: List[CloudClusterPrintJob] = []
+        self.printers = []  # type: List[CloudClusterPrinter]
+        self.print_jobs = []  # type: List[CloudClusterPrintJob]
         super().__init__(**kwargs)
 
         self.printers = [CloudClusterPrinter(**p) if isinstance(p, dict) else p for p in self.printers]
@@ -106,25 +106,25 @@ class CloudClusterStatus(BaseModel):
 
 class JobUploadRequest(BaseModel):
     def __init__(self, **kwargs):
-        self.file_size: int = None
-        self.job_name: str = None
+        self.file_size = None  # type: int
+        self.job_name = None  # type: str
         super().__init__(**kwargs)
 
 
 class JobUploadResponse(BaseModel):
     def __init__(self, **kwargs):
-        self.download_url: str = None
-        self.job_id: str = None
-        self.job_name: str = None
-        self.slicing_details: str = None
-        self.status: str = None
-        self.upload_url: str = None
+        self.download_url = None  # type: str
+        self.job_id = None  # type: str
+        self.job_name = None  # type: str
+        self.slicing_details = None  # type: str
+        self.status = None  # type: str
+        self.upload_url = None  # type: str
         super().__init__(**kwargs)
 
 
 class PrintResponse(BaseModel):
     def __init__(self, **kwargs):
-        self.cluster_job_id: str = None
-        self.job_id: str = None
-        self.status: str = None
+        self.cluster_job_id = None  # type: str
+        self.job_id = None  # type: str
+        self.status = None  # type: str
         super().__init__(**kwargs)
