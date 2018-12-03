@@ -377,7 +377,8 @@
         "print_setup_slider_groove": [0.16, 0.16],
         "print_setup_slider_handle": [1.0, 1.0],
         "print_setup_slider_tickmarks": [0.32, 0.32],
-        "print_setup_support_extruder_selector": [18.2, 2.5],
+        "print_setup_big_dropdown": [28, 2.5],
+        "print_setup_icon": [1.2, 1.2],
 
         "configuration_selector_mode_tabs": [0.0, 3.0],
 

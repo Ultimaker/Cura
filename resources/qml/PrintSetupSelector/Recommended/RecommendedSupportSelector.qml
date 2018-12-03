@@ -76,7 +76,7 @@ Item
         {
             id: supportExtruderCombobox
 
-            height: UM.Theme.getSize("print_setup_support_extruder_selector").height
+            height: UM.Theme.getSize("print_setup_big_dropdown").height
             anchors
             {
                 left: enableSupportCheckBox.right

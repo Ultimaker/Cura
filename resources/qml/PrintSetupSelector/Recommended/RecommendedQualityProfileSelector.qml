@@ -182,7 +182,7 @@ Item
             id: customisedSettings
 
             visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
-            height: visible ? Math.round(0.8 * qualityRowTitle.height) : 0
+            height: visible ? UM.Theme.getSize("print_setup_icon").height : 0
             width: height
             anchors
             {
@@ -203,7 +203,7 @@ Item
             onEntered:
             {
                 var tooltipContent = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
-                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height),  tooltipContent)
+                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, 0),  tooltipContent)
             }
             onExited: base.hideTooltip()
         }

@@ -38,6 +38,7 @@ QtObject
                     }
                 }
 
+                radius: UM.Theme.getSize("setting_control_radius").width
                 border.width: Theme.getSize("default_lining").width
                 border.color:
                 {
@@ -489,11 +490,12 @@ QtObject
                 UM.RecolorImage
                 {
                     id: swatch
-                    height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                    height: Math.round(control.height / 2)
                     width: height
                     anchors.right: downArrow.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+//                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
                     sourceSize.width: width
                     sourceSize.height: height
                     source: UM.Theme.getIcon("extruder_button")

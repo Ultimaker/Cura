@@ -11,8 +11,6 @@ Cura.ExpandableComponent
 {
     id: printSetupSelector
 
-    property bool hideSettings: PrintInformation.preSliced
-
     property string enabledText: catalog.i18nc("@label:Should be short", "On")
     property string disabledText: catalog.i18nc("@label:Should be short", "Off")
 
