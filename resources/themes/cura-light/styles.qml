@@ -1,9 +1,9 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.10
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
 import UM 1.1 as UM
 
@@ -718,6 +718,212 @@ QtObject
                     }
                     font: UM.Theme.getFont("action_button")
                     text: control.text
+                }
+            }
+            label: Item { }
+        }
+    }
+
+    property Component toolbox_action_button: Component
+    {
+        ButtonStyle
+        {
+            background: Rectangle
+            {
+                implicitWidth: UM.Theme.getSize("toolbox_action_button").width
+                implicitHeight: UM.Theme.getSize("toolbox_action_button").height
+                color:
+                {
+                    if (control.installed)
+                    {
+                        return UM.Theme.getColor("action_button_disabled");
+                    }
+                    else
+                    {
+                        if (control.hovered)
+                        {
+                            return UM.Theme.getColor("primary_hover");
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("primary");
+                        }
+                    }
+
+                }
+            }
+            label: Label
+            {
+                text: control.text
+                color:
+                {
+                    if (control.installed)
+                    {
+                        return UM.Theme.getColor("action_button_disabled_text");
+                    }
+                    else
+                    {
+                        if (control.hovered)
+                        {
+                            return UM.Theme.getColor("button_text_hover");
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("button_text");
+                        }
+                    }
+                }
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font: UM.Theme.getFont("default_bold")
+            }
+        }
+    }
+
+    property Component monitor_button_style: Component
+    {
+        ButtonStyle
+        {
+            background: Rectangle
+            {
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if(!control.enabled)
+                    {
+                        return UM.Theme.getColor("action_button_disabled_border");
+                    }
+                    else if(control.pressed)
+                    {
+                        return UM.Theme.getColor("action_button_active_border");
+                    }
+                    else if(control.hovered)
+                    {
+                        return UM.Theme.getColor("action_button_hovered_border");
+                    }
+                    return UM.Theme.getColor("action_button_border");
+                }
+                color:
+                {
+                    if(!control.enabled)
+                    {
+                        return UM.Theme.getColor("action_button_disabled");
+                    }
+                    else if(control.pressed)
+                    {
+                        return UM.Theme.getColor("action_button_active");
+                    }
+                    else if(control.hovered)
+                    {
+                        return UM.Theme.getColor("action_button_hovered");
+                    }
+                    return UM.Theme.getColor("action_button");
+                }
+                Behavior on color
+                {
+                    ColorAnimation
+                    {
+                        duration: 50
+                    }
+                }
+            }
+
+            label: Item
+            {
+                UM.RecolorImage
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: Math.floor(control.width / 2)
+                    height: Math.floor(control.height / 2)
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color:
+                    {
+                        if(!control.enabled)
+                        {
+                            return UM.Theme.getColor("action_button_disabled_text");
+                        }
+                        else if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_text");
+                        }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        }
+                        return UM.Theme.getColor("action_button_text");
+                    }
+                    source: control.iconSource
+                }
+            }
+        }
+    }
+
+    property Component monitor_checkable_button_style: Component
+    {
+        ButtonStyle {
+            background: Rectangle {
+                border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if(!control.enabled)
+                    {
+                        return UM.Theme.getColor("action_button_disabled_border");
+                    }
+                    else if (control.checked || control.pressed)
+                    {
+                        return UM.Theme.getColor("action_button_active_border");
+                    }
+                    else if(control.hovered)
+                    {
+                        return UM.Theme.getColor("action_button_hovered_border");
+                    }
+                    return UM.Theme.getColor("action_button_border");
+                }
+                color:
+                {
+                    if(!control.enabled)
+                    {
+                        return UM.Theme.getColor("action_button_disabled");
+                    }
+                    else if (control.checked || control.pressed)
+                    {
+                        return UM.Theme.getColor("action_button_active");
+                    }
+                    else if (control.hovered)
+                    {
+                        return UM.Theme.getColor("action_button_hovered");
+                    }
+                    return UM.Theme.getColor("action_button");
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+                Label {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
+                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                    color:
+                    {
+                        if(!control.enabled)
+                        {
+                            return UM.Theme.getColor("action_button_disabled_text");
+                        }
+                        else if (control.checked || control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_text");
+                        }
+                        else if (control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        }
+                        return UM.Theme.getColor("action_button_text");
+                    }
+                    font: UM.Theme.getFont("default")
+                    text: control.text
+                    horizontalAlignment: Text.AlignHCenter
+                    elide: Text.ElideMiddle
                 }
             }
             label: Item { }
