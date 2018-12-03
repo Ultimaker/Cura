@@ -359,6 +359,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             self.writeError.emit()
             return
 
+        # TODO: add progress messages so we have visual feedback when uploading to cloud
         # TODO: Multipart upload
         job_response = JobUploadResponse(**response.get("data"))
         Logger.log("i", "Print job created successfully: %s", job_response.__dict__)
