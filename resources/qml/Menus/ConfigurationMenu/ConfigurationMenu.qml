@@ -147,7 +147,7 @@ Cura.ExpandableComponent
             width: parent.width
             height: childrenRect.height
 
-            Cura.ActionButton
+            Cura.SecondaryButton
             {
                 id: goToCustom
                 visible: popupItem.configuration_method === "auto"
@@ -159,18 +159,13 @@ Cura.ExpandableComponent
                     top: parent.top
                 }
 
-                color: UM.Theme.getColor("secondary")
-                hoverColor: UM.Theme.getColor("secondary")
-                textColor: UM.Theme.getColor("primary")
-                textHoverColor: UM.Theme.getColor("text")
-
                 iconSource: UM.Theme.getIcon("arrow_right")
                 iconOnRightSide: true
 
                 onClicked: popupItem.configuration_method = "custom"
             }
 
-            Cura.ActionButton
+            Cura.SecondaryButton
             {
                 id: goToAuto
                 visible: popupItem.configuration_method === "custom"
@@ -181,11 +176,6 @@ Cura.ExpandableComponent
                     left: parent.left
                     top: parent.top
                 }
-
-                color: UM.Theme.getColor("secondary")
-                hoverColor: UM.Theme.getColor("secondary")
-                textColor: UM.Theme.getColor("primary")
-                textHoverColor: UM.Theme.getColor("text")
 
                 iconSource: UM.Theme.getIcon("arrow_left")
 
