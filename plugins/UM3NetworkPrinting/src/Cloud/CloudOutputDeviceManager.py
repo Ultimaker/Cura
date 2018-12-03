@@ -87,6 +87,7 @@ class CloudOutputDeviceManager(NetworkClient):
         found_cluster_ids = set(found_clusters.keys())
 
         # Add an output device for each new remote cluster.
+        # We only add when is_online as we don't want the option in the drop down if the cluster is not online.
         for cluster_id in found_cluster_ids.difference(known_cluster_ids):
             if found_clusters[cluster_id].is_online:
                 self._addCloudOutputDevice(found_clusters[cluster_id])
@@ -113,9 +114,7 @@ class CloudOutputDeviceManager(NetworkClient):
         device = CloudOutputDevice(cluster.cluster_id)
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
-        if cluster.is_online:
-            # We found a new online cluster, we might need to connect to it.
-            self._connectToActiveMachine()
+        self._connectToActiveMachine()
 
     ##  Remove a CloudOutputDevice
     def _removeCloudOutputDevice(self, cluster: CloudCluster):
