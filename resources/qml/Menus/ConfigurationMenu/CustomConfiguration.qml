@@ -90,7 +90,6 @@ Item
         radius: tabBar.visible ? UM.Theme.getSize("default_radius").width : 0
         border.width: tabBar.visible ? UM.Theme.getSize("default_lining").width : 0
         border.color: UM.Theme.getColor("lining")
-        color: UM.Theme.getColor("main_background")
 
         //Remove rounding and lining at the top.
         Rectangle
