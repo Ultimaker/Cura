@@ -23,11 +23,7 @@ Item
         anchors.fill: parent
         opacity:
         {
-            if (!printJob)
-            {
-                return 0
-            }
-            if (printJob.state == "error" || !printJob.isActive)
+            if (printJob && (printJob.state == "error" || !printJob.isActive))
             {
                 return 0.5
             }
