@@ -41,7 +41,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._api_prefix = ""
         self._address = address
         self._properties = properties
-        self._user_agent = "%s/%s " % (CuraApplication.getInstance().getApplicationName(), CuraApplication.getInstance().getVersion())
+        self._user_agent = "%s/%s " % (CuraApplication.getInstance().getApplicationName(),
+                                       CuraApplication.getInstance().getVersion())
 
         self._onFinishedCallbacks = {}      # type: Dict[str, Callable[[QNetworkReply], None]]
         self._authentication_state = AuthState.NotAuthenticated
@@ -55,7 +56,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._gcode = []                    # type: List[str]
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     def setAuthenticationState(self, authentication_state: AuthState) -> None:

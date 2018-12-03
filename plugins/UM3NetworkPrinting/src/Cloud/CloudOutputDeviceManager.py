@@ -3,7 +3,7 @@
 import json
 from time import sleep
 from threading import Thread
-from typing import Dict, Optional, List
+from typing import Dict, Optional
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 

@@ -3,20 +3,20 @@
 import io
 import json
 import os
-from typing import List, Optional, Dict, cast
+from typing import List, Optional, Dict, cast, Union
 
 from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM import i18nCatalog
-from UM.FileHandler import FileWriter
+from UM.FileHandler.FileWriter import FileWriter
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.OutputDevice import OutputDeviceError
 from UM.Scene.SceneNode import SceneNode
 from UM.Version import Version
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput import PrinterOutputController, PrintJobOutputModel
+from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -38,7 +38,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The cloud URL to use for this remote cluster.
     # TODO: Make sure that this url goes to the live api before release
-    ROOT_PATH= "https://api-staging.ultimaker.com"
+    ROOT_PATH = "https://api-staging.ultimaker.com"
     CLUSTER_API_ROOT = "{}/connect/v1/".format(ROOT_PATH)
     CURA_API_ROOT = "{}/cura/v1/".format(ROOT_PATH)
     CURA_DRIVE_API_ROOT = "{}/cura-drive/v1/".format(ROOT_PATH)
@@ -66,10 +66,26 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._printers = {}  # type: Dict[str, PrinterOutputModel]
         self._print_jobs = {}  # type: Dict[str, PrintJobOutputModel]
         self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
-    
+
+    @staticmethod
+    def _parseReply(reply: QNetworkReply) -> Tuple[int, Union[None, str, bytes]]:
+        """
+        Parses a reply from the stardust server.
+        :param reply: The reply received from the server.
+        :return: The status code and the response dict.
+        """
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        response = None
+        try:
+            response = bytes(reply.readAll()).decode("utf-8")
+            response = json.loads(response)
+        except JSONDecodeError:
+            Logger.logException("w", "Unable to decode JSON from reply.")
+        return status_code, response
+
     ##  We need to override _createEmptyRequest to work for the cloud.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
-        #url = QUrl(self.CLUSTER_API_ROOT_PATH_FORMAT.format(cluster_id = self._device_id) + path)
+        # noinspection PyArgumentList
         url = QUrl(path)
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
@@ -98,8 +114,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
+
         file_format = self._determineFileFormat(file_handler)
-        writer = self._determineWriter(file_format)
+        writer = self._determineWriter(file_handler, file_format)
 
         # This function pauses with the yield, waiting on instructions on which printer it needs to print with.
         if not writer:
@@ -123,7 +140,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._addPrintJobToQueue(stream, request)
 
     # TODO: This is yanked right out of ClusterUM3OoutputDevice, great candidate for a utility or base class
-    def _determineFileFormat(self, file_handler) -> None:
+    def _determineFileFormat(self, file_handler) -> Optional[Dict[str, Union[str, int]]]:
         # Formats supported by this application (file types that we can actually write).
         if file_handler:
             file_formats = file_handler.getSupportedFileTypesWrite()
@@ -143,21 +160,28 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             machine_file_formats = ["application/x-ufp"] + machine_file_formats
 
         # Take the intersection between file_formats and machine_file_formats.
-        format_by_mimetype = {format["mime_type"]: format for format in file_formats}
-        file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
+        format_by_mimetype = {f["mime_type"]: f for f in file_formats}
+
+        # Keep them ordered according to the preference in machine_file_formats.
+        file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats]
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError(self.I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!"))
+            raise OutputDeviceError.WriteRequestFailedError(
+                self.I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!")
+            )
         return file_formats[0]
 
     # TODO: This is yanked right out of ClusterUM3OoutputDevice, great candidate for a utility or base class
-    def _determineWriter(self, file_handler, file_format):
+    @staticmethod
+    def _determineWriter(file_handler, file_format) -> Optional[FileWriter]:
         # Just take the first file format available.
         if file_handler is not None:
             writer = file_handler.getWriterByMimeType(cast(str, file_format["mime_type"]))
         else:
-            writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(cast(str, file_format["mime_type"]))
+            writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(
+                cast(str, file_format["mime_type"])
+            )
 
         if not writer:
             Logger.log("e", "Unexpected error when trying to get the FileWriter")
@@ -173,7 +197,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  Get remote print jobs.
     @pyqtProperty("QVariantList", notify = printJobsChanged)
     def queuedPrintJobs(self) -> List[UM3PrintJobOutputModel]:
-        return [print_job for print_job in self._print_jobs if print_job.state == "queued" or print_job.state == "error"]
+        return [print_job for print_job in self._print_jobs.values()
+                if print_job.state == "queued" or print_job.state == "error"]
 
     ##  Called when the connection to the cluster changes.
     def connect(self) -> None:
@@ -182,20 +207,19 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  Called when the network data should be updated.
     def _update(self) -> None:
         super()._update()
-        self.get("{root}/cluster/{cluster_id}/status".format(self.CLUSTER_API_ROOT, self._device_id),
+        self.get("{root}/cluster/{cluster_id}/status".format(root=self.CLUSTER_API_ROOT, cluster_id=self._device_id),
                  on_finished = self._onStatusCallFinished)
-
 
     ##  Method called when HTTP request to status endpoint is finished.
     #   Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, reply: QNetworkReply) -> None:
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-        if status_code != 200:
+        status_code, response = self._parseReply(reply)
+        if status_code > 204:
             Logger.log("w", "Got unexpected response while trying to get cloud cluster data: {}, {}"
-                       .format(status_code, reply.readAll()))
+                       .format(status_code, status, response))
             return
-        
-        printers, print_jobs = self._parseStatusResponse(reply)
+
+        printers, print_jobs = self._parseStatusResponse(response)
         if not printers and not print_jobs:
             return
         
@@ -204,79 +228,69 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._updatePrintJobs(print_jobs)
 
     @staticmethod
-    def _parseStatusResponse(reply: QNetworkReply): # Optional[(CloudClusterPrinter, CloudClusterPrintJob)] doesn't work
-
+    def _parseStatusResponse(response: dict) -> Optional[Tuple[CloudClusterPrinter, CloudClusterPrintJob]]:
         printers = []
         print_jobs = []
-        s = ''
-        try:
-            s = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
-            for p in s["printers"]:
-                printer = CloudClusterPrinter(**p)
-                configuration = printer.configuration
-                printer.configuration = []
-                for c in configuration:
-                    extruder = CloudClusterPrinterConfiguration(**c)
-                    extruder.material = CloudClusterPrinterConfigurationMaterial(extruder.material)
-                    printer.configuration.append(extruder)
+        data = response["data"]
+        for p in data["printers"]:
+            printer = CloudClusterPrinter(**p)
+            configuration = printer.configuration
+            printer.configuration = []
+            for c in configuration:
+                extruder = CloudClusterPrinterConfiguration(**c)
+                extruder.material = CloudClusterPrinterConfigurationMaterial(material=extruder.material)
+                printer.configuration.append(extruder)
 
-                printers.append(printer)
+            printers.append(printer)
 
-            for j in s["print_jobs"]:
-                job = CloudClusterPrintJob(**j)
-                constraints = job.constraints
-                job.constraints = []
-                for c in constraints:
-                    job.constraints.append(CloudClusterPrintJobConstraint(**c))
+        for j in data["print_jobs"]:
+            job = CloudClusterPrintJob(**j)
+            constraints = job.constraints
+            job.constraints = []
+            for c in constraints:
+                job.constraints.append(CloudClusterPrintJobConstraint(**c))
 
-                configuration = job.configuration
-                job.configuration = []
-                for c in configuration:
-                    configuration = CloudClusterPrinterConfiguration(**c)
-                    configuration.material = CloudClusterPrinterConfigurationMaterial(configuration.material)
-                    job.configuration.append(configuration)
+            configuration = job.configuration
+            job.configuration = []
+            for c in configuration:
+                configuration = CloudClusterPrinterConfiguration(**c)
+                configuration.material = CloudClusterPrinterConfigurationMaterial(material=configuration.material)
+                job.configuration.append(configuration)
 
-                print_jobs.append(job)
-
-        except json.decoder.JSONDecodeError:
-            Logger.logException("w", "Unable to decode JSON from reply.")
-            return None
+            print_jobs.append(job)
 
         return printers, print_jobs
 
     def _updatePrinters(self, printers: List[CloudClusterPrinter]) -> None:
-        remote_printers = {p.uuid: p for p in printers}
+        remote_printers = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
 
-        removed_printers = set(self._printers.keys()).difference(set(remote_printers.keys()))
-        new_printers = set(remote_printers.keys()).difference(set(self._printers.keys()))
-        updated_printers = set(self._printers.keys()).intersection(set(remote_printers.keys()))
+        removed_printer_ids = set(self._printers).difference(remote_printers)
+        new_printer_ids = set(remote_printers).difference(self._printers)
+        updated_printer_ids = set(self._printers).intersection(remote_printers)
 
-        for p in removed_printers:
-            self._removePrinter(p)
+        for printer_guid in removed_printer_ids:
+            self._removePrinter(printer_guid)
 
-        for p in new_printers:
-            self._addPrinter(printers[p])
-            self._updatePrinter(printers[p])
+        for printer_guid in new_printer_ids:
+            self._addPrinter(remote_printers[printer_guid])
+            self._updatePrinter(remote_printers[printer_guid])
 
-        for p in updated_printers:
-            self._updatePrinter(printers[p])
+        for printer_guid in updated_printer_ids:
+            self._updatePrinter(remote_printers[printer_guid])
 
         # TODO: properly handle removed and updated printers
         self.printersChanged.emit()
 
-
-    def _addPrinter(self, printer):
-        self._printers[printer.uuid] = self._createPrinterOutputModel(self, printer)
+    def _addPrinter(self, printer: CloudClusterPrinter) -> None:
+        self._printers[printer.uuid] = self._createPrinterOutputModel(printer)
 
     def _createPrinterOutputModel(self, printer: CloudClusterPrinter) -> PrinterOutputModel:
         return PrinterOutputModel(PrinterOutputController(self), len(printer.configuration),
                                   firmware_version=printer.firmware_version)
 
-    def _updatePrinter(self, guid : str, printer : CloudClusterPrinter):
-        self._printers[guid] = self._updatePrinterOutputModel(self, printer)
-
-    def _updatePrinterOutputModel(self, printer: CloudClusterPrinter, model : PrinterOutputModel) -> PrinterOutputModel:
+    def _updatePrinter(self, printer: CloudClusterPrinter) -> None:
+        model = self._printers[printer.uuid]
         model.updateKey(printer.uuid)
         model.updateName(printer.friendly_name)
         model.updateType(printer.machine_variant)
@@ -291,43 +305,42 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
             extruder.updateHotendID(extruder_data.print_core_id)
 
-            material_data = extruder_data.material
-            if extruder.activeMaterial is None or extruder.activeMaterial.guid != material.guid:
-                material = self._createMaterialOutputModel(material_data)
+            if extruder.activeMaterial is None or extruder.activeMaterial.guid != extruder_data.material.guid:
+                material = self._createMaterialOutputModel(extruder_data.material)
                 extruder.updateActiveMaterial(material)
 
-    def _createMaterialOutputModel(self, material: CloudClusterPrinterConfigurationMaterial) -> MaterialOutputModel:
-            material_manager = CuraApplication.getInstance().getMaterialManager()
-            material_group_list = material_manager.getMaterialGroupListByGUID(material.guid) or []
+    @staticmethod
+    def _createMaterialOutputModel(material: CloudClusterPrinterConfigurationMaterial) -> MaterialOutputModel:
+        material_manager = CuraApplication.getInstance().getMaterialManager()
+        material_group_list = material_manager.getMaterialGroupListByGUID(material.guid) or []
 
-            # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
-            read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
-            non_read_only_material_group_list = list(filter(lambda x: not x.is_read_only, material_group_list))
-            material_group = None
-            if read_only_material_group_list:
-                read_only_material_group_list = sorted(read_only_material_group_list, key=lambda x: x.name)
-                material_group = read_only_material_group_list[0]
-            elif non_read_only_material_group_list:
-                non_read_only_material_group_list = sorted(non_read_only_material_group_list, key=lambda x: x.name)
-                material_group = non_read_only_material_group_list[0]
+        # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
+        read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
+        non_read_only_material_group_list = list(filter(lambda x: not x.is_read_only, material_group_list))
+        material_group = None
+        if read_only_material_group_list:
+            read_only_material_group_list = sorted(read_only_material_group_list, key=lambda x: x.name)
+            material_group = read_only_material_group_list[0]
+        elif non_read_only_material_group_list:
+            non_read_only_material_group_list = sorted(non_read_only_material_group_list, key=lambda x: x.name)
+            material_group = non_read_only_material_group_list[0]
 
-            if material_group:
-                container = material_group.root_material_node.getContainer()
-                color = container.getMetaDataEntry("color_code")
-                brand = container.getMetaDataEntry("brand")
-                material_type = container.getMetaDataEntry("material")
-                name = container.getName()
-            else:
-                Logger.log("w",
-                           "Unable to find material with guid {guid}. Using data as provided by cluster".format(
-                               guid=material.guid))
-                color = material.color
-                brand = material.brand
-                material_type = material.material
-                name = "Empty" if material.material == "empty" else "Unknown"
+        if material_group:
+            container = material_group.root_material_node.getContainer()
+            color = container.getMetaDataEntry("color_code")
+            brand = container.getMetaDataEntry("brand")
+            material_type = container.getMetaDataEntry("material")
+            name = container.getName()
+        else:
+            Logger.log("w",
+                       "Unable to find material with guid {guid}. Using data as provided by cluster".format(
+                           guid=material.guid))
+            color = material.color
+            brand = material.brand
+            material_type = material.material
+            name = "Empty" if material.material == "empty" else "Unknown"
 
-            return MaterialOutputModel(guid=material.guid, type=material_type, brand=brand, color=color, name=name)
-
+        return MaterialOutputModel(guid=material.guid, type=material_type, brand=brand, color=color, name=name)
 
     def _removePrinter(self, guid):
         del self._printers[guid]
@@ -346,53 +359,51 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             self._addPrintJob(jobs[j])
 
         for j in updated_jobs:
-            self._updatePrintJob(jobs[j])
+            self._updatePrintJob(remote_jobs[j])
 
         # TODO: properly handle removed and updated printers
         self.printJobsChanged()
 
-    def _addPrintJob(self, job: CloudClusterPrintJob):
+    def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
         self._print_jobs[job.uuid] = self._createPrintJobOutputModel(job)
 
-    def _createPrintJobOutputModel(self, job:CloudClusterPrintJob) -> PrintJobOutputModel:
+    def _createPrintJobOutputModel(self, job: CloudClusterPrintJob) -> PrintJobOutputModel:
         controller = self._printers[job.printer_uuid]._controller  # TODO: Can we access this property?
         model = PrintJobOutputModel(controller, job.uuid, job.name)
         assigned_printer = self._printes[job.printer_uuid]  # TODO: Or do we have to use the assigned_to field?
         model.updateAssignedPrinter(assigned_printer)
+        return model
 
-    def _updatePrintJobOutputModel(self, guid: str, job:CloudClusterPrintJob):
-        model =self._print_jobs[guid]
+    def _updatePrintJobOutputModel(self, guid: str, job: CloudClusterPrintJob) -> None:
+        model = self._print_jobs[guid]
 
         model.updateTimeTotal(job.time_total)
         model.updateTimeElapsed(job.time_elapsed)
         model.updateOwner(job.owner)
         model.updateState(job.status)
 
-    def _removePrintJob(self, guid:str):
+    def _removePrintJob(self, guid: str):
         del self._print_jobs[guid]
 
-    def _addPrintJobToQueue(self, stream, request:JobUploadRequest):
+    def _addPrintJobToQueue(self, stream, request: JobUploadRequest):
         self.put("{}/jobs/upload".format(self.CURA_API_ROOT), data = json.dumps(request.__dict__),
                  on_finished = lambda reply: self._onAddPrintJobToQueueFinished(stream, reply))
 
     def _onAddPrintJobToQueueFinished(self, stream, reply: QNetworkReply) -> None:
-        s = json.loads(bytes(reply.readAll()).decode("utf-8"))
+        status_code, response = self._parseReply(reply)  # type: Tuple[int, dict]
+        if status_code > 204 or not isinstance(dict, response) or "data" not in response:
+            Logger.error()
+            return
 
-        self.put()
+        job_response = JobUploadResponse(**response.get("data"))
+        self.put(job_response.upload_url, data=stream.getvalue(), on_finished=self._onPrintJobUploaded)
 
-        # try:
-        #     r = requests.put(self._job.output_url, data=data)
-        #     if r.status_code == 200:
-        #         Logger.log("d", "Finished writing %s to remote URL %s", "", self._job.output_url)
-        #         self.onWriteSuccess.emit(r.text)
-        #     else:
-        #         Logger.log("d", "Error writing %s to remote URL %s", "", self._job.output_url)
-        #         self.onWriteFailed.emit("Failed to export G-code to remote URL: {}".format(r.text))
-        # except requests.ConnectionError as e:
-        #     Logger.log("e", "There was a connection error when uploading the G-code to a remote URL: %s", e)
-        #     self.onWriteFailed.emit("Failed to export G-code to remote URL: {}".format(e))
-        # except requests.HTTPError as e:
-        #     Logger.log("e", "There was an HTTP error when uploading the G-code to a remote URL: %s", e)
-        #     self.onWriteFailed.emit("Failed to export G-code to remote URL: {}".format(e))
+    def _onPrintJobUploaded(self, reply: QNetworkReply) -> None:
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        if status_code > 204:
+            self.onWriteFailed.emit("Failed to export G-code to remote URL: {}".format(r.text))
+            Logger.logException("w", "Received unexpected response from the job upload: %s, %s.", status_code,
+                                bytes(reply.readAll()).decode())
+            return
 
-        pass
+        self.onWriteSuccess.emit(r.text)

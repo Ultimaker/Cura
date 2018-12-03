@@ -1,5 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import List
+
 from ..Models import BaseModel
 
 
@@ -41,7 +43,7 @@ class CloudClusterPrinterConfiguration(BaseModel):
 ##  Class representing a cluster printer
 class CloudClusterPrinter(BaseModel):
     def __init__(self, **kwargs):
-        self.configuration = None  # type: CloudClusterPrinterConfiguration
+        self.configuration = None  # type: List[CloudClusterPrinterConfiguration]
         self.enabled = None  # type: str
         self.firmware_version = None  # type: str
         self.friendly_name = None  # type: str
@@ -56,7 +58,7 @@ class CloudClusterPrinter(BaseModel):
 ## Class representing a cloud cluster print job constraint
 class CloudClusterPrintJobConstraint(BaseModel):
     def __init__(self, **kwargs):
-        self.require_printer_name: None  # type: str
+        self.require_printer_name = None  # type: str
         super().__init__(**kwargs)
 
 ##  Class representing a print job
