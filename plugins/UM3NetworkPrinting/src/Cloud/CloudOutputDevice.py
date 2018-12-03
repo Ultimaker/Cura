@@ -129,7 +129,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         stream = io.StringIO() if file_format["mode"] == FileWriter.OutputMode.TextMode else io.BytesIO()
         writer.write(stream, nodes)
-        self._sendPrintJob(file_name + "." + file_format["extension"], stream)
+        self._sendPrintJob(file_name + "." + file_format["extension"], file_format["mime_type"], stream)
 
     # TODO: This is yanked right out of ClusterUM3OutputDevice, great candidate for a utility or base class
     def _determineFileFormat(self, file_handler) -> Optional[Dict[str, Union[str, int]]]:
@@ -339,12 +339,13 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         model.updateOwner(job.owner)
         model.updateState(job.status)
 
-    def _sendPrintJob(self, file_name: str, stream: Union[io.StringIO, io.BytesIO]) -> None:
+    def _sendPrintJob(self, file_name: str, content_type: str, stream: Union[io.StringIO, io.BytesIO]) -> None:
         mesh = stream.getvalue()
 
         request = JobUploadRequest()
         request.job_name = file_name
         request.file_size = len(mesh)
+        request.content_type = content_type
 
         Logger.log("i", "Creating new cloud print job: %s", request.__dict__)
         self.put("{}/jobs/upload".format(self.CURA_API_ROOT), data = json.dumps({"data": request.__dict__}),
@@ -355,6 +356,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if status_code > 204 or not isinstance(response, dict) or "data" not in response:
             Logger.log("w", "Got unexpected response while trying to add print job to cluster: {}, {}"
                        .format(status_code, response))
+            self.writeError.emit()
             return
 
         # TODO: Multipart upload
@@ -368,6 +370,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if status_code > 204:
             Logger.logException("w", "Received unexpected response from the job upload: %s, %s.", status_code,
                                 bytes(reply.readAll()).decode())
+            self.writeError.emit()
             return
 
         Logger.log("i", "Print job uploaded successfully: %s", reply.readAll())
@@ -379,7 +382,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if status_code > 204 or not isinstance(response, dict) or "data" not in response:
             Logger.log("w", "Got unexpected response while trying to request printing: %s, %s",
                        status_code, response)
+            self.writeError.emit()
             return
 
         print_response = PrintResponse(**response["data"])
         Logger.log("i", "Print job requested successfully: %s", print_response.__dict__)
+        self.writeFinished.emit()

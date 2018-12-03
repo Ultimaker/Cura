@@ -108,6 +108,7 @@ class JobUploadRequest(BaseModel):
     def __init__(self, **kwargs):
         self.file_size = None  # type: int
         self.job_name = None  # type: str
+        self.content_type = None  # type: str
         super().__init__(**kwargs)
 
 
