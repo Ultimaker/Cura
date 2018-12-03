@@ -22,8 +22,10 @@ from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
-from .Models import CloudClusterPrinter, CloudClusterPrinterConfiguration, CloudClusterPrinterConfigurationMaterial, \
-    CloudClusterPrintJob, CloudClusterPrintJobConstraint, JobUploadRequest, JobUploadResponse, PrintResponse
+from .Models import (
+    CloudClusterPrinter, CloudClusterPrintJob, JobUploadRequest, JobUploadResponse, PrintResponse, CloudClusterStatus,
+    CloudClusterPrinterConfigurationMaterial
+)
 
 
 ##  The cloud output device is a network output device that works remotely but has limited functionality.
@@ -209,58 +211,21 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #   Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, reply: QNetworkReply) -> None:
         status_code, response = self._parseReply(reply)
-        if status_code > 204 or not isinstance(response, dict):
+        if status_code > 204 or not isinstance(response, dict) or "data" not in response:
             Logger.log("w", "Got unexpected response while trying to get cloud cluster data: %s, %s",
                        status_code, response)
             return
 
         Logger.log("d", "Got response form the cloud cluster %s, %s", status_code, response)
-        printers, print_jobs = self._parseStatusResponse(response)
-        if not printers and not print_jobs:
-            return
-        
+        status = CloudClusterStatus(**response["data"])
+
         # Update all data from the cluster.
-        self._updatePrinters(printers)
-        self._updatePrintJobs(print_jobs)
-
-    @staticmethod
-    def _parseStatusResponse(response: dict) -> Tuple[List[CloudClusterPrinter], List[CloudClusterPrintJob]]:
-        printers = []
-        print_jobs = []
-
-        data = response["data"]
-        for p in data["printers"]:
-            printer = CloudClusterPrinter(**p)
-            configuration = printer.configuration
-            printer.configuration = []
-            for c in configuration:
-                extruder = CloudClusterPrinterConfiguration(**c)
-                extruder.material = CloudClusterPrinterConfigurationMaterial(material=extruder.material)
-                printer.configuration.append(extruder)
-
-            printers.append(printer)
-
-        for j in data["print_jobs"]:
-            job = CloudClusterPrintJob(**j)
-            constraints = job.constraints
-            job.constraints = []
-            for c in constraints:
-                job.constraints.append(CloudClusterPrintJobConstraint(**c))
-
-            configuration = job.configuration
-            job.configuration = []
-            for c in configuration:
-                configuration = CloudClusterPrinterConfiguration(**c)
-                configuration.material = CloudClusterPrinterConfigurationMaterial(material=configuration.material)
-                job.configuration.append(configuration)
-
-            print_jobs.append(job)
-
-        return printers, print_jobs
+        self._updatePrinters(status.printers)
+        self._updatePrintJobs(status.print_jobs)
 
     def _updatePrinters(self, printers: List[CloudClusterPrinter]) -> None:
-        remote_printers = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
-        current_printers = {p.key: p for p in self._printers}
+        remote_printers: Dict[str, CloudClusterPrinter] = {p.uuid: p for p in printers}
+        current_printers: Dict[str, PrinterOutputModel] = {p.key: p for p in self._printers}
 
         removed_printer_ids = set(current_printers).difference(remote_printers)
         new_printer_ids = set(remote_printers).difference(current_printers)
@@ -337,8 +302,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         return MaterialOutputModel(guid=material.guid, type=material_type, brand=brand, color=color, name=name)
 
     def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
-        remote_jobs = {j.uuid: j for j in jobs}
-        current_jobs = {j.key: j for j in self._print_jobs}
+        remote_jobs: Dict[str, CloudClusterPrintJob] = {j.uuid: j for j in jobs}
+        current_jobs: Dict[str, UM3PrintJobOutputModel] = {j.key: j for j in self._print_jobs}
 
         removed_job_ids = set(current_jobs).difference(set(remote_jobs))
         new_job_ids = set(remote_jobs.keys()).difference(set(current_jobs))
@@ -368,7 +333,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._print_jobs.append(model)
 
     @staticmethod
-    def _updateUM3PrintJobOutputModel(model: PrinterOutputModel, job: CloudClusterPrintJob) -> None:
+    def _updateUM3PrintJobOutputModel(model: UM3PrintJobOutputModel, job: CloudClusterPrintJob) -> None:
         model.updateTimeTotal(job.time_total)
         model.updateTimeElapsed(job.time_elapsed)
         model.updateOwner(job.owner)
@@ -411,10 +376,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     def _onPrintJobRequested(self, reply: QNetworkReply) -> None:
         status_code, response = self._parseReply(reply)
-        if status_code > 204 or not isinstance(response, dict):
+        if status_code > 204 or not isinstance(response, dict) or "data" not in response:
             Logger.log("w", "Got unexpected response while trying to request printing: %s, %s",
                        status_code, response)
             return
 
-        print_response = PrintResponse(**response.get("data"))
+        print_response = PrintResponse(**response["data"])
         Logger.log("i", "Print job requested successfully: %s", print_response.__dict__)
