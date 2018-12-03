@@ -48,7 +48,7 @@ Column
 
         text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
         color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 
