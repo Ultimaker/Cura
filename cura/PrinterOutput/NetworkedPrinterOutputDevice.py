@@ -180,13 +180,16 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             self._createNetworkManager()
         assert (self._manager is not None)
 
-    def put(self, target: str, data: Union[str, bytes], on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+    def put(self, target: str, data: Union[str, bytes], on_finished: Optional[Callable[[QNetworkReply], None]],
+            on_progress: Optional[Callable] = None) -> None:
         self._validateManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         if self._manager is not None:
             reply = self._manager.put(request, data if isinstance(data, bytes) else data.encode())
             self._registerOnFinishedCallback(reply, on_finished)
+            if on_progress is not None:
+                reply.uploadProgress.connect(on_progress)
         else:
             Logger.log("e", "Could not find manager.")
 

@@ -71,6 +71,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # Properties to populate later on with received cloud data.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
         self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
+        
+        # We only allow a single upload at a time.
+        self._sending_job = False
+        self._progress_message = None  # type: Optional[Message]
 
     @staticmethod
     def _parseReply(reply: QNetworkReply) -> Tuple[int, Union[None, str, bytes]]:
@@ -117,14 +121,22 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  Called when Cura requests an output device to receive a (G-code) file.
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+        
+        # Show an error message if we're already sending a job.
+        if self._sending_job:
+            self._onUploadError(self.I18N_CATALOG.i18nc(
+                "@info:status", "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+            return
+        
+        # Indicate we have started sending a job.
+        self._sending_job = True
         self.writeStarted.emit(self)
 
         file_format = self._determineFileFormat(file_handler)
         writer = self._determineWriter(file_handler, file_format)
-
-        # This function pauses with the yield, waiting on instructions on which printer it needs to print with.
         if not writer:
             Logger.log("e", "Missing file or mesh writer!")
+            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not export print job."))
             return
 
         stream = io.StringIO() if file_format["mode"] == FileWriter.OutputMode.TextMode else io.BytesIO()
@@ -186,11 +198,12 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def printers(self):
         return self._printers
 
+    ##  Get remote print jobs.
     @pyqtProperty("QVariantList", notify = printJobsChanged)
     def printJobs(self)-> List[UM3PrintJobOutputModel]:
         return self._print_jobs
 
-    ##  Get remote print jobs.
+    ##  Get remote print jobs that are still in the print queue.
     @pyqtProperty("QVariantList", notify = printJobsChanged)
     def queuedPrintJobs(self) -> List[UM3PrintJobOutputModel]:
         return [print_job for print_job in self._print_jobs
@@ -354,24 +367,27 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onPrintJobCreated(self, mesh: bytes, reply: QNetworkReply) -> None:
         status_code, response = self._parseReply(reply)
         if status_code > 204 or not isinstance(response, dict) or "data" not in response:
-            Logger.log("w", "Got unexpected response while trying to add print job to cluster: {}, {}"
-                       .format(status_code, response))
-            self.writeError.emit()
+            Logger.log("w", "Unexpected response while adding to queue: {}, {}".format(status_code, response))
+            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not add print job to queue."))
             return
 
-        # TODO: add progress messages so we have visual feedback when uploading to cloud
         # TODO: Multipart upload
         job_response = JobUploadResponse(**response.get("data"))
         Logger.log("i", "Print job created successfully: %s", job_response.__dict__)
         self.put(job_response.upload_url, data=mesh,
-                 on_finished=lambda r: self._onPrintJobUploaded(job_response.job_id, r))
+                 on_finished=lambda r: self._onPrintJobUploaded(job_response.job_id, r),
+                 on_progress = self._onUploadPrintJobProgress)
+
+    def _onUploadPrintJobProgress(self, bytes_sent: int, bytes_total: int) -> None:
+        if bytes_total > 0:
+            self._updateUploadProgress(int((bytes_sent / bytes_total) * 100))
 
     def _onPrintJobUploaded(self, job_id: str, reply: QNetworkReply) -> None:
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if status_code > 204:
-            Logger.logException("w", "Received unexpected response from the job upload: %s, %s.", status_code,
-                                bytes(reply.readAll()).decode())
-            self.writeError.emit()
+            Logger.log("w", "Received unexpected response from the job upload: %s, %s.", status_code,
+                            bytes(reply.readAll()).decode())
+            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not add print job to queue."))
             return
 
         Logger.log("i", "Print job uploaded successfully: %s", reply.readAll())
@@ -381,25 +397,53 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onPrintJobRequested(self, reply: QNetworkReply) -> None:
         status_code, response = self._parseReply(reply)
         if status_code > 204 or not isinstance(response, dict) or "data" not in response:
-            Logger.log("w", "Got unexpected response while trying to request printing: %s, %s",
-                       status_code, response)
-            self.writeError.emit()
+            Logger.log("w", "Got unexpected response while trying to request printing: %s, %s", status_code, response)
+            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not add print job to queue."))
             return
 
         print_response = PrintResponse(**response["data"])
         Logger.log("i", "Print job requested successfully: %s", print_response.__dict__)
-        self.writeFinished.emit()
+        self._onUploadSuccess()
 
-    def _showUploadErrorMessage(self):
-        message = Message(self.I18N_CATALOG.i18nc(
-            "@info:status", "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+    def _updateUploadProgress(self, progress: int):
+        if not self._progress_message:
+            self._progress_message = Message(
+                text = self.I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster"),
+                title = self.I18N_CATALOG.i18nc("@info:title", "Sending Data..."),
+                progress = -1,
+                lifetime = 0,
+                dismissable = False,
+                use_inactivity_timer = False
+            )
+        self._progress_message.setProgress(progress)
+        self._progress_message.show()
+
+    def _resetUploadProgress(self):
+        if self._progress_message:
+            self._progress_message.hide()
+            self._progress_message = None
+
+    def _onUploadError(self, message: str = None):
+        self._resetUploadProgress()
+        if message:
+            message = Message(
+                text = message,
+                title = self.I18N_CATALOG.i18nc("@info:title", "Error"),
+                lifetime = 10,
+                dismissable = True
+            )
+            message.show()
+        self._sending_job = False  # the upload has failed so we're not sending a job anymore
+        self.writeError.emit()
+
+    def _onUploadSuccess(self):
+        self._resetUploadProgress()
+        message = Message(
+            text = self.I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
+            title = self.I18N_CATALOG.i18nc("@info:title", "Data Sent"),
+            lifetime = 5,
+            dismissable = True,
+        )
         message.show()
-
-    def _showOrUpdateUploadProgressMessage(self, new_progress = 0):
-        # TODO: implement this
-        # See ClusterUM3OutputDevice for inspiration
-        pass
-
-    def _showUploadSuccessMessage(self):
-        # TODO: implement this
-        pass
+        self._sending_job = False  # the upload has finished so we're not sending a job anymore
+        self.writeFinished.emit()

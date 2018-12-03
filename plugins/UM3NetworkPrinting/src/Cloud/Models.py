@@ -120,6 +120,7 @@ class JobUploadResponse(BaseModel):
         self.slicing_details = None  # type: str
         self.status = None  # type: str
         self.upload_url = None  # type: str
+        self.content_type = None  # type: str
         super().__init__(**kwargs)
 
 
