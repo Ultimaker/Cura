@@ -169,6 +169,30 @@ Item
             height: childrenRect.height
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
+            Label
+            {
+                id: printerStatus
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                }
+                color: "#414054" // TODO: Theme!
+                font: UM.Theme.getFont("large") // 16pt, bold
+                text: {
+                    if (printer && printer.state == "disabled"){
+                        return catalog.i18nc("@label:status", "Unavailable")
+                    }
+                    if (printer && printer.state == "unreachable"){
+                        return catalog.i18nc("@label:status", "Unavailable")
+                    }
+                    if (printer && !printer.activePrintJob)
+                    {
+                        return catalog.i18nc("@label:status", "Idle")
+                    }
+                    return ""
+                }
+            }
+
             Item
             {
                 anchors
