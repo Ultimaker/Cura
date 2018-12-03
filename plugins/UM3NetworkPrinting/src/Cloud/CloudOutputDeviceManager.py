@@ -20,8 +20,6 @@ from .Models import CloudCluster
 #
 #   API spec is available on https://api.ultimaker.com/docs/connect/spec/.
 #
-#   TODO: figure out how to pair remote clusters, local networked clusters and local cura printer presets.
-#   TODO: for now we just have multiple output devices if the cluster is available both locally and remote.
 class CloudOutputDeviceManager(NetworkClient):
     
     # The cloud URL to use for remote clusters.
@@ -42,8 +40,9 @@ class CloudOutputDeviceManager(NetworkClient):
         self._account.loginStateChanged.connect(self._getRemoteClusters)
         
         # When switching machines we check if we have to activate a remote cluster.
-        application.globalContainerStackChanged.connect(self._activeMachineChanged)
-
+        application.globalContainerStackChanged.connect(self._connectToActiveMachine)
+        
+        # TODO: fix this
         # Periodically check all remote clusters for the authenticated user.
         # self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
         # self._update_clusters_thread.start()
@@ -89,14 +88,12 @@ class CloudOutputDeviceManager(NetworkClient):
 
         # Add an output device for each new remote cluster.
         for cluster_id in found_cluster_ids.difference(known_cluster_ids):
-            self._addCloudOutputDevice(found_clusters[cluster_id])
+            if found_clusters[cluster_id].is_online:
+                self._addCloudOutputDevice(found_clusters[cluster_id])
 
         # Remove output devices that are gone
         for cluster_id in known_cluster_ids.difference(found_cluster_ids):
             self._removeCloudOutputDevice(found_clusters[cluster_id])
-
-        # For testing we add a dummy device:
-        # self._addCloudOutputDevice(CloudCluster(cluster_id = "LJ0tciiuZZjarrXAvFLEZ6ox4Cvx8FvtXUlQv4vIhV6w"))
 
     @staticmethod
     def _parseStatusResponse(reply: QNetworkReply) -> Dict[str, CloudCluster]:
@@ -116,7 +113,9 @@ class CloudOutputDeviceManager(NetworkClient):
         device = CloudOutputDevice(cluster.cluster_id)
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
-        device.connect()  # TODO: Only connect the current device
+        if cluster.is_online:
+            # We found a new online cluster, we might need to connect to it.
+            self._connectToActiveMachine()
 
     ##  Remove a CloudOutputDevice
     def _removeCloudOutputDevice(self, cluster: CloudCluster):
@@ -124,20 +123,20 @@ class CloudOutputDeviceManager(NetworkClient):
         del self._remote_clusters[cluster.cluster_id]
 
     ##  Callback for when the active machine was changed by the user.
-    def _activeMachineChanged(self):
+    def _connectToActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
-
-        local_device_id = active_machine.getMetaDataEntry("um_network_key")
-        if local_device_id:
-            active_output_device = self._output_device_manager.getActiveDevice()
-            # TODO: We must find a match for the active machine and a cloud device
-
+        
+        # Check if the stored cluster_id for the active machine is in our list of remote clusters.
         stored_cluster_id = active_machine.getMetaDataEntry("um_cloud_cluster_id")
-        if stored_cluster_id not in self._remote_clusters.keys():
-            # Currently authenticated user does not have access to stored cluster or no user is signed in.
+        if stored_cluster_id in self._remote_clusters.keys():
+            self._remote_clusters.get(stored_cluster_id).connect()
             return
 
-        # We found the active machine as remote cluster so let's connect to it.
-        self._remote_clusters.get(stored_cluster_id).connect()
+        # TODO: See if this cloud cluster still has to be associated to the active machine.
+        # TODO: We have to get a common piece of data, like local network hostname, from the active machine and
+        # TODO: cloud cluster and then set the "um_cloud_cluster_id" meta data key on the active machine.
+        # TODO: If so, we can also immediate connect to it.
+        # active_machine.setMetaDataEntry("um_cloud_cluster_id", "")
+        # self._remote_clusters.get(stored_cluster_id).connect()

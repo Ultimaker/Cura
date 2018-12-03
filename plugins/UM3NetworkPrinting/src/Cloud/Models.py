@@ -13,6 +13,7 @@ class CloudCluster(BaseModel):
         self.host_name = None  # type: str
         self.host_version = None  # type: str
         self.status = None  # type: str
+        self.is_online = None  # type: bool
         super().__init__(**kwargs)
 
     def validate(self):
