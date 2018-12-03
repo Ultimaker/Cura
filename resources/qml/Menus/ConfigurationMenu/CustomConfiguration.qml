@@ -40,6 +40,7 @@ Item
         id: tabBar
         anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
+        visible: Cura.MachineManager.numberExtrudersEnabled > 1
 
         currentIndex: Math.max(Cura.ExtruderManager.activeExtruderIndex, 0)
 
@@ -86,8 +87,8 @@ Item
         height: childrenRect.height
         anchors.top: tabBar.bottom
 
-        radius: UM.Theme.getSize("default_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
+        radius: tabBar.visible ? UM.Theme.getSize("default_radius").width : 0
+        border.width: tabBar.visible ? UM.Theme.getSize("default_lining").width : 0
         border.color: UM.Theme.getColor("lining")
         color: UM.Theme.getColor("main_background")
 
@@ -98,6 +99,7 @@ Item
             height: parent.radius
             anchors.top: parent.top
             color: UM.Theme.getColor("lining")
+            visible: tabBar.visible
             Rectangle
             {
                 anchors
