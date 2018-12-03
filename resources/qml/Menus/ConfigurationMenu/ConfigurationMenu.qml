@@ -102,7 +102,7 @@ Cura.ExpandableComponent
         height: implicitHeight //Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
         spacing: UM.Theme.getSize("default_margin").height
 
-        property var is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
+        property bool is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
         onVisibleChanged:
         {
             is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected //Re-evaluate.
