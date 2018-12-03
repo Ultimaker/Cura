@@ -97,10 +97,10 @@ Item
             property string color_override: ""  // for manually setting values
             property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
             {
-                var current_extruder = extruderModel.get(currentIndex);
-                color_override = "";
+                var current_extruder = extruderModel.get(currentIndex)
+                color_override = ""
                 if (current_extruder === undefined) return ""
-                return (current_extruder.color) ? current_extruder.color : "";
+                return (current_extruder.color) ? current_extruder.color : ""
             }
 
             currentIndex:
