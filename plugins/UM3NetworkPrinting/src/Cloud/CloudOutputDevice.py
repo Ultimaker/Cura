@@ -217,7 +217,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _update(self) -> None:
         super()._update()
         Logger.log("i", "Calling the cloud cluster")
-        self.get("{root}/cluster/{cluster_id}/status".format(root=self.CLUSTER_API_ROOT, cluster_id=self._device_id),
+        self.get("{root}/cluster/{cluster_id}/status".format(root = self.CLUSTER_API_ROOT,
+                                                             cluster_id = self._device_id),
                  on_finished = self._onStatusCallFinished)
 
     ##  Method called when HTTP request to status endpoint is finished.
@@ -257,7 +258,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     def _addPrinter(self, printer: CloudClusterPrinter) -> None:
         model = PrinterOutputModel(
-            PrinterOutputController(self), len(printer.configuration), firmware_version=printer.firmware_version
+            PrinterOutputController(self), len(printer.configuration), firmware_version = printer.firmware_version
         )
         self._printers.append(model)
         self._updatePrinter(model, printer)
@@ -291,10 +292,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         non_read_only_material_group_list = list(filter(lambda x: not x.is_read_only, material_group_list))
         material_group = None
         if read_only_material_group_list:
-            read_only_material_group_list = sorted(read_only_material_group_list, key=lambda x: x.name)
+            read_only_material_group_list = sorted(read_only_material_group_list, key = lambda x: x.name)
             material_group = read_only_material_group_list[0]
         elif non_read_only_material_group_list:
-            non_read_only_material_group_list = sorted(non_read_only_material_group_list, key=lambda x: x.name)
+            non_read_only_material_group_list = sorted(non_read_only_material_group_list, key = lambda x: x.name)
             material_group = non_read_only_material_group_list[0]
 
         if material_group:
@@ -304,15 +305,15 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             material_type = container.getMetaDataEntry("material")
             name = container.getName()
         else:
-            Logger.log("w",
-                       "Unable to find material with guid {guid}. Using data as provided by cluster".format(
-                           guid=material.guid))
+            Logger.log("w", "Unable to find material with guid {guid}. Using data as provided by cluster"
+                       .format(guid = material.guid))
             color = material.color
             brand = material.brand
             material_type = material.material
             name = "Empty" if material.material == "empty" else "Unknown"
 
-        return MaterialOutputModel(guid=material.guid, type=material_type, brand=brand, color=color, name=name)
+        return MaterialOutputModel(guid = material.guid, type = material_type, brand = brand, color = color,
+                                   name = name)
 
     def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
         remote_jobs = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
@@ -374,8 +375,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # TODO: Multipart upload
         job_response = JobUploadResponse(**response.get("data"))
         Logger.log("i", "Print job created successfully: %s", job_response.__dict__)
-        self.put(job_response.upload_url, data=mesh,
-                 on_finished=lambda r: self._onPrintJobUploaded(job_response.job_id, r),
+        self.put(job_response.upload_url, data = mesh,
+                 on_finished = lambda r: self._onPrintJobUploaded(job_response.job_id, r),
                  on_progress = self._onUploadPrintJobProgress)
 
     def _onUploadPrintJobProgress(self, bytes_sent: int, bytes_total: int) -> None:
@@ -392,7 +393,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         Logger.log("i", "Print job uploaded successfully: %s", reply.readAll())
         url = "{}/cluster/{}/print/{}".format(self.CLUSTER_API_ROOT, self._device_id, job_id)
-        self.post(url, data="", on_finished=self._onPrintJobRequested)
+        self.post(url, data = "", on_finished = self._onPrintJobRequested)
 
     def _onPrintJobRequested(self, reply: QNetworkReply) -> None:
         status_code, response = self._parseReply(reply)
