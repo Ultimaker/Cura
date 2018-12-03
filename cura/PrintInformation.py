@@ -14,8 +14,7 @@ from UM.Logger import Logger
 from UM.Qt.Duration import Duration
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from UM.MimeTypeDatabase import MimeTypeDatabase
-
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
 
 from typing import TYPE_CHECKING
 
@@ -361,7 +360,7 @@ class PrintInformation(QObject):
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(name)
                 data = mime_type.stripExtension(name)
-            except:
+            except MimeTypeNotFoundError:
                 Logger.log("w", "Unsupported Mime Type Database file extension %s", name)
 
             if data is not None and check_name is not None:
@@ -395,28 +394,14 @@ class PrintInformation(QObject):
             return
         active_machine_type_name = global_container_stack.definition.getName()
 
-        abbr_machine = ""
-        for word in re.findall(r"[\w']+", active_machine_type_name):
-            if word.lower() == "ultimaker":
-                abbr_machine += "UM"
-            elif word.isdigit():
-                abbr_machine += word
-            else:
-                stripped_word = self._stripAccents(word.upper())
-                # - use only the first character if the word is too long (> 3 characters)
-                # - use the whole word if it's not too long (<= 3 characters)
-                if len(stripped_word) > 3:
-                    stripped_word = stripped_word[0]
-                abbr_machine += stripped_word
-
-        self._abbr_machine = abbr_machine
+        self._abbr_machine = self._application.getMachineManager().getAbbreviatedMachineName(active_machine_type_name)
 
     ##  Utility method that strips accents from characters (eg: â -> a)
     def _stripAccents(self, to_strip: str) -> str:
         return ''.join(char for char in unicodedata.normalize('NFD', to_strip) if unicodedata.category(char) != 'Mn')
 
     @pyqtSlot(result = "QVariantMap")
-    def getFeaturePrintTimes(self):
+    def getFeaturePrintTimes(self) -> Dict[str, Duration]:
         result = {}
         if self._active_build_plate not in self._print_times_per_feature:
             self._initPrintTimesPerFeature(self._active_build_plate)

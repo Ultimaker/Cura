@@ -16,7 +16,7 @@ Button
 {
     id: modelCheckerButton
 
-    UM.I18nCatalog{id: catalog; name:"cura"}
+    UM.I18nCatalog{id: catalog; name: "cura"}
 
     visible: manager.hasWarnings
     tooltip: catalog.i18nc("@info:tooltip", "Some things could be problematic in this print. Click to see tips for adjustment.")

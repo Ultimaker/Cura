@@ -2,84 +2,145 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
 Item
 {
-    id: base;
+    id: base
 
-    width: buttons.width;
+    width: buttons.width
     height: buttons.height
     property int activeY
 
-    Column
+    Item
     {
-        id: buttons;
+        id: buttons
+        width: parent.visible ? toolButtons.width : 0
+        height: childrenRect.height
 
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        spacing: UM.Theme.getSize("button_lining").width
+        Behavior on width { NumberAnimation { duration: 100 } }
 
-        Repeater
+        // Used to create a rounded rectangle behind the toolButtons
+        Rectangle
         {
-            id: repeat
-
-            model: UM.ToolModel { }
-            width: childrenRect.width
-            height: childrenRect.height
-            Button
+            anchors
             {
-                text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
-                iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
-                checkable: true
-                checked: model.active
-                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
-                style: UM.Theme.styles.tool_button
+                fill: toolButtons
+                leftMargin: -radius - border.width
+                rightMargin: -border.width
+                topMargin: -border.width
+                bottomMargin: -border.width
+            }
+            radius: UM.Theme.getSize("default_radius").width
+            color: UM.Theme.getColor("lining")
+        }
 
-                onCheckedChanged:
+        Column
+        {
+            id: toolButtons
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            spacing: UM.Theme.getSize("default_lining").height
+
+            Repeater
+            {
+                id: repeat
+
+                model: UM.ToolModel { id: toolsModel }
+                width: childrenRect.width
+                height: childrenRect.height
+
+                delegate: ToolbarButton
                 {
-                    if (checked)
+                    text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
+                    checkable: true
+                    checked: model.active
+                    enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
+
+                    isTopElement: toolsModel.getItem(0).id == model.id
+                    isBottomElement: toolsModel.getItem(toolsModel.rowCount() - 1).id == model.id
+
+                    toolItem: UM.RecolorImage
                     {
-                        base.activeY = y;
+                        source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                        color: UM.Theme.getColor("toolbar_button_text")
+
+                        sourceSize: UM.Theme.getSize("button_icon")
                     }
-                }
 
-                //Workaround since using ToolButton's onClicked would break the binding of the checked property, instead
-                //just catch the click so we do not trigger that behaviour.
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
+                    onCheckedChanged:
                     {
-                        forceActiveFocus() //First grab focus, so all the text fields are updated
-                        if(parent.checked)
+                        if (checked)
                         {
-                            UM.Controller.setActiveTool(null);
+                            base.activeY = y;
                         }
-                        else
+                    }
+
+                    //Workaround since using ToolButton's onClicked would break the binding of the checked property, instead
+                    //just catch the click so we do not trigger that behaviour.
+                    MouseArea
+                    {
+                        anchors.fill: parent;
+                        onClicked:
                         {
-                            UM.Controller.setActiveTool(model.id);
+                            forceActiveFocus() //First grab focus, so all the text fields are updated
+                            if(parent.checked)
+                            {
+                                UM.Controller.setActiveTool(null);
+                            }
+                            else
+                            {
+                                UM.Controller.setActiveTool(model.id);
+                            }
                         }
                     }
                 }
             }
         }
 
-        Item { height: UM.Theme.getSize("default_margin").height; width: UM.Theme.getSize("default_lining").width; visible: extruders.count > 0 }
-
-        Repeater
+        // Used to create a rounded rectangle behind the extruderButtons
+        Rectangle
         {
-            id: extruders
-            width: childrenRect.width
-            height: childrenRect.height
-            property var _model: Cura.ExtrudersModel { id: extrudersModel }
-            model: _model.items.length > 1 ? _model : 0
-            ExtruderButton { extruder: model }
+            anchors
+            {
+                fill: extruderButtons
+                leftMargin: -radius - border.width
+                rightMargin: -border.width
+                topMargin: -border.width
+                bottomMargin: -border.width
+            }
+            radius: UM.Theme.getSize("default_radius").width
+            color: UM.Theme.getColor("lining")
+        }
+
+        Column
+        {
+            id: extruderButtons
+
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.top: toolButtons.bottom
+            anchors.right: parent.right
+            spacing: UM.Theme.getSize("default_lining").height
+
+            Repeater
+            {
+                id: extruders
+                width: childrenRect.width
+                height: childrenRect.height
+                property var _model: Cura.ExtrudersModel { id: extrudersModel }
+                model: _model.items.length > 1 ? _model : 0
+
+                delegate: ExtruderButton
+                {
+                    extruder: model
+                    isTopElement: extrudersModel.getItem(0).id == model.id
+                    isBottomElement: extrudersModel.getItem(extrudersModel.rowCount() - 1).id == model.id
+                }
+            }
         }
     }
 
@@ -91,7 +152,7 @@ Item
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: base.top;
         anchors.topMargin: base.activeY
-        z: buttons.z -1
+        z: buttons.z - 1
 
         target: Qt.point(parent.right, base.activeY +  Math.round(UM.Theme.getSize("button").height/2))
         arrowSize: UM.Theme.getSize("default_arrow").width

@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -15,7 +15,7 @@ Item {
     property bool activity: CuraApplication.platformActivity
     property string fileBaseName: PrintInformation.baseName
 
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     height: childrenRect.height
 
