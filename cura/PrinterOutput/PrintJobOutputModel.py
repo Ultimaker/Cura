@@ -125,9 +125,33 @@ class PrintJobOutputModel(QObject):
     def timeElapsed(self):
         return self._time_elapsed
 
+    @pyqtProperty(int, notify = timeElapsedChanged)
+    def timeRemaining(self) -> int:
+        # Never get a negative time remaining
+        return max(self.timeTotal - self.timeElapsed, 0)
+
+    @pyqtProperty(float, notify = timeElapsedChanged)
+    def progress(self) -> float:
+        result = self.timeElapsed / self.timeTotal
+        if result > 1.0:
+            result = 1.0
+        return result
+
     @pyqtProperty(str, notify=stateChanged)
     def state(self):
         return self._state
+
+    @pyqtProperty(bool, notify=stateChanged)
+    def isActive(self) -> bool:
+        inactiveStates = [
+            "pausing",
+            "paused",
+            "resuming",
+            "wait_cleanup"
+        ]
+        if self.state in inactiveStates and self.timeRemaining > 0:
+            return False
+        return True
 
     def updateTimeTotal(self, new_time_total):
         if self._time_total != new_time_total:
