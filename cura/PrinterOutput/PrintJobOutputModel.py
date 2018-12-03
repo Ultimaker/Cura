@@ -118,11 +118,11 @@ class PrintJobOutputModel(QObject):
             self.nameChanged.emit()
 
     @pyqtProperty(int, notify = timeTotalChanged)
-    def timeTotal(self):
+    def timeTotal(self) -> int:
         return self._time_total
 
     @pyqtProperty(int, notify = timeElapsedChanged)
-    def timeElapsed(self):
+    def timeElapsed(self) -> int:
         return self._time_elapsed
 
     @pyqtProperty(int, notify = timeElapsedChanged)
@@ -138,7 +138,7 @@ class PrintJobOutputModel(QObject):
         return result
 
     @pyqtProperty(str, notify=stateChanged)
-    def state(self):
+    def state(self) -> str:
         return self._state
 
     @pyqtProperty(bool, notify=stateChanged)
