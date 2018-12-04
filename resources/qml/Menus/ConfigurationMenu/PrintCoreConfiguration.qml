@@ -70,7 +70,7 @@ Column
     Label
     {
         id: materialLabel
-        text: printCoreConfiguration.material.name
+        text: printCoreConfiguration.material == null ? "" : printCoreConfiguration.material.name
         renderType: Text.NativeRendering
         elide: Text.ElideRight
         width: parent.width
