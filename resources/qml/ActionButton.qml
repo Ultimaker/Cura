@@ -12,7 +12,7 @@ Button
 {
     id: button
     property alias iconSource: buttonIconLeft.source
-    property var iconOnRightSide: false
+    property bool isIconOnRightSide: false
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
@@ -43,7 +43,7 @@ Button
 
     contentItem: Row
     {
-        //Left side icon. Only displayed if !iconOnRightSide.
+        //Left side icon. Only displayed if !isIconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconLeft
@@ -53,7 +53,7 @@ Button
             sourceSize.width: width
             sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != "" && !button.iconOnRightSide
+            visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -71,7 +71,7 @@ Button
             elide: Text.ElideRight
         }
 
-        //Right side icon. Only displayed if iconOnRightSide.
+        //Right side icon. Only displayed if isIconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconRight
@@ -81,7 +81,7 @@ Button
             sourceSize.width: width
             sourceSize.height: height
             color: buttonIconLeft.color
-            visible: source != "" && button.iconOnRightSide
+            visible: source != "" && button.isIconOnRightSide
             anchors.verticalCenter: buttonIconLeft.verticalCenter
         }
     }

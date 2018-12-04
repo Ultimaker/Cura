@@ -162,7 +162,7 @@ Cura.ExpandableComponent
                 anchors.right: parent.right
 
                 iconSource: UM.Theme.getIcon("arrow_right")
-                iconOnRightSide: true
+                isIconOnRightSide: true
 
                 onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.CUSTOM
             }
