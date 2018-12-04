@@ -131,6 +131,7 @@ class CloudOutputDeviceManager(NetworkClient):
         device = CloudOutputDevice(cluster.cluster_id)
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
+        device.connect()  # TODO: remove this
         self._connectToActiveMachine()
 
     ##  Remove a CloudOutputDevice

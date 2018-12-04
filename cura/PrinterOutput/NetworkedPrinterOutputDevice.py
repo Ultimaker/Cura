@@ -180,10 +180,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             self._createNetworkManager()
         assert (self._manager is not None)
 
-    def put(self, target: str, data: Union[str, bytes], on_finished: Optional[Callable[[QNetworkReply], None]],
+    def put(self, target: str, data: Union[str, bytes], content_type: str = None,
+            on_finished: Optional[Callable[[QNetworkReply], None]] = None,
             on_progress: Optional[Callable] = None) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
+        request = self._createEmptyRequest(target, content_type = content_type)
         self._last_request_time = time()
         if self._manager is not None:
             reply = self._manager.put(request, data if isinstance(data, bytes) else data.encode())
