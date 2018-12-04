@@ -2,12 +2,13 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from time import sleep
-from threading import Thread
+from threading import Timer
 from typing import Dict, Optional
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
+from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
 from cura.NetworkClient import NetworkClient
 
@@ -42,10 +43,9 @@ class CloudOutputDeviceManager(NetworkClient):
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         
-        # TODO: fix this
-        # Periodically check all remote clusters for the authenticated user.
-        # self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
-        # self._update_clusters_thread.start()
+        self._on_cluster_received = Signal()
+        self._on_cluster_received.connect(self._getRemoteClusters)
+
 
     ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
@@ -56,16 +56,17 @@ class CloudOutputDeviceManager(NetworkClient):
             request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
         return request
 
-    ##  Update the clusters
-    def _updateClusters(self) -> None:
-        while True:
-            self._getRemoteClusters()
-            sleep(self.CHECK_CLUSTER_INTERVAL)
-        
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
         Logger.log("i", "Retrieving remote clusters")
-        self.get("/clusters", on_finished = self._onGetRemoteClustersFinished)
+        if self._account.isLoggedIn:
+            self.get("/clusters", on_finished = self._onGetRemoteClustersFinished)
+
+        # Only start the polling thread after the user is authenticated
+        # The first call to _getRemoteClusters comes from self._account.loginStateChanged
+        timer = Timer(5.0, self._on_cluster_received.emit)
+        timer.start()
+
 
     ##  Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, reply: QNetworkReply) -> None:
