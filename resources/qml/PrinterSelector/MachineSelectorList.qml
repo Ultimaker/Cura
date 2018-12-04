@@ -79,7 +79,7 @@ Column
         delegate: MachineSelectorButton
         {
             text: model.metadata["connect_group_name"]
-            checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+            checked: true  // cloud devices are always online if they are available
             outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
             Connections
