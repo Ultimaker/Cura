@@ -532,7 +532,7 @@
             "package_type": "plugin",
             "display_name": "USB Printing",
             "description": "Accepts G-Code and sends them to a printer. Plugin can also update firmware.",
-            "package_version": "1.0.0",
+            "package_version": "1.0.1",
             "sdk_version": 5,
             "website": "https://ultimaker.com",
             "author": {
