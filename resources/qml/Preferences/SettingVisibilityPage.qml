@@ -25,11 +25,7 @@ UM.PreferencesPage
 
     function reset()
     {
-        UM.Preferences.resetPreference("general/visible_settings")
-
-        // After calling this function update Setting visibility preset combobox.
-        // Reset should set default setting preset ("Basic")
-        visibilityPreset.currentIndex = 1
+        settingVisibilityPresetsModel.setActivePreset("basic")
     }
     resetEnabled: true;
 
