@@ -215,10 +215,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state != "queued"]
 
-    @pyqtProperty(bool, notify = printJobsChanged)
-    def receivedPrintJobs(self) -> bool:
-        return not self._sending_job
-
     ##  Called when the connection to the cluster changes.
     def connect(self) -> None:
         super().connect()
@@ -464,7 +460,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     @pyqtProperty(QObject, notify = printersChanged)
     def activePrinter(self) -> Optional[PrinterOutputModel]:
-        return self._printers[0] or None
+        if not self._printers:
+            return None
+        return self._printers[0]
 
     @pyqtSlot(QObject)
     def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
@@ -477,3 +475,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(QUrl)
     def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
         pass
+
+    @pyqtProperty(bool, notify = printJobsChanged)
+    def receivedPrintJobs(self) -> bool:
+        return True
