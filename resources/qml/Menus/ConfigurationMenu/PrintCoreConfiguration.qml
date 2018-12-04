@@ -16,16 +16,11 @@ Row
     spacing: UM.Theme.getSize("default_margin").width
 
     //Extruder icon.
-    Item
+    Cura.ExtruderIcon
     {
-        width: childrenRect.width
-        height: information.height
-        Cura.ExtruderIcon
-        {
-            materialColor: printCoreConfiguration.material.color
-            anchors.verticalCenter: parent.verticalCenter
-            extruderEnabled: printCoreConfiguration.material.name !== "" && printCoreConfiguration.hotendID !== ""
-        }
+        materialColor: printCoreConfiguration.material.color
+        anchors.verticalCenter: parent.verticalCenter
+        extruderEnabled: printCoreConfiguration.material.name !== "" && printCoreConfiguration.hotendID !== ""
     }
 
     Column
