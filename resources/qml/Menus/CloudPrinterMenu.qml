@@ -9,12 +9,12 @@ import Cura 1.0 as Cura
 Instantiator {
 
     model: UM.ContainerStacksModel {
-        filter: {"type": "machine", "um_cloud_cluster_id": "*", "hidden": "False"}
+        filter: {"type": "machine", "um_cloud_cluster_id": "*"}
     }
 
     MenuItem {
         // iconSource: UM.Theme.getIcon("printer_single") TODO: use cloud icon here
-        text: model.name
+        text: model.metadata["connect_group_name"]
         checkable: true
         checked: true // cloud printers are only listed if they are actually online
         exclusiveGroup: group;
