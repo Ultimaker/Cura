@@ -27,7 +27,7 @@ Column
     ScrollView
     {
         id: container
-        width: parent.width - parent.padding
+        width: parent.width
         height: Math.min(configurationList.contentHeight, 350 * screenScaleFactor)
 
         ButtonGroup
@@ -58,7 +58,7 @@ Column
 
             delegate: ConfigurationItem
             {
-                width: parent.width - UM.Theme.getSize("default_margin").width
+                width: parent.width
                 configuration: modelData
             }
         }
