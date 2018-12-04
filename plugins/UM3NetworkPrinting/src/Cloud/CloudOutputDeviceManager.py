@@ -8,6 +8,7 @@ from typing import Dict, Optional
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
+from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
 from cura.NetworkClient import NetworkClient
 
@@ -42,10 +43,14 @@ class CloudOutputDeviceManager(NetworkClient):
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         
-        # TODO: fix this
         # Periodically check all remote clusters for the authenticated user.
-        # self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
-        # self._update_clusters_thread.start()
+        # This is done by emitting to _on_cluster_received by _update_clusters_thread
+        # The thread is only started after the user is authenticated, otherwise the api call results in
+        # an authentication error
+        self._on_cluster_received = Signal()
+        self._on_cluster_received.connect(self._getRemoteClusters)
+        self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
+
 
     ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
@@ -59,13 +64,25 @@ class CloudOutputDeviceManager(NetworkClient):
     ##  Update the clusters
     def _updateClusters(self) -> None:
         while True:
-            self._getRemoteClusters()
-            sleep(self.CHECK_CLUSTER_INTERVAL)
-        
+
+            # Stop if the application is shutting down
+            if CuraApplication.getInstance().isShuttingDown():
+                return
+
+            self._on_cluster_received.emit()
+            sleep(5)
+
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
         Logger.log("i", "Retrieving remote clusters")
-        self.get("/clusters", on_finished = self._onGetRemoteClustersFinished)
+        if self._account.isLoggedIn:
+            self.get("/clusters", on_finished = self._onGetRemoteClustersFinished)
+
+        # Only start the polling thread after the user is authenticated
+        # The first call to _getRemoteClusters comes from self._account.loginStateChanged
+        if not self._update_clusters_thread.is_alive():
+            self._update_clusters_thread.start()
+
 
     ##  Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, reply: QNetworkReply) -> None:
