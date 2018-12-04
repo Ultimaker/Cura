@@ -159,11 +159,7 @@ Cura.ExpandableComponent
                 visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.AUTO
                 text: catalog.i18nc("@label", "Custom")
 
-                anchors
-                {
-                    right: parent.right
-                    top: parent.top
-                }
+                anchors.right: parent.right
 
                 iconSource: UM.Theme.getIcon("arrow_right")
                 iconOnRightSide: true
@@ -176,12 +172,6 @@ Cura.ExpandableComponent
                 id: goToAuto
                 visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.CUSTOM
                 text: catalog.i18nc("@label", "Configurations")
-
-                anchors
-                {
-                    left: parent.left
-                    top: parent.top
-                }
 
                 iconSource: UM.Theme.getIcon("arrow_left")
 
