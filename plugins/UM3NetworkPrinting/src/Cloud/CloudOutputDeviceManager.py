@@ -1,7 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from threading import Timer
-from typing import Dict, List
+from typing import Dict, List, Optional
+
+from PyQt5.QtCore import QTimer
 
 from UM import i18nCatalog
 from UM.Logger import Logger
@@ -9,7 +10,6 @@ from UM.Message import Message
 from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
 from plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient import CloudApiClient
-
 from .CloudOutputDevice import CloudOutputDevice
 from .Models import CloudCluster, CloudErrorObject
 
@@ -39,12 +39,17 @@ class CloudOutputDeviceManager:
         self._account = application.getCuraAPI().account
         self._account.loginStateChanged.connect(self._getRemoteClusters)
         self._api = CloudApiClient(self._account, self._onApiError)
-        
+
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         
         self._on_cluster_received = Signal()
         self._on_cluster_received.connect(self._getRemoteClusters)
+
+        self.update_timer = QTimer(CuraApplication.getInstance())
+        self.update_timer.setInterval(self.CHECK_CLUSTER_INTERVAL * 1000)
+        self.update_timer.setSingleShot(False)
+        self.update_timer.timeout.connect(self._on_cluster_received.emit)
 
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
@@ -52,10 +57,9 @@ class CloudOutputDeviceManager:
         if self._account.isLoggedIn:
             self._api.getClusters(self._onGetRemoteClustersFinished)
 
-        # Only start the polling thread after the user is authenticated
+        # Only start the polling timer after the user is authenticated
         # The first call to _getRemoteClusters comes from self._account.loginStateChanged
-        timer = Timer(5.0, self._on_cluster_received.emit)
-        timer.start()
+        self.update_timer.start()
 
     ##  Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudCluster]) -> None:
@@ -85,7 +89,7 @@ class CloudOutputDeviceManager:
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
         device.connect()  # TODO: remove this
-        self._connectToActiveMachine()
+        self._connectToActiveMachine(cluster.cluster_id, cluster.host_name)
 
     ##  Remove a CloudOutputDevice
     #   \param cluster: The cluster that was removed
@@ -94,11 +98,16 @@ class CloudOutputDeviceManager:
         del self._remote_clusters[cluster.cluster_id]
 
     ##  Callback for when the active machine was changed by the user.
-    def _connectToActiveMachine(self) -> None:
+    def _connectToActiveMachine(self, cluster_id: Optional[str] = None, host_name: Optional[str] = None) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
-        
+
+        # TODO: Remove this once correct pairing has been added (see below).
+        if cluster_id:
+            active_machine.setMetaDataEntry("um_cloud_cluster_id", cluster_id)
+            active_machine.setMetaDataEntry("connect_group_name", host_name)
+
         # Check if the stored cluster_id for the active machine is in our list of remote clusters.
         stored_cluster_id = active_machine.getMetaDataEntry("um_cloud_cluster_id")
         if stored_cluster_id in self._remote_clusters.keys():

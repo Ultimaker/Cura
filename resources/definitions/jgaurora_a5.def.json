@@ -9,7 +9,7 @@
         "file_formats": "text/x-gcode",
         "platform": "jgaurora_a5.stl",
         "platform_offset": [-242, -101, 273],
-        "preferred_quality_type": "fine",
+        "preferred_quality_type": "fast",
         "machine_extruder_trains":
         {
             "0": "jgaurora_a5_extruder_0"
@@ -54,9 +54,6 @@
         },
         "material_bed_temperature": {
             "default_value": 67
-        },
-        "layer_height": {
-            "default_value": 0.15
         },
         "layer_height_0": {
             "default_value": 0.12

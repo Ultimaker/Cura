@@ -52,6 +52,46 @@ Column
 
     Label
     {
+        text: catalog.i18nc("@label", "Cloud connected printers")
+        visible: cloudPrintersModel.items.length > 0
+        leftPadding: UM.Theme.getSize("default_margin").width
+        height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
+        renderType: Text.NativeRendering
+        font: UM.Theme.getFont("medium")
+        color: UM.Theme.getColor("text_medium")
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Repeater
+    {
+        id: cloudPrinters
+
+        model: UM.ContainerStacksModel
+        {
+            id: cloudPrintersModel
+            filter:
+            {
+                "type": "machine",
+                "um_cloud_cluster_id": "*"
+            }
+        }
+
+        delegate: MachineSelectorButton
+        {
+            text: model.metadata["connect_group_name"]
+            checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+            outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
+            Connections
+            {
+                target: Cura.MachineManager
+                onActiveMachineNetworkGroupNameChanged: checked = Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+            }
+        }
+    }
+
+    Label
+    {
         text: catalog.i18nc("@label", "Preset printers")
         visible: virtualPrintersModel.items.length > 0
         leftPadding: UM.Theme.getSize("default_margin").width
@@ -71,7 +111,9 @@ Column
             id: virtualPrintersModel
             filter:
             {
-                "type": "machine", "um_network_key": null
+                "type": "machine",
+                "um_network_key": null,
+                "um_cloud_cluster_id": null
             }
         }
 
