@@ -12,7 +12,7 @@ Row
     id: extruderInfo
     property var printCoreConfiguration
 
-    height: childrenRect.height
+    height: information.height
     spacing: UM.Theme.getSize("default_margin").width
 
     //Extruder icon.
