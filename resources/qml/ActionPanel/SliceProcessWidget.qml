@@ -44,7 +44,7 @@ Column
     {
         id: autoSlicingLabel
         width: parent.width
-        visible: prepareButtons.autoSlice && widget.backendState == UM.Backend.Processing
+        visible: prepareButtons.autoSlice && (widget.backendState == UM.Backend.Processing || widget.backendState == UM.Backend.NotStarted)
 
         text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
         color: UM.Theme.getColor("text")
@@ -71,7 +71,8 @@ Column
         width: parent.width
         height: UM.Theme.getSize("progressbar").height
         value: progress
-        visible: widget.backendState == UM.Backend.Processing
+        indeterminate: widget.backendState == UM.Backend.NotStarted
+        visible: (widget.backendState == UM.Backend.Processing || (prepareButtons.autoSlice && widget.backendState == UM.Backend.NotStarted))
 
         background: Rectangle
         {
@@ -135,6 +136,10 @@ Column
         {
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
             prepareButtons.autoSlice = autoSlice
+            if(autoSlice)
+            {
+                CuraApplication.backend.forceSlice()
+            }
         }
     }
 
