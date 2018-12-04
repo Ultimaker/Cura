@@ -69,7 +69,7 @@ Item
                     {
                         return "../svg/aborted-icon.svg"
                     }
-                    break;
+                    return "";
                 case "pausing":
                     return "../svg/paused-icon.svg"
                 case "paused":
