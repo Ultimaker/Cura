@@ -60,7 +60,7 @@ class NetworkClient:
 
     ##  Executes the correct callback method when a network request finishes.
     def __handleOnFinished(self, reply: QNetworkReply) -> None:
-        
+
         # Due to garbage collection, we need to cache certain bits of post operations.
         # As we don't want to keep them around forever, delete them if we get a reply.
         if reply.operation() == QNetworkAccessManager.PostOperation:
@@ -79,6 +79,8 @@ class NetworkClient:
         callback_key = reply.url().toString() + str(reply.operation())
         if callback_key in self._on_finished_callbacks:
             self._on_finished_callbacks[callback_key](reply)
+        else:
+            Logger.log("w", "Received reply to URL %s but no callbacks are registered", reply.url())
 
     ##  Removes all cached Multi-Part items.
     def _clearCachedMultiPart(self, reply: QNetworkReply) -> None:

@@ -21,7 +21,7 @@ from .Models import CloudCluster, CloudErrorObject
 class CloudOutputDeviceManager:
 
     # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 5  # seconds
+    CHECK_CLUSTER_INTERVAL = 5.0  # seconds
 
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
