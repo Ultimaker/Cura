@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
 import os
-from typing import List, Optional, Dict, cast, Union
+from typing import List, Optional, Dict, cast, Union, Set
 
 from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty, pyqtSlot
 
@@ -27,6 +27,32 @@ from .Models import (
 )
 
 
+## Private class that contains all the translations for this component.
+class T:
+    # The translation catalog for this device.
+
+    _I18N_CATALOG = i18nCatalog("cura")
+
+    PRINT_VIA_CLOUD_BUTTON = _I18N_CATALOG.i18nc("@action:button", "Print via Cloud")
+    PRINT_VIA_CLOUD_TOOLTIP = _I18N_CATALOG.i18nc("@properties:tooltip", "Print via Cloud")
+
+    CONNECTED_VIA_CLOUD = _I18N_CATALOG.i18nc("@info:status", "Connected via Cloud")
+    BLOCKED_UPLOADING = _I18N_CATALOG.i18nc("@info:status", "Sending new jobs (temporarily) blocked, still sending "
+                                                            "the previous print job.")
+
+    COULD_NOT_EXPORT = _I18N_CATALOG.i18nc("@info:status", "Could not export print job.")
+    WRITE_FAILED = _I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!")
+
+    SENDING_DATA_TEXT = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
+    SENDING_DATA_TITLE = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
+
+    ERROR = _I18N_CATALOG.i18nc("@info:title", "Error")
+    UPLOAD_ERROR = _I18N_CATALOG.i18nc("@info:text", "Could not upload the data to the printer.")
+
+    UPLOAD_SUCCESS_TITLE = _I18N_CATALOG.i18nc("@info:title", "Data Sent")
+    UPLOAD_SUCCESS_TEXT = _I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer.")
+
+
 ##  The cloud output device is a network output device that works remotely but has limited functionality.
 #   Currently it only supports viewing the printer and print job status and adding a new job to the queue.
 #   As such, those methods have been implemented here.
@@ -34,9 +60,6 @@ from .Models import (
 #
 #   TODO: figure our how the QML interface for the cluster networking should operate with this limited functionality.
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
-    
-    # The translation catalog for this device.
-    I18N_CATALOG = i18nCatalog("cura")
 
     # Signal triggered when the printers in the remote cluster were changed.
     printersChanged = pyqtSignal()
@@ -74,9 +97,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _setInterfaceElements(self):
         self.setPriority(2)  # make sure we end up below the local networking and above 'save to file'
         self.setName(self._id)
-        self.setShortDescription(self.I18N_CATALOG.i18nc("@action:button", "Print via Cloud"))
-        self.setDescription(self.I18N_CATALOG.i18nc("@properties:tooltip", "Print via Cloud"))
-        self.setConnectionText(self.I18N_CATALOG.i18nc("@info:status", "Connected via Cloud"))
+        self.setShortDescription(T.PRINT_VIA_CLOUD_BUTTON)
+        self.setDescription(T.PRINT_VIA_CLOUD_TOOLTIP)
+        self.setConnectionText(T.CONNECTED_VIA_CLOUD)
     
     ##  Called when Cura requests an output device to receive a (G-code) file.
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
@@ -84,8 +107,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         
         # Show an error message if we're already sending a job.
         if self._sending_job:
-            self._onUploadError(self.I18N_CATALOG.i18nc(
-                "@info:status", "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+            self._onUploadError(T.BLOCKED_UPLOADING)
             return
         
         # Indicate we have started sending a job.
@@ -96,7 +118,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         writer = self._determineWriter(file_handler, file_format)
         if not writer:
             Logger.log("e", "Missing file or mesh writer!")
-            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not export print job."))
+            self._onUploadError(T.COULD_NOT_EXPORT)
             return
 
         stream = io.StringIO() if file_format["mode"] == FileWriter.OutputMode.TextMode else io.BytesIO()
@@ -131,9 +153,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError(
-                self.I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!")
-            )
+            raise OutputDeviceError.WriteRequestFailedError(T.WRITE_FAILED)
         return file_formats[0]
 
     # TODO: This is yanked right out of ClusterUM3OutputDevice, great candidate for a utility or base class
@@ -279,18 +299,21 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         remote_jobs = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
         current_jobs = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
 
-        for removed_job_id in set(current_jobs).difference(remote_jobs):
+        remote_job_ids = set(remote_jobs)  # type: Set[str]
+        current_job_ids = set(current_jobs)  # type: Set[str]
+
+        for removed_job_id in current_job_ids.difference(remote_job_ids):
             self._print_jobs.remove(current_jobs[removed_job_id])
 
-        for new_job_id in set(remote_jobs.keys()).difference(current_jobs):
+        for new_job_id in remote_job_ids.difference(current_jobs):
             self._addPrintJob(remote_jobs[new_job_id])
 
-        for updated_job_id in set(current_jobs).intersection(remote_jobs):
+        for updated_job_id in current_job_ids.intersection(remote_job_ids):
             self._updateUM3PrintJobOutputModel(current_jobs[updated_job_id], remote_jobs[updated_job_id])
 
         # We only have to update when jobs are added or removed
-        # updated jobs push their changes via their outputmodel
-        if len(removed_job_ids) > 0 or len(new_job_ids) > 0:
+        # updated jobs push their changes via their output model
+        if remote_job_ids != current_job_ids:
             self.printJobsChanged.emit()
 
     def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
@@ -324,7 +347,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
         Logger.log("i", "Print job created successfully: %s", job_response.__dict__)
-        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._onUploadPrintJobProgress)
+        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._onUploadPrintJobProgress,
+                             lambda error: self._onUploadError(T.UPLOAD_ERROR))
 
     def _onPrintJobUploaded(self, job_id: str) -> None:
         self._api.requestPrint(self._device_id, job_id, self._onUploadSuccess)
@@ -336,8 +360,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _updateUploadProgress(self, progress: int):
         if not self._progress_message:
             self._progress_message = Message(
-                text = self.I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster"),
-                title = self.I18N_CATALOG.i18nc("@info:title", "Sending Data..."),
+                text = T.SENDING_DATA_TEXT,
+                title = T.SENDING_DATA_TITLE,
                 progress = -1,
                 lifetime = 0,
                 dismissable = False,
@@ -356,19 +380,20 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if message:
             message = Message(
                 text = message,
-                title = self.I18N_CATALOG.i18nc("@info:title", "Error"),
+                title = T.ERROR,
                 lifetime = 10,
                 dismissable = True
             )
             message.show()
-        self._sending_job = False  # the upload has failed so we're not sending a job anymore
+        self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeError.emit()
 
+    # Shows a message when the upload has succeeded
     def _onUploadSuccess(self):
         self._resetUploadProgress()
         message = Message(
-            text = self.I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
-            title = self.I18N_CATALOG.i18nc("@info:title", "Data Sent"),
+            text = T.UPLOAD_SUCCESS_TEXT,
+            title = T.UPLOAD_SUCCESS_TITLE,
             lifetime = 5,
             dismissable = True,
         )
