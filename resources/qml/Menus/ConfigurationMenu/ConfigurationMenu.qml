@@ -28,6 +28,12 @@ Cura.ExpandableComponent
         name: "cura"
     }
 
+    enum ConfigurationMethod
+    {
+        AUTO,
+        CUSTOM
+    }
+
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
     headerItem: Item
     {
@@ -108,7 +114,7 @@ Cura.ExpandableComponent
             is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected //Re-evaluate.
         }
 
-        property var configuration_method: is_connected ? "auto" : "custom" //Auto if connected to a printer at start-up, or Custom if not.
+        property int configuration_method: is_connected ? ConfigurationMenu.ConfigurationMethod.AUTO : ConfigurationMenu.ConfigurationMethod.CUSTOM //Auto if connected to a printer at start-up, or Custom if not.
 
         Item
         {
@@ -117,13 +123,13 @@ Cura.ExpandableComponent
             AutoConfiguration
             {
                 id: autoConfiguration
-                visible: popupItem.configuration_method === "auto"
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.AUTO
             }
 
             CustomConfiguration
             {
                 id: customConfiguration
-                visible: popupItem.configuration_method === "custom"
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.CUSTOM
             }
         }
 
@@ -150,7 +156,7 @@ Cura.ExpandableComponent
             Cura.SecondaryButton
             {
                 id: goToCustom
-                visible: popupItem.configuration_method === "auto"
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.AUTO
                 text: catalog.i18nc("@label", "Custom")
 
                 anchors
@@ -162,13 +168,13 @@ Cura.ExpandableComponent
                 iconSource: UM.Theme.getIcon("arrow_right")
                 iconOnRightSide: true
 
-                onClicked: popupItem.configuration_method = "custom"
+                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.CUSTOM
             }
 
             Cura.SecondaryButton
             {
                 id: goToAuto
-                visible: popupItem.configuration_method === "custom"
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.CUSTOM
                 text: catalog.i18nc("@label", "Configurations")
 
                 anchors
@@ -179,7 +185,7 @@ Cura.ExpandableComponent
 
                 iconSource: UM.Theme.getIcon("arrow_left")
 
-                onClicked: popupItem.configuration_method = "auto"
+                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.AUTO
             }
         }
     }
