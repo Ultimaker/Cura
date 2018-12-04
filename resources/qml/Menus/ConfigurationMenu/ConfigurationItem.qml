@@ -34,7 +34,13 @@ Button
             {
                 id: extruderRow
 
-                width: parent.width - 2 * parent.padding
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: parent.padding
+                    right: parent.right
+                    rightMargin: parent.padding
+                }
                 height: childrenRect.height
 
                 spacing: UM.Theme.getSize("default_margin").width
@@ -58,7 +64,13 @@ Button
                 id: separator
 
                 visible: buildplateInformation.visible
-                width: parent.width - 2 * parent.padding
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: parent.padding
+                    right: parent.right
+                    rightMargin: parent.padding
+                }
                 height: visible ? Math.round(UM.Theme.getSize("thick_lining").height / 2) : 0
                 color: UM.Theme.getColor("text")
             }
@@ -66,7 +78,14 @@ Button
             Item
             {
                 id: buildplateInformation
-                width: parent.width - 2 * parent.padding
+
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: parent.padding
+                    right: parent.right
+                    rightMargin: parent.padding
+                }
                 height: childrenRect.height
                 visible: configuration.buildplateConfiguration != ""
 
