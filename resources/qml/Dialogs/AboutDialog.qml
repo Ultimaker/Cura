@@ -39,8 +39,6 @@ UM.Dialog
 
         source: UM.Theme.getImage("logo")
 
-        sourceSize.width: width
-        sourceSize.height: height
         anchors.top: parent.top
         anchors.topMargin: ((base.minimumWidth - width) / 2) | 0
         anchors.horizontalCenter: parent.horizontalCenter

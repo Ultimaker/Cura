@@ -95,8 +95,6 @@ Button
                     anchors.left: parent.left
                     width: UM.Theme.getSize("main_window_header_button_icon").width
                     height: UM.Theme.getSize("main_window_header_button_icon").height
-                    sourceSize.width: width
-                    sourceSize.height: height
                     source: UM.Theme.getIcon("buildplate")
                     color: UM.Theme.getColor("text")
                 }

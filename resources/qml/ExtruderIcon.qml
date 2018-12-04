@@ -22,8 +22,6 @@ Item
         id: mainIcon
         anchors.fill: parent
 
-        sourceSize.width: parent.width
-        sourceSize.height: parent.height
         source: UM.Theme.getIcon("extruder_button")
         color: extruderEnabled ? materialColor: "gray"
     }
@@ -64,7 +62,6 @@ Item
             id: disabledIcon
             anchors.fill: parent
             anchors.margins: UM.Theme.getSize("thick_lining").width
-            sourceSize.width: width
             sourceSize.height: width
             source: UM.Theme.getIcon("cross1")
             visible: !extruderEnabled

@@ -731,7 +731,6 @@ Item
                             {
                                 anchors.fill: parent
                                 anchors.margins: 2 * screenScaleFactor
-                                sourceSize.width: width
                                 sourceSize.height: width
                                 source: UM.Theme.getIcon(model.icon)
                                 color: UM.Theme.getColor("quality_slider_unavailable")

@@ -50,8 +50,6 @@ Button
             source: ""
             height: buttonText.height
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
             visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
@@ -78,8 +76,6 @@ Button
             source: buttonIconLeft.source
             height: buttonText.height
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: buttonIconLeft.color
             visible: source != "" && button.isIconOnRightSide
             anchors.verticalCenter: buttonIconLeft.verticalCenter

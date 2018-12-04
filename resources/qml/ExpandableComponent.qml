@@ -139,8 +139,6 @@ Item
                 verticalCenter: parent.verticalCenter
                 margins: background.padding
             }
-            sourceSize.width: width
-            sourceSize.height: height
             visible: source != ""
             width: height
             height: Math.round(0.2 * base.height)

@@ -265,7 +265,6 @@ Item {
                                         anchors.verticalCenter: parent.verticalCenter
                                         width: parent.width
                                         height: width
-                                        sourceSize.width: width
                                         sourceSize.height: width
                                         color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
                                         source: UM.Theme.getIcon("minus")
