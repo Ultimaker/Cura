@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from time import sleep
-from threading import Thread
+from threading import Timer
 from typing import Dict, Optional
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
@@ -43,13 +43,8 @@ class CloudOutputDeviceManager(NetworkClient):
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         
-        # Periodically check all remote clusters for the authenticated user.
-        # This is done by emitting to _on_cluster_received by _update_clusters_thread
-        # The thread is only started after the user is authenticated, otherwise the api call results in
-        # an authentication error
         self._on_cluster_received = Signal()
         self._on_cluster_received.connect(self._getRemoteClusters)
-        self._update_clusters_thread = Thread(target=self._updateClusters, daemon=True)
 
 
     ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
@@ -61,17 +56,6 @@ class CloudOutputDeviceManager(NetworkClient):
             request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
         return request
 
-    ##  Update the clusters
-    def _updateClusters(self) -> None:
-        while True:
-
-            # Stop if the application is shutting down
-            if CuraApplication.getInstance().isShuttingDown():
-                return
-
-            self._on_cluster_received.emit()
-            sleep(5)
-
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
         Logger.log("i", "Retrieving remote clusters")
@@ -80,8 +64,8 @@ class CloudOutputDeviceManager(NetworkClient):
 
         # Only start the polling thread after the user is authenticated
         # The first call to _getRemoteClusters comes from self._account.loginStateChanged
-        if not self._update_clusters_thread.is_alive():
-            self._update_clusters_thread.start()
+        timer = Timer(5.0, self._on_cluster_received.emit)
+        timer.start()
 
 
     ##  Callback for when the request for getting the clusters. is finished.
