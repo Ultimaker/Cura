@@ -145,7 +145,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + target)
         request = QNetworkRequest(url)
         if content_type is not None:
-            request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+            request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
@@ -180,54 +180,85 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             self._createNetworkManager()
         assert (self._manager is not None)
 
-    def put(self, target: str, data: Union[str, bytes], content_type: str = None,
+    ## Sends a put request to the given path.
+    #  url: The path after the API prefix.
+    #  data: The data to be sent in the body
+    #  content_type: The content type of the body data.
+    #  on_finished: The function to call when the response is received.
+    #  on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
+    def put(self, url: str, data: Union[str, bytes], content_type: Optional[str] = None,
             on_finished: Optional[Callable[[QNetworkReply], None]] = None,
-            on_progress: Optional[Callable] = None) -> None:
+            on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target, content_type = content_type)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.put(request, data if isinstance(data, bytes) else data.encode())
-            self._registerOnFinishedCallback(reply, on_finished)
-            if on_progress is not None:
-                reply.uploadProgress.connect(on_progress)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def delete(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        request = self._createEmptyRequest(url, content_type = content_type)
+        self._last_request_time = time()
+
+        if not self._manager:
+            return Logger.log("e", "No network manager was created to execute the PUT call with.")
+
+        body = data if isinstance(data, bytes) else data.encode()  # type: bytes
+        reply = self._manager.put(request, body)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+        if on_progress is not None:
+            reply.uploadProgress.connect(on_progress)
+
+    ## Sends a delete request to the given path.
+    #  url: The path after the API prefix.
+    #  on_finished: The function to be call when the response is received.
+    def delete(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.deleteResource(request)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        request = self._createEmptyRequest(url)
+        self._last_request_time = time()
+
+        if not self._manager:
+            return Logger.log("e", "No network manager was created to execute the DELETE call with.")
+
+        reply = self._manager.deleteResource(request)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+    ## Sends a get request to the given path.
+    #  \param url: The path after the API prefix.
+    #  \param on_finished: The function to be call when the response is received.
+    def get(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.get(request)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def post(self, target: str, data: Union[str, bytes], on_finished: Optional[Callable[[QNetworkReply], None]],
-             on_progress: Callable = None) -> None:
+        request = self._createEmptyRequest(url)
+        self._last_request_time = time()
+
+        if not self._manager:
+            return Logger.log("e", "No network manager was created to execute the GET call with.")
+
+        reply = self._manager.get(request)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+    ## Sends a post request to the given path.
+    #  \param url: The path after the API prefix.
+    #  \param data: The data to be sent in the body
+    #  \param on_finished: The function to call when the response is received.
+    #  \param on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
+    def post(self, url: str, data: Union[str, bytes],
+             on_finished: Optional[Callable[[QNetworkReply], None]],
+             on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.post(request, data if isinstance(data, bytes) else data.encode())
-            if on_progress is not None:
-                reply.uploadProgress.connect(on_progress)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def postFormWithParts(self, target: str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
+        request = self._createEmptyRequest(url)
+        self._last_request_time = time()
+
+        if not self._manager:
+            return Logger.log("e", "Could not find manager.")
+
+        body = data if isinstance(data, bytes) else data.encode()  # type: bytes
+        reply = self._manager.post(request, body)
+        if on_progress is not None:
+            reply.uploadProgress.connect(on_progress)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+    def postFormWithParts(self, target: str, parts: List[QHttpPart],
+                          on_finished: Optional[Callable[[QNetworkReply], None]],
+                          on_progress: Callable = None) -> QNetworkReply:
         self._validateManager()
         request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)

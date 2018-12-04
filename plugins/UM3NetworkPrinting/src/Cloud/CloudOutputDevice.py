@@ -1,13 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
-import json
 import os
-from json import JSONDecodeError
-from typing import List, Optional, Dict, cast, Union, Tuple
+from typing import List, Optional, Dict, cast, Union
 
 from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty, pyqtSlot
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM import i18nCatalog
 from UM.FileHandler.FileWriter import FileWriter
@@ -22,10 +19,11 @@ from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient import CloudApiClient
 from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models import (
-    CloudClusterPrinter, CloudClusterPrintJob, JobUploadRequest, JobUploadResponse, PrintResponse, CloudClusterStatus,
-    CloudClusterPrinterConfigurationMaterial
+    CloudClusterPrinter, CloudClusterPrintJob, CloudJobUploadRequest, CloudJobResponse, CloudClusterStatus,
+    CloudClusterPrinterConfigurationMaterial, CloudErrorObject
 )
 
 
@@ -40,20 +38,16 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
-    # The cloud URL to use for this remote cluster.
-    # TODO: Make sure that this URL goes to the live api before release
-    ROOT_PATH = "https://api-staging.ultimaker.com"
-    CLUSTER_API_ROOT = "{}/connect/v1/".format(ROOT_PATH)
-    CURA_API_ROOT = "{}/cura/v1/".format(ROOT_PATH)
-
     # Signal triggered when the printers in the remote cluster were changed.
     printersChanged = pyqtSignal()
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, parent: QObject = None):
+    def __init__(self, api_client: CloudApiClient, device_id: str, parent: QObject = None):
         super().__init__(device_id = device_id, address = "", properties = {}, parent = parent)
+        self._api = api_client
+
         self._setInterfaceElements()
         
         self._device_id = device_id
@@ -76,40 +70,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._sending_job = False
         self._progress_message = None  # type: Optional[Message]
 
-    @staticmethod
-    def _parseReply(reply: QNetworkReply) -> Tuple[int, Union[None, str, bytes]]:
-        """
-        Parses a reply from the stardust server.
-        :param reply: The reply received from the server.
-        :return: The status code and the response dict.
-        """
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-        response = None
-        try:
-            response = bytes(reply.readAll()).decode("utf-8")
-            response = json.loads(response)
-        except JSONDecodeError:
-            Logger.logException("w", "Unable to decode JSON from reply.")
-        return status_code, response
-
-    ##  We need to override _createEmptyRequest to work for the cloud.
-    def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
-        # noinspection PyArgumentList
-        url = QUrl(path)
-        request = QNetworkRequest(url)
-        request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
-        request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
-        
-        if not self._account.isLoggedIn:
-            # TODO: show message to user to sign in
-            self.setAuthenticationState(AuthState.NotAuthenticated)
-        else:
-            # TODO: not execute call at all when not signed in?
-            self.setAuthenticationState(AuthState.Authenticated)
-            request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
-
-        return request
-    
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self):
         self.setPriority(2)  # make sure we end up below the local networking and above 'save to file'
@@ -223,22 +183,16 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _update(self) -> None:
         super()._update()
         Logger.log("i", "Calling the cloud cluster")
-        self.get("{root}/cluster/{cluster_id}/status".format(root = self.CLUSTER_API_ROOT,
-                                                             cluster_id = self._device_id),
-                 on_finished = self._onStatusCallFinished)
+        if self._account.isLoggedIn:
+            self.setAuthenticationState(AuthState.Authenticated)
+            self._api.getClusterStatus(self._device_id, self._onStatusCallFinished)
+        else:
+            self.setAuthenticationState(AuthState.NotAuthenticated)
 
     ##  Method called when HTTP request to status endpoint is finished.
     #   Contains both printers and print jobs statuses in a single response.
-    def _onStatusCallFinished(self, reply: QNetworkReply) -> None:
-        status_code, response = self._parseReply(reply)
-        if status_code > 204 or not isinstance(response, dict) or "data" not in response:
-            Logger.log("w", "Got unexpected response while trying to get cloud cluster data: %s, %s",
-                       status_code, response)
-            return
-
-        Logger.log("d", "Got response form the cloud cluster %s, %s", status_code, response)
-        status = CloudClusterStatus(**response["data"])
-
+    def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
+        Logger.log("d", "Got response form the cloud cluster: %s", status.__dict__)
         # Update all data from the cluster.
         self._updatePrinters(status.printers)
         self._updatePrintJobs(status.print_jobs)
@@ -325,18 +279,14 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         remote_jobs = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
         current_jobs = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
 
-        removed_job_ids = set(current_jobs).difference(set(remote_jobs))
-        new_job_ids = set(remote_jobs.keys()).difference(set(current_jobs))
-        updated_job_ids = set(current_jobs).intersection(set(remote_jobs))
+        for removed_job_id in set(current_jobs).difference(remote_jobs):
+            self._print_jobs.remove(current_jobs[removed_job_id])
 
-        for job_id in removed_job_ids:
-            self._print_jobs.remove(current_jobs[job_id])
+        for new_job_id in set(remote_jobs.keys()).difference(current_jobs):
+            self._addPrintJob(remote_jobs[new_job_id])
 
-        for job_id in new_job_ids:
-            self._addPrintJob(remote_jobs[job_id])
-
-        for job_id in updated_job_ids:
-            self._updateUM3PrintJobOutputModel(current_jobs[job_id], remote_jobs[job_id])
+        for updated_job_id in set(current_jobs).intersection(remote_jobs):
+            self._updateUM3PrintJobOutputModel(current_jobs[updated_job_id], remote_jobs[updated_job_id])
 
         # We only have to update when jobs are added or removed
         # updated jobs push their changes via their outputmodel
@@ -364,55 +314,24 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _sendPrintJob(self, file_name: str, content_type: str, stream: Union[io.StringIO, io.BytesIO]) -> None:
         mesh = stream.getvalue()
 
-        request = JobUploadRequest()
+        request = CloudJobUploadRequest()
         request.job_name = file_name
         request.file_size = len(mesh)
         request.content_type = content_type
 
         Logger.log("i", "Creating new cloud print job: %s", request.__dict__)
-        self.put("{}/jobs/upload".format(self.CURA_API_ROOT), data = json.dumps({"data": request.__dict__}),
-                 on_finished = lambda reply: self._onPrintJobCreated(mesh, reply))
+        self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh, response))
 
-    def _onPrintJobCreated(self, mesh: bytes, reply: QNetworkReply) -> None:
-        status_code, response = self._parseReply(reply)
-        if status_code > 204 or not isinstance(response, dict) or "data" not in response:
-            Logger.log("w", "Unexpected response while adding to queue: {}, {}".format(status_code, response))
-            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not add print job to queue."))
-            return
-
-        # TODO: Multipart upload
-        job_response = JobUploadResponse(**response.get("data"))
+    def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
         Logger.log("i", "Print job created successfully: %s", job_response.__dict__)
-        self.put(job_response.upload_url, data = mesh, content_type = job_response.content_type,
-                 on_finished = lambda r: self._onPrintJobUploaded(job_response.job_id, r),
-                 on_progress = self._onUploadPrintJobProgress)
+        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._onUploadPrintJobProgress)
+
+    def _onPrintJobUploaded(self, job_id: str) -> None:
+        self._api.requestPrint(self._device_id, job_id, self._onUploadSuccess)
 
     def _onUploadPrintJobProgress(self, bytes_sent: int, bytes_total: int) -> None:
         if bytes_total > 0:
             self._updateUploadProgress(int((bytes_sent / bytes_total) * 100))
-
-    def _onPrintJobUploaded(self, job_id: str, reply: QNetworkReply) -> None:
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-        if status_code > 204:
-            Logger.log("w", "Received unexpected response from the job upload: %s, %s.", status_code,
-                            bytes(reply.readAll()).decode())
-            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not add print job to queue."))
-            return
-
-        Logger.log("i", "Print job uploaded successfully: %s", reply.readAll())
-        url = "{}/cluster/{}/print/{}".format(self.CLUSTER_API_ROOT, self._device_id, job_id)
-        self.post(url, data = "", on_finished = self._onPrintJobRequested)
-
-    def _onPrintJobRequested(self, reply: QNetworkReply) -> None:
-        status_code, response = self._parseReply(reply)
-        if status_code > 204 or not isinstance(response, dict) or "data" not in response:
-            Logger.log("w", "Got unexpected response while trying to request printing: %s, %s", status_code, response)
-            self._onUploadError(self.I18N_CATALOG.i18nc("@info:status", "Could not add print job to queue."))
-            return
-
-        print_response = PrintResponse(**response["data"])
-        Logger.log("i", "Print job requested successfully: %s", print_response.__dict__)
-        self._onUploadSuccess()
 
     def _updateUploadProgress(self, progress: int):
         if not self._progress_message:
@@ -481,3 +400,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtProperty(bool, notify = printJobsChanged)
     def receivedPrintJobs(self) -> bool:
         return True
+
+    def _onApiError(self, errors: List[CloudErrorObject]) -> None:
+        pass  # TODO: Show errors...
