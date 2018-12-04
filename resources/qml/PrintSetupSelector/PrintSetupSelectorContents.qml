@@ -17,8 +17,25 @@ Item
     width: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
     height: childrenRect.height
 
-    property int currentModeIndex: -1
+    enum Mode
+    {
+        Recommended = 0,
+        Custom = 1
+    }
+
+    // Set the current mode index to the value that is stored in the preferences or Recommended mode otherwise.
+    property int currentModeIndex:
+    {
+        var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
+
+        if(index != null && !isNaN(index))
+        {
+            return index
+        }
+        return PrintSetupSelectorContents.Mode.Recommended
+    }
     onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
+
 
     // Header of the popup
     Rectangle
@@ -93,7 +110,9 @@ Item
     Item
     {
         id: contents
-        height: currentModeIndex == 0 ? recommendedPrintSetup.height : customPrintSetup.height
+        // Use the visible property instead of checking the currentModeIndex. That creates a binding that
+        // evaluates the new height every time the visible property changes.
+        height: recommendedPrintSetup.visible ? recommendedPrintSetup.height : customPrintSetup.height
 
         anchors
         {
@@ -111,7 +130,7 @@ Item
                 right: parent.right
                 top: parent.top
             }
-            visible: currentModeIndex == 0
+            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
         }
 
         CustomPrintSetup
@@ -123,7 +142,7 @@ Item
                 right: parent.right
                 top: parent.top
             }
-            visible: currentModeIndex == 1
+            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
         }
     }
 
@@ -160,8 +179,8 @@ Item
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Recommended")
             iconSource: UM.Theme.getIcon("arrow_left")
-            visible: currentModeIndex == 1
-            onClicked: currentModeIndex = 0
+            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
+            onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Recommended
         }
 
         Cura.SecondaryButton
@@ -174,22 +193,8 @@ Item
             text: catalog.i18nc("@button", "Custom")
             iconSource: UM.Theme.getIcon("arrow_right")
             iconOnRightSide: true
-            visible: currentModeIndex == 0
-            onClicked: currentModeIndex = 1
-        }
-    }
-
-    Component.onCompleted:
-    {
-        var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
-
-        if(index != null && !isNaN(index))
-        {
-            currentModeIndex = index
-        }
-        else
-        {
-            currentModeIndex = 0
+            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
+            onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Custom
         }
     }
 }

@@ -25,10 +25,7 @@ Item
     property alias headerItem: headerItemLoader.sourceComponent
 
     // The popupItem holds the QML item that is shown when the "open" button is pressed
-    property var popupItem
-
-    // The popupItem holds the QML item that is shown when the "open" button is pressed
-    property var componentItem
+    property alias popupItem: popup.contentItem
 
     property color popupBackgroundColor: UM.Theme.getColor("action_button")
 
@@ -85,23 +82,6 @@ Item
         {
             popup.open()
         }
-    }
-
-    onPopupItemChanged:
-    {
-        // Since we want the size of the popup to be set by the size of the content,
-        // we need to do it like this.
-        popup.width = popupItem.width + 2 * popup.padding
-        popup.height = popupItem.height + 2 * popup.padding
-        popup.contentItem = popupItem
-    }
-
-    Connections
-    {
-        // Since it could be that the popup is dynamically populated, we should also take these changes into account.
-        target: popupItem
-        onWidthChanged: popup.width = popupItem.width + 2 * popup.padding
-        onHeightChanged: popup.height = popupItem.height + 2 * popup.padding
     }
 
     implicitHeight: 100 * screenScaleFactor
@@ -202,5 +182,25 @@ Item
             border.color: UM.Theme.getColor("lining")
             radius: UM.Theme.getSize("default_radius").width
         }
+
+        contentItem: Item { }
+
+        onContentItemChanged:
+        {
+            // Since we want the size of the popup to be set by the size of the content,
+            // we need to do it like this.
+            popup.width = contentItem.width + 2 * popup.padding
+            popup.height = contentItem.height + 2 * popup.padding
+        }
+    }
+
+    // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the Popup item.
+    // Apparently the order in which these are handled matters and so the height is correctly updated if this is here.
+    Connections
+    {
+        // Since it could be that the popup is dynamically populated, we should also take these changes into account.
+        target: popup.contentItem
+        onWidthChanged: popup.width = popup.contentItem.width + 2 * popup.padding
+        onHeightChanged: popup.height = popup.contentItem.height + 2 * popup.padding
     }
 }
