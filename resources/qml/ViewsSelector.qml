@@ -13,7 +13,6 @@ Cura.ExpandableComponent
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandableComponent.ContentAlignment.AlignLeft
-    iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     property var viewModel: UM.ViewModel { }
 

@@ -30,7 +30,7 @@ Item
     property alias headerItem: headerItemLoader.sourceComponent
 
     // The contentItem holds the QML item that is shown when the "open" button is pressed
-    property alias contentItem: content.contentItem
+    property var contentItem: content.contentItem
 
     // Defines the type of the contents
     property int contentType: ExpandableComponent.ContentType.Floating
@@ -38,6 +38,7 @@ Item
     property color contentBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
+    property color headerActiveColor: UM.Theme.getColor("secondary")
     property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
 
     // Defines the alignment of the content with respect of the headerItem, by default to the right
@@ -123,7 +124,7 @@ Item
             width: parent.width
             height: UM.Theme.getSize("thick_lining").height
             color: UM.Theme.getColor("primary")
-            visible: expanded
+            visible: contentType == ExpandableComponent.ContentType.Floating && expanded
             anchors.bottom: parent.bottom
         }
 
@@ -138,6 +139,9 @@ Item
             }
             sourceSize.width: width
             sourceSize.height: height
+            source: contentType == ExpandableComponent.ContentType.Floating ?
+                        (expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")) :
+                        UM.Theme.getIcon("pencil")
             visible: source != ""
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
@@ -151,7 +155,8 @@ Item
             onClicked: toggleContent()
             hoverEnabled: true
             onEntered: background.color = headerHoverColor
-            onExited: background.color = headerBackgroundColor
+            onExited: background.color = (contentType == ExpandableComponent.ContentType.Fixed && expanded) ?
+                            headerActiveColor : headerBackgroundColor
         }
     }
 
@@ -190,16 +195,15 @@ Item
             border.color: UM.Theme.getColor("lining")
             radius: UM.Theme.getSize("default_radius").width
         }
+    }
 
-        contentItem: Item { }
-
-        onContentItemChanged:
-        {
-            // Since we want the size of the content to be set by the size of the content,
-            // we need to do it like this.
-            content.width = contentItem.width + 2 * content.padding
-            content.height = contentItem.height + 2 * content.padding
-        }
+    onContentItemChanged:
+    {
+        // Since we want the size of the content to be set by the size of the content,
+        // we need to do it like this.
+        content.width = contentItem.width + 2 * content.padding
+        content.height = contentItem.height + 2 * content.padding
+        content.contentItem = contentItem
     }
 
     // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.

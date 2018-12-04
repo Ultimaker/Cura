@@ -14,7 +14,7 @@ Cura.ExpandableComponent
     property string enabledText: catalog.i18nc("@label:Should be short", "On")
     property string disabledText: catalog.i18nc("@label:Should be short", "Off")
 
-    iconSource: UM.Theme.getIcon("pencil")
+    contentType: Cura.ExpandableComponent.ContentType.Fixed
     contentPadding: UM.Theme.getSize("default_lining").width
     contentSpacingY: UM.Theme.getSize("narrow_margin").width
 
