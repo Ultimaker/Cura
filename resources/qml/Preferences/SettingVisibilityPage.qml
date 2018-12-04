@@ -25,11 +25,7 @@ UM.PreferencesPage
 
     function reset()
     {
-        UM.Preferences.resetPreference("general/visible_settings")
-
-        // After calling this function update Setting visibility preset combobox.
-        // Reset should set default setting preset ("Basic")
-        visibilityPreset.currentIndex = 1
+        settingVisibilityPresetsModel.setActivePreset("basic")
     }
     resetEnabled: true;
 
@@ -115,21 +111,22 @@ UM.PreferencesPage
 
             currentIndex:
             {
+                var idx = -1;
                 for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
                 {
-                    if(settingVisibilityPresetsModel.items[i].id == settingVisibilityPresetsModel.activePreset)
+                    if(settingVisibilityPresetsModel.items[i].presetId == settingVisibilityPresetsModel.activePreset)
                     {
-                        currentIndex = i;
-                        return;
+                        idx = i;
+                        break;
                     }
                 }
-                return -1
+                return idx;
             }
 
             onActivated:
             {
-                var preset_id = settingVisibilityPresetsModel.items[index].id;
-                settingVisibilityPresetsModel.setActivePreset(preset_id);
+                var preset_id = settingVisibilityPresetsModel.items[index].presetId
+                settingVisibilityPresetsModel.setActivePreset(preset_id)
             }
         }
 

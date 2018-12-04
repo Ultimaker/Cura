@@ -64,11 +64,18 @@ Item
             activeFocusOnPress: true
             menu: ProfileMenu { }
 
-            function generateActiveQualityText () {
-                var result = Cura.MachineManager.activeQualityOrQualityChangesName;
+            function generateActiveQualityText ()
+            {
+                var result = Cura.MachineManager.activeQualityOrQualityChangesName
+                if (Cura.MachineManager.isActiveQualityExperimental)
+                {
+                    result += " (Experimental)"
+                }
 
-                if (Cura.MachineManager.isActiveQualitySupported) {
-                    if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                if (Cura.MachineManager.isActiveQualitySupported)
+                {
+                    if (Cura.MachineManager.activeQualityLayerHeight > 0)
+                    {
                         result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
                         result += " - "
                         result += Cura.MachineManager.activeQualityLayerHeight + "mm"
