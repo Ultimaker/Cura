@@ -181,7 +181,7 @@ Item
                 {
                     id: materialSelection
 
-                    property var valueError: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") != "True" : true
+                    property bool valueError: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") != "True" : true
                     property var valueWarning: !Cura.MachineManager.isActiveQualitySupported
 
                     text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
