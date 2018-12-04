@@ -6,40 +6,48 @@ import Cura 1.0 as Cura
 
 import QtGraphicalEffects 1.0 // For the dropshadow
 
-// The expandable component has 3 major sub components:
+// The expandable component has 2 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
-//      * The popupItem; The content that needs to be shown if the component is expanded.
-//      * The icon; An icon that is displayed on the right of the drawer.
+//      * The contentItem; The content that needs to be shown if the component is expanded.
 Item
 {
     id: base
 
-    // Enumeration with the different possible alignments of the popup with respect of the headerItem
-    enum PopupAlignment 
+    // Enumeration with the different possible alignments of the content with respect of the headerItem
+    enum ContentAlignment
     {
         AlignLeft,
         AlignRight
     }
 
+    enum ContentType
+    {
+        Floating,
+        Fixed
+    }
+
     // The headerItem holds the QML item that is always displayed.
     property alias headerItem: headerItemLoader.sourceComponent
 
-    // The popupItem holds the QML item that is shown when the "open" button is pressed
-    property alias popupItem: popup.contentItem
+    // The contentItem holds the QML item that is shown when the "open" button is pressed
+    property alias contentItem: content.contentItem
 
-    property color popupBackgroundColor: UM.Theme.getColor("action_button")
+    // Defines the type of the contents
+    property int contentType: ExpandableComponent.ContentType.Floating
+
+    property color contentBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
     property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
 
-    // Defines the alignment of the popup with respect of the headerItem, by default to the right
-    property int popupAlignment: ExpandableComponent.PopupAlignment.AlignRight
+    // Defines the alignment of the content with respect of the headerItem, by default to the right
+    property int contentAlignment: ExpandableComponent.ContentAlignment.AlignRight
 
-    // How much spacing is needed around the popupItem
-    property alias popupPadding: popup.padding
+    // How much spacing is needed around the contentItem
+    property alias contentPadding: content.padding
 
-    // How much spacing is needed for the popupItem by Y coordinate
-    property var popupSpacingY: 0
+    // How much spacing is needed for the contentItem by Y coordinate
+    property var contentSpacingY: 0
 
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
@@ -53,7 +61,7 @@ Item
     property alias iconSize: collapseButton.height
 
     // Is the "drawer" open?
-    readonly property alias expanded: popup.visible
+    readonly property alias expanded: content.visible
 
     property alias expandedHighlightColor: expandedHighlight.color
 
@@ -63,8 +71,8 @@ Item
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
 
-    // Change the popupItem close behaviour
-    property alias popupClosePolicy : popup.closePolicy
+    // Change the contentItem close behaviour
+    property alias contentClosePolicy : content.closePolicy
 
     property alias headerShadowColor: shadow.color
 
@@ -72,15 +80,15 @@ Item
 
     property int shadowOffset: 2
 
-    function togglePopup()
+    function toggleContent()
     {
-        if (popup.visible)
+        if (content.visible)
         {
-            popup.close()
+            content.close()
         }
         else
         {
-            popup.open()
+            content.open()
         }
     }
 
@@ -108,7 +116,7 @@ Item
             }
         }
 
-        // A highlight that is shown when the popup is expanded
+        // A highlight that is shown when the content is expanded
         Rectangle
         {
             id: expandedHighlight
@@ -140,7 +148,7 @@ Item
         {
             id: mouseArea
             anchors.fill: parent
-            onClicked: togglePopup()
+            onClicked: toggleContent()
             hoverEnabled: true
             onEntered: background.color = headerHoverColor
             onExited: background.color = headerBackgroundColor
@@ -163,21 +171,21 @@ Item
 
     Popup
     {
-        id: popup
+        id: content
 
-        // Ensure that the popup is located directly below the headerItem
-        y: background.height + base.shadowOffset + popupSpacingY
+        // Ensure that the content is located directly below the headerItem
+        y: background.height + base.shadowOffset + base.contentSpacingY
 
-        // Make the popup aligned with the rest, using the property popupAlignment to decide whether is right or left.
+        // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
-        x: popupAlignment == ExpandableComponent.PopupAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
+        x: contentAlignment == ExpandableComponent.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
         padding: UM.Theme.getSize("default_margin").width
         closePolicy: Popup.CloseOnPressOutsideParent
 
         background: Cura.RoundedRectangle
         {
             cornerSide: Cura.RoundedRectangle.Direction.Down
-            color: popupBackgroundColor
+            color: contentBackgroundColor
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
             radius: UM.Theme.getSize("default_radius").width
@@ -187,20 +195,20 @@ Item
 
         onContentItemChanged:
         {
-            // Since we want the size of the popup to be set by the size of the content,
+            // Since we want the size of the content to be set by the size of the content,
             // we need to do it like this.
-            popup.width = contentItem.width + 2 * popup.padding
-            popup.height = contentItem.height + 2 * popup.padding
+            content.width = contentItem.width + 2 * content.padding
+            content.height = contentItem.height + 2 * content.padding
         }
     }
 
-    // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the Popup item.
+    // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.
     // Apparently the order in which these are handled matters and so the height is correctly updated if this is here.
     Connections
     {
-        // Since it could be that the popup is dynamically populated, we should also take these changes into account.
-        target: popup.contentItem
-        onWidthChanged: popup.width = popup.contentItem.width + 2 * popup.padding
-        onHeightChanged: popup.height = popup.contentItem.height + 2 * popup.padding
+        // Since it could be that the content is dynamically populated, we should also take these changes into account.
+        target: content.contentItem
+        onWidthChanged: content.width = content.contentItem.width + 2 * content.padding
+        onHeightChanged: content.height = content.contentItem.height + 2 * content.padding
     }
 }

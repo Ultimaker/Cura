@@ -45,7 +45,7 @@ Cura.ExpandableComponent
         verticalAlignment: Text.AlignVCenter
     }
 
-    popupItem: Column
+    contentItem: Column
     {
         id: viewSettings
 

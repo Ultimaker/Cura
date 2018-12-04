@@ -11,8 +11,8 @@ Cura.ExpandableComponent
 {
     id: viewSelector
 
-    popupPadding: UM.Theme.getSize("default_lining").width
-    popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
+    contentPadding: UM.Theme.getSize("default_lining").width
+    contentAlignment: Cura.ExpandableComponent.ContentAlignment.AlignLeft
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     property var viewModel: UM.ViewModel { }
@@ -70,7 +70,7 @@ Cura.ExpandableComponent
         }
     }
 
-    popupItem: Column
+    contentItem: Column
     {
         id: viewSelectorPopup
         width: viewSelector.width - 2 * viewSelector.popupPadding

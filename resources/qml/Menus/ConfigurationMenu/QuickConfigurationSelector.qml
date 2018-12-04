@@ -93,7 +93,7 @@ Cura.ExpandableComponent
         }
     }
 
-    popupItem: Item
+    contentItem: Item
     {
         width: base.width - 2 * UM.Theme.getSize("default_margin").width
         height: 200

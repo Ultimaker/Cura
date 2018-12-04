@@ -15,10 +15,10 @@ Cura.ExpandableComponent
     property string disabledText: catalog.i18nc("@label:Should be short", "Off")
 
     iconSource: UM.Theme.getIcon("pencil")
-    popupPadding: UM.Theme.getSize("default_lining").width
-    popupSpacingY: UM.Theme.getSize("narrow_margin").width
+    contentPadding: UM.Theme.getSize("default_lining").width
+    contentSpacingY: UM.Theme.getSize("narrow_margin").width
 
-    popupClosePolicy: Popup.CloseOnEscape
+    contentClosePolicy: Popup.CloseOnEscape
 
     UM.I18nCatalog
     {
@@ -36,5 +36,5 @@ Cura.ExpandableComponent
         id: extrudersModel
     }
 
-    popupItem: PrintSetupSelectorContents {}
+    contentItem: PrintSetupSelectorContents {}
 }

@@ -15,8 +15,8 @@ Cura.ExpandableComponent
     property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-    popupPadding: UM.Theme.getSize("default_lining").width
-    popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
+    contentPadding: UM.Theme.getSize("default_lining").width
+    contentAlignment: Cura.ExpandableComponent.ContentAlignment.AlignLeft
     iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
 
     UM.I18nCatalog
@@ -80,7 +80,7 @@ Cura.ExpandableComponent
         }
     }
 
-    popupItem: Item
+    contentItem: Item
     {
         id: popup
         width: UM.Theme.getSize("machine_selector_widget_content").width
