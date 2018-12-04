@@ -63,8 +63,6 @@ class CloudOutputDeviceManager:
         found_clusters = {c.cluster_id: c for c in clusters}
 
         Logger.log("i", "Parsed remote clusters to %s", found_clusters)
-        if not found_clusters:
-            return
 
         known_cluster_ids = set(self._remote_clusters.keys())
         found_cluster_ids = set(found_clusters.keys())
@@ -85,7 +83,6 @@ class CloudOutputDeviceManager:
         device = CloudOutputDevice(self._api, cluster.cluster_id)
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
-        device.connect()  # TODO: remove this
         self._connectToActiveMachine(cluster.cluster_id)
 
     ##  Remove a CloudOutputDevice
@@ -95,13 +92,14 @@ class CloudOutputDeviceManager:
         if cluster.cluster_id in self._remote_clusters:
             del self._remote_clusters[cluster.cluster_id]
 
-    ##  Callback for when the active machine was changed by the user.
+    ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self, cluster_id: Optional[str] = None) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
 
         # TODO: Remove this once correct pairing has been added (see below).
+        # TODO: This just adds any available cluster to the active device for testing.
         if cluster_id:
             active_machine.setMetaDataEntry("um_cloud_cluster_id", cluster_id)
 
