@@ -1,9 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-from threading import Timer
 from typing import Dict, Optional
 
+from PyQt5.QtCore import QTimer
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
@@ -45,6 +45,11 @@ class CloudOutputDeviceManager(NetworkClient):
         self._on_cluster_received = Signal()
         self._on_cluster_received.connect(self._getRemoteClusters)
 
+        self.update_timer = QTimer(CuraApplication.getInstance())
+        self.update_timer.setInterval(self.CHECK_CLUSTER_INTERVAL * 1000)
+        self.update_timer.setSingleShot(False)
+        self.update_timer.timeout.connect(self._on_cluster_received.emit)
+
 
     ##  Override _createEmptyRequest to add the needed authentication header for talking to the Ultimaker Cloud API.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
@@ -61,10 +66,9 @@ class CloudOutputDeviceManager(NetworkClient):
         if self._account.isLoggedIn:
             self.get("/clusters", on_finished = self._onGetRemoteClustersFinished)
 
-        # Only start the polling thread after the user is authenticated
+        # Only start the polling timer after the user is authenticated
         # The first call to _getRemoteClusters comes from self._account.loginStateChanged
-        timer = Timer(5.0, self._on_cluster_received.emit)
-        timer.start()
+        self.update_timer.start()
 
 
     ##  Callback for when the request for getting the clusters. is finished.
