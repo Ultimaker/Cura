@@ -115,6 +115,7 @@ Item
             }
             radius: UM.Theme.getSize("default_radius").width
             color: UM.Theme.getColor("lining")
+            visible: extrudersModel.items.length > 1
         }
 
         Column
@@ -131,8 +132,7 @@ Item
                 id: extruders
                 width: childrenRect.width
                 height: childrenRect.height
-                property var _model: Cura.ExtrudersModel { id: extrudersModel }
-                model: _model.items.length > 1 ? _model : 0
+                model: extrudersModel.items.length > 1 ? extrudersModel : 0
 
                 delegate: ExtruderButton
                 {
@@ -144,13 +144,18 @@ Item
         }
     }
 
+    Cura.ExtrudersModel
+    {
+        id: extrudersModel
+    }
+
     UM.PointingRectangle
     {
-        id: panelBorder;
+        id: panelBorder
 
-        anchors.left: parent.right;
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-        anchors.top: base.top;
+        anchors.left: parent.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.top: base.top
         anchors.topMargin: base.activeY
         z: buttons.z - 1
 
@@ -161,14 +166,14 @@ Item
         {
             if (panel.item && panel.width > 0)
             {
-                 return Math.max(panel.width + 2 * UM.Theme.getSize("default_margin").width);
+                 return Math.max(panel.width + 2 * UM.Theme.getSize("default_margin").width)
             }
             else
             {
                 return 0;
             }
         }
-        height: panel.item ? panel.height + 2 * UM.Theme.getSize("default_margin").height : 0;
+        height: panel.item ? panel.height + 2 * UM.Theme.getSize("default_margin").height : 0
 
         opacity: panel.item && panel.width > 0 ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
@@ -186,11 +191,11 @@ Item
         {
             id: panel
 
-            x: UM.Theme.getSize("default_margin").width;
-            y: UM.Theme.getSize("default_margin").height;
+            x: UM.Theme.getSize("default_margin").width
+            y: UM.Theme.getSize("default_margin").height
 
             source: UM.ActiveTool.valid ? UM.ActiveTool.activeToolPanel : ""
-            enabled: UM.Controller.toolsEnabled;
+            enabled: UM.Controller.toolsEnabled
         }
     }
 
