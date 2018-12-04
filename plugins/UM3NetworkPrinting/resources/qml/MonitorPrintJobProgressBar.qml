@@ -78,7 +78,7 @@ Item
         {
             if (!printJob)
             {
-                return "";
+                return ""
             }
             switch (printJob.state)
             {
@@ -105,7 +105,7 @@ Item
                 case "queued":
                     return catalog.i18nc("@label:status", "Action required")
                 default:
-                    return catalog.i18nc("@label:status", "Finishes %1 at %2".arg(OutputDevice.getDateCompleted( printJob.timeRemaining ), OutputDevice.getTimeCompleted( printJob.timeRemaining )))
+                    return catalog.i18nc("@label:status", "Finishes %1 at %2".arg(OutputDevice.getDateCompleted( printJob.timeRemaining )).arg(OutputDevice.getTimeCompleted( printJob.timeRemaining )))
             }
         }
         width: contentWidth
