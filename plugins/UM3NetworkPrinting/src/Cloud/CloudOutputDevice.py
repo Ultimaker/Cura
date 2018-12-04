@@ -338,8 +338,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         for job_id in updated_job_ids:
             self._updateUM3PrintJobOutputModel(current_jobs[job_id], remote_jobs[job_id])
 
-        # TODO: properly handle removed and updated printers
-        self.printJobsChanged.emit()
+        # We only have to update when jobs are added or removed
+        # updated jobs push their changes via their outputmodel
+        if len(removed_job_ids) > 0 or len(new_job_ids) > 0:
+            self.printJobsChanged.emit()
 
     def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
         try:
