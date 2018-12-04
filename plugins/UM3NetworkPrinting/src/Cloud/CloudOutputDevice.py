@@ -375,7 +375,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # TODO: Multipart upload
         job_response = JobUploadResponse(**response.get("data"))
         Logger.log("i", "Print job created successfully: %s", job_response.__dict__)
-        self.put(job_response.upload_url, data = mesh,
+        self.put(job_response.upload_url, data = mesh, content_type = job_response.content_type,
                  on_finished = lambda r: self._onPrintJobUploaded(job_response.job_id, r),
                  on_progress = self._onUploadPrintJobProgress)
 
