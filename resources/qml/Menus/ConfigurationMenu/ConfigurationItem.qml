@@ -12,6 +12,7 @@ Button
     id: configurationItem
 
     property var configuration: null
+    hoverEnabled: true
 
     height: childrenRect.height
 
