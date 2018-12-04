@@ -7,7 +7,6 @@ from PyQt5.QtCore import QTimer
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
 from plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
@@ -43,13 +42,10 @@ class CloudOutputDeviceManager:
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         
-        self._on_cluster_received = Signal()
-        self._on_cluster_received.connect(self._getRemoteClusters)
-
         self.update_timer = QTimer(CuraApplication.getInstance())
         self.update_timer.setInterval(self.CHECK_CLUSTER_INTERVAL * 1000)
         self.update_timer.setSingleShot(False)
-        self.update_timer.timeout.connect(self._on_cluster_received.emit)
+        self.update_timer.timeout.connect(self._getRemoteClusters)
 
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
@@ -59,7 +55,8 @@ class CloudOutputDeviceManager:
 
         # Only start the polling timer after the user is authenticated
         # The first call to _getRemoteClusters comes from self._account.loginStateChanged
-        self.update_timer.start()
+        if not self.update_timer.isActive():
+            self.update_timer.start()
 
     ##  Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudCluster]) -> None:
