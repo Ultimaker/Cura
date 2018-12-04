@@ -139,8 +139,8 @@ Item
             sourceSize.width: width
             sourceSize.height: height
             visible: source != ""
-            width: height
-            height: Math.round(0.2 * base.height)
+            width: UM.Theme.getSize("standard_arrow").width
+            height: UM.Theme.getSize("standard_arrow").height
             color: UM.Theme.getColor("text")
         }
 

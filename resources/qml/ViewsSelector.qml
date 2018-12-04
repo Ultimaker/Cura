@@ -120,7 +120,7 @@ Cura.ExpandableComponent
 
                 onClicked:
                 {
-                    viewSelector.togglePopup()
+                    toggleContent()
                     UM.Controller.setActiveView(id)
                 }
             }

@@ -134,7 +134,7 @@ Cura.ExpandableComponent
                 text: catalog.i18nc("@button", "Add printer")
                 onClicked:
                 {
-                    togglePopup()
+                    toggleContent()
                     Cura.Actions.addMachine.trigger()
                 }
             }
@@ -146,7 +146,7 @@ Cura.ExpandableComponent
                 text: catalog.i18nc("@button", "Manage printers")
                 onClicked:
                 {
-                    togglePopup()
+                    toggleContent()
                     Cura.Actions.configureMachines.trigger()
                 }
             }

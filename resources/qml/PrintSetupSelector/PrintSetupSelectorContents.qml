@@ -93,7 +93,7 @@ Item
 
             background: Item {}
 
-            onClicked: togglePopup() // Will hide the popup item
+            onClicked: toggleContent() // Will hide the popup item
         }
     }
 
