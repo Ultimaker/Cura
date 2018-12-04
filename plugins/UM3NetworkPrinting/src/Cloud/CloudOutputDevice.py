@@ -6,7 +6,7 @@ import os
 from json import JSONDecodeError
 from typing import List, Optional, Dict, cast, Union, Tuple
 
-from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty, pyqtSlot
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM import i18nCatalog
@@ -208,6 +208,16 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def queuedPrintJobs(self) -> List[UM3PrintJobOutputModel]:
         return [print_job for print_job in self._print_jobs
                 if print_job.state == "queued" or print_job.state == "error"]
+
+    ##  Get remote print jobs that are assigned to a printer.
+    @pyqtProperty("QVariantList", notify = printJobsChanged)
+    def activePrintJobs(self) -> List[UM3PrintJobOutputModel]:
+        return [print_job for print_job in self._print_jobs if
+                print_job.assignedPrinter is not None and print_job.state != "queued"]
+
+    @pyqtProperty(bool, notify = printJobsChanged)
+    def receivedPrintJobs(self) -> bool:
+        return not self._sending_job
 
     ##  Called when the connection to the cluster changes.
     def connect(self) -> None:
@@ -448,3 +458,22 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         message.show()
         self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeFinished.emit()
+
+    ##  TODO: The following methods are required by the monitor page QML, but are not actually available using cloud.
+    #   TODO: We fake the methods here to not break the monitor page.
+
+    @pyqtProperty(QObject, notify = printersChanged)
+    def activePrinter(self) -> Optional[PrinterOutputModel]:
+        return self._printers[0] or None
+
+    @pyqtSlot(QObject)
+    def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
+        pass
+
+    @pyqtProperty(QUrl, notify = printersChanged)
+    def activeCameraUrl(self) -> "QUrl":
+        return QUrl()
+
+    @pyqtSlot(QUrl)
+    def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
+        pass
