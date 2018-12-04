@@ -43,7 +43,7 @@ Button
 
     contentItem: Row
     {
-        //Icon if displayed on the left side.
+        //Left side icon. Only displayed if !iconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconLeft
@@ -71,7 +71,7 @@ Button
             elide: Text.ElideRight
         }
 
-        //Icon if displayed on the right side.
+        //Right side icon. Only displayed if iconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconRight
