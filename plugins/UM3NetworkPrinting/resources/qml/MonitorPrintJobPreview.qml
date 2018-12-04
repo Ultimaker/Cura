@@ -65,11 +65,7 @@ Item
                 case "error":
                     return "../svg/aborted-icon.svg"
                 case "wait_cleanup":
-                    if (printJob.state == "wait_cleanup" && printJob.timeTotal > printJob.timeElapsed)
-                    {
-                        return "../svg/aborted-icon.svg"
-                    }
-                    return "";
+                    return printJob.timeTotal > printJob.timeElapsed ? "../svg/aborted-icon.svg" : "";
                 case "pausing":
                     return "../svg/paused-icon.svg"
                 case "paused":
