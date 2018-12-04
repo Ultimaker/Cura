@@ -90,9 +90,11 @@ Item
                     return catalog.i18nc("@label:status", "Finished")
                 case "sent_to_printer":
                     return catalog.i18nc("@label:status", "Preparing...")
-                case "aborting":
+                case "pre_print":
+                    return catalog.i18nc("@label:status", "Preparing...")
+                case "aborting": // NOTE: Doesn't exist but maybe should someday
                     return catalog.i18nc("@label:status", "Aborting...")
-                case "aborted":
+                case "aborted": // NOTE: Unused, see above
                     return catalog.i18nc("@label:status", "Aborted")
                 case "pausing":
                     return catalog.i18nc("@label:status", "Pausing...")
