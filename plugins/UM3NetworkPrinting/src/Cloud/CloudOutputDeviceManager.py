@@ -92,7 +92,8 @@ class CloudOutputDeviceManager:
     #   \param cluster: The cluster that was removed
     def _removeCloudOutputDevice(self, cluster: CloudCluster):
         self._output_device_manager.removeOutputDevice(cluster.cluster_id)
-        del self._remote_clusters[cluster.cluster_id]
+        if cluster.cluster_id in self._remote_clusters:
+            del self._remote_clusters[cluster.cluster_id]
 
     ##  Callback for when the active machine was changed by the user.
     def _connectToActiveMachine(self, cluster_id: Optional[str] = None, host_name: Optional[str] = None) -> None:
