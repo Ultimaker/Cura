@@ -116,7 +116,7 @@ class CloudOutputDeviceManager(NetworkClient):
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
         device.connect()  # TODO: remove this
-        self._connectToActiveMachine()
+        self._connectToActiveMachine(cluster.cluster_id, cluster.host_name)
 
     ##  Remove a CloudOutputDevice
     def _removeCloudOutputDevice(self, cluster: CloudCluster):
@@ -124,10 +124,15 @@ class CloudOutputDeviceManager(NetworkClient):
         del self._remote_clusters[cluster.cluster_id]
 
     ##  Callback for when the active machine was changed by the user.
-    def _connectToActiveMachine(self) -> None:
+    def _connectToActiveMachine(self, cluster_id: Optional[str] = None, host_name: Optional[str] = None) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
+
+        # TODO: Remove this once correct pairing has been added (see below).
+        if cluster_id:
+            active_machine.setMetaDataEntry("um_cloud_cluster_id", cluster_id)
+            active_machine.setMetaDataEntry("connect_group_name", host_name)
         
         # Check if the stored cluster_id for the active machine is in our list of remote clusters.
         stored_cluster_id = active_machine.getMetaDataEntry("um_cloud_cluster_id")
