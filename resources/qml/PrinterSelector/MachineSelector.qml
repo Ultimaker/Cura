@@ -59,9 +59,6 @@ Cura.ExpandableComponent
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
-            sourceSize.width: width
-            sourceSize.height: height
-
             color: UM.Theme.getColor("primary")
             visible: isNetworkPrinter && isPrinterConnected
 

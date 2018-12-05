@@ -51,7 +51,7 @@ Column
 
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
-                font: UM.Theme.getFont("small")
+                font: UM.Theme.getFont("default_bold")
             }
 
             Cura.IconLabel
@@ -84,7 +84,7 @@ Column
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
             }
         }
 
@@ -111,7 +111,7 @@ Column
         {
             id: previewStageShortcut
 
-            height: UM.Theme.getSize("action_panel_button").height
+            height: UM.Theme.getSize("action_button").height
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Preview")
@@ -125,8 +125,8 @@ Column
 
         Cura.OutputDevicesActionButton
         {
-            width: previewStageShortcut.visible ? UM.Theme.getSize("action_panel_button").width : parent.width
-            height: UM.Theme.getSize("action_panel_button").height
+            width: previewStageShortcut.visible ? UM.Theme.getSize("action_button").width : parent.width
+            height: UM.Theme.getSize("action_button").height
         }
     }
 }

@@ -86,13 +86,13 @@ Item
             Label
             {
                 text: catalog.i18nc("@label", "Website") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
             Label
             {
                 text: catalog.i18nc("@label", "Email") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
         }
@@ -118,7 +118,7 @@ Item
                     }
                     return ""
                 }
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
@@ -134,7 +134,7 @@ Item
                     }
                     return ""
                 }
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
