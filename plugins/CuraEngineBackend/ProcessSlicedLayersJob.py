@@ -195,7 +195,7 @@ class ProcessSlicedLayersJob(Job):
         if extruders:
             material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:
-                position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
+                position = int(extruder.getMetaDataEntry("position", default = "0"))
                 try:
                     default_color = ExtrudersModel.defaultColors[position]
                 except IndexError:

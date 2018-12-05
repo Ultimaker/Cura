@@ -49,7 +49,7 @@ Item
         }
         color: "#191919" // TODO: Theme!
         elide: Text.ElideRight
-        font: UM.Theme.getFont("very_small") // 12pt, regular
+        font: UM.Theme.getFont("default") // 12pt, regular
         text: ""
 
         // FIXED-LINE-HEIGHT:
@@ -66,7 +66,7 @@ Item
         }
         color: "#191919" // TODO: Theme!
         elide: Text.ElideRight
-        font: UM.Theme.getFont("small") // 12pt, bold
+        font: UM.Theme.getFont("default_bold") // 12pt, bold
         text: ""
 
         // FIXED-LINE-HEIGHT:

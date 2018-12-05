@@ -52,7 +52,7 @@ Item
             id: buildplateLabel
             color: "#191919" // TODO: Theme!
             elide: Text.ElideRight
-            font: UM.Theme.getFont("very_small") // 12pt, regular
+            font: UM.Theme.getFont("default") // 12pt, regular
             text: ""
 
             // FIXED-LINE-HEIGHT:

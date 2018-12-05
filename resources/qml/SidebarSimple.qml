@@ -106,7 +106,7 @@ Item
                         var availableMin = -1
                         var availableMax = -1
 
-                        for (var i = 0; i < Cura.QualityProfilesDropDownMenuModel.rowCount(); i++)
+                        for (var i = 0; i < Cura.QualityProfilesDropDownMenuModel.count; i++)
                         {
                             var qualityItem = Cura.QualityProfilesDropDownMenuModel.getItem(i)
 
@@ -183,7 +183,7 @@ Item
                         qualityModel.existingQualityProfile = 0
 
                         // check, the ticks count cannot be less than zero
-                        qualityModel.totalTicks = Math.max(0, Cura.QualityProfilesDropDownMenuModel.rowCount() - 1)
+                        qualityModel.totalTicks = Math.max(0, Cura.QualityProfilesDropDownMenuModel.count - 1)
                     }
                 }
 
@@ -731,7 +731,6 @@ Item
                             {
                                 anchors.fill: parent
                                 anchors.margins: 2 * screenScaleFactor
-                                sourceSize.width: width
                                 sourceSize.height: width
                                 source: UM.Theme.getIcon(model.icon)
                                 color: UM.Theme.getColor("quality_slider_unavailable")
@@ -1156,7 +1155,7 @@ Item
     function populateExtruderModel()
     {
         extruderModel.clear();
-        for(var extruderNumber = 0; extruderNumber < extruders.rowCount() ; extruderNumber++)
+        for(var extruderNumber = 0; extruderNumber < extruders.count; extruderNumber++)
         {
             extruderModel.append({
                 text: extruders.getItem(extruderNumber).name,

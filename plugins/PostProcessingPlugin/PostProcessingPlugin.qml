@@ -141,7 +141,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.7)
                                     height: Math.round(control.height / 2.7)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: palette.text
                                     source: UM.Theme.getIcon("cross1")
@@ -176,7 +175,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.5)
                                     height: Math.round(control.height / 2.5)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
                                     source: UM.Theme.getIcon("arrow_bottom")
@@ -211,7 +209,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.5)
                                     height: Math.round(control.height / 2.5)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
                                     source: UM.Theme.getIcon("arrow_top")
@@ -498,7 +495,6 @@ UM.Dialog
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.round(parent.width / 2)
                     height: Math.round(parent.height / 2)
-                    sourceSize.width: width
                     sourceSize.height: height
                     color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :
                                control.pressed ? UM.Theme.getColor("action_button_active_text") :

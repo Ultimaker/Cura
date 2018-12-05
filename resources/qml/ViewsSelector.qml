@@ -19,7 +19,7 @@ Cura.ExpandableComponent
 
     property var activeView:
     {
-        for (var i = 0; i < viewModel.rowCount(); i++)
+        for (var i = 0; i < viewModel.count; i++)
         {
             if (viewModel.items[i].active)
             {

@@ -129,23 +129,26 @@ Button
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.width: width
             sourceSize.height: width
             color:
             {
                 if (!base.enabled)
                 {
                     return UM.Theme.getColor("setting_category_disabled_text")
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
+                }
+                else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
                 {
                     return UM.Theme.getColor("setting_category_active_hover_text")
-                } else if (base.pressed || (base.checkable && base.checked))
+                }
+                else if (base.pressed || (base.checkable && base.checked))
                 {
                     return UM.Theme.getColor("setting_category_active_text")
-                } else if (base.hovered || base.activeFocus)
+                }
+                else if (base.hovered || base.activeFocus)
                 {
                     return UM.Theme.getColor("setting_category_hover_text")
-                } else
+                }
+                else
                 {
                     return UM.Theme.getColor("setting_category_text")
                 }
