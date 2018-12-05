@@ -19,9 +19,10 @@ Item
     UM.I18nCatalog
     {
         id: catalog
-        name:"cura"
+        name: "cura"
     }
 
+    width: childrenRect.width
     height: childrenRect.height
 
     onActivityChanged:
@@ -33,82 +34,75 @@ Item
         }
     }
 
-    Rectangle
+    Item
     {
         id: jobNameRow
         anchors.top: parent.top
-        anchors.right: parent.right
+        anchors.left: parent.left
         height: UM.Theme.getSize("jobspecs_line").height
-        visible: base.activity
 
-        Item
+        Button
         {
-            width: parent.width
-            height: parent.height
+            id: printJobPencilIcon
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            width: UM.Theme.getSize("save_button_specs_icons").width
+            height: UM.Theme.getSize("save_button_specs_icons").height
 
-            Button
+            onClicked:
             {
-                id: printJobPencilIcon
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                width: UM.Theme.getSize("save_button_specs_icons").width
-                height: UM.Theme.getSize("save_button_specs_icons").height
+                printJobTextfield.selectAll()
+                printJobTextfield.focus = true
+            }
 
-                onClicked:
+            style: ButtonStyle
+            {
+                background: Item
                 {
-                    printJobTextfield.selectAll()
-                    printJobTextfield.focus = true
-                }
-
-                style: ButtonStyle
-                {
-                    background: Item
+                    UM.RecolorImage
                     {
-                        UM.RecolorImage
-                        {
-                            width: UM.Theme.getSize("save_button_specs_icons").width
-                            height: UM.Theme.getSize("save_button_specs_icons").height
-                            sourceSize.width: width
-                            sourceSize.height: width
-                            color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene")
-                            source: UM.Theme.getIcon("pencil")
-                        }
+                        width: UM.Theme.getSize("save_button_specs_icons").width
+                        height: UM.Theme.getSize("save_button_specs_icons").height
+                        sourceSize.width: width
+                        sourceSize.height: width
+                        color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene")
+                        source: UM.Theme.getIcon("pencil")
                     }
                 }
             }
+        }
 
-            TextField
+        TextField
+        {
+            id: printJobTextfield
+            anchors.left: printJobPencilIcon.right
+            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+            height: UM.Theme.getSize("jobspecs_line").height
+            width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
+            maximumLength: 120
+            property int unremovableSpacing: 5
+            text: PrintInformation.jobName
+            horizontalAlignment: TextInput.AlignLeft
+
+            onEditingFinished:
             {
-                id: printJobTextfield
-                anchors.right: printJobPencilIcon.left
-                anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-                height: UM.Theme.getSize("jobspecs_line").height
-                width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
-                maximumLength: 120
-                property int unremovableSpacing: 5
-                text: PrintInformation.jobName
-                horizontalAlignment: TextInput.AlignRight
+                var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
+                PrintInformation.setJobName(new_name, true)
+                printJobTextfield.focus = false
+            }
 
-                onEditingFinished:
+            validator: RegExpValidator {
+                regExp: /^[^\\\/\*\?\|\[\]]*$/
+            }
+
+            style: TextFieldStyle
+            {
+                textColor: UM.Theme.getColor("text_scene")
+                font: UM.Theme.getFont("default_bold")
+                background: Rectangle
                 {
-                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
-                    PrintInformation.setJobName(new_name, true)
-                    printJobTextfield.focus = false
-                }
-
-                validator: RegExpValidator {
-                    regExp: /^[^\\\/\*\?\|\[\]]*$/
-                }
-
-                style: TextFieldStyle
-                {
-                    textColor: UM.Theme.getColor("text_scene")
-                    font: UM.Theme.getFont("default_bold")
-                    background: Rectangle
-                    {
-                        opacity: 0
-                        border.width: 0
-                    }
+                    opacity: 0
+                    border.width: 0
                 }
             }
         }
@@ -118,22 +112,16 @@ Item
     {
         id: additionalComponentsRow
         anchors.top: jobNameRow.bottom
-        anchors.right: parent.right
+        anchors.left: parent.left
     }
 
     Label
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
-        anchors.right: additionalComponentsRow.left
-        anchors.rightMargin:
-        {
-            if (additionalComponentsRow.width > 0)
-            {
-                return UM.Theme.getSize("default_margin").width
-            }
-            return 0
-        }
+        anchors.left: additionalComponentsRow.right
+        anchors.leftMargin: additionalComponentsRow.width > 0 ? UM.Theme.getSize("default_margin").width : 0
+
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("default_bold")

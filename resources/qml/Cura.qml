@@ -189,16 +189,6 @@ UM.MainWindow
                 onHideTooltip: base.hideTooltip()
             }
 
-            JobSpecs
-            {
-                id: jobSpecs
-                anchors
-                {
-                    bottom: parent.bottom
-                    bottomMargin: UM.Theme.getSize("default_margin").height
-                }
-            }
-
             Toolbar
             {
                 // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
@@ -228,6 +218,19 @@ UM.MainWindow
                 }
             }
 
+            JobSpecs
+            {
+                id: jobSpecs
+                visible: CuraApplication.platformActivity
+                anchors
+                {
+                    left: parent.left
+                    bottom: viewOrientationControls.top
+                    margins: UM.Theme.getSize("wide_margin").width
+                    bottomMargin: UM.Theme.getSize("default_margin").width
+                }
+            }
+
             ViewOrientationControls
             {
                 id: viewOrientationControls
@@ -235,9 +238,8 @@ UM.MainWindow
                 anchors
                 {
                     left: parent.left
-                    margins: UM.Theme.getSize("default_margin").width
-
                     bottom: parent.bottom
+                    margins: UM.Theme.getSize("wide_margin").width
                 }
             }
 
