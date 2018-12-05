@@ -66,8 +66,8 @@ class Toolbox(QObject, Extension):
         self._old_plugin_ids = set()  # type: Set[str]
         self._old_plugin_metadata = dict()  # type: Dict[str, Dict[str, Any]]
 
-        # Data:
-        self._metadata = {
+        # The responses as given by the server parsed to a list.
+        self._server_response_data = {
             "authors":             [],
             "packages":            [],
         }  # type: Dict[str, List[Any]]
@@ -301,13 +301,13 @@ class Toolbox(QObject, Extension):
                                     if plugin_id not in all_plugin_package_ids)
             self._old_plugin_metadata = {k: v for k, v in self._old_plugin_metadata.items() if k in self._old_plugin_ids}
 
-            self._metadata["plugins_installed"] = all_packages["plugin"] + list(self._old_plugin_metadata.values())
-            self._models["plugins_installed"].setMetadata(self._metadata["plugins_installed"])
+            self._server_response_data["plugins_installed"] = all_packages["plugin"] + list(self._old_plugin_metadata.values())
+            self._models["plugins_installed"].setMetadata(self._server_response_data["plugins_installed"])
             self.metadataChanged.emit()
         if "material" in all_packages:
-            self._metadata["materials_installed"] = all_packages["material"]
+            self._server_response_data["materials_installed"] = all_packages["material"]
             # TODO: ADD MATERIALS HERE ONCE MATERIALS PORTION OF TOOLBOX IS LIVE
-            self._models["materials_installed"].setMetadata(self._metadata["materials_installed"])
+            self._models["materials_installed"].setMetadata(self._server_response_data["materials_installed"])
             self.metadataChanged.emit()
 
     @pyqtSlot(str)
@@ -461,7 +461,7 @@ class Toolbox(QObject, Extension):
     def getRemotePackage(self, package_id: str) -> Optional[Dict]:
         # TODO: make the lookup in a dict, not a loop. canUpdate is called for every item.
         remote_package = None
-        for package in self._metadata["packages"]:
+        for package in self._server_response_data["packages"]:
             if package["package_id"] == package_id:
                 remote_package = package
                 break
@@ -524,7 +524,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = int)
     def getNumberOfInstalledPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._metadata["materials_installed"]:
+        for package in self._server_response_data["materials_installed"]:
             if package["author"]["author_id"] == author_id:
                 count += 1
         return count
@@ -533,7 +533,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = int)
     def getTotalNumberOfMaterialPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._metadata["packages"]:
+        for package in self._server_response_data["packages"]:
             if package["package_type"] == "material":
                 if package["author"]["author_id"] == author_id:
                     count += 1
@@ -554,10 +554,10 @@ class Toolbox(QObject, Extension):
 
     def isLoadingComplete(self) -> bool:
         populated = 0
-        for metadata_list in self._metadata.items():
+        for metadata_list in self._server_response_data.items():
             if metadata_list:
                 populated += 1
-        return populated == len(self._metadata.items())
+        return populated == len(self._server_response_data.items())
 
     # Make API Calls
     # --------------------------------------------------------------------------
@@ -639,15 +639,13 @@ class Toolbox(QObject, Extension):
                                 Logger.log("e", "Could not find the %s model.", response_type)
                                 break
                             
-                            self._metadata[response_type] = json_data["data"]
-                            self._models[response_type].setMetadata(self._metadata[response_type])
+                            self._server_response_data[response_type] = json_data["data"]
+                            self._models[response_type].setMetadata(self._server_response_data[response_type])
 
-                            # Do some auto filtering
-                            # TODO: Make multiple API calls in the future to handle this
                             if response_type is "packages":
                                 self._models[response_type].setFilter({"type": "plugin"})
                                 self.reBuildMaterialsModels()
-                                self.buildPluginsModels()
+                                self.reBuildPluginsModels()
                             elif response_type is "authors":
                                 self._models[response_type].setFilter({"package_types": "material"})
                                 self._models[response_type].setFilter({"tags": "generic"})
@@ -743,39 +741,39 @@ class Toolbox(QObject, Extension):
 
     # Exposed Models:
     # --------------------------------------------------------------------------
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def authorsModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["authors"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def packagesModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["packages"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def pluginsShowcaseModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["plugins_showcase"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def pluginsAvailableModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["plugins_available"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def pluginsInstalledModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["plugins_installed"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsShowcaseModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["materials_showcase"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsAvailableModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["materials_available"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsInstalledModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["materials_installed"])
 
-    @pyqtProperty(QObject, notify=metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsGenericModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["materials_generic"])
 
@@ -814,7 +812,7 @@ class Toolbox(QObject, Extension):
 
         processed_authors = []  # type: List[str]
 
-        for item in self._metadata["packages"]:
+        for item in self._server_response_data["packages"]:
             if item["package_type"] == "material":
 
                 author = item["author"]
@@ -836,11 +834,11 @@ class Toolbox(QObject, Extension):
         self._models["materials_available"].setMetadata(materials_available_metadata)
         self._models["materials_generic"].setMetadata(materials_generic_metadata)
 
-    def buildPluginsModels(self) -> None:
+    def reBuildPluginsModels(self) -> None:
         plugins_showcase_metadata = []
         plugins_available_metadata = []
 
-        for item in self._metadata["packages"]:
+        for item in self._server_response_data["packages"]:
             if item["package_type"] == "plugin":
                 if "showcase" in item["tags"]:
                     plugins_showcase_metadata.append(item)

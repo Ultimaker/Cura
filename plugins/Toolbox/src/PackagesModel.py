@@ -45,8 +45,9 @@ class PackagesModel(ListModel):
         self._filter = {}  # type: Dict[str, str]
 
     def setMetadata(self, data):
-        self._metadata = data
-        self._update()
+        if self._metadata != data:
+            self._metadata = data
+            self._update()
 
     def _update(self):
         items = []

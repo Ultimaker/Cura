@@ -29,8 +29,9 @@ class AuthorsModel(ListModel):
         self._filter = {}  # type: Dict[str, str]
 
     def setMetadata(self, data: List[Dict[str, Union[str, List[str], int]]]):
-        self._metadata = data
-        self._update()
+        if self._metadata != data:
+            self._metadata = data
+            self._update()
 
     def _update(self) -> None:
         items = []  # type: List[Dict[str, Union[str, List[str], int, None]]]
