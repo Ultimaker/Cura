@@ -9,20 +9,27 @@ import QtQuick.Layouts 1.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-Item {
+Item
+{
     id: base
 
     property bool activity: CuraApplication.platformActivity
     property string fileBaseName: PrintInformation.baseName
 
-    UM.I18nCatalog { id: catalog; name: "cura"}
+    UM.I18nCatalog
+    {
+        id: catalog
+        name:"cura"
+    }
 
     height: childrenRect.height
 
-    onActivityChanged: {
-        if (activity == false) {
+    onActivityChanged:
+    {
+        if (!activity)
+        {
             //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
-            PrintInformation.baseName = ''
+            PrintInformation.baseName = ""
         }
     }
 
@@ -49,21 +56,22 @@ Item {
 
                 onClicked:
                 {
-                    printJobTextfield.selectAll();
-                    printJobTextfield.focus = true;
+                    printJobTextfield.selectAll()
+                    printJobTextfield.focus = true
                 }
+
                 style: ButtonStyle
                 {
                     background: Item
                     {
                         UM.RecolorImage
                         {
-                            width: UM.Theme.getSize("save_button_specs_icons").width;
-                            height: UM.Theme.getSize("save_button_specs_icons").height;
-                            sourceSize.width: width;
-                            sourceSize.height: width;
-                            color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene");
-                            source: UM.Theme.getIcon("pencil");
+                            width: UM.Theme.getSize("save_button_specs_icons").width
+                            height: UM.Theme.getSize("save_button_specs_icons").height
+                            sourceSize.width: width
+                            sourceSize.height: width
+                            color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene")
+                            source: UM.Theme.getIcon("pencil")
                         }
                     }
                 }
@@ -73,25 +81,31 @@ Item {
             {
                 id: printJobTextfield
                 anchors.right: printJobPencilIcon.left
-                anchors.rightMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
+                anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
                 height: UM.Theme.getSize("jobspecs_line").height
                 width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
                 maximumLength: 120
                 property int unremovableSpacing: 5
                 text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
-                onEditingFinished: {
-                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text;
-                    PrintInformation.setJobName(new_name, true);
-                    printJobTextfield.focus = false;
+
+                onEditingFinished:
+                {
+                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
+                    PrintInformation.setJobName(new_name, true)
+                    printJobTextfield.focus = false
                 }
+
                 validator: RegExpValidator {
                     regExp: /^[^\\\/\*\?\|\[\]]*$/
                 }
-                style: TextFieldStyle{
-                    textColor: UM.Theme.getColor("text_scene");
-                    font: UM.Theme.getFont("default_bold");
-                    background: Rectangle {
+
+                style: TextFieldStyle
+                {
+                    textColor: UM.Theme.getColor("text_scene")
+                    font: UM.Theme.getFont("default_bold")
+                    background: Rectangle
+                    {
                         opacity: 0
                         border.width: 0
                     }
@@ -100,7 +114,8 @@ Item {
         }
     }
 
-    Row {
+    Row
+    {
         id: additionalComponentsRow
         anchors.top: jobNameRow.bottom
         anchors.right: parent.right
@@ -117,10 +132,7 @@ Item {
             {
                 return UM.Theme.getSize("default_margin").width
             }
-            else
-            {
-                return 0;
-            }
+            return 0
         }
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
@@ -129,21 +141,25 @@ Item {
         text: CuraApplication.getSceneBoundingBoxString
     }
 
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         base.addAdditionalComponents("jobSpecsButton")
     }
 
-    Connections {
+    Connections
+    {
         target: CuraApplication
         onAdditionalComponentsChanged: base.addAdditionalComponents("jobSpecsButton")
     }
 
-    function addAdditionalComponents (areaId) {
-        if(areaId == "jobSpecsButton") {
-            for (var component in CuraApplication.additionalComponents["jobSpecsButton"]) {
+    function addAdditionalComponents (areaId)
+    {
+        if (areaId == "jobSpecsButton")
+        {
+            for (var component in CuraApplication.additionalComponents["jobSpecsButton"])
+            {
                 CuraApplication.additionalComponents["jobSpecsButton"][component].parent = additionalComponentsRow
             }
         }
     }
-
 }
