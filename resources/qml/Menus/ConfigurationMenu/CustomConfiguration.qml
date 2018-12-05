@@ -76,7 +76,7 @@ Item
             target: repeater.model
             onModelChanged:
             {
-                tabBar.currentIndex = Math.max(Cura.ExtruderManager.activeExtruderIndex, 0)
+                tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex)
             }
         }
     }
