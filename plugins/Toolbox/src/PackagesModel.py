@@ -33,7 +33,7 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
         self.addRoleName(Qt.UserRole + 14, "is_active")
-        self.addRoleName(Qt.UserRole + 15, "is_installed") # Scheduled pkgs are included in the model but should not be marked as actually installed
+        self.addRoleName(Qt.UserRole + 15, "is_installed")  # Scheduled pkgs are included in the model but should not be marked as actually installed
         self.addRoleName(Qt.UserRole + 16, "has_configs")
         self.addRoleName(Qt.UserRole + 17, "supported_configs")
         self.addRoleName(Qt.UserRole + 18, "download_count")
