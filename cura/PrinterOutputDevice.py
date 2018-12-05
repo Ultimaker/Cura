@@ -131,7 +131,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         return None
 
-    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional["FileHandler"] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     @pyqtProperty(QObject, notify = printersChanged)
@@ -207,8 +208,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:
-        self._unique_configurations = list(set([printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None]))
-        self._unique_configurations.sort(key = lambda k: k.printerType)
+        self._unique_configurations = sorted(
+            {printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None},
+            key=lambda config: config.printerType,
+        )
         self.uniqueConfigurationsChanged.emit()
 
     # Returns the unique configurations of the printers within this output device

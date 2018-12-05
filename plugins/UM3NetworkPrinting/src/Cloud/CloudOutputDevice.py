@@ -1,14 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import io
 import os
 from time import time
-from typing import List, Optional, Dict, Union, Set
+from typing import List, Optional, Dict, Set
 
 from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty, pyqtSlot
 
 from UM import i18nCatalog
-from UM.FileHandler.FileWriter import FileWriter
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
@@ -16,10 +14,10 @@ from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
+from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from plugins.UM3NetworkPrinting.src.BaseCuraConnectDevice import BaseCuraConnectDevice
 from plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient import CloudApiClient
+from plugins.UM3NetworkPrinting.src.MeshFormatHandler import MeshFormatHandler
 from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models import (
     CloudClusterPrinter, CloudClusterPrintJob, CloudJobUploadRequest, CloudJobResponse, CloudClusterStatus,
@@ -59,7 +57,7 @@ class T:
 #   Note that this device represents a single remote cluster, not a list of multiple clusters.
 #
 #   TODO: figure our how the QML interface for the cluster networking should operate with this limited functionality.
-class CloudOutputDevice(BaseCuraConnectDevice):
+class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 2.0  # seconds
@@ -118,17 +116,20 @@ class CloudOutputDevice(BaseCuraConnectDevice):
         self._sending_job = True
         self.writeStarted.emit(self)
 
-        file_format = self._getPreferredFormat(file_handler)
-        writer = self._getWriter(file_handler, file_format["mime_type"])
-        if not writer:
+        mesh_format = MeshFormatHandler(file_handler, self.firmwareVersion)
+        if not mesh_format.is_valid:
             Logger.log("e", "Missing file or mesh writer!")
             return self._onUploadError(T.COULD_NOT_EXPORT)
 
-        stream = io.StringIO() if file_format["mode"] == FileWriter.OutputMode.TextMode else io.BytesIO()
-        writer.write(stream, nodes)
+        mesh_bytes = mesh_format.getBytes(nodes)
 
         # TODO: Remove extension from the file name, since we are using content types now
-        self._sendPrintJob(file_name + "." + file_format["extension"], file_format["mime_type"], stream)
+        request = CloudJobUploadRequest(
+            job_name = file_name + "." + mesh_format.file_extension,
+            file_size = len(mesh_bytes),
+            content_type = mesh_format.mime_type,
+        )
+        self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh_bytes, response))
 
     ##  Get remote printers.
     @pyqtProperty("QVariantList", notify = clusterPrintersChanged)
@@ -291,16 +292,6 @@ class CloudOutputDevice(BaseCuraConnectDevice):
         model.updateTimeElapsed(job.time_elapsed)
         model.updateOwner(job.owner)
         model.updateState(job.status)
-
-    def _sendPrintJob(self, file_name: str, content_type: str, stream: Union[io.StringIO, io.BytesIO]) -> None:
-        mesh = stream.getvalue()
-
-        request = CloudJobUploadRequest()
-        request.job_name = file_name
-        request.file_size = len(mesh)
-        request.content_type = content_type
-
-        self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh, response))
 
     def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
         self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,

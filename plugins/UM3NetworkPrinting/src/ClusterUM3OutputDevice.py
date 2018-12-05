@@ -10,7 +10,6 @@ import json
 import os
 
 from UM.FileHandler.FileHandler import FileHandler
-from UM.FileHandler.FileWriter import FileWriter  # To choose based on the output file mode (text vs. binary).
 from UM.FileHandler.WriteFileJob import WriteFileJob  # To call the file writer asynchronously.
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -23,10 +22,10 @@ from UM.Scene.SceneNode import SceneNode  # For typing.
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
-from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
+from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from plugins.UM3NetworkPrinting.src.BaseCuraConnectDevice import BaseCuraConnectDevice
+from plugins.UM3NetworkPrinting.src.MeshFormatHandler import MeshFormatHandler
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .SendMaterialJob import SendMaterialJob
@@ -40,7 +39,7 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 i18n_catalog = i18nCatalog("cura")
 
 
-class ClusterUM3OutputDevice(BaseCuraConnectDevice):
+class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     printJobsChanged = pyqtSignal()
     activePrinterChanged = pyqtSignal()
     activeCameraUrlChanged = pyqtSignal()
@@ -103,14 +102,13 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
 
         self.sendMaterialProfiles()
 
-        preferred_format = self._getPreferredFormat(file_handler)
-        writer = self._getWriter(file_handler, preferred_format["mime_type"])
+        mesh_format = MeshFormatHandler(file_handler, self.firmwareVersion)
 
         # This function pauses with the yield, waiting on instructions on which printer it needs to print with.
-        if not writer:
+        if not mesh_format.is_valid:
             Logger.log("e", "Missing file or mesh writer!")
             return
-        self._sending_job = self._sendPrintJob(writer, preferred_format, nodes)
+        self._sending_job = self._sendPrintJob(mesh_format, nodes)
         if self._sending_job is not None:
             self._sending_job.send(None)  # Start the generator.
 
@@ -150,11 +148,8 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
     #   greenlet in order to optionally wait for selectPrinter() to select a
     #   printer.
     #   The greenlet yields exactly three times: First time None,
-    #   \param writer The file writer to use to create the data.
-    #   \param preferred_format A dictionary containing some information about
-    #   what format to write to. This is necessary to create the correct buffer
-    #   types and file extension and such.
-    def _sendPrintJob(self, writer: FileWriter, preferred_format: Dict, nodes: List[SceneNode]):
+    #   \param mesh_format Object responsible for choosing the right kind of format to write with.
+    def _sendPrintJob(self, mesh_format: MeshFormatHandler, nodes: List[SceneNode]):
         Logger.log("i", "Sending print job to printer.")
         if self._sending_gcode:
             self._error_message = Message(
@@ -172,17 +167,17 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
 
         # Using buffering greatly reduces the write time for many lines of gcode
 
-        stream = io.BytesIO() # type: Union[io.BytesIO, io.StringIO]# Binary mode.
-        if preferred_format["mode"] == FileWriter.OutputMode.TextMode:
-            stream = io.StringIO()
+        stream = mesh_format.createStream()
 
-        job = WriteFileJob(writer, stream, nodes, preferred_format["mode"])
+        job = WriteFileJob(mesh_format.writer, stream, nodes, mesh_format.file_mode)
 
-        self._write_job_progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0, dismissable = False, progress = -1,
-                                                   title = i18n_catalog.i18nc("@info:title", "Sending Data"), use_inactivity_timer = False)
+        self._write_job_progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"),
+                                                   lifetime = 0, dismissable = False, progress = -1,
+                                                   title = i18n_catalog.i18nc("@info:title", "Sending Data"),
+                                                   use_inactivity_timer = False)
         self._write_job_progress_message.show()
 
-        self._dummy_lambdas = (target_printer, preferred_format, stream)
+        self._dummy_lambdas = (target_printer, mesh_format.preferred_format, stream)
         job.finished.connect(self._sendPrintJobWaitOnWriteJobFinished)
 
         job.start()
@@ -194,9 +189,11 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
         if self._write_job_progress_message:
             self._write_job_progress_message.hide()
 
-        self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0, dismissable = False, progress = -1,
+        self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0,
+                                         dismissable = False, progress = -1,
                                          title = i18n_catalog.i18nc("@info:title", "Sending Data"))
-        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = None, description = "")
+        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = None,
+                                         description = "")
         self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
         self._progress_message.show()
         parts = []
@@ -220,7 +217,9 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
 
         parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, output))
 
-        self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, on_finished = self._onPostPrintJobFinished, on_progress = self._onUploadPrintJobProgress)
+        self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts,
+                                                            on_finished = self._onPostPrintJobFinished,
+                                                            on_progress = self._onUploadPrintJobProgress)
 
     @pyqtProperty(QObject, notify = activePrinterChanged)
     def activePrinter(self) -> Optional[PrinterOutputModel]:
