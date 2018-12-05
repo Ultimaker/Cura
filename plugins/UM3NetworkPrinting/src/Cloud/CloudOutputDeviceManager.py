@@ -8,9 +8,10 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from cura.CuraApplication import CuraApplication
-from plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient import CloudApiClient
+from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
-from .Models import CloudCluster, CloudErrorObject
+from .Models.CloudCluster import CloudCluster
+from .Models.CloudErrorObject import CloudErrorObject
 
 
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.

@@ -25,11 +25,11 @@ from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationM
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from plugins.UM3NetworkPrinting.src.MeshFormatHandler import MeshFormatHandler
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
-from .SendMaterialJob import SendMaterialJob
 from .ConfigurationChangeModel import ConfigurationChangeModel
+from .MeshFormatHandler import MeshFormatHandler
+from .SendMaterialJob import SendMaterialJob
 from .UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply

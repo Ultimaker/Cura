@@ -2,9 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from time import time
-from typing import List, Optional, Dict, Set
+from typing import Dict, List, Optional, Set
 
-from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM import i18nCatalog
 from UM.FileHandler.FileHandler import FileHandler
@@ -12,18 +12,19 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
+from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient import CloudApiClient
-from plugins.UM3NetworkPrinting.src.MeshFormatHandler import MeshFormatHandler
-from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
-from .Models import (
-    CloudClusterPrinter, CloudClusterPrintJob, CloudJobUploadRequest, CloudJobResponse, CloudClusterStatus,
-    CloudClusterPrinterConfigurationMaterial, CloudErrorObject,
-    CloudPrintResponse
-)
+from ..MeshFormatHandler import MeshFormatHandler
+from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from .CloudApiClient import CloudApiClient
+from .Models.CloudErrorObject import CloudErrorObject
+from .Models.CloudClusterStatus import CloudClusterStatus
+from .Models.CloudJobUploadRequest import CloudJobUploadRequest
+from .Models.CloudPrintResponse import CloudPrintResponse
+from .Models.CloudJobResponse import CloudJobResponse
+from .Models.CloudClusterPrinter import CloudClusterPrinter
+from .Models.CloudClusterPrintJob import CloudClusterPrintJob
 
 
 ## Class that contains all the translations for this module.
@@ -180,79 +181,22 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         remote_printers = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
         current_printers = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
 
-        removed_printer_ids = set(current_printers).difference(remote_printers)
-        new_printer_ids = set(remote_printers).difference(current_printers)
-        updated_printer_ids = set(current_printers).intersection(remote_printers)
+        remote_printer_ids = set(remote_printers)  # type: Set[str]
+        current_printer_ids = set(current_printers)  # type: Set[str]
 
-        for printer_guid in removed_printer_ids:
-            self._printers.remove(current_printers[printer_guid])
+        for removed_printer_id in current_printer_ids.difference(remote_printer_ids):
+            removed_printer = current_printers[removed_printer_id]
+            self._printers.remove(removed_printer)
 
-        for printer_guid in new_printer_ids:
-            self._addPrinter(remote_printers[printer_guid])
+        for new_printer_id in remote_printer_ids.difference(current_printer_ids):
+            new_printer = remote_printers[new_printer_id]
+            controller = PrinterOutputController(self)
+            self._printers.append(new_printer.createOutputModel(controller))
 
-        for printer_guid in updated_printer_ids:
-            self._updatePrinter(current_printers[printer_guid], remote_printers[printer_guid])
+        for updated_printer_guid in current_printer_ids.intersection(remote_printer_ids):
+            remote_printers[updated_printer_guid].updateOutputModel(current_printers[updated_printer_guid])
 
         self.clusterPrintersChanged.emit()
-
-    def _addPrinter(self, printer: CloudClusterPrinter) -> None:
-        model = PrinterOutputModel(
-            PrinterOutputController(self), len(printer.configuration), firmware_version = printer.firmware_version
-        )
-        self._printers.append(model)
-        self._updatePrinter(model, printer)
-
-    def _updatePrinter(self, model: PrinterOutputModel, printer: CloudClusterPrinter) -> None:
-        model.updateKey(printer.uuid)
-        model.updateName(printer.friendly_name)
-        model.updateType(printer.machine_variant)
-        model.updateState(printer.status if printer.enabled else "disabled")
-
-        for index in range(0, len(printer.configuration)):
-            try:
-                extruder = model.extruders[index]
-                extruder_data = printer.configuration[index]
-            except IndexError:
-                break
-
-            extruder.updateHotendID(extruder_data.print_core_id)
-
-            if extruder.activeMaterial is None or extruder.activeMaterial.guid != extruder_data.material.guid:
-                material = self._createMaterialOutputModel(extruder_data.material)
-                extruder.updateActiveMaterial(material)
-
-    @staticmethod
-    def _createMaterialOutputModel(material: CloudClusterPrinterConfigurationMaterial) -> MaterialOutputModel:
-        material_manager = CuraApplication.getInstance().getMaterialManager()
-        material_group_list = material_manager.getMaterialGroupListByGUID(material.guid) or []
-
-        # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
-        read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
-        non_read_only_material_group_list = list(filter(lambda x: not x.is_read_only, material_group_list))
-        material_group = None
-        if read_only_material_group_list:
-            read_only_material_group_list = sorted(read_only_material_group_list, key = lambda x: x.name)
-            material_group = read_only_material_group_list[0]
-        elif non_read_only_material_group_list:
-            non_read_only_material_group_list = sorted(non_read_only_material_group_list, key = lambda x: x.name)
-            material_group = non_read_only_material_group_list[0]
-
-        if material_group:
-            container = material_group.root_material_node.getContainer()
-            color = container.getMetaDataEntry("color_code")
-            brand = container.getMetaDataEntry("brand")
-            material_type = container.getMetaDataEntry("material")
-            name = container.getName()
-        else:
-            Logger.log("w", "Unable to find material with guid {guid}. Using data as provided by cluster"
-                       .format(guid = material.guid))
-            color = material.color
-            brand = material.brand
-            material_type = material.material
-            name = "Empty" if material.material == "empty" else "Unknown"
-
-        return MaterialOutputModel(guid = material.guid, type = material_type, brand = brand, color = color,
-                                   name = name)
 
     def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
         remote_jobs = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
@@ -264,11 +208,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         for removed_job_id in current_job_ids.difference(remote_job_ids):
             self._print_jobs.remove(current_jobs[removed_job_id])
 
-        for new_job_id in remote_job_ids.difference(current_jobs):
+        for new_job_id in remote_job_ids.difference(current_job_ids):
             self._addPrintJob(remote_jobs[new_job_id])
 
         for updated_job_id in current_job_ids.intersection(remote_job_ids):
-            self._updateUM3PrintJobOutputModel(current_jobs[updated_job_id], remote_jobs[updated_job_id])
+            remote_jobs[updated_job_id].updateOutputModel(current_jobs[updated_job_id])
 
         # We only have to update when jobs are added or removed
         # updated jobs push their changes via their output model
@@ -282,16 +226,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             return Logger.log("w", "Missing printer %s for job %s in %s", job.printer_uuid, job.uuid,
                               [p.key for p in self._printers])
 
-        model = UM3PrintJobOutputModel(printer.getController(), job.uuid, job.name)
-        model.updateAssignedPrinter(printer)
-        self._print_jobs.append(model)
-
-    @staticmethod
-    def _updateUM3PrintJobOutputModel(model: UM3PrintJobOutputModel, job: CloudClusterPrintJob) -> None:
-        model.updateTimeTotal(job.time_total)
-        model.updateTimeElapsed(job.time_elapsed)
-        model.updateOwner(job.owner)
-        model.updateState(job.status)
+        self._print_jobs.append(job.createOutputModel(printer))
 
     def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
         self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,

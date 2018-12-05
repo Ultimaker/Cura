@@ -9,10 +9,13 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from UM.Logger import Logger
 from cura.API import Account
 from cura.NetworkClient import NetworkClient
-from plugins.UM3NetworkPrinting.src.Models import BaseModel
-from plugins.UM3NetworkPrinting.src.Cloud.Models import (
-    CloudCluster, CloudErrorObject, CloudClusterStatus, CloudJobUploadRequest, CloudPrintResponse, CloudJobResponse
-)
+from ..Models import BaseModel
+from .Models.CloudCluster import CloudCluster
+from .Models.CloudErrorObject import CloudErrorObject
+from .Models.CloudClusterStatus import CloudClusterStatus
+from .Models.CloudJobUploadRequest import CloudJobUploadRequest
+from .Models.CloudPrintResponse import CloudPrintResponse
+from .Models.CloudJobResponse import CloudJobResponse
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
