@@ -70,13 +70,6 @@ class Toolbox(QObject, Extension):
         self._metadata = {
             "authors":             [],
             "packages":            [],
-            "plugins_showcase":    [],
-            "plugins_available":   [],
-            "plugins_installed":   [],
-            "materials_showcase":  [],
-            "materials_available": [],
-            "materials_installed": [],
-            "materials_generic":   []
         }  # type: Dict[str, List[Any]]
 
         # Models:
@@ -178,12 +171,7 @@ class Toolbox(QObject, Extension):
         )
         self._request_urls = {
             "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
-            "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
-            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
-            "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url = self._api_url)),
-            "materials_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
-            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url = self._api_url)),
-            "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url = self._api_url))
+            "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
 
     # Get the API root for the packages API depending on Cura version settings.
@@ -606,8 +594,8 @@ class Toolbox(QObject, Extension):
         if self._download_reply:
             try:
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-            except TypeError: #Raised when the method is not connected to the signal yet.
-                pass #Don't need to disconnect.
+            except TypeError:  # Raised when the method is not connected to the signal yet.
+                pass  # Don't need to disconnect.
             self._download_reply.abort()
         self._download_reply = None
         self._download_request = None
@@ -633,22 +621,8 @@ class Toolbox(QObject, Extension):
             self.resetDownload()
             return
 
-        # HACK: These request are not handled independently at this moment, but together from the "packages" call
-        do_not_handle = [
-            "materials_available",
-            "materials_showcase",
-            "materials_generic",
-            "plugins_available",
-            "plugins_showcase",
-        ]
-
         if reply.operation() == QNetworkAccessManager.GetOperation:
             for response_type, url in self._request_urls.items():
-
-                # HACK: Do nothing because we'll handle these from the "packages" call
-                if response_type in do_not_handle:
-                    continue
-
                 if reply.url() == url:
                     if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                         try:
@@ -672,11 +646,10 @@ class Toolbox(QObject, Extension):
                             # TODO: Make multiple API calls in the future to handle this
                             if response_type is "packages":
                                 self._models[response_type].setFilter({"type": "plugin"})
-                                self.buildMaterialsModels()
+                                self.reBuildMaterialsModels()
                                 self.buildPluginsModels()
-                            if response_type is "authors":
+                            elif response_type is "authors":
                                 self._models[response_type].setFilter({"package_types": "material"})
-                            if response_type is "materials_generic":
                                 self._models[response_type].setFilter({"tags": "generic"})
 
                             self.metadataChanged.emit()
@@ -834,10 +807,10 @@ class Toolbox(QObject, Extension):
 
     # HACK(S):
     # --------------------------------------------------------------------------
-    def buildMaterialsModels(self) -> None:
-        self._metadata["materials_showcase"] = []
-        self._metadata["materials_available"] = []
-        self._metadata["materials_generic"] = []
+    def reBuildMaterialsModels(self) -> None:
+        materials_showcase_metadata = []
+        materials_available_metadata = []
+        materials_generic_metadata = []
 
         processed_authors = []  # type: List[str]
 
@@ -850,30 +823,29 @@ class Toolbox(QObject, Extension):
 
                 # Generic materials to be in the same section
                 if "generic" in item["tags"]:
-                    self._metadata["materials_generic"].append(item)
+                    materials_generic_metadata.append(item)
                 else:
                     if "showcase" in item["tags"]:
-                        self._metadata["materials_showcase"].append(author)
+                        materials_showcase_metadata.append(author)
                     else:
-                        self._metadata["materials_available"].append(author)
+                        materials_available_metadata.append(author)
 
                     processed_authors.append(author["author_id"])
 
-        self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
-        self._models["materials_available"].setMetadata(self._metadata["materials_available"])
-        self._models["materials_generic"].setMetadata(self._metadata["materials_generic"])
+        self._models["materials_showcase"].setMetadata(materials_showcase_metadata)
+        self._models["materials_available"].setMetadata(materials_available_metadata)
+        self._models["materials_generic"].setMetadata(materials_generic_metadata)
 
     def buildPluginsModels(self) -> None:
-        self._metadata["plugins_showcase"] = []
-        self._metadata["plugins_available"] = []
+        plugins_showcase_metadata = []
+        plugins_available_metadata = []
 
         for item in self._metadata["packages"]:
             if item["package_type"] == "plugin":
-
                 if "showcase" in item["tags"]:
-                    self._metadata["plugins_showcase"].append(item)
+                    plugins_showcase_metadata.append(item)
                 else:
-                    self._metadata["plugins_available"].append(item)
+                    plugins_available_metadata.append(item)
 
-        self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
-        self._models["plugins_available"].setMetadata(self._metadata["plugins_available"])
+        self._models["plugins_showcase"].setMetadata(plugins_showcase_metadata)
+        self._models["plugins_available"].setMetadata(plugins_available_metadata)

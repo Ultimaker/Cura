@@ -73,7 +73,7 @@ class AuthorsModel(ListModel):
             self._filter = filter_dict
             self._update()
 
-    @pyqtProperty("QStringMap", fset = setFilter, constant = True)
+    @pyqtProperty("QVariantMap", fset = setFilter, constant = True)
     def filter(self) -> Dict[str, str]:
         return self._filter
 
