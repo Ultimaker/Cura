@@ -42,8 +42,6 @@ Item
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: extrudersModel.count > 1
 
-        currentIndex: Math.max(Cura.ExtruderManager.activeExtruderIndex, 0)
-
         Repeater
         {
             id: repeater
@@ -65,6 +63,18 @@ Item
                 {
                     Cura.ExtruderManager.setActiveExtruderIndex(tabBar.currentIndex)
                 }
+            }
+        }
+
+        //When active extruder changes for some other reason, switch tabs.
+        //Don't directly link currentIndex to Cura.ExtruderManager.activeExtruderIndex!
+        //This causes a segfault in Qt 5.11. Something with VisualItemModel removing index -1. We have to use setCurrentIndex instead.
+        Connections
+        {
+            target: Cura.ExtruderManager
+            onActiveExtruderChanged:
+            {
+                tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex);
             }
         }
 
