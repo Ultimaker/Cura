@@ -79,7 +79,7 @@ class CloudOutputDeviceManager:
             self._removeCloudOutputDevice(found_clusters[cluster_id])
 
         # TODO: not pass clusters that are not online?
-        self._connectToActiveMachine(clusters)
+        self._connectToActiveMachine()
 
     ##  Adds a CloudOutputDevice for each entry in the remote cluster list from the API.
     #   \param cluster: The cluster that was added.
@@ -96,7 +96,7 @@ class CloudOutputDeviceManager:
             del self._remote_clusters[cluster.cluster_id]
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
-    def _connectToActiveMachine(self, clusters: List[CloudCluster]) -> None:
+    def _connectToActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
@@ -115,9 +115,10 @@ class CloudOutputDeviceManager:
         if not local_network_key:
             return
 
-        cluster_id = next(local_network_key in cluster.host_name for cluster in clusters)
-        if cluster_id in self._remote_clusters.keys():
-            return self._remote_clusters.get(cluster_id).connect()
+        # TODO: get host_name in the output device so we can iterate here
+        # cluster_id = next(local_network_key in cluster.host_name for cluster in self._remote_clusters.items())
+        # if cluster_id in self._remote_clusters.keys():
+        #     return self._remote_clusters.get(cluster_id).connect()
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
