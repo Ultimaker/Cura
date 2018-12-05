@@ -491,11 +491,8 @@ class Toolbox(QObject, Extension):
     def canUpdate(self, package_id: str) -> bool:
         local_package = self._package_manager.getInstalledPackageInfo(package_id)
         if local_package is None:
-            Logger.log("i", "Could not find package [%s] as installed in the package manager, fall back to check the old plugins",
-                       package_id)
             local_package = self.getOldPluginPackageMetadata(package_id)
             if local_package is None:
-                Logger.log("i", "Could not find package [%s] in the old plugins", package_id)
                 return False
 
         remote_package = self.getRemotePackage(package_id)
