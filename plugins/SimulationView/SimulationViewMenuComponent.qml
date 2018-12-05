@@ -16,7 +16,6 @@ Cura.ExpandableComponent
     id: base
 
     width: UM.Theme.getSize("layerview_menu_size").width
-    contentType: Cura.ExpandableComponent.ContentType.Fixed
 
     Connections
     {

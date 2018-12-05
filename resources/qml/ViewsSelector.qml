@@ -7,12 +7,12 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Cura.ExpandableComponent
+Cura.ExpandablePopup
 {
     id: viewSelector
 
     contentPadding: UM.Theme.getSize("default_lining").width
-    contentAlignment: Cura.ExpandableComponent.ContentAlignment.AlignLeft
+    contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
 
     property var viewModel: UM.ViewModel { }
 
@@ -72,13 +72,13 @@ Cura.ExpandableComponent
     contentItem: Column
     {
         id: viewSelectorPopup
-        width: viewSelector.width - 2 * viewSelector.popupPadding
+        width: viewSelector.width - 2 * viewSelector.contentPadding
 
         // For some reason the height/width of the column gets set to 0 if this is not set...
         Component.onCompleted:
         {
             height = implicitHeight
-            width = viewSelector.width - 2 * viewSelector.popupPadding
+            width = viewSelector.width - 2 * viewSelector.contentPadding
         }
 
         Repeater

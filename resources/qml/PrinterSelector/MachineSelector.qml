@@ -7,7 +7,7 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Cura.ExpandableComponent
+Cura.ExpandablePopup
 {
     id: machineSelector
 
@@ -16,7 +16,7 @@ Cura.ExpandableComponent
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
     contentPadding: UM.Theme.getSize("default_lining").width
-    contentAlignment: Cura.ExpandableComponent.ContentAlignment.AlignLeft
+    contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
 
     UM.I18nCatalog
     {
