@@ -150,7 +150,7 @@ Item
         }
         border
         {
-            color: "#EAEAEC" // TODO: Theme!
+            color: printer.activePrintJob.configurationChanges.length !== 0 ? "#f5a623" : "#EAEAEC" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
         color: "white" // TODO: Theme!
