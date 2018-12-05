@@ -69,16 +69,14 @@ class Toolbox(QObject, Extension):
         # The responses as given by the server parsed to a list.
         self._server_response_data = {
             "authors":             [],
-            "packages":            [],
-            "plugins_installed":   [],
-            "materials_installed": []
+            "packages":            []
         }  # type: Dict[str, List[Any]]
 
         # Models:
         self._models = {
             "authors":             AuthorsModel(self),
             "packages":            PackagesModel(self),
-        }  # type: Dict[str, ListModel]
+        }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
 
         self._plugins_showcase_model = PackagesModel(self)
         self._plugins_available_model = PackagesModel(self)
@@ -305,11 +303,9 @@ class Toolbox(QObject, Extension):
                                     if plugin_id not in all_plugin_package_ids)
             self._old_plugin_metadata = {k: v for k, v in self._old_plugin_metadata.items() if k in self._old_plugin_ids}
 
-            self._server_response_data["plugins_installed"] = all_packages["plugin"] + list(self._old_plugin_metadata.values())
-            self._plugins_installed_model.setMetadata(self._server_response_data["plugins_installed"])
+            self._plugins_installed_model.setMetadata(all_packages["plugin"] + list(self._old_plugin_metadata.values()))
             self.metadataChanged.emit()
         if "material" in all_packages:
-            self._server_response_data["materials_installed"] = all_packages["material"]
             self._materials_installed_model.setMetadata(all_packages["material"])
             self.metadataChanged.emit()
 
@@ -527,8 +523,8 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = int)
     def getNumberOfInstalledPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._server_response_data["materials_installed"]:
-            if package["author"]["author_id"] == author_id:
+        for package in self._materials_installed_model.items:
+            if package["author_id"] == author_id:
                 count += 1
         return count
 
