@@ -78,13 +78,15 @@ class CloudOutputDeviceManager:
         for cluster_id in known_cluster_ids.difference(found_cluster_ids):
             self._removeCloudOutputDevice(found_clusters[cluster_id])
 
+        # TODO: not pass clusters that are not online?
+        self._connectToActiveMachine(clusters)
+
     ##  Adds a CloudOutputDevice for each entry in the remote cluster list from the API.
     #   \param cluster: The cluster that was added.
     def _addCloudOutputDevice(self, cluster: CloudCluster):
         device = CloudOutputDevice(self._api, cluster.cluster_id)
         self._output_device_manager.addOutputDevice(device)
         self._remote_clusters[cluster.cluster_id] = device
-        self._connectToActiveMachine(cluster.cluster_id)
 
     ##  Remove a CloudOutputDevice
     #   \param cluster: The cluster that was removed
@@ -94,28 +96,28 @@ class CloudOutputDeviceManager:
             del self._remote_clusters[cluster.cluster_id]
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
-    def _connectToActiveMachine(self, cluster_id: Optional[str] = None) -> None:
+    def _connectToActiveMachine(self, clusters: List[CloudCluster]) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
 
-        # TODO: Remove this once correct pairing has been added (see below).
-        # TODO: This just adds any available cluster to the active device for testing.
-        if cluster_id:
-            active_machine.setMetaDataEntry("um_cloud_cluster_id", cluster_id)
-
         # Check if the stored cluster_id for the active machine is in our list of remote clusters.
         stored_cluster_id = active_machine.getMetaDataEntry("um_cloud_cluster_id")
         if stored_cluster_id in self._remote_clusters.keys():
-            self._remote_clusters.get(stored_cluster_id).connect()
+            return self._remote_clusters.get(stored_cluster_id).connect()
+
+        # Check if the active printer has a local network connection and match this key to the remote cluster.
+        # The local network key is formatted as ultimakersystem-xxxxxxxxxxxx._ultimaker._tcp.local.
+        # The optional remote host_name is formatted as ultimakersystem-xxxxxxxxxxxx.
+        # This means we can match the two by checking if the host_name is in the network key string.
+
+        local_network_key = active_machine.getMetaDataEntry("um_network_key")
+        if not local_network_key:
             return
 
-        # TODO: See if this cloud cluster still has to be associated to the active machine.
-        # TODO: We have to get a common piece of data, like local network hostname, from the active machine and
-        # TODO: cloud cluster and then set the "um_cloud_cluster_id" meta data key on the active machine.
-        # TODO: If so, we can also immediate connect to it.
-        # active_machine.setMetaDataEntry("um_cloud_cluster_id", "")
-        # self._remote_clusters.get(stored_cluster_id).connect()
+        cluster_id = next(local_network_key in cluster.host_name for cluster in clusters)
+        if cluster_id in self._remote_clusters.keys():
+            return self._remote_clusters.get(cluster_id).connect()
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
