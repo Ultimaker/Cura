@@ -18,14 +18,12 @@ from UM.i18n import i18nCatalog
 
 from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
-from UM.OutputDevice import OutputDeviceError  # To show that something went wrong when writing.
 from UM.Scene.SceneNode import SceneNode  # For typing.
-from UM.Version import Version  # To check against firmware versions for support.
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
-from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
+from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from plugins.UM3NetworkPrinting.src.BaseCuraConnectDevice import BaseCuraConnectDevice
@@ -50,7 +48,7 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
 
     # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
     # Inheritance doesn't seem to work. Tying them together does work, but i'm open for better suggestions.
-    clusterPrintersChanged = pyqtSignal()
+    _clusterPrintersChanged = pyqtSignal()
 
     def __init__(self, device_id, address, properties, parent = None) -> None:
         super().__init__(device_id = device_id, address = address, properties=properties, parent = parent)
@@ -66,7 +64,7 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterMonitorItem.qml")
 
         # See comments about this hack with the clusterPrintersChanged signal
-        self.printersChanged.connect(self.clusterPrintersChanged)
+        self.printersChanged.connect(self._clusterPrintersChanged)
 
         self._accepts_commands = True  # type: bool
 
@@ -99,47 +97,14 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
 
         self._active_camera_url = QUrl()  # type: QUrl
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         self.writeStarted.emit(self)
 
         self.sendMaterialProfiles()
 
-        # Formats supported by this application (file types that we can actually write).
-        if file_handler:
-            file_formats = file_handler.getSupportedFileTypesWrite()
-        else:
-            file_formats = CuraApplication.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
-
-        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        # Create a list from the supported file formats string.
-        if not global_stack:
-            Logger.log("e", "Missing global stack!")
-            return
-
-        machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
-        machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
-        # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
-        if "application/x-ufp" not in machine_file_formats and Version(self.firmwareVersion) >= Version("4.4"):
-            machine_file_formats = ["application/x-ufp"] + machine_file_formats
-
-        # Take the intersection between file_formats and machine_file_formats.
-        format_by_mimetype = {format["mime_type"]: format for format in file_formats}
-        file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
-
-        if len(file_formats) == 0:
-            Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError(i18n_catalog.i18nc("@info:status", "There are no file formats available to write with!"))
-        preferred_format = file_formats[0]
-
-        # Just take the first file format available.
-        if file_handler is not None:
-            writer = file_handler.getWriterByMimeType(cast(str, preferred_format["mime_type"]))
-        else:
-            writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(cast(str, preferred_format["mime_type"]))
-
-        if not writer:
-            Logger.log("e", "Unexpected error when trying to get the FileWriter")
-            return
+        preferred_format = self._getPreferredFormat(file_handler)
+        writer = self._getWriter(file_handler, preferred_format["mime_type"])
 
         # This function pauses with the yield, waiting on instructions on which printer it needs to print with.
         if not writer:
@@ -355,7 +320,7 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
     def activePrintJobs(self) -> List[UM3PrintJobOutputModel]:
         return [print_job for print_job in self._print_jobs if print_job.assignedPrinter is not None and print_job.state != "queued"]
 
-    @pyqtProperty("QVariantList", notify = clusterPrintersChanged)
+    @pyqtProperty("QVariantList", notify = _clusterPrintersChanged)
     def connectedPrintersTypeCount(self) -> List[Dict[str, str]]:
         printer_count = {} # type: Dict[str, int]
         for printer in self._printers:
@@ -368,7 +333,7 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
             result.append({"machine_type": machine_type, "count": str(printer_count[machine_type])})
         return result
 
-    @pyqtProperty("QVariantList", notify=clusterPrintersChanged)
+    @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
     def printers(self):
         return self._printers
 

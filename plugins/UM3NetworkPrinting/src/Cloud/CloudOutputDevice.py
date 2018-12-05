@@ -2,9 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
 import os
-from datetime import datetime, timedelta
 from time import time
-from typing import List, Optional, Dict, cast, Union, Set
+from typing import List, Optional, Dict, Union, Set
 
 from PyQt5.QtCore import QObject, pyqtSignal, QUrl, pyqtProperty, pyqtSlot
 
@@ -13,9 +12,7 @@ from UM.FileHandler.FileWriter import FileWriter
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.OutputDevice import OutputDeviceError
 from UM.Scene.SceneNode import SceneNode
-from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
@@ -45,7 +42,6 @@ class T:
                                                             "the previous print job.")
 
     COULD_NOT_EXPORT = _I18N_CATALOG.i18nc("@info:status", "Could not export print job.")
-    WRITE_FAILED = _I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!")
 
     SENDING_DATA_TEXT = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
     SENDING_DATA_TITLE = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
@@ -69,7 +65,7 @@ class CloudOutputDevice(BaseCuraConnectDevice):
     CHECK_CLUSTER_INTERVAL = 2.0  # seconds
 
     # Signal triggered when the printers in the remote cluster were changed.
-    printersChanged = pyqtSignal()
+    clusterPrintersChanged = pyqtSignal()
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
@@ -122,8 +118,8 @@ class CloudOutputDevice(BaseCuraConnectDevice):
         self._sending_job = True
         self.writeStarted.emit(self)
 
-        file_format = self._determineFileFormat(file_handler)
-        writer = self._determineWriter(file_handler, file_format)
+        file_format = self._getPreferredFormat(file_handler)
+        writer = self._getWriter(file_handler, file_format["mime_type"])
         if not writer:
             Logger.log("e", "Missing file or mesh writer!")
             return self._onUploadError(T.COULD_NOT_EXPORT)
@@ -134,56 +130,8 @@ class CloudOutputDevice(BaseCuraConnectDevice):
         # TODO: Remove extension from the file name, since we are using content types now
         self._sendPrintJob(file_name + "." + file_format["extension"], file_format["mime_type"], stream)
 
-    # TODO: This is yanked right out of ClusterUM3OutputDevice, great candidate for a utility or base class
-    def _determineFileFormat(self, file_handler) -> Optional[Dict[str, Union[str, int]]]:
-        # Formats supported by this application (file types that we can actually write).
-        if file_handler:
-            file_formats = file_handler.getSupportedFileTypesWrite()
-        else:
-            file_formats = CuraApplication.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
-
-        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        # Create a list from the supported file formats string.
-        if not global_stack:
-            Logger.log("e", "Missing global stack!")
-            return
-
-        machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
-        machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
-        # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
-        if "application/x-ufp" not in machine_file_formats and Version(self.firmwareVersion) >= Version("4.4"):
-            machine_file_formats = ["application/x-ufp"] + machine_file_formats
-
-        # Take the intersection between file_formats and machine_file_formats.
-        format_by_mimetype = {f["mime_type"]: f for f in file_formats}
-
-        # Keep them ordered according to the preference in machine_file_formats.
-        file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats]
-
-        if len(file_formats) == 0:
-            Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError(T.WRITE_FAILED)
-        return file_formats[0]
-
-    # TODO: This is yanked right out of ClusterUM3OutputDevice, great candidate for a utility or base class
-    @staticmethod
-    def _determineWriter(file_handler, file_format) -> Optional[FileWriter]:
-        # Just take the first file format available.
-        if file_handler is not None:
-            writer = file_handler.getWriterByMimeType(cast(str, file_format["mime_type"]))
-        else:
-            writer = CuraApplication.getInstance().getMeshFileHandler().getWriterByMimeType(
-                cast(str, file_format["mime_type"])
-            )
-
-        if not writer:
-            Logger.log("e", "Unexpected error when trying to get the FileWriter")
-            return
-
-        return writer
-
     ##  Get remote printers.
-    @pyqtProperty("QVariantList", notify = printersChanged)
+    @pyqtProperty("QVariantList", notify = clusterPrintersChanged)
     def printers(self):
         return self._printers
 
@@ -244,7 +192,7 @@ class CloudOutputDevice(BaseCuraConnectDevice):
         for printer_guid in updated_printer_ids:
             self._updatePrinter(current_printers[printer_guid], remote_printers[printer_guid])
 
-        self.printersChanged.emit()
+        self.clusterPrintersChanged.emit()
 
     def _addPrinter(self, printer: CloudClusterPrinter) -> None:
         model = PrinterOutputModel(
@@ -409,7 +357,7 @@ class CloudOutputDevice(BaseCuraConnectDevice):
     ##  TODO: The following methods are required by the monitor page QML, but are not actually available using cloud.
     #   TODO: We fake the methods here to not break the monitor page.
 
-    @pyqtProperty(QObject, notify = printersChanged)
+    @pyqtProperty(QObject, notify = clusterPrintersChanged)
     def activePrinter(self) -> Optional[PrinterOutputModel]:
         if not self._printers:
             return None
@@ -419,7 +367,7 @@ class CloudOutputDevice(BaseCuraConnectDevice):
     def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
         pass
 
-    @pyqtProperty(QUrl, notify = printersChanged)
+    @pyqtProperty(QUrl, notify = clusterPrintersChanged)
     def activeCameraUrl(self) -> "QUrl":
         return QUrl()
 
