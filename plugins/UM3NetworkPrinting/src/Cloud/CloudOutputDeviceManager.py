@@ -62,6 +62,10 @@ class CloudOutputDeviceManager:
             # The first call to _getRemoteClusters comes from self._account.loginStateChanged
             if not self._update_timer.isActive():
                 self._update_timer.start()
+        else:
+            self._onGetRemoteClustersFinished([])
+            if self._update_timer.isActive():
+                self._update_timer.stop()
 
     ##  Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudCluster]) -> None:
@@ -73,6 +77,8 @@ class CloudOutputDeviceManager:
 
         # Remove output devices that are gone
         for removed_cluster in removed_devices:
+            if removed_cluster.isConnected():
+                removed_cluster.disconnect()
             self._output_device_manager.removeOutputDevice(removed_cluster.key)
             del self._remote_clusters[removed_cluster.key]
 

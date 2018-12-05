@@ -129,7 +129,7 @@ class CloudApiClient(NetworkClient):
             data = response["data"]
             result = [model(**c) for c in data] if isinstance(data, list) else model(**data)
             on_finished(result)
-        elif "error" in response:
+        elif "errors" in response:
             self._on_error([CloudErrorObject(**error) for error in response["errors"]])
         else:
             Logger.log("e", "Cannot find data or errors in the cloud response: %s", response)
