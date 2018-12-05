@@ -386,8 +386,24 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(int, result = str)
     def getDateCompleted(self, time_remaining: int) -> str:
         current_time = time()
-        datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
-        return (datetime_completed.strftime("%a %b ") + "{day}".format(day=datetime_completed.day)).upper()
+        completed = datetime.fromtimestamp(current_time + time_remaining)
+        today = datetime.fromtimestamp(current_time)
+
+        # If finishing date is more than 7 days out, using "Mon Dec 3 at HH:MM" format
+        if completed.toordinal() > today.toordinal() + 7:
+            return completed.strftime("%a %b ") + "{day}".format(day=completed.day)
+        
+        # If finishing date is within the next week, use "Monday at HH:MM" format
+        elif completed.toordinal() > today.toordinal() + 1:
+            return completed.strftime("%a")
+        
+        # If finishing tomorrow, use "tomorrow at HH:MM" format
+        elif completed.toordinal() > today.toordinal():
+            return "tomorrow"
+
+        # If finishing today, use "today at HH:MM" format
+        else:
+            return "today"
 
     @pyqtSlot(str)
     def sendJobToTop(self, print_job_uuid: str) -> None:
@@ -592,6 +608,16 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _createMaterialOutputModel(self, material_data: Dict[str, Any]) -> "MaterialOutputModel":
         material_manager = CuraApplication.getInstance().getMaterialManager()
         material_group_list = material_manager.getMaterialGroupListByGUID(material_data["guid"])
+        # This can happen if the connected machine has no material in one or more extruders (if GUID is empty), or the
+        # material is unknown to Cura, so we should return an "empty" or "unknown" material model.
+        if material_group_list is None:
+            material_name = "Empty" if len(material_data["guid"]) == 0 else "Unknown"
+            return MaterialOutputModel(guid = material_data["guid"],
+                                       type = material_data.get("type", ""),
+                                       color = material_data.get("color", ""),
+                                       brand = material_data.get("brand", ""),
+                                       name = material_data.get("name", material_name)
+                                       )
 
         # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
         read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))

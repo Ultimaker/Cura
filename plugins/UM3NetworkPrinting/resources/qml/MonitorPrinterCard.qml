@@ -169,6 +169,32 @@ Item
             height: childrenRect.height
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
+            Label
+            {
+                id: printerStatus
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                }
+                color: "#414054" // TODO: Theme!
+                font: UM.Theme.getFont("large") // 16pt, bold
+                text: {
+                    if (printer && printer.state == "disabled")
+                    {
+                        return catalog.i18nc("@label:status", "Unavailable")
+                    }
+                    if (printer && printer.state == "unreachable")
+                    {
+                        return catalog.i18nc("@label:status", "Unreachable")
+                    }
+                    if (printer && printer.state == "idle")
+                    {
+                        return catalog.i18nc("@label:status", "Idle")
+                    }
+                    return ""
+                }
+            }
+
             Item
             {
                 anchors
@@ -183,6 +209,7 @@ Item
                     printJob: base.printer.activePrintJob
                     size: parent.height
                 }
+                visible: printer.activePrintJob
             }
 
             Item
@@ -193,14 +220,15 @@ Item
                 }
                 width: 216 * screenScaleFactor // TODO: Theme!
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
+                visible: printer.activePrintJob
 
                 Label
                 {
                     id: printerJobNameLabel
-                    text: base.printer.activePrintJob ? base.printer.activePrintJob.name : "Untitled" // TODO: I18N
-                    color: "#414054" // TODO: Theme!
+                    color: printer.activePrintJob && printer.activePrintJob.isActive ? "#414054" : "#babac1" // TODO: Theme!
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("large") // 16pt, bold
+                    text: base.printer.activePrintJob ? base.printer.activePrintJob.name : "Untitled" // TODO: I18N
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -217,10 +245,10 @@ Item
                         topMargin: 6 * screenScaleFactor // TODO: Theme!
                         left: printerJobNameLabel.left
                     }
-                    text: printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
-                    color: "#53657d" // TODO: Theme!
+                    color: printer.activePrintJob && printer.activePrintJob.isActive ? "#53657d" : "#babac1" // TODO: Theme!
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("very_small") // 12pt, regular
+                    text: printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -236,6 +264,7 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 printJob: printer.activePrintJob
+                visible: printer.activePrintJob
             }
         }
     }
