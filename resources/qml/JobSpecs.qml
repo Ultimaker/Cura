@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -15,7 +15,7 @@ Item {
     property bool activity: CuraApplication.platformActivity
     property string fileBaseName: PrintInformation.baseName
 
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     height: childrenRect.height
 
@@ -60,7 +60,6 @@ Item {
                         {
                             width: UM.Theme.getSize("save_button_specs_icons").width;
                             height: UM.Theme.getSize("save_button_specs_icons").height;
-                            sourceSize.width: width;
                             sourceSize.height: width;
                             color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene");
                             source: UM.Theme.getIcon("pencil");
@@ -124,7 +123,7 @@ Item {
         }
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
-        font: UM.Theme.getFont("small")
+        font: UM.Theme.getFont("default_bold")
         color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
     }

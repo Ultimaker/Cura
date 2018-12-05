@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -22,8 +22,6 @@ Item
     property alias viewTopCamera: viewTopCameraAction;
     property alias viewLeftSideCamera: viewLeftSideCameraAction;
     property alias viewRightSideCamera: viewRightSideCameraAction;
-
-    property alias expandSidebar: expandSidebarAction;
 
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
@@ -58,7 +56,6 @@ Item
 
     property alias preferences: preferencesAction;
 
-    property alias showEngineLog: showEngineLogAction;
     property alias showProfileFolder: showProfileFolderAction;
     property alias documentation: documentationAction;
     property alias reportBug: reportBugAction;
@@ -70,7 +67,7 @@ Item
 
     property alias browsePackages: browsePackagesAction
 
-    UM.I18nCatalog{id: catalog; name:"cura"}
+    UM.I18nCatalog{id: catalog; name: "cura"}
 
     Action
     {
@@ -400,14 +397,6 @@ Item
 
     Action
     {
-        id: showEngineLogAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
-        iconName: "view-list-text";
-        shortcut: StandardKey.WhatsThis;
-    }
-
-    Action
-    {
         id: showProfileFolderAction;
         text: catalog.i18nc("@action:inmenu menubar:help","Show Configuration Folder");
     }
@@ -425,12 +414,5 @@ Item
         id: browsePackagesAction
         text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
-    }
-
-    Action
-    {
-        id: expandSidebarAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
-        shortcut: "Ctrl+E";
     }
 }

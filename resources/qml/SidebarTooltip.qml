@@ -36,7 +36,7 @@ UM.PointingRectangle {
             }
         }
         base.opacity = 1;
-        target = Qt.point(40 , position.y + Math.round(UM.Theme.getSize("tooltip_arrow_margins").height / 2))
+        target = Qt.point(position.x + 1, position.y + Math.round(UM.Theme.getSize("tooltip_arrow_margins").height / 2))
     }
 
     function hide() {
