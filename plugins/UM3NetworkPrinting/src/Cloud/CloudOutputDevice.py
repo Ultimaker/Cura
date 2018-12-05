@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
+from datetime import datetime
+
 from time import time
 from typing import Dict, List, Optional, Set
 
@@ -10,6 +12,7 @@ from UM import i18nCatalog
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
@@ -66,6 +69,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
 
+    # Signal triggered when the selected printer in the UI should be changed.
+    activePrinterChanged = pyqtSignal()
+
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
     # Therefore we create a private signal used to trigger the printersChanged signal.
     _clusterPrintersChanged = pyqtSignal()
@@ -90,8 +96,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                                    "../../resources/qml/ClusterControlItem.qml")
 
-        # trigger the printersChanged signal when the private signal is triggered
+        # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
+
+        # We keep track of which printer is visible in the monitor page.
+        self._active_printer = None  # type: Optional[PrinterOutputModel]
 
         # Properties to populate later on with received cloud data.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
@@ -158,6 +167,18 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def printers(self) -> List[PrinterOutputModel]:
         return self._printers
 
+    ##  Get the active printer in the UI (monitor page).
+    @pyqtProperty(QObject, notify = activePrinterChanged)
+    def activePrinter(self) -> Optional[PrinterOutputModel]:
+        return self._active_printer
+
+    ## Set the active printer in the UI (monitor page).
+    @pyqtSlot(QObject)
+    def setActivePrinter(self, printer: Optional[PrinterOutputModel] = None) -> None:
+        if printer != self._active_printer:
+            self._active_printer = printer
+            self.activePrinterChanged.emit()
+
     @pyqtProperty(int, notify = _clusterPrintersChanged)
     def clusterSize(self) -> int:
         return len(self._printers)
@@ -178,6 +199,37 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def activePrintJobs(self) -> List[UM3PrintJobOutputModel]:
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state != "queued"]
+
+    @pyqtSlot(int, result = str)
+    def formatDuration(self, seconds: int) -> str:
+        # TODO: this really shouldn't be in this class
+        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
+
+    @pyqtSlot(int, result = str)
+    def getTimeCompleted(self, time_remaining: int) -> str:
+        # TODO: this really shouldn't be in this class
+        current_time = time()
+        datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
+        return "{hour:02d}:{minute:02d}".format(hour = datetime_completed.hour, minute = datetime_completed.minute)
+
+    @pyqtSlot(int, result = str)
+    def getDateCompleted(self, time_remaining: int) -> str:
+        # TODO: this really shouldn't be in this class
+        current_time = time()
+        completed = datetime.fromtimestamp(current_time + time_remaining)
+        today = datetime.fromtimestamp(current_time)
+        # If finishing date is more than 7 days out, using "Mon Dec 3 at HH:MM" format
+        if completed.toordinal() > today.toordinal() + 7:
+            return completed.strftime("%a %b ") + "{day}".format(day = completed.day)
+        # If finishing date is within the next week, use "Monday at HH:MM" format
+        elif completed.toordinal() > today.toordinal() + 1:
+            return completed.strftime("%a")
+        # If finishing tomorrow, use "tomorrow at HH:MM" format
+        elif completed.toordinal() > today.toordinal():
+            return "tomorrow"
+        # If finishing today, use "today at HH:MM" format
+        else:
+            return "today"
 
     ##  Called when the connection to the cluster changes.
     def connect(self) -> None:
@@ -209,6 +261,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         removed_printers, added_printers, updated_printers = findChanges(previous, received)
 
         for removed_printer in removed_printers:
+            if self._active_printer == removed_printer:
+                self.setActivePrinter(None)
             self._printers.remove(removed_printer)
 
         for added_printer in added_printers:
@@ -217,6 +271,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         for model, printer in updated_printers:
             printer.updateOutputModel(model)
+
+        # Always have an active printer
+        if not self._active_printer:
+            self.setActivePrinter(self._printers[0])
 
         self._clusterPrintersChanged.emit()
 
@@ -306,16 +364,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  TODO: The following methods are required by the monitor page QML, but are not actually available using cloud.
     #   TODO: We fake the methods here to not break the monitor page.
 
-    @pyqtProperty(QObject, notify = _clusterPrintersChanged)
-    def activePrinter(self) -> Optional[PrinterOutputModel]:
-        if not self._printers:
-            return None
-        return self._printers[0]
-
-    @pyqtSlot(QObject)
-    def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
-        pass
-
     @pyqtProperty(QUrl, notify = _clusterPrintersChanged)
     def activeCameraUrl(self) -> "QUrl":
         return QUrl()
@@ -335,3 +383,19 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot()
     def openPrinterControlPanel(self) -> None:
         pass
+
+    @pyqtSlot(str)
+    def sendJobToTop(self, print_job_uuid: str) -> None:
+        pass
+
+    @pyqtSlot(str)
+    def deleteJobFromQueue(self, print_job_uuid: str) -> None:
+        pass
+
+    @pyqtSlot(str)
+    def forceSendJob(self, print_job_uuid: str) -> None:
+        pass
+
+    @pyqtProperty("QVariantList", notify = _clusterPrintersChanged)
+    def connectedPrintersTypeCount(self) -> List[Dict[str, str]]:
+        return []
