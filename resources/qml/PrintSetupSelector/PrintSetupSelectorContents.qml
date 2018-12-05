@@ -192,7 +192,7 @@ Item
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Custom")
             iconSource: UM.Theme.getIcon("arrow_right")
-            iconOnRightSide: true
+            isIconOnRightSide: true
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
             onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Custom
         }

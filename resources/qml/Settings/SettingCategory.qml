@@ -105,7 +105,6 @@ Button
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.width: width
             sourceSize.height: width
             color:
             {

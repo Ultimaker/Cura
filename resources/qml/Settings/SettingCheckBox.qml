@@ -125,7 +125,6 @@ SettingItem
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: Math.round(parent.width / 2.5)
                 height: Math.round(parent.height / 2.5)
-                sourceSize.width: width
                 sourceSize.height: width
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
                 source: UM.Theme.getIcon("check")

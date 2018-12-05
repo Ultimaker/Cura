@@ -11,7 +11,7 @@ Button
 {
     id: button
     property alias iconSource: buttonIconLeft.source
-    property var iconOnRightSide: false
+    property bool isIconOnRightSide: false
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
@@ -32,9 +32,13 @@ Button
     // we elide the text to the right so the text will be cut off with the three dots at the end.
     property var fixedWidthMode: false
 
+    leftPadding: UM.Theme.getSize("default_margin").width
+    rightPadding: UM.Theme.getSize("default_margin").width
+    height: UM.Theme.getSize("action_button").height
+
     contentItem: Row
     {
-        //Icon if displayed on the left side.
+        //Left side icon. Only displayed if !isIconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconLeft
@@ -44,7 +48,7 @@ Button
             sourceSize.width: width
             sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != "" && !button.iconOnRightSide
+            visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -62,7 +66,7 @@ Button
             elide: Text.ElideRight
         }
 
-        //Icon if displayed on the right side.
+        //Right side icon. Only displayed if isIconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconRight
@@ -72,7 +76,7 @@ Button
             sourceSize.width: width
             sourceSize.height: height
             color: buttonIconLeft.color
-            visible: source != "" && button.iconOnRightSide
+            visible: source != "" && button.isIconOnRightSide
             anchors.verticalCenter: buttonIconLeft.verticalCenter
         }
     }

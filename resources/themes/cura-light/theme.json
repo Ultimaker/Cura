@@ -41,12 +41,12 @@
             "family": "Noto Sans"
         },
         "small": {
-            "size": 1.0,
-            "weight": 63,
+            "size": 0.85,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "very_small": {
-            "size": 1.0,
+            "size": 0.7,
             "weight": 50,
             "family": "Noto Sans"
         },
@@ -62,12 +62,6 @@
         },
         "action_button": {
             "size": 1.15,
-            "weight": 50,
-            "family": "Noto Sans"
-        },
-        "extruder_icon":
-        {
-            "size": 0.7,
             "weight": 50,
             "family": "Noto Sans"
         }
@@ -242,6 +236,7 @@
         "checkbox_border": [199, 199, 199, 255],
         "checkbox_border_hover": [50, 130, 255, 255],
         "checkbox_mark": [50, 130, 255, 255],
+        "checkbox_disabled": [223, 223, 223, 255],
         "checkbox_text": [35, 35, 35, 255],
 
         "tooltip": [68, 192, 255, 255],
@@ -311,14 +306,6 @@
         "layerview_support_interface": [64, 192, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
-        "configuration_item": [255, 255, 255, 0],
-        "configuration_item_active": [12, 169, 227, 32],
-        "configuration_item_text": [0, 0, 0, 255],
-        "configuration_item_text_active": [0, 0, 0, 255],
-        "configuration_item_border": [127, 127, 127, 255],
-        "configuration_item_border_active": [12, 169, 227, 32],
-        "configuration_item_border_hover": [50, 130, 255, 255],
-
         "tab_status_connected": [50, 130, 255, 255],
         "tab_status_disconnected": [200, 200, 200, 255],
 
@@ -384,7 +371,6 @@
 
         "action_panel_widget": [25.0, 0.0],
         "action_panel_information_widget": [20.0, 0.0],
-        "action_panel_button": [15.0, 3.0],
 
         "machine_selector_widget": [20.0, 4.0],
         "machine_selector_widget_content": [25.0, 32.0],
@@ -430,6 +416,9 @@
         "button": [4, 4],
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
+
+        "action_button": [15.0, 3.0],
+        "action_button_radius": [0.15, 0.15],
 
         "small_button": [2, 2],
         "small_button_icon": [1.5, 1.5],
@@ -519,9 +508,6 @@
         "toolbox_loader": [2.0, 2.0],
 
         "avatar_image": [6.8, 6.8],
-
-        "action_button": [15.0, 3.0],
-        "action_button_radius": [0.15, 0.15],
 
         "monitor_config_override_box": [1.0, 14.0],
         "monitor_extruder_circle": [2.75, 2.75],

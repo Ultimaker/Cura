@@ -74,7 +74,6 @@ QtObject
                     anchors.rightMargin: Theme.getSize("default_margin").width
                     width: Theme.getSize("standard_arrow").width
                     height: Theme.getSize("standard_arrow").height
-                    sourceSize.width: width
                     sourceSize.height: width
                     color: control.enabled ? Theme.getColor("setting_category_text") : Theme.getColor("setting_category_disabled_text")
                     source: Theme.getIcon("arrow_bottom")
@@ -258,7 +257,6 @@ QtObject
                         anchors.bottomMargin: Theme.getSize("button").height - Math.round(Theme.getSize("button_icon").height / 4)
                         width: Theme.getSize("standard_arrow").width
                         height: Theme.getSize("standard_arrow").height
-                        sourceSize.width: width
                         sourceSize.height: width
                         visible: control.menu != null;
                         color:
@@ -531,7 +529,7 @@ QtObject
                 implicitWidth:  Theme.getSize("checkbox").width
                 implicitHeight: Theme.getSize("checkbox").height
 
-                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox")
+                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : (control.enabled ? Theme.getColor("checkbox") : Theme.getColor("checkbox_disabled"))
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : UM.Theme.getSize("checkbox_radius").width
@@ -545,7 +543,6 @@ QtObject
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.round(parent.width / 2.5)
                     height: Math.round(parent.height / 2.5)
-                    sourceSize.width: width
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
                     source: control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check")
@@ -588,7 +585,6 @@ QtObject
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.round(parent.width / 2.5)
                     height: Math.round(parent.height / 2.5)
-                    sourceSize.width: width
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
                     source:
@@ -840,7 +836,6 @@ QtObject
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.floor(control.width / 2)
                     height: Math.floor(control.height / 2)
-                    sourceSize.width: width
                     sourceSize.height: width
                     color:
                     {

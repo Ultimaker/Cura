@@ -1,5 +1,5 @@
-// Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.0
@@ -31,12 +31,15 @@ SettingItem
             {
                 forceActiveFocus();
                 propertyProvider.setPropertyValue("value", model.getItem(index).index);
-            } else
+            }
+            else
             {
                 if (propertyProvider.properties.value == -1)
                 {
-                    control.currentIndex = model.rowCount() - 1;  // we know the last item is "Not overriden"
-                } else {
+                    control.currentIndex = model.count - 1;  // we know the last item is "Not overriden"
+                }
+                else
+                {
                     control.currentIndex = propertyProvider.properties.value;  // revert to the old value
                 }
             }

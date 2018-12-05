@@ -30,9 +30,6 @@ Item
         width: UM.Theme.getSize("section_icon").width
         height: width
 
-        sourceSize.width: width
-        sourceSize.height: height
-
         color: label.color
         visible: source != ""
     }

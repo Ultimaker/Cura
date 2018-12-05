@@ -55,7 +55,8 @@ Rectangle
             text: ""
             implicitWidth: UM.Theme.getSize("favorites_button").width
             implicitHeight: UM.Theme.getSize("favorites_button").height
-            UM.RecolorImage {
+            UM.RecolorImage
+            {
                 anchors
                 {
                     verticalCenter: parent.verticalCenter
@@ -63,8 +64,6 @@ Rectangle
                 }
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
-                sourceSize.width: width
-                sourceSize.height: height
                 color: "black"
                 source: brand_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             }
