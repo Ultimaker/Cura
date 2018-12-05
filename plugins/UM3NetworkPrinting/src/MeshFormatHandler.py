@@ -15,8 +15,7 @@ from cura.CuraApplication import CuraApplication
 
 ## Class that contains all the translations for this module.
 class T:
-    # The translation catalog for this device.
-
+    # The translation catalog for this module.
     _I18N_CATALOG = i18nCatalog("cura")
     NO_FORMATS_AVAILABLE = _I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!")
 

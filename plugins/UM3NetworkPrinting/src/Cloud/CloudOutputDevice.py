@@ -24,6 +24,7 @@ from .Models.CloudPrintResponse import CloudPrintResponse
 from .Models.CloudJobResponse import CloudJobResponse
 from .Models.CloudClusterPrinter import CloudClusterPrinter
 from .Models.CloudClusterPrintJob import CloudClusterPrintJob
+from .Utils import findChanges
 
 
 ## Class that contains all the translations for this module.
@@ -198,45 +199,41 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._updatePrintJobs(status.print_jobs)
 
     def _updatePrinters(self, printers: List[CloudClusterPrinter]) -> None:
-        remote_printers = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
-        current_printers = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
+        previous = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
+        received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
 
-        remote_printer_ids = set(remote_printers)  # type: Set[str]
-        current_printer_ids = set(current_printers)  # type: Set[str]
+        removed_printers, added_printers, updated_printers = findChanges(previous, received)
 
-        for removed_printer_id in current_printer_ids.difference(remote_printer_ids):
-            removed_printer = current_printers[removed_printer_id]
+        for removed_printer in removed_printers:
             self._printers.remove(removed_printer)
 
-        for new_printer_id in remote_printer_ids.difference(current_printer_ids):
-            new_printer = remote_printers[new_printer_id]
+        for added_printer in added_printers:
             controller = PrinterOutputController(self)
-            self._printers.append(new_printer.createOutputModel(controller))
+            self._printers.append(added_printer.createOutputModel(controller))
 
-        for updated_printer_guid in current_printer_ids.intersection(remote_printer_ids):
-            remote_printers[updated_printer_guid].updateOutputModel(current_printers[updated_printer_guid])
+        for model, printer in updated_printers:
+            printer.updateOutputModel(model)
 
         self._clusterPrintersChanged.emit()
 
     def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
-        remote_jobs = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
-        current_jobs = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
+        received = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
+        previous = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
 
-        remote_job_ids = set(remote_jobs)  # type: Set[str]
-        current_job_ids = set(current_jobs)  # type: Set[str]
+        removed_jobs, added_jobs, updated_jobs = findChanges(previous, received)
 
-        for removed_job_id in current_job_ids.difference(remote_job_ids):
-            self._print_jobs.remove(current_jobs[removed_job_id])
+        for removed_job in removed_jobs:
+            self._print_jobs.remove(removed_job)
 
-        for new_job_id in remote_job_ids.difference(current_job_ids):
-            self._addPrintJob(remote_jobs[new_job_id])
+        for added_job in added_jobs:
+            self._addPrintJob(added_job)
 
-        for updated_job_id in current_job_ids.intersection(remote_job_ids):
-            remote_jobs[updated_job_id].updateOutputModel(current_jobs[updated_job_id])
+        for model, job in updated_jobs:
+            job.updateOutputModel(model)
 
         # We only have to update when jobs are added or removed
         # updated jobs push their changes via their output model
-        if remote_job_ids != current_job_ids:
+        if added_jobs or removed_jobs:
             self.printJobsChanged.emit()
 
     def _addPrintJob(self, job: CloudClusterPrintJob) -> None:

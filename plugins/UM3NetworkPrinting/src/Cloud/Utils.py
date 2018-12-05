@@ -4,6 +4,13 @@ T = TypeVar("T")
 U = TypeVar("U")
 
 
+## Splits the given dictionaries into three lists (in a tuple):
+#       - `removed`: Items that were in the first argument but removed in the second one.
+#       - `added`: Items that were not in the first argument but were included in the second one.
+#       - `updated`: Items that were in both dictionaries. Both values are given in a tuple.
+#  \param previous: The previous items
+#  \param received: The received items
+#  \return: The tuple (removed, added, updated) as explained above.
 def findChanges(previous: Dict[str, T], received: Dict[str, U]) -> Tuple[List[T], List[U], List[Tuple[T, U]]]:
     previous_ids = set(previous)
     received_ids = set(received)
