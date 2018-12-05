@@ -45,8 +45,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     activeCameraUrlChanged = pyqtSignal()
     receivedPrintJobsChanged = pyqtSignal()
 
-    # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
-    # Inheritance doesn't seem to work. Tying them together does work, but i'm open for better suggestions.
+    # Notify can only use signals that are defined by the class that they are in, not inherited ones.
+    # Therefore we create a private signal used to trigger the printersChanged signal.
     _clusterPrintersChanged = pyqtSignal()
 
     def __init__(self, device_id, address, properties, parent = None) -> None:
@@ -62,7 +62,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/ClusterMonitorItem.qml")
 
-        # See comments about this hack with the clusterPrintersChanged signal
+        # trigger the printersChanged signal when the private signal is triggered
         self.printersChanged.connect(self._clusterPrintersChanged)
 
         self._accepts_commands = True  # type: bool

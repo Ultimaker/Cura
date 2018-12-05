@@ -18,7 +18,6 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudApiClient import CloudApiClient
-from .Models.CloudErrorObject import CloudErrorObject
 from .Models.CloudClusterStatus import CloudClusterStatus
 from .Models.CloudJobUploadRequest import CloudJobUploadRequest
 from .Models.CloudPrintResponse import CloudPrintResponse
@@ -63,19 +62,21 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 2.0  # seconds
 
-    # Signal triggered when the printers in the remote cluster were changed.
-    clusterPrintersChanged = pyqtSignal()
-
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
+
+    # Notify can only use signals that are defined by the class that they are in, not inherited ones.
+    # Therefore we create a private signal used to trigger the printersChanged signal.
+    _clusterPrintersChanged = pyqtSignal()
 
     ## Creates a new cloud output device
     #  \param api_client: The client that will run the API calls
     #  \param device_id: The ID of the device (i.e. the cluster_id for the cloud API)
     #  \param parent: The optional parent of this output device.
-    def __init__(self, api_client: CloudApiClient, device_id: str, parent: QObject = None) -> None:
+    def __init__(self, api_client: CloudApiClient, device_id: str, host_name: str, parent: QObject = None) -> None:
         super().__init__(device_id = device_id, address = "", properties = {}, parent = parent)
         self._api = api_client
+        self._host_name = host_name
 
         self._setInterfaceElements()
         
@@ -87,7 +88,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
                                                    "../../resources/qml/ClusterMonitorItem.qml")
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                                    "../../resources/qml/ClusterControlItem.qml")
-        
+
+        # trigger the printersChanged signal when the private signal is triggered
+        self.printersChanged.connect(self._clusterPrintersChanged)
+
         # Properties to populate later on with received cloud data.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
         self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
@@ -95,6 +99,22 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # We only allow a single upload at a time.
         self._sending_job = False
         self._progress_message = None  # type: Optional[Message]
+
+    ## Gets the host name of this device
+    @property
+    def host_name(self) -> str:
+        return self._host_name
+
+    ## Updates the host name of the output device
+    @host_name.setter
+    def host_name(self, value: str) -> None:
+        self._host_name = value
+
+    ## Checks whether the given network key is found in the cloud's host name
+    def matchesNetworkKey(self, network_key: str) -> bool:
+        # A network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
+        # the host name should then be "ultimakersystem-aabbccdd0011"
+        return network_key.startswith(self._host_name)
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self):
@@ -133,7 +153,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh_bytes, response))
 
     ##  Get remote printers.
-    @pyqtProperty("QVariantList", notify = clusterPrintersChanged)
+    @pyqtProperty("QVariantList", notify = _clusterPrintersChanged)
     def printers(self):
         return self._printers
 
@@ -196,7 +216,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         for updated_printer_guid in current_printer_ids.intersection(remote_printer_ids):
             remote_printers[updated_printer_guid].updateOutputModel(current_printers[updated_printer_guid])
 
-        self.clusterPrintersChanged.emit()
+        self._clusterPrintersChanged.emit()
 
     def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
         remote_jobs = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
@@ -283,7 +303,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  TODO: The following methods are required by the monitor page QML, but are not actually available using cloud.
     #   TODO: We fake the methods here to not break the monitor page.
 
-    @pyqtProperty(QObject, notify = clusterPrintersChanged)
+    @pyqtProperty(QObject, notify = _clusterPrintersChanged)
     def activePrinter(self) -> Optional[PrinterOutputModel]:
         if not self._printers:
             return None
@@ -293,7 +313,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def setActivePrinter(self, printer: Optional[PrinterOutputModel]) -> None:
         pass
 
-    @pyqtProperty(QUrl, notify = clusterPrintersChanged)
+    @pyqtProperty(QUrl, notify = _clusterPrintersChanged)
     def activeCameraUrl(self) -> "QUrl":
         return QUrl()
 
@@ -304,6 +324,3 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtProperty(bool, notify = printJobsChanged)
     def receivedPrintJobs(self) -> bool:
         return True
-
-    def _onApiError(self, errors: List[CloudErrorObject]) -> None:
-        pass  # TODO: Show errors...

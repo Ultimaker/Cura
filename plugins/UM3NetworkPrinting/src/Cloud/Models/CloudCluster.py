@@ -11,7 +11,7 @@ class CloudCluster(BaseModel):
         self.host_name = None  # type: str
         self.host_version = None  # type: str
         self.status = None  # type: str
-        self.is_online = None  # type: bool
+        self.is_online = False  # type: bool
         super().__init__(**kwargs)
 
     # Validates the model, raising an exception if the model is invalid.
