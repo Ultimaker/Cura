@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
 import os
+from datetime import datetime, timedelta
 from time import time
 from typing import List, Optional, Dict, cast, Union, Set
 
@@ -18,8 +19,9 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
+from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from plugins.UM3NetworkPrinting.src.BaseCuraConnectDevice import BaseCuraConnectDevice
 from plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient import CloudApiClient
 from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models import (
@@ -61,7 +63,7 @@ class T:
 #   Note that this device represents a single remote cluster, not a list of multiple clusters.
 #
 #   TODO: figure our how the QML interface for the cluster networking should operate with this limited functionality.
-class CloudOutputDevice(NetworkedPrinterOutputDevice):
+class CloudOutputDevice(BaseCuraConnectDevice):
 
     # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 2.0  # seconds

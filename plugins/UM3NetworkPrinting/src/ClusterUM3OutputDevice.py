@@ -1,7 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, Optional, Set, Tuple, Union
+from typing import Any, cast, Tuple, Union, Optional, Dict, List
+from time import time
+from datetime import datetime
+
+import io  # To create the correct buffers for sending data to the printer.
+import json
+import os
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.FileWriter import FileWriter  # To choose based on the output file mode (text vs. binary).
@@ -22,6 +28,7 @@ from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationM
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from plugins.UM3NetworkPrinting.src.BaseCuraConnectDevice import BaseCuraConnectDevice
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .SendMaterialJob import SendMaterialJob
@@ -32,18 +39,10 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices, QImage
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
-from time import time
-from datetime import datetime
-from typing import Optional, Dict, List
-
-import io  # To create the correct buffers for sending data to the printer.
-import json
-import os
-
 i18n_catalog = i18nCatalog("cura")
 
 
-class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
+class ClusterUM3OutputDevice(BaseCuraConnectDevice):
     printJobsChanged = pyqtSignal()
     activePrinterChanged = pyqtSignal()
     activeCameraUrlChanged = pyqtSignal()
