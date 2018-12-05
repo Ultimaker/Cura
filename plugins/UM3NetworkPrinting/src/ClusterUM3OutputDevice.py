@@ -385,8 +385,24 @@ class ClusterUM3OutputDevice(BaseCuraConnectDevice):
     @pyqtSlot(int, result = str)
     def getDateCompleted(self, time_remaining: int) -> str:
         current_time = time()
-        datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
-        return (datetime_completed.strftime("%a %b ") + "{day}".format(day=datetime_completed.day)).upper()
+        completed = datetime.fromtimestamp(current_time + time_remaining)
+        today = datetime.fromtimestamp(current_time)
+
+        # If finishing date is more than 7 days out, using "Mon Dec 3 at HH:MM" format
+        if completed.toordinal() > today.toordinal() + 7:
+            return completed.strftime("%a %b ") + "{day}".format(day=completed.day)
+        
+        # If finishing date is within the next week, use "Monday at HH:MM" format
+        elif completed.toordinal() > today.toordinal() + 1:
+            return completed.strftime("%a")
+        
+        # If finishing tomorrow, use "tomorrow at HH:MM" format
+        elif completed.toordinal() > today.toordinal():
+            return "tomorrow"
+
+        # If finishing today, use "today at HH:MM" format
+        else:
+            return "today"
 
     @pyqtSlot(str)
     def sendJobToTop(self, print_job_uuid: str) -> None:

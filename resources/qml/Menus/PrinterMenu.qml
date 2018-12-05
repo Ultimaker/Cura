@@ -39,23 +39,6 @@ Menu
 
     MenuItem
     {
-        text: catalog.i18nc("@label:category menu label", "Cloud enabled printers")
-        enabled: false
-        visible: cloudPrinterMenu.count > 0
-    }
-
-    CloudPrinterMenu
-    {
-        id: cloudPrinterMenu
-    }
-
-    MenuSeparator
-    {
-        visible: cloudPrinterMenu.count > 0
-    }
-
-    MenuItem
-    {
         text: catalog.i18nc("@label:category menu label", "Local printers")
         enabled: false
         visible: localPrinterMenu.count > 0

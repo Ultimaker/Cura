@@ -527,12 +527,6 @@ class MachineManager(QObject):
             return self._global_container_stack.getMetaDataEntry("um_network_key", "")
         return ""
 
-    @pyqtProperty(str, notify=printerConnectedStatusChanged)
-    def activeMachineCloudKey(self) -> str:
-        if self._global_container_stack:
-            return self._global_container_stack.getMetaDataEntry("um_cloud_cluster_id", "")
-        return ""
-
     @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkGroupName(self) -> str:
         if self._global_container_stack:

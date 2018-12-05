@@ -12,7 +12,6 @@ Cura.ExpandableComponent
     id: machineSelector
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
-    property bool isCloudConnected: Cura.MachineManager.activeMachineCloudKey != ""
     property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
@@ -56,7 +55,7 @@ Cura.ExpandableComponent
                 leftMargin: UM.Theme.getSize("thick_margin").width
             }
 
-            source: isCloudConnected ? UM.Theme.getIcon("printer_cloud_connected") : UM.Theme.getIcon("printer_connected")
+            source: UM.Theme.getIcon("printer_connected")
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
@@ -64,7 +63,7 @@ Cura.ExpandableComponent
             sourceSize.height: height
 
             color: UM.Theme.getColor("primary")
-            visible: isNetworkPrinter && (isPrinterConnected || isCloudConnected)
+            visible: isNetworkPrinter && isPrinterConnected
 
             // Make a themable circle in the background so we can change it in other themes
             Rectangle

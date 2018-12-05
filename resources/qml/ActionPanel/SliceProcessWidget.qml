@@ -137,6 +137,10 @@ Column
         {
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
             prepareButtons.autoSlice = autoSlice
+            if(autoSlice)
+            {
+                CuraApplication.backend.forceSlice()
+            }
         }
     }
 
