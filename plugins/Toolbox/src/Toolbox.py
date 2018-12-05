@@ -70,20 +70,24 @@ class Toolbox(QObject, Extension):
         self._server_response_data = {
             "authors":             [],
             "packages":            [],
+            "plugins_installed":   [],
+            "materials_installed": []
         }  # type: Dict[str, List[Any]]
 
         # Models:
         self._models = {
             "authors":             AuthorsModel(self),
             "packages":            PackagesModel(self),
-            "plugins_showcase":    PackagesModel(self),
-            "plugins_available":   PackagesModel(self),
-            "plugins_installed":   PackagesModel(self),
-            "materials_showcase":  AuthorsModel(self),
-            "materials_available": AuthorsModel(self),
-            "materials_installed": PackagesModel(self),
-            "materials_generic":   PackagesModel(self)
         }  # type: Dict[str, ListModel]
+
+        self._plugins_showcase_model = PackagesModel(self)
+        self._plugins_available_model = PackagesModel(self)
+        self._plugins_installed_model = PackagesModel(self)
+
+        self._materials_showcase_model = AuthorsModel(self)
+        self._materials_available_model = AuthorsModel(self)
+        self._materials_installed_model = PackagesModel(self)
+        self._materials_generic_model = PackagesModel(self)
 
         # These properties are for keeping track of the UI state:
         # ----------------------------------------------------------------------
@@ -302,12 +306,11 @@ class Toolbox(QObject, Extension):
             self._old_plugin_metadata = {k: v for k, v in self._old_plugin_metadata.items() if k in self._old_plugin_ids}
 
             self._server_response_data["plugins_installed"] = all_packages["plugin"] + list(self._old_plugin_metadata.values())
-            self._models["plugins_installed"].setMetadata(self._server_response_data["plugins_installed"])
+            self._plugins_installed_model.setMetadata(self._server_response_data["plugins_installed"])
             self.metadataChanged.emit()
         if "material" in all_packages:
             self._server_response_data["materials_installed"] = all_packages["material"]
-            # TODO: ADD MATERIALS HERE ONCE MATERIALS PORTION OF TOOLBOX IS LIVE
-            self._models["materials_installed"].setMetadata(self._server_response_data["materials_installed"])
+            self._materials_installed_model.setMetadata(all_packages["material"])
             self.metadataChanged.emit()
 
     @pyqtSlot(str)
@@ -751,31 +754,31 @@ class Toolbox(QObject, Extension):
 
     @pyqtProperty(QObject, constant=True)
     def pluginsShowcaseModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["plugins_showcase"])
+        return self._plugins_showcase_model
 
     @pyqtProperty(QObject, constant=True)
     def pluginsAvailableModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["plugins_available"])
+        return self._plugins_available_model
 
     @pyqtProperty(QObject, constant=True)
     def pluginsInstalledModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["plugins_installed"])
+        return self._plugins_installed_model
 
     @pyqtProperty(QObject, constant=True)
     def materialsShowcaseModel(self) -> AuthorsModel:
-        return cast(AuthorsModel, self._models["materials_showcase"])
+        return self._materials_showcase_model
 
     @pyqtProperty(QObject, constant=True)
     def materialsAvailableModel(self) -> AuthorsModel:
-        return cast(AuthorsModel, self._models["materials_available"])
+        return self._materials_available_model
 
     @pyqtProperty(QObject, constant=True)
     def materialsInstalledModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["materials_installed"])
+        return self._materials_installed_model
 
     @pyqtProperty(QObject, constant=True)
     def materialsGenericModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["materials_generic"])
+        return self._materials_generic_model
 
     # Filter Models:
     # --------------------------------------------------------------------------
@@ -830,9 +833,9 @@ class Toolbox(QObject, Extension):
 
                     processed_authors.append(author["author_id"])
 
-        self._models["materials_showcase"].setMetadata(materials_showcase_metadata)
-        self._models["materials_available"].setMetadata(materials_available_metadata)
-        self._models["materials_generic"].setMetadata(materials_generic_metadata)
+        self._materials_showcase_model.setMetadata(materials_showcase_metadata)
+        self._materials_available_model.setMetadata(materials_available_metadata)
+        self._materials_generic_model.setMetadata(materials_generic_metadata)
 
     def reBuildPluginsModels(self) -> None:
         plugins_showcase_metadata = []
@@ -845,5 +848,5 @@ class Toolbox(QObject, Extension):
                 else:
                     plugins_available_metadata.append(item)
 
-        self._models["plugins_showcase"].setMetadata(plugins_showcase_metadata)
-        self._models["plugins_available"].setMetadata(plugins_available_metadata)
+        self._plugins_showcase_model.setMetadata(plugins_showcase_metadata)
+        self._plugins_available_model.setMetadata(plugins_available_metadata)
