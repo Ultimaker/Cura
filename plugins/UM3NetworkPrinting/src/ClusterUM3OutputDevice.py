@@ -411,8 +411,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     ##  Called when the connection to the cluster changes.
     def connect(self) -> None:
-        super().connect()
-        self.sendMaterialProfiles()
+        pass
+        # super().connect()
+        # self.sendMaterialProfiles()
 
     def _onGetPreviewImageFinished(self, reply: QNetworkReply) -> None:
         reply_url = reply.url().toString()

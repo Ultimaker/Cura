@@ -155,8 +155,12 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ##  Get remote printers.
     @pyqtProperty("QVariantList", notify = _clusterPrintersChanged)
-    def printers(self):
+    def printers(self) -> List[PrinterOutputModel]:
         return self._printers
+
+    @pyqtProperty(int, notify = _clusterPrintersChanged)
+    def clusterSize(self) -> int:
+        return len(self._printers)
 
     ##  Get remote print jobs.
     @pyqtProperty("QVariantList", notify = printJobsChanged)
@@ -237,13 +241,15 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             self.printJobsChanged.emit()
 
     def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
+        # TODO: somehow we don't see the queued print jobs on the monitor page yet, we have to figure out why.
         try:
-            printer = next(p for p in self._printers if job.printer_uuid == p.key)
+            printer = next(p for p in self._printers if job.printer_uuid == p.key or job.assigned_to == p.key)
         except StopIteration:
             return Logger.log("w", "Missing printer %s for job %s in %s", job.printer_uuid, job.uuid,
                               [p.key for p in self._printers])
 
-        self._print_jobs.append(job.createOutputModel(printer))
+        print_job = job.createOutputModel(printer)
+        self._print_jobs.append(print_job)
 
     def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
         self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,
@@ -321,3 +327,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtProperty(bool, notify = printJobsChanged)
     def receivedPrintJobs(self) -> bool:
         return True
+
+    @pyqtSlot()
+    def openPrintJobControlPanel(self) -> None:
+        pass
+
+    @pyqtSlot()
+    def openPrinterControlPanel(self) -> None:
+        pass

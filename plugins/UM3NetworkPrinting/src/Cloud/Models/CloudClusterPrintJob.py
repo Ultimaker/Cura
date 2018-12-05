@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List
+from typing import List, Optional
 
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from .CloudClusterPrinterConfiguration import CloudClusterPrinterConfiguration
@@ -33,14 +33,15 @@ class CloudClusterPrintJob(BaseModel):
         super().__init__(**kwargs)
         self.printers = [CloudClusterPrinterConfiguration(**c) if isinstance(c, dict) else c
                          for c in self.configuration]
-        self.printers = [CloudClusterPrintJobConstraint(**p) if isinstance(p, dict) else p
-                         for p in self.constraints]
+        self.print_jobs = [CloudClusterPrintJobConstraint(**p) if isinstance(p, dict) else p
+                           for p in self.constraints]
 
     ## Creates an UM3 print job output model based on this cloud cluster print job.
     #  \param printer: The output model of the printer
     def createOutputModel(self, printer: PrinterOutputModel) -> UM3PrintJobOutputModel:
         model = UM3PrintJobOutputModel(printer.getController(), self.uuid, self.name)
         model.updateAssignedPrinter(printer)
+        printer.updateActivePrintJob(model)
         return model
 
     ## Updates an UM3 print job output model based on this cloud cluster print job.
