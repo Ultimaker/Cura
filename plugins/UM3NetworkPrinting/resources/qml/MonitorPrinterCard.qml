@@ -66,7 +66,7 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                width: 216 * screenScaleFactor // TODO: Theme!
+                width: 180 * screenScaleFactor // TODO: Theme!
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
 
                 Label
@@ -216,7 +216,7 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                width: 216 * screenScaleFactor // TODO: Theme!
+                width: 180 * screenScaleFactor // TODO: Theme!
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
                 visible: printer.activePrintJob
 
