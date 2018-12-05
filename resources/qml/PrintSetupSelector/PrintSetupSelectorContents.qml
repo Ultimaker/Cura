@@ -28,7 +28,7 @@ Item
     {
         var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
 
-        if(index != null && !isNaN(index))
+        if (index != null && !isNaN(index))
         {
             return index
         }
@@ -150,7 +150,8 @@ Item
     {
         id: buttonsSeparator
 
-        anchors.top: contents.bottom
+        // The buttonsSeparator is inside the contents. This is to avoid a double line in the bottom
+        anchors.bottom: contents.bottom
         width: parent.width
         height: UM.Theme.getSize("default_lining").height
         color: UM.Theme.getColor("lining")
@@ -162,10 +163,9 @@ Item
         property real padding: UM.Theme.getSize("default_margin").width
         height: childrenRect.height + 2 * padding
 
-        // The buttonsSeparator is inside the buttonRow. This is to avoid some weird behaviours with the scroll bar.
         anchors
         {
-            top: buttonsSeparator.top
+            top: buttonsSeparator.bottom
             left: parent.left
             right: parent.right
         }
