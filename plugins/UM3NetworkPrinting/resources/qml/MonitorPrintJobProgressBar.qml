@@ -88,6 +88,8 @@ Item
                         return catalog.i18nc("@label:status", "Aborted")
                     }
                     return catalog.i18nc("@label:status", "Finished")
+                case "finished":
+                    return catalog.i18nc("@label:status", "Finished")
                 case "sent_to_printer":
                     return catalog.i18nc("@label:status", "Preparing...")
                 case "pre_print":
