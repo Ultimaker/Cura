@@ -559,34 +559,30 @@ class Toolbox(QObject, Extension):
 
     # Check for plugins that were installed with the old plugin browser
     def isOldPlugin(self, plugin_id: str) -> bool:
-        if plugin_id in self._old_plugin_ids:
-            return True
-        return False
+         return plugin_id in self._old_plugin_ids
 
     def getOldPluginPackageMetadata(self, plugin_id: str) -> Optional[Dict[str, Any]]:
         return self._old_plugin_metadata.get(plugin_id)
 
-    def loadingComplete(self) -> bool:
+    def isLoadingComplete(self) -> bool:
         populated = 0
-        for list in self._metadata.items():
-            if len(list) > 0:
+        for metadata_list in self._metadata.items():
+            if metadata_list:
                 populated += 1
-        if populated == len(self._metadata.items()):
-            return True
-        return False
+        return populated == len(self._metadata.items())
 
     # Make API Calls
     # --------------------------------------------------------------------------
-    def _makeRequestByType(self, type: str) -> None:
-        Logger.log("i", "Marketplace: Requesting %s metadata from server.", type)
-        request = QNetworkRequest(self._request_urls[type])
+    def _makeRequestByType(self, request_type: str) -> None:
+        Logger.log("i", "Requesting %s metadata from server.", request_type)
+        request = QNetworkRequest(self._request_urls[request_type])
         request.setRawHeader(*self._request_header)
         if self._network_manager:
             self._network_manager.get(request)
 
     @pyqtSlot(str)
     def startDownload(self, url: str) -> None:
-        Logger.log("i", "Marketplace: Attempting to download & install package from %s.", url)
+        Logger.log("i", "Attempting to download & install package from %s.", url)
         url = QUrl(url)
         self._download_request = QNetworkRequest(url)
         if hasattr(QNetworkRequest, "FollowRedirectsAttribute"):
@@ -603,7 +599,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def cancelDownload(self) -> None:
-        Logger.log("i", "Marketplace: User cancelled the download of a package.")
+        Logger.log("i", "User cancelled the download of a package.")
         self.resetDownload()
 
     def resetDownload(self) -> None:
@@ -647,10 +643,10 @@ class Toolbox(QObject, Extension):
         ]
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            for type, url in self._request_urls.items():
+            for response_type, url in self._request_urls.items():
 
                 # HACK: Do nothing because we'll handle these from the "packages" call
-                if type in do_not_handle:
+                if response_type in do_not_handle:
                     continue
 
                 if reply.url() == url:
@@ -665,38 +661,35 @@ class Toolbox(QObject, Extension):
                                 return
 
                             # Create model and apply metadata:
-                            if not self._models[type]:
-                                Logger.log("e", "Could not find the %s model.", type)
+                            if not self._models[response_type]:
+                                Logger.log("e", "Could not find the %s model.", response_type)
                                 break
                             
-                            self._metadata[type] = json_data["data"]
-                            self._models[type].setMetadata(self._metadata[type])
+                            self._metadata[response_type] = json_data["data"]
+                            self._models[response_type].setMetadata(self._metadata[response_type])
 
                             # Do some auto filtering
                             # TODO: Make multiple API calls in the future to handle this
-                            if type is "packages":
-                                self._models[type].setFilter({"type": "plugin"})
+                            if response_type is "packages":
+                                self._models[response_type].setFilter({"type": "plugin"})
                                 self.buildMaterialsModels()
                                 self.buildPluginsModels()
-                            if type is "authors":
-                                self._models[type].setFilter({"package_types": "material"})
-                            if type is "materials_generic":
-                                self._models[type].setFilter({"tags": "generic"})
+                            if response_type is "authors":
+                                self._models[response_type].setFilter({"package_types": "material"})
+                            if response_type is "materials_generic":
+                                self._models[response_type].setFilter({"tags": "generic"})
 
                             self.metadataChanged.emit()
 
-                            if self.loadingComplete() is True:
+                            if self.isLoadingComplete():
                                 self.setViewPage("overview")
 
-                            return
                         except json.decoder.JSONDecodeError:
-                            Logger.log("w", "Marketplace: Received invalid JSON for %s.", type)
+                            Logger.log("w", "Received invalid JSON for %s.", response_type)
                             break
                     else:
                         self.setViewPage("errored")
                         self.resetDownload()
-                        return
-
         else:
             # Ignore any operation that is not a get operation
             pass
@@ -717,10 +710,10 @@ class Toolbox(QObject, Extension):
                 self._onDownloadComplete(file_path)
 
     def _onDownloadComplete(self, file_path: str) -> None:
-        Logger.log("i", "Marketplace: Download complete.")
+        Logger.log("i", "Download complete.")
         package_info = self._package_manager.getPackageInfo(file_path)
         if not package_info:
-            Logger.log("w", "Marketplace: Package file [%s] was not a valid CuraPackage.", file_path)
+            Logger.log("w", "Package file [%s] was not a valid CuraPackage.", file_path)
             return
 
         license_content = self._package_manager.getPackageLicense(file_path)
@@ -729,7 +722,6 @@ class Toolbox(QObject, Extension):
             return
 
         self.install(file_path)
-        return
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
@@ -847,7 +839,7 @@ class Toolbox(QObject, Extension):
         self._metadata["materials_available"] = []
         self._metadata["materials_generic"] = []
 
-        processed_authors = [] # type: List[str]
+        processed_authors = []  # type: List[str]
 
         for item in self._metadata["packages"]:
             if item["package_type"] == "material":
