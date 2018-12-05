@@ -31,8 +31,8 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
-    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com" #type: str
-    DEFAULT_CLOUD_API_VERSION = 1 #type: int
+    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"  # type: str
+    DEFAULT_CLOUD_API_VERSION = 1  # type: int
 
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
@@ -192,9 +192,9 @@ class Toolbox(QObject, Extension):
             return self.DEFAULT_CLOUD_API_ROOT
         if not hasattr(cura.CuraVersion, "CuraCloudAPIRoot"): # type: ignore
             return self.DEFAULT_CLOUD_API_ROOT
-        if not cura.CuraVersion.CuraCloudAPIRoot: # type: ignore
+        if not cura.CuraVersion.CuraCloudAPIRoot:  # type: ignore
             return self.DEFAULT_CLOUD_API_ROOT
-        return cura.CuraVersion.CuraCloudAPIRoot # type: ignore
+        return cura.CuraVersion.CuraCloudAPIRoot  # type: ignore
 
     # Get the cloud API version from CuraVersion
     def _getCloudAPIVersion(self) -> int:
@@ -202,9 +202,9 @@ class Toolbox(QObject, Extension):
             return self.DEFAULT_CLOUD_API_VERSION
         if not hasattr(cura.CuraVersion, "CuraCloudAPIVersion"): # type: ignore
             return self.DEFAULT_CLOUD_API_VERSION
-        if not cura.CuraVersion.CuraCloudAPIVersion: # type: ignore
+        if not cura.CuraVersion.CuraCloudAPIVersion:  # type: ignore
             return self.DEFAULT_CLOUD_API_VERSION
-        return cura.CuraVersion.CuraCloudAPIVersion # type: ignore
+        return cura.CuraVersion.CuraCloudAPIVersion  # type: ignore
 
     # Get the packages version depending on Cura version settings.
     def _getSDKVersion(self) -> Union[int, str]:
@@ -231,12 +231,6 @@ class Toolbox(QObject, Extension):
         # Make remote requests:
         self._makeRequestByType("packages")
         self._makeRequestByType("authors")
-        # TODO: Uncomment in the future when the tag-filtered api calls work in the cloud server
-        # self._makeRequestByType("plugins_showcase")
-        # self._makeRequestByType("plugins_available")
-        # self._makeRequestByType("materials_showcase")
-        # self._makeRequestByType("materials_available")
-        # self._makeRequestByType("materials_generic")
 
         # Gather installed packages:
         self._updateInstalledModels()
@@ -281,7 +275,7 @@ class Toolbox(QObject, Extension):
                 "description": plugin_data["plugin"]["description"]
             }
             return formatted
-        except:
+        except KeyError:
             Logger.log("w", "Unable to convert plugin meta data %s", str(plugin_data))
             return None
 
