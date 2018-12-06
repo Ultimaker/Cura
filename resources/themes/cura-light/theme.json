@@ -123,8 +123,8 @@
         "text_subtext": [0, 0, 0, 255],
         "text_medium": [128, 128, 128, 255],
         "text_emphasis": [255, 255, 255, 255],
-        "text_scene": [31, 36, 39, 255],
-        "text_scene_hover": [70, 84, 113, 255],
+        "text_scene": [102, 102, 102, 255],
+        "text_scene_hover": [123, 123, 113, 255],
 
         "error": [255, 140, 0, 255],
         "warning": [255, 190, 35, 255],
@@ -144,10 +144,10 @@
         "button_text_active_hover": [255, 255, 255, 255],
 
         "small_button": [0, 0, 0, 0],
-        "small_button_hover": [10, 8, 80, 255],
+        "small_button_hover": [102, 102, 102, 255],
         "small_button_active": [10, 8, 80, 255],
         "small_button_active_hover": [10, 8, 80, 255],
-        "small_button_text": [171, 171, 191, 255],
+        "small_button_text": [102, 102, 102, 255],
         "small_button_text_hover": [255, 255, 255, 255],
         "small_button_text_active": [255, 255, 255, 255],
         "small_button_text_active_hover": [255, 255, 255, 255],

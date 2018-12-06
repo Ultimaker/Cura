@@ -142,7 +142,7 @@ Item
             visible: source != ""
             width: height
             height: Math.round(0.2 * base.height)
-            color: UM.Theme.getColor("text")
+            color: UM.Theme.getColor("small_button_text")
         }
 
         MouseArea

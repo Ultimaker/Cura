@@ -226,8 +226,8 @@ UM.MainWindow
                 {
                     left: parent.left
                     bottom: viewOrientationControls.top
-                    margins: UM.Theme.getSize("wide_margin").width
-                    bottomMargin: UM.Theme.getSize("default_margin").width
+                    margins: UM.Theme.getSize("default_margin").width
+                    bottomMargin: UM.Theme.getSize("thin_margin").width
                 }
             }
 
@@ -239,7 +239,7 @@ UM.MainWindow
                 {
                     left: parent.left
                     bottom: parent.bottom
-                    margins: UM.Theme.getSize("wide_margin").width
+                    margins: UM.Theme.getSize("default_margin").width
                 }
             }
 
