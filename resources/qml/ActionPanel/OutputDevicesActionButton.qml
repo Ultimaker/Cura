@@ -17,6 +17,7 @@ Item
         id: saveToButton
         height: parent.height
         fixedWidthMode: true
+        cornerSide: deviceSelectionMenu.visible ? Cura.RoundedRectangle.Direction.Left : Cura.RoundedRectangle.Direction.All
 
         anchors
         {
@@ -44,6 +45,7 @@ Item
 
         shadowEnabled: true
         shadowColor: UM.Theme.getColor("primary_shadow")
+        cornerSide: Cura.RoundedRectangle.Direction.Right
 
         anchors
         {

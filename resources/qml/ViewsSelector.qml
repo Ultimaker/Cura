@@ -73,6 +73,8 @@ Cura.ExpandablePopup
     {
         id: viewSelectorPopup
         width: viewSelector.width - 2 * viewSelector.contentPadding
+        leftPadding: UM.Theme.getSize("default_lining").width
+        rightPadding: UM.Theme.getSize("default_lining").width
 
         // For some reason the height/width of the column gets set to 0 if this is not set...
         Component.onCompleted:
@@ -90,7 +92,7 @@ Cura.ExpandablePopup
             {
                 id: viewsSelectorButton
                 text: model.name
-                width: parent.width
+                width: parent.width - viewSelectorPopup.leftPadding - viewSelectorPopup.rightPadding
                 height: UM.Theme.getSize("action_button").height
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width

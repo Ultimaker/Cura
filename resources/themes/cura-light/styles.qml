@@ -146,7 +146,7 @@ QtObject
                     text: control.text
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    font: UM.Theme.getFont("medium_bold")
+                    font: UM.Theme.getFont("medium")
                     color:
                     {
                         if (control.checked)

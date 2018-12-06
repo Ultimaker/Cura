@@ -44,6 +44,7 @@ Cura.ExpandablePopup
             orientation: ListView.Horizontal
             anchors.fill: parent
             model: extrudersModel
+            visible: base.enabled
 
             delegate: Item
             {
@@ -69,6 +70,7 @@ Cura.ExpandablePopup
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text_inactive")
+                    renderType: Text.NativeRendering
 
                     anchors
                     {
@@ -86,6 +88,7 @@ Cura.ExpandablePopup
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
 
                     anchors
                     {
@@ -99,6 +102,23 @@ Cura.ExpandablePopup
             }
         }
     }
+
+    //Disable the menu if there are no materials, variants or build plates to change.
+    function updateEnabled()
+    {
+        var active_definition_id = Cura.MachineManager.activeMachine.definition.id;
+        var has_materials = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_materials");
+        var has_variants = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_variants");
+        var has_buildplates = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_variant_buildplates");
+        base.enabled = has_materials || has_variants || has_buildplates; //Only let it drop down if there is any configuration that you could change.
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged: base.updateEnabled();
+    }
+    Component.onCompleted: updateEnabled();
 
     contentItem: Column
     {
@@ -136,8 +156,9 @@ Cura.ExpandablePopup
         {
             id: separator
             visible: buttonBar.visible
+            x: -contentPadding
 
-            width: parent.width
+            width: base.width
             height: UM.Theme.getSize("default_lining").height
 
             color: UM.Theme.getColor("lining")

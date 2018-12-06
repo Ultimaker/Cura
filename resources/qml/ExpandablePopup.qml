@@ -32,6 +32,8 @@ Item
     property color headerActiveColor: UM.Theme.getColor("secondary")
     property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
 
+    property alias enabled: mouseArea.enabled
+
     // Defines the alignment of the content with respect of the headerItem, by default to the right
     property int contentAlignment: ExpandablePopup.ContentAlignment.AlignRight
 
@@ -125,10 +127,8 @@ Item
                 verticalCenter: parent.verticalCenter
                 margins: background.padding
             }
-            sourceSize.width: width
-            sourceSize.height: height
             source: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
-            visible: source != ""
+            visible: source != "" && base.enabled
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             color: UM.Theme.getColor("text")

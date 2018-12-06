@@ -19,6 +19,7 @@ Item
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         height: contentHeight
+        renderType: Text.NativeRendering
 
         anchors
         {

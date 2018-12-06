@@ -14,7 +14,7 @@ Button
     property var configuration: null
     hoverEnabled: true
 
-    height: childrenRect.height
+    height: background.height
 
     background: Rectangle
     {

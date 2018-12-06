@@ -5,16 +5,20 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0 // For the dropshadow
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 
 Button
 {
     id: button
-    property alias iconSource: buttonIconLeft.source
     property bool isIconOnRightSide: false
+
+    property alias iconSource: buttonIconLeft.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
+    property alias cornerSide: backgroundRect.cornerSide
+
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
     property color disabledColor: color
@@ -24,9 +28,9 @@ Button
     property color outlineColor: color
     property color outlineHoverColor: hoverColor
     property color outlineDisabledColor: outlineColor
-    hoverEnabled: true
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
+
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
     // we elide the text to the right so the text will be cut off with the three dots at the end.
@@ -35,6 +39,7 @@ Button
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
     height: UM.Theme.getSize("action_button").height
+    hoverEnabled: true
 
     contentItem: Row
     {
@@ -81,9 +86,10 @@ Button
         }
     }
 
-    background: Rectangle
+    background: Cura.RoundedRectangle
     {
         id: backgroundRect
+        cornerSide: Cura.RoundedRectangle.Direction.All
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
