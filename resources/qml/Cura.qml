@@ -88,6 +88,30 @@ UM.MainWindow
             window: base
         }
 
+        Rectangle
+        {
+            id: headerBackground
+            anchors
+            {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+            }
+            height: stageMenu.source != "" ? Math.round(mainWindowHeader.height + stageMenu.height / 2) : mainWindowHeader.height
+            color: UM.Theme.getColor("main_window_header_background")
+
+            // This is the new fancy pattern
+            Image
+            {
+                id: backgourndPattern
+                anchors.fill: parent
+                fillMode: Image.Tile
+                source: UM.Theme.getImage("header_pattern")
+                horizontalAlignment: Image.AlignLeft
+                verticalAlignment: Image.AlignTop
+            }
+        }
+
         MainWindowHeader
         {
             id: mainWindowHeader
@@ -140,44 +164,6 @@ UM.MainWindow
                             }
                         }
                         openDialog.handleOpenFileUrls(nonPackages);
-                    }
-                }
-            }
-
-            Rectangle
-            {
-                id: stageMenuBackground
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                }
-                visible: stageMenu.source != ""
-                height: visible ? Math.round(UM.Theme.getSize("stage_menu").height / 2) : 0
-
-                LinearGradient
-                {
-                    anchors.fill: parent
-                    start: Qt.point(0, 0)
-                    end: Qt.point(parent.width, 0)
-                    gradient: Gradient
-                    {
-                        GradientStop
-                        {
-                            position: 0.0
-                            color: UM.Theme.getColor("main_window_header_background")
-                        }
-                        GradientStop
-                        {
-                            position: 0.5
-                            color: UM.Theme.getColor("main_window_header_background_gradient")
-                        }
-                        GradientStop
-                        {
-                            position: 1.0
-                            color: UM.Theme.getColor("main_window_header_background")
-                        }
                     }
                 }
             }
@@ -257,7 +243,8 @@ UM.MainWindow
 
                 anchors
                 {
-                    top: stageMenuBackground.bottom
+                    // Align to the top of the stageMenu since the stageMenu may not exist
+                    top: parent.top
                     left: parent.left
                     right: parent.right
                     bottom: parent.bottom

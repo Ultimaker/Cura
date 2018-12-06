@@ -93,14 +93,14 @@
         "secondary_button_hover": [228, 228, 228, 255],
         "secondary_button_text": [30, 102, 215, 255],
 
-        "main_window_header_background": [10, 8, 80, 255],
+        "main_window_header_background": [8, 7, 63, 255],
         "main_window_header_background_gradient": [25, 23, 91, 255],
-        "main_window_header_button_text_active": [10, 8, 80, 255],
+        "main_window_header_button_text_active": [8, 7, 63, 255],
         "main_window_header_button_text_inactive": [255, 255, 255, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
         "main_window_header_button_background_active": [255, 255, 255, 255],
         "main_window_header_button_background_inactive": [255, 255, 255, 0],
-        "main_window_header_button_background_hovered": [255, 255, 255, 102],
+        "main_window_header_button_background_hovered": [117, 114, 159, 255],
 
         "account_widget_outline_active": [70, 66, 126, 255],
 
@@ -113,7 +113,7 @@
 
         "toolbar_background": [255, 255, 255, 255],
 
-        "printer_type_label_background": [171, 171, 191, 255],
+        "printer_type_label_background": [228, 228, 242, 255],
 
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
@@ -127,9 +127,9 @@
         "text_scene_hover": [70, 84, 113, 255],
 
         "error": [255, 140, 0, 255],
-        "warning": [255, 190, 35, 255],
+        "warning": [245, 166, 35, 255],
 
-        "toolbar_button_text": [10, 8, 80, 255],
+        "toolbar_button_text": [8, 7, 63, 255],
         "toolbar_button_hover": [232, 242, 252, 255],
         "toolbar_button_active": [232, 242, 252, 255],
         "toolbar_button_active_hover": [232, 242, 252, 255],
@@ -144,9 +144,9 @@
         "button_text_active_hover": [255, 255, 255, 255],
 
         "small_button": [0, 0, 0, 0],
-        "small_button_hover": [10, 8, 80, 255],
-        "small_button_active": [10, 8, 80, 255],
-        "small_button_active_hover": [10, 8, 80, 255],
+        "small_button_hover": [8, 7, 63, 255],
+        "small_button_active": [8, 7, 63, 255],
+        "small_button_active_hover": [8, 7, 63, 255],
         "small_button_text": [171, 171, 191, 255],
         "small_button_text_hover": [255, 255, 255, 255],
         "small_button_text_active": [255, 255, 255, 255],
@@ -222,8 +222,8 @@
         "progressbar_control": [50, 130, 255, 255],
 
         "slider_groove": [223, 223, 223, 255],
-        "slider_groove_fill": [10, 8, 80, 255],
-        "slider_handle": [10, 8, 80, 255],
+        "slider_groove_fill": [8, 7, 63, 255],
+        "slider_handle": [8, 7, 63, 255],
         "slider_handle_active": [50, 130, 255, 255],
         "slider_text_background": [255, 255, 255, 255],
 
