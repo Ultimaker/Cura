@@ -40,6 +40,7 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 19, "tags")
         self.addRoleName(Qt.UserRole + 20, "links")
         self.addRoleName(Qt.UserRole + 21, "website")
+        self.addRoleName(Qt.UserRole + 22, "login_required")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -100,6 +101,7 @@ class PackagesModel(ListModel):
                 "tags":                 package["tags"] if "tags" in package else [],
                 "links":                links_dict,
                 "website":              package["website"] if "website" in package else None,
+                "login_required":       "login-required" in package.get("tags", [])
             })
 
         # Filter on all the key-word arguments.

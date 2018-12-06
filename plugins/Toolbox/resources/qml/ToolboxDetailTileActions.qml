@@ -5,11 +5,14 @@ import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
+import Cura 1.1 as Cura
 
 Column
 {
     property bool installed: toolbox.isInstalled(model.id)
     property bool canUpdate: toolbox.canUpdate(model.id)
+    property bool loginRequired: model.login_required && !Cura.API.account.isLoggedIn
+
     width: UM.Theme.getSize("toolbox_action_button").width
     spacing: UM.Theme.getSize("narrow_margin").height
 
@@ -28,9 +31,26 @@ Column
         onCompleteAction: toolbox.viewCategory = "installed"
 
         // Don't allow installing while another download is running
-        enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model)
+        enabled: installed || (!(toolbox.isDownloading && toolbox.activePackage != model) && !loginRequired)
         opacity: enabled ? 1.0 : 0.5
         visible: !updateButton.visible // Don't show when the update button is visible
+    }
+
+
+    Label
+    {
+        wrapMode: Text.WordWrap
+        text:"<a href='%1'>Log in</a> is required to install"
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
+        linkColor: UM.Theme.getColor("text_link")
+        visible: loginRequired
+        width: installButton.width
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked:Cura.API.account.login()
+        }
     }
 
     ToolboxProgressButton
