@@ -44,31 +44,36 @@ Window
                 top: header.bottom
                 bottom: footer.top
             }
-
-            Loader
+            // TODO: This could be improved using viewFilter instead of viewCategory
+            ToolboxLoadingPage
             {
-                anchors.fill:parent
-                source:
-                {
-                    if(toolbox.viewCategory == "installed")
-                    {
-                        return "ToolboxInstalledPage.qml"
-                    }
-
-                    switch (toolbox.viewPage)
-                    {
-                        case "loading":
-                            return "ToolboxLoadingPage.qml"
-                        case "errored":
-                            return "ToolboxErrorPage.qml"
-                        case "overview":
-                            return "ToolboxDownloadsPage.qml"
-                        case "detail":
-                            return "ToolboxDetailPage.qml"
-                        case "author":
-                            return "ToolboxAuthorPage.qml"
-                    }
-                }
+                id: viewLoading
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "loading"
+            }
+            ToolboxErrorPage
+            {
+                id: viewErrored
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "errored"
+            }
+            ToolboxDownloadsPage
+            {
+                id: viewDownloads
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "overview"
+            }
+            ToolboxDetailPage
+            {
+                id: viewDetail
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "detail"
+            }
+            ToolboxAuthorPage
+            {
+                id: viewAuthor
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "author"
+            }
+            ToolboxInstalledPage
+            {
+                id: installedPluginList
+                visible: toolbox.viewCategory == "installed"
             }
         }
 
@@ -90,7 +95,7 @@ Window
                 licenseDialog.show();
             }
         }
-
+        
         ToolboxLicenseDialog
         {
             id: licenseDialog

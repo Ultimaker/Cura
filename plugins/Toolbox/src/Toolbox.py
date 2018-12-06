@@ -622,39 +622,44 @@ class Toolbox(QObject, Extension):
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
             for response_type, url in self._request_urls.items():
-                if reply.url() != url:
-                    continue
+                if reply.url() == url:
+                    if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                        try:
+                            json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
-                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
-                    try:
-                        json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-                    except json.decoder.JSONDecodeError:
-                        Logger.log("w", "Received invalid JSON for %s.", response_type)
-                        break
+                            # Check for errors:
+                            if "errors" in json_data:
+                                for error in json_data["errors"]:
+                                    Logger.log("e", "%s", error["title"])
+                                return
 
-                    # Check for errors:
-                    if "errors" in json_data:
-                        for error in json_data["errors"]:
-                            Logger.log("e", "%s", error["title"])
-                        return
+                            # Create model and apply metadata:
+                            if not self._models[response_type]:
+                                Logger.log("e", "Could not find the %s model.", response_type)
+                                break
+                            
+                            self._server_response_data[response_type] = json_data["data"]
+                            self._models[response_type].setMetadata(self._server_response_data[response_type])
 
-                    self._server_response_data[response_type] = json_data["data"]
-                    self._models[response_type].setMetadata(json_data["data"])
+                            if response_type is "packages":
+                                self._models[response_type].setFilter({"type": "plugin"})
+                                self.reBuildMaterialsModels()
+                                self.reBuildPluginsModels()
+                            elif response_type is "authors":
+                                self._models[response_type].setFilter({"package_types": "material"})
+                                self._models[response_type].setFilter({"tags": "generic"})
 
-                    if response_type is "packages":
-                        self._models["packages"].setFilter({"type": "plugin"})
-                        self.reBuildMaterialsModels()
-                        self.reBuildPluginsModels()
-                    elif response_type is "authors":
-                        self._models["authors"].setFilter({"tags": "generic"})
+                            self.metadataChanged.emit()
 
-                    self.metadataChanged.emit()
+                            if self.isLoadingComplete():
+                                self.setViewPage("overview")
 
-                    if self.isLoadingComplete():
-                        self.setViewPage("overview")
-                else:
-                    self.setViewPage("errored")
-                    self.resetDownload()
+                        except json.decoder.JSONDecodeError:
+                            Logger.log("w", "Received invalid JSON for %s.", response_type)
+                            break
+                    else:
+                        self.setViewPage("errored")
+                        self.resetDownload()
         else:
             # Ignore any operation that is not a get operation
             pass
