@@ -18,6 +18,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudApiClient import CloudApiClient
@@ -266,8 +267,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             self._printers.remove(removed_printer)
 
         for added_printer in added_printers:
-            controller = PrinterOutputController(self)
-            self._printers.append(added_printer.createOutputModel(controller))
+            self._printers.append(added_printer.createOutputModel(CloudOutputController(self)))
 
         for model, printer in updated_printers:
             printer.updateOutputModel(model)
@@ -276,13 +276,17 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if not self._active_printer:
             self.setActivePrinter(self._printers[0])
 
-        self._clusterPrintersChanged.emit()
+        if removed_printers or added_printers or updated_printers:
+            self._clusterPrintersChanged.emit()
 
     def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
         received = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
         previous = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
 
         removed_jobs, added_jobs, updated_jobs = findChanges(previous, received)
+
+        # TODO: we see that not all data in the UI is correctly updated when the queue and active jobs change.
+        # TODO: we need to fix this here somehow by updating the correct output models.
 
         for removed_job in removed_jobs:
             self._print_jobs.remove(removed_job)
@@ -292,23 +296,29 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         for model, job in updated_jobs:
             job.updateOutputModel(model)
+            self._updatePrintJobDetails(model)
 
         # We only have to update when jobs are added or removed
         # updated jobs push their changes via their output model
-        if added_jobs or removed_jobs:
+        if added_jobs or removed_jobs or updated_jobs:
             self.printJobsChanged.emit()
 
     def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
-        # TODO: we don't see the queued print jobs on the monitor page yet because job.printer_uuid and job.assigned_to
-        #       are always None
-        try:
-            printer = next(p for p in self._printers if job.printer_uuid == p.key or job.assigned_to == p.key)
-        except StopIteration:
-            return Logger.log("w", "Missing printer %s for job %s in %s", job.printer_uuid, job.uuid,
-                              [p.key for p in self._printers])
-
-        print_job = job.createOutputModel(printer)
+        print_job = job.createOutputModel(CloudOutputController(self))
+        self._updatePrintJobDetails(print_job)
         self._print_jobs.append(print_job)
+
+    def _updatePrintJobDetails(self, print_job: UM3PrintJobOutputModel):
+        printer = None
+        try:
+            printer = next(p for p in self._printers if print_job.assignedPrinter == p.key)
+        except StopIteration:
+            Logger.log("w", "Missing printer %s for job %s in %s", print_job.assignedPrinter, print_job.key,
+                       [p.key for p in self._printers])
+
+        if printer:
+            printer.updateActivePrintJob(print_job)
+            print_job.updateAssignedPrinter(printer)
 
     def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
         self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,

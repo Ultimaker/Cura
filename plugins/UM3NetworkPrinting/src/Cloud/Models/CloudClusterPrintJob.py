@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional
 
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from .CloudClusterPrinterConfiguration import CloudClusterPrinterConfiguration
 from .CloudClusterPrintJobConstraint import CloudClusterPrintJobConstraint
 from ...Models import BaseModel
@@ -38,11 +38,9 @@ class CloudClusterPrintJob(BaseModel):
 
     ## Creates an UM3 print job output model based on this cloud cluster print job.
     #  \param printer: The output model of the printer
-    def createOutputModel(self, printer: PrinterOutputModel) -> UM3PrintJobOutputModel:
-        model = UM3PrintJobOutputModel(printer.getController(), self.uuid, self.name)
+    def createOutputModel(self, controller: CloudOutputController) -> UM3PrintJobOutputModel:
+        model = UM3PrintJobOutputModel(controller, self.uuid, self.name)
         # TODO: implement more data as shown in ClusterUM3OutputDevice._createPrintJobModel
-        model.updateAssignedPrinter(printer)
-        printer.updateActivePrintJob(model)
         return model
 
     ## Updates an UM3 print job output model based on this cloud cluster print job.
