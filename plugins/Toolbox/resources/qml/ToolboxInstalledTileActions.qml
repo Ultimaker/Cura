@@ -6,12 +6,13 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 Column
 {
     property bool canUpdate: false
     property bool canDowngrade: false
+    property bool loginRequired: model.login_required && !Cura.API.account.isLoggedIn
     width: UM.Theme.getSize("toolbox_action_button").width
     spacing: UM.Theme.getSize("narrow_margin").height
 
@@ -40,9 +41,25 @@ Column
         onActiveAction: toolbox.cancelDownload()
 
         // Don't allow installing while another download is running
-        enabled: !(toolbox.isDownloading && toolbox.activePackage != model)
+        enabled: !(toolbox.isDownloading && toolbox.activePackage != model) && !loginRequired
         opacity: enabled ? 1.0 : 0.5
         visible: canUpdate
+    }
+
+    Label
+    {
+        wrapMode: Text.WordWrap
+        text: catalog.i18nc("@label:The string between <a href=> and </a> is the highlighted link", "<a href='%1'>Log in</a> is required to update")
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
+        linkColor: UM.Theme.getColor("text_link")
+        visible: loginRequired
+        width: updateButton.width
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: Cura.API.account.login()
+        }
     }
 
     Cura.SecondaryButton

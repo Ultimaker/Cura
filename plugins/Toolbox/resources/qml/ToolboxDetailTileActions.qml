@@ -36,7 +36,6 @@ Column
         visible: !updateButton.visible // Don't show when the update button is visible
     }
 
-
     Label
     {
         wrapMode: Text.WordWrap
