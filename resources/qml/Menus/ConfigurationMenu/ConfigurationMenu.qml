@@ -102,6 +102,23 @@ Cura.ExpandableComponent
         }
     }
 
+    //Disable the menu if there are no materials, variants or build plates to change.
+    function updateEnabled()
+    {
+        var active_definition_id = Cura.MachineManager.activeMachine.definition.id;
+        var has_materials = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_materials");
+        var has_variants = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_variants");
+        var has_buildplates = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_variant_buildplates");
+        base.enabled = has_materials || has_variants || has_buildplates; //Only let it drop down if there is any configuration that you could change.
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged: base.updateEnabled();
+    }
+    Component.onCompleted: updateEnabled();
+
     popupItem: Column
     {
         id: popupItem
