@@ -188,27 +188,21 @@ Item
     Connections
     {
         target: qualitiesModel
-        onItemsChanged:
-        {
+        onItemsChanged: {
             var toSelectItemName = base.currentItem == null ? "" : base.currentItem.name;
-            if (newQualityNameToSelect != "")
-            {
+            if (newQualityNameToSelect != "") {
                 toSelectItemName = newQualityNameToSelect;
             }
 
             var newIdx = -1;  // Default to nothing if nothing can be found
-            if (toSelectItemName != "")
-            {
+            if (toSelectItemName != "") {
                 // Select the required quality name if given
-                for (var idx = 0; idx < qualitiesModel.count; ++idx)
-                {
+                for (var idx = 0; idx < qualitiesModel.rowCount(); ++idx) {
                     var item = qualitiesModel.getItem(idx);
-                    if (item.name == toSelectItemName)
-                    {
+                    if (item.name == toSelectItemName) {
                         // Switch to the newly created profile if needed
                         newIdx = idx;
-                        if (base.toActivateNewQuality)
-                        {
+                        if (base.toActivateNewQuality) {
                             // Activate this custom quality if required
                             Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
                         }
@@ -388,11 +382,9 @@ Item
                     var selectedItemName = Cura.MachineManager.activeQualityOrQualityChangesName;
 
                     // Select the required quality name if given
-                    for (var idx = 0; idx < qualitiesModel.count; idx++)
-                    {
+                    for (var idx = 0; idx < qualitiesModel.rowCount(); idx++) {
                         var item = qualitiesModel.getItem(idx);
-                        if (item.name == selectedItemName)
-                        {
+                        if (item.name == selectedItemName) {
                             currentIndex = idx;
                             break;
                         }

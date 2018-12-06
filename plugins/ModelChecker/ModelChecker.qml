@@ -16,7 +16,7 @@ Button
 {
     id: modelCheckerButton
 
-    UM.I18nCatalog{id: catalog; name: "cura"}
+    UM.I18nCatalog{id: catalog; name:"cura"}
 
     visible: manager.hasWarnings
     tooltip: catalog.i18nc("@info:tooltip", "Some things could be problematic in this print. Click to see tips for adjustment.")
@@ -33,6 +33,7 @@ Button
             {
                 width: UM.Theme.getSize("save_button_specs_icons").width;
                 height: UM.Theme.getSize("save_button_specs_icons").height;
+                sourceSize.width: width;
                 sourceSize.height: width;
                 color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene");
                 source: "model_checker.svg"

@@ -7,8 +7,6 @@ import QtQuick.Controls 1.1
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
-import "../Dialogs"
-
 Menu
 {
     id: menu

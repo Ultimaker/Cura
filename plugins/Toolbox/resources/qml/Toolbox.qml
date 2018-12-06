@@ -20,11 +20,11 @@ Window
     maximumWidth: minimumWidth
     minimumHeight: height
     maximumHeight: minimumHeight
-    color: UM.Theme.getColor("main_background")
+    color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog
     {
         id: catalog
-        name: "cura"
+        name:"cura"
     }
     Item
     {

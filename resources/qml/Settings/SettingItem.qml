@@ -128,11 +128,11 @@ Item {
             id: settingControls
 
             height: Math.round(parent.height / 2)
-            spacing: Math.round(UM.Theme.getSize("thick_margin").height / 2)
+            spacing: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
 
             anchors {
                 right: controlContainer.left
-                rightMargin: Math.round(UM.Theme.getSize("thick_margin").width / 2)
+                rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
                 verticalCenter: parent.verticalCenter
             }
 
@@ -290,7 +290,7 @@ Item {
             enabled: propertyProvider.isValueUsed
 
             anchors.right: parent.right;
-            anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
             anchors.verticalCenter: parent.verticalCenter;
             width: UM.Theme.getSize("setting_control").width;
             height: UM.Theme.getSize("setting_control").height

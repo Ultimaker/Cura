@@ -439,7 +439,6 @@ class CuraApplication(QtApplication):
             "XmlMaterialProfile", #Cura crashes without this one.
             "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
             "PrepareStage", #Cura is useless without this one since you can't load models.
-            "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
             "MonitorStage", #Major part of Cura's functionality.
             "LocalFileOutputDevice", #Major part of Cura's functionality.
             "LocalContainerProvider", #Cura is useless without any profiles or setting definitions.
@@ -632,7 +631,9 @@ class CuraApplication(QtApplication):
             self._message_box_callback(button, *self._message_box_callback_arguments)
             self._message_box_callback = None
             self._message_box_callback_arguments = []
-            
+
+    showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
+
     def setSaveDataEnabled(self, enabled: bool) -> None:
         self._save_data_enabled = enabled
 
@@ -1663,9 +1664,7 @@ class CuraApplication(QtApplication):
             is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
 
             if is_non_sliceable:
-                # Need to switch first to the preview stage and then to layer view
-                self.callLater(lambda: (self.getController().setActiveStage("PreviewStage"),
-                                        self.getController().setActiveView("SimulationView")))
+                self.callLater(lambda: self.getController().setActiveView("SimulationView"))
 
                 block_slicing_decorator = BlockSlicingDecorator()
                 node.addDecorator(block_slicing_decorator)

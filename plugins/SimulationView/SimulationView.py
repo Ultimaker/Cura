@@ -16,7 +16,6 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry
-from UM.Qt.QtApplication import QtApplication
 from UM.Resources import Resources
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
@@ -27,8 +26,8 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.OpenGLContext import OpenGLContext
 from UM.View.GL.ShaderProgram import ShaderProgram
 
+from UM.View.View import View
 from UM.i18n import i18nCatalog
-from cura.CuraView import CuraView
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
 
@@ -49,15 +48,15 @@ catalog = i18nCatalog("cura")
 
 
 ## View used to display g-code paths.
-class SimulationView(CuraView):
+class SimulationView(View):
     # Must match SimulationView.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self) -> None:
+        super().__init__()
 
         self._max_layers = 0
         self._current_layer_num = 0
@@ -113,16 +112,6 @@ class SimulationView(CuraView):
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
-
-        QtApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
-
-    def _onEngineCreated(self) -> None:
-        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-        if plugin_path:
-            self.addDisplayComponent("main", os.path.join(plugin_path, "SimulationViewMainComponent.qml"))
-            self.addDisplayComponent("menu", os.path.join(plugin_path, "SimulationViewMenuComponent.qml"))
-        else:
-            Logger.log("e", "Unable to find the path for %s", self.getPluginId())
 
     def _evaluateCompatibilityMode(self) -> bool:
         return OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode"))

@@ -57,7 +57,7 @@ Cura.MachineAction
         spacing: UM.Theme.getSize("default_margin").height
 
         SystemPalette { id: palette }
-        UM.I18nCatalog { id: catalog; name: "cura" }
+        UM.I18nCatalog { id: catalog; name:"cura" }
         Label
         {
             id: pageTitle

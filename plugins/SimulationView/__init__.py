@@ -8,21 +8,19 @@ from . import SimulationViewProxy, SimulationView
 
 catalog = i18nCatalog("cura")
 
-
 def getMetaData():
     return {
         "view": {
             "name": catalog.i18nc("@item:inlistbox", "Layer view"),
-            "weight": 0
+            "view_panel": "SimulationView.qml",
+            "weight": 2
         }
     }
-
 
 def createSimulationViewProxy(engine, script_engine):
     return SimulationViewProxy.SimulationViewProxy()
 
-
 def register(app):
     simulation_view = SimulationView.SimulationView()
     qmlRegisterSingletonType(SimulationViewProxy.SimulationViewProxy, "UM", 1, 0, "SimulationView", simulation_view.getProxy)
-    return { "view": simulation_view}
+    return { "view": SimulationView.SimulationView()}

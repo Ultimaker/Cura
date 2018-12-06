@@ -185,9 +185,9 @@ Item
                     }
                     if (printer && printer.state == "unreachable")
                     {
-                        return catalog.i18nc("@label:status", "Unreachable")
+                        return catalog.i18nc("@label:status", "Unavailable")
                     }
-                    if (printer && printer.state == "idle")
+                    if (printer && !printer.activePrintJob && printer.state == "idle")
                     {
                         return catalog.i18nc("@label:status", "Idle")
                     }

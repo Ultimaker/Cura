@@ -10,8 +10,7 @@ def getMetaData():
     return {
         "view": {
             "name": i18n_catalog.i18nc("@item:inmenu", "Solid view"),
-            "weight": 0,
-            "visible": False
+            "weight": 0
         }
     }
 

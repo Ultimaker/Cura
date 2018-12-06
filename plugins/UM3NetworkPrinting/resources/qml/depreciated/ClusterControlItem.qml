@@ -13,7 +13,7 @@ Component {
         property var shadowRadius: UM.Theme.getSize("monitor_shadow_radius").width;
         property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width;
         anchors.fill: parent;
-        color: UM.Theme.getColor("main_background");
+        color: UM.Theme.getColor("sidebar");
         visible: OutputDevice != null;
 
         UM.I18nCatalog {

@@ -1,5 +1,5 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.1
@@ -24,15 +24,16 @@ Item
     Item
     {
         id: globalProfileRow
-        height: UM.Theme.getSize("print_setup_item").height
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.hideSettings
 
         anchors
         {
             top: parent.top
             left: parent.left
-            leftMargin: Math.round(UM.Theme.getSize("thick_margin").width)
+            leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
             right: parent.right
-            rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
+            rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
         }
 
         Label
@@ -40,7 +41,7 @@ Item
             id: globalProfileLabel
             text: catalog.i18nc("@label","Profile:")
             textFormat: Text.PlainText
-            width: Math.round(parent.width * 0.45 - UM.Theme.getSize("thick_margin").width - 2)
+            width: Math.round(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
@@ -53,6 +54,7 @@ Item
             id: globalProfileSelection
 
             text: generateActiveQualityText()
+            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
             width: Math.round(parent.width * 0.55)
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
@@ -94,7 +96,7 @@ Item
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.rightMargin: Math.round(UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("thick_margin").width)
+                anchors.rightMargin: Math.round(UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width)
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                 iconSource: UM.Theme.getIcon("star");
@@ -107,7 +109,7 @@ Item
                 onEntered:
                 {
                     var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
-                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("thick_margin").width, 0),  content)
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
                 }
                 onExited: base.hideTooltip()
             }
@@ -123,20 +125,19 @@ Item
         anchors
         {
             top: globalProfileRow.bottom
-            topMargin: UM.Theme.getSize("thick_margin").height
+            topMargin: UM.Theme.getSize("sidebar_margin").height
             right: parent.right
-            rightMargin: UM.Theme.getSize("thick_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
         style: ButtonStyle
         {
-            background: Item
-            {
-                UM.RecolorImage
-                {
+            background: Item {
+                UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
                     sourceSize.height: width
                     color: control.enabled ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_category_disabled_text")
                     source: UM.Theme.getIcon("menu")
@@ -177,13 +178,15 @@ Item
         anchors
         {
             top: globalProfileRow.bottom
-            topMargin: UM.Theme.getSize("thick_margin").height
+            topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
-            leftMargin: UM.Theme.getSize("thick_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: settingVisibilityMenu.left
             rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
         }
-        height: UM.Theme.getSize("setting_control").height
+        height: visible ? UM.Theme.getSize("setting_control").height : 0
+        Behavior on height { NumberAnimation { duration: 100 } }
+
         Timer
         {
             id: settingsSearchTimer
@@ -199,7 +202,7 @@ Item
             height: parent.height
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
+            anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
 
             placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
@@ -296,7 +299,8 @@ Item
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
-        anchors.topMargin: UM.Theme.getSize("thick_margin").height
+        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("sidebar_margin").height : 0
+        Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
@@ -333,7 +337,7 @@ Item
             {
                 id: delegate
 
-                width: Math.round(UM.Theme.getSize("print_setup_widget").width);
+                width: Math.round(UM.Theme.getSize("sidebar").width);
                 height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled == "True" ? 1 : 0
