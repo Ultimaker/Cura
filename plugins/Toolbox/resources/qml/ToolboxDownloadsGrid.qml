@@ -24,7 +24,7 @@ Column
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
     }
-    GridLayout
+    Grid
     {
         id: grid
         width: parent.width - 2 * parent.padding
@@ -34,10 +34,12 @@ Column
         Repeater
         {
             model: gridArea.model
-            delegate: ToolboxDownloadsGridTile
+            delegate: Loader
             {
-                Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns
-                Layout.preferredHeight: UM.Theme.getSize("toolbox_thumbnail_small").height
+                asynchronous: true
+                width: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns
+                height: UM.Theme.getSize("toolbox_thumbnail_small").height
+                source: "ToolboxDownloadsGridTile.qml"
             }
         }
     }

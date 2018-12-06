@@ -26,10 +26,15 @@ Item
             }
             height: childrenRect.height + 2 * UM.Theme.getSize("wide_margin").height
             spacing: UM.Theme.getSize("default_margin").height
+
             Repeater
             {
                 model: toolbox.packagesModel
-                delegate: ToolboxDetailTile {}
+                delegate: Loader
+                {
+                    asynchronous: true
+                    source: "ToolboxDetailTile.qml"
+                }
             }
         }
     }

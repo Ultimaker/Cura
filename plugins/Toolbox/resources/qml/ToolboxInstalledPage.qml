@@ -64,7 +64,11 @@ ScrollView
                 {
                     id: materialList
                     model: toolbox.pluginsInstalledModel
-                    delegate: ToolboxInstalledTile {}
+                    delegate: Loader
+                    {
+                        asynchronous: true
+                        source: "ToolboxInstalledTile.qml"
+                    }
                 }
             }
         }
@@ -101,7 +105,11 @@ ScrollView
                 {
                     id: pluginList
                     model: toolbox.materialsInstalledModel
-                    delegate: ToolboxInstalledTile {}
+                    delegate: Loader
+                    {
+                        asynchronous: true
+                        source: "ToolboxInstalledTile.qml"
+                    }
                 }
             }
         }

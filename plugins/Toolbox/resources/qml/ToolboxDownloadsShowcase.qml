@@ -30,23 +30,26 @@ Rectangle
             height: childrenRect.height
             spacing: UM.Theme.getSize("wide_margin").width
             columns: 3
-            anchors
-            {
-                horizontalCenter: parent.horizontalCenter
-            }
+            anchors.horizontalCenter: parent.horizontalCenter
+
             Repeater
             {
-                model: {
-                    if ( toolbox.viewCategory == "plugin" )
+                model:
+                {
+                    if (toolbox.viewCategory == "plugin")
                     {
                         return toolbox.pluginsShowcaseModel
                     }
-                    if ( toolbox.viewCategory == "material" )
+                    if (toolbox.viewCategory == "material")
                     {
                         return toolbox.materialsShowcaseModel
                     }
                 }
-                delegate: ToolboxDownloadsShowcaseTile {}
+                delegate: Loader
+                {
+                    asynchronous: true
+                    source: "ToolboxDownloadsShowcaseTile.qml"
+                }
             }
         }
     }
