@@ -40,7 +40,7 @@ Column
     Label
     {
         wrapMode: Text.WordWrap
-        text:"<a href='%1'>Log in</a> is required to install"
+        text: catalog.i18nc("@label:The string between <a href=> and </a> is the highlighted link", "<a href='%1'>Log in</a> is required to install or update")
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
         linkColor: UM.Theme.getColor("text_link")
@@ -49,7 +49,7 @@ Column
         MouseArea
         {
             anchors.fill: parent
-            onClicked:Cura.API.account.login()
+            onClicked: Cura.API.account.login()
         }
     }
 
@@ -68,7 +68,7 @@ Column
         }
         onActiveAction: toolbox.cancelDownload()
         // Don't allow installing while another download is running
-        enabled: !(toolbox.isDownloading && toolbox.activePackage != model)
+        enabled: !(toolbox.isDownloading && toolbox.activePackage != model) && !loginRequired
         opacity: enabled ? 1.0 : 0.5
         visible: canUpdate
     }
