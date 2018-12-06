@@ -28,9 +28,24 @@ Column
     {
         id: container
         width: parent.width
-        height: Math.round(Math.min(configurationList.height, 350 * screenScaleFactor))
+        readonly property int maximumHeight: 350 * screenScaleFactor
+        height: Math.round(Math.min(configurationList.height, maximumHeight))
         contentHeight: configurationList.height
         clip: true
+
+        ScrollBar.vertical.policy: (configurationList.height > maximumHeight) ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff //The AsNeeded policy also hides it when the cursor is away, and we don't want that.
+        ScrollBar.vertical.background: Rectangle
+        {
+            implicitWidth: UM.Theme.getSize("scrollbar").width
+            radius: width / 2
+            color: UM.Theme.getColor("scrollbar_background")
+        }
+        ScrollBar.vertical.contentItem: Rectangle
+        {
+            implicitWidth: UM.Theme.getSize("scrollbar").width
+            radius: width / 2
+            color: UM.Theme.getColor(parent.pressed ? "scrollbar_handle_down" : parent.hovered ? "scrollbar_handle_hover" : "scrollbar_handle")
+        }
 
         ButtonGroup
         {
@@ -41,7 +56,7 @@ Column
         {
             id: configurationList
             spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
-            width: container.width
+            width: container.width - ((height > container.maximumHeight) ? container.ScrollBar.vertical.background.width : 0) //Make room for scroll bar if there is any.
             contentHeight: childrenRect.height
             height: childrenRect.height
 
