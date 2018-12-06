@@ -6,6 +6,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
+import Cura 1.0 as Cura
+
 Column
 {
     property bool canUpdate: false
@@ -43,44 +45,18 @@ Column
         visible: canUpdate
     }
 
-    Button
+    Cura.SecondaryButton
     {
         id: removeButton
         text: canDowngrade ? catalog.i18nc("@action:button", "Downgrade") : catalog.i18nc("@action:button", "Uninstall")
         visible: !model.is_bundled && model.is_installed
         enabled: !toolbox.isDownloading
-        style: ButtonStyle
-        {
-            background: Rectangle
-            {
-                implicitWidth: UM.Theme.getSize("toolbox_action_button").width
-                implicitHeight: UM.Theme.getSize("toolbox_action_button").height
-                color: "transparent"
-                border
-                {
-                    width: UM.Theme.getSize("default_lining").width
-                    color:
-                    {
-                        if (control.hovered)
-                        {
-                            return UM.Theme.getColor("primary_hover")
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("lining")
-                        }
-                    }
-                }
-            }
-            label: Label
-            {
-                text: control.text
-                color: UM.Theme.getColor("text")
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font: UM.Theme.getFont("default")
-            }
-        }
+
+        width: UM.Theme.getSize("toolbox_action_button").width
+        height: UM.Theme.getSize("toolbox_action_button").height
+
+        fixedWidthMode: true
+
         onClicked: toolbox.checkPackageUsageAndUninstall(model.id)
         Connections
         {

@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
-
+import Cura 1.0 as Cura
 
 Item
 {
@@ -25,9 +25,12 @@ Item
     width: UM.Theme.getSize("toolbox_action_button").width
     height: UM.Theme.getSize("toolbox_action_button").height
 
-    Button
+    Cura.PrimaryButton
     {
         id: button
+        width: UM.Theme.getSize("toolbox_action_button").width
+        height: UM.Theme.getSize("toolbox_action_button").height
+        fixedWidthMode: true
         text:
         {
             if (complete)
@@ -56,92 +59,6 @@ Item
             else
             {
                 readyAction()
-            }
-        }
-        style: ButtonStyle
-        {
-            background: Rectangle
-            {
-                implicitWidth: UM.Theme.getSize("toolbox_action_button").width
-                implicitHeight: UM.Theme.getSize("toolbox_action_button").height
-                color:
-                {
-                    if (base.complete)
-                    {
-                        return "transparent"
-                    }
-                    else
-                    {
-                        if (control.hovered)
-                        {
-                            return UM.Theme.getColor("primary_hover")
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("primary")
-                        }
-                    }
-                }
-                border
-                {
-                    width:
-                    {
-                        if (base.complete)
-                        {
-                            UM.Theme.getSize("default_lining").width
-                        }
-                        else
-                        {
-                            return 0
-                        }
-                    }
-                    color:
-                    {
-                        if (control.hovered)
-                        {
-                            return UM.Theme.getColor("primary_hover")
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("lining")
-                        }
-                    }
-                }
-            }
-            label: Label
-            {
-                text: control.text
-                color:
-                {
-                    if (base.complete)
-                    {
-                        return UM.Theme.getColor("text")
-                    }
-                    else
-                    {
-                        if (control.hovered)
-                        {
-                            return UM.Theme.getColor("button_text_hover")
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("button_text")
-                        }
-                    }
-                }
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font:
-                {
-                    if (base.complete)
-                    {
-                        return UM.Theme.getFont("default")
-                    }
-                    else
-                    {
-                        return UM.Theme.getFont("default_bold")
-                    }
-                }
             }
         }
     }
