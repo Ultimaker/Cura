@@ -93,7 +93,7 @@ UM.MainWindow
             id: headerBackground
             anchors
             {
-                top: parent.top
+                top: applicationMenu.bottom
                 left: parent.left
                 right: parent.right
             }
