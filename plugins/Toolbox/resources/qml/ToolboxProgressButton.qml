@@ -18,9 +18,9 @@ Item
     property var activeLabel: catalog.i18nc("@action:button", "Cancel")
     property var completeLabel: catalog.i18nc("@action:button", "Installed")
 
-    property var readyAction: null          // Action when button is ready and clicked (likely install)
-    property var activeAction: null         // Action when button is active and clicked (likely cancel)
-    property var completeAction: null       // Action when button is complete and clicked (likely go to installed)
+    signal readyAction() // Action when button is ready and clicked (likely install)
+    signal activeAction() // Action when button is active and clicked (likely cancel)
+    signal completeAction() // Action when button is complete and clicked (likely go to installed)
 
     width: UM.Theme.getSize("toolbox_action_button").width
     height: UM.Theme.getSize("toolbox_action_button").height
@@ -47,15 +47,15 @@ Item
         {
             if (complete)
             {
-                return completeAction()
+                completeAction()
             }
             else if (active)
             {
-                return activeAction()
+                activeAction()
             }
             else
             {
-                return readyAction()
+                readyAction()
             }
         }
         style: ButtonStyle

@@ -90,7 +90,7 @@ Window
                 licenseDialog.show();
             }
         }
-        
+
         ToolboxLicenseDialog
         {
             id: licenseDialog
