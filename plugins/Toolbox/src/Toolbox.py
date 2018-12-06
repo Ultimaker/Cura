@@ -546,7 +546,7 @@ class Toolbox(QObject, Extension):
 
     # Check for plugins that were installed with the old plugin browser
     def isOldPlugin(self, plugin_id: str) -> bool:
-         return plugin_id in self._old_plugin_ids
+        return plugin_id in self._old_plugin_ids
 
     def getOldPluginPackageMetadata(self, plugin_id: str) -> Optional[Dict[str, Any]]:
         return self._old_plugin_metadata.get(plugin_id)
@@ -709,8 +709,9 @@ class Toolbox(QObject, Extension):
         return self._is_downloading
 
     def setActivePackage(self, package: Dict[str, Any]) -> None:
-        self._active_package = package
-        self.activePackageChanged.emit()
+        if self._active_package != package:
+            self._active_package = package
+            self.activePackageChanged.emit()
 
     ##  The active package is the package that is currently being downloaded
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
@@ -718,16 +719,18 @@ class Toolbox(QObject, Extension):
         return self._active_package
 
     def setViewCategory(self, category: str = "plugin") -> None:
-        self._view_category = category
-        self.viewChanged.emit()
+        if self._view_category != category:
+            self._view_category = category
+            self.viewChanged.emit()
 
     @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
     def viewCategory(self) -> str:
         return self._view_category
 
     def setViewPage(self, page: str = "overview") -> None:
-        self._view_page = page
-        self.viewChanged.emit()
+        if self._view_page != page:
+            self._view_page = page
+            self.viewChanged.emit()
 
     @pyqtProperty(str, fset = setViewPage, notify = viewChanged)
     def viewPage(self) -> str:
