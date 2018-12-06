@@ -108,6 +108,7 @@
         "machine_selector_active": [68, 72, 75, 255],
         "machine_selector_hover": [68, 72, 75, 255],
         "machine_selector_text_active": [255, 255, 255, 255],
+        "machine_selector_printer_icon": [8, 7, 63, 255],
 
         "action_panel_secondary": [27, 95, 202, 255],
 
