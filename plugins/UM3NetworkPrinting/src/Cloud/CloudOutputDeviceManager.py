@@ -58,10 +58,13 @@ class CloudOutputDeviceManager:
 
     #  Called when the uses logs in or out
     def _onLoginStateChanged(self) -> None:
-        if self._account.isLoggedIn and not self._update_timer.isActive():
-            self._update_timer.start()
+        if self._account.isLoggedIn:
+            if not self._update_timer.isActive():
+                self._update_timer.start()
         else:
-            self._update_timer.stop()
+            if self._update_timer.isActive():
+                self._update_timer.stop()
+
             # Notify that all clusters have disappeared
             self._onGetRemoteClustersFinished([])
 
