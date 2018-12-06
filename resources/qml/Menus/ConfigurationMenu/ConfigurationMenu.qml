@@ -45,6 +45,7 @@ Cura.ExpandableComponent
             orientation: ListView.Horizontal
             anchors.fill: parent
             model: extrudersModel
+            visible: base.enabled
 
             delegate: Item
             {
