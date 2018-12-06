@@ -299,7 +299,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             self.printJobsChanged.emit()
 
     def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
-        # TODO: somehow we don't see the queued print jobs on the monitor page yet, we have to figure out why.
+        # TODO: we don't see the queued print jobs on the monitor page yet because job.printer_uuid and job.assigned_to
+        #       are always None
         try:
             printer = next(p for p in self._printers if job.printer_uuid == p.key or job.assigned_to == p.key)
         except StopIteration:
