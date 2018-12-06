@@ -671,6 +671,11 @@ class Toolbox(QObject, Extension):
             if bytes_sent == bytes_total:
                 self.setIsDownloading(False)
                 cast(QNetworkReply, self._download_reply).downloadProgress.disconnect(self._onDownloadProgress)
+                
+                # Check if the download was sucessfull
+                if self._download_reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+                    Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
+                    return
                 # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
