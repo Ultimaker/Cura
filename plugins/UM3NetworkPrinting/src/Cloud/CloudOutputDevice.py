@@ -287,6 +287,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # TODO: we see that not all data in the UI is correctly updated when the queue and active jobs change.
         # TODO: we need to fix this here somehow by updating the correct output models.
+        # TODO: also the configuration drop down in the slice window is not populated because we are missing some data.
+        # TODO: to fix this we need to implement more data as shown in ClusterUM3OutputDevice._createPrintJobModel
 
         for removed_job in removed_jobs:
             self._print_jobs.remove(removed_job)

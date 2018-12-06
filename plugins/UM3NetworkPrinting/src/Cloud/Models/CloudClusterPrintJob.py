@@ -40,7 +40,6 @@ class CloudClusterPrintJob(BaseModel):
     #  \param printer: The output model of the printer
     def createOutputModel(self, controller: CloudOutputController) -> UM3PrintJobOutputModel:
         model = UM3PrintJobOutputModel(controller, self.uuid, self.name)
-        # TODO: implement more data as shown in ClusterUM3OutputDevice._createPrintJobModel
         return model
 
     ## Updates an UM3 print job output model based on this cloud cluster print job.
