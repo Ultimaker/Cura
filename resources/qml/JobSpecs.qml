@@ -108,25 +108,26 @@ Item
         }
     }
 
-    Row
-    {
-        id: additionalComponentsRow
-        anchors.top: jobNameRow.bottom
-        anchors.left: parent.left
-    }
-
     Label
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
-        anchors.left: additionalComponentsRow.right
-        anchors.leftMargin: additionalComponentsRow.width > 0 ? UM.Theme.getSize("default_margin").width : 0
+        anchors.left: parent.left
 
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("default_bold")
         color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
+    }
+
+    Row
+    {
+        id: additionalComponentsRow
+        anchors.top: boundingSpec.top
+        anchors.bottom: boundingSpec.bottom
+        anchors.left: boundingSpec.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
     }
 
     Component.onCompleted:
@@ -140,7 +141,7 @@ Item
         onAdditionalComponentsChanged: base.addAdditionalComponents("jobSpecsButton")
     }
 
-    function addAdditionalComponents (areaId)
+    function addAdditionalComponents(areaId)
     {
         if (areaId == "jobSpecsButton")
         {
