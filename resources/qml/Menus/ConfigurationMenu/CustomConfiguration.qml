@@ -26,6 +26,7 @@ Item
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         height: contentHeight
+        renderType: Text.NativeRendering
 
         anchors
         {
@@ -150,6 +151,7 @@ Item
                     height: parent.height
                     width: selectors.textWidth
                     visible: extrudersModel.count > 1
+                    renderType: Text.NativeRendering
                 }
 
                 OldControls.CheckBox
@@ -186,6 +188,7 @@ Item
                     height: parent.height
                     width: selectors.textWidth
                     visible: materialSelection.visible
+                    renderType: Text.NativeRendering
                 }
 
                 OldControls.ToolButton
@@ -224,6 +227,7 @@ Item
                     height: parent.height
                     width: selectors.textWidth
                     visible: variantSelection.visible
+                    renderType: Text.NativeRendering
                 }
 
                 OldControls.ToolButton

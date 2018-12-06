@@ -71,6 +71,7 @@ Cura.ExpandableComponent
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text_inactive")
+                    renderType: Text.NativeRendering
 
                     anchors
                     {
@@ -88,6 +89,7 @@ Cura.ExpandableComponent
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
 
                     anchors
                     {
@@ -155,8 +157,9 @@ Cura.ExpandableComponent
         {
             id: separator
             visible: buttonBar.visible
+            x: -popupPadding
 
-            width: parent.width
+            width: base.width
             height: UM.Theme.getSize("default_lining").height
 
             color: UM.Theme.getColor("lining")
