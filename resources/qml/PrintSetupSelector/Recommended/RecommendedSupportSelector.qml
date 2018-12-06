@@ -50,7 +50,7 @@ Item
             property alias _hovered: enableSupportMouseArea.containsMouse
 
             style: UM.Theme.styles.checkbox
-            enabled: recommendedPrintSettup.settingsEnabled
+            enabled: recommendedPrintSetup.settingsEnabled
 
             visible: supportEnabled.properties.enabled == "True"
             checked: supportEnabled.properties.value == "True"
@@ -87,7 +87,7 @@ Item
             }
 
             style: UM.Theme.styles.combobox_color
-            enabled: recommendedPrintSettup.settingsEnabled
+            enabled: recommendedPrintSetup.settingsEnabled
             visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
             textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
 
@@ -127,7 +127,7 @@ Item
                 id: supportExtruderMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-                enabled: recommendedPrintSettup.settingsEnabled
+                enabled: recommendedPrintSetup.settingsEnabled
                 acceptedButtons: Qt.NoButton
                 onEntered:
                 {

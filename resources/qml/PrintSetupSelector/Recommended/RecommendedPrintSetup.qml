@@ -10,7 +10,7 @@ import Cura 1.0 as Cura
 
 Item
 {
-    id: recommendedPrintSettup
+    id: recommendedPrintSetup
 
     height: childrenRect.height + 2 * padding
 

@@ -50,7 +50,7 @@ Item
 
             //: Setting enable printing build-plate adhesion helper checkbox
             style: UM.Theme.styles.checkbox
-            enabled: recommendedPrintSettup.settingsEnabled
+            enabled: recommendedPrintSetup.settingsEnabled
 
             visible: platformAdhesionType.properties.enabled == "True"
             checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
