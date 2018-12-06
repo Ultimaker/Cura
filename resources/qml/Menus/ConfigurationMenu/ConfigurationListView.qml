@@ -28,7 +28,9 @@ Column
     {
         id: container
         width: parent.width
-        height: Math.min(configurationList.contentHeight, 350 * screenScaleFactor)
+        height: Math.round(Math.min(configurationList.height, 350 * screenScaleFactor))
+        contentHeight: configurationList.height
+        clip: true
 
         ButtonGroup
         {
@@ -41,6 +43,7 @@ Column
             spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
             width: container.width
             contentHeight: childrenRect.height
+            height: childrenRect.height
 
             section.property: "modelData.printerType"
             section.criteria: ViewSection.FullString
