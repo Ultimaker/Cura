@@ -41,7 +41,7 @@ class CloudOutputDeviceManager:
         self._output_device_manager = application.getOutputDeviceManager()
 
         self._account = application.getCuraAPI().account
-        self._account.loginStateChanged.connect(self._getRemoteClusters)
+        self._account.loginStateChanged.connect(self._onLoginStateChanged)
         self._api = CloudApiClient(self._account, self._onApiError)
 
         # When switching machines we check if we have to activate a remote cluster.
@@ -49,23 +49,26 @@ class CloudOutputDeviceManager:
 
         # create a timer to update the remote cluster list
         self._update_timer = QTimer(application)
-        self._update_timer.setInterval(self.CHECK_CLUSTER_INTERVAL * 1000)
+        self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._getRemoteClusters)
+
+        # Make sure the timer is started in case we missed the loginChanged signal
+        self._onLoginStateChanged()
+
+    #  Called when the uses logs in or out
+    def _onLoginStateChanged(self) -> None:
+        if self._account.isLoggedIn and not self._update_timer.isActive():
+            self._update_timer.start()
+        else:
+            self._update_timer.stop()
+            # Notify that all clusters have disappeared
+            self._onGetRemoteClustersFinished([])
 
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
         Logger.log("i", "Retrieving remote clusters")
-        if self._account.isLoggedIn:
-            self._api.getClusters(self._onGetRemoteClustersFinished)
-            # Only start the polling timer after the user is authenticated
-            # The first call to _getRemoteClusters comes from self._account.loginStateChanged
-            if not self._update_timer.isActive():
-                self._update_timer.start()
-        else:
-            self._onGetRemoteClustersFinished([])
-            if self._update_timer.isActive():
-                self._update_timer.stop()
+        self._api.getClusters(self._onGetRemoteClustersFinished)
 
     ##  Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudCluster]) -> None:
