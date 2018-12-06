@@ -17,7 +17,7 @@ Item
     }
 
     width: parent.width
-    height: visible ? childrenRect.height : 0
+    height: childrenRect.height
 
     Label
     {
