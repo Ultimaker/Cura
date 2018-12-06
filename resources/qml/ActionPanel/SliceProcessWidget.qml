@@ -48,7 +48,7 @@ Column
 
         text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
         color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 
@@ -61,7 +61,7 @@ Column
         text: catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")
         source: UM.Theme.getIcon("warning")
         color: UM.Theme.getColor("warning")
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob
@@ -94,7 +94,6 @@ Column
         }
     }
 
-
     Item
     {
         id: prepareButtons
@@ -103,7 +102,7 @@ Column
         // Disable the slice process when
 
         width: parent.width
-        height: UM.Theme.getSize("action_panel_button").height
+        height: UM.Theme.getSize("action_button").height
         visible: !autoSlice
         Cura.PrimaryButton
         {

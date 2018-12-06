@@ -37,8 +37,6 @@ Item
         width: UM.Theme.getSize("section_icon").width
         height: UM.Theme.getSize("section_icon").height
 
-        sourceSize.width: width
-        sourceSize.height: height
         color: "black"
 
         anchors

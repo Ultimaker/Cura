@@ -21,8 +21,10 @@ UM.ManagementPage
 
     function activeMachineIndex()
     {
-        for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
+        for(var i = 0; i < model.count; i++)
+        {
+            if (model.getItem(i).id == Cura.MachineManager.activeMachineId)
+            {
                 return i;
             }
         }
@@ -47,7 +49,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
-            enabled: base.currentItem != null && model.rowCount() > 1
+            enabled: base.currentItem != null && model.count > 1
             onClicked: confirmDialog.open();
         },
         Button

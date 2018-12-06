@@ -17,6 +17,7 @@ Item
         id: saveToButton
         height: parent.height
         fixedWidthMode: true
+        cornerSide: deviceSelectionMenu.visible ? Cura.RoundedRectangle.Direction.Left : Cura.RoundedRectangle.Direction.All
 
         anchors
         {
@@ -44,6 +45,7 @@ Item
 
         shadowEnabled: true
         shadowColor: UM.Theme.getColor("primary_shadow")
+        cornerSide: Cura.RoundedRectangle.Direction.Right
 
         anchors
         {
@@ -51,6 +53,8 @@ Item
             right: parent.right
         }
 
+        leftPadding: UM.Theme.getSize("narrow_margin").width //Need more space than usual here for wide text.
+        rightPadding: UM.Theme.getSize("narrow_margin").width
         tooltip: catalog.i18nc("@info:tooltip", "Select the active output device")
         iconSource: popup.opened ? UM.Theme.getIcon("arrow_top") : UM.Theme.getIcon("arrow_bottom")
         color: UM.Theme.getColor("action_panel_secondary")

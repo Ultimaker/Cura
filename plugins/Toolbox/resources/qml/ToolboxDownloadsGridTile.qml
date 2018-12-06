@@ -52,7 +52,6 @@ Item
                     bottom: parent.bottom
                     right: parent.right
                 }
-                sourceSize.width: width
                 sourceSize.height: height
                 visible: installedPackages != 0
                 color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
@@ -81,7 +80,7 @@ Item
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: UM.Theme.getColor("text_medium")
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
             }
         }
     }

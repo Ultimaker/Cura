@@ -32,6 +32,8 @@ Item
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
     property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
 
+    property alias enabled: mouseArea.enabled
+
     // Defines the alignment of the popup with respect of the headerItem, by default to the right
     property int popupAlignment: ExpandableComponent.PopupAlignment.AlignRight
 
@@ -139,9 +141,7 @@ Item
                 verticalCenter: parent.verticalCenter
                 margins: background.padding
             }
-            sourceSize.width: width
-            sourceSize.height: height
-            visible: source != ""
+            visible: source != "" && base.enabled
             width: height
             height: Math.round(0.2 * base.height)
             color: UM.Theme.getColor("text")
