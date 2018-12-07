@@ -13,7 +13,19 @@ RowLayout
     Cura.IconWithText
     {
         source: UM.Theme.getIcon("category_layer_height")
-        text: Cura.MachineManager.activeStack ? Cura.MachineManager.activeQualityOrQualityChangesName + " " + layerHeight.properties.value + "mm" : ""
+        text:
+        {
+            if (Cura.MachineManager.activeStack)
+            {
+                var text = Cura.MachineManager.activeQualityOrQualityChangesName
+                if (!Cura.MachineManager.hasNotSupportedQuality)
+                {
+                    text += " " + layerHeight.properties.value + "mm"
+                }
+                return text
+            }
+            return ""
+        }
 
         UM.SettingPropertyProvider
         {
