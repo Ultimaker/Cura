@@ -16,24 +16,36 @@ Column
     width: UM.Theme.getSize("toolbox_action_button").width
     spacing: UM.Theme.getSize("narrow_margin").height
 
-    ToolboxProgressButton
+    Item
     {
-        id: installButton
-        active: toolbox.isDownloading && toolbox.activePackage == model
-        complete: installed
-        onReadyAction:
+        width: installButton.width
+        height: installButton.height
+        ToolboxProgressButton
         {
-            toolbox.activePackage = model
-            toolbox.startDownload(model.download_url)
+            id: installButton
+            active: toolbox.isDownloading && toolbox.activePackage == model
+            onReadyAction:
+            {
+                toolbox.activePackage = model
+                toolbox.startDownload(model.download_url)
+            }
+            onActiveAction: toolbox.cancelDownload()
+
+            // Don't allow installing while another download is running
+            enabled: installed || (!(toolbox.isDownloading && toolbox.activePackage != model) && !loginRequired)
+            opacity: enabled ? 1.0 : 0.5
+            visible: !updateButton.visible && !installed// Don't show when the update button is visible
         }
-        onActiveAction: toolbox.cancelDownload()
 
-        onCompleteAction: toolbox.viewCategory = "installed"
-
-        // Don't allow installing while another download is running
-        enabled: installed || (!(toolbox.isDownloading && toolbox.activePackage != model) && !loginRequired)
-        opacity: enabled ? 1.0 : 0.5
-        visible: !updateButton.visible // Don't show when the update button is visible
+        Cura.SecondaryButton
+        {
+            visible: installed
+            onClicked: toolbox.viewCategory = "installed"
+            text: catalog.i18nc("@action:button", "Installed")
+            fixedWidthMode: true
+            width: installButton.width
+            height: installButton.height
+        }
     }
 
     Label

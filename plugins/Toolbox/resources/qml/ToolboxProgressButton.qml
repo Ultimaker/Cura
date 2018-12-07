@@ -7,6 +7,7 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
+// TODO; This is in quite some need for refactoring.
 Item
 {
     id: base
