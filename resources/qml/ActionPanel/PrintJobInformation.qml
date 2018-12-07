@@ -30,7 +30,7 @@ Column
         {
             text: catalog.i18nc("@label", "Time specification").toUpperCase()
             color: UM.Theme.getColor("primary")
-            font: UM.Theme.getFont("default_bold")
+            font: UM.Theme.getFont("small")
             renderType: Text.NativeRendering
         }
 
@@ -61,7 +61,7 @@ Column
             }
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("very_small")
             renderType: Text.NativeRendering
             textFormat: Text.RichText
         }
@@ -79,7 +79,7 @@ Column
         {
             text: catalog.i18nc("@label", "Material specification").toUpperCase()
             color: UM.Theme.getColor("primary")
-            font: UM.Theme.getFont("default_bold")
+            font: UM.Theme.getFont("small")
             renderType: Text.NativeRendering
         }
         
@@ -151,7 +151,7 @@ Column
             }
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("very_small")
             renderType: Text.NativeRendering
             textFormat: Text.RichText
         }

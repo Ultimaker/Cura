@@ -15,6 +15,9 @@ UM.RecolorImage
     width: UM.Theme.getSize("section_icon").width
     height: UM.Theme.getSize("section_icon").height
 
+    sourceSize.width: width
+    sourceSize.height: height
+
     color: popup.opened ? UM.Theme.getColor("primary") : UM.Theme.getColor("text_medium")
 
     MouseArea

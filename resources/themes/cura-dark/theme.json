@@ -15,7 +15,7 @@
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 204],
         "border": [127, 127, 127, 255],
-        "secondary": [95, 95, 95, 255],
+        "secondary": [241, 242, 242, 255],
 
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
@@ -195,6 +195,14 @@
         "layerview_move_retraction": [128,  128,  255, 255],
         "layerview_support_interface": [64, 192, 255, 255],
         "layerview_nozzle": [181, 166, 66, 120],
+
+        "configuration_item": [0, 0, 0, 0],
+        "configuration_item_active": [12, 169, 227, 179],
+        "configuration_item_text": [255, 255, 255, 255],
+        "configuration_item_text_active": [255, 255, 255, 255],
+        "configuration_item_border": [255, 255, 255, 255],
+        "configuration_item_border_active": [12, 169, 227, 179],
+        "configuration_item_border_hover": [12, 169, 227, 179],
 
         "material_compatibility_warning": [255, 255, 255, 255],
 

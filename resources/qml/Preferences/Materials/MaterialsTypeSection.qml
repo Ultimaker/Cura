@@ -74,6 +74,8 @@ Rectangle
                 }
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
+                sourceSize.width: width
+                sourceSize.height: height
                 color: "black"
                 source: material_type_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             }

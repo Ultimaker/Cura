@@ -7,17 +7,14 @@ import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0 // For the dropshadow
 
 import UM 1.1 as UM
-import Cura 1.0 as Cura
 
 Button
 {
     id: button
-    property alias iconSource: buttonIconLeft.source
-    property bool isIconOnRightSide: false
+    property alias iconSource: buttonIcon.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
-    property alias cornerSide: backgroundRect.cornerSide
 
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
@@ -39,21 +36,18 @@ Button
     // we elide the text to the right so the text will be cut off with the three dots at the end.
     property var fixedWidthMode: false
 
-    leftPadding: UM.Theme.getSize("default_margin").width
-    rightPadding: UM.Theme.getSize("default_margin").width
-    height: UM.Theme.getSize("action_button").height
-
     contentItem: Row
     {
-        //Left side icon. Only displayed if !isIconOnRightSide.
         UM.RecolorImage
         {
-            id: buttonIconLeft
+            id: buttonIcon
             source: ""
-            height: buttonText.height
-            width: visible ? height : 0
+            height: Math.round(0.6 * parent.height)
+            width: height
+            sourceSize.width: width
+            sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
-            visible: source != "" && !button.isIconOnRightSide
+            visible: source != ""
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -70,24 +64,11 @@ Button
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
         }
-
-        //Right side icon. Only displayed if isIconOnRightSide.
-        UM.RecolorImage
-        {
-            id: buttonIconRight
-            source: buttonIconLeft.source
-            height: buttonText.height
-            width: visible ? height : 0
-            color: buttonIconLeft.color
-            visible: source != "" && button.isIconOnRightSide
-            anchors.verticalCenter: buttonIconLeft.verticalCenter
-        }
     }
 
-    background: Cura.RoundedRectangle
+    background: Rectangle
     {
         id: backgroundRect
-        cornerSide: Cura.RoundedRectangle.Direction.All
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width

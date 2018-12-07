@@ -1,5 +1,5 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.1
@@ -129,14 +129,13 @@ Item
         }
         style: ButtonStyle
         {
-            background: Item
-            {
-                UM.RecolorImage
-                {
+            background: Item {
+                UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
                     sourceSize.height: width
                     color: control.enabled ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_category_disabled_text")
                     source: UM.Theme.getIcon("menu")

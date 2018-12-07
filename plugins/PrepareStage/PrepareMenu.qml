@@ -61,7 +61,7 @@ Item
                 color: UM.Theme.getColor("lining")
             }
 
-            Cura.ConfigurationMenu
+            Cura.QuickConfigurationSelector
             {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -107,6 +107,7 @@ Item
                     height: UM.Theme.getSize("button_icon").height
                     color: UM.Theme.getColor("toolbar_button_text")
 
+                    sourceSize.width: width
                     sourceSize.height: height
                 }
             }

@@ -31,6 +31,9 @@ Item
         width: UM.Theme.getSize("section_icon").width
         height: width
 
+        sourceSize.width: width
+        sourceSize.height: height
+
         color: label.color
         visible: source != ""
     }
@@ -45,7 +48,7 @@ Item
         text: "Empty label"
         elide: Text.ElideRight
         color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("very_small")
         renderType: Text.NativeRendering
     }
 }

@@ -13,7 +13,7 @@ Column
 
     Label
     {
-        text: catalog.i18nc("@label", "Connected printers")
+        text: catalog.i18nc("@label", "Network connected printers")
         visible: networkedPrintersModel.items.length > 0
         leftPadding: UM.Theme.getSize("default_margin").width
         height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0

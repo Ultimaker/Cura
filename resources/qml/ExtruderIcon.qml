@@ -22,6 +22,8 @@ Item
         id: mainIcon
         anchors.fill: parent
 
+        sourceSize.width: parent.width
+        sourceSize.height: parent.height
         source: UM.Theme.getIcon("extruder_button")
         color: extruderEnabled ? materialColor: "gray"
     }
@@ -48,9 +50,7 @@ Item
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
-            font: UM.Theme.getFont("very_small")
-            width: contentWidth
-            height: contentHeight
+            font: UM.Theme.getFont("extruder_icon")
             visible: extruderEnabled
             renderType: Text.NativeRendering
             horizontalAlignment: Text.AlignHCenter
@@ -62,6 +62,7 @@ Item
             id: disabledIcon
             anchors.fill: parent
             anchors.margins: UM.Theme.getSize("thick_lining").width
+            sourceSize.width: width
             sourceSize.height: width
             source: UM.Theme.getIcon("cross1")
             visible: !extruderEnabled

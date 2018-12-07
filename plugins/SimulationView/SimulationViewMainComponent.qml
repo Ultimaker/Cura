@@ -61,9 +61,10 @@ Item
         iconSource: !is_simulation_playing ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
-        hoverColor: UM.Theme.getColor("slider_handle_active")
-        color: UM.Theme.getColor("slider_handle")
-        iconMargin: UM.Theme.getSize("thick_lining").width
+        hoverBackgroundColor: UM.Theme.getColor("small_button_hover")
+        hoverColor: UM.Theme.getColor("small_button_text_hover")
+        color: UM.Theme.getColor("small_button_text")
+        iconMargin: 0.5 * UM.Theme.getSize("wide_lining").width
         visible: !UM.SimulationView.compatibilityMode
 
         Connections

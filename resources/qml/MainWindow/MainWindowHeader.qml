@@ -12,12 +12,37 @@ import QtGraphicalEffects 1.0
 
 import "../Account"
 
-Item
+Rectangle
 {
     id: base
 
     implicitHeight: UM.Theme.getSize("main_window_header").height
     implicitWidth: UM.Theme.getSize("main_window_header").width
+
+    LinearGradient
+    {
+        anchors.fill: parent
+        start: Qt.point(0, 0)
+        end: Qt.point(parent.width, 0)
+        gradient: Gradient
+        {
+            GradientStop
+            {
+                position: 0.0
+                color: UM.Theme.getColor("main_window_header_background")
+            }
+            GradientStop
+            {
+                position: 0.5
+                color: UM.Theme.getColor("main_window_header_background_gradient")
+            }
+            GradientStop
+            {
+                position: 1.0
+                color: UM.Theme.getColor("main_window_header_background")
+            }
+        }
+    }
 
     Image
     {
@@ -29,6 +54,9 @@ Item
         source: UM.Theme.getImage("logo")
         width: UM.Theme.getSize("logo").width
         height: UM.Theme.getSize("logo").height
+
+        sourceSize.width: width
+        sourceSize.height: height
     }
 
     Row

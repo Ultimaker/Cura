@@ -41,12 +41,12 @@
             "family": "Noto Sans"
         },
         "small": {
-            "size": 0.85,
-            "weight": 50,
+            "size": 1.0,
+            "weight": 63,
             "family": "Noto Sans"
         },
         "very_small": {
-            "size": 0.7,
+            "size": 1.0,
             "weight": 50,
             "family": "Noto Sans"
         },
@@ -62,6 +62,12 @@
         },
         "action_button": {
             "size": 1.15,
+            "weight": 50,
+            "family": "Noto Sans"
+        },
+        "extruder_icon":
+        {
+            "size": 0.7,
             "weight": 50,
             "family": "Noto Sans"
         }
@@ -93,14 +99,14 @@
         "secondary_button_hover": [228, 228, 228, 255],
         "secondary_button_text": [30, 102, 215, 255],
 
-        "main_window_header_background": [8, 7, 63, 255],
+        "main_window_header_background": [10, 8, 80, 255],
         "main_window_header_background_gradient": [25, 23, 91, 255],
-        "main_window_header_button_text_active": [8, 7, 63, 255],
+        "main_window_header_button_text_active": [10, 8, 80, 255],
         "main_window_header_button_text_inactive": [255, 255, 255, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
         "main_window_header_button_background_active": [255, 255, 255, 255],
         "main_window_header_button_background_inactive": [255, 255, 255, 0],
-        "main_window_header_button_background_hovered": [117, 114, 159, 255],
+        "main_window_header_button_background_hovered": [255, 255, 255, 102],
 
         "account_widget_outline_active": [70, 66, 126, 255],
 
@@ -108,13 +114,12 @@
         "machine_selector_active": [68, 72, 75, 255],
         "machine_selector_hover": [68, 72, 75, 255],
         "machine_selector_text_active": [255, 255, 255, 255],
-        "machine_selector_printer_icon": [8, 7, 63, 255],
 
         "action_panel_secondary": [27, 95, 202, 255],
 
         "toolbar_background": [255, 255, 255, 255],
 
-        "printer_type_label_background": [228, 228, 242, 255],
+        "printer_type_label_background": [171, 171, 191, 255],
 
         "text": [0, 0, 0, 255],
         "text_detail": [174, 174, 174, 128],
@@ -128,9 +133,9 @@
         "text_scene_hover": [70, 84, 113, 255],
 
         "error": [255, 140, 0, 255],
-        "warning": [245, 166, 35, 255],
+        "warning": [255, 190, 35, 255],
 
-        "toolbar_button_text": [8, 7, 63, 255],
+        "toolbar_button_text": [10, 8, 80, 255],
         "toolbar_button_hover": [232, 242, 252, 255],
         "toolbar_button_active": [232, 242, 252, 255],
         "toolbar_button_active_hover": [232, 242, 252, 255],
@@ -145,9 +150,9 @@
         "button_text_active_hover": [255, 255, 255, 255],
 
         "small_button": [0, 0, 0, 0],
-        "small_button_hover": [8, 7, 63, 255],
-        "small_button_active": [8, 7, 63, 255],
-        "small_button_active_hover": [8, 7, 63, 255],
+        "small_button_hover": [10, 8, 80, 255],
+        "small_button_active": [10, 8, 80, 255],
+        "small_button_active_hover": [10, 8, 80, 255],
         "small_button_text": [171, 171, 191, 255],
         "small_button_text_hover": [255, 255, 255, 255],
         "small_button_text_active": [255, 255, 255, 255],
@@ -223,8 +228,8 @@
         "progressbar_control": [50, 130, 255, 255],
 
         "slider_groove": [223, 223, 223, 255],
-        "slider_groove_fill": [8, 7, 63, 255],
-        "slider_handle": [8, 7, 63, 255],
+        "slider_groove_fill": [10, 8, 80, 255],
+        "slider_handle": [10, 8, 80, 255],
         "slider_handle_active": [50, 130, 255, 255],
         "slider_text_background": [255, 255, 255, 255],
 
@@ -236,7 +241,6 @@
         "checkbox_border": [64, 69, 72, 255],
         "checkbox_border_hover": [50, 130, 255, 255],
         "checkbox_mark": [119, 122, 124, 255],
-        "checkbox_disabled": [223, 223, 223, 255],
         "checkbox_text": [27, 27, 27, 255],
 
         "tooltip": [68, 192, 255, 255],
@@ -306,6 +310,14 @@
         "layerview_support_interface": [64, 192, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
+        "configuration_item": [255, 255, 255, 0],
+        "configuration_item_active": [12, 169, 227, 32],
+        "configuration_item_text": [0, 0, 0, 255],
+        "configuration_item_text_active": [0, 0, 0, 255],
+        "configuration_item_border": [127, 127, 127, 255],
+        "configuration_item_border_active": [12, 169, 227, 32],
+        "configuration_item_border_hover": [50, 130, 255, 255],
+
         "tab_status_connected": [50, 130, 255, 255],
         "tab_status_disconnected": [200, 200, 200, 255],
 
@@ -365,6 +377,7 @@
 
         "action_panel_widget": [25.0, 0.0],
         "action_panel_information_widget": [20.0, 0.0],
+        "action_panel_button": [15.0, 3.0],
 
         "machine_selector_widget": [20.0, 4.0],
         "machine_selector_widget_content": [25.0, 32.0],
@@ -409,9 +422,6 @@
         "button": [4, 4],
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
-
-        "action_button": [15.0, 3.0],
-        "action_button_radius": [0.15, 0.15],
 
         "small_button": [2, 2],
         "small_button_icon": [1.5, 1.5],
@@ -500,6 +510,9 @@
         "toolbox_loader": [2.0, 2.0],
 
         "avatar_image": [6.8, 6.8],
+
+        "action_button": [15.0, 3.0],
+        "action_button_radius": [0.15, 0.15],
 
         "monitor_config_override_box": [1.0, 14.0],
         "monitor_extruder_circle": [2.75, 2.75],

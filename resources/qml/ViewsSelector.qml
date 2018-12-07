@@ -19,7 +19,7 @@ Cura.ExpandableComponent
 
     property var activeView:
     {
-        for (var i = 0; i < viewModel.count; i++)
+        for (var i = 0; i < viewModel.rowCount(); i++)
         {
             if (viewModel.items[i].active)
             {
@@ -74,8 +74,6 @@ Cura.ExpandableComponent
     {
         id: viewSelectorPopup
         width: viewSelector.width - 2 * viewSelector.popupPadding
-        leftPadding: UM.Theme.getSize("default_lining").width
-        rightPadding: UM.Theme.getSize("default_lining").width
 
         // For some reason the height/width of the column gets set to 0 if this is not set...
         Component.onCompleted:
@@ -93,7 +91,7 @@ Cura.ExpandableComponent
             {
                 id: viewsSelectorButton
                 text: model.name
-                width: parent.width - viewSelectorPopup.leftPadding - viewSelectorPopup.rightPadding
+                width: parent.width
                 height: UM.Theme.getSize("action_button").height
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width

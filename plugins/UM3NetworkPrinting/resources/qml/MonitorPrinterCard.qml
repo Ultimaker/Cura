@@ -179,15 +179,13 @@ Item
                 color: "#414054" // TODO: Theme!
                 font: UM.Theme.getFont("large") // 16pt, bold
                 text: {
-                    if (printer && printer.state == "disabled")
-                    {
+                    if (printer && printer.state == "disabled"){
                         return catalog.i18nc("@label:status", "Unavailable")
                     }
-                    if (printer && printer.state == "unreachable")
-                    {
-                        return catalog.i18nc("@label:status", "Unreachable")
+                    if (printer && printer.state == "unreachable"){
+                        return catalog.i18nc("@label:status", "Unavailable")
                     }
-                    if (printer && printer.state == "idle")
+                    if (printer && !printer.activePrintJob)
                     {
                         return catalog.i18nc("@label:status", "Idle")
                     }

@@ -228,7 +228,7 @@ Item
 
             return result
         }
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("very_small")
         color: UM.Theme.getColor("text")
         linkColor: UM.Theme.getColor("text_link")
         onLinkActivated: Qt.openUrlExternally(link)

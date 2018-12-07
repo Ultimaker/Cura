@@ -43,7 +43,7 @@ Item
         {
             id: outputDeviceAddressLabel
             text: (outputDevice != null && outputDevice.address != null) ? outputDevice.address : ""
-            font: UM.Theme.getFont("default_bold")
+            font: UM.Theme.getFont("small")
             color: UM.Theme.getColor("text_inactive")
             anchors.top: outputDeviceNameLabel.bottom
             anchors.left: parent.left
@@ -54,7 +54,7 @@ Item
         {
             text: outputDevice != null ? "" : catalog.i18nc("@info:status", "The printer is not connected.")
             color: outputDevice != null && outputDevice.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("very_small")
             wrapMode: Text.WordWrap
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
