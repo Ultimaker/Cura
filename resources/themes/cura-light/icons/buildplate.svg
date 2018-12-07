@@ -4,6 +4,6 @@
         <polyline points="0 6 7 9 14 6" />
         <polyline points="0 8 7 11 14 8" />
         <polyline points="0 10 7 13 14 10" />
-        <polygon points="0 3.75 7 1 14 3.75 7 6.5" />
+        <polygon points="0 3.75 7 1 14 3.75 7 6.5" fill="black" />
     </g>
 </svg>
