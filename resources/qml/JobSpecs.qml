@@ -80,7 +80,6 @@ Item
             height: UM.Theme.getSize("jobspecs_line").height
             width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
             maximumLength: 120
-            property int unremovableSpacing: 5
             text: PrintInformation.jobName
             horizontalAlignment: TextInput.AlignLeft
 
