@@ -109,10 +109,9 @@ Item
             }
             source: UM.Theme.getIcon("pencil")
             visible: source != "" && base.enabled
-//            color: UM.Theme.getColor("small_button_text")
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            color: UM.Theme.getColor("text")
+            color: UM.Theme.getColor("small_button_text")
         }
 
         MouseArea
