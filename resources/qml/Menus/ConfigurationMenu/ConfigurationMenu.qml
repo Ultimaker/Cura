@@ -34,9 +34,11 @@ Cura.ExpandablePopup
         Custom
     }
 
+    enabled: Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants || Cura.MachineManager.hasVariantBuildplates; //Only let it drop down if there is any configuration that you could change.
+
     headerItem: Item
     {
-        // Horizontal list that shows the extruders
+        // Horizontal list that shows the extruders and their materials
         ListView
         {
             id: extrudersList
@@ -44,7 +46,7 @@ Cura.ExpandablePopup
             orientation: ListView.Horizontal
             anchors.fill: parent
             model: extrudersModel
-            visible: base.enabled
+            visible: Cura.MachineManager.hasMaterials
 
             delegate: Item
             {
@@ -101,24 +103,26 @@ Cura.ExpandablePopup
                 }
             }
         }
-    }
 
-    //Disable the menu if there are no materials, variants or build plates to change.
-    function updateEnabled()
-    {
-        var active_definition_id = Cura.MachineManager.activeMachine.definition.id;
-        var has_materials = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_materials");
-        var has_variants = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_variants");
-        var has_buildplates = Cura.ContainerManager.getContainerMetaDataEntry(active_definition_id, "has_variant_buildplates");
-        base.enabled = has_materials || has_variants || has_buildplates; //Only let it drop down if there is any configuration that you could change.
-    }
+        //Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
+        Label
+        {
+            text: catalog.i18nc("@label", "Select configuration")
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
 
-    Connections
-    {
-        target: Cura.MachineManager
-        onGlobalContainerChanged: base.updateEnabled();
+            visible: !Cura.MachineManager.hasMaterials && (Cura.MachineManager.hasVariants || Cura.MachineManager.hasVariantBuildplates)
+
+            anchors
+            {
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_margin").width
+                verticalCenter: parent.verticalCenter
+            }
+        }
     }
-    Component.onCompleted: updateEnabled();
 
     contentItem: Column
     {
