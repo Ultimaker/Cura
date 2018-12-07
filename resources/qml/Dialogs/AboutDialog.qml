@@ -35,12 +35,10 @@ UM.Dialog
     {
         id: logo
         width: (base.minimumWidth * 0.85) | 0
-        height: (width * (1/4.25)) | 0
+        height: (width * (UM.Theme.getSize("logo").height / UM.Theme.getSize("logo").width)) | 0
 
-        source: UM.Theme.getImage("logo")
+        source: UM.Theme.getImage("logo_about")
 
-        sourceSize.width: width
-        sourceSize.height: height
         anchors.top: parent.top
         anchors.topMargin: ((base.minimumWidth - width) / 2) | 0
         anchors.horizontalCenter: parent.horizontalCenter

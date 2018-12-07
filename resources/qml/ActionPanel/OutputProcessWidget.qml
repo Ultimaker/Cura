@@ -51,7 +51,7 @@ Column
 
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
-                font: UM.Theme.getFont("small")
+                font: UM.Theme.getFont("default_bold")
             }
 
             Cura.IconLabel
@@ -84,7 +84,7 @@ Column
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
             }
         }
 
@@ -101,17 +101,25 @@ Column
         }
     }
 
-    Row
+    Item
     {
         id: buttonRow
-        spacing: UM.Theme.getSize("default_margin").width
-        width: parent.width
+        anchors.right: parent.right
+        anchors.left: parent.left
+        height: UM.Theme.getSize("action_button").height
 
         Cura.SecondaryButton
         {
             id: previewStageShortcut
 
-            height: UM.Theme.getSize("action_panel_button").height
+            anchors
+            {
+                left: parent.left
+                right: outputDevicesButton.left
+                rightMargin: UM.Theme.getSize("default_margin").width
+            }
+
+            height: UM.Theme.getSize("action_button").height
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Preview")
@@ -125,8 +133,11 @@ Column
 
         Cura.OutputDevicesActionButton
         {
-            width: previewStageShortcut.visible ? UM.Theme.getSize("action_panel_button").width : parent.width
-            height: UM.Theme.getSize("action_panel_button").height
+            id: outputDevicesButton
+
+            anchors.right: parent.right
+            width: previewStageShortcut.visible ? UM.Theme.getSize("action_button").width : parent.width
+            height: UM.Theme.getSize("action_button").height
         }
     }
 }
