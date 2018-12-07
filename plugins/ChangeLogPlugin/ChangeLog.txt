@@ -6,6 +6,7 @@
 - Updated firmware to Marlin 1.1.9, with support for homing the Y axis and parking the nozzle on pause
 - Fixed multiplying models on the belt
 - Fixed layer view for objects that are cut off below the belt
+
 *Gyroid infill
 New infill pattern with enhanced strength properties. Gyroid infill is one of the strongest infill types for a given weight, has isotropic properties, and prints relatively fast with reduced material use and a fully connected part interior. Note: Slicing time can increase up to 40 seconds or more, depending on the model. Contributed by smartavionics.
 
