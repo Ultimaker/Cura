@@ -16,6 +16,42 @@ Item
     height: UM.Theme.getSize("toolbox_thumbnail_small").height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
+    MouseArea
+    {
+        anchors.fill: parent
+        hoverEnabled: true
+        onEntered: thumbnail.border.color = UM.Theme.getColor("primary")
+        onExited: thumbnail.border.color = UM.Theme.getColor("lining")
+        onClicked:
+        {
+            base.selection = model
+            switch(toolbox.viewCategory)
+            {
+                case "material":
+
+                    // If model has a type, it must be a package
+                    if (model.type !== undefined)
+                    {
+                        toolbox.viewPage = "detail"
+                        toolbox.filterModelByProp("packages", "id", model.id)
+                    }
+                    else
+                    {
+                        toolbox.viewPage = "author"
+                        toolbox.setFilters("packages", {
+                            "author_id": model.id,
+                            "type": "material"
+                        })
+                    }
+                    break
+                default:
+                    toolbox.viewPage = "detail"
+                    toolbox.filterModelByProp("packages", "id", model.id)
+                    break
+            }
+        }
+    }
+
     Rectangle
     {
         id: thumbnail
@@ -33,8 +69,6 @@ Item
             fillMode: Image.PreserveAspectFit
             source: model.icon_url || "../images/logobot.svg"
             mipmap: true
-
-
         }
         UM.RecolorImage
         {
@@ -49,42 +83,6 @@ Item
             visible: installedPackages != 0
             color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
             source: "../images/installed_check.svg"
-        }
-
-        MouseArea
-        {
-            anchors.fill: thumbnail
-            hoverEnabled: true
-            onEntered: thumbnail.border.color = UM.Theme.getColor("primary")
-            onExited: thumbnail.border.color = UM.Theme.getColor("lining")
-            onClicked:
-            {
-                base.selection = model
-                switch(toolbox.viewCategory)
-                {
-                    case "material":
-
-                        // If model has a type, it must be a package
-                        if (model.type !== undefined)
-                        {
-                            toolbox.viewPage = "detail"
-                            toolbox.filterModelByProp("packages", "id", model.id)
-                        }
-                        else
-                        {
-                            toolbox.viewPage = "author"
-                            toolbox.setFilters("packages", {
-                                "author_id": model.id,
-                                "type": "material"
-                            })
-                        }
-                        break
-                    default:
-                        toolbox.viewPage = "detail"
-                        toolbox.filterModelByProp("packages", "id", model.id)
-                        break
-                }
-            }
         }
     }
     Item
@@ -119,17 +117,39 @@ Item
             anchors.top: name.bottom
             anchors.bottom: rating.top
             verticalAlignment: Text.AlignVCenter
+            maximumLineCount: 2
         }
-        RatingWidget
+        Row
         {
             id: rating
-            visible: model.type == "plugin"
-            packageId: model.id
-            rating: model.average_rating != undefined ? model.average_rating : 0
-            numRatings: model.num_ratings != undefined ? model.num_ratings : 0
-            userRating: model.user_rating
-            enabled: installedPackages != 0 && Cura.API.account.isLoggedIn
-            anchors.bottom: parent.bottom
+            height: UM.Theme.getSize("rating_star").height
+            visible: model.average_rating > 0 //Has a rating at all.
+            spacing: UM.Theme.getSize("thick_lining").width
+            anchors
+            {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+
+            UM.RecolorImage
+            {
+                id: starIcon
+                source: UM.Theme.getIcon("star_filled")
+                color: "#5a5a5a"
+                height: UM.Theme.getSize("rating_star").height
+                width: UM.Theme.getSize("rating_star").width
+            }
+
+            Label
+            {
+                text: model.average_rating.toFixed(1) + " (" + model.num_ratings + " " + catalog.i18nc("@label", "ratings") + ")"
+                verticalAlignment: Text.AlignVCenter
+                height: starIcon.height
+                anchors.verticalCenter: starIcon.verticalCenter
+                color: starIcon.color
+                font: UM.Theme.getFont("small")
+            }
         }
     }
 }

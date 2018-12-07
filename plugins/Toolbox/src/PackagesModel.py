@@ -105,7 +105,7 @@ class PackagesModel(ListModel):
                 "links":                links_dict,
                 "website":              package["website"] if "website" in package else None,
                 "login_required":       "login-required" in package.get("tags", []),
-                "average_rating":       package.get("rating", {}).get("average", 0),
+                "average_rating":       float(package.get("rating", {}).get("average", 0)),
                 "num_ratings":          package.get("rating", {}).get("count", 0),
                 "user_rating":          package.get("rating", {}).get("user", 0)
             })
