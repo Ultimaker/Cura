@@ -111,7 +111,7 @@ Item
             visible: source != "" && base.enabled
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            color: UM.Theme.getColor("text")
+            color: UM.Theme.getColor("small_button_text")
         }
 
         MouseArea
