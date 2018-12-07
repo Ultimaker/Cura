@@ -1,10 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
-from datetime import datetime
 
 from time import time
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 
@@ -92,7 +91,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._host_name = host_name
 
         self._setInterfaceElements()
-        
+
         self._device_id = device_id
         self._account = CuraApplication.getInstance().getCuraAPI().account
 
@@ -111,7 +110,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # Properties to populate later on with received cloud data.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
         self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
-        
+
         # We only allow a single upload at a time.
         self._sending_job = False
         # TODO: handle progress messages in another class.
@@ -120,6 +119,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # Keep server string of the last generated time to avoid updating models more than once for the same response
         self._received_printers = None  # type: Optional[List[CloudClusterPrinter]]
         self._received_print_jobs = None  # type: Optional[List[CloudClusterPrintJob]]
+
+        # A set of the user's job IDs that have finished
+        self._finished_jobs = set()  # type: Set[str]
 
     ## Gets the host name of this device
     @property
@@ -144,16 +146,16 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self.setShortDescription(T.PRINT_VIA_CLOUD_BUTTON)
         self.setDescription(T.PRINT_VIA_CLOUD_TOOLTIP)
         self.setConnectionText(T.CONNECTED_VIA_CLOUD)
-    
+
     ##  Called when Cura requests an output device to receive a (G-code) file.
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
-        
+
         # Show an error message if we're already sending a job.
         if self._sending_job:
             self._onUploadError(T.BLOCKED_UPLOADING)
             return
-        
+
         # Indicate we have started sending a job.
         self._sending_job = True
         self.writeStarted.emit(self)
@@ -165,9 +167,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         mesh_bytes = mesh_format.getBytes(nodes)
 
-        # TODO: Remove extension from the file name, since we are using content types now
         request = CloudJobUploadRequest(
-            job_name = file_name, ## + "." + mesh_format.file_extension,
+            job_name = file_name,
             file_size = len(mesh_bytes),
             content_type = mesh_format.mime_type,
         )
@@ -261,18 +262,15 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Handles the event of a change in a print job state
     def _onPrintJobStateChanged(self) -> None:
-        username = self._account.userName
-        finished_jobs = [job for job in self._print_jobs if job.state == "wait_cleanup"]
-
-        newly_finished_jobs = [job for job in finished_jobs if job not in self._finished_jobs and job.owner == username]
-        for job in newly_finished_jobs:
-            if job.assignedPrinter:
-                job_completed_text = T.JOB_COMPLETED_PRINTER.format(printer_name=job.assignedPrinter.name,
-                                                                    job_name=job.name)
-            else:
-                job_completed_text = T.JOB_COMPLETED_NO_PRINTER.format(job_name=job.name)
-            job_completed_message = Message(text=job_completed_text, title = T.JOB_COMPLETED_TITLE)
-            job_completed_message.show()
+        user_name = self._getUserName()
+        for job in self._print_jobs:
+            if job.state == "wait_cleanup" and job.key not in self._finished_jobs and job.owner == user_name:
+                self._finished_jobs.add(job.key)
+                Message(
+                    title = T.JOB_COMPLETED_TITLE,
+                    text = (T.JOB_COMPLETED_PRINTER.format(printer_name=job.assignedPrinter.name, job_name=job.name)
+                            if job.assignedPrinter else T.JOB_COMPLETED_NO_PRINTER.format(job_name=job.name)),
+                ).show()
 
         # Ensure UI gets updated
         self.printJobsChanged.emit()
@@ -326,13 +324,12 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onUploadError(self, message: str = None) -> None:
         self._resetUploadProgress()
         if message:
-            message = Message(
+            Message(
                 text = message,
                 title = T.ERROR,
                 lifetime = 10,
                 dismissable = True
-            )
-            message.show()
+            ).show()
         self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeError.emit()
 
@@ -341,18 +338,17 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onUploadSuccess(self, response: CloudPrintResponse) -> None:
         Logger.log("i", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
         self._resetUploadProgress()
-        message = Message(
+        Message(
             text = T.UPLOAD_SUCCESS_TEXT,
             title = T.UPLOAD_SUCCESS_TITLE,
             lifetime = 5,
             dismissable = True,
-        )
-        message.show()
+        ).show()
         self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeFinished.emit()
 
     ##  Gets the remote printers.
-    @pyqtProperty("QVariantList", notify = _clusterPrintersChanged)
+    @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
     def printers(self) -> List[PrinterOutputModel]:
         return self._printers
 
@@ -374,7 +370,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ##  Get remote print jobs.
     @pyqtProperty("QVariantList", notify = printJobsChanged)
-    def printJobs(self)-> List[UM3PrintJobOutputModel]:
+    def printJobs(self) -> List[UM3PrintJobOutputModel]:
         return self._print_jobs
 
     ##  Get remote print jobs that are still in the print queue.

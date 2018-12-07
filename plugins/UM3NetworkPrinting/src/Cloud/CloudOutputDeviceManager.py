@@ -7,6 +7,7 @@ from PyQt5.QtCore import QTimer
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
+from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
 from .CloudApiClient import CloudApiClient
@@ -40,7 +41,7 @@ class CloudOutputDeviceManager:
         application = CuraApplication.getInstance()
         self._output_device_manager = application.getOutputDeviceManager()
 
-        self._account = application.getCuraAPI().account
+        self._account = application.getCuraAPI().account  # type: Account
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
         self._api = CloudApiClient(self._account, self._onApiError)
 
@@ -54,11 +55,11 @@ class CloudOutputDeviceManager:
         self._update_timer.timeout.connect(self._getRemoteClusters)
 
         # Make sure the timer is started in case we missed the loginChanged signal
-        self._onLoginStateChanged()
+        self._onLoginStateChanged(self._account.isLoggedIn)
 
     #  Called when the uses logs in or out
-    def _onLoginStateChanged(self) -> None:
-        if self._account.isLoggedIn:
+    def _onLoginStateChanged(self, is_logged_in: bool) -> None:
+        if is_logged_in:
             if not self._update_timer.isActive():
                 self._update_timer.start()
         else:
