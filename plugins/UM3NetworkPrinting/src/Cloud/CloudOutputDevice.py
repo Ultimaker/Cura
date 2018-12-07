@@ -16,7 +16,6 @@ from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
@@ -28,7 +27,7 @@ from .Models.CloudPrintResponse import CloudPrintResponse
 from .Models.CloudJobResponse import CloudJobResponse
 from .Models.CloudClusterPrinter import CloudClusterPrinter
 from .Models.CloudClusterPrintJob import CloudClusterPrintJob
-from .Utils import findChanges
+from .Utils import findChanges, formatDateCompleted, formatTimeCompleted
 
 
 ## Class that contains all the translations for this module.
@@ -55,6 +54,12 @@ class T:
     UPLOAD_SUCCESS_TITLE = _I18N_CATALOG.i18nc("@info:title", "Data Sent")
     UPLOAD_SUCCESS_TEXT = _I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer.")
 
+    JOB_COMPLETED_TITLE = _I18N_CATALOG.i18nc("@info:status", "Print finished")
+    JOB_COMPLETED_PRINTER = _I18N_CATALOG.i18nc("@info:status",
+                                                "Printer '{printer_name}' has finished printing '{job_name}'.")
+
+    JOB_COMPLETED_NO_PRINTER = _I18N_CATALOG.i18nc("@info:status", "The print job '{job_name}' was finished.")
+
 
 ##  The cloud output device is a network output device that works remotely but has limited functionality.
 #   Currently it only supports viewing the printer and print job status and adding a new job to the queue.
@@ -65,7 +70,7 @@ class T:
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 2.0  # seconds
+    CHECK_CLUSTER_INTERVAL = 4.0  # seconds
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
@@ -109,6 +114,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         
         # We only allow a single upload at a time.
         self._sending_job = False
+        # TODO: handle progress messages in another class.
         self._progress_message = None  # type: Optional[Message]
 
     ## Gets the host name of this device
@@ -128,7 +134,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         return network_key.startswith(self._host_name)
 
     ##  Set all the interface elements and texts for this output device.
-    def _setInterfaceElements(self):
+    def _setInterfaceElements(self) -> None:
         self.setPriority(2)  # make sure we end up below the local networking and above 'save to file'
         self.setName(self._id)
         self.setShortDescription(T.PRINT_VIA_CLOUD_BUTTON)
@@ -157,13 +163,192 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # TODO: Remove extension from the file name, since we are using content types now
         request = CloudJobUploadRequest(
-            job_name = file_name + "." + mesh_format.file_extension,
+            job_name = file_name, ## + "." + mesh_format.file_extension,
             file_size = len(mesh_bytes),
             content_type = mesh_format.mime_type,
         )
         self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh_bytes, response))
 
-    ##  Get remote printers.
+    ##  Called when the connection to the cluster changes.
+    def connect(self) -> None:
+        super().connect()
+
+    ##  Called when the network data should be updated.
+    def _update(self) -> None:
+        super()._update()
+        if self._last_response_time and time() - self._last_response_time < self.CHECK_CLUSTER_INTERVAL:
+            return  # avoid calling the cloud too often
+
+        if self._account.isLoggedIn:
+            self.setAuthenticationState(AuthState.Authenticated)
+            self._api.getClusterStatus(self._device_id, self._onStatusCallFinished)
+        else:
+            self.setAuthenticationState(AuthState.NotAuthenticated)
+
+    ##  Method called when HTTP request to status endpoint is finished.
+    #   Contains both printers and print jobs statuses in a single response.
+    def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
+        # Update all data from the cluster.
+        self._updatePrinters(status.printers)
+        self._updatePrintJobs(status.print_jobs)
+
+    ## Updates the local list of printers with the list received from the cloud.
+    #  \param jobs: The printers received from the cloud.
+    def _updatePrinters(self, printers: List[CloudClusterPrinter]) -> None:
+        previous = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
+        received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
+
+        removed_printers, added_printers, updated_printers = findChanges(previous, received)
+
+        for removed_printer in removed_printers:
+            if self._active_printer == removed_printer:
+                self.setActivePrinter(None)
+            self._printers.remove(removed_printer)
+
+        for added_printer in added_printers:
+            self._printers.append(added_printer.createOutputModel(CloudOutputController(self)))
+
+        for model, printer in updated_printers:
+            printer.updateOutputModel(model)
+
+        # Always have an active printer
+        if not self._active_printer:
+            self.setActivePrinter(self._printers[0])
+
+        if removed_printers or added_printers or updated_printers:
+            self._clusterPrintersChanged.emit()
+
+    ## Updates the local list of print jobs with the list received from the cloud.
+    #  \param jobs: The print jobs received from the cloud.
+    def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
+        received = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
+        previous = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
+
+        removed_jobs, added_jobs, updated_jobs = findChanges(previous, received)
+
+        # TODO: we see that not all data in the UI is correctly updated when the queue and active jobs change.
+        # TODO: we need to fix this here somehow by updating the correct output models.
+        # TODO: the configuration drop down in the slice window is not populated because we are missing some data.
+        # TODO: to fix this we need to implement more data as shown in ClusterUM3OutputDevice._createPrintJobModel
+
+        for removed_job in removed_jobs:
+            self._print_jobs.remove(removed_job)
+
+        for added_job in added_jobs:
+            self._addPrintJob(added_job)
+
+        for model, job in updated_jobs:
+            job.updateOutputModel(model)
+            if job.printer_uuid:
+                self._updateAssignedPrinter(model, job.printer_uuid)
+
+        # We only have to update when jobs are added or removed
+        # updated jobs push their changes via their output model
+        if added_jobs or removed_jobs or updated_jobs:
+            self.printJobsChanged.emit()
+
+    ## Registers a new print job received via the cloud API.
+    #  \param job: The print job received.
+    def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
+        model = job.createOutputModel(CloudOutputController(self))
+        model.stateChanged.connect(self._onPrintJobStateChanged)
+        if job.printer_uuid:
+            self._updateAssignedPrinter(model, job.printer_uuid)
+        self._print_jobs.append(model)
+
+    ## Handles the event of a change in a print job state
+    def _onPrintJobStateChanged(self) -> None:
+        username = self._account.userName
+        finished_jobs = [job for job in self._print_jobs if job.state == "wait_cleanup"]
+
+        newly_finished_jobs = [job for job in finished_jobs if job not in self._finished_jobs and job.owner == username]
+        for job in newly_finished_jobs:
+            if job.assignedPrinter:
+                job_completed_text = T.JOB_COMPLETED_PRINTER.format(printer_name=job.assignedPrinter.name,
+                                                                    job_name=job.name)
+            else:
+                job_completed_text = T.JOB_COMPLETED_NO_PRINTER.format(job_name=job.name)
+            job_completed_message = Message(text=job_completed_text, title = T.JOB_COMPLETED_TITLE)
+            job_completed_message.show()
+
+        # Ensure UI gets updated
+        self.printJobsChanged.emit()
+
+    ## Updates the printer assignment for the given print job model.
+    def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:
+        printer = next((p for p in self._printers if printer_uuid == p.key), None)
+
+        if not printer:
+            return Logger.log("w", "Missing printer %s for job %s in %s", model.assignedPrinter, model.key,
+                              [p.key for p in self._printers])
+
+        printer.updateActivePrintJob(model)
+        model.updateAssignedPrinter(printer)
+
+    ## Uploads the mesh when the print job was registered with the cloud API.
+    #  \param mesh: The bytes to upload.
+    #  \param job_response: The response received from the cloud API.
+    def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
+        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,
+                             lambda _: self._onUploadError(T.UPLOAD_ERROR))
+
+    ## Requests the print to be sent to the printer when we finished uploading the mesh.
+    #  \param job_id: The ID of the job.
+    def _onPrintJobUploaded(self, job_id: str) -> None:
+        self._api.requestPrint(self._device_id, job_id, self._onUploadSuccess)
+
+    ## Updates the progress of the mesh upload.
+    #  \param progress: The amount of percentage points uploaded until now (0-100).
+    def _updateUploadProgress(self, progress: int) -> None:
+        if not self._progress_message:
+            self._progress_message = Message(
+                text = T.SENDING_DATA_TEXT,
+                title = T.SENDING_DATA_TITLE,
+                progress = -1,
+                lifetime = 0,
+                dismissable = False,
+                use_inactivity_timer = False
+            )
+        self._progress_message.setProgress(progress)
+        self._progress_message.show()
+
+    ## Hides the upload progress bar
+    def _resetUploadProgress(self) -> None:
+        if self._progress_message:
+            self._progress_message.hide()
+            self._progress_message = None
+
+    ## Displays the given message if uploading the mesh has failed
+    #  \param message: The message to display.
+    def _onUploadError(self, message: str = None) -> None:
+        self._resetUploadProgress()
+        if message:
+            message = Message(
+                text = message,
+                title = T.ERROR,
+                lifetime = 10,
+                dismissable = True
+            )
+            message.show()
+        self._sending_job = False  # the upload has finished so we're not sending a job anymore
+        self.writeError.emit()
+
+    ## Shows a message when the upload has succeeded
+    #  \param response: The response from the cloud API.
+    def _onUploadSuccess(self, response: CloudPrintResponse) -> None:
+        Logger.log("i", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
+        self._resetUploadProgress()
+        message = Message(
+            text = T.UPLOAD_SUCCESS_TEXT,
+            title = T.UPLOAD_SUCCESS_TITLE,
+            lifetime = 5,
+            dismissable = True,
+        )
+        message.show()
+        self._sending_job = False  # the upload has finished so we're not sending a job anymore
+        self.writeFinished.emit()
+
+    ##  Gets the remote printers.
     @pyqtProperty("QVariantList", notify = _clusterPrintersChanged)
     def printers(self) -> List[PrinterOutputModel]:
         return self._printers
@@ -209,170 +394,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(int, result = str)
     def getTimeCompleted(self, time_remaining: int) -> str:
         # TODO: this really shouldn't be in this class
-        current_time = time()
-        datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
-        return "{hour:02d}:{minute:02d}".format(hour = datetime_completed.hour, minute = datetime_completed.minute)
+        return formatTimeCompleted(time_remaining)
 
     @pyqtSlot(int, result = str)
     def getDateCompleted(self, time_remaining: int) -> str:
-        # TODO: this really shouldn't be in this class
-        current_time = time()
-        completed = datetime.fromtimestamp(current_time + time_remaining)
-        today = datetime.fromtimestamp(current_time)
-        # If finishing date is more than 7 days out, using "Mon Dec 3 at HH:MM" format
-        if completed.toordinal() > today.toordinal() + 7:
-            return completed.strftime("%a %b ") + "{day}".format(day = completed.day)
-        # If finishing date is within the next week, use "Monday at HH:MM" format
-        elif completed.toordinal() > today.toordinal() + 1:
-            return completed.strftime("%a")
-        # If finishing tomorrow, use "tomorrow at HH:MM" format
-        elif completed.toordinal() > today.toordinal():
-            return "tomorrow"
-        # If finishing today, use "today at HH:MM" format
-        else:
-            return "today"
-
-    ##  Called when the connection to the cluster changes.
-    def connect(self) -> None:
-        super().connect()
-
-    ##  Called when the network data should be updated.
-    def _update(self) -> None:
-        super()._update()
-        if self._last_response_time and time() - self._last_response_time < self.CHECK_CLUSTER_INTERVAL:
-            return  # avoid calling the cloud too often
-
-        if self._account.isLoggedIn:
-            self.setAuthenticationState(AuthState.Authenticated)
-            self._api.getClusterStatus(self._device_id, self._onStatusCallFinished)
-        else:
-            self.setAuthenticationState(AuthState.NotAuthenticated)
-
-    ##  Method called when HTTP request to status endpoint is finished.
-    #   Contains both printers and print jobs statuses in a single response.
-    def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
-        # Update all data from the cluster.
-        self._updatePrinters(status.printers)
-        self._updatePrintJobs(status.print_jobs)
-
-    def _updatePrinters(self, printers: List[CloudClusterPrinter]) -> None:
-        previous = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
-        received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
-
-        removed_printers, added_printers, updated_printers = findChanges(previous, received)
-
-        for removed_printer in removed_printers:
-            if self._active_printer == removed_printer:
-                self.setActivePrinter(None)
-            self._printers.remove(removed_printer)
-
-        for added_printer in added_printers:
-            self._printers.append(added_printer.createOutputModel(CloudOutputController(self)))
-
-        for model, printer in updated_printers:
-            printer.updateOutputModel(model)
-
-        # Always have an active printer
-        if not self._active_printer:
-            self.setActivePrinter(self._printers[0])
-
-        if removed_printers or added_printers or updated_printers:
-            self._clusterPrintersChanged.emit()
-
-    def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
-        received = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
-        previous = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
-
-        removed_jobs, added_jobs, updated_jobs = findChanges(previous, received)
-
-        # TODO: we see that not all data in the UI is correctly updated when the queue and active jobs change.
-        # TODO: we need to fix this here somehow by updating the correct output models.
-        # TODO: also the configuration drop down in the slice window is not populated because we are missing some data.
-        # TODO: to fix this we need to implement more data as shown in ClusterUM3OutputDevice._createPrintJobModel
-
-        for removed_job in removed_jobs:
-            self._print_jobs.remove(removed_job)
-
-        for added_job in added_jobs:
-            self._addPrintJob(added_job)
-
-        for model, job in updated_jobs:
-            job.updateOutputModel(model)
-            self._updatePrintJobDetails(model)
-
-        # We only have to update when jobs are added or removed
-        # updated jobs push their changes via their output model
-        if added_jobs or removed_jobs or updated_jobs:
-            self.printJobsChanged.emit()
-
-    def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
-        print_job = job.createOutputModel(CloudOutputController(self))
-        self._updatePrintJobDetails(print_job)
-        self._print_jobs.append(print_job)
-
-    def _updatePrintJobDetails(self, print_job: UM3PrintJobOutputModel):
-        printer = None
-        try:
-            printer = next(p for p in self._printers if print_job.assignedPrinter == p.key)
-        except StopIteration:
-            Logger.log("w", "Missing printer %s for job %s in %s", print_job.assignedPrinter, print_job.key,
-                       [p.key for p in self._printers])
-
-        if printer:
-            printer.updateActivePrintJob(print_job)
-            print_job.updateAssignedPrinter(printer)
-
-    def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
-        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,
-                             lambda _: self._onUploadError(T.UPLOAD_ERROR))
-
-    def _onPrintJobUploaded(self, job_id: str) -> None:
-        self._api.requestPrint(self._device_id, job_id, self._onUploadSuccess)
-
-    def _updateUploadProgress(self, progress: int):
-        if not self._progress_message:
-            self._progress_message = Message(
-                text = T.SENDING_DATA_TEXT,
-                title = T.SENDING_DATA_TITLE,
-                progress = -1,
-                lifetime = 0,
-                dismissable = False,
-                use_inactivity_timer = False
-            )
-        self._progress_message.setProgress(progress)
-        self._progress_message.show()
-
-    def _resetUploadProgress(self):
-        if self._progress_message:
-            self._progress_message.hide()
-            self._progress_message = None
-
-    def _onUploadError(self, message: str = None):
-        self._resetUploadProgress()
-        if message:
-            message = Message(
-                text = message,
-                title = T.ERROR,
-                lifetime = 10,
-                dismissable = True
-            )
-            message.show()
-        self._sending_job = False  # the upload has finished so we're not sending a job anymore
-        self.writeError.emit()
-
-    # Shows a message when the upload has succeeded
-    def _onUploadSuccess(self, response: CloudPrintResponse):
-        Logger.log("i", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
-        self._resetUploadProgress()
-        message = Message(
-            text = T.UPLOAD_SUCCESS_TEXT,
-            title = T.UPLOAD_SUCCESS_TITLE,
-            lifetime = 5,
-            dismissable = True,
-        )
-        message.show()
-        self._sending_job = False  # the upload has finished so we're not sending a job anymore
-        self.writeFinished.emit()
+        return formatDateCompleted(time_remaining)
 
     ##  TODO: The following methods are required by the monitor page QML, but are not actually available using cloud.
     #   TODO: We fake the methods here to not break the monitor page.

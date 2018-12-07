@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List
 
+from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from .CloudClusterPrinterConfiguration import CloudClusterPrinterConfiguration
@@ -40,5 +41,9 @@ class CloudClusterPrinter(BaseModel):
         model.updateType(self.machine_variant)
         model.updateState(self.status if self.enabled else "disabled")
 
-        for configuration, extruder in zip(self.configuration, model.extruders):
-            configuration.updateOutputModel(extruder)
+        for configuration, extruder_output, extruder_config in \
+                zip(self.configuration, model.extruders, model.printerConfiguration.extruderConfigurations):
+            configuration.updateOutputModel(extruder_output)
+            configuration.updateConfigurationModel(extruder_config)
+
+        pass

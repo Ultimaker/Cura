@@ -1,5 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import List, Optional
+
+from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
 from .CloudClusterPrinterConfigurationMaterial import CloudClusterPrinterConfigurationMaterial
 from ...Models import BaseModel
@@ -8,7 +12,7 @@ from ...Models import BaseModel
 ##  Class representing a cloud cluster printer configuration
 class CloudClusterPrinterConfiguration(BaseModel):
     def __init__(self, **kwargs) -> None:
-        self.extruder_index = None  # type: str
+        self.extruder_index = None  # type: int
         self.material = None  # type: CloudClusterPrinterConfigurationMaterial
         self.nozzle_diameter = None  # type: str
         self.print_core_id = None  # type: str
@@ -25,3 +29,16 @@ class CloudClusterPrinterConfiguration(BaseModel):
         if model.activeMaterial is None or model.activeMaterial.guid != self.material.guid:
             material = self.material.createOutputModel()
             model.updateActiveMaterial(material)
+
+    ## Creates a configuration model
+    def createConfigurationModel(self) -> ExtruderConfigurationModel:
+        model = ExtruderConfigurationModel(position = self.extruder_index)
+        self.updateConfigurationModel(model)
+        return model
+
+    ## Creates a configuration model
+    def updateConfigurationModel(self, model: ExtruderConfigurationModel) -> ExtruderConfigurationModel:
+        model.setHotendID(self.print_core_id)
+        if self.material:
+            model.setMaterial(self.material.createOutputModel())
+        return model
