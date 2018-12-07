@@ -64,11 +64,12 @@ Column
             section.criteria: ViewSection.FullString
             section.delegate: Item
             {
-                height: printerTypeLabel.height + UM.Theme.getSize("default_margin").height
+                height: printerTypeLabel.height + UM.Theme.getSize("default_margin").height * 2 //Causes a default margin above the label and a default margin below the label.
                 Cura.PrinterTypeLabel
                 {
                     id: printerTypeLabel
                     text: Cura.MachineManager.getAbbreviatedMachineName(section)
+                    anchors.verticalCenter: parent.verticalCenter //One default margin above and one below.
                 }
             }
 
