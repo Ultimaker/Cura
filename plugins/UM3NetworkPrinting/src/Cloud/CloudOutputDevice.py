@@ -1,10 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
-from datetime import datetime
 
 from time import time
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 
@@ -215,8 +214,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if not self._active_printer:
             self.setActivePrinter(self._printers[0])
 
-        if removed_printers or added_printers or updated_printers:
-            self._clusterPrintersChanged.emit()
+        self.printersChanged.emit()
 
     ## Updates the local list of print jobs with the list received from the cloud.
     #  \param jobs: The print jobs received from the cloud.
@@ -388,12 +386,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     @pyqtSlot(int, result = str)
     def formatDuration(self, seconds: int) -> str:
-        # TODO: this really shouldn't be in this class
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
 
     @pyqtSlot(int, result = str)
     def getTimeCompleted(self, time_remaining: int) -> str:
-        # TODO: this really shouldn't be in this class
         return formatTimeCompleted(time_remaining)
 
     @pyqtSlot(int, result = str)
@@ -413,7 +409,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     @pyqtProperty(bool, notify = printJobsChanged)
     def receivedPrintJobs(self) -> bool:
-        return True
+        return bool(self._print_jobs)
 
     @pyqtSlot()
     def openPrintJobControlPanel(self) -> None:

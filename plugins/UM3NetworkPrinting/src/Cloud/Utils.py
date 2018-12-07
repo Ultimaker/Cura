@@ -29,24 +29,25 @@ def findChanges(previous: Dict[str, T], received: Dict[str, U]) -> Tuple[List[T]
     return removed, added, updated
 
 
-def formatTimeCompleted(time_remaining: int) -> str:
-    completed = datetime.now() + timedelta(seconds=time_remaining)
+def formatTimeCompleted(seconds_remaining: int) -> str:
+    completed = datetime.now() + timedelta(seconds=seconds_remaining)
     return "{hour:02d}:{minute:02d}".format(hour = completed.hour, minute = completed.minute)
 
 
-def formatDateCompleted(time_remaining: int) -> str:
-    remaining = timedelta(seconds=time_remaining)
-    completed = datetime.now() + remaining
+def formatDateCompleted(seconds_remaining: int) -> str:
+    now = datetime.now()
+    completed = now + timedelta(seconds=seconds_remaining)
+    days = (completed.date() - now.date()).days
     i18n = i18nCatalog("cura")
 
     # If finishing date is more than 7 days out, using "Mon Dec 3 at HH:MM" format
-    if remaining.days >= 7:
+    if days >= 7:
         return completed.strftime("%a %b ") + "{day}".format(day = completed.day)
     # If finishing date is within the next week, use "Monday at HH:MM" format
-    elif remaining.days >= 2:
+    elif days >= 2:
         return completed.strftime("%a")
     # If finishing tomorrow, use "tomorrow at HH:MM" format
-    elif remaining.days >= 1:
+    elif days >= 1:
         return i18n.i18nc("@info:status", "tomorrow")
     # If finishing today, use "today at HH:MM" format
     else:
