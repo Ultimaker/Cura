@@ -43,7 +43,7 @@ ScrollView
         {
             color: "transparent"
             width: parent.width
-            height: childrenRect.height + UM.Theme.getSize("default_lining").width
+            height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
             Column
@@ -74,7 +74,7 @@ ScrollView
         {
             color: "transparent"
             width: parent.width
-            height: childrenRect.height + UM.Theme.getSize("default_lining").width
+            height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
             Column
