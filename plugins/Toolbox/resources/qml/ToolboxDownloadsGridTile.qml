@@ -58,13 +58,49 @@ Item
                 color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
                 source: "../images/installed_check.svg"
             }
+
+            MouseArea
+            {
+                anchors.fill: thumbnail
+                hoverEnabled: true
+                onEntered: thumbnail.border.color = UM.Theme.getColor("primary")
+                onExited: thumbnail.border.color = UM.Theme.getColor("lining")
+                onClicked:
+                {
+                    base.selection = model
+                    switch(toolbox.viewCategory)
+                    {
+                        case "material":
+
+                            // If model has a type, it must be a package
+                            if (model.type !== undefined)
+                            {
+                                toolbox.viewPage = "detail"
+                                toolbox.filterModelByProp("packages", "id", model.id)
+                            }
+                            else
+                            {
+                                toolbox.viewPage = "author"
+                                toolbox.setFilters("packages", {
+                                    "author_id": model.id,
+                                    "type": "material"
+                                })
+                            }
+                            break
+                        default:
+                            toolbox.viewPage = "detail"
+                            toolbox.filterModelByProp("packages", "id", model.id)
+                            break
+                    }
+                }
+            }
         }
         Column
         {
             width: parent.width - thumbnail.width - parent.spacing
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").width)
             anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            //anchors.topMargin: UM.Theme.getSize("default_margin").height
             Label
             {
                 id: name
@@ -94,49 +130,6 @@ Item
                 numRatings: model.num_ratings != undefined ? model.num_ratings : 0
                 userRating: model.user_rating
                 enabled: installedPackages != 0 && Cura.API.account.isLoggedIn
-            }
-        }
-    }
-    MouseArea
-    {
-        anchors.fill: parent
-        hoverEnabled: true
-        onEntered:
-        {
-            thumbnail.border.color = UM.Theme.getColor("primary")
-            highlight.opacity = 0.1
-        }
-        onExited:
-        {
-            thumbnail.border.color = UM.Theme.getColor("lining")
-            highlight.opacity = 0.0
-        }
-        onClicked:
-        {
-            base.selection = model
-            switch(toolbox.viewCategory)
-            {
-                case "material":
-
-                    // If model has a type, it must be a package
-                    if (model.type !== undefined)
-                    {
-                        toolbox.viewPage = "detail"
-                        toolbox.filterModelByProp("packages", "id", model.id)
-                    }
-                    else
-                    {
-                        toolbox.viewPage = "author"
-                        toolbox.setFilters("packages", {
-                            "author_id": model.id,
-                            "type": "material"
-                        })
-                    }
-                    break
-                default:
-                    toolbox.viewPage = "detail"
-                    toolbox.filterModelByProp("packages", "id", model.id)
-                    break
             }
         }
     }
