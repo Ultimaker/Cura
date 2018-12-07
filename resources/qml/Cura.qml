@@ -88,7 +88,7 @@ UM.MainWindow
             window: base
         }
 
-        Rectangle
+        Item
         {
             id: headerBackground
             anchors
@@ -98,12 +98,36 @@ UM.MainWindow
                 right: parent.right
             }
             height: stageMenu.source != "" ? Math.round(mainWindowHeader.height + stageMenu.height / 2) : mainWindowHeader.height
-            color: UM.Theme.getColor("main_window_header_background")
+
+            LinearGradient
+            {
+                anchors.fill: parent
+                start: Qt.point(0, 0)
+                end: Qt.point(parent.width, 0)
+                gradient: Gradient
+                {
+                    GradientStop
+                    {
+                        position: 0.0
+                        color: UM.Theme.getColor("main_window_header_background")
+                    }
+                    GradientStop
+                    {
+                        position: 0.5
+                        color: UM.Theme.getColor("main_window_header_background_gradient")
+                    }
+                    GradientStop
+                    {
+                        position: 1.0
+                        color: UM.Theme.getColor("main_window_header_background")
+                    }
+                }
+            }
 
             // This is the new fancy pattern
             Image
             {
-                id: backgourndPattern
+                id: backgroundPattern
                 anchors.fill: parent
                 fillMode: Image.Tile
                 source: UM.Theme.getImage("header_pattern")
@@ -166,13 +190,6 @@ UM.MainWindow
                         openDialog.handleOpenFileUrls(nonPackages);
                     }
                 }
-            }
-
-            Connections
-            {
-                target: stageMenu.item
-                onShowTooltip: base.showTooltip(item, location, text)
-                onHideTooltip: base.hideTooltip()
             }
 
             JobSpecs
@@ -274,8 +291,6 @@ UM.MainWindow
                 // Every time the stage is changed.
                 property var printSetupSelector: Cura.PrintSetupSelector
                 {
-                    onShowTooltip: base.showTooltip(item, location, text)
-                    onHideTooltip: base.hideTooltip()
                     width: UM.Theme.getSize("print_setup_widget").width
                     height: UM.Theme.getSize("stage_menu").height
                     headerCornerSide: RoundedRectangle.Direction.Right
@@ -294,7 +309,7 @@ UM.MainWindow
             }
         }
 
-        SidebarTooltip
+        PrintSetupTooltip
         {
             id: tooltip
         }

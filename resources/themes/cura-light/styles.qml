@@ -9,7 +9,7 @@ import UM 1.1 as UM
 
 QtObject
 {
-    property Component sidebar_header_button: Component
+    property Component print_setup_header_button: Component
     {
         ButtonStyle
         {
@@ -38,6 +38,7 @@ QtObject
                     }
                 }
 
+                radius: UM.Theme.getSize("setting_control_radius").width
                 border.width: Theme.getSize("default_lining").width
                 border.color:
                 {
@@ -79,7 +80,7 @@ QtObject
                 }
                 Label
                 {
-                    id: sidebarComboBoxLabel
+                    id: printSetupComboBoxLabel
                     color: control.enabled ? Theme.getColor("setting_control_text") : Theme.getColor("setting_control_disabled_text")
                     text: control.text;
                     elide: Text.ElideRight;
@@ -381,16 +382,16 @@ QtObject
             {
                 implicitWidth: Theme.getSize("scrollbar").width
                 radius: Math.round(implicitWidth / 2)
-                color: Theme.getColor("scrollbar_background");
+                color: Theme.getColor("scrollbar_background")
             }
 
             handle: Rectangle
             {
                 id: scrollViewHandle
-                implicitWidth: Theme.getSize("scrollbar").width;
+                implicitWidth: Theme.getSize("scrollbar").width
                 radius: Math.round(implicitWidth / 2)
 
-                color: styleData.pressed ? Theme.getColor("scrollbar_handle_down") : styleData.hovered ? Theme.getColor("scrollbar_handle_hover") : Theme.getColor("scrollbar_handle");
+                color: styleData.pressed ? Theme.getColor("scrollbar_handle_down") : styleData.hovered ? Theme.getColor("scrollbar_handle_hover") : Theme.getColor("scrollbar_handle")
                 Behavior on color { ColorAnimation { duration: 50; } }
             }
         }
@@ -411,11 +412,11 @@ QtObject
 
                 border.width: Theme.getSize("default_lining").width;
                 border.color: control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
+                radius: UM.Theme.getSize("setting_control_radius").width
             }
 
             label: Item
             {
-
                 Label
                 {
                     anchors.left: parent.left
@@ -463,11 +464,11 @@ QtObject
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled") : control._hovered ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control._hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+                radius: UM.Theme.getSize("setting_control_radius").width
             }
 
             label: Item
             {
-
                 Label
                 {
                     anchors.left: parent.left
@@ -484,17 +485,18 @@ QtObject
                     verticalAlignment: Text.AlignVCenter
                 }
 
-                Rectangle
+                UM.RecolorImage
                 {
                     id: swatch
-                    height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                    height: Math.round(control.height / 2)
                     width: height
                     anchors.right: downArrow.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
-                    radius: Math.round(width / 2)
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    source: UM.Theme.getIcon("extruder_button")
                     color: (control.color_override !== "") ? control.color_override : control.color
                 }
 
@@ -530,7 +532,7 @@ QtObject
                 color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : (control.enabled ? Theme.getColor("checkbox") : Theme.getColor("checkbox_disabled"))
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : 0
+                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : UM.Theme.getSize("checkbox_radius").width
 
                 border.width: Theme.getSize("default_lining").width
                 border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border")
@@ -554,6 +556,7 @@ QtObject
                 color: Theme.getColor("checkbox_text")
                 font: Theme.getFont("default")
                 elide: Text.ElideRight
+                renderType: Text.NativeRendering
             }
         }
     }
@@ -571,7 +574,7 @@ QtObject
                 color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : 0
+                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : UM.Theme.getSize("checkbox_radius").width
 
                 border.width: Theme.getSize("default_lining").width;
                 border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
@@ -623,6 +626,7 @@ QtObject
 
                 border.width: Theme.getSize("default_lining").width;
                 border.color: control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
+                radius: UM.Theme.getSize("setting_control_radius").width
 
                 color: Theme.getColor("setting_validation_ok");
 
@@ -640,7 +644,7 @@ QtObject
         }
     }
 
-    property Component sidebar_action_button: Component
+    property Component print_setup_action_button: Component
     {
         ButtonStyle
         {

@@ -44,7 +44,7 @@ Column
                 rightMargin: UM.Theme.getSize("thin_margin").height
             }
 
-            Cura.IconLabel
+            Cura.IconWithText
             {
                 id: estimatedTime
                 width: parent.width
@@ -54,7 +54,7 @@ Column
                 font: UM.Theme.getFont("default_bold")
             }
 
-            Cura.IconLabel
+            Cura.IconWithText
             {
                 id: estimatedCosts
                 width: parent.width
@@ -84,7 +84,6 @@ Column
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
-                font: UM.Theme.getFont("default")
             }
         }
 

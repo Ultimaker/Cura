@@ -141,6 +141,7 @@ Item
             Row
             {
                 height: UM.Theme.getSize("print_setup_item").height
+                visible: extrudersModel.count > 1  // If there is only one extruder, there is no point to enable/disable that.
 
                 Label
                 {
@@ -150,7 +151,6 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    visible: extrudersModel.count > 1
                     renderType: Text.NativeRendering
                 }
 
@@ -160,7 +160,6 @@ Item
                     enabled: !checked || Cura.MachineManager.numberExtrudersEnabled > 1 //Disable if it's the last enabled extruder.
                     height: UM.Theme.getSize("setting_control").height
                     style: UM.Theme.styles.checkbox
-                    visible: extrudersModel.count > 1
 
                     /* Use a MouseArea to process the click on this checkbox.
                        This is necessary because actually clicking the checkbox
@@ -179,6 +178,8 @@ Item
             Row
             {
                 height: UM.Theme.getSize("print_setup_item").height
+                visible: Cura.MachineManager.hasMaterials
+
                 Label
                 {
                     text: catalog.i18nc("@label", "Material")
@@ -187,7 +188,6 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    visible: materialSelection.visible
                     renderType: Text.NativeRendering
                 }
 
@@ -200,12 +200,11 @@ Item
 
                     text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
-                    visible: Cura.MachineManager.hasMaterials
 
                     height: UM.Theme.getSize("setting_control").height
                     width: selectors.controlWidth
 
-                    style: UM.Theme.styles.sidebar_header_button
+                    style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true
                     menu: Cura.MaterialMenu
                     {
@@ -217,6 +216,7 @@ Item
             Row
             {
                 height: UM.Theme.getSize("print_setup_item").height
+                visible: Cura.MachineManager.hasVariants
 
                 Label
                 {
@@ -226,7 +226,6 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    visible: variantSelection.visible
                     renderType: Text.NativeRendering
                 }
 
@@ -234,12 +233,11 @@ Item
                 {
                     id: variantSelection
                     text: Cura.MachineManager.activeVariantName
-                    tooltip: Cura.MachineManager.activeVariantName;
-                    visible: Cura.MachineManager.hasVariants
+                    tooltip: Cura.MachineManager.activeVariantName
 
                     height: UM.Theme.getSize("setting_control").height
                     width: selectors.controlWidth
-                    style: UM.Theme.styles.sidebar_header_button
+                    style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true;
 
                     menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }

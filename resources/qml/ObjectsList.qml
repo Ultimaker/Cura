@@ -224,7 +224,7 @@ Rectangle
     {
         id: arrangeAllBuildPlatesButton;
         text: catalog.i18nc("@action:button","Arrange to all build plates");
-        style: UM.Theme.styles.sidebar_action_button
+        style: UM.Theme.styles.print_setup_action_button
         height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors
@@ -244,7 +244,7 @@ Rectangle
     {
         id: arrangeBuildPlateButton;
         text: catalog.i18nc("@action:button","Arrange current build plate");
-        style: UM.Theme.styles.sidebar_action_button
+        style: UM.Theme.styles.print_setup_action_button
         height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors
