@@ -1,11 +1,11 @@
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from ...Models import BaseModel
+from .BaseCloudModel import BaseCloudModel
 
 
 ##  Class representing a cloud cluster printer configuration
-class CloudClusterPrinterConfigurationMaterial(BaseModel):
+class CloudClusterPrinterConfigurationMaterial(BaseCloudModel):
     def __init__(self, **kwargs) -> None:
         self.guid = None  # type: str
         self.brand = None  # type: str

@@ -25,6 +25,7 @@ from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationM
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from plugins.UM3NetworkPrinting.src.Cloud.Utils import formatTimeCompleted, formatDateCompleted
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .ConfigurationChangeModel import ConfigurationChangeModel
@@ -337,14 +338,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         return self._printers
 
     @pyqtSlot(int, result = str)
-    def formatDuration(self, seconds: int) -> str:
-        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
+    def getTimeCompleted(self, time_remaining: int) -> str:
+        return formatTimeCompleted(time_remaining)
 
     @pyqtSlot(int, result = str)
-    def getTimeCompleted(self, time_remaining: int) -> str:
-        current_time = time()
-        datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
-        return "{hour:02d}:{minute:02d}".format(hour=datetime_completed.hour, minute=datetime_completed.minute)
+    def getDateCompleted(self, time_remaining: int) -> str:
+        return formatDateCompleted(time_remaining)
 
     @pyqtSlot(int, result = str)
     def getDateCompleted(self, time_remaining: int) -> str:

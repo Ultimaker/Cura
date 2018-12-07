@@ -1,10 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from ...Models import BaseModel
+from .BaseCloudModel import BaseCloudModel
 
 
 # Model that represents the response received from the cloud after requesting to upload a print job
-class CloudJobResponse(BaseModel):
+class CloudJobResponse(BaseCloudModel):
     def __init__(self, **kwargs) -> None:
         self.download_url = None  # type: str
         self.job_id = None  # type: str
