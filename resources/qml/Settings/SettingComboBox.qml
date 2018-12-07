@@ -35,6 +35,7 @@ SettingItem
                 return UM.Theme.getColor("setting_control")
             }
 
+            radius: UM.Theme.getSize("setting_control_radius").width
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {

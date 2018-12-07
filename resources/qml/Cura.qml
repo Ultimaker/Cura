@@ -88,7 +88,7 @@ UM.MainWindow
             window: base
         }
 
-        Rectangle
+        Item
         {
             id: headerBackground
             anchors
@@ -192,13 +192,6 @@ UM.MainWindow
                 }
             }
 
-            Connections
-            {
-                target: stageMenu.item
-                onShowTooltip: base.showTooltip(item, location, text)
-                onHideTooltip: base.hideTooltip()
-            }
-
             Toolbar
             {
                 // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
@@ -300,8 +293,6 @@ UM.MainWindow
                 // Every time the stage is changed.
                 property var printSetupSelector: Cura.PrintSetupSelector
                 {
-                    onShowTooltip: base.showTooltip(item, location, text)
-                    onHideTooltip: base.hideTooltip()
                     width: UM.Theme.getSize("print_setup_widget").width
                     height: UM.Theme.getSize("stage_menu").height
                     headerCornerSide: RoundedRectangle.Direction.Right
@@ -320,7 +311,7 @@ UM.MainWindow
             }
         }
 
-        SidebarTooltip
+        PrintSetupTooltip
         {
             id: tooltip
         }

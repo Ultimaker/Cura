@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
  * Menu that allows you to select the configuration of the current printer, such
  * as the nozzle sizes and materials in each extruder.
  */
-Cura.ExpandableComponent
+Cura.ExpandablePopup
 {
     id: base
 
@@ -30,11 +30,10 @@ Cura.ExpandableComponent
 
     enum ConfigurationMethod
     {
-        AUTO,
-        CUSTOM
+        Auto,
+        Custom
     }
 
-    iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
     headerItem: Item
     {
         // Horizontal list that shows the extruders
@@ -121,7 +120,7 @@ Cura.ExpandableComponent
     }
     Component.onCompleted: updateEnabled();
 
-    popupItem: Column
+    contentItem: Column
     {
         id: popupItem
         width: base.width - 2 * UM.Theme.getSize("default_margin").width
@@ -134,22 +133,34 @@ Cura.ExpandableComponent
             is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected //Re-evaluate.
         }
 
-        property int configuration_method: is_connected ? ConfigurationMenu.ConfigurationMethod.AUTO : ConfigurationMenu.ConfigurationMethod.CUSTOM //Auto if connected to a printer at start-up, or Custom if not.
+        property int configuration_method: is_connected ? ConfigurationMenu.ConfigurationMethod.Auto : ConfigurationMenu.ConfigurationMethod.Custom //Auto if connected to a printer at start-up, or Custom if not.
 
         Item
         {
             width: parent.width
-            height: childrenRect.height
+            height:
+            {
+                var height = 0;
+                if(autoConfiguration.visible)
+                {
+                    height += autoConfiguration.height;
+                }
+                if(customConfiguration.visible)
+                {
+                    height += customConfiguration.height;
+                }
+                return height;
+            }
             AutoConfiguration
             {
                 id: autoConfiguration
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.AUTO
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Auto
             }
 
             CustomConfiguration
             {
                 id: customConfiguration
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.CUSTOM
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
             }
         }
 
@@ -157,7 +168,7 @@ Cura.ExpandableComponent
         {
             id: separator
             visible: buttonBar.visible
-            x: -popupPadding
+            x: -contentPadding
 
             width: base.width
             height: UM.Theme.getSize("default_lining").height
@@ -177,7 +188,7 @@ Cura.ExpandableComponent
             Cura.SecondaryButton
             {
                 id: goToCustom
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.AUTO
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Auto
                 text: catalog.i18nc("@label", "Custom")
 
                 anchors.right: parent.right
@@ -185,18 +196,18 @@ Cura.ExpandableComponent
                 iconSource: UM.Theme.getIcon("arrow_right")
                 isIconOnRightSide: true
 
-                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.CUSTOM
+                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Custom
             }
 
             Cura.SecondaryButton
             {
                 id: goToAuto
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.CUSTOM
+                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
                 text: catalog.i18nc("@label", "Configurations")
 
                 iconSource: UM.Theme.getIcon("arrow_left")
 
-                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.AUTO
+                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Auto
             }
         }
     }

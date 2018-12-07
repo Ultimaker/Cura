@@ -35,13 +35,10 @@ Item
     property alias enabled: mouseArea.enabled
 
     // Defines the alignment of the content with respect of the headerItem, by default to the right
-    property int contentAlignment: ExpandableComponent.ContentAlignment.AlignRight
+    property int contentAlignment: ExpandablePopup.ContentAlignment.AlignRight
 
     // How much spacing is needed around the contentItem
     property alias contentPadding: content.padding
-
-    // How much spacing is needed for the contentItem by Y coordinate
-    property var contentSpacingY: UM.Theme.getSize("narrow_margin").width
 
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
@@ -57,11 +54,16 @@ Item
     // Is the "drawer" open?
     readonly property alias expanded: content.visible
 
+    property alias expandedHighlightColor: expandedHighlight.color
+
     // What should the radius of the header be. This is also influenced by the headerCornerSide
     property alias headerRadius: background.radius
 
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
+
+    // Change the contentItem close behaviour
+    property alias contentClosePolicy : content.closePolicy
 
     property alias headerShadowColor: shadow.color
 
@@ -71,7 +73,14 @@ Item
 
     function toggleContent()
     {
-        content.visible = !content.visible
+        if (content.visible)
+        {
+            content.close()
+        }
+        else
+        {
+            content.open()
+        }
     }
 
     implicitHeight: 100 * screenScaleFactor
@@ -98,6 +107,17 @@ Item
             }
         }
 
+        // A highlight that is shown when the content is expanded
+        Rectangle
+        {
+            id: expandedHighlight
+            width: parent.width
+            height: UM.Theme.getSize("thick_lining").height
+            color: UM.Theme.getColor("primary")
+            visible: expanded
+            anchors.bottom: parent.bottom
+        }
+
         UM.RecolorImage
         {
             id: collapseButton
@@ -107,9 +127,8 @@ Item
                 verticalCenter: parent.verticalCenter
                 margins: background.padding
             }
-            source: UM.Theme.getIcon("pencil")
+            source: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             visible: source != "" && base.enabled
-//            color: UM.Theme.getColor("small_button_text")
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             color: UM.Theme.getColor("text")
@@ -122,7 +141,7 @@ Item
             onClicked: toggleContent()
             hoverEnabled: true
             onEntered: background.color = headerHoverColor
-            onExited: background.color = expanded ? headerActiveColor : headerBackgroundColor
+            onExited: background.color = headerBackgroundColor
         }
     }
 
@@ -140,18 +159,18 @@ Item
         z: background.z - 1
     }
 
-    Control
+    Popup
     {
         id: content
-        visible: false
 
         // Ensure that the content is located directly below the headerItem
-        y: background.height + base.shadowOffset + base.contentSpacingY
+        y: background.height + base.shadowOffset
 
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
-        x: contentAlignment == ExpandableComponent.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
+        x: contentAlignment == ExpandablePopup.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
         padding: UM.Theme.getSize("default_margin").width
+        closePolicy: Popup.CloseOnPressOutsideParent
 
         background: Cura.RoundedRectangle
         {

@@ -309,7 +309,7 @@ Item
                 }
             }
 
-            style: UM.Theme.styles.sidebar_action_button
+            style: UM.Theme.styles.print_setup_action_button
         }
 
         Button
@@ -325,7 +325,7 @@ Item
             text: catalog.i18nc("@label", "Abort Print")
             onClicked: confirmationDialog.visible = true
 
-            style: UM.Theme.styles.sidebar_action_button
+            style: UM.Theme.styles.print_setup_action_button
         }
 
         MessageDialog
