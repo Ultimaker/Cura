@@ -101,15 +101,23 @@ Column
         }
     }
 
-    Row
+    Item
     {
         id: buttonRow
-        spacing: UM.Theme.getSize("default_margin").width
-        width: parent.width
+        anchors.right: parent.right
+        anchors.left: parent.left
+        height: UM.Theme.getSize("action_button").height
 
         Cura.SecondaryButton
         {
             id: previewStageShortcut
+
+            anchors
+            {
+                left: parent.left
+                right: outputDevicesButton.left
+                rightMargin: UM.Theme.getSize("default_margin").width
+            }
 
             height: UM.Theme.getSize("action_button").height
             leftPadding: UM.Theme.getSize("default_margin").width
@@ -125,6 +133,9 @@ Column
 
         Cura.OutputDevicesActionButton
         {
+            id: outputDevicesButton
+
+            anchors.right: parent.right
             width: previewStageShortcut.visible ? UM.Theme.getSize("action_button").width : parent.width
             height: UM.Theme.getSize("action_button").height
         }

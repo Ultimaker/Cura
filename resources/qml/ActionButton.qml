@@ -7,6 +7,7 @@ import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0 // For the dropshadow
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Button
 {
@@ -16,6 +17,7 @@ Button
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
+    property alias cornerSide: backgroundRect.cornerSide
 
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
@@ -82,9 +84,10 @@ Button
         }
     }
 
-    background: Rectangle
+    background: Cura.RoundedRectangle
     {
         id: backgroundRect
+        cornerSide: Cura.RoundedRectangle.Direction.All
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
