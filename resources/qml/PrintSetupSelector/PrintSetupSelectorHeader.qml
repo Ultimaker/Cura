@@ -43,7 +43,6 @@ RowLayout
         source: UM.Theme.getIcon("category_support")
         text: supportEnabled.properties.value == "True" ? enabledText : disabledText
 
-
         UM.SettingPropertyProvider
         {
             id: supportEnabled
