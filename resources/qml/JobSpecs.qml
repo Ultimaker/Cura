@@ -60,7 +60,6 @@ Item {
                         {
                             width: UM.Theme.getSize("save_button_specs_icons").width;
                             height: UM.Theme.getSize("save_button_specs_icons").height;
-                            sourceSize.width: width;
                             sourceSize.height: width;
                             color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene");
                             source: UM.Theme.getIcon("pencil");
@@ -124,7 +123,7 @@ Item {
         }
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
-        font: UM.Theme.getFont("small")
+        font: UM.Theme.getFont("default_bold")
         color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
     }

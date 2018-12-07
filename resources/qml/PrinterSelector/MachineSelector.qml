@@ -25,29 +25,52 @@ Cura.ExpandableComponent
         name: "cura"
     }
 
-    headerItem: Cura.IconLabel
+    headerItem: Item
     {
-        text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
-        source:
-        {
-            if (isNetworkPrinter)
-            {
-                if (machineSelector.outputDevice != null && machineSelector.outputDevice.clusterSize > 1)
-                {
-                    return UM.Theme.getIcon("printer_group")
-                }
-                return UM.Theme.getIcon("printer_single")
-            }
-            return ""
-        }
-        font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text")
-        iconSize: UM.Theme.getSize("machine_selector_icon").width
+        implicitHeight: icon.height
 
         UM.RecolorImage
         {
             id: icon
 
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            source:
+            {
+                if (isNetworkPrinter)
+                {
+                    if (machineSelector.outputDevice != null && machineSelector.outputDevice.clusterSize > 1)
+                    {
+                        return UM.Theme.getIcon("printer_group")
+                    }
+                    return UM.Theme.getIcon("printer_single")
+                }
+                return ""
+            }
+            width: UM.Theme.getSize("machine_selector_icon").width
+            height: width
+
+            color: UM.Theme.getColor("machine_selector_printer_icon")
+            visible: source != ""
+        }
+
+        Label
+        {
+            id: label
+            anchors.left: icon.visible ? icon.right : parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: UM.Theme.getSize("thin_margin").width
+            anchors.verticalCenter: icon.verticalCenter
+            text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+            elide: Text.ElideRight
+            color: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
+        }
+
+        UM.RecolorImage
+        {
             anchors
             {
                 bottom: parent.bottom
@@ -58,9 +81,6 @@ Cura.ExpandableComponent
             source: UM.Theme.getIcon("printer_connected")
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
-
-            sourceSize.width: width
-            sourceSize.height: height
 
             color: UM.Theme.getColor("primary")
             visible: isNetworkPrinter && isPrinterConnected

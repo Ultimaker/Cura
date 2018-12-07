@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -156,7 +156,6 @@ UM.Dialog
                             anchors.rightMargin: UM.Theme.getSize("default_margin").width
                             width: UM.Theme.getSize("standard_arrow").width
                             height: UM.Theme.getSize("standard_arrow").height
-                            sourceSize.width: width
                             sourceSize.height: width
                             color: palette.windowText
                             source: base.activeCategory == section ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
@@ -170,7 +169,7 @@ UM.Dialog
                     if (machineList.model.getItem(machineList.currentIndex).section != section)
                     {
                         // Find the first machine from this section
-                        for(var i = 0; i < machineList.model.rowCount(); i++)
+                        for(var i = 0; i < machineList.model.count; i++)
                         {
                             var item = machineList.model.getItem(i);
                             if (item.section == section)
