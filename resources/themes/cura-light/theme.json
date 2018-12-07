@@ -394,6 +394,7 @@
         "section": [0.0, 2.2],
         "section_icon": [1.6, 1.6],
         "section_icon_column": [2.8, 0.0],
+        "rating_star": [1.0, 1.0],
 
         "setting": [25.0, 1.8],
         "setting_control": [10.0, 2.0],

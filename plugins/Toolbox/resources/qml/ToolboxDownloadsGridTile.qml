@@ -84,6 +84,16 @@ Item
                 color: UM.Theme.getColor("text_medium")
                 font: UM.Theme.getFont("default")
             }
+
+            RatingWidget
+            {
+                visible: model.type == "plugin"
+                packageId: model.id
+                rating: model.average_rating != undefined ? model.average_rating : 0
+                numRatings: model.num_ratings != undefined ? model.num_ratings : 0
+                userRating: model.user_rating
+                enabled: installedPackages != 0
+            }
         }
     }
     MouseArea

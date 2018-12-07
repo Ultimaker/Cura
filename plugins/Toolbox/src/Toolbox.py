@@ -22,7 +22,8 @@ from cura.CuraApplication import CuraApplication
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
-
+from cura.CuraVersion import CuraVersion
+from cura.API import CuraAPI
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
@@ -50,17 +51,10 @@ class Toolbox(QObject, Extension):
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
         self._network_manager = None  # type: Optional[QNetworkAccessManager]
-        self._request_header = [
-            b"User-Agent",
-            str.encode(
-                "%s/%s (%s %s)" % (
-                    self._application.getApplicationName(),
-                    self._application.getVersion(),
-                    platform.system(),
-                    platform.machine(),
-                )
-            )
-        ]
+        self._request_headers = [] # type: List[Tuple(bytes, bytes)]
+        self._updateRequestHeader()
+
+
         self._request_urls = {}  # type: Dict[str, QUrl]
         self._to_update = []  # type: List[str] # Package_ids that are waiting to be updated
         self._old_plugin_ids = set()  # type: Set[str]
@@ -115,6 +109,7 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = ""  # type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._updateRequestHeader)
 
     # Signals:
     # --------------------------------------------------------------------------
@@ -134,11 +129,37 @@ class Toolbox(QObject, Extension):
     showLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
 
+    def _updateRequestHeader(self):
+        self._request_headers = [
+            (b"User-Agent",
+            str.encode(
+                "%s/%s (%s %s)" % (
+                    self._application.getApplicationName(),
+                    self._application.getVersion(),
+                    platform.system(),
+                    platform.machine(),
+                )
+            ))
+        ]
+        access_token = self._application.getCuraAPI().account.accessToken
+        if access_token:
+            self._request_headers.append((b"Authorization", "Bearer {}".format(access_token).encode()))
+
     def _resetUninstallVariables(self) -> None:
         self._package_id_to_uninstall = None  # type: Optional[str]
         self._package_name_to_uninstall = ""
         self._package_used_materials = []  # type: List[Tuple[GlobalStack, str, str]]
         self._package_used_qualities = []  # type: List[Tuple[GlobalStack, str, str]]
+
+    @pyqtSlot(str, int)
+    def ratePackage(self, package_id: str, rating: int) -> None:
+        url = QUrl("{base_url}/packages/{package_id}/ratings".format(base_url=self._api_url, package_id = package_id))
+
+        self._rate_request = QNetworkRequest(url)
+        for header_name, header_value in self._request_headers:
+            cast(QNetworkRequest, self._rate_request).setRawHeader(header_name, header_value)
+        data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(CuraVersion), rating)
+        self._rate_reply = cast(QNetworkAccessManager, self._network_manager).put(self._rate_request, data.encode())
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
@@ -563,7 +584,8 @@ class Toolbox(QObject, Extension):
     def _makeRequestByType(self, request_type: str) -> None:
         Logger.log("i", "Requesting %s metadata from server.", request_type)
         request = QNetworkRequest(self._request_urls[request_type])
-        request.setRawHeader(*self._request_header)
+        for header_name, header_value in self._request_headers:
+            request.setRawHeader(header_name, header_value)
         if self._network_manager:
             self._network_manager.get(request)
 
@@ -578,7 +600,8 @@ class Toolbox(QObject, Extension):
         if hasattr(QNetworkRequest, "RedirectPolicyAttribute"):
             # Patch for Qt 5.9+
             cast(QNetworkRequest, self._download_request).setAttribute(QNetworkRequest.RedirectPolicyAttribute, True)
-        cast(QNetworkRequest, self._download_request).setRawHeader(*self._request_header)
+        for header_name, header_value in self._request_headers:
+            cast(QNetworkRequest, self._download_request).setRawHeader(header_name, header_value)
         self._download_reply = cast(QNetworkAccessManager, self._network_manager).get(self._download_request)
         self.setDownloadProgress(0)
         self.setIsDownloading(True)
@@ -660,7 +683,7 @@ class Toolbox(QObject, Extension):
                     else:
                         self.setViewPage("errored")
                         self.resetDownload()
-        else:
+        elif reply.operation() == QNetworkAccessManager.PutOperation:
             # Ignore any operation that is not a get operation
             pass
 
