@@ -350,7 +350,7 @@ Item
                 enabled: !Cura.SimpleModeSettingsManager.isProfileUserCreated
                 onEntered:
                 {
-                    var tooltipContent = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
+                    var tooltipContent = catalog.i18nc("@tooltip", "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile")
                     base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), tooltipContent)
                 }
                 onExited: base.hideTooltip()
