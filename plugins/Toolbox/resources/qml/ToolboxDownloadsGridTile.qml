@@ -63,6 +63,8 @@ Item
         {
             width: parent.width - thumbnail.width - parent.spacing
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").width)
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             Label
             {
                 id: name
