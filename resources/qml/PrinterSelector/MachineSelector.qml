@@ -7,7 +7,7 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Cura.ExpandableComponent
+Cura.ExpandablePopup
 {
     id: machineSelector
 
@@ -15,9 +15,8 @@ Cura.ExpandableComponent
     property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-    popupPadding: UM.Theme.getSize("default_lining").width
-    popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
-    iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+    contentPadding: UM.Theme.getSize("default_lining").width
+    contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
 
     UM.I18nCatalog
     {
@@ -100,7 +99,7 @@ Cura.ExpandableComponent
         }
     }
 
-    popupItem: Item
+    contentItem: Item
     {
         id: popup
         width: UM.Theme.getSize("machine_selector_widget_content").width
@@ -154,7 +153,7 @@ Cura.ExpandableComponent
                 text: catalog.i18nc("@button", "Add printer")
                 onClicked:
                 {
-                    togglePopup()
+                    toggleContent()
                     Cura.Actions.addMachine.trigger()
                 }
             }
@@ -166,7 +165,7 @@ Cura.ExpandableComponent
                 text: catalog.i18nc("@button", "Manage printers")
                 onClicked:
                 {
-                    togglePopup()
+                    toggleContent()
                     Cura.Actions.configureMachines.trigger()
                 }
             }

@@ -13,9 +13,11 @@ import Cura 1.0 as Cura
 // It sets the icon size + half of the content as its minium width (in which case it will elide the text)
 Item
 {
-    property alias iconColor: icon.color
     property alias source: icon.source
+    property alias iconSize: icon.width
+    property alias color: label.color
     property alias text: label.text
+    property alias font: label.font
 
     property real margin: UM.Theme.getSize("narrow_margin").width
 
@@ -37,7 +39,7 @@ Item
         width: UM.Theme.getSize("section_icon").width
         height: UM.Theme.getSize("section_icon").height
 
-        color: "black"
+        color: label.color
 
         anchors
         {

@@ -12,8 +12,8 @@ Button
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.leftMargin: UM.Theme.getSize("thick_margin").width
-    anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+    // To avoid overlaping with the scrollBars
+    anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
     hoverEnabled: true
 
     background: Rectangle
@@ -25,50 +25,26 @@ Button
             if (base.color)
             {
                 return base.color
-            } else if (!base.enabled)
+            }
+            else if (!base.enabled)
             {
                 return UM.Theme.getColor("setting_category_disabled")
-            } else if (base.hovered && base.checkable && base.checked)
+            }
+            else if (base.hovered && base.checkable && base.checked)
             {
                 return UM.Theme.getColor("setting_category_active_hover")
-            } else if (base.pressed || (base.checkable && base.checked))
+            }
+            else if (base.pressed || (base.checkable && base.checked))
             {
                 return UM.Theme.getColor("setting_category_active")
-            } else if (base.hovered)
+            }
+            else if (base.hovered)
             {
                 return UM.Theme.getColor("setting_category_hover")
-            } else
-            {
-                return UM.Theme.getColor("setting_category")
             }
+            return UM.Theme.getColor("setting_category")
         }
         Behavior on color { ColorAnimation { duration: 50; } }
-        Rectangle
-        {
-            id: backgroundLiningRectangle
-            height: UM.Theme.getSize("default_lining").height
-            width: parent.width
-            anchors.bottom: parent.bottom
-            color:
-            {
-                if (!base.enabled)
-                {
-                    return UM.Theme.getColor("setting_category_disabled_border")
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
-                {
-                    return UM.Theme.getColor("setting_category_active_hover_border")
-                } else if (base.pressed || (base.checkable && base.checked))
-                {
-                    return UM.Theme.getColor("setting_category_active_border")
-                } else if (base.hovered || base.activeFocus)
-                {
-                    return UM.Theme.getColor("setting_category_hover_border")
-                } else
-                {
-                    return UM.Theme.getColor("setting_category_border")
-                }
-            }
-        }
     }
 
     signal showTooltip(string text)
@@ -148,10 +124,7 @@ Button
                 {
                     return UM.Theme.getColor("setting_category_hover_text")
                 }
-                else
-                {
-                    return UM.Theme.getColor("setting_category_text")
-                }
+                return UM.Theme.getColor("setting_category_text")
             }
             source: base.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         }
@@ -162,25 +135,26 @@ Button
         id: icon
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("thin_margin").width
         color:
         {
             if (!base.enabled)
             {
                 return UM.Theme.getColor("setting_category_disabled_text")
-            } else if((base.hovered || base.activeFocus) && base.checkable && base.checked)
+            }
+            else if((base.hovered || base.activeFocus) && base.checkable && base.checked)
             {
                 return UM.Theme.getColor("setting_category_active_hover_text")
-            } else if(base.pressed || (base.checkable && base.checked))
+            }
+            else if(base.pressed || (base.checkable && base.checked))
             {
                 return UM.Theme.getColor("setting_category_active_text")
-            } else if(base.hovered || base.activeFocus)
+            }
+            else if(base.hovered || base.activeFocus)
             {
                 return UM.Theme.getColor("setting_category_hover_text")
-            } else
-            {
-                return UM.Theme.getColor("setting_category_text")
             }
+            return UM.Theme.getColor("setting_category_text")
         }
         source: UM.Theme.getIcon(definition.icon)
         width: UM.Theme.getSize("section_icon").width
@@ -197,7 +171,9 @@ Button
         if (definition.expanded)
         {
             settingDefinitionsModel.collapse(definition.key)
-        } else {
+        }
+        else
+        {
             settingDefinitionsModel.expandRecursive(definition.key)
         }
         //Set focus so that tab navigation continues from this point on.
@@ -206,7 +182,7 @@ Button
     }
     onActiveFocusChanged:
     {
-        if(activeFocus)
+        if (activeFocus)
         {
             base.focusReceived()
         }

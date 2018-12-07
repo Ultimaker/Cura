@@ -10,9 +10,6 @@ import Cura 1.1 as Cura
 Item
 {
     id: previewMenu
-    // This widget doesn't show tooltips by itself. Instead it emits signals so others can do something with it.
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
 
     property real itemHeight: height - 2 * UM.Theme.getSize("default_lining").width
 

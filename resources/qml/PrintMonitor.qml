@@ -49,7 +49,7 @@ Rectangle
     property var activePrinter: connectedDevice != null ? connectedDevice.activePrinter : null
     property var activePrintJob: activePrinter != null ? activePrinter.activePrintJob: null
 
-    SidebarTooltip
+    PrintSetupTooltip
     {
         id: tooltip
     }

@@ -29,7 +29,7 @@ Item {
         Button {
             height: UM.Theme.getSize("save_button_save_to_button").height;
             onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication();
-            style: UM.Theme.styles.sidebar_action_button;
+            style: UM.Theme.styles.print_setup_action_button;
             text: catalog.i18nc("@action:button", "Request Access");
             tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer");
             visible: printerConnected && !printerAcceptsCommands && !authenticationRequested;
@@ -38,7 +38,7 @@ Item {
         Button {
             height: UM.Theme.getSize("save_button_save_to_button").height;
             onClicked: connectActionDialog.show();
-            style: UM.Theme.styles.sidebar_action_button;
+            style: UM.Theme.styles.print_setup_action_button;
             text: catalog.i18nc("@action:button", "Connect");
             tooltip: catalog.i18nc("@info:tooltip", "Connect to a printer");
             visible: !printerConnected;

@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
  * Menu that allows you to select the configuration of the current printer, such
  * as the nozzle sizes and materials in each extruder.
  */
-Cura.ExpandableComponent
+Cura.ExpandablePopup
 {
     id: base
 
@@ -34,7 +34,6 @@ Cura.ExpandableComponent
         CUSTOM
     }
 
-    iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
     headerItem: Item
     {
         // Horizontal list that shows the extruders
@@ -121,7 +120,7 @@ Cura.ExpandableComponent
     }
     Component.onCompleted: updateEnabled();
 
-    popupItem: Column
+    contentItem: Column
     {
         id: popupItem
         width: base.width - 2 * UM.Theme.getSize("default_margin").width
@@ -157,7 +156,7 @@ Cura.ExpandableComponent
         {
             id: separator
             visible: buttonBar.visible
-            x: -popupPadding
+            x: -contentPadding
 
             width: base.width
             height: UM.Theme.getSize("default_lining").height
