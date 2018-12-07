@@ -6,6 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import UM 1.1 as UM
+import Cura 1.1 as Cura
 
 Item
 {
@@ -92,7 +93,7 @@ Item
                 rating: model.average_rating != undefined ? model.average_rating : 0
                 numRatings: model.num_ratings != undefined ? model.num_ratings : 0
                 userRating: model.user_rating
-                enabled: installedPackages != 0
+                enabled: installedPackages != 0 && Cura.API.account.isLoggedIn
             }
         }
     }
