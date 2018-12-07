@@ -21,7 +21,7 @@ Item
         id: thumbnail
         width: UM.Theme.getSize("toolbox_thumbnail_small").width
         height: UM.Theme.getSize("toolbox_thumbnail_small").height
-        color: "white"
+        color: UM.Theme.getColor("main_background")
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 

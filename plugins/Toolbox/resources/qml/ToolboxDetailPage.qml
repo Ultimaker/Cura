@@ -37,7 +37,7 @@ Item
                 leftMargin: UM.Theme.getSize("wide_margin").width
                 topMargin: UM.Theme.getSize("wide_margin").height
             }
-            color: "white" //Always a white background for image (regardless of theme).
+            color: UM.Theme.getColor("main_background")
             Image
             {
                 anchors.fill: parent
