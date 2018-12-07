@@ -6,11 +6,11 @@ from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
 from .CloudClusterPrinterConfigurationMaterial import CloudClusterPrinterConfigurationMaterial
-from ...Models import BaseModel
+from .BaseCloudModel import BaseCloudModel
 
 
 ##  Class representing a cloud cluster printer configuration
-class CloudClusterPrinterConfiguration(BaseModel):
+class CloudClusterPrinterConfiguration(BaseCloudModel):
     def __init__(self, **kwargs) -> None:
         self.extruder_index = None  # type: int
         self.material = None  # type: CloudClusterPrinterConfigurationMaterial

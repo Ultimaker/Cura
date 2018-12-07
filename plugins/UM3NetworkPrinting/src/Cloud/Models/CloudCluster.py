@@ -1,10 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from ...Models import BaseModel
+from .BaseCloudModel import BaseCloudModel
 
 
 ##  Class representing a cloud connected cluster.
-class CloudCluster(BaseModel):
+class CloudCluster(BaseCloudModel):
     def __init__(self, **kwargs):
         self.cluster_id = None  # type: str
         self.host_guid = None  # type: str

@@ -6,11 +6,11 @@ from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from .CloudClusterPrinterConfiguration import CloudClusterPrinterConfiguration
-from ...Models import BaseModel
+from .BaseCloudModel import BaseCloudModel
 
 
 ##  Class representing a cluster printer
-class CloudClusterPrinter(BaseModel):
+class CloudClusterPrinter(BaseCloudModel):
     def __init__(self, **kwargs) -> None:
         self.configuration = []  # type: List[CloudClusterPrinterConfiguration]
         self.enabled = None  # type: str

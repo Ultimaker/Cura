@@ -1,6 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
+from datetime import datetime
 
 from time import time
 from typing import Dict, List, Optional
@@ -116,6 +117,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # TODO: handle progress messages in another class.
         self._progress_message = None  # type: Optional[Message]
 
+        # Keep server string of the last generated time to avoid updating models more than once for the same response
+        self._received_printers = None  # type: Optional[List[CloudClusterPrinter]]
+        self._received_print_jobs = None  # type: Optional[List[CloudClusterPrintJob]]
+
     ## Gets the host name of this device
     @property
     def host_name(self) -> str:
@@ -188,8 +193,13 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #   Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
         # Update all data from the cluster.
-        self._updatePrinters(status.printers)
-        self._updatePrintJobs(status.print_jobs)
+        if self._received_printers != status.printers:
+            self._received_printers = status.printers
+            self._updatePrinters(status.printers)
+
+        if status.print_jobs != self._received_print_jobs:
+            self._received_print_jobs = status.print_jobs
+            self._updatePrintJobs(status.print_jobs)
 
     ## Updates the local list of printers with the list received from the cloud.
     #  \param jobs: The printers received from the cloud.
@@ -214,7 +224,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if not self._active_printer:
             self.setActivePrinter(self._printers[0])
 
-        self.printersChanged.emit()
+        self.printersChanged.emit()  # TODO: Make this more efficient by not updating every request
 
     ## Updates the local list of print jobs with the list received from the cloud.
     #  \param jobs: The print jobs received from the cloud.
@@ -223,11 +233,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         previous = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
 
         removed_jobs, added_jobs, updated_jobs = findChanges(previous, received)
-
-        # TODO: we see that not all data in the UI is correctly updated when the queue and active jobs change.
-        # TODO: we need to fix this here somehow by updating the correct output models.
-        # TODO: the configuration drop down in the slice window is not populated because we are missing some data.
-        # TODO: to fix this we need to implement more data as shown in ClusterUM3OutputDevice._createPrintJobModel
 
         for removed_job in removed_jobs:
             self._print_jobs.remove(removed_job)

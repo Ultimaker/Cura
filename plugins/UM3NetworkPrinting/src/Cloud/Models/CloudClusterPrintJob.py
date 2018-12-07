@@ -6,14 +6,14 @@ from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from .CloudClusterPrinterConfiguration import CloudClusterPrinterConfiguration
 from .CloudClusterPrintJobConstraint import CloudClusterPrintJobConstraint
-from ...Models import BaseModel
+from .BaseCloudModel import BaseCloudModel
 
 
 ##  Class representing a print job
 from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 
-class CloudClusterPrintJob(BaseModel):
+class CloudClusterPrintJob(BaseCloudModel):
     def __init__(self, **kwargs) -> None:
         self.assigned_to = None  # type: str
         self.configuration = []  # type: List[CloudClusterPrinterConfiguration]
