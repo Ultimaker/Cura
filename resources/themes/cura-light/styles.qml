@@ -9,7 +9,7 @@ import UM 1.1 as UM
 
 QtObject
 {
-    property Component sidebar_header_button: Component
+    property Component print_setup_header_button: Component
     {
         ButtonStyle
         {
@@ -80,7 +80,7 @@ QtObject
                 }
                 Label
                 {
-                    id: sidebarComboBoxLabel
+                    id: printSetupComboBoxLabel
                     color: control.enabled ? Theme.getColor("setting_control_text") : Theme.getColor("setting_control_disabled_text")
                     text: control.text;
                     elide: Text.ElideRight;
@@ -644,7 +644,7 @@ QtObject
         }
     }
 
-    property Component sidebar_action_button: Component
+    property Component print_setup_action_button: Component
     {
         ButtonStyle
         {

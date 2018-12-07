@@ -309,7 +309,7 @@ UM.MainWindow
             }
         }
 
-        SidebarTooltip
+        PrintSetupTooltip
         {
             id: tooltip
         }

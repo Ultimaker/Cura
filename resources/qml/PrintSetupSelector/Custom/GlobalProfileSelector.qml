@@ -43,7 +43,7 @@ Item
             right: parent.right
         }
         tooltip: Cura.MachineManager.activeQualityOrQualityChangesName
-        style: UM.Theme.styles.sidebar_header_button
+        style: UM.Theme.styles.print_setup_header_button
         activeFocusOnPress: true
         menu: Cura.ProfileMenu { }
 

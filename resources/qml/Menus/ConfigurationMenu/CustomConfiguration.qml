@@ -204,7 +204,7 @@ Item
                     height: UM.Theme.getSize("setting_control").height
                     width: selectors.controlWidth
 
-                    style: UM.Theme.styles.sidebar_header_button
+                    style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true
                     menu: Cura.MaterialMenu
                     {
@@ -237,7 +237,7 @@ Item
 
                     height: UM.Theme.getSize("setting_control").height
                     width: selectors.controlWidth
-                    style: UM.Theme.styles.sidebar_header_button
+                    style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true;
 
                     menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
