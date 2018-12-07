@@ -23,7 +23,7 @@ Item
         anchors.fill: parent
         opacity:
         {
-            if (printJob && (printJob.state == "error" || !printJob.isActive))
+            if (printJob && (printJob.state == "error" || printJob.configurationChanges.length > 0 || !printJob.isActive))
             {
                 return 0.5
             }
@@ -60,6 +60,10 @@ Item
         height: 0.5 * printJobPreview.height
         source:
         {
+            if (printJob.configurationChanges.length > 0)
+            {
+                return "../svg/warning-icon.svg"
+            }
             switch(printJob.state)
             {
                 case "error":
@@ -75,6 +79,7 @@ Item
                 default:
                     return ""
             }
+            return ""
         }
         sourceSize
         {
