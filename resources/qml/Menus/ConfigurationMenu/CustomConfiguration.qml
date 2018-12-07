@@ -151,7 +151,6 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    visible: extrudersModel.count > 1
                     renderType: Text.NativeRendering
                 }
 
@@ -189,7 +188,6 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    visible: materialSelection.visible
                     renderType: Text.NativeRendering
                 }
 
@@ -228,7 +226,6 @@ Item
                     color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    visible: variantSelection.visible
                     renderType: Text.NativeRendering
                 }
 
