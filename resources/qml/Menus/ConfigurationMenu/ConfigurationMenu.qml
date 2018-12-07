@@ -139,7 +139,19 @@ Cura.ExpandableComponent
         Item
         {
             width: parent.width
-            height: childrenRect.height
+            height:
+            {
+                var height = 0;
+                if(autoConfiguration.visible)
+                {
+                    height += autoConfiguration.height;
+                }
+                if(customConfiguration.visible)
+                {
+                    height += customConfiguration.height;
+                }
+                return height;
+            }
             AutoConfiguration
             {
                 id: autoConfiguration
