@@ -22,7 +22,6 @@ from .Utils import findChanges
 #
 #   API spec is available on https://api.ultimaker.com/docs/connect/spec/.
 #
-
 class CloudOutputDeviceManager:
     META_CLUSTER_ID = "um_cloud_cluster_id"
 
@@ -32,9 +31,7 @@ class CloudOutputDeviceManager:
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
-    def __init__(self):
-        super().__init__()
-
+    def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
 
@@ -86,6 +83,7 @@ class CloudOutputDeviceManager:
         for removed_cluster in removed_devices:
             if removed_cluster.isConnected():
                 removed_cluster.disconnect()
+            removed_cluster.close()
             self._output_device_manager.removeOutputDevice(removed_cluster.key)
             del self._remote_clusters[removed_cluster.key]
 
@@ -124,20 +122,17 @@ class CloudOutputDeviceManager:
             return
 
         device = next((c for c in self._remote_clusters.values() if c.matchesNetworkKey(local_network_key)), None)
-        if not device:
-            return
-
-        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        return device.connect()
+        if device:
+            active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+            device.connect()
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
     def _onApiError(self, errors: List[CloudErrorObject]) -> None:
         message = ". ".join(e.title for e in errors)  # TODO: translate errors
-        message = Message(
+        Message(
             text = message,
             title = self.I18N_CATALOG.i18nc("@info:title", "Error"),
             lifetime = 10,
             dismissable = True
-        )
-        message.show()
+        ).show()
