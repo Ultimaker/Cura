@@ -18,7 +18,7 @@ Column
     property var activePrinter: connectedDevice != null ? connectedDevice.activePrinter : null
     property var activePrintJob: activePrinter != null ? activePrinter.activePrintJob: null
 
-    Cura.ExtrudersModel
+    PrintSetupTooltip
     {
         id: extrudersModel
         simpleNames: true

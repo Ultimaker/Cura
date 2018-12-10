@@ -54,8 +54,25 @@ Column
     ScrollView
     {
         id: container
-        width: parent.width - parent.padding
-        height: Math.min(configurationList.contentHeight, 350 * screenScaleFactor)
+        width: parent.width
+        readonly property int maximumHeight: 350 * screenScaleFactor
+        height: Math.round(Math.min(configurationList.height, maximumHeight))
+        contentHeight: configurationList.height
+        clip: true
+
+        ScrollBar.vertical.policy: (configurationList.height > maximumHeight) ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff //The AsNeeded policy also hides it when the cursor is away, and we don't want that.
+        ScrollBar.vertical.background: Rectangle
+        {
+            implicitWidth: UM.Theme.getSize("scrollbar").width
+            radius: width / 2
+            color: UM.Theme.getColor("scrollbar_background")
+        }
+        ScrollBar.vertical.contentItem: Rectangle
+        {
+            implicitWidth: UM.Theme.getSize("scrollbar").width
+            radius: width / 2
+            color: UM.Theme.getColor(parent.pressed ? "scrollbar_handle_down" : parent.hovered ? "scrollbar_handle_hover" : "scrollbar_handle")
+        }
 
         style: UM.Theme.styles.scrollview
         __wheelAreaScrollSpeed: 75 // Scroll three lines in one scroll event
@@ -64,12 +81,22 @@ Column
         {
             id: configurationList
             spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
-            width: container.width
+            width: container.width - ((height > container.maximumHeight) ? container.ScrollBar.vertical.background.width : 0) //Make room for scroll bar if there is any.
             contentHeight: childrenRect.height
+            height: childrenRect.height
 
             section.property: "modelData.printerType"
             section.criteria: ViewSection.FullString
-            section.delegate: sectionHeading
+            section.delegate: Item
+            {
+                height: printerTypeLabel.height + UM.Theme.getSize("default_margin").height * 2 //Causes a default margin above the label and a default margin below the label.
+                Cura.PrinterTypeLabel
+                {
+                    id: printerTypeLabel
+                    text: Cura.MachineManager.getAbbreviatedMachineName(section)
+                    anchors.verticalCenter: parent.verticalCenter //One default margin above and one below.
+                }
+            }
 
             model: (outputDevice != null) ? outputDevice.uniqueConfigurations : []
             delegate: ConfigurationItem

@@ -1534,6 +1534,10 @@ class MachineManager(QObject):
             name = self._current_quality_group.name
         return name
 
+    @pyqtProperty(bool, notify = activeQualityGroupChanged)
+    def hasNotSupportedQuality(self) -> bool:
+        return self._current_quality_group is None and self._current_quality_changes_group is None
+
     def _updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:
             return

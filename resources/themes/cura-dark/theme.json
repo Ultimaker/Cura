@@ -34,16 +34,7 @@
         "text_scene_hover": [255, 255, 255, 204],
 
         "error": [212, 31, 53, 255],
-        "sidebar_header_bar": [39, 44, 48, 255],
-        "sidebar_header_active": [39, 44, 48, 255],
-        "sidebar_header_hover": [68, 72, 75, 255],
-        "sidebar_header_highlight": [68, 192, 255, 255],
-        "sidebar_header_highlight_hover": [68, 192, 255, 255],
-        "sidebar_header_text_active": [255, 255, 255, 255],
-        "sidebar_header_text_hover": [255, 255, 255, 255],
-        "sidebar_header_text_inactive": [255, 255, 255, 127],
-        "sidebar_lining": [31, 36, 39, 255],
-        "sidebar_lining_thin": [255, 255, 255, 30],
+        "disabled": [32, 32, 32, 255],
 
         "button": [39, 44, 48, 255],
         "button_hover": [39, 44, 48, 255],

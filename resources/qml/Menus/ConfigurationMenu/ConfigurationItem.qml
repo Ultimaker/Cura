@@ -15,11 +15,7 @@ Rectangle
     property var selected: false
     signal activateConfiguration()
 
-    height: childrenRect.height
-    border.width: UM.Theme.getSize("default_lining").width
-    border.color: updateBorderColor()
-    color: selected ? UM.Theme.getColor("configuration_item_active") : UM.Theme.getColor("configuration_item")
-    property var textColor: selected ? UM.Theme.getColor("configuration_item_text_active") : UM.Theme.getColor("configuration_item_text")
+    height: background.height
 
     function updateBorderColor()
     {
@@ -53,6 +49,8 @@ Rectangle
                     printCoreConfiguration: modelData
                     mainColor: textColor
                 }
+                height: visible ? Math.round(UM.Theme.getSize("default_lining").height / 2) : 0
+                color: UM.Theme.getColor("lining")
             }
         }
 

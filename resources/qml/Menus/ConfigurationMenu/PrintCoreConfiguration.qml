@@ -18,14 +18,14 @@ Column
 
     Item
     {
-        id: extruder
-        width: parent.width
-        height: childrenRect.height
+        materialColor: printCoreConfiguration.material.color
+        anchors.verticalCenter: parent.verticalCenter
+        extruderEnabled: printCoreConfiguration.material.brand !== "" && printCoreConfiguration.hotendID !== ""
+    }
 
         Label
         {
-            id: extruderLabel
-            text: catalog.i18nc("@label:extruder label", "Extruder")
+            text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             anchors.left: parent.left
