@@ -106,13 +106,15 @@ Item
         {
             id: disabledLabel
             visible: !base.enabled
+            anchors.fill: parent
             leftPadding: background.padding
+            rightPadding: background.padding
             text: "This component is disabled"
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
             color: UM.Theme.getColor("text")
-            height: parent.height
+            wrapMode: Text.WordWrap
         }
 
         Item
