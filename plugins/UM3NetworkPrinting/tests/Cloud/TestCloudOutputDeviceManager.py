@@ -4,9 +4,9 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from cura.CuraApplication import CuraApplication
-from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDevice import CloudOutputDevice
-from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
-from plugins.UM3NetworkPrinting.tests.Cloud.NetworkManagerMock import NetworkManagerMock
+from src.Cloud.CloudOutputDevice import CloudOutputDevice
+from src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
+from .NetworkManagerMock import NetworkManagerMock
 
 
 @patch("cura.NetworkClient.QNetworkAccessManager")
@@ -15,18 +15,19 @@ class TestCloudOutputDeviceManager(TestCase):
     def setUp(self):
         super().setUp()
         self.app = CuraApplication.getInstance()
-        if not self.app:
-            self.app = CuraApplication()
-            self.app.initialize()
-
         self.network = NetworkManagerMock()
         self.manager = CloudOutputDeviceManager()
         self.clusters_response = self.network.prepareGetClusters()
 
-    ## In the tear down method we check whether the state of the output device manager is what we expect based on the
-    #  mocked API response.
     def tearDown(self):
-        super().tearDown()
+        try:
+            self._beforeTearDown()
+        finally:
+            super().tearDown()
+
+    ## Before tear down method we check whether the state of the output device manager is what we expect based on the
+    #  mocked API response.
+    def _beforeTearDown(self):
         # let the network send replies
         self.network.flushReplies()
         # get the created devices
@@ -82,6 +83,7 @@ class TestCloudOutputDeviceManager(TestCase):
 
         self.assertTrue(self.app.getOutputDeviceManager().getOutputDevice(cluster1["cluster_id"]).isConnected())
         self.assertFalse(self.app.getOutputDeviceManager().getOutputDevice(cluster2["cluster_id"]).isConnected())
+        self.assertEquals([], active_machine_mock.setMetaDataEntry.mock_calls)
 
     @patch("cura.CuraApplication.CuraApplication.getGlobalContainerStack")
     def test_device_connects_by_network_key(self, global_container_stack_mock, network_mock):
@@ -97,11 +99,12 @@ class TestCloudOutputDeviceManager(TestCase):
         self.assertFalse(self.app.getOutputDeviceManager().getOutputDevice(cluster1["cluster_id"]).isConnected())
         self.assertTrue(self.app.getOutputDeviceManager().getOutputDevice(cluster2["cluster_id"]).isConnected())
 
-        active_machine_mock.setMetaDataEntry.assert_called_once_with("um_cloud_cluster_id", cluster2["cluster_id"])
+        active_machine_mock.setMetaDataEntry.assert_called_with("um_cloud_cluster_id", cluster2["cluster_id"])
 
     @patch("UM.Message.Message.show")
     def test_api_error(self, message_mock, network_mock):
-        self.clusters_response = {"errors": [{"id": "notFound"}]}
+        self.clusters_response = {"errors": [{"id": "notFound", "title": "Not found!", "http_status": "404"}]}
         self.network.prepareGetClusters(self.clusters_response)
         self._loadData(network_mock)
+        self.network.flushReplies()
         message_mock.assert_called_once_with()

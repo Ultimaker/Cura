@@ -66,7 +66,8 @@ class NetworkManagerMock:
     #  \return The data in the response.
     def prepareGetClusters(self, data: Optional[dict] = None) -> dict:
         data, response = self._getResponseData("clusters", data)
-        self.prepareReply("GET", "https://api-staging.ultimaker.com/connect/v1/clusters", 200, response)
+        status_code = 200 if "data" in data else int(data["errors"][0]["http_status"])
+        self.prepareReply("GET", "https://api-staging.ultimaker.com/connect/v1/clusters", status_code, response)
         return data
 
     ## Gets the data that should be in the server's response in both dictionary and JSON-encoded bytes format.
@@ -87,6 +88,7 @@ class NetworkManagerMock:
     def flushReplies(self):
         for reply in self.replies.values():
             self.finished.emit(reply)
+        self.reset()
 
     ## Deletes all prepared replies
     def reset(self):

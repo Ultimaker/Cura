@@ -95,9 +95,8 @@ class TestCloudApiClient(TestCase):
         def _callback(clusters):
             result.extend(clusters)
 
-        with mock.patch.object(Application, "getInstance", new = lambda: FixtureApplication()):
-            api = CloudApiClient(account_mock, self._errorHandler)
-            api.getClusters(_callback)
+        api = CloudApiClient(account_mock, self._errorHandler)
+        api.getClusters(_callback)
 
         manager_mock.return_value.finished.emit(reply_mock)
 
