@@ -181,7 +181,6 @@ class CuraApplication(QtApplication):
         # Variables set from CLI
         self._files_to_open = []
         self._use_single_instance = False
-        self._trigger_early_crash = False  # For debug only
 
         self._single_instance = None
 
@@ -292,7 +291,10 @@ class CuraApplication(QtApplication):
             sys.exit(0)
 
         self._use_single_instance = self._cli_args.single_instance
-        self._trigger_early_crash = self._cli_args.trigger_early_crash
+        # FOR TESTING ONLY
+        if self._cli_args.trigger_early_crash:
+            assert not "This crash is triggered by the trigger_early_crash command line argument."
+
         for filename in self._cli_args.file:
             self._files_to_open.append(os.path.abspath(filename))
 
