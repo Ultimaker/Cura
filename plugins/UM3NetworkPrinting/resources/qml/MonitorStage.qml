@@ -8,6 +8,7 @@ import UM 1.3 as UM
 import Cura 1.0 as Cura
 import QtGraphicalEffects 1.0
 
+// Root component for the monitor tab (stage)
 Component
 {
     Item
