@@ -16,7 +16,7 @@ Button
     property alias iconSource: buttonIconLeft.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
-    property alias tooltip: tooltip.text
+    property alias tooltip: tooltip.tooltipText
     property alias cornerSide: backgroundRect.cornerSide
 
     property color color: UM.Theme.getColor("primary")
@@ -109,11 +109,9 @@ Button
         z: backgroundRect.z - 1
     }
 
-    ToolTip
+    Cura.ToolTip
     {
         id: tooltip
-        text: ""
-        delay: 500
-        visible: text != "" && button.hovered
+        show: button.hovered
     }
 }

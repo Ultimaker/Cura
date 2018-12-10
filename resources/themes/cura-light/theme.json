@@ -240,7 +240,7 @@
         "checkbox_disabled": [223, 223, 223, 255],
         "checkbox_text": [35, 35, 35, 255],
 
-        "tooltip": [68, 192, 255, 255],
+        "tooltip": [19, 19, 19, 255],
         "tooltip_text": [255, 255, 255, 255],
 
         "tool_button_border": [255, 255, 255, 0],
