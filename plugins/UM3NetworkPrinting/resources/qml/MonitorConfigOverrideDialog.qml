@@ -48,8 +48,8 @@ UM.Dialog
         anchors
         {
             fill: parent
-            leftMargin: 108
-            rightMargin: 18
+            leftMargin: 60
+            rightMargin: 60
             topMargin: 18
             bottomMargin: 56
         }
