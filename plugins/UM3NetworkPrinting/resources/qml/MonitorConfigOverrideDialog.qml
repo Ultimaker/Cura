@@ -57,7 +57,7 @@ UM.Dialog
             var topLine
             if (materialsAreKnown(printer.activePrintJob))
             {
-                topLine = catalog.i18nc("@label", "The assigned printer, %1, requires the following configuration change(s):").arg(printer.name)
+                topLine = catalog.i18ncp("@label", "The assigned printer, %1, requires the following configuration change:", "The assigned printer, %1, requires the following configuration changes:").arg(printer.name)
             }
             else
             {
