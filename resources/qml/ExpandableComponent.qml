@@ -162,7 +162,7 @@ Item
 
         background: Cura.RoundedRectangle
         {
-            cornerSide: Cura.RoundedRectangle.Direction.Down
+            cornerSide: Cura.RoundedRectangle.Direction.All
             color: contentBackgroundColor
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")

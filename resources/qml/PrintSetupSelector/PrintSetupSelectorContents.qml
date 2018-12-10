@@ -38,11 +38,13 @@ Item
 
 
     // Header of the popup
-    Rectangle
+    Cura.RoundedRectangle
     {
         id: header
         height: UM.Theme.getSize("print_setup_widget_header").height
         color: UM.Theme.getColor("secondary")
+        cornerSide: Cura.RoundedRectangle.Direction.Up
+        radius: UM.Theme.getSize("default_radius").width
 
         anchors
         {
