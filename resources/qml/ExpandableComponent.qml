@@ -37,6 +37,9 @@ Item
 
     property alias enabled: mouseArea.enabled
 
+    // Text to show when this component is disabled
+    property alias disabledText: disabledLabel.text
+
     // Defines the alignment of the content with respect of the headerItem, by default to the right
     property int contentAlignment: ExpandableComponent.ContentAlignment.AlignRight
 
@@ -85,7 +88,7 @@ Item
     {
         target: background
         property: "color"
-        value: expanded ? headerActiveColor : headerBackgroundColor
+        value: enabled ? (expanded ? headerActiveColor : headerBackgroundColor) : UM.Theme.getColor("disabled")
     }
 
     implicitHeight: 100 * screenScaleFactor
@@ -96,36 +99,55 @@ Item
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
 
-        color: expanded ? headerActiveColor : headerBackgroundColor
+        color: base.enabled ? (base.expanded ? headerActiveColor : headerBackgroundColor) : UM.Theme.getColor("disabled")
         anchors.fill: parent
 
-        Loader
+        Label
         {
-            id: headerItemLoader
-            anchors
-            {
-                left: parent.left
-                right: collapseButton.visible ? collapseButton.left : parent.right
-                top: parent.top
-                bottom: parent.bottom
-                margins: background.padding
-            }
+            id: disabledLabel
+            visible: !base.enabled
+            leftPadding: background.padding
+            text: "This component is disabled"
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            color: UM.Theme.getColor("text")
+            height: parent.height
         }
 
-        UM.RecolorImage
+        Item
         {
-            id: collapseButton
-            anchors
+            anchors.fill: parent
+            visible: base.enabled
+
+            Loader
             {
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-                margins: background.padding
+                id: headerItemLoader
+                anchors
+                {
+                    left: parent.left
+                    right: collapseButton.visible ? collapseButton.left : parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                    margins: background.padding
+                }
             }
-            source: UM.Theme.getIcon("pencil")
-            visible: source != "" && base.enabled
-            width: UM.Theme.getSize("standard_arrow").width
-            height: UM.Theme.getSize("standard_arrow").height
-            color: UM.Theme.getColor("small_button_text")
+
+            UM.RecolorImage
+            {
+                id: collapseButton
+                anchors
+                {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: background.padding
+                }
+                source: UM.Theme.getIcon("pencil")
+                visible: source != ""
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                color: UM.Theme.getColor("small_button_text")
+            }
         }
 
         MouseArea
@@ -135,7 +157,7 @@ Item
             onClicked: toggleContent()
             hoverEnabled: true
             onEntered: background.color = headerHoverColor
-            onExited: background.color = expanded ? headerActiveColor : headerBackgroundColor
+            onExited: background.color = base.enabled ? (base.expanded ? headerActiveColor : headerBackgroundColor) : UM.Theme.getColor("disabled")
         }
     }
 
