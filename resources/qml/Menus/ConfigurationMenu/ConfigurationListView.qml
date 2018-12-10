@@ -12,7 +12,7 @@ Column
     id: base
     property var outputDevice: null
     height: childrenRect.height + 2 * padding
-    spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
+    spacing: UM.Theme.getSize("narrow_margin").height
 
     function forceModelUpdate()
     {
@@ -55,7 +55,7 @@ Column
         ListView
         {
             id: configurationList
-            spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
+            spacing: UM.Theme.getSize("narrow_margin").height
             width: container.width - ((height > container.maximumHeight) ? container.ScrollBar.vertical.background.width : 0) //Make room for scroll bar if there is any.
             contentHeight: childrenRect.height
             height: childrenRect.height
@@ -64,7 +64,7 @@ Column
             section.criteria: ViewSection.FullString
             section.delegate: Item
             {
-                height: printerTypeLabel.height + UM.Theme.getSize("default_margin").height * 2 //Causes a default margin above the label and a default margin below the label.
+                height: printerTypeLabel.height + UM.Theme.getSize("wide_margin").height //Causes a default margin above the label and a default margin below the label.
                 Cura.PrinterTypeLabel
                 {
                     id: printerTypeLabel
