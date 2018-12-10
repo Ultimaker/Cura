@@ -13,7 +13,6 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkRepl
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Extension import Extension
-from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
 from UM.Version import Version
 
@@ -22,8 +21,7 @@ from cura.CuraApplication import CuraApplication
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
-from cura.CuraVersion import CuraVersion
-from cura.API import CuraAPI
+
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
@@ -158,7 +156,7 @@ class Toolbox(QObject, Extension):
         self._rate_request = QNetworkRequest(url)
         for header_name, header_value in self._request_headers:
             cast(QNetworkRequest, self._rate_request).setRawHeader(header_name, header_value)
-        data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(CuraVersion), rating)
+        data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
         self._rate_reply = cast(QNetworkAccessManager, self._network_manager).put(self._rate_request, data.encode())
 
     @pyqtSlot(result = str)
