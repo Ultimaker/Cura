@@ -168,8 +168,10 @@ Item
 
         style: ButtonStyle
         {
-            background: Item {
-                UM.RecolorImage {
+            background: Item
+            {
+                UM.RecolorImage
+                {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: UM.Theme.getSize("standard_arrow").width
@@ -180,8 +182,9 @@ Item
                     source: UM.Theme.getIcon("menu")
                 }
             }
-            label: Label{}
+            label: Label {}
         }
+
         menu: SettingVisibilityPresetsMenu
         {
             onShowAllSettings:
@@ -190,6 +193,14 @@ Item
                 filter.updateDefinitionModel()
             }
         }
+    }
+
+    // Mouse area that gathers the scroll events to not propagate it to the main view.
+    MouseArea
+    {
+        anchors.fill: scrollView
+        acceptedButtons: Qt.AllButtons
+        onWheel: wheel.accepted = true
     }
 
     ScrollView
