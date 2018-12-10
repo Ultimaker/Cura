@@ -11,10 +11,11 @@ Cura.ExpandableComponent
 {
     id: printSetupSelector
 
-    property string enabledText: catalog.i18nc("@label:Should be short", "On")
-    property string disabledText: catalog.i18nc("@label:Should be short", "Off")
+    property bool preSlicedData: PrintInformation.preSliced
 
     contentPadding: UM.Theme.getSize("default_lining").width
+    contentHeaderTitle: catalog.i18nc("@label", "Print settings")
+    enabled: !preSlicedData
 
     UM.I18nCatalog
     {
@@ -22,10 +23,7 @@ Cura.ExpandableComponent
         name: "cura"
     }
 
-    headerItem: PrintSetupSelectorHeader
-    {
-        anchors.fill: parent
-    }
+    headerItem: PrintSetupSelectorHeader {}
 
     Cura.ExtrudersModel
     {

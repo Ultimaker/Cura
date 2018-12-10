@@ -362,12 +362,13 @@
         "print_setup_mode_toggle": [0.0, 2.0],
         "print_setup_item": [0.0, 2.0],
         "print_setup_extruder_box": [0.0, 6.0],
-        "print_setup_widget_header": [0.0, 3.0],
         "print_setup_slider_groove": [0.16, 0.16],
         "print_setup_slider_handle": [1.0, 1.0],
         "print_setup_slider_tickmarks": [0.32, 0.32],
         "print_setup_big_item": [28, 2.5],
         "print_setup_icon": [1.2, 1.2],
+
+        "expandable_component_content_header": [0.0, 3.0],
 
         "configuration_selector_mode_tabs": [0.0, 3.0],
 

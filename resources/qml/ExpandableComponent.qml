@@ -1,3 +1,6 @@
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
@@ -40,6 +43,9 @@ Item
     // How much spacing is needed around the contentItem
     property alias contentPadding: content.padding
 
+    // Adds a title to the content item
+    property alias contentHeaderTitle: contentHeader.headerTitle
+
     // How much spacing is needed for the contentItem by Y coordinate
     property var contentSpacingY: UM.Theme.getSize("narrow_margin").width
 
@@ -55,7 +61,7 @@ Item
     property alias iconSize: collapseButton.height
 
     // Is the "drawer" open?
-    readonly property alias expanded: content.visible
+    readonly property alias expanded: contentContainer.visible
 
     // What should the radius of the header be. This is also influenced by the headerCornerSide
     property alias headerRadius: background.radius
@@ -71,7 +77,7 @@ Item
 
     function toggleContent()
     {
-        content.visible = !expanded
+        contentContainer.visible = !expanded
     }
 
     // Add this binding since the background color is not updated otherwise
@@ -147,10 +153,13 @@ Item
         z: background.z - 1
     }
 
-    Control
+    Cura.RoundedRectangle
     {
-        id: content
+        id: contentContainer
+
         visible: false
+        width: childrenRect.width
+        height: childrenRect.height
 
         // Ensure that the content is located directly below the headerItem
         y: background.height + base.shadowOffset + base.contentSpacingY
@@ -158,25 +167,42 @@ Item
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
         x: contentAlignment == ExpandableComponent.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
-        padding: UM.Theme.getSize("default_margin").width
 
-        background: Cura.RoundedRectangle
+        cornerSide: Cura.RoundedRectangle.Direction.All
+        color: contentBackgroundColor
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+        radius: UM.Theme.getSize("default_radius").width
+
+        ExpandableComponentHeader
         {
-            cornerSide: Cura.RoundedRectangle.Direction.All
-            color: contentBackgroundColor
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("lining")
-            radius: UM.Theme.getSize("default_radius").width
+            id: contentHeader
+            headerTitle: ""
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+                left: parent.left
+            }
+
         }
 
-        contentItem: Item {}
-
-        onContentItemChanged:
+        Control
         {
-            // Since we want the size of the content to be set by the size of the content,
-            // we need to do it like this.
-            content.width = contentItem.width + 2 * content.padding
-            content.height = contentItem.height + 2 * content.padding
+            id: content
+
+            anchors.top: contentHeader.bottom
+            padding: UM.Theme.getSize("default_margin").width
+
+            contentItem: Item {}
+
+            onContentItemChanged:
+            {
+                // Since we want the size of the content to be set by the size of the content,
+                // we need to do it like this.
+                content.width = contentItem.width + 2 * content.padding
+                content.height = contentItem.height + 2 * content.padding
+            }
         }
     }
 
@@ -187,6 +213,10 @@ Item
         // Since it could be that the content is dynamically populated, we should also take these changes into account.
         target: content.contentItem
         onWidthChanged: content.width = content.contentItem.width + 2 * content.padding
-        onHeightChanged: content.height = content.contentItem.height + 2 * content.padding
+        onHeightChanged:
+        {
+            content.height = content.contentItem.height + 2 * content.padding
+            contentContainer.height = contentHeader.height + content.height
+        }
     }
 }

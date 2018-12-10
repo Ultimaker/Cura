@@ -12,7 +12,7 @@ import "Custom"
 
 Item
 {
-    id: popup
+    id: content
 
     width: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
     height: childrenRect.height
@@ -36,79 +36,6 @@ Item
     }
     onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex)
 
-
-    // Header of the popup
-    Cura.RoundedRectangle
-    {
-        id: header
-        height: UM.Theme.getSize("print_setup_widget_header").height
-        color: UM.Theme.getColor("secondary")
-        cornerSide: Cura.RoundedRectangle.Direction.Up
-        radius: UM.Theme.getSize("default_radius").width
-
-        anchors
-        {
-            top: parent.top
-            right: parent.right
-            left: parent.left
-        }
-
-        Label
-        {
-            id: headerLabel
-            text: catalog.i18nc("@label", "Print settings")
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
-            color: UM.Theme.getColor("text")
-            height: parent.height
-
-            anchors
-            {
-                topMargin: UM.Theme.getSize("default_margin").height
-                left: parent.left
-                leftMargin: UM.Theme.getSize("default_margin").height
-            }
-        }
-
-        Button
-        {
-            id: closeButton
-            width: UM.Theme.getSize("message_close").width
-            height: UM.Theme.getSize("message_close").height
-            hoverEnabled: true
-
-            anchors
-            {
-                right: parent.right
-                rightMargin: UM.Theme.getSize("default_margin").width
-                verticalCenter: parent.verticalCenter
-            }
-
-            contentItem: UM.RecolorImage
-            {
-                anchors.fill: parent
-                sourceSize.width: width
-                color: closeButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                source: UM.Theme.getIcon("cross1")
-            }
-
-            background: Item {}
-
-            onClicked: toggleContent() // Will hide the popup item
-        }
-    }
-
-    Rectangle
-    {
-        id: topSeparator
-
-        anchors.bottom: header.bottom
-        width: parent.width
-        height: UM.Theme.getSize("default_lining").height
-        color: UM.Theme.getColor("lining")
-    }
-
     Item
     {
         id: contents
@@ -118,7 +45,7 @@ Item
 
         anchors
         {
-            top: header.bottom
+            top: parent.top
             left: parent.left
             right: parent.right
         }
