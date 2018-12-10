@@ -173,7 +173,7 @@ Rectangle
         anchors.bottom: parent.bottom
     }
 
-    SidebarTooltip
+    PrintSetupTooltip
     {
         id: tooltip
     }

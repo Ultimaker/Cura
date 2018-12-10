@@ -72,8 +72,8 @@ Button
                     right: parent.right
                     rightMargin: parent.padding
                 }
-                height: visible ? Math.round(UM.Theme.getSize("thick_lining").height / 2) : 0
-                color: UM.Theme.getColor("text")
+                height: visible ? Math.round(UM.Theme.getSize("default_lining").height / 2) : 0
+                color: UM.Theme.getColor("lining")
             }
 
             Item
