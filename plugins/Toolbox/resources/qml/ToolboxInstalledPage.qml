@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
@@ -38,6 +38,7 @@ ScrollView
             text: catalog.i18nc("@title:tab", "Plugins")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
         }
         Rectangle
         {
@@ -68,6 +69,7 @@ ScrollView
             text: catalog.i18nc("@title:tab", "Materials")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
         }
 
         Rectangle
