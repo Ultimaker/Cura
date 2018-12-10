@@ -74,6 +74,7 @@ Item
             id: closeButton
             width: UM.Theme.getSize("message_close").width
             height: UM.Theme.getSize("message_close").height
+            hoverEnabled: true
 
             anchors
             {
@@ -86,8 +87,7 @@ Item
             {
                 anchors.fill: parent
                 sourceSize.width: width
-                sourceSize.height: width
-                color: UM.Theme.getColor("message_text")
+                color: closeButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
                 source: UM.Theme.getIcon("cross1")
             }
 

@@ -9,7 +9,6 @@ UM.SimpleButton
 {
     width: UM.Theme.getSize("small_button").width
     height: UM.Theme.getSize("small_button").height
-    hoverBackgroundColor: UM.Theme.getColor("small_button_hover")
     hoverColor: UM.Theme.getColor("small_button_text_hover")
     color: UM.Theme.getColor("small_button_text")
     iconMargin: 0.5 * UM.Theme.getSize("wide_lining").width

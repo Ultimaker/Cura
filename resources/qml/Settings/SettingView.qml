@@ -178,7 +178,7 @@ Item
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: height
-                    color: control.enabled ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_category_disabled_text")
+                    color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
                     source: UM.Theme.getIcon("menu")
                 }
             }
