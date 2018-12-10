@@ -1,29 +1,26 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import json
-import os
 from unittest import TestCase
 from unittest.mock import patch
 
 from cura.CuraApplication import CuraApplication
 from src.Cloud.CloudOutputDevice import CloudOutputDevice
 from src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
+from tests.Cloud.Fixtures import parseFixture, readFixture
 from .NetworkManagerMock import NetworkManagerMock
 
 
 @patch("cura.NetworkClient.QNetworkAccessManager")
 class TestCloudOutputDeviceManager(TestCase):
     URL = "https://api-staging.ultimaker.com/connect/v1/clusters"
-    with open("{}/Fixtures/clusters.json".format(os.path.dirname(__file__)), "rb") as f:
-        DEFAULT_RESPONSE = f.read()
 
     def setUp(self):
         super().setUp()
         self.app = CuraApplication.getInstance()
         self.network = NetworkManagerMock()
         self.manager = CloudOutputDeviceManager()
-        self.clusters_response = json.loads(self.DEFAULT_RESPONSE.decode())
-        self.network.prepareReply("GET", self.URL, 200, self.DEFAULT_RESPONSE)
+        self.clusters_response = parseFixture("getClusters")
+        self.network.prepareReply("GET", self.URL, 200, readFixture("getClusters"))
 
     def tearDown(self):
         try:

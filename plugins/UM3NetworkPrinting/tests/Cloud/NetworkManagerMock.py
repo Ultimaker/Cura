@@ -1,10 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-from typing import Dict, Tuple, Union
+from typing import Dict, Tuple, Union, Optional
 from unittest.mock import MagicMock
 
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 
 from UM.Logger import Logger
 from UM.Signal import Signal
@@ -25,23 +25,30 @@ class NetworkManagerMock:
         "PUT": QNetworkAccessManager.PutOperation,
         "DELETE": QNetworkAccessManager.DeleteOperation,
         "HEAD": QNetworkAccessManager.HeadOperation,
-    }
+    }  # type: Dict[str, int]
 
     ## Initializes the network manager mock.
-    def __init__(self):
+    def __init__(self) -> None:
         # a dict with the prepared replies, using the format {(http_method, url): reply}
         self.replies = {}  # type: Dict[Tuple[str, str], QNetworkReply]
+        self.request_bodies = {}  # type: Dict[Tuple[str, str], bytes]
 
     ## Mock implementation  of the get, post, put, delete and head methods from the network manager.
     #  Since the methods are very simple and the same it didn't make sense to repeat the code.
     #  \param method: The method being called.
     #  \return The mocked function, if the method name is known. Defaults to the standard getattr function.
-    def __getattr__(self, method: str):
+    def __getattr__(self, method: str) -> any:
+        ## This mock implementation will simply return the reply from the prepared ones.
+        # it raises a KeyError if requests are done without being prepared.
+        def doRequest(request: QNetworkRequest, body: Optional[bytes] = None, *_):
+            key = method.upper(), request.url().toString()
+            if body:
+                self.request_bodies[key] = body
+            return self.replies[key]
+
         operation = self._OPERATIONS.get(method.upper())
         if operation:
-            # this mock implementation will simply return the reply from the prepared ones.
-            # it raises a KeyError if requests are done without being prepared.
-            return lambda request, *_: self.replies[method.upper(), request.url().toString()]
+            return doRequest
 
         # the attribute is not one of the implemented methods, default to the standard implementation.
         return getattr(super(), method)
@@ -60,12 +67,18 @@ class NetworkManagerMock:
         self.replies[method, url] = reply_mock
         Logger.log("i", "Prepared mock {}-response to {} {}", status_code, method, url)
 
+    ## Gets the request that was sent to the network manager for the given method and URL.
+    #  \param method: The HTTP method.
+    #  \param url: The URL.
+    def getRequestBody(self, method: str, url: str) -> Optional[bytes]:
+        return self.request_bodies.get((method.upper(), url))
+
     ## Emits the signal that the reply is ready to all prepared replies.
-    def flushReplies(self):
+    def flushReplies(self) -> None:
         for reply in self.replies.values():
             self.finished.emit(reply)
         self.reset()
 
     ## Deletes all prepared replies
-    def reset(self):
+    def reset(self) -> None:
         self.replies.clear()

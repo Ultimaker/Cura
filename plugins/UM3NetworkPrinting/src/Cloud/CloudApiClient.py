@@ -92,7 +92,7 @@ class CloudApiClient(NetworkClient):
     #  \param job_id: The ID of the print job.
     #  \param on_finished: The function to be called after the result is parsed.
     def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], any]) -> None:
-        url = "{}/cluster/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
+        url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
         self.post(url, data = "", on_finished=self._wrapCallback(on_finished, CloudPrintResponse))
 
     ##  We override _createEmptyRequest in order to add the user credentials.

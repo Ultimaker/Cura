@@ -1,0 +1,10 @@
+{
+  "data": {
+    "content_type": "text/plain",
+    "download_url": "https://api.ultimaker.com/print-job-download",
+    "job_id": "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE=",
+    "job_name": "Ultimaker Robot v3.0",
+    "status": "queued",
+    "upload_url": "https://api.ultimaker.com/print-job-upload"
+  }
+}

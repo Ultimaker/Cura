@@ -217,7 +217,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             printer.updateOutputModel(model)
 
         # Always have an active printer
-        if not self._active_printer:
+        if self._printers and not self._active_printer:
             self.setActivePrinter(self._printers[0])
 
         self.printersChanged.emit()  # TODO: Make this more efficient by not updating every request
