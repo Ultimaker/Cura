@@ -95,39 +95,46 @@ UM.Dialog
         }
     }
     // Utils
-    function formatPrintJobName(name) {
-        var extensions = [ ".gcode.gz", ".gz", ".gcode", ".ufp" ];
-        for (var i = 0; i < extensions.length; i++) {
-            var extension = extensions[i];
-            if (name.slice(-extension.length) === extension) {
-                name = name.substring(0, name.length - extension.length);
+    function formatPrintJobName(name)
+    {
+        var extensions = [ ".gcode.gz", ".gz", ".gcode", ".ufp" ]
+        for (var i = 0; i < extensions.length; i++)
+        {
+            var extension = extensions[i]
+            if (name.slice(-extension.length) === extension)
+            {
+                name = name.substring(0, name.length - extension.length)
             }
         }
         return name;
     }
-    function materialsAreKnown(job) {
-        var conf0 = job.configuration[0];
-        if (conf0 && !conf0.material.material) {
-            return false;
+    function materialsAreKnown(job)
+    {
+        var conf0 = job.configuration[0]
+        if (conf0 && !conf0.material.material)
+        {
+            return false
         }
-        var conf1 = job.configuration[1];
-        if (conf1 && !conf1.material.material) {
-            return false;
+        var conf1 = job.configuration[1]
+        if (conf1 && !conf1.material.material)
+        {
+            return false
         }
-        return true;
+        return true
     }
-    function formatBuildPlateType(buildPlateType) {
-        var translationText = "";
+    function formatBuildPlateType(buildPlateType)
+    {
+        var translationText = ""
         switch (buildPlateType) {
             case "glass":
-                translationText = catalog.i18nc("@label", "Glass");
-                break;
+                translationText = catalog.i18nc("@label", "Glass")
+                break
             case "aluminum":
-                translationText = catalog.i18nc("@label", "Aluminum");
-                break;
+                translationText = catalog.i18nc("@label", "Aluminum")
+                break
             default:
-                translationText = null;
+                translationText = null
         }
-        return translationText;
+        return translationText
     }
 }
