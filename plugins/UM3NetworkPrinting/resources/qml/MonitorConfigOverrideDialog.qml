@@ -96,7 +96,7 @@ UM.Dialog
     }
     // Utils
     function formatPrintJobName(name) {
-        var extensions = [ ".gz", ".gcode", ".gcode.gz", ".ufp" ];
+        var extensions = [ ".gcode.gz", ".gz", ".gcode", ".ufp" ];
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             if (name.slice(-extension.length) === extension) {
