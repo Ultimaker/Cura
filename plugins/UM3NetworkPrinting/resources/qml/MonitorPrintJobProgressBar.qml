@@ -55,7 +55,7 @@ Item
             left: progressBar.right
             leftMargin: 18 * screenScaleFactor // TODO: Theme!
         }
-        text: Math.round(printJob.progress * 100) + "%"
+        text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? "#374355" : "#babac1" // TODO: Theme!
         width: contentWidth
         font: UM.Theme.getFont("medium") // 14pt, regular

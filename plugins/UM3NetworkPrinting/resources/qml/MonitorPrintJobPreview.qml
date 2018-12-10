@@ -60,6 +60,10 @@ Item
         height: 0.5 * printJobPreview.height
         source:
         {
+            if (!printJob)
+            {
+                return ""
+            }
             if (printJob.configurationChanges.length > 0)
             {
                 return "../svg/warning-icon.svg"

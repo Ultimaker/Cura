@@ -54,6 +54,10 @@ UM.Dialog
         wrapMode: Text.WordWrap
         text:
         {
+            if (!printer.activePrintJob)
+            {
+                return ""
+            }
             var topLine
             if (materialsAreKnown(printer.activePrintJob))
             {
