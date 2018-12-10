@@ -194,6 +194,7 @@ Item
                     }
                     return ""
                 }
+                visible: text !== ""
             }
 
             Item
