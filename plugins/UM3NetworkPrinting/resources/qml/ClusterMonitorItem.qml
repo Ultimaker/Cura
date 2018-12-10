@@ -130,7 +130,7 @@ Component
                         verticalCenter: externalLinkIcon.verticalCenter
                     }
                     color: UM.Theme.getColor("primary")
-                    font: UM.Theme.getFont("default")
+                    font: UM.Theme.getFont("default") // 12pt, regular
                     linkColor: UM.Theme.getColor("primary")
                     text: catalog.i18nc("@label link to connect manager", "Manage queue in Cura Connect")
                 }
