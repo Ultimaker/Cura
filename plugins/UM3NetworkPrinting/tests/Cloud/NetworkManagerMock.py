@@ -1,11 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-from typing import Dict, Tuple
+import os
+from typing import Dict, Tuple, Optional
 from unittest.mock import MagicMock
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
 
+from UM.Logger import Logger
 from UM.Signal import Signal
 
 
@@ -26,6 +28,7 @@ class NetworkManagerMock:
         "HEAD": QNetworkAccessManager.HeadOperation,
     }
 
+    ## Initializes the network manager mock.
     def __init__(self):
         # a dict with the prepared replies, using the format {(http_method, url): reply}
         self.replies = {}  # type: Dict[Tuple[str, str], QNetworkReply]
@@ -48,33 +51,37 @@ class NetworkManagerMock:
     #  \param method: The HTTP method.
     #  \param url: The URL being requested.
     #  \param status_code: The HTTP status code for the response.
-    #  \param response: A dictionary with the response from the server (this is converted to JSON).
-    def prepareReply(self, method: str, url: str, status_code: int, response: dict) -> None:
+    #  \param response: The response body from the server (generally json-encoded).
+    def prepareReply(self, method: str, url: str, status_code: int, response: bytes) -> None:
         reply_mock = MagicMock()
         reply_mock.url().toString.return_value = url
         reply_mock.operation.return_value = self._OPERATIONS[method]
         reply_mock.attribute.return_value = status_code
-        reply_mock.readAll.return_value = json.dumps(response).encode()
+        reply_mock.readAll.return_value = response
         self.replies[method, url] = reply_mock
+        Logger.log("i", "Prepared mock {}-response to {} {}", status_code, method, url)
 
     ## Prepares a reply for the API call to get clusters.
-    def prepareGetClusters(self) -> None:
-        self.prepareReply(
-            "GET", "https://api-staging.ultimaker.com/connect/v1/clusters",
-            200, {
-                "data": [{
-                    "cluster_id": "RIZ6cZbWA_Ua7RZVJhrdVfVpf0z-MqaSHQE4v8aRTtYq",
-                    "host_guid": "e90ae0ac-1257-4403-91ee-a44c9b7e8050",
-                    "host_name": "ultimakersystem-ccbdd30044ec", "host_version": "5.1.2.20180807",
-                    "is_online": False, "status": "inactive"
-                }, {
-                    "cluster_id": "R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC",
-                    "host_guid": "e90ae0ac-1257-4403-91ee-a44c9b7e8050",
-                    "host_name": "ultimakersystem-ccbdd30044ec", "host_version": "5.1.2.20180807",
-                    "is_online": True, "status": "active"
-                }]
-            }
-        )
+    #  \param data: The data the server should return. If not given, a default response will be used.
+    #  \return The data in the response.
+    def prepareGetClusters(self, data: Optional[dict] = None) -> dict:
+        data, response = self._getResponseData("clusters", data)
+        self.prepareReply("GET", "https://api-staging.ultimaker.com/connect/v1/clusters", 200, response)
+        return data
+
+    ## Gets the data that should be in the server's response in both dictionary and JSON-encoded bytes format.
+    #  \param fixture_name: The name of the fixture.
+    #  \param data: The data that should be returned (optional)
+    #  \return The server's response in both dictionary and JSON-encoded bytes format.
+    @staticmethod
+    def _getResponseData(fixture_name: str, data: Optional[dict] = None) -> Tuple[dict, bytes]:
+        if data is None:
+            with open("{}/Fixtures/{}.json".format(os.path.dirname(__file__), fixture_name), "rb") as f:
+                response = f.read()
+            data = json.loads(response.decode())
+        else:
+            response = json.dumps(data).encode()
+        return data, response
 
     ## Emits the signal that the reply is ready to all prepared replies.
     def flushReplies(self):
