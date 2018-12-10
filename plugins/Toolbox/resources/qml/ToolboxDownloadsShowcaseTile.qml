@@ -20,7 +20,7 @@ Rectangle
     Rectangle
     {
         id: thumbnail
-        color: "white"
+        color: UM.Theme.getColor("main_background")
         width: UM.Theme.getSize("toolbox_thumbnail_large").width
         height: UM.Theme.getSize("toolbox_thumbnail_large").height
         anchors
