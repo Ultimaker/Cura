@@ -18,22 +18,7 @@ class TestCloudOutputDeviceManager(TestCase):
         self.app.initialize()
 
         self.network = NetworkManagerMock()
-        self.network.prepareResponse(
-            "GET", "https://api-staging.ultimaker.com/connect/v1/clusters",
-            200, {
-                "data": [{
-                    "cluster_id": "RIZ6cZbWA_Ua7RZVJhrdVfVpf0z-MqaSHQE4v8aRTtYq",
-                    "host_guid": "e90ae0ac-1257-4403-91ee-a44c9b7e8050",
-                    "host_name": "ultimakersystem-ccbdd30044ec", "host_version": "5.1.2.20180807",
-                    "is_online": False, "status": "inactive"
-                }, {
-                    "cluster_id": "R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC",
-                    "host_guid": "e90ae0ac-1257-4403-91ee-a44c9b7e8050",
-                    "host_name": "ultimakersystem-ccbdd30044ec", "host_version": "5.1.2.20180807",
-                    "is_online": True, "status": "active"
-                }]
-            }
-        )
+        self.network.prepareGetClusters()
 
     def tearDown(self):
         super().tearDown()
@@ -48,4 +33,6 @@ class TestCloudOutputDeviceManager(TestCase):
         self.network.flushReplies()
 
         devices = self.app.getOutputDeviceManager().getOutputDevices()
-        self.assertEqual([CloudOutputDevice], list(map(type, devices)))
+        self.assertEqual([CloudOutputDevice], [type(d) for d in devices])
+        self.assertEqual(["R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC"], [d.key for d in devices])
+        self.assertEqual(["ultimakersystem-ccbdd30044ec"], [d.host_name for d in devices])
