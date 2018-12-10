@@ -6,6 +6,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
+import Cura 1.1 as Cura
+
 Item
 {
     id: page
@@ -103,6 +105,12 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
+            Label
+            {
+                text: catalog.i18nc("@label", "Rating") + ":"
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text_medium")
+            }
         }
         Column
         {
@@ -159,6 +167,16 @@ Item
                 text: details === null ? "" : (details.download_count || catalog.i18nc("@label", "Unknown"))
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+            }
+            RatingWidget
+            {
+                id: rating
+                visible: details.type == "plugin"
+                packageId: details.id
+                rating: details.average_rating
+                numRatings: details.num_ratings
+                userRating: details.user_rating
+                enabled: toolbox.isInstalled(details.id) && Cura.API.account.isLoggedIn
             }
         }
         Rectangle
