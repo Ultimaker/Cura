@@ -136,14 +136,16 @@ Item
             {
                 id: starIcon
                 source: UM.Theme.getIcon("star_filled")
-                color: "#5a5a5a"
+                color: model.user_rating == 0  ? "#5a5a5a" : UM.Theme.getColor("primary")
                 height: UM.Theme.getSize("rating_star").height
                 width: UM.Theme.getSize("rating_star").width
             }
 
             Label
             {
-                text: model.average_rating.toFixed(1) + " (" + model.num_ratings + " " + catalog.i18nc("@label", "ratings") + ")"
+                // If the user voted, show that value. Otherwsie show the average rating.
+                property real ratingtoUse: model.user_rating == 0 ? model.average_rating: model.user_rating
+                text: ratingtoUse.toFixed(1) + " (" + model.num_ratings + " " + catalog.i18nc("@label", "ratings") + ")"
                 verticalAlignment: Text.AlignVCenter
                 height: starIcon.height
                 anchors.verticalCenter: starIcon.verticalCenter
