@@ -248,11 +248,13 @@
 
         "message_background": [255, 255, 255, 255],
         "message_shadow": [0, 0, 0, 120],
-        "message_border": [127, 127, 127, 255],
+        "message_border": [192, 193, 194, 255],
         "message_text": [0, 0, 0, 255],
-        "message_button": [50, 130, 255, 255],
-        "message_button_hover": [50, 130, 255, 255],
-        "message_button_active": [50, 130, 255, 255],
+        "message_close": [102, 102, 102, 255],
+        "message_close_hover": [8, 7, 63, 255],
+        "message_button": [38, 113, 231, 255],
+        "message_button_hover": [81, 145, 247, 255],
+        "message_button_active": [38, 113, 231, 255],
         "message_button_text": [255, 255, 255, 255],
         "message_button_text_hover": [255, 255, 255, 255],
         "message_button_text_active": [255, 255, 255, 255],
@@ -478,6 +480,8 @@
         "message_shadow": [0, 0],
         "message_margin": [0, 1.0],
         "message_inner_margin": [1.5, 1.5],
+        "message_radius": [0.25, 0.25],
+        "message_button_radius": [0.15, 0.15],
 
         "infill_button_margin": [0.5, 0.5],
 
