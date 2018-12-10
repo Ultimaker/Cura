@@ -181,15 +181,34 @@ Item
                 onRated:
                 {
                     toolbox.ratePackage(details.id, rating)
-                    var index = toolbox.packagesModel.find("id", details.id)
+                    // HACK: This is a far from optimal solution, but without major refactoring, this is the best we can
+                    // do. Since a rework of this is scheduled, it shouldn't live that long...
+                    var index = toolbox.pluginsAvailableModel.find("id", details.id)
                     if(index != -1)
                     {
-                        // Found the package
-                        toolbox.packagesModel.setProperty(index, "user_rating", rating)
-                        toolbox.packagesModel.setProperty(index, "num_ratings", details.num_ratings + 1)
+                        if(details.user_rating == 0)  // User never rated before.
+                        {
+                            toolbox.pluginsAvailableModel.setProperty(index, "num_ratings", details.num_ratings + 1)
+                        }
+
+                        toolbox.pluginsAvailableModel.setProperty(index, "user_rating", rating)
+
 
                         // Hack; This is because the current selection is an outdated copy, so we need to re-copy it.
-                        base.selection = toolbox.packagesModel.getItem(index)
+                        base.selection = toolbox.pluginsAvailableModel.getItem(index)
+                        return
+                    }
+                    index = toolbox.pluginsShowcaseModel.find("id", details.id)
+                    if(index != -1)
+                    {
+                        if(details.user_rating == 0) // User never rated before.
+                        {
+                            toolbox.pluginsShowcaseModel.setProperty(index, "user_rating", rating)
+                        }
+                        toolbox.pluginsShowcaseModel.setProperty(index, "num_ratings", details.num_ratings + 1)
+
+                        // Hack; This is because the current selection is an outdated copy, so we need to re-copy it.
+                        base.selection = toolbox.pluginsShowcaseModel.getItem(index)
                     }
                 }
             }
