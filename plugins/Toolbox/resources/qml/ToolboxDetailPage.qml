@@ -177,6 +177,21 @@ Item
                 numRatings: details.num_ratings
                 userRating: details.user_rating
                 enabled: toolbox.isInstalled(details.id) && Cura.API.account.isLoggedIn
+
+                onRated:
+                {
+                    toolbox.ratePackage(details.id, rating)
+                    var index = toolbox.packagesModel.find("id", details.id)
+                    if(index != -1)
+                    {
+                        // Found the package
+                        toolbox.packagesModel.setProperty(index, "user_rating", rating)
+                        toolbox.packagesModel.setProperty(index, "num_ratings", details.num_ratings + 1)
+
+                        // Hack; This is because the current selection is an outdated copy, so we need to re-copy it.
+                        base.selection = toolbox.packagesModel.getItem(index)
+                    }
+                }
             }
         }
         Rectangle

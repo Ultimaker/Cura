@@ -19,6 +19,8 @@ Item
 
     property int userRating: 0
 
+    signal rated(int rating)
+
     width: contentRow.width
     height: contentRow.height
     MouseArea
@@ -94,8 +96,9 @@ Item
                     onClicked:
                     {
                         // Ensure that the local rating is updated (even though it's not on the server just yet)
-                        _localRating = index + 1
-                        toolbox.ratePackage(ratingWidget.packageId, index + 1)
+                        //_localRating = index + 1
+                        rated(index + 1)
+
                     }
                 }
             }
