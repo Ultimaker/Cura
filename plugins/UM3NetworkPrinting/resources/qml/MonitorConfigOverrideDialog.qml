@@ -48,7 +48,8 @@ UM.Dialog
         anchors
         {
             fill: parent
-            margins: 60 * screenScaleFactor // TODO: Theme!
+            margins: 36 * screenScaleFactor // TODO: Theme!
+            bottomMargin: 56 * screenScaleFactor // TODO: Theme!
         }
         wrapMode: Text.WordWrap
         text:
@@ -62,7 +63,7 @@ UM.Dialog
             {
                 topLine = catalog.i18nc("@label", "The printer %1 is assigned, but the job contains an unknown material configuration.").arg(printer.name)
             }
-            var result = "<p>" + topLine +"</p>"
+            var result = "<p>" + topLine +"</p>\n\n"
             for (var i = 0; i < printer.activePrintJob.configurationChanges.length; i++)
             {
                 var change = printer.activePrintJob.configurationChanges[i]
