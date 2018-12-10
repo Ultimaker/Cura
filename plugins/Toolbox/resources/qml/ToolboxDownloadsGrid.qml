@@ -38,7 +38,7 @@ Column
             delegate: Loader
             {
                 asynchronous: true
-                width: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns
+                width: Math.round((grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns)
                 height: UM.Theme.getSize("toolbox_thumbnail_small").height
                 source: "ToolboxDownloadsGridTile.qml"
             }
