@@ -113,7 +113,7 @@ Item
             id: disabledLabel
             visible: !base.enabled
             leftPadding: background.padding
-            text: catalog.i18nc("@label default disabled text", "This component is disabled")
+            text: ""
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
