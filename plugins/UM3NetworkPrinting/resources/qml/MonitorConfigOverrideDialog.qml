@@ -48,10 +48,7 @@ UM.Dialog
         anchors
         {
             fill: parent
-            leftMargin: 60
-            rightMargin: 60
-            topMargin: 18
-            bottomMargin: 56
+            margins: 60 * screenScaleFactor // TODO: Theme!
         }
         wrapMode: Text.WordWrap
         text:
