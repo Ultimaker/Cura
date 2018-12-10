@@ -36,6 +36,11 @@ class CloudApiClient(NetworkClient):
         self._account = account
         self._on_error = on_error
 
+    ## Gets the account used for the API.
+    @property
+    def account(self) -> Account:
+        return self._account
+
     ## Retrieves all the clusters for the user that is currently logged in.
     #  \param on_finished: The function to be called after the result is parsed.
     def getClusters(self, on_finished: Callable[[List[CloudCluster]], any]) -> None:
@@ -46,7 +51,7 @@ class CloudApiClient(NetworkClient):
     #  \param cluster_id: The ID of the cluster.
     #  \param on_finished: The function to be called after the result is parsed.
     def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], any]) -> None:
-        url = "{}/cluster/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
+        url = "{}/clusters/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
         self.get(url, on_finished=self._wrapCallback(on_finished, CloudClusterStatus))
 
     ## Requests the cloud to register the upload of a print job mesh.

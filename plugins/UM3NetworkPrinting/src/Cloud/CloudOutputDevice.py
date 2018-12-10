@@ -13,7 +13,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
-from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
@@ -93,7 +92,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._setInterfaceElements()
 
         self._device_id = device_id
-        self._account = CuraApplication.getInstance().getCuraAPI().account
+        self._account = api_client.account
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -173,10 +172,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             content_type = mesh_format.mime_type,
         )
         self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh_bytes, response))
-
-    ##  Called when the connection to the cluster changes.
-    def connect(self) -> None:
-        super().connect()
 
     ##  Called when the network data should be updated.
     def _update(self) -> None:

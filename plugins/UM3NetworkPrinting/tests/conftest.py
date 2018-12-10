@@ -1,13 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest
-import Arcus #Prevents error: "PyCapsule_GetPointer called with incorrect name" with conflicting SIP configurations between Arcus and PyQt: Import Arcus first!
-from UM.Qt.QtApplication import QtApplication # QT application import is required, even though it isn't used.
-from UM.Application import Application
 from UM.Signal import Signal
 
 from cura.CuraApplication import CuraApplication
+from cura.Machines.MaterialManager import MaterialManager
 
 
 # This mock application must extend from Application and not QtApplication otherwise some QObjects are created and
@@ -17,6 +15,11 @@ class FixtureApplication(CuraApplication):
         super().__init__()
         super().initialize()
         Signal._signalQueue = self
+
+        self.getPreferences().addPreference("cura/favorite_materials", "")
+
+        self._material_manager = MaterialManager(self._container_registry, parent = self)
+        self._material_manager.initialize()
 
     def functionEvent(self, event):
         event.call()

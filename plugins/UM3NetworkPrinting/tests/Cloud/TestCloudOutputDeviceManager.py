@@ -1,5 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import json
+import os
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -11,13 +13,17 @@ from .NetworkManagerMock import NetworkManagerMock
 
 @patch("cura.NetworkClient.QNetworkAccessManager")
 class TestCloudOutputDeviceManager(TestCase):
+    URL = "https://api-staging.ultimaker.com/connect/v1/clusters"
+    with open("{}/Fixtures/clusters.json".format(os.path.dirname(__file__)), "rb") as f:
+        DEFAULT_RESPONSE = f.read()
 
     def setUp(self):
         super().setUp()
         self.app = CuraApplication.getInstance()
         self.network = NetworkManagerMock()
         self.manager = CloudOutputDeviceManager()
-        self.clusters_response = self.network.prepareGetClusters()
+        self.clusters_response = json.loads(self.DEFAULT_RESPONSE.decode())
+        self.network.prepareReply("GET", self.URL, 200, self.DEFAULT_RESPONSE)
 
     def tearDown(self):
         try:
@@ -58,7 +64,7 @@ class TestCloudOutputDeviceManager(TestCase):
 
         # update the cluster from member variable, which is checked at tearDown
         self.clusters_response["data"][0]["host_name"] = "New host name"
-        self.network.prepareGetClusters(self.clusters_response)
+        self.network.prepareReply("GET", self.URL, 200, self.clusters_response)
 
         self.manager._update_timer.timeout.emit()
 
@@ -67,7 +73,7 @@ class TestCloudOutputDeviceManager(TestCase):
 
         # delete the cluster from member variable, which is checked at tearDown
         del self.clusters_response["data"][1]
-        self.network.prepareGetClusters(self.clusters_response)
+        self.network.prepareReply("GET", self.URL, 200, self.clusters_response)
 
         self.manager._update_timer.timeout.emit()
 
@@ -104,7 +110,7 @@ class TestCloudOutputDeviceManager(TestCase):
     @patch("UM.Message.Message.show")
     def test_api_error(self, message_mock, network_mock):
         self.clusters_response = {"errors": [{"id": "notFound", "title": "Not found!", "http_status": "404"}]}
-        self.network.prepareGetClusters(self.clusters_response)
+        self.network.prepareReply("GET", self.URL, 200, self.clusters_response)
         self._loadData(network_mock)
         self.network.flushReplies()
         message_mock.assert_called_once_with()

@@ -1,8 +1,5 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List, Optional
-
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
 from .CloudClusterPrinterConfigurationMaterial import CloudClusterPrinterConfigurationMaterial

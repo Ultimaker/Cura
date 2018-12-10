@@ -1,8 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-import os
-from typing import Dict, Tuple, Optional
+from typing import Dict, Tuple, Union
 from unittest.mock import MagicMock
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
@@ -52,37 +51,14 @@ class NetworkManagerMock:
     #  \param url: The URL being requested.
     #  \param status_code: The HTTP status code for the response.
     #  \param response: The response body from the server (generally json-encoded).
-    def prepareReply(self, method: str, url: str, status_code: int, response: bytes) -> None:
+    def prepareReply(self, method: str, url: str, status_code: int, response: Union[bytes, dict]) -> None:
         reply_mock = MagicMock()
         reply_mock.url().toString.return_value = url
         reply_mock.operation.return_value = self._OPERATIONS[method]
         reply_mock.attribute.return_value = status_code
-        reply_mock.readAll.return_value = response
+        reply_mock.readAll.return_value = response if isinstance(response, bytes) else json.dumps(response).encode()
         self.replies[method, url] = reply_mock
         Logger.log("i", "Prepared mock {}-response to {} {}", status_code, method, url)
-
-    ## Prepares a reply for the API call to get clusters.
-    #  \param data: The data the server should return. If not given, a default response will be used.
-    #  \return The data in the response.
-    def prepareGetClusters(self, data: Optional[dict] = None) -> dict:
-        data, response = self._getResponseData("clusters", data)
-        status_code = 200 if "data" in data else int(data["errors"][0]["http_status"])
-        self.prepareReply("GET", "https://api-staging.ultimaker.com/connect/v1/clusters", status_code, response)
-        return data
-
-    ## Gets the data that should be in the server's response in both dictionary and JSON-encoded bytes format.
-    #  \param fixture_name: The name of the fixture.
-    #  \param data: The data that should be returned (optional)
-    #  \return The server's response in both dictionary and JSON-encoded bytes format.
-    @staticmethod
-    def _getResponseData(fixture_name: str, data: Optional[dict] = None) -> Tuple[dict, bytes]:
-        if data is None:
-            with open("{}/Fixtures/{}.json".format(os.path.dirname(__file__), fixture_name), "rb") as f:
-                response = f.read()
-            data = json.loads(response.decode())
-        else:
-            response = json.dumps(data).encode()
-        return data, response
 
     ## Emits the signal that the reply is ready to all prepared replies.
     def flushReplies(self):
