@@ -17,12 +17,6 @@ parser.add_argument("--debug",
                     default = False,
                     help = "Turn on the debug mode by setting this option."
                     )
-parser.add_argument("--trigger-early-crash",
-                    dest = "trigger_early_crash",
-                    action = "store_true",
-                    default = False,
-                    help = "FOR TESTING ONLY. Trigger an early crash to show the crash dialog."
-                    )
 known_args = vars(parser.parse_known_args()[0])
 
 if not known_args["debug"]:
