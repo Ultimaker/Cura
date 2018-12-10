@@ -71,7 +71,15 @@ Item
 
     function toggleContent()
     {
-        content.visible = !content.visible
+        content.visible = !expanded
+    }
+
+    // Add this binding since the background color is not updated otherwise
+    Binding
+    {
+        target: background
+        property: "color"
+        value: expanded ? headerActiveColor : headerBackgroundColor
     }
 
     implicitHeight: 100 * screenScaleFactor
@@ -82,7 +90,7 @@ Item
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
 
-        color: headerBackgroundColor
+        color: expanded ? headerActiveColor : headerBackgroundColor
         anchors.fill: parent
 
         Loader
