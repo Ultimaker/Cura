@@ -617,7 +617,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # This can happen if the connected machine has no material in one or more extruders (if GUID is empty), or the		
         # material is unknown to Cura, so we should return an "empty" or "unknown" material model.		
         if material_group_list is None:
-            material_name = "Empty" if len(material_data.get("guid", "") == 0 else "Unknown"
+            material_name = "Empty" if len(material_data.get("guid", "")) == 0 else "Unknown"
             return MaterialOutputModel(guid = material_data.get("guid", ""),
                                         type = material_data.get("type", ""),
                                         color = material_data.get("color", ""),
