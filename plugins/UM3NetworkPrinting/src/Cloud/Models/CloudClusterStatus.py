@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Any
 
 from .CloudClusterPrinterStatus import CloudClusterPrinterStatus
 from .CloudClusterPrintJobStatus import CloudClusterPrintJobStatus
@@ -16,8 +16,8 @@ class CloudClusterStatus(BaseCloudModel):
     #  \param print_jobs: The latest status of each print job in the cluster.
     #  \param generated_time: The datetime when the object was generated on the server-side.
     def __init__(self,
-                 printers: List[Union[CloudClusterPrinterStatus, Dict[str, any]]],
-                 print_jobs: List[Union[CloudClusterPrintJobStatus, Dict[str, any]]],
+                 printers: List[Union[CloudClusterPrinterStatus, Dict[str, Any]]],
+                 print_jobs: List[Union[CloudClusterPrintJobStatus, Dict[str, Any]]],
                  generated_time: Union[str, datetime],
                  **kwargs) -> None:
         self.generated_time = self.parseDate(generated_time)

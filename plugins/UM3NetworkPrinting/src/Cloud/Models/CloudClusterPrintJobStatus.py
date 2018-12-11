@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List, Optional, Union, Dict
+from typing import List, Optional, Union, Dict, Any
 
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
@@ -36,12 +36,12 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
     #  \param uuid: UUID of this print job. Should be used for identification purposes.
     def __init__(self, created_at: str, force: bool, machine_variant: str, name: str, started: bool, status: str,
                  time_total: int, uuid: str,
-                 configuration: List[Union[Dict[str, any], CloudClusterPrinterConfiguration]],
-                 constraints: List[Union[Dict[str, any], CloudClusterPrintJobConstraints]],
+                 configuration: List[Union[Dict[str, Any], CloudClusterPrinterConfiguration]],
+                 constraints: List[Union[Dict[str, Any], CloudClusterPrintJobConstraints]],
                  last_seen: Optional[float] = None, network_error_count: Optional[int] = None,
                  owner: Optional[str] = None, printer_uuid: Optional[str] = None, time_elapsed: Optional[int] = None,
                  assigned_to: Optional[str] = None, **kwargs) -> None:
-        self.assigned_to = assigned_to  # type: str
+        self.assigned_to = assigned_to
         self.configuration = self.parseModels(CloudClusterPrinterConfiguration, configuration)
         self.constraints = self.parseModels(CloudClusterPrintJobConstraints, constraints)
         self.created_at = created_at

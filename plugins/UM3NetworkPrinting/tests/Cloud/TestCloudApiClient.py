@@ -2,22 +2,23 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
+from typing import List
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from cura.CuraApplication import CuraApplication
 from src.Cloud.CloudApiClient import CloudApiClient
-from src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
 from src.Cloud.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from src.Cloud.Models.CloudErrorObject import CloudErrorObject
 from tests.Cloud.Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
 
 @patch("cura.NetworkClient.QNetworkAccessManager")
 class TestCloudApiClient(TestCase):
-    def _errorHandler(self):
-        pass
+    def _errorHandler(self, errors: List[CloudErrorObject]):
+        raise Exception("Received unexpected error: {}".format(errors))
 
     def setUp(self):
         super().setUp()
@@ -26,7 +27,6 @@ class TestCloudApiClient(TestCase):
 
         self.app = CuraApplication.getInstance()
         self.network = NetworkManagerMock()
-        self.manager = CloudOutputDeviceManager()
         self.api = CloudApiClient(self.account, self._errorHandler)
 
     def test_GetClusters(self, network_mock):

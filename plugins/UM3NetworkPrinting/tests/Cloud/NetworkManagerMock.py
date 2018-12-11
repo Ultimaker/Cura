@@ -14,9 +14,6 @@ from UM.Signal import Signal
 #  After patching the QNetworkManager class, requests are prepared before they can be executed.
 #  Any requests not prepared beforehand will cause KeyErrors.
 class NetworkManagerMock:
-    # signals used in the network manager.
-    finished = Signal()
-    authenticationRequired = Signal()
 
     # an enumeration of the supported operations and their code for the network access manager.
     _OPERATIONS = {
@@ -32,6 +29,10 @@ class NetworkManagerMock:
         # a dict with the prepared replies, using the format {(http_method, url): reply}
         self.replies = {}  # type: Dict[Tuple[str, str], QNetworkReply]
         self.request_bodies = {}  # type: Dict[Tuple[str, str], bytes]
+
+        # signals used in the network manager.
+        self.finished = Signal()
+        self.authenticationRequired = Signal()
 
     ## Mock implementation  of the get, post, put, delete and head methods from the network manager.
     #  Since the methods are very simple and the same it didn't make sense to repeat the code.

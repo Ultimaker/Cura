@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List, Union, Dict, Optional
+from typing import List, Union, Dict, Optional, Any
 
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -24,7 +24,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
     #  \param reserved_by: A printer can be claimed by a specific print job.
     def __init__(self, enabled: bool, firmware_version: str, friendly_name: str, ip_address: str, machine_variant: str,
                  status: str, unique_name: str, uuid: str,
-                 configuration: List[Union[Dict[str, any], CloudClusterPrinterConfiguration]],
+                 configuration: List[Union[Dict[str, Any], CloudClusterPrinterConfiguration]],
                  reserved_by: Optional[str] = None, **kwargs) -> None:
 
         self.configuration = self.parseModels(CloudClusterPrinterConfiguration, configuration)

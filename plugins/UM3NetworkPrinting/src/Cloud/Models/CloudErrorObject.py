@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 
 from .BaseCloudModel import BaseCloudModel
 
@@ -18,7 +18,7 @@ class CloudErrorObject(BaseCloudModel):
     #  \param http_status: The HTTP status code applicable to this problem, converted to string.
     #  \param meta: Non-standard meta-information about the error, depending on the error code.
     def __init__(self, id: str, code: str, title: str, http_status: str, detail: Optional[str] = None,
-                 meta: Optional[Dict[str, any]] = None, **kwargs) -> None:
+                 meta: Optional[Dict[str, Any]] = None, **kwargs) -> None:
         self.id = id
         self.code = code
         self.http_status = http_status

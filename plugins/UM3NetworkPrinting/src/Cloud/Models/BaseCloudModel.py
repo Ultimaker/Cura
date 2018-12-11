@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime, timezone
-from typing import Dict, Union, TypeVar, Type, List
+from typing import Dict, Union, TypeVar, Type, List, Any
 
 from ...Models import BaseModel
 
@@ -21,7 +21,7 @@ class BaseCloudModel(BaseModel):
         return type(self) != type(other) or self.toDict() != other.toDict()
 
     ## Converts the model into a serializable dictionary
-    def toDict(self) -> Dict[str, any]:
+    def toDict(self) -> Dict[str, Any]:
         return self.__dict__
 
     # Type variable used in the parse methods below, which should be a subclass of BaseModel.
@@ -32,7 +32,7 @@ class BaseCloudModel(BaseModel):
     #  \param values: The value of the model, which is usually a dictionary, but may also be already parsed.
     #  \return An instance of the model_class given.
     @staticmethod
-    def parseModel(model_class: Type[T], values: Union[T, Dict[str, any]]) -> T:
+    def parseModel(model_class: Type[T], values: Union[T, Dict[str, Any]]) -> T:
         if isinstance(values, dict):
             return model_class(**values)
         return values
@@ -42,7 +42,7 @@ class BaseCloudModel(BaseModel):
     #  \param values: The value of the list. Each value is usually a dictionary, but may also be already parsed.
     #  \return A list of instances of the model_class given.
     @classmethod
-    def parseModels(cls, model_class: Type[T], values: List[Union[T, Dict[str, any]]]) -> List[T]:
+    def parseModels(cls, model_class: Type[T], values: List[Union[T, Dict[str, Any]]]) -> List[T]:
         return [cls.parseModel(model_class, value) for value in values]
 
     ## Parses the given date string.

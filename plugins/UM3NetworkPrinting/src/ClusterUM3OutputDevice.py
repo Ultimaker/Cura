@@ -56,7 +56,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._number_of_extruders = 2
 
-        self._dummy_lambdas = ("", {}, io.BytesIO()) #type: Tuple[str, Dict, Union[io.StringIO, io.BytesIO]]
+        self._dummy_lambdas = ("", {}, io.BytesIO()
+                               )  # type: Tuple[str, Dict[str, Union[str, int, bool]], Union[io.StringIO, io.BytesIO]]
 
         self._print_jobs = [] # type: List[UM3PrintJobOutputModel]
         self._received_print_jobs = False # type: bool
@@ -254,7 +255,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
             # timeout responses if this happens.
             self._last_response_time = time()
-            if self._progress_message and new_progress > self._progress_message.getProgress():
+            old_progress = self._progress_message.getProgress()
+            if self._progress_message and (old_progress is None or new_progress > old_progress):
                 self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
 
@@ -344,28 +346,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(int, result = str)
     def getDateCompleted(self, time_remaining: int) -> str:
         return formatDateCompleted(time_remaining)
-
-    @pyqtSlot(int, result = str)
-    def getDateCompleted(self, time_remaining: int) -> str:
-        current_time = time()
-        completed = datetime.fromtimestamp(current_time + time_remaining)
-        today = datetime.fromtimestamp(current_time)
-
-        # If finishing date is more than 7 days out, using "Mon Dec 3 at HH:MM" format
-        if completed.toordinal() > today.toordinal() + 7:
-            return completed.strftime("%a %b ") + "{day}".format(day=completed.day)
-        
-        # If finishing date is within the next week, use "Monday at HH:MM" format
-        elif completed.toordinal() > today.toordinal() + 1:
-            return completed.strftime("%a")
-        
-        # If finishing tomorrow, use "tomorrow at HH:MM" format
-        elif completed.toordinal() > today.toordinal():
-            return "tomorrow"
-
-        # If finishing today, use "today at HH:MM" format
-        else:
-            return "today"
 
     @pyqtSlot(str)
     def sendJobToTop(self, print_job_uuid: str) -> None:

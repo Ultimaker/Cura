@@ -1,13 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
-from typing import Optional, TYPE_CHECKING, List
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QImage
+from typing import List
+
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-
+from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from .ConfigurationChangeModel import ConfigurationChangeModel
 
 

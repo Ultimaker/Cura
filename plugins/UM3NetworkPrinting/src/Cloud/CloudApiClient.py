@@ -31,7 +31,7 @@ class CloudApiClient(NetworkClient):
     ## Initializes a new cloud API client.
     #  \param account: The user's account object
     #  \param on_error: The callback to be called whenever we receive errors from the server.
-    def __init__(self, account: Account, on_error: Callable[[List[CloudErrorObject]], None]):
+    def __init__(self, account: Account, on_error: Callable[[List[CloudErrorObject]], None]) -> None:
         super().__init__()
         self._account = account
         self._on_error = on_error
