@@ -5,7 +5,7 @@ from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 
 class CloudOutputController(PrinterOutputController):
-    def __init__(self, output_device: OutputDevice):
+    def __init__(self, output_device: OutputDevice) -> None:
         super().__init__(output_device)
         
         # The cloud connection only supports fetching the printer and queue status and adding a job to the queue.
