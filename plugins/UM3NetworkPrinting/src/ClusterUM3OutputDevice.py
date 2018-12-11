@@ -551,7 +551,24 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _createMaterialOutputModel(self, material_data: Dict[str, Any]) -> "MaterialOutputModel":
         material_manager = CuraApplication.getInstance().getMaterialManager()
-        material_group_list = material_manager.getMaterialGroupListByGUID(material_data["guid"])
+        material_group_list = None
+
+        # Avoid crashing if there is no "guid" field in the metadata
+        material_guid = material_data.get("guid")
+        if material_guid:
+            material_group_list = material_manager.getMaterialGroupListByGUID(material_guid)
+
+        # This can happen if the connected machine has no material in one or more extruders (if GUID is empty), or the		
+        # material is unknown to Cura, so we should return an "empty" or "unknown" material model.		
+        if material_group_list is None:
+            material_name = i18n_catalog.i18nc("@label:material", "Empty") if len(material_data.get("guid", "")) == 0 \
+                        else i18n_catalog.i18nc("@label:material", "Unknown")
+            return MaterialOutputModel(guid = material_data.get("guid", ""),
+                                        type = material_data.get("type", ""),
+                                        color = material_data.get("color", ""),
+                                        brand = material_data.get("brand", ""),
+                                        name = material_data.get("name", material_name)
+                                        )
 
         # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
         read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
@@ -577,9 +594,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             color = material_data["color"]
             brand = material_data["brand"]
             material_type = material_data["material"]
-            name = "Empty" if material_data["material"] == "empty" else "Unknown"
-        return MaterialOutputModel(guid=material_data["guid"], type=material_type,
-                                       brand=brand, color=color, name=name)
+            name = i18n_catalog.i18nc("@label:material", "Empty") if material_data["material"] == "empty" \
+                else i18n_catalog.i18nc("@label:material", "Unknown")
+        return MaterialOutputModel(guid = material_data["guid"], type = material_type,
+                                   brand = brand, color = color, name = name)
 
     def _updatePrinter(self, printer: PrinterOutputModel, data: Dict[str, Any]) -> None:
         # For some unknown reason the cluster wants UUID for everything, except for sending a job directly to a printer.
