@@ -59,7 +59,7 @@ class BaseMaterialsModel(ListModel):
         self._extruder_stack = None
 
         self._available_materials = None  # type: Optional[Dict[str, MaterialNode]]
-        self._favorite_ids = set()  # type: Set(str)
+        self._favorite_ids = set()  # type: Set[str]
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
