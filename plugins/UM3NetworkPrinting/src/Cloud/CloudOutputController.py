@@ -1,10 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from UM.OutputDevice.OutputDevice import OutputDevice
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 
 class CloudOutputController(PrinterOutputController):
-    def __init__(self, output_device):
+    def __init__(self, output_device: OutputDevice):
         super().__init__(output_device)
         
         # The cloud connection only supports fetching the printer and queue status and adding a job to the queue.
