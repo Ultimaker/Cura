@@ -60,6 +60,7 @@ Cura.ExpandablePopup
             {
                 left: title.right
                 leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
             }
             height: parent.height
             elide: Text.ElideRight

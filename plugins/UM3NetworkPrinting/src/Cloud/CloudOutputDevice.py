@@ -96,9 +96,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                   "../../resources/qml/ClusterMonitorItem.qml")
-        self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                   "../../resources/qml/ClusterControlItem.qml")
+                                                   "../../resources/qml/MonitorStage.qml")
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)

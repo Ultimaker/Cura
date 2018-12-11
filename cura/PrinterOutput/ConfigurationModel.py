@@ -44,7 +44,7 @@ class ConfigurationModel(QObject):
 
     @pyqtProperty(str, fset = setBuildplateConfiguration, notify = configurationChanged)
     def buildplateConfiguration(self) -> str:
-        return self._buildplate_configuration
+        return self._buildplate_configuration.capitalize()
 
     ##  This method is intended to indicate whether the configuration is valid or not.
     #   The method checks if the mandatory fields are or not set

@@ -1,3 +1,6 @@
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
@@ -33,6 +36,9 @@ Item
     property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
 
     property alias enabled: mouseArea.enabled
+
+    // Text to show when this component is disabled
+    property alias disabledText: disabledLabel.text
 
     // Defines the alignment of the content with respect of the headerItem, by default to the right
     property int contentAlignment: ExpandablePopup.ContentAlignment.AlignRight
@@ -83,6 +89,14 @@ Item
         }
     }
 
+    // Add this binding since the background color is not updated otherwise
+    Binding
+    {
+        target: background
+        property: "color"
+        value: enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
+    }
+
     implicitHeight: 100 * screenScaleFactor
     implicitWidth: 400 * screenScaleFactor
 
@@ -91,47 +105,66 @@ Item
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
 
-        color: headerBackgroundColor
+        color: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
         anchors.fill: parent
 
-        Loader
+        Label
         {
-            id: headerItemLoader
-            anchors
-            {
-                left: parent.left
-                right: collapseButton.visible ? collapseButton.left : parent.right
-                top: parent.top
-                bottom: parent.bottom
-                margins: background.padding
-            }
+            id: disabledLabel
+            visible: !base.enabled
+            leftPadding: background.padding
+            text: ""
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            color: UM.Theme.getColor("text")
+            height: parent.height
         }
 
-        // A highlight that is shown when the content is expanded
-        Rectangle
+        Item
         {
-            id: expandedHighlight
-            width: parent.width
-            height: UM.Theme.getSize("thick_lining").height
-            color: UM.Theme.getColor("primary")
-            visible: expanded
-            anchors.bottom: parent.bottom
-        }
+            anchors.fill: parent
+            visible: base.enabled
 
-        UM.RecolorImage
-        {
-            id: collapseButton
-            anchors
+            Loader
             {
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-                margins: background.padding
+                id: headerItemLoader
+                anchors
+                {
+                    left: parent.left
+                    right: collapseButton.visible ? collapseButton.left : parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                    margins: background.padding
+                }
             }
-            source: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
-            visible: source != "" && base.enabled
-            width: UM.Theme.getSize("standard_arrow").width
-            height: UM.Theme.getSize("standard_arrow").height
-            color: UM.Theme.getColor("small_button_text")
+
+            // A highlight that is shown when the content is expanded
+            Rectangle
+            {
+                id: expandedHighlight
+                width: parent.width
+                height: UM.Theme.getSize("thick_lining").height
+                color: UM.Theme.getColor("primary")
+                visible: expanded
+                anchors.bottom: parent.bottom
+            }
+
+            UM.RecolorImage
+            {
+                id: collapseButton
+                anchors
+                {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: background.padding
+                }
+                source: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                visible: source != ""
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                color: UM.Theme.getColor("small_button_text")
+            }
         }
 
         MouseArea
@@ -141,7 +174,7 @@ Item
             onClicked: toggleContent()
             hoverEnabled: true
             onEntered: background.color = headerHoverColor
-            onExited: background.color = headerBackgroundColor
+            onExited: background.color = base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
         }
     }
 

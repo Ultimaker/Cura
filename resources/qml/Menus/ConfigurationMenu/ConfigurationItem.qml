@@ -29,7 +29,7 @@ Button
             id: contentColumn
             width: parent.width
             padding: UM.Theme.getSize("wide_margin").width
-            spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
+            spacing: UM.Theme.getSize("narrow_margin").height
 
             Row
             {

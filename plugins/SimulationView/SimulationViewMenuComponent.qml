@@ -16,6 +16,7 @@ Cura.ExpandableComponent
     id: base
 
     width: UM.Theme.getSize("layerview_menu_size").width
+    contentHeaderTitle: catalog.i18nc("@label", "Color scheme")
 
     Connections
     {
