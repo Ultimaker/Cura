@@ -123,17 +123,6 @@ UM.MainWindow
                     }
                 }
             }
-
-            // This is the new fancy pattern
-            Image
-            {
-                id: backgroundPattern
-                anchors.fill: parent
-                fillMode: Image.Tile
-                source: UM.Theme.getImage("header_pattern")
-                horizontalAlignment: Image.AlignLeft
-                verticalAlignment: Image.AlignTop
-            }
         }
 
         MainWindowHeader
