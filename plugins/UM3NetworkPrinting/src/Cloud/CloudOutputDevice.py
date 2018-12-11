@@ -323,8 +323,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             Message(
                 text = message,
                 title = T.ERROR,
-                lifetime = 10,
-                dismissable = True
+                lifetime = 10
             ).show()
         self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeError.emit()
@@ -337,8 +336,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         Message(
             text = T.UPLOAD_SUCCESS_TEXT,
             title = T.UPLOAD_SUCCESS_TITLE,
-            lifetime = 5,
-            dismissable = True,
+            lifetime = 5
         ).show()
         self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeFinished.emit()
