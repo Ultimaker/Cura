@@ -143,9 +143,7 @@ Item
 
             Label
             {
-                // If the user voted, show that value. Otherwsie show the average rating.
-                property real ratingtoUse: model.user_rating == 0 ? model.average_rating: model.user_rating
-                text: ratingtoUse.toFixed(1) + " (" + model.num_ratings + " " + catalog.i18nc("@label", "ratings") + ")"
+                text: model.average_rating.toFixed(1) + " (" + model.num_ratings + " " + catalog.i18nc("@label", "ratings") + ")"
                 verticalAlignment: Text.AlignVCenter
                 height: starIcon.height
                 anchors.verticalCenter: starIcon.verticalCenter
