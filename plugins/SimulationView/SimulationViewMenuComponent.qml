@@ -35,14 +35,36 @@ Cura.ExpandableComponent
         }
     }
 
-    headerItem: Label
+    headerItem: Item
     {
-        id: layerViewTypesLabel
-        text: catalog.i18nc("@label", "Color scheme")
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("setting_control_text")
-        height: base.height
-        verticalAlignment: Text.AlignVCenter
+        Label
+        {
+            id: colorSchemeLabel
+            text: catalog.i18nc("@label", "Color scheme")
+            verticalAlignment: Text.AlignVCenter
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_medium")
+            renderType: Text.NativeRendering
+        }
+
+        Label
+        {
+            text: layerTypeCombobox.currentText
+            verticalAlignment: Text.AlignVCenter
+            anchors
+            {
+                left: colorSchemeLabel.right
+                leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
+            }
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
+        }
     }
 
     contentItem: Column
@@ -125,7 +147,7 @@ Cura.ExpandableComponent
         Label
         {
             id: compatibilityModeLabel
-            text: catalog.i18nc("@label","Compatibility Mode")
+            text: catalog.i18nc("@label", "Compatibility Mode")
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             visible: UM.SimulationView.compatibilityMode
@@ -136,7 +158,7 @@ Cura.ExpandableComponent
 
         Item  // Spacer
         {
-            height: Math.round(UM.Theme.getSize("default_margin").width / 2)
+            height: UM.Theme.getSize("narrow_margin").width
             width: width
         }
 
