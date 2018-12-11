@@ -203,7 +203,7 @@ class NetworkClient:
     ##  Does a POST request with form data to the given URL.
     def postForm(self, url: str, header_data: str, body_data: bytes,
                  on_finished: Optional[Callable[[QNetworkReply], None]],
-                 on_progress: Callable = None) -> None:
+                 on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         post_part = QHttpPart()
         post_part.setHeader(QNetworkRequest.ContentDispositionHeader, header_data)
         post_part.setBody(body_data)
@@ -212,7 +212,7 @@ class NetworkClient:
     ##  Does a POST request with form parts to the given URL.
     def postFormWithParts(self, target: str, parts: List[QHttpPart],
                           on_finished: Optional[Callable[[QNetworkReply], None]],
-                          on_progress: Callable = None) -> Optional[QNetworkReply]:
+                          on_progress: Optional[Callable[[int, int], None]] = None) -> Optional[QNetworkReply]:
         self._validateManager()
         
         request = self._createEmptyRequest(target, content_type = None)
