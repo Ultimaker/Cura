@@ -61,7 +61,7 @@ UM.Dialog
             var topLine
             if (materialsAreKnown(printer.activePrintJob))
             {
-                topLine = catalog.i18ncp("@label", "The assigned printer, %1, requires the following configuration change:", "The assigned printer, %1, requires the following configuration changes:").arg(printer.name)
+                topLine = catalog.i18ncp("@label", "The assigned printer, %1, requires the following configuration change:", "The assigned printer, %1, requires the following configuration changes:", printer.activePrintJob.configurationChanges.length).arg(printer.name)
             }
             else
             {
@@ -89,8 +89,10 @@ UM.Dialog
                     default:
                         text = "unknown"
                 }
-                result += "<p><b>" + text + "</b></p>"
+                result += "<p><b>" + text + "</b></p>\n\n"
             }
+            var bottomLine = catalog.i18nc("@label", "Override will use the specified settings with the existing printer configuration. This may result in a failed print.")
+            result += "<p>" + bottomLine + "</p>\n\n"
             return result
         }
     }
