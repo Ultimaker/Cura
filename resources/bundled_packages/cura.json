@@ -356,6 +356,23 @@
             }
         }
     },
+   "PreviewStage": {
+        "package_info": {
+            "package_id": "PreviewStage",
+            "package_type": "plugin",
+            "display_name": "Preview Stage",
+            "description": "Provides a preview stage in Cura.",
+            "package_version": "1.0.0",
+            "sdk_version": 5,
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "RemovableDriveOutputDevice": {
         "package_info": {
             "package_id": "RemovableDriveOutputDevice",

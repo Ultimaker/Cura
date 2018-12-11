@@ -31,7 +31,7 @@ UM.Dialog
 
     Item
     {
-        UM.I18nCatalog{id: catalog; name:"cura"}
+        UM.I18nCatalog{id: catalog; name: "cura"}
         id: base
         property int columnWidth: Math.round((base.width / 2) - UM.Theme.getSize("default_margin").width)
         property int textMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
@@ -141,7 +141,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.7)
                                     height: Math.round(control.height / 2.7)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: palette.text
                                     source: UM.Theme.getIcon("cross1")
@@ -176,7 +175,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.5)
                                     height: Math.round(control.height / 2.5)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
                                     source: UM.Theme.getIcon("arrow_bottom")
@@ -211,7 +209,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.5)
                                     height: Math.round(control.height / 2.5)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
                                     source: UM.Theme.getIcon("arrow_top")
@@ -260,7 +257,7 @@ UM.Dialog
 
         Rectangle
         {
-            color: UM.Theme.getColor("sidebar")
+            color: UM.Theme.getColor("main_background")
             anchors.left: activeScripts.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
@@ -415,7 +412,7 @@ UM.Dialog
             }
         }
 
-        Cura.SidebarTooltip
+        Cura.PrintSetupTooltip
         {
             id: tooltip
         }
@@ -498,7 +495,6 @@ UM.Dialog
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.round(parent.width / 2)
                     height: Math.round(parent.height / 2)
-                    sourceSize.width: width
                     sourceSize.height: height
                     color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :
                                control.pressed ? UM.Theme.getColor("action_button_active_text") :

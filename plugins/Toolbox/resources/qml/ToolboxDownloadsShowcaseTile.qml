@@ -48,8 +48,6 @@ Rectangle
                 right: parent.right
                 bottomMargin: UM.Theme.getSize("default_lining").width
             }
-            sourceSize.width: width
-            sourceSize.height: height
             visible: installedPackages != 0
             color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
             source: "../images/installed_check.svg"

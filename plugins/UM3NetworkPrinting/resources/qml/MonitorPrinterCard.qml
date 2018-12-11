@@ -3,6 +3,7 @@
 
 import QtQuick 2.3
 import QtQuick.Controls 2.0
+import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
 /**
@@ -66,7 +67,7 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                width: 216 * screenScaleFactor // TODO: Theme!
+                width: 180 * screenScaleFactor // TODO: Theme!
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
 
                 Label
@@ -150,7 +151,7 @@ Item
         }
         border
         {
-            color: "#EAEAEC" // TODO: Theme!
+            color: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "#EAEAEC" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
         color: "white" // TODO: Theme!
@@ -185,14 +186,15 @@ Item
                     }
                     if (printer && printer.state == "unreachable")
                     {
-                        return catalog.i18nc("@label:status", "Unreachable")
+                        return catalog.i18nc("@label:status", "Unavailable")
                     }
-                    if (printer && printer.state == "idle")
+                    if (printer && !printer.activePrintJob && printer.state == "idle")
                     {
                         return catalog.i18nc("@label:status", "Idle")
                     }
                     return ""
                 }
+                visible: text !== ""
             }
 
             Item
@@ -218,7 +220,7 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                width: 216 * screenScaleFactor // TODO: Theme!
+                width: 180 * screenScaleFactor // TODO: Theme!
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
                 visible: printer.activePrintJob
 
@@ -247,7 +249,7 @@ Item
                     }
                     color: printer.activePrintJob && printer.activePrintJob.isActive ? "#53657d" : "#babac1" // TODO: Theme!
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("very_small") // 12pt, regular
+                    font: UM.Theme.getFont("default") // 12pt, regular
                     text: printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
                     width: parent.width
 
@@ -264,8 +266,67 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 printJob: printer.activePrintJob
-                visible: printer.activePrintJob
+                visible: printer.activePrintJob && printer.activePrintJob.configurationChanges.length === 0
+            }
+
+            Label
+            {
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                }
+                font: UM.Theme.getFont("default")
+                text: "Requires configuration changes"
+                visible: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0
+
+                // FIXED-LINE-HEIGHT:
+                height: 18 * screenScaleFactor // TODO: Theme!
+                verticalAlignment: Text.AlignVCenter
             }
         }
+
+        Button
+        {
+            id: detailsButton
+            anchors
+            {
+                verticalCenter: parent.verticalCenter
+                right: parent.right
+                rightMargin: 18 * screenScaleFactor // TODO: Theme!
+            }
+            background: Rectangle
+            {
+                color: "#d8d8d8" // TODO: Theme!
+                radius: 2 * screenScaleFactor // Todo: Theme!
+                Rectangle
+                {
+                    anchors.fill: parent
+                    anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
+                    color: detailsButton.hovered ? "#e4e4e4" : "#f0f0f0" // TODO: Theme!
+                    radius: 2 * screenScaleFactor // Todo: Theme!
+                }
+            }
+            contentItem: Label
+            {
+                anchors.fill: parent
+                anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
+                color: "#1e66d7" // TODO: Theme!
+                font: UM.Theme.getFont("medium") // 14pt, regular
+                text: "Details" // TODO: I18NC!
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                height: 18 * screenScaleFactor // TODO: Theme!
+            }
+            implicitHeight: 32 * screenScaleFactor // TODO: Theme!
+            implicitWidth: 96 * screenScaleFactor // TODO: Theme!
+            visible: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0
+            onClicked: overrideConfirmationDialog.open()
+        }
+    }
+
+    MonitorConfigOverrideDialog
+    {
+        id: overrideConfirmationDialog
+        printer: base.printer
     }
 }

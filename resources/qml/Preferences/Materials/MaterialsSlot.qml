@@ -95,8 +95,6 @@ Rectangle
             }
             width: UM.Theme.getSize("favorites_button_icon").width
             height: UM.Theme.getSize("favorites_button_icon").height
-            sourceSize.width: width
-            sourceSize.height: height
             color:
             {
                 if (favorite_button.hovered)

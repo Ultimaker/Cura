@@ -64,6 +64,7 @@ Cura.MachineAction
             width: parent.width
             text: catalog.i18nc("@title:window", "Connect to Networked Printer")
             wrapMode: Text.WordWrap
+            renderType: Text.NativeRendering
             font.pointSize: 18
         }
 
@@ -72,6 +73,7 @@ Cura.MachineAction
             id: pageDescription
             width: parent.width
             wrapMode: Text.WordWrap
+            renderType: Text.NativeRendering
             text: catalog.i18nc("@label", "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n\nSelect your printer from the list below:")
         }
 
@@ -182,6 +184,7 @@ Cura.MachineAction
                                 text: listview.model[index].name
                                 color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
                                 elide: Text.ElideRight
+                                renderType: Text.NativeRendering
                             }
 
                             MouseArea
@@ -204,6 +207,7 @@ Cura.MachineAction
                     anchors.left: parent.left
                     anchors.right: parent.right
                     wrapMode: Text.WordWrap
+                    renderType: Text.NativeRendering
                     text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -221,6 +225,7 @@ Cura.MachineAction
                     text: base.selectedDevice ? base.selectedDevice.name : ""
                     font: UM.Theme.getFont("large")
                     elide: Text.ElideRight
+                    renderType: Text.NativeRendering
                 }
                 Grid
                 {
@@ -231,12 +236,14 @@ Cura.MachineAction
                     {
                         width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
                         text: catalog.i18nc("@label", "Type")
                     }
                     Label
                     {
                         width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
                         text:
                         {
                             if(base.selectedDevice)
@@ -268,24 +275,28 @@ Cura.MachineAction
                     {
                         width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     Label
                     {
                         width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
                         text: base.selectedDevice ? base.selectedDevice.firmwareVersion : ""
                     }
                     Label
                     {
                         width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
                         width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
                         text: base.selectedDevice ? base.selectedDevice.ipAddress : ""
                     }
                 }
@@ -294,6 +305,7 @@ Cura.MachineAction
                 {
                     width: parent.width
                     wrapMode: Text.WordWrap
+                    renderType: Text.NativeRendering
                     text:{
                         // The property cluster size does not exist for older UM3 devices.
                         if(!base.selectedDevice || base.selectedDevice.clusterSize == null || base.selectedDevice.clusterSize == 1)
@@ -315,6 +327,7 @@ Cura.MachineAction
                 {
                     width: parent.width
                     wrapMode: Text.WordWrap
+                    renderType: Text.NativeRendering
                     visible: base.selectedDevice != null && !base.completeProperties
                     text: catalog.i18nc("@label", "The printer at this address has not yet responded." )
                 }
@@ -358,9 +371,10 @@ Cura.MachineAction
 
             Label
             {
-                text: catalog.i18nc("@alabel","Enter the IP address or hostname of your printer on the network.")
+                text: catalog.i18nc("@alabel", "Enter the IP address or hostname of your printer on the network.")
                 width: parent.width
                 wrapMode: Text.WordWrap
+                renderType: Text.NativeRendering
             }
 
             TextField

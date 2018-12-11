@@ -11,31 +11,9 @@ Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View")
     id: base
+    enabled: !PrintInformation.preSliced
 
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
-
-    // main views
-    Instantiator
-    {
-        model: UM.ViewModel{}
-        MenuItem
-        {
-            text: model.name
-            checkable: true
-            checked: model.active
-            exclusiveGroup: group
-            onTriggered: UM.Controller.setActiveView(model.id)
-            enabled: !PrintInformation.preSliced
-        }
-        onObjectAdded: base.insertItem(index, object)
-        onObjectRemoved: base.removeItem(object)
-    }
-    ExclusiveGroup
-    {
-        id: group
-    }
-
-    MenuSeparator {}
 
     Menu
     {
@@ -80,12 +58,6 @@ Menu
 
     MenuSeparator {}
 
-    MenuItem
-    {
-        action: Cura.Actions.expandSidebar
-    }
-
-    MenuSeparator {}
     MenuItem
     {
         action: Cura.Actions.toggleFullScreen

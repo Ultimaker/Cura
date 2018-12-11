@@ -394,21 +394,7 @@ class PrintInformation(QObject):
             return
         active_machine_type_name = global_container_stack.definition.getName()
 
-        abbr_machine = ""
-        for word in re.findall(r"[\w']+", active_machine_type_name):
-            if word.lower() == "ultimaker":
-                abbr_machine += "UM"
-            elif word.isdigit():
-                abbr_machine += word
-            else:
-                stripped_word = self._stripAccents(word.upper())
-                # - use only the first character if the word is too long (> 3 characters)
-                # - use the whole word if it's not too long (<= 3 characters)
-                if len(stripped_word) > 3:
-                    stripped_word = stripped_word[0]
-                abbr_machine += stripped_word
-
-        self._abbr_machine = abbr_machine
+        self._abbr_machine = self._application.getMachineManager().getAbbreviatedMachineName(active_machine_type_name)
 
     ##  Utility method that strips accents from characters (eg: â -> a)
     def _stripAccents(self, to_strip: str) -> str:

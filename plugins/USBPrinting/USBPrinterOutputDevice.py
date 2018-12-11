@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import os
 
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
@@ -64,7 +65,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._accepts_commands = True
 
         self._paused = False
-        self._printer_busy = False # when printer is preheating and waiting (M190/M109), or when waiting for action on the printer
+        self._printer_busy = False  # When printer is preheating and waiting (M190/M109), or when waiting for action on the printer
 
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
@@ -76,6 +77,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._firmware_name_requested = False
         self._firmware_updater = AvrFirmwareUpdater(self)
+
+        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MonitorItem.qml")
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
 

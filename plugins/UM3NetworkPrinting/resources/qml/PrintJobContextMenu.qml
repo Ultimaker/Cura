@@ -182,7 +182,7 @@ Item {
                     abortConfirmationDialog.visible = true;
                     popup.close();
                 }
-                text: printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
+                text: printJob && printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
                 visible: {
                     if (!printJob) {
                         return false;

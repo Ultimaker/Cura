@@ -1,14 +1,16 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
+
 import "Menus"
 import "Menus/ConfigurationMenu"
+
 
 Rectangle
 {
@@ -30,8 +32,8 @@ Rectangle
     property variant printMaterialCosts: PrintInformation.materialCosts
     property variant printMaterialNames: PrintInformation.materialNames
 
-    color: UM.Theme.getColor("sidebar")
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    color: UM.Theme.getColor("main_background")
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     Timer {
         id: tooltipDelayTimer
@@ -70,7 +72,7 @@ Rectangle
         time -= minutes * 60
         var seconds = Math.floor(time);
 
-        var finalTime = strPadLeft(hours, "0", 2) + ':' + strPadLeft(minutes,'0',2)+ ':' + strPadLeft(seconds,'0',2);
+        var finalTime = strPadLeft(hours, "0", 2) + ":" + strPadLeft(minutes, "0", 2) + ":" + strPadLeft(seconds, "0", 2);
         return finalTime;
     }
 
@@ -85,11 +87,11 @@ Rectangle
         }
     }
 
-    MachineSelection
+    MachineSelector
     {
         id: machineSelection
         width: base.width - configSelection.width - separator.width
-        height: UM.Theme.getSize("sidebar_header").height
+        height: UM.Theme.getSize("stage_menu").height
         anchors.top: base.top
         anchors.left: parent.left
     }
@@ -98,21 +100,20 @@ Rectangle
     {
         id: separator
         visible: configSelection.visible
-        width: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
-        height: UM.Theme.getSize("sidebar_header").height
-        color: UM.Theme.getColor("sidebar_lining_thin")
+        width: visible ? Math.round(UM.Theme.getSize("thick_lining").height / 2) : 0
+        height: UM.Theme.getSize("stage_menu").height
+        color: UM.Theme.getColor("thick_lining")
         anchors.left: machineSelection.right
     }
 
-    ConfigurationSelection
+    CustomConfigurationSelector
     {
         id: configSelection
         visible: isNetworkPrinter && printerConnected
         width: visible ? Math.round(base.width * 0.15) : 0
-        height: UM.Theme.getSize("sidebar_header").height
+        height: UM.Theme.getSize("stage_menu").height
         anchors.top: base.top
         anchors.right: parent.right
-        panelWidth: base.width
     }
 
     Loader
@@ -158,10 +159,10 @@ Rectangle
     {
         id: footerSeparator
         width: parent.width
-        height: UM.Theme.getSize("sidebar_lining").height
-        color: UM.Theme.getColor("sidebar_lining")
+        height: UM.Theme.getSize("wide_lining").height
+        color: UM.Theme.getColor("wide_lining")
         anchors.bottom: monitorButton.top
-        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
     }
 
     // MonitorButton is actually the bottom footer panel.
@@ -172,7 +173,7 @@ Rectangle
         anchors.bottom: parent.bottom
     }
 
-    SidebarTooltip
+    PrintSetupTooltip
     {
         id: tooltip
     }

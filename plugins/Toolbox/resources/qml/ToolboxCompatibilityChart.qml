@@ -90,7 +90,7 @@ Item
             model: packageData.supported_configs
             headerDelegate: Rectangle
             {
-                color: UM.Theme.getColor("sidebar")
+                color: UM.Theme.getColor("main_background")
                 height: UM.Theme.getSize("toolbox_chart_row").height
                 Label
                 {
@@ -228,7 +228,7 @@ Item
 
             return result
         }
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
         linkColor: UM.Theme.getColor("text_link")
         onLinkActivated: Qt.openUrlExternally(link)
