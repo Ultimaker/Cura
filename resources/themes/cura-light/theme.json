@@ -407,6 +407,7 @@
         "button_lining": [0, 0],
 
         "action_button": [15.0, 3.0],
+        "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
 
         "small_button": [2, 2],

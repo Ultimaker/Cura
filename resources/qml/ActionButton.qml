@@ -43,12 +43,13 @@ Button
 
     contentItem: Row
     {
+        spacing: UM.Theme.getSize("narrow_margin").width
         //Left side icon. Only displayed if !isIconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconLeft
             source: ""
-            height: buttonText.height
+            height: UM.Theme.getSize("action_button_icon").height
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
@@ -76,7 +77,7 @@ Button
         {
             id: buttonIconRight
             source: buttonIconLeft.source
-            height: buttonText.height
+            height: UM.Theme.getSize("action_button_icon").height
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height

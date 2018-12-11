@@ -60,7 +60,7 @@ Item
         {
             text: catalog.i18nc("@label", "Printer")
             width: Math.round(parent.width * 0.3) - UM.Theme.getSize("default_margin").width
-//            height: contentHeight
+            height: contentHeight
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             anchors.verticalCenter: printerTypeSelector.verticalCenter
