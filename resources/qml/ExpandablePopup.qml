@@ -94,7 +94,20 @@ Item
     {
         target: background
         property: "color"
-        value: enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
+        value: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
+    }
+
+    // The panel needs to close when it becomes disabled
+    Connections
+    {
+        target: base
+        onEnabledChanged:
+        {
+            if (!base.enabled && expanded)
+            {
+                toggleContent()
+            }
+        }
     }
 
     implicitHeight: 100 * screenScaleFactor
