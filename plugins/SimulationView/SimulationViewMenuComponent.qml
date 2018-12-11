@@ -222,25 +222,25 @@ Cura.ExpandableComponent
                 Component.onCompleted:
                 {
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Travels"),
+                        label: catalog.i18nc("@label", "Travels"),
                         initialValue: viewSettings.show_travel_moves,
                         preference: "layerview/show_travel_moves",
                         colorId:  "layerview_move_combing"
                     });
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Helpers"),
+                        label: catalog.i18nc("@label", "Helpers"),
                         initialValue: viewSettings.show_helpers,
                         preference: "layerview/show_helpers",
                         colorId:  "layerview_support"
                     });
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Shell"),
+                        label: catalog.i18nc("@label", "Shell"),
                         initialValue: viewSettings.show_skin,
                         preference: "layerview/show_skin",
                         colorId:  "layerview_inset_0"
                     });
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Infill"),
+                        label: catalog.i18nc("@label", "Infill"),
                         initialValue: viewSettings.show_infill,
                         preference: "layerview/show_infill",
                         colorId:  "layerview_infill"
