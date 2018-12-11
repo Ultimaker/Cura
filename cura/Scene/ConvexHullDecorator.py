@@ -187,7 +187,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
             for child in self._node.getChildren():
                 child_hull = child.callDecoration("_compute2DConvexHull")
                 if child_hull:
-                    points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    try:
+                        points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    except ValueError:
+                        pass
 
                 if points.size < 3:
                     return None
