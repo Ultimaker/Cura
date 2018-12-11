@@ -23,8 +23,8 @@ Item
     {
         id: header
         text: catalog.i18nc("@header", "Custom")
-        font: UM.Theme.getFont("large")
-        color: UM.Theme.getColor("text")
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("small_button_text")
         height: contentHeight
         renderType: Text.NativeRendering
 
@@ -51,9 +51,7 @@ Item
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
             top: header.bottom
             topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
         }
