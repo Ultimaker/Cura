@@ -107,7 +107,7 @@ class PackagesModel(ListModel):
                 "login_required":       "login-required" in package.get("tags", []),
                 "average_rating":       float(package.get("rating", {}).get("average", 0)),
                 "num_ratings":          package.get("rating", {}).get("count", 0),
-                "user_rating":          package.get("rating", {}).get("user", 0)
+                "user_rating":          package.get("rating", {}).get("user_rating", 0)
             })
 
         # Filter on all the key-word arguments.
