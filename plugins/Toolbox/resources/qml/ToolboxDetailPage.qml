@@ -57,16 +57,22 @@ Item
                 top: thumbnail.top
                 left: thumbnail.right
                 leftMargin: UM.Theme.getSize("default_margin").width
-                right: parent.right
-                rightMargin: UM.Theme.getSize("wide_margin").width
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
             text: details === null ? "" : (details.name || "")
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
-            width: parent.width
-            height: UM.Theme.getSize("toolbox_property_label").height
+            width: properties.width + values.width
+            height: contentHeight
+        }
+
+        SmallRatingWidget
+        {
+            anchors.left: title.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: title.verticalCenter
+            property var model: details
         }
 
         Column
@@ -81,6 +87,12 @@ Item
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
             height: childrenRect.height
+            Label
+            {
+                text: catalog.i18nc("@label", "Rating") + ":"
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text_medium")
+            }
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
@@ -105,12 +117,6 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
-            Label
-            {
-                text: catalog.i18nc("@label", "Rating") + ":"
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text_medium")
-            }
         }
         Column
         {
@@ -124,50 +130,6 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             height: childrenRect.height
-            Label
-            {
-                text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-            }
-            Label
-            {
-                text:
-                {
-                    if (details === null)
-                    {
-                        return ""
-                    }
-                    var date = new Date(details.last_updated)
-                    return date.toLocaleString(UM.Preferences.getValue("general/language"))
-                }
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-            }
-            Label
-            {
-                text:
-                {
-                    if (details === null)
-                    {
-                        return ""
-                    }
-                    else
-                    {
-                        return "<a href=\"" + details.website + "\">" + details.author_name + "</a>"
-                    }
-                }
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                linkColor: UM.Theme.getColor("text_link")
-                onLinkActivated: Qt.openUrlExternally(link)
-            }
-            Label
-            {
-                text: details === null ? "" : (details.download_count || catalog.i18nc("@label", "Unknown"))
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-            }
             RatingWidget
             {
                 id: rating
@@ -211,6 +173,50 @@ Item
                         base.selection = toolbox.pluginsShowcaseModel.getItem(index)
                     }
                 }
+            }
+            Label
+            {
+                text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+            }
+            Label
+            {
+                text:
+                {
+                    if (details === null)
+                    {
+                        return ""
+                    }
+                    var date = new Date(details.last_updated)
+                    return date.toLocaleString(UM.Preferences.getValue("general/language"))
+                }
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+            }
+            Label
+            {
+                text:
+                {
+                    if (details === null)
+                    {
+                        return ""
+                    }
+                    else
+                    {
+                        return "<a href=\"" + details.website + "\">" + details.author_name + "</a>"
+                    }
+                }
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+            Label
+            {
+                text: details === null ? "" : (details.download_count || catalog.i18nc("@label", "Unknown"))
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
             }
         }
         Rectangle
