@@ -1,3 +1,5 @@
+from typing import Optional
+
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
@@ -5,12 +7,19 @@ from .BaseCloudModel import BaseCloudModel
 
 
 ##  Class representing a cloud cluster printer configuration
+#  Spec: https://api-staging.ultimaker.com/connect/v1/spec
 class CloudClusterPrinterConfigurationMaterial(BaseCloudModel):
-    def __init__(self, **kwargs) -> None:
-        self.guid = None  # type: str
-        self.brand = None  # type: str
-        self.color = None  # type: str
-        self.material = None  # type: str
+    ## Creates a new material configuration model.
+    #  \param brand: The brand of material in this print core, e.g. 'Ultimaker'.
+    #  \param color: The color of material in this print core, e.g. 'Blue'.
+    #  \param guid: he GUID of the material in this print core, e.g. '506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9'.
+    #  \param material: The type of material in this print core, e.g. 'PLA'.
+    def __init__(self, brand: Optional[str] = None, color: Optional[str] = None, guid: Optional[str] = None,
+                 material: Optional[str] = None, **kwargs) -> None:
+        self.guid = guid
+        self.brand = brand
+        self.color = color
+        self.material = material
         super().__init__(**kwargs)
 
     ## Creates a material output model based on this cloud printer material.

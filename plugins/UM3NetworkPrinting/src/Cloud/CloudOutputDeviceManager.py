@@ -12,7 +12,7 @@ from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
-from .Models.CloudCluster import CloudCluster
+from .Models.CloudClusterResponse import CloudClusterResponse
 from .Models.CloudErrorObject import CloudErrorObject
 from .Utils import findChanges
 
@@ -72,8 +72,8 @@ class CloudOutputDeviceManager:
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
     ##  Callback for when the request for getting the clusters. is finished.
-    def _onGetRemoteClustersFinished(self, clusters: List[CloudCluster]) -> None:
-        online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudCluster]
+    def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
+        online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
 
         removed_devices, added_clusters, updates = findChanges(self._remote_clusters, online_clusters)
 
