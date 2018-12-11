@@ -183,17 +183,16 @@ Cura.ExpandableComponent
 
                 style: UM.Theme.styles.checkbox
 
-                Rectangle
+
+                UM.RecolorImage
                 {
+                    id: swatch
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: extrudersModelCheckBox.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
+                    source: UM.Theme.getIcon("extruder_button")
                     color: model.color
-                    radius: Math.round(width / 2)
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: !viewSettings.show_legend && !viewSettings.show_gradient
                 }
 
                 Label
