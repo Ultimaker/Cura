@@ -229,6 +229,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         removed_jobs, added_jobs, updated_jobs = findChanges(previous, received)
 
         for removed_job in removed_jobs:
+            if removed_job.assignedPrinter:
+                removed_job.assignedPrinter.updateActivePrintJob(None)
+                removed_job.stateChanged.disconnect(self._onPrintJobStateChanged)
             self._print_jobs.remove(removed_job)
 
         for added_job in added_jobs:

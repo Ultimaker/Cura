@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from json import JSONDecodeError
-from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict
+from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
@@ -19,7 +19,7 @@ from .Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
-#  Each method should only handle models instead of exposing any HTTP details.
+#  Each method should only handle models instead of exposing Any HTTP details.
 class CloudApiClient(NetworkClient):
 
     # The cloud URL to use for this remote cluster.
@@ -43,21 +43,21 @@ class CloudApiClient(NetworkClient):
 
     ## Retrieves all the clusters for the user that is currently logged in.
     #  \param on_finished: The function to be called after the result is parsed.
-    def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], any]) -> None:
+    def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
         url = "{}/clusters".format(self.CLUSTER_API_ROOT)
         self.get(url, on_finished=self._wrapCallback(on_finished, CloudClusterResponse))
 
     ## Retrieves the status of the given cluster.
     #  \param cluster_id: The ID of the cluster.
     #  \param on_finished: The function to be called after the result is parsed.
-    def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], any]) -> None:
+    def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], Any]) -> None:
         url = "{}/clusters/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
         self.get(url, on_finished=self._wrapCallback(on_finished, CloudClusterStatus))
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
     #  \param on_finished: The function to be called after the result is parsed.
-    def requestUpload(self, request: CloudPrintJobUploadRequest, on_finished: Callable[[CloudPrintJobResponse], any]
+    def requestUpload(self, request: CloudPrintJobUploadRequest, on_finished: Callable[[CloudPrintJobResponse], Any]
                       ) -> None:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
         body = json.dumps({"data": request.toDict()})
@@ -69,8 +69,8 @@ class CloudApiClient(NetworkClient):
     #  \param on_finished: The function to be called after the result is parsed. It receives the print job ID.
     #  \param on_progress: A function to be called during upload progress. It receives a percentage (0-100).
     #  \param on_error: A function to be called if the upload fails. It receives a dict with the error.
-    def uploadMesh(self, upload_response: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[str], any],
-                   on_progress: Callable[[int], any], on_error: Callable[[dict], any]):
+    def uploadMesh(self, upload_response: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[str], Any],
+                   on_progress: Callable[[int], Any], on_error: Callable[[dict], Any]):
         
         def progressCallback(bytes_sent: int, bytes_total: int) -> None:
             if bytes_total:
@@ -92,7 +92,7 @@ class CloudApiClient(NetworkClient):
     #  \param cluster_id: The ID of the cluster.
     #  \param job_id: The ID of the print job.
     #  \param on_finished: The function to be called after the result is parsed.
-    def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], any]) -> None:
+    def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any]) -> None:
         url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
         self.post(url, data = "", on_finished=self._wrapCallback(on_finished, CloudPrintResponse))
 
@@ -110,7 +110,7 @@ class CloudApiClient(NetworkClient):
     #  \param reply: The reply from the server.
     #  \return A tuple with a status code and a dictionary.
     @staticmethod
-    def _parseReply(reply: QNetworkReply) -> Tuple[int, Dict[str, any]]:
+    def _parseReply(reply: QNetworkReply) -> Tuple[int, Dict[str, Any]]:
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         try:
             response = bytes(reply.readAll()).decode()
@@ -128,8 +128,8 @@ class CloudApiClient(NetworkClient):
     #  \param response: The response from the server, after being converted to a dict.
     #  \param on_finished: The callback in case the response is successful.
     #  \param model_class: The type of the model to convert the response to. It may either be a single record or a list.
-    def _parseModels(self, response: Dict[str, any],
-                     on_finished: Callable[[Union[Model, List[Model]]], any],
+    def _parseModels(self, response: Dict[str, Any],
+                     on_finished: Callable[[Union[Model, List[Model]]], Any],
                      model_class: Type[Model]) -> None:
         if "data" in response:
             data = response["data"]
@@ -145,7 +145,7 @@ class CloudApiClient(NetworkClient):
     #  \param model: The type of the model to convert the response to. It may either be a single record or a list.
     #  \return: A function that can be passed to the
     def _wrapCallback(self,
-                      on_finished: Callable[[Union[Model, List[Model]]], any],
+                      on_finished: Callable[[Union[Model, List[Model]]], Any],
                       model: Type[Model],
                       ) -> Callable[[QNetworkReply], None]:
         def parse(reply: QNetworkReply) -> None:

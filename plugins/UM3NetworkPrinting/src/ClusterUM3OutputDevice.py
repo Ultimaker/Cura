@@ -56,8 +56,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._number_of_extruders = 2
 
-        self._dummy_lambdas = ("", {}, io.BytesIO()
-                               )  # type: Tuple[str, Dict[str, Union[str, int, bool]], Union[io.StringIO, io.BytesIO]]
+        self._dummy_lambdas = (
+            "", {}, io.BytesIO()
+        )  # type: Tuple[Optional[str], Dict[str, Union[str, int, bool]], Union[io.StringIO, io.BytesIO]]
 
         self._print_jobs = [] # type: List[UM3PrintJobOutputModel]
         self._received_print_jobs = False # type: bool
@@ -165,7 +166,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._sending_gcode = True
 
-        target_printer = yield #Potentially wait on the user to select a target printer.
+        # Potentially wait on the user to select a target printer.
+        target_printer = yield  # type: Optional[str]
 
         # Using buffering greatly reduces the write time for many lines of gcode
 
@@ -179,13 +181,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                    use_inactivity_timer = False)
         self._write_job_progress_message.show()
 
-        self._dummy_lambdas = (target_printer, mesh_format.preferred_format, stream)
-        job.finished.connect(self._sendPrintJobWaitOnWriteJobFinished)
-
-        job.start()
-
-        yield True  # Return that we had success!
-        yield  # To prevent having to catch the StopIteration exception.
+        if mesh_format.preferred_format is not None:
+            self._dummy_lambdas = (target_printer, mesh_format.preferred_format, stream)
+            job.finished.connect(self._sendPrintJobWaitOnWriteJobFinished)
+            job.start()
+            yield True  # Return that we had success!
+            yield  # To prevent having to catch the StopIteration exception.
 
     def _sendPrintJobWaitOnWriteJobFinished(self, job: WriteFileJob) -> None:
         if self._write_job_progress_message:
@@ -255,8 +256,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
             # timeout responses if this happens.
             self._last_response_time = time()
-            old_progress = self._progress_message.getProgress()
-            if self._progress_message and (old_progress is None or new_progress > old_progress):
+            if self._progress_message is not None and new_progress > self._progress_message.getProgress():
                 self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
 
