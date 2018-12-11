@@ -22,7 +22,7 @@ Item
             case "Ultimaker S5":
                 return "UM S5"
             default:
-                return ""
+                return text
         }
     }
 
