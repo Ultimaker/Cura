@@ -1,0 +1,22 @@
+{
+	"blackbelt_ht": {
+		"guid":"0826f261-d0e9-41a3-ab66-c4df8f32d384",
+		"spool_cost":89.95,
+		"spool_weight":2200
+	},
+	"blackbelt_ngen": {
+		"guid":"13ea3fda-52ef-4364-93ad-b23c0d1c6b29",
+		"spool_cost":79.95,
+		"spool_weight":2200
+	},
+	"blackbelt_petg": {
+		"guid":"44ee0260-162f-443b-9000-7e23491cd324",
+		"spool_cost":48.4,
+		"spool_weight":2200
+	},
+	"blackbelt_cheetah": {
+		"guid":"4028c0f4-7122-4448-9e9c-1ede54c89e6c",
+		"spool_cost":78.65,
+		"spool_weight":1000
+	}
+}

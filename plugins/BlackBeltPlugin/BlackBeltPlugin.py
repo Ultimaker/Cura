@@ -70,43 +70,85 @@ class BlackBeltPlugin(Extension):
         # Hide nozzle in simulation view
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
 
-        # Handle default setting visibility
+        # Disable USB printing output device
+        self._application.getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
+        # Update preference defaults
         preferences = self._application.getPreferences()
         preferences.preferenceChanged.connect(self._onPreferencesChanged)
-        if self._configurationNeedsUpdates():
+
+        preferences.addPreference("blackbelt/setting_version", "0.0.0")
+        plugin_version = self._getPluginVersion()
+        if Version(preferences.getValue("blackbelt/setting_version")) < Version(plugin_version):
             Logger.log("d", "BlackBelt-specific updates to configuration are needed")
             self._force_visibility_update = True
+
             preferences.addPreference("general/theme", self._application.default_theme)
             preferences.setValue("general/theme", "blackbelt")
             preferences.addPreference("cura/active_setting_visibility_preset", "basic")
             preferences.setValue("cura/active_setting_visibility_preset", "blackbelt")
 
-        # Disable USB printing output device
-        self._application.getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+            add_pricing = True
+            preferences.addPreference("cura/currency", "€")
+            if preferences.getValue("cura/currency") != "€":
+                add_pricing = False
+            preferences.addPreference("cura/favorite_materials", "")
+            preferences.addPreference("cura/material_settings", "{}")
+            try:
+                material_settings = json.loads(preferences.getValue("cura/material_settings"))
+            except json.decoder.JSONDecodeError:
+                Logger.log("e", "Unable to parse material settings: %s" % preferences.getValue("cura/material_settings"))
+                material_settings = {}
 
-    def _configurationNeedsUpdates(self):
-        preferences = self._application.getPreferences()
-        preferences.addPreference("blackbelt/setting_version", "0.0.0")
+            material_favorites = set()
+            for item in preferences.getValue("cura/favorite_materials").split(";"):
+                material_favorites.add(item)
 
+            # Get default material pricing from json file
+            material_defaults = {}
+            defaults_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "material_settings.json")
+            try:
+                with open(defaults_file_path) as defaults_file:
+                    material_defaults = json.load(defaults_file)
+            except:
+                Logger.log("w", "Could not load default material pricing")
+
+            for material_id in material_defaults:
+                material_favorites.add(material_id)
+                guid = material_defaults[material_id].get("guid", None)
+                if not guid:
+                    continue
+                if material_settings.get(guid, None):
+                    continue
+                settings = { "spool_weight": material_defaults[material_id].get("spool_weight", 750) }
+                if add_pricing:
+                    settings["spool_cost"] = material_defaults[material_id].get("spool_cost", 0)
+                material_settings[guid] = settings
+
+            preferences.setValue("cura/material_settings", json.dumps(material_settings))
+            preferences.setValue("cura/favorite_materials", ";".join(list(material_favorites)))
+
+
+    def _getPluginVersion(self):
         # Get version information from plugin.json
         plugin_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugin.json")
+        plugin_version = "0.0.0"
         try:
             with open(plugin_file_path) as plugin_file:
                 plugin_info = json.load(plugin_file)
                 plugin_version = plugin_info["version"]
         except:
             Logger.log("w", "Could not determine BlackBelt plugin version")
-            return False
 
-        if Version(preferences.getValue("blackbelt/setting_version")) < Version(plugin_version):
-            Logger.log("d", "Setting BlackBelt version nr to %s" % plugin_version)
-            preferences.setValue("blackbelt/setting_version", plugin_version)
-            return True
-
-        return False
+        return plugin_version
 
 
     def _onEngineCreated(self):
+        # for some reason, setting this preference value does not "take" if we do it sooner
+        plugin_version = self._getPluginVersion()
+        Logger.log("d", "Setting BlackBelt version nr to %s" % plugin_version)
+        self._application.getPreferences().setValue("blackbelt/setting_version", plugin_version)
+
         self._application.getMachineManager().activeVariantChanged.connect(self._onActiveVariantChanged)
         self._application.getMachineManager().activeQualityChanged.connect(self._onActiveQualityChanged)
 
