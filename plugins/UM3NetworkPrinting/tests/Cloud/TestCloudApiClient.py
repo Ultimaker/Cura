@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import json
 import os
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
@@ -9,8 +8,9 @@ from unittest.mock import patch, MagicMock
 from cura.CuraApplication import CuraApplication
 from src.Cloud.CloudApiClient import CloudApiClient
 from src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
-from src.Cloud.Models.CloudJobResponse import CloudJobResponse
-from src.Cloud.Models.CloudJobUploadRequest import CloudJobUploadRequest
+from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
+from src.Cloud.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from tests.Cloud.Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
 
@@ -71,12 +71,11 @@ class TestCloudApiClient(TestCase):
         network_mock.return_value = self.network
         results = []
 
-        with open("{}/Fixtures/requestUploadResponse.json".format(os.path.dirname(__file__)), "rb") as f:
-            response = f.read()
+        response = readFixture("putJobUploadResponse")
 
         self.network.prepareReply("PUT", "https://api-staging.ultimaker.com/cura/v1/jobs/upload", 200, response)
-        self.api.requestUpload(CloudJobUploadRequest(job_name = "job name", file_size = 143234, content_type = "text/plain"),
-                               lambda r: results.append(r))
+        request = CloudPrintJobUploadRequest(job_name = "job name", file_size = 143234, content_type = "text/plain")
+        self.api.requestUpload(request, lambda r: results.append(r))
         self.network.flushReplies()
 
         self.assertEqual(results[0].content_type, "text/plain")
@@ -87,13 +86,11 @@ class TestCloudApiClient(TestCase):
         results = []
         progress = MagicMock()
 
-        with open("{}/Fixtures/requestUploadResponse.json".format(os.path.dirname(__file__)), "rb") as f:
-            thedata = json.loads(f.read().decode("ascii"))
-            data = thedata["data"]
-            upload_response = CloudJobResponse(**data)
+        data = parseFixture("putJobUploadResponse")["data"]
+        upload_response = CloudPrintJobResponse(**data)
 
         self.network.prepareReply("PUT", upload_response.upload_url, 200,
-                                  '{ data : "" }')  # Network client doesn't look into the reply
+                                  b'{ data : "" }')  # Network client doesn't look into the reply
 
         self.api.uploadMesh(upload_response, b'', lambda job_id: results.append(job_id),
                             progress.advance, progress.error)
@@ -107,11 +104,11 @@ class TestCloudApiClient(TestCase):
         network_mock.return_value = self.network
         results = []
 
-        cluster_id = "NWKV6vJP_LdYsXgXqAcaNCR0YcLJwar1ugh0ikEZsZs8"
-        job_id = "db34b096-c4d5-46f3-bea7-da6a19905e6c"
+        response = readFixture("postJobPrintResponse")
 
-        with open("{}/Fixtures/requestPrintResponse.json".format(os.path.dirname(__file__)), "rb") as f:
-            response = f.read()
+        cluster_id = "NWKV6vJP_LdYsXgXqAcaNCR0YcLJwar1ugh0ikEZsZs8"
+        cluster_job_id = "9a59d8e9-91d3-4ff6-b4cb-9db91c4094dd"
+        job_id = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
 
         self.network.prepareReply("POST",
                                   "https://api-staging.ultimaker.com/connect/v1/clusters/{}/print/{}"
@@ -123,5 +120,6 @@ class TestCloudApiClient(TestCase):
         self.network.flushReplies()
 
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].job_id, "db34b096-c4d5-46f3-bea7-da6a19905e6c")
+        self.assertEqual(results[0].job_id, job_id)
+        self.assertEqual(results[0].cluster_job_id, cluster_job_id)
         self.assertEqual(results[0].status, "queued")

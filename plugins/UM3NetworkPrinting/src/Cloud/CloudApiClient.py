@@ -10,12 +10,12 @@ from UM.Logger import Logger
 from cura.API import Account
 from cura.NetworkClient import NetworkClient
 from ..Models import BaseModel
-from .Models.CloudCluster import CloudCluster
+from .Models.CloudClusterResponse import CloudClusterResponse
 from .Models.CloudErrorObject import CloudErrorObject
 from .Models.CloudClusterStatus import CloudClusterStatus
-from .Models.CloudJobUploadRequest import CloudJobUploadRequest
+from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from .Models.CloudPrintResponse import CloudPrintResponse
-from .Models.CloudJobResponse import CloudJobResponse
+from .Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
@@ -43,9 +43,9 @@ class CloudApiClient(NetworkClient):
 
     ## Retrieves all the clusters for the user that is currently logged in.
     #  \param on_finished: The function to be called after the result is parsed.
-    def getClusters(self, on_finished: Callable[[List[CloudCluster]], any]) -> None:
+    def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], any]) -> None:
         url = "{}/clusters".format(self.CLUSTER_API_ROOT)
-        self.get(url, on_finished=self._wrapCallback(on_finished, CloudCluster))
+        self.get(url, on_finished=self._wrapCallback(on_finished, CloudClusterResponse))
 
     ## Retrieves the status of the given cluster.
     #  \param cluster_id: The ID of the cluster.
@@ -57,10 +57,11 @@ class CloudApiClient(NetworkClient):
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
     #  \param on_finished: The function to be called after the result is parsed.
-    def requestUpload(self, request: CloudJobUploadRequest, on_finished: Callable[[CloudJobResponse], any]) -> None:
+    def requestUpload(self, request: CloudPrintJobUploadRequest, on_finished: Callable[[CloudPrintJobResponse], any]
+                      ) -> None:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
-        body = json.dumps({"data": request.__dict__})
-        self.put(url, body, on_finished=self._wrapCallback(on_finished, CloudJobResponse))
+        body = json.dumps({"data": request.toDict()})
+        self.put(url, body, on_finished=self._wrapCallback(on_finished, CloudPrintJobResponse))
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param upload_response: The object received after requesting an upload with `self.requestUpload`.
@@ -68,7 +69,7 @@ class CloudApiClient(NetworkClient):
     #  \param on_finished: The function to be called after the result is parsed. It receives the print job ID.
     #  \param on_progress: A function to be called during upload progress. It receives a percentage (0-100).
     #  \param on_error: A function to be called if the upload fails. It receives a dict with the error.
-    def uploadMesh(self, upload_response: CloudJobResponse, mesh: bytes, on_finished: Callable[[str], any],
+    def uploadMesh(self, upload_response: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[str], any],
                    on_progress: Callable[[int], any], on_error: Callable[[dict], any]):
         
         def progressCallback(bytes_sent: int, bytes_total: int) -> None:
@@ -126,13 +127,13 @@ class CloudApiClient(NetworkClient):
     ## Parses the given models and calls the correct callback depending on the result.
     #  \param response: The response from the server, after being converted to a dict.
     #  \param on_finished: The callback in case the response is successful.
-    #  \param model: The type of the model to convert the response to. It may either be a single record or a list.
+    #  \param model_class: The type of the model to convert the response to. It may either be a single record or a list.
     def _parseModels(self, response: Dict[str, any],
                      on_finished: Callable[[Union[Model, List[Model]]], any],
-                     model: Type[Model]) -> None:
+                     model_class: Type[Model]) -> None:
         if "data" in response:
             data = response["data"]
-            result = [model(**c) for c in data] if isinstance(data, list) else model(**data)
+            result = [model_class(**c) for c in data] if isinstance(data, list) else model_class(**data)
             on_finished(result)
         elif "errors" in response:
             self._on_error([CloudErrorObject(**error) for error in response["errors"]])

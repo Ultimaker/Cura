@@ -20,11 +20,11 @@ from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudApiClient import CloudApiClient
 from .Models.CloudClusterStatus import CloudClusterStatus
-from .Models.CloudJobUploadRequest import CloudJobUploadRequest
+from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from .Models.CloudPrintResponse import CloudPrintResponse
-from .Models.CloudJobResponse import CloudJobResponse
-from .Models.CloudClusterPrinter import CloudClusterPrinter
-from .Models.CloudClusterPrintJob import CloudClusterPrintJob
+from .Models.CloudPrintJobResponse import CloudPrintJobResponse
+from .Models.CloudClusterPrinterStatus import CloudClusterPrinterStatus
+from .Models.CloudClusterPrintJobStatus import CloudClusterPrintJobStatus
 from .Utils import findChanges, formatDateCompleted, formatTimeCompleted
 
 
@@ -116,8 +116,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._progress_message = None  # type: Optional[Message]
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
-        self._received_printers = None  # type: Optional[List[CloudClusterPrinter]]
-        self._received_print_jobs = None  # type: Optional[List[CloudClusterPrintJob]]
+        self._received_printers = None  # type: Optional[List[CloudClusterPrinterStatus]]
+        self._received_print_jobs = None  # type: Optional[List[CloudClusterPrintJobStatus]]
 
         # A set of the user's job IDs that have finished
         self._finished_jobs = set()  # type: Set[str]
@@ -166,7 +166,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         mesh_bytes = mesh_format.getBytes(nodes)
 
-        request = CloudJobUploadRequest(
+        request = CloudPrintJobUploadRequest(
             job_name = file_name,
             file_size = len(mesh_bytes),
             content_type = mesh_format.mime_type,
@@ -199,9 +199,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Updates the local list of printers with the list received from the cloud.
     #  \param jobs: The printers received from the cloud.
-    def _updatePrinters(self, printers: List[CloudClusterPrinter]) -> None:
+    def _updatePrinters(self, printers: List[CloudClusterPrinterStatus]) -> None:
         previous = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
-        received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinter]
+        received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinterStatus]
 
         removed_printers, added_printers, updated_printers = findChanges(previous, received)
 
@@ -224,8 +224,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Updates the local list of print jobs with the list received from the cloud.
     #  \param jobs: The print jobs received from the cloud.
-    def _updatePrintJobs(self, jobs: List[CloudClusterPrintJob]) -> None:
-        received = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJob]
+    def _updatePrintJobs(self, jobs: List[CloudClusterPrintJobStatus]) -> None:
+        received = {j.uuid: j for j in jobs}  # type: Dict[str, CloudClusterPrintJobStatus]
         previous = {j.key: j for j in self._print_jobs}  # type: Dict[str, UM3PrintJobOutputModel]
 
         removed_jobs, added_jobs, updated_jobs = findChanges(previous, received)
@@ -248,7 +248,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Registers a new print job received via the cloud API.
     #  \param job: The print job received.
-    def _addPrintJob(self, job: CloudClusterPrintJob) -> None:
+    def _addPrintJob(self, job: CloudClusterPrintJobStatus) -> None:
         model = job.createOutputModel(CloudOutputController(self))
         model.stateChanged.connect(self._onPrintJobStateChanged)
         if job.printer_uuid:
@@ -284,7 +284,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Uploads the mesh when the print job was registered with the cloud API.
     #  \param mesh: The bytes to upload.
     #  \param job_response: The response received from the cloud API.
-    def _onPrintJobCreated(self, mesh: bytes, job_response: CloudJobResponse) -> None:
+    def _onPrintJobCreated(self, mesh: bytes, job_response: CloudPrintJobResponse) -> None:
         self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,
                              lambda _: self._onUploadError(T.UPLOAD_ERROR))
 

@@ -106,7 +106,9 @@ class TestCloudOutputDeviceManager(TestCase):
 
     @patch("UM.Message.Message.show")
     def test_api_error(self, message_mock, network_mock):
-        self.clusters_response = {"errors": [{"id": "notFound", "title": "Not found!", "http_status": "404"}]}
+        self.clusters_response = {
+            "errors": [{"id": "notFound", "title": "Not found!", "http_status": "404", "code": "notFound"}]
+        }
         self.network.prepareReply("GET", self.URL, 200, self.clusters_response)
         self._loadData(network_mock)
         self.network.flushReplies()
