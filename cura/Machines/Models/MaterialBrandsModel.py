@@ -28,12 +28,8 @@ class MaterialBrandsModel(BaseMaterialsModel):
         self._update()
 
     def _update(self):
-
-        # Perform standard check and reset if the check fails
         if not self._canUpdate():
-            self.setItems([])
             return
-
         # Get updated list of favorites
         self._favorite_ids = self._material_manager.getFavorites()
 

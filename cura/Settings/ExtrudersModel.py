@@ -224,6 +224,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "definition": ""
                 }
                 items.append(item)
-
-            self.setItems(items)
-            self.modelChanged.emit()
+            if self._items != items:
+                self.setItems(items)
+                self.modelChanged.emit()
