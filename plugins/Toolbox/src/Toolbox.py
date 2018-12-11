@@ -18,6 +18,7 @@ from UM.i18n import i18nCatalog
 from UM.Version import Version
 
 import cura
+from cura import CuraConstants
 from cura.CuraApplication import CuraApplication
 
 from .AuthorsModel import AuthorsModel
@@ -39,9 +40,9 @@ class Toolbox(QObject, Extension):
 
         self._application = application  # type: CuraApplication
 
-        self._sdk_version = None  # type: Optional[Union[str, int]]
-        self._cloud_api_version = None  # type: Optional[int]
-        self._cloud_api_root = None  # type: Optional[str]
+        self._sdk_version = CuraConstants.CuraSDKVersion  # type: Union[str, int]
+        self._cloud_api_version = CuraConstants.CuraCloudAPIVersion  # type: int
+        self._cloud_api_root = CuraConstants.CuraCloudAPIRoot  # type: str
         self._api_url = None  # type: Optional[str]
 
         # Network:
@@ -168,9 +169,6 @@ class Toolbox(QObject, Extension):
     def _onAppInitialized(self) -> None:
         self._plugin_registry = self._application.getPluginRegistry()
         self._package_manager = self._application.getPackageManager()
-        self._sdk_version = self._getSDKVersion()
-        self._cloud_api_version = self._getCloudAPIVersion()
-        self._cloud_api_root = self._getCloudAPIRoot()
         self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
             cloud_api_root = self._cloud_api_root,
             cloud_api_version = self._cloud_api_version,
@@ -185,36 +183,6 @@ class Toolbox(QObject, Extension):
             "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url = self._api_url)),
             "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url = self._api_url))
         }
-
-    # Get the API root for the packages API depending on Cura version settings.
-    def _getCloudAPIRoot(self) -> str:
-        if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_CLOUD_API_ROOT
-        if not hasattr(cura.CuraVersion, "CuraCloudAPIRoot"): # type: ignore
-            return self.DEFAULT_CLOUD_API_ROOT
-        if not cura.CuraVersion.CuraCloudAPIRoot: # type: ignore
-            return self.DEFAULT_CLOUD_API_ROOT
-        return cura.CuraVersion.CuraCloudAPIRoot # type: ignore
-
-    # Get the cloud API version from CuraVersion
-    def _getCloudAPIVersion(self) -> int:
-        if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_CLOUD_API_VERSION
-        if not hasattr(cura.CuraVersion, "CuraCloudAPIVersion"): # type: ignore
-            return self.DEFAULT_CLOUD_API_VERSION
-        if not cura.CuraVersion.CuraCloudAPIVersion: # type: ignore
-            return self.DEFAULT_CLOUD_API_VERSION
-        return cura.CuraVersion.CuraCloudAPIVersion # type: ignore
-
-    # Get the packages version depending on Cura version settings.
-    def _getSDKVersion(self) -> Union[int, str]:
-        if not hasattr(cura, "CuraVersion"):
-            return self._application.getAPIVersion().getMajor()
-        if not hasattr(cura.CuraVersion, "CuraSDKVersion"):  # type: ignore
-            return self._application.getAPIVersion().getMajor()
-        if not cura.CuraVersion.CuraSDKVersion:  # type: ignore
-            return self._application.getAPIVersion().getMajor()
-        return cura.CuraVersion.CuraSDKVersion  # type: ignore
 
     @pyqtSlot()
     def browsePackages(self) -> None:

@@ -115,6 +115,8 @@ from cura.ObjectsModel import ObjectsModel
 
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
+from cura import CuraConstants
+
 from UM.FlameProfiler import pyqtSlot
 from UM.Decorators import override
 
@@ -126,15 +128,6 @@ if TYPE_CHECKING:
 
 
 numpy.seterr(all = "ignore")
-
-try:
-    from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
-except ImportError:
-    CuraAppDisplayName = "Ultimaker Cura"
-    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-    CuraBuildType = ""
-    CuraDebugMode = False
-    CuraSDKVersion = "5.0.0"
 
 
 class CuraApplication(QtApplication):
@@ -162,11 +155,11 @@ class CuraApplication(QtApplication):
 
     def __init__(self, *args, **kwargs):
         super().__init__(name = "cura",
-                         app_display_name = CuraAppDisplayName,
-                         version = CuraVersion,
-                         api_version = CuraSDKVersion,
-                         buildtype = CuraBuildType,
-                         is_debug_mode = CuraDebugMode,
+                         app_display_name = CuraConstants.CuraAppDisplayName,
+                         version = CuraConstants.CuraVersion,
+                         api_version = CuraConstants.CuraSDKVersion,
+                         buildtype = CuraConstants.CuraBuildType,
+                         is_debug_mode = CuraConstants.CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
@@ -937,7 +930,7 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraApplication", self)
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
-        engine.rootContext().setContextProperty("CuraSDKVersion", CuraSDKVersion)
+        engine.rootContext().setContextProperty("CuraSDKVersion", CuraConstants.CuraSDKVersion)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 

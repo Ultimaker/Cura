@@ -1,21 +1,22 @@
 # Copyright (c) 2018 Ultimaker B.V.
 from UM import i18nCatalog
 
+from cura import CuraConstants
+
 
 class Settings:
     """
     Keeps the application settings.
     """
-    UM_CLOUD_API_ROOT = "https://api.ultimaker.com"
     DRIVE_API_VERSION = 1
-    DRIVE_API_URL = "{}/cura-drive/v{}".format(UM_CLOUD_API_ROOT, str(DRIVE_API_VERSION))
-    
+    DRIVE_API_URL = "{}/cura-drive/v{}".format(CuraConstants.CuraCloudAPIRoot, str(DRIVE_API_VERSION))
+
     AUTO_BACKUP_ENABLED_PREFERENCE_KEY = "cura_drive/auto_backup_enabled"
     AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY = "cura_drive/auto_backup_date"
 
     I18N_CATALOG_ID = "cura"
     I18N_CATALOG = i18nCatalog(I18N_CATALOG_ID)
-    
+
     MESSAGE_TITLE = I18N_CATALOG.i18nc("@info:title", "Backups"),
 
     # Translatable messages for the entire plugin.
