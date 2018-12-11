@@ -326,7 +326,7 @@ Item
                                 return UM.Theme.getColor("action_button_text");
                             }
                         }
-                        font: UM.Theme.getFont("action_button")
+                        font: UM.Theme.getFont("medium")
                         text:
                         {
                             if(extruderModel == null)

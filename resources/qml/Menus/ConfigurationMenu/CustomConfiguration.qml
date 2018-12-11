@@ -60,7 +60,7 @@ Item
         {
             text: catalog.i18nc("@label", "Printer")
             width: Math.round(parent.width * 0.3) - UM.Theme.getSize("default_margin").width
-            height: contentHeight
+//            height: contentHeight
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             anchors.verticalCenter: printerTypeSelector.verticalCenter
@@ -72,7 +72,7 @@ Item
             id: printerTypeSelector
             text: Cura.MachineManager.activeMachineDefinitionName
             tooltip: Cura.MachineManager.activeMachineDefinitionName
-            height: UM.Theme.getSize("setting_control").height
+            height: UM.Theme.getSize("print_setup_big_item").height
             width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
             style: UM.Theme.styles.print_setup_header_button
@@ -222,7 +222,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_item").height
+                height: UM.Theme.getSize("print_setup_big_item").height
                 visible: Cura.MachineManager.hasMaterials
 
                 Label
@@ -246,7 +246,7 @@ Item
                     text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
 
-                    height: UM.Theme.getSize("setting_control").height
+                    height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
 
                     style: UM.Theme.styles.print_setup_header_button
@@ -260,7 +260,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_item").height
+                height: UM.Theme.getSize("print_setup_big_item").height
                 visible: Cura.MachineManager.hasVariants
 
                 Label
@@ -280,7 +280,7 @@ Item
                     text: Cura.MachineManager.activeVariantName
                     tooltip: Cura.MachineManager.activeVariantName
 
-                    height: UM.Theme.getSize("setting_control").height
+                    height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
                     style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true;

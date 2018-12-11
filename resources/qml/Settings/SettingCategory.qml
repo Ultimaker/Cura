@@ -73,7 +73,7 @@ Button
             text: definition.label
             textFormat: Text.PlainText
             renderType: Text.NativeRendering
-            font: UM.Theme.getFont("setting_category")
+            font: UM.Theme.getFont("default")
             color:
             {
                 if (!base.enabled)
@@ -106,26 +106,7 @@ Button
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.height: width
-            color:
-            {
-                if (!base.enabled)
-                {
-                    return UM.Theme.getColor("setting_category_disabled_text")
-                }
-                else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
-                {
-                    return UM.Theme.getColor("setting_category_active_hover_text")
-                }
-                else if (base.pressed || (base.checkable && base.checked))
-                {
-                    return UM.Theme.getColor("setting_category_active_text")
-                }
-                else if (base.hovered || base.activeFocus)
-                {
-                    return UM.Theme.getColor("setting_category_hover_text")
-                }
-                return UM.Theme.getColor("setting_category_text")
-            }
+            color: UM.Theme.getColor("setting_control_button")
             source: base.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         }
     }
