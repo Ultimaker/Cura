@@ -135,11 +135,15 @@ Cura.ExpandablePopup
 
         property bool is_connected: false  // If current machine is connected to a printer. Only evaluated upon making popup visible.
         property int configuration_method: ConfigurationMenu.ConfigurationMethod.Custom  // Type of configuration being used. Only evaluated upon making popup visible.
+        property int manual_selected_method: -1  // It stores the configuration method selected by the user. By default the selected method is
 
         onVisibleChanged:
         {
             is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected  // Re-evaluate.
-            configuration_method = is_connected ? ConfigurationMenu.ConfigurationMethod.Auto : ConfigurationMenu.ConfigurationMethod.Custom  // Auto if connected to a printer at start-up, or Custom if not.
+
+            // If the printer is not connected, we switch always to the custom mode. If is connected instead, the auto mode
+            // or the previous state is selected
+            configuration_method = is_connected ? (manual_selected_method == -1 ? ConfigurationMenu.ConfigurationMethod.Auto : manual_selected_method) : ConfigurationMenu.ConfigurationMethod.Custom
         }
 
         Item
@@ -158,6 +162,7 @@ Cura.ExpandablePopup
                 }
                 return height
             }
+
             AutoConfiguration
             {
                 id: autoConfiguration
@@ -203,7 +208,11 @@ Cura.ExpandablePopup
                 iconSource: UM.Theme.getIcon("arrow_right")
                 isIconOnRightSide: true
 
-                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Custom
+                onClicked:
+                {
+                    popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Custom
+                    popupItem.manual_selected_method = popupItem.configuration_method
+                }
             }
 
             Cura.SecondaryButton
@@ -214,8 +223,18 @@ Cura.ExpandablePopup
 
                 iconSource: UM.Theme.getIcon("arrow_left")
 
-                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Auto
+                onClicked:
+                {
+                    popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Auto
+                    popupItem.manual_selected_method = popupItem.configuration_method
+                }
             }
         }
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged: popupItem.manual_selected_method = -1  // When switching printers, reset the value of the manual selected method
     }
 }
