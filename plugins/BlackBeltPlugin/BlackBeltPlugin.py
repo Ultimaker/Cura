@@ -172,6 +172,7 @@ class BlackBeltPlugin(Extension):
 
         container_registry = ContainerRegistry.getInstance()
         self._application._material_manager = PatchedMaterialManager.PatchedMaterialManager(container_registry, self._application)
+        self._application.getQualityManager()._material_manager = self._application.getMaterialManager()
         self._application._material_manager.initialize()
 
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)

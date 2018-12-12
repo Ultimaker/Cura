@@ -8,7 +8,7 @@ from cura.Machines.MaterialNode import MaterialNode
 from cura.Machines.MaterialGroup import MaterialGroup
 from cura.Machines.VariantType import VariantType
 
-from typing import Dict, Optional, TYPE_CHECKING
+from typing import List, Dict, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
 
@@ -112,12 +112,43 @@ class PatchedMaterialManager(MaterialManager):
 
         # Create a new ID & container to hold the data.
         new_id = self._container_registry.uniqueName("custom_material")
-        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
+        ### START PATCH
+        new_metadata = {"name": catalog.i18nc("@label", "New Material"),
                         "brand": catalog.i18nc("@label", "Custom"),
                         "GUID": str(uuid.uuid4()),
                         }
+        ### END PATCH
 
         self.duplicateMaterial(material_group.root_material_node,
                                new_base_id = new_id,
                                new_metadata = new_metadata)
         return new_id
+
+    #   There are 2 ways to get fallback materials;
+    #   - A fallback by type (@sa getFallbackMaterialIdByMaterialType), which adds the generic version of this material
+    #   - A fallback by GUID; If a material has been duplicated, it should also check if the original materials do have
+    #       a GUID. This should only be done if the material itself does not have a quality just yet.
+    #
+    # Copied verbatim from MaterialManager.getFallBackMaterialIdsByMaterial, with a minor patch to fix a crash when
+    # creating a new material
+    def getFallBackMaterialIdsByMaterial(self, material: "InstanceContainer") -> List[str]:
+        results = []  # type: List[str]
+
+        material_groups = self.getMaterialGroupListByGUID(material.getMetaDataEntry("GUID"))
+        ### START PATCH
+        if material_groups is None:
+            return []
+        ### END PATCH
+        for material_group in material_groups:  # type: ignore
+            if material_group.name != material.getId():
+                # If the material in the group is read only, put it at the front of the list (since that is the most
+                # likely one to get a result)
+                if material_group.is_read_only:
+                    results.insert(0, material_group.name)
+                else:
+                    results.append(material_group.name)
+
+        fallback = self.getFallbackMaterialIdByMaterialType(material.getMetaDataEntry("material"))
+        if fallback is not None:
+            results.append(fallback)
+        return results
