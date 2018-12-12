@@ -34,6 +34,8 @@ Cura.ExpandablePopup
         Custom
     }
 
+    contentPadding: UM.Theme.getSize("default_lining").width
+    contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
     enabled: Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants || Cura.MachineManager.hasVariantBuildplates; //Only let it drop down if there is any configuration that you could change.
 
     headerItem: Item
@@ -127,8 +129,9 @@ Cura.ExpandablePopup
     contentItem: Column
     {
         id: popupItem
-        width: base.width - 2 * UM.Theme.getSize("default_margin").width
+        width: UM.Theme.getSize("configuration_selector").width
         height: implicitHeight //Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
+        padding: UM.Theme.getSize("default_margin").height
         spacing: UM.Theme.getSize("default_margin").height
 
         property bool is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
@@ -141,19 +144,19 @@ Cura.ExpandablePopup
 
         Item
         {
-            width: parent.width
+            width: parent.width - 2 * parent.padding
             height:
             {
-                var height = 0;
-                if(autoConfiguration.visible)
+                var height = 0
+                if (autoConfiguration.visible)
                 {
-                    height += autoConfiguration.height;
+                    height += autoConfiguration.height
                 }
-                if(customConfiguration.visible)
+                if (customConfiguration.visible)
                 {
-                    height += customConfiguration.height;
+                    height += customConfiguration.height
                 }
-                return height;
+                return height
             }
             AutoConfiguration
             {
@@ -172,9 +175,9 @@ Cura.ExpandablePopup
         {
             id: separator
             visible: buttonBar.visible
-            x: -contentPadding
+            x: -parent.padding
 
-            width: base.width
+            width: parent.width
             height: UM.Theme.getSize("default_lining").height
 
             color: UM.Theme.getColor("lining")
@@ -186,7 +189,7 @@ Cura.ExpandablePopup
             id: buttonBar
             visible: popupItem.is_connected //Switching only makes sense if the "auto" part is possible.
 
-            width: parent.width
+            width: parent.width - 2 * parent.padding
             height: childrenRect.height
 
             Cura.SecondaryButton

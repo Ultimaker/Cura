@@ -11,7 +11,7 @@ Column
 {
     id: base
     property var outputDevice: null
-    height: childrenRect.height + 2 * padding
+    height: childrenRect.height + padding
     spacing: UM.Theme.getSize("narrow_margin").height
 
     function forceModelUpdate()
@@ -57,7 +57,6 @@ Column
             id: configurationList
             spacing: UM.Theme.getSize("narrow_margin").height
             width: container.width - ((height > container.maximumHeight) ? container.ScrollBar.vertical.background.width : 0) //Make room for scroll bar if there is any.
-            contentHeight: childrenRect.height
             height: childrenRect.height
 
             section.property: "modelData.printerType"

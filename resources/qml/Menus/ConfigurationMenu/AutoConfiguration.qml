@@ -31,6 +31,7 @@ Item
     ConfigurationListView
     {
         anchors.top: header.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").width
         width: parent.width
 
         outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
