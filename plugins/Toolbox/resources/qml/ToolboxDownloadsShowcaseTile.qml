@@ -51,12 +51,11 @@ Rectangle
     UM.RecolorImage
     {
         width: (parent.width * 0.20) | 0
-        height: (parent.height * 0.20) | 0
+        height: width
         anchors
         {
-            bottom: parent.bottom
+            bottom: bottomBorder.top
             right: parent.right
-            bottomMargin: UM.Theme.getSize("default_lining").width
         }
         visible: installedPackages != 0
         color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
@@ -70,10 +69,21 @@ Rectangle
         anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
     }
+    Rectangle
+    {
+        id: bottomBorder
+        color: UM.Theme.getColor("primary")
+        anchors.bottom: parent.bottom
+        width: parent.width
+        height: UM.Theme.getSize("toolbox_header_highlight").height
+    }
 
     MouseArea
     {
         anchors.fill: parent
+        hoverEnabled: true
+        onEntered: tileBase.border.color = UM.Theme.getColor("primary")
+        onExited: tileBase.border.color = UM.Theme.getColor("lining")
         onClicked:
         {
             base.selection = model
