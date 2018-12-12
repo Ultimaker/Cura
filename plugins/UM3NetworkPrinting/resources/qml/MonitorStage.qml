@@ -97,7 +97,7 @@ Component
                     top: parent.top
                 }
                 color: UM.Theme.getColor("text")
-                font: UM.Theme.getFont("large_nonbold")
+                font: UM.Theme.getFont("large")
                 text: catalog.i18nc("@label", "Queued")
             }
 

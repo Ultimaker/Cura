@@ -62,7 +62,7 @@ Button
             id: buttonText
             text: button.text
             color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor): button.textDisabledColor
-            font: UM.Theme.getFont("action_button")
+            font: UM.Theme.getFont("medium")
             visible: text != ""
             renderType: Text.NativeRendering
             anchors.verticalCenter: parent.verticalCenter

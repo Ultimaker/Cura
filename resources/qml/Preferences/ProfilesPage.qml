@@ -471,7 +471,7 @@ Item
 
                     Label {
                         text: base.currentItemName
-                        font: UM.Theme.getFont("large")
+                        font: UM.Theme.getFont("large_bold")
                     }
                 }
 

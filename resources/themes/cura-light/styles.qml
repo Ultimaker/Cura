@@ -208,8 +208,8 @@ QtObject
                         anchors.verticalCenter: parent.verticalCenter;
 
                         text: control.text;
-                        font: Theme.getFont("button_tooltip");
-                        color: Theme.getColor("tooltip_text");
+                        font: Theme.getFont("default")
+                        color: Theme.getColor("tooltip_text")
                     }
                 }
 
@@ -716,7 +716,7 @@ QtObject
                             return UM.Theme.getColor("action_button_text");
                         }
                     }
-                    font: UM.Theme.getFont("action_button")
+                    font: UM.Theme.getFont("medium")
                     text: control.text
                 }
             }
