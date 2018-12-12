@@ -6,7 +6,7 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode #For typing.
 from cura.CuraApplication import CuraApplication
 
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
@@ -28,8 +28,8 @@ class AuthState(IntEnum):
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
 
-    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, parent = parent)
+    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.networkConnection, parent: QObject = None) -> None:
+        super().__init__(device_id = device_id, connection_type = connection_type, parent = parent)
         self._manager = None    # type: Optional[QNetworkAccessManager]
         self._last_manager_create_time = None       # type: Optional[float]
         self._recreate_network_manager_time = 30

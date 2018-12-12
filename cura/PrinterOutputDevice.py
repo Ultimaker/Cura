@@ -34,6 +34,12 @@ class ConnectionState(IntEnum):
     busy = 3
     error = 4
 
+class ConnectionType(IntEnum):
+    none = 0
+    usbConnection = 1
+    networkConnection = 2
+    clusterConnection = 3
+    cloudConnection = 4
 
 ##  Printer output device adds extra interface options on top of output device.
 #
@@ -62,7 +68,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the configuration of one of the printers has changed.
     uniqueConfigurationsChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, parent: QObject = None) -> None:
+    def __init__(self, device_id: str, connection_type: ConnectionType, parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
@@ -84,6 +90,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._update_timer.timeout.connect(self._update)
 
         self._connection_state = ConnectionState.closed #type: ConnectionState
+        self._connection_type = connection_type
 
         self._firmware_updater = None #type: Optional[FirmwareUpdater]
         self._firmware_name = None #type: Optional[str]
@@ -116,6 +123,16 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._connection_state != connection_state:
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
+
+    def checkConnectionType(self, connection_type: ConnectionType) -> bool:
+        return connection_type == self._connection_type
+
+    def getConnectionType(self) -> ConnectionType:
+        return self._connection_type
+
+    def setConnectionType(self, new_connection_type: ConnectionType) -> None:
+        if self._connection_type != new_connection_type:
+            self._connection_type = new_connection_type
 
     @pyqtProperty(str, notify = connectionStateChanged)
     def connectionState(self) -> ConnectionState:

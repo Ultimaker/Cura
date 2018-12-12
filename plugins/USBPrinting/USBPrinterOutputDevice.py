@@ -7,7 +7,7 @@ from UM.i18n import i18nCatalog
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.GenericOutputController import GenericOutputController
@@ -29,7 +29,7 @@ catalog = i18nCatalog("cura")
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
-        super().__init__(serial_port)
+        super().__init__(serial_port, connection_type=ConnectionType.usbConnection)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))

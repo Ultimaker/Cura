@@ -32,7 +32,7 @@ Column
             id: networkedPrintersModel
             filter:
             {
-                "type": "machine", "um_network_key": "*", "hidden": "False"
+                "type": "machine", "um_network_key": "*", "hidden": "False", "um_connection_type": "[2,3,4]"
             }
         }
 

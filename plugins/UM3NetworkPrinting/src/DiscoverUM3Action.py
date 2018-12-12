@@ -3,7 +3,7 @@
 
 import os.path
 import time
-from typing import cast, Optional
+from typing import Optional
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
 
@@ -13,6 +13,7 @@ from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
 from cura.MachineAction import MachineAction
+from cura.PrinterOutputDevice import PrinterOutputDevice
 
 from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
 
@@ -116,22 +117,28 @@ class DiscoverUM3Action(MachineAction):
             # Ensure that the connection states are refreshed.
             self._network_plugin.reCheckConnections()
 
-    @pyqtSlot(str)
-    def setKey(self, key: str) -> None:
-        Logger.log("d", "Attempting to set the network key of the active machine to %s", key)
+    @pyqtSlot(QObject)
+    def setKey(self, printer_device: Optional[PrinterOutputDevice]) -> None:
+        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
             meta_data = global_container_stack.getMetaData()
             if "um_network_key" in meta_data:
                 previous_network_key= meta_data["um_network_key"]
-                global_container_stack.setMetaDataEntry("um_network_key", key)
+                global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
                 # Delete old authentication data.
-                Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), key)
+                Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
                 global_container_stack.removeMetaDataEntry("network_authentication_id")
                 global_container_stack.removeMetaDataEntry("network_authentication_key")
-                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = key)
+                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = printer_device.key)
+
+                if "um_connection_type" in meta_data:
+                    previous_connection_type = meta_data["um_connection_type"]
+                    global_container_stack.setMetaDataEntry("um_connection_type", printer_device.getConnectionType().value)
+                    CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_connection_type", value = previous_connection_type, new_value = printer_device.getConnectionType().value)
             else:
-                global_container_stack.setMetaDataEntry("um_network_key", key)
+                global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
+                global_container_stack.setMetaDataEntry("um_connection_type", printer_device.getConnectionType().value)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
