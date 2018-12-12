@@ -3,8 +3,6 @@ import QtQuick.Controls 1.4
 import UM 1.1 as UM
 import Cura 1.1 as Cura
 
-
-
 Row
 {
     id: rating
@@ -24,7 +22,7 @@ Row
     Label
     {
         id: numRatingsLabel
-        text: model.average_rating.toFixed(1) + " (" + model.num_ratings + " " + catalog.i18nc("@label", "ratings") + ")"
+        text: model.average_rating != undefined ? model.average_rating.toFixed(1) + " (" + model.num_ratings + " " + catalog.i18nc("@label", "ratings") + ")": ""
         verticalAlignment: Text.AlignVCenter
         height: starIcon.height
         width: contentWidth
