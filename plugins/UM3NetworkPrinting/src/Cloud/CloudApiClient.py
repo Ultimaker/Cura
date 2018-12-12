@@ -9,6 +9,7 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from UM.Logger import Logger
 from cura.API import Account
 from cura.NetworkClient import NetworkClient
+from .ResumableUpload import ResumableUpload
 from ..Models import BaseModel
 from .Models.CloudClusterResponse import CloudClusterResponse
 from .Models.CloudErrorObject import CloudErrorObject
@@ -69,24 +70,10 @@ class CloudApiClient(NetworkClient):
     #  \param on_finished: The function to be called after the result is parsed. It receives the print job ID.
     #  \param on_progress: A function to be called during upload progress. It receives a percentage (0-100).
     #  \param on_error: A function to be called if the upload fails. It receives a dict with the error.
-    def uploadMesh(self, upload_response: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[str], Any],
-                   on_progress: Callable[[int], Any], on_error: Callable[[dict], Any]):
-        
-        def progressCallback(bytes_sent: int, bytes_total: int) -> None:
-            if bytes_total:
-                on_progress(int((bytes_sent / bytes_total) * 100))
-
-        def finishedCallback(reply: QNetworkReply):
-            status_code, response = self._parseReply(reply)
-            if status_code < 300:
-                on_finished(upload_response.job_id)
-            else:
-                Logger.log("e", "Received unexpected response %s uploading mesh: %s", status_code, response)
-                on_error(response)
-
-        # TODO: Multipart upload
-        self.put(upload_response.upload_url, data = mesh, content_type = upload_response.content_type,
-                 on_finished = finishedCallback, on_progress = progressCallback)
+    def uploadMesh(self, upload_response: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
+                   on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
+        ResumableUpload(upload_response.upload_url, upload_response.content_type, mesh, on_finished,
+                        on_progress, on_error).start()
 
     # Requests a cluster to print the given print job.
     #  \param cluster_id: The ID of the cluster.

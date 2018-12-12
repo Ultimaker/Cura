@@ -89,16 +89,17 @@ class TestCloudApiClient(TestCase):
         data = parseFixture("putJobUploadResponse")["data"]
         upload_response = CloudPrintJobResponse(**data)
 
-        self.network.prepareReply("PUT", upload_response.upload_url, 200,
-                                  b'{ data : "" }')  # Network client doesn't look into the reply
+        # Network client doesn't look into the reply
+        self.network.prepareReply("PUT", upload_response.upload_url, 200, b'{}')
 
-        self.api.uploadMesh(upload_response, b'', lambda job_id: results.append(job_id),
-                            progress.advance, progress.error)
+        mesh = ("1234" * 100000).encode()
+        self.api.uploadMesh(upload_response, mesh, lambda: results.append("sent"), progress.advance, progress.error)
 
-        self.network.flushReplies()
+        for _ in range(10):
+            self.network.flushReplies()
+            self.network.prepareReply("PUT", upload_response.upload_url, 200, b'{}')
 
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0], upload_response.job_id)
+        self.assertEqual(["sent"], results)
 
     def test_requestPrint(self, network_mock):
         network_mock.return_value = self.network

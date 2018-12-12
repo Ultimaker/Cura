@@ -76,7 +76,8 @@ class NetworkManagerMock:
 
     ## Emits the signal that the reply is ready to all prepared replies.
     def flushReplies(self) -> None:
-        for reply in self.replies.values():
+        for key, reply in self.replies.items():
+            Logger.log("i", "Flushing reply to {} {}", *key)
             self.finished.emit(reply)
         self.reset()
 

@@ -18,6 +18,7 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from .CloudProgressMessage import CloudProgressMessage
 from .CloudApiClient import CloudApiClient
 from .Models.CloudClusterStatus import CloudClusterStatus
 from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
@@ -43,9 +44,6 @@ class T:
 
     COULD_NOT_EXPORT = _I18N_CATALOG.i18nc("@info:status", "Could not export print job.")
 
-    SENDING_DATA_TEXT = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
-    SENDING_DATA_TITLE = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
-
     ERROR = _I18N_CATALOG.i18nc("@info:title", "Error")
     UPLOAD_ERROR = _I18N_CATALOG.i18nc("@info:text", "Could not upload the data to the printer.")
 
@@ -68,7 +66,7 @@ class T:
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 4.0  # seconds
+    CHECK_CLUSTER_INTERVAL = 5.0  # seconds
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
@@ -109,9 +107,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
 
         # We only allow a single upload at a time.
-        self._sending_job = False
-        # TODO: handle progress messages in another class.
-        self._progress_message = None  # type: Optional[Message]
+        self._progress = CloudProgressMessage()
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
         self._received_printers = None  # type: Optional[List[CloudClusterPrinterStatus]]
@@ -149,7 +145,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
 
         # Show an error message if we're already sending a job.
-        if self._sending_job:
+        if self._progress.visible:
             self._onUploadError(T.BLOCKED_UPLOADING)
             return
 
@@ -286,53 +282,31 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #  \param mesh: The bytes to upload.
     #  \param job_response: The response received from the cloud API.
     def _onPrintJobCreated(self, mesh: bytes, job_response: CloudPrintJobResponse) -> None:
-        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,
-                             lambda _: self._onUploadError(T.UPLOAD_ERROR))
+        self._progress.show()
+        self._api.uploadMesh(job_response, mesh, lambda: self._onPrintJobUploaded(job_response.job_id),
+                             self._progress.update, self._onUploadError)
 
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
     #  \param job_id: The ID of the job.
     def _onPrintJobUploaded(self, job_id: str) -> None:
         self._api.requestPrint(self._device_id, job_id, self._onUploadSuccess)
 
-    ## Updates the progress of the mesh upload.
-    #  \param progress: The amount of percentage points uploaded until now (0-100).
-    def _updateUploadProgress(self, progress: int) -> None:
-        if not self._progress_message:
-            self._progress_message = Message(
-                text = T.SENDING_DATA_TEXT,
-                title = T.SENDING_DATA_TITLE,
-                progress = -1,
-                lifetime = 0,
-                dismissable = False,
-                use_inactivity_timer = False
-            )
-        self._progress_message.setProgress(progress)
-        self._progress_message.show()
-
-    ## Hides the upload progress bar
-    def _resetUploadProgress(self) -> None:
-        if self._progress_message:
-            self._progress_message.hide()
-            self._progress_message = None
-
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.
-    def _onUploadError(self, message: str = None) -> None:
-        self._resetUploadProgress()
-        if message:
-            Message(
-                text = message,
-                title = T.ERROR,
-                lifetime = 10
-            ).show()
-        self._sending_job = False  # the upload has finished so we're not sending a job anymore
+    def _onUploadError(self, message = None) -> None:
+        self._progress.hide()
+        Message(
+            text = message or T.UPLOAD_ERROR,
+            title = T.ERROR,
+            lifetime = 10
+        ).show()
         self.writeError.emit()
 
     ## Shows a message when the upload has succeeded
     #  \param response: The response from the cloud API.
     def _onUploadSuccess(self, response: CloudPrintResponse) -> None:
         Logger.log("i", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
-        self._resetUploadProgress()
+        self._progress.hide()
         Message(
             text = T.UPLOAD_SUCCESS_TEXT,
             title = T.UPLOAD_SUCCESS_TITLE,
