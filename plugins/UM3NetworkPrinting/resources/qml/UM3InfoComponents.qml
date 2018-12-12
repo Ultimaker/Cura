@@ -83,9 +83,7 @@ Item {
 
             Column {
                 Repeater {
-                    model: Cura.ExtrudersModel {
-                        simpleNames: true;
-                    }
+                    model: Cura.ExtrudersModel { }
 
                     Label {
                         text: model.name;

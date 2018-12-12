@@ -78,8 +78,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._update_extruder_timer.setSingleShot(True)
         self._update_extruder_timer.timeout.connect(self.__updateExtruders)
 
-        self._simple_names = False
-
         self._active_machine_extruders = []  # type: Iterable[ExtruderStack]
         self._add_optional_extruder = False
 
@@ -100,21 +98,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     @pyqtProperty(bool, fset = setAddOptionalExtruder, notify = addOptionalExtruderChanged)
     def addOptionalExtruder(self):
         return self._add_optional_extruder
-
-    ##  Set the simpleNames property.
-    def setSimpleNames(self, simple_names):
-        if simple_names != self._simple_names:
-            self._simple_names = simple_names
-            self.simpleNamesChanged.emit()
-            self._updateExtruders()
-
-    ##  Emitted when the simpleNames property changes.
-    simpleNamesChanged = pyqtSignal()
-
-    ##  Whether or not the model should show all definitions regardless of visibility.
-    @pyqtProperty(bool, fset = setSimpleNames, notify = simpleNamesChanged)
-    def simpleNames(self):
-        return self._simple_names
 
     ##  Links to the stack-changed signal of the new extruders when an extruder
     #   is swapped out or added in the current machine.

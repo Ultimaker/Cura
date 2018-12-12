@@ -63,7 +63,6 @@ Rectangle
         Cura.ExtrudersModel
         {
             id: extrudersModel
-            simpleNames: true
         }
 
         OutputDeviceHeader
