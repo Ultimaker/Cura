@@ -44,7 +44,7 @@ Rectangle
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         height: UM.Theme.getSize("toolbox_heading_label").height
-        width: parent.width
+        width: parent.width - UM.Theme.getSize("default_margin").width
         wrapMode: Text.WordWrap
         font: UM.Theme.getFont("medium_bold")
     }
