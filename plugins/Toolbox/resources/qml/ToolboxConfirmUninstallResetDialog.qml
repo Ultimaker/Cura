@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -66,6 +66,7 @@ UM.Dialog
             anchors.right: parent.right
             font: UM.Theme.getFont("default")
             wrapMode: Text.WordWrap
+            renderType: Text.NativeRendering
         }
 
         // Buttons
