@@ -1,7 +1,7 @@
-import QtQuick 2.2
-import QtQuick.Controls 2.0
+import QtQuick 2.7
+import QtQuick.Controls 2.1
 import UM 1.0 as UM
-
+import Cura 1.1 as Cura
 Item
 {
     id: ratingWidget
@@ -11,6 +11,7 @@ Item
     property string packageId: ""
 
     property int userRating: 0
+    property bool canRate: false
 
     signal rated(int rating)
 
@@ -20,7 +21,7 @@ Item
     {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: ratingWidget.enabled
+        hoverEnabled: ratingWidget.canRate
         acceptedButtons: Qt.NoButton
         onExited:
         {
@@ -40,11 +41,14 @@ Item
                     hoverEnabled: true
                     onHoveredChanged:
                     {
-                        if(hovered)
+                        if(hovered && ratingWidget.canRate)
                         {
                             indexHovered = index
                         }
                     }
+
+                    ToolTip.visible: control.hovered  && !ratingWidget.canRate
+                    ToolTip.text: !Cura.API.account.isLoggedIn ? catalog.i18nc("@label", "You need to login first before you can rate"): catalog.i18nc("@label", "You need to install the package before you can rate")
 
                     property bool isStarFilled:
                     {
@@ -72,7 +76,7 @@ Item
                         // Unfilled stars should always have the default color. Only filled stars should change on hover
                         color:
                         {
-                            if(!enabled)
+                            if(!ratingWidget.canRate)
                             {
                                 return "#5a5a5a"
                             }
