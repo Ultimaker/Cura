@@ -23,15 +23,40 @@ Item
         }
     }
 
-    // This component will appear when there is no configurations (e.g. when loosing connection)
-    Label
+    // This component will appear when there is no configurations (e.g. when losing connection)
+    Item
     {
         width: parent.width
         visible: configurationList.model.length == 0
-        text: "Configuration list empty. Probably because of lost connection"  // TODO change this to a proper component
-        horizontalAlignment: Text.AlignHCenter
-        wrapMode: Text.WordWrap
-        renderType: Text.NativeRendering
+        height: label.height + 2 * UM.Theme.getSize("default_margin").height
+        anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+        UM.RecolorImage
+        {
+            id: icon
+
+            anchors.left: parent.left
+            anchors.verticalCenter: label.verticalCenter
+
+            source: UM.Theme.getIcon("warning")
+            color: UM.Theme.getColor("warning")
+            width: UM.Theme.getSize("section_icon").width
+            height: width
+        }
+
+        Label
+        {
+            id: label
+            anchors.left: icon.right
+            anchors.right: parent.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "The configurations are not available because the printer is disconnected.")
+            color: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            wrapMode: Text.WordWrap
+        }
     }
 
     ScrollView
