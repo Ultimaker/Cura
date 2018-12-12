@@ -3,7 +3,7 @@ import base64
 import hashlib
 from datetime import datetime
 from tempfile import NamedTemporaryFile
-from typing import Optional, List, Dict
+from typing import Any, Optional, List, Dict
 
 import requests
 
@@ -34,7 +34,7 @@ class DriveApiService:
         """Create a new instance of the Drive API service and set the cura_api object."""
         self._cura_api = cura_api
 
-    def getBackups(self) -> List[Dict[str, any]]:
+    def getBackups(self) -> List[Dict[str, Any]]:
         """Get all backups from the API."""
         access_token = self._cura_api.account.accessToken
         if not access_token:
@@ -85,7 +85,7 @@ class DriveApiService:
         else:
             self.onCreatingStateChanged.emit(is_creating=False)
 
-    def restoreBackup(self, backup: Dict[str, any]) -> None:
+    def restoreBackup(self, backup: Dict[str, Any]) -> None:
         """
         Restore a previously exported backup from cloud storage.
         :param backup: A dict containing an entry from the API list response.
@@ -157,7 +157,7 @@ class DriveApiService:
             return False
         return True
 
-    def _requestBackupUpload(self, backup_metadata: Dict[str, any], backup_size: int) -> Optional[str]:
+    def _requestBackupUpload(self, backup_metadata: Dict[str, Any], backup_size: int) -> Optional[str]:
         """
         Request a backup upload slot from the API.
         :param backup_metadata: A dict containing some meta data about the backup.

@@ -14,14 +14,14 @@ class UploadBackupJob(Job):
     As it can take longer than some other tasks, we schedule this using a Cura Job.
     """
 
-    def __init__(self, signed_upload_url: str, backup_zip: bytes):
+    def __init__(self, signed_upload_url: str, backup_zip: bytes) -> None:
         super().__init__()
         self._signed_upload_url = signed_upload_url
         self._backup_zip = backup_zip
         self._upload_success = False
         self.backup_upload_error_message = ""
 
-    def run(self):
+    def run(self) -> None:
         Message(Settings.translatable_messages["uploading_backup"], title = Settings.MESSAGE_TITLE,
                 lifetime = 10).show()
 

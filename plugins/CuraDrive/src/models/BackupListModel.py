@@ -1,5 +1,5 @@
 # Copyright (c) 2018 Ultimaker B.V.
-from typing import List, Dict
+from typing import Any, List, Dict
 
 from UM.Qt.ListModel import ListModel
 
@@ -11,7 +11,7 @@ class BackupListModel(ListModel):
     The BackupListModel transforms the backups data that came from the server so it can be served to the Qt UI.
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
         self.addRoleName(Qt.UserRole + 1, "backup_id")
         self.addRoleName(Qt.UserRole + 2, "download_url")
@@ -19,7 +19,7 @@ class BackupListModel(ListModel):
         self.addRoleName(Qt.UserRole + 4, "md5_hash")
         self.addRoleName(Qt.UserRole + 5, "data")
 
-    def loadBackups(self, data: List[Dict[str, any]]) -> None:
+    def loadBackups(self, data: List[Dict[str, Any]]) -> None:
         """
         Populate the model with server data.
         :param data:

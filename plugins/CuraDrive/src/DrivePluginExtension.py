@@ -70,7 +70,8 @@ class DrivePluginExtension(QObject, Extension):
         if not self._drive_window:
             self._drive_window = self.createDriveWindow()
         self.refreshBackups()
-        self._drive_window.show()
+        if self._drive_window:
+            self._drive_window.show()
 
     def createDriveWindow(self) -> Optional["QObject"]:
         """
