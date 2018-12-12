@@ -29,7 +29,7 @@ Button
             id: contentColumn
             width: parent.width
             padding: UM.Theme.getSize("wide_margin").width
-            spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
+            spacing: UM.Theme.getSize("narrow_margin").height
 
             Row
             {
@@ -72,8 +72,8 @@ Button
                     right: parent.right
                     rightMargin: parent.padding
                 }
-                height: visible ? Math.round(UM.Theme.getSize("thick_lining").height / 2) : 0
-                color: UM.Theme.getColor("text")
+                height: visible ? Math.round(UM.Theme.getSize("default_lining").height / 2) : 0
+                color: UM.Theme.getColor("lining")
             }
 
             Item

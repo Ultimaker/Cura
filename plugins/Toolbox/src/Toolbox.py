@@ -691,7 +691,8 @@ class Toolbox(QObject, Extension):
             self.setDownloadProgress(new_progress)
             if bytes_sent == bytes_total:
                 self.setIsDownloading(False)
-                cast(QNetworkReply, self._download_reply).downloadProgress.disconnect(self._onDownloadProgress)
+                self._download_reply = cast(QNetworkReply, self._download_reply)
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
                 
                 # Check if the download was sucessfull
                 if self._download_reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:

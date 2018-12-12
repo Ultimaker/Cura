@@ -83,7 +83,14 @@ class BuildVolume(SceneNode):
             " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
 
         self._global_container_stack = None
+
+        self._stack_change_timer = QTimer()
+        self._stack_change_timer.setInterval(100)
+        self._stack_change_timer.setSingleShot(True)
+        self._stack_change_timer.timeout.connect(self._onStackChangeTimerFinished)
+
         self._application.globalContainerStackChanged.connect(self._onStackChanged)
+
         self._onStackChanged()
 
         self._engine_ready = False
@@ -104,6 +111,8 @@ class BuildVolume(SceneNode):
         self._setting_change_timer.setInterval(150)
         self._setting_change_timer.setSingleShot(True)
         self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
+
+
 
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
@@ -479,6 +488,8 @@ class BuildVolume(SceneNode):
             maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
+        self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds
+
         self.updateNodeBoundaryCheck()
 
     def getBoundingBox(self) -> AxisAlignedBox:
@@ -524,8 +535,11 @@ class BuildVolume(SceneNode):
         if extra_z != self._extra_z_clearance:
             self._extra_z_clearance = extra_z
 
-    ##  Update the build volume visualization
     def _onStackChanged(self):
+        self._stack_change_timer.start()
+
+    ##  Update the build volume visualization
+    def _onStackChangeTimerFinished(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
             extruders = ExtruderManager.getInstance().getActiveExtruderStacks()

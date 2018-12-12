@@ -16,7 +16,7 @@ Cura.ExpandableComponent
     id: base
 
     width: UM.Theme.getSize("layerview_menu_size").width
-    iconSource: UM.Theme.getIcon("pencil")
+    contentHeaderTitle: catalog.i18nc("@label", "Color scheme")
 
     Connections
     {
@@ -45,7 +45,7 @@ Cura.ExpandableComponent
         verticalAlignment: Text.AlignVCenter
     }
 
-    popupItem: Column
+    contentItem: Column
     {
         id: viewSettings
 

@@ -13,8 +13,8 @@ Column
     property var loggedIn: false
     property var profileImage: ""
 
-    padding: 2 * UM.Theme.getSize("default_margin").height
-    spacing: 2 * UM.Theme.getSize("default_margin").height
+    padding: UM.Theme.getSize("wide_margin").height
+    spacing: UM.Theme.getSize("wide_margin").height
 
     AvatarImage
     {

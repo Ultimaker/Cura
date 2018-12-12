@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.3
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
@@ -13,7 +13,7 @@ Item
     id: toolboxDownloadsGridTile
     property int packageCount: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getTotalNumberOfMaterialPackagesByAuthor(model.id) : 1
     property int installedPackages: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
-    height: UM.Theme.getSize("toolbox_thumbnail_small").height
+    height: childrenRect.height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
     MouseArea

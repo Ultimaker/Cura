@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
@@ -32,6 +32,7 @@ UM.Dialog
             anchors.right: parent.right
             text: licenseDialog.pluginName + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
             wrapMode: Text.Wrap
+            renderType: Text.NativeRendering
         }
         TextArea
         {

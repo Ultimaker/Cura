@@ -7,13 +7,12 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Cura.ExpandableComponent
+Cura.ExpandablePopup
 {
     id: viewSelector
 
-    popupPadding: UM.Theme.getSize("default_lining").width
-    popupAlignment: Cura.ExpandableComponent.PopupAlignment.AlignLeft
-    iconSource: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+    contentPadding: UM.Theme.getSize("default_lining").width
+    contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
 
     property var viewModel: UM.ViewModel { }
 
@@ -61,6 +60,7 @@ Cura.ExpandableComponent
             {
                 left: title.right
                 leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
             }
             height: parent.height
             elide: Text.ElideRight
@@ -70,10 +70,10 @@ Cura.ExpandableComponent
         }
     }
 
-    popupItem: Column
+    contentItem: Column
     {
         id: viewSelectorPopup
-        width: viewSelector.width - 2 * viewSelector.popupPadding
+        width: viewSelector.width - 2 * viewSelector.contentPadding
         leftPadding: UM.Theme.getSize("default_lining").width
         rightPadding: UM.Theme.getSize("default_lining").width
 
@@ -81,7 +81,7 @@ Cura.ExpandableComponent
         Component.onCompleted:
         {
             height = implicitHeight
-            width = viewSelector.width - 2 * viewSelector.popupPadding
+            width = viewSelector.width - 2 * viewSelector.contentPadding
         }
 
         Repeater
@@ -122,7 +122,7 @@ Cura.ExpandableComponent
 
                 onClicked:
                 {
-                    viewSelector.togglePopup()
+                    toggleContent()
                     UM.Controller.setActiveView(id)
                 }
             }

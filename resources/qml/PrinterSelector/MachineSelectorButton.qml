@@ -83,7 +83,7 @@ Button
 
     onClicked:
     {
-        togglePopup()
+        toggleContent()
         Cura.MachineManager.setActiveMachine(model.id)
     }
 

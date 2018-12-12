@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
@@ -23,6 +23,7 @@ Column
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
+        renderType: Text.NativeRendering
     }
     Grid
     {
@@ -37,7 +38,7 @@ Column
             delegate: Loader
             {
                 asynchronous: true
-                width: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns
+                width: Math.round((grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns)
                 height: UM.Theme.getSize("toolbox_thumbnail_small").height
                 source: "ToolboxDownloadsGridTile.qml"
             }

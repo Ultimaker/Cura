@@ -88,7 +88,7 @@ UM.MainWindow
             window: base
         }
 
-        Rectangle
+        Item
         {
             id: headerBackground
             anchors
@@ -122,17 +122,6 @@ UM.MainWindow
                         color: UM.Theme.getColor("main_window_header_background")
                     }
                 }
-            }
-
-            // This is the new fancy pattern
-            Image
-            {
-                id: backgroundPattern
-                anchors.fill: parent
-                fillMode: Image.Tile
-                source: UM.Theme.getImage("header_pattern")
-                horizontalAlignment: Image.AlignLeft
-                verticalAlignment: Image.AlignTop
             }
         }
 
@@ -192,23 +181,6 @@ UM.MainWindow
                 }
             }
 
-            Connections
-            {
-                target: stageMenu.item
-                onShowTooltip: base.showTooltip(item, location, text)
-                onHideTooltip: base.hideTooltip()
-            }
-
-            JobSpecs
-            {
-                id: jobSpecs
-                anchors
-                {
-                    bottom: parent.bottom
-                    bottomMargin: UM.Theme.getSize("default_margin").height
-                }
-            }
-
             Toolbar
             {
                 // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
@@ -238,6 +210,19 @@ UM.MainWindow
                 }
             }
 
+            JobSpecs
+            {
+                id: jobSpecs
+                visible: CuraApplication.platformActivity
+                anchors
+                {
+                    left: parent.left
+                    bottom: viewOrientationControls.top
+                    margins: UM.Theme.getSize("default_margin").width
+                    bottomMargin: UM.Theme.getSize("thin_margin").width
+                }
+            }
+
             ViewOrientationControls
             {
                 id: viewOrientationControls
@@ -245,9 +230,8 @@ UM.MainWindow
                 anchors
                 {
                     left: parent.left
-                    margins: UM.Theme.getSize("default_margin").width
-
                     bottom: parent.bottom
+                    margins: UM.Theme.getSize("default_margin").width
                 }
             }
 
@@ -298,8 +282,6 @@ UM.MainWindow
                 // Every time the stage is changed.
                 property var printSetupSelector: Cura.PrintSetupSelector
                 {
-                    onShowTooltip: base.showTooltip(item, location, text)
-                    onHideTooltip: base.hideTooltip()
                     width: UM.Theme.getSize("print_setup_widget").width
                     height: UM.Theme.getSize("stage_menu").height
                     headerCornerSide: RoundedRectangle.Direction.Right
@@ -318,7 +300,7 @@ UM.MainWindow
             }
         }
 
-        SidebarTooltip
+        PrintSetupTooltip
         {
             id: tooltip
         }

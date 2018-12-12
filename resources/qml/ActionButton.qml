@@ -3,17 +3,17 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-
 import QtGraphicalEffects 1.0 // For the dropshadow
-
 import UM 1.1 as UM
 import Cura 1.0 as Cura
+
 
 Button
 {
     id: button
-    property alias iconSource: buttonIconLeft.source
     property bool isIconOnRightSide: false
+
+    property alias iconSource: buttonIconLeft.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.text
@@ -28,9 +28,6 @@ Button
     property color outlineColor: color
     property color outlineHoverColor: hoverColor
     property color outlineDisabledColor: outlineColor
-
-    hoverEnabled: true
-
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
 
@@ -42,6 +39,7 @@ Button
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
     height: UM.Theme.getSize("action_button").height
+    hoverEnabled: true
 
     contentItem: Row
     {
@@ -52,6 +50,8 @@ Button
             source: ""
             height: buttonText.height
             width: visible ? height : 0
+            sourceSize.width: width
+            sourceSize.height: height
             color: button.hovered ? button.textHoverColor : button.textColor
             visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
@@ -78,6 +78,8 @@ Button
             source: buttonIconLeft.source
             height: buttonText.height
             width: visible ? height : 0
+            sourceSize.width: width
+            sourceSize.height: height
             color: buttonIconLeft.color
             visible: source != "" && button.isIconOnRightSide
             anchors.verticalCenter: buttonIconLeft.verticalCenter

@@ -412,7 +412,7 @@ UM.Dialog
             }
         }
 
-        Cura.SidebarTooltip
+        Cura.PrintSetupTooltip
         {
             id: tooltip
         }

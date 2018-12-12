@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -24,6 +24,7 @@ Column
         font: UM.Theme.getFont("default")
         wrapMode: Text.WordWrap
         width: parent.width
+        renderType: Text.NativeRendering
     }
 
     ToolboxProgressButton
@@ -55,6 +56,8 @@ Column
         linkColor: UM.Theme.getColor("text_link")
         visible: loginRequired
         width: updateButton.width
+        renderType: Text.NativeRendering
+
         MouseArea
         {
             anchors.fill: parent

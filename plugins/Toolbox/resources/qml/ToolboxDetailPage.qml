@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.3
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -64,6 +64,7 @@ Item
             color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
+            renderType: Text.NativeRendering
         }
 
         SmallRatingWidget
@@ -91,30 +92,35 @@ Item
                 text: catalog.i18nc("@label", "Rating") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Last updated") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Author") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Downloads") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
         }
         Column
@@ -176,6 +182,7 @@ Item
                 text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
             Label
             {
@@ -190,6 +197,7 @@ Item
                 }
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
             Label
             {
@@ -208,12 +216,14 @@ Item
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: details === null ? "" : (details.download_count || catalog.i18nc("@label", "Unknown"))
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
         }
         Rectangle

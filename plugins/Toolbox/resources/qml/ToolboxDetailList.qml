@@ -32,7 +32,11 @@ Item
                 model: toolbox.packagesModel
                 delegate: Loader
                 {
-                    asynchronous: true
+                    // FIXME: When using asynchronous loading, on Mac and Windows, the tile may fail to load complete,
+                    // leaving an empty space below the title part. We turn it off for now to make it work on Mac and
+                    // Windows.
+                    // Can be related to this QT bug: https://bugreports.qt.io/browse/QTBUG-50992
+                    asynchronous: false
                     source: "ToolboxDetailTile.qml"
                 }
             }
