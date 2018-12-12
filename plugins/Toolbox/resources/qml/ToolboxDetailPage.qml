@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.3
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -37,7 +37,7 @@ Item
                 leftMargin: UM.Theme.getSize("wide_margin").width
                 topMargin: UM.Theme.getSize("wide_margin").height
             }
-            color: white //Always a white background for image (regardless of theme).
+            color: "white" //Always a white background for image (regardless of theme).
             Image
             {
                 anchors.fill: parent
@@ -65,6 +65,7 @@ Item
             wrapMode: Text.WordWrap
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height
+            renderType: Text.NativeRendering
         }
 
         Column
@@ -82,26 +83,30 @@ Item
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Last updated") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Author") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Downloads") + ":"
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
         }
         Column
@@ -119,8 +124,9 @@ Item
             Label
             {
                 text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
             Label
             {
@@ -133,8 +139,9 @@ Item
                     var date = new Date(details.last_updated)
                     return date.toLocaleString(UM.Preferences.getValue("general/language"))
                 }
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
             Label
             {
@@ -149,16 +156,18 @@ Item
                         return "<a href=\"" + details.website + "\">" + details.author_name + "</a>"
                     }
                 }
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: details === null ? "" : (details.download_count || catalog.i18nc("@label", "Unknown"))
-                font: UM.Theme.getFont("very_small")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
         }
         Rectangle

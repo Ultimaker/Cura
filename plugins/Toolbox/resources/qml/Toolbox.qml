@@ -14,17 +14,17 @@ Window
     modality: Qt.ApplicationModal
     flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
-    width: 720 * screenScaleFactor
-    height: 640 * screenScaleFactor
+    width: Math.floor(720 * screenScaleFactor)
+    height: Math.floor(640 * screenScaleFactor)
     minimumWidth: width
     maximumWidth: minimumWidth
     minimumHeight: height
     maximumHeight: minimumHeight
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
     UM.I18nCatalog
     {
         id: catalog
-        name:"cura"
+        name: "cura"
     }
     Item
     {
@@ -95,6 +95,7 @@ Window
                 licenseDialog.show();
             }
         }
+        
         ToolboxLicenseDialog
         {
             id: licenseDialog

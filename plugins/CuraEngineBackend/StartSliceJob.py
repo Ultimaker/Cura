@@ -323,7 +323,7 @@ class StartSliceJob(Job):
             value = stack.getProperty(key, "value")
             result[key] = value
             Job.yieldThread()
-
+        
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
         result["print_temperature"] = result["material_print_temperature"]
         result["time"] = time.strftime("%H:%M:%S") #Some extra settings.

@@ -3,6 +3,8 @@
 
 import collections
 import time
+import re
+import unicodedata
 from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
@@ -872,7 +874,7 @@ class MachineManager(QObject):
             caution_message = Message(catalog.i18nc(
                 "@info:generic",
                 "Settings have been changed to match the current availability of extruders: [%s]" % ", ".join(add_user_changes)),
-                lifetime=0,
+                lifetime = 0,
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
 
@@ -1534,9 +1536,32 @@ class MachineManager(QObject):
             name = self._current_quality_group.name
         return name
 
+    @pyqtProperty(bool, notify = activeQualityGroupChanged)
+    def hasNotSupportedQuality(self) -> bool:
+        return self._current_quality_group is None and self._current_quality_changes_group is None
+
     def _updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()
+
+    ##  This function will translate any printer type name to an abbreviated printer type name
+    @pyqtSlot(str, result = str)
+    def getAbbreviatedMachineName(self, machine_type_name: str) -> str:
+        abbr_machine = ""
+        for word in re.findall(r"[\w']+", machine_type_name):
+            if word.lower() == "ultimaker":
+                abbr_machine += "UM"
+            elif word.isdigit():
+                abbr_machine += word
+            else:
+                stripped_word = "".join(char for char in unicodedata.normalize("NFD", word.upper()) if unicodedata.category(char) != "Mn")
+                # - use only the first character if the word is too long (> 3 characters)
+                # - use the whole word if it's not too long (<= 3 characters)
+                if len(stripped_word) > 3:
+                    stripped_word = stripped_word[0]
+                abbr_machine += stripped_word
+
+        return abbr_machine

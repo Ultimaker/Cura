@@ -19,7 +19,7 @@ Cura.MachineAction
         property bool heatupBedStarted: false
         property bool printerConnected: Cura.MachineManager.printerConnected
 
-        UM.I18nCatalog { id: catalog; name:"cura"}
+        UM.I18nCatalog { id: catalog; name: "cura"}
         Label
         {
             id: pageTitle

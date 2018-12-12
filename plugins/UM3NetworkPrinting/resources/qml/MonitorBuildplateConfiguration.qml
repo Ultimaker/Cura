@@ -27,7 +27,7 @@ Item
     Row
     {
         height: parent.height
-        spacing: 12 * screenScaleFactor // TODO: Theme! (Should be same as extruder spacing)
+        spacing: UM.Theme.getSize("print_setup_slider_handle").width // TODO: Theme! (Should be same as extruder spacing)
 
         // This wrapper ensures that the buildplate icon is located centered
         // below an extruder icon.
@@ -52,7 +52,7 @@ Item
             id: buildplateLabel
             color: "#191919" // TODO: Theme!
             elide: Text.ElideRight
-            font: UM.Theme.getFont("very_small") // 12pt, regular
+            font: UM.Theme.getFont("default") // 12pt, regular
             text: ""
 
             // FIXED-LINE-HEIGHT:

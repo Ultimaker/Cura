@@ -28,37 +28,40 @@ SettingItem
             // 3: material  -> user changed material in materials page
             // 4: variant
             // 5: machine
-            var value;
-            if ((base.resolve != "None") && (stackLevel != 0) && (stackLevel != 1)) {
+            var value
+            if ((base.resolve != "None") && (stackLevel != 0) && (stackLevel != 1))
+            {
                 // We have a resolve function. Indicates that the setting is not settable per extruder and that
                 // we have to choose between the resolved value (default) and the global value
                 // (if user has explicitly set this).
-                value = base.resolve;
-            } else {
-                value = propertyProvider.properties.value;
+                value = base.resolve
+            }
+            else
+            {
+                value = propertyProvider.properties.value
             }
 
             switch(value)
             {
                 case "True":
-                    return true;
+                    return true
                 case "False":
-                    return false;
+                    return false
                 default:
-                    return value;
+                    return value
             }
         }
 
         Keys.onSpacePressed:
         {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", !checked);
+            forceActiveFocus()
+            propertyProvider.setPropertyValue("value", !checked)
         }
 
         onClicked:
         {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", !checked);
+            forceActiveFocus()
+            propertyProvider.setPropertyValue("value", !checked)
         }
 
         Keys.onTabPressed:
@@ -72,9 +75,9 @@ SettingItem
 
         onActiveFocusChanged:
         {
-            if(activeFocus)
+            if (activeFocus)
             {
-                base.focusReceived();
+                base.focusReceived()
             }
         }
 
@@ -90,37 +93,38 @@ SettingItem
 
             color:
             {
-                if(!enabled)
+                if (!enabled)
                 {
                     return UM.Theme.getColor("setting_control_disabled")
                 }
-                if(control.containsMouse || control.activeFocus)
+                if (control.containsMouse || control.activeFocus)
                 {
                     return UM.Theme.getColor("setting_control_highlight")
                 }
                 return UM.Theme.getColor("setting_control")
             }
 
+            radius: UM.Theme.getSize("setting_control_radius").width
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
-                if(!enabled)
+                if (!enabled)
                 {
                     return UM.Theme.getColor("setting_control_disabled_border")
                 }
-                if(control.containsMouse || control.activeFocus)
+                if (control.containsMouse || control.activeFocus)
                 {
                     return UM.Theme.getColor("setting_control_border_highlight")
                 }
                 return UM.Theme.getColor("setting_control_border")
             }
 
-            UM.RecolorImage {
+            UM.RecolorImage
+            {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: Math.round(parent.width / 2.5)
                 height: Math.round(parent.height / 2.5)
-                sourceSize.width: width
                 sourceSize.height: width
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
                 source: UM.Theme.getIcon("check")
