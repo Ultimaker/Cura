@@ -70,6 +70,7 @@
                     "default_value": 0.25,
                     "minimum_value": "0",
                     "maximum_value": "5",
+                    "minimum_value_warning": "0.25",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -152,6 +153,9 @@
         "material_bed_temperature": {
             "value": "max(extruderValues('default_material_bed_temperature'))"
         },
+        "material_flow": {
+            "resolve": "extruderValue(0, 'material_flow')"
+        },
 
 
         "layer_height_0": {
@@ -165,7 +169,7 @@
             "value": "line_width"
         },
         "wall_line_width_0": {
-            "value": "line_width + 0.1"
+            "value": "line_width"
         },
         "skin_line_width": {
             "value": "line_width"
@@ -194,7 +198,9 @@
         "z_seam_type": {
             "value": "'shortest'"
         },
-
+        "fill_perimeter_gaps": {
+            "value": "'nowhere'"
+        },
 
 
 
@@ -282,7 +288,7 @@
         },
 
         "blackbelt_raft_gap": {
-            "value": "0.2"
+            "value": "0.5"
         },
         "blackbelt_belt_wall_enabled": {
             "value": "True"

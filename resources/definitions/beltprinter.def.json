@@ -81,7 +81,7 @@
                     "default_value": 0.3,
                     "value": "0.75 * line_width",
                     "minimum_value": "0",
-                    "maximum_value_warning": "min(extruderValues('machine_nozzle_size'))",
+                    "maximum_value_warning": "1.5 * min(extruderValues('machine_nozzle_size'))",
                     "enabled": "blackbelt_raft",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -440,7 +440,10 @@
         "adaptive_layer_height_enabled": {
             "enabled": false
         },
-
+        "carve_multiple_volumes": {
+            "enabled": false,
+            "value": "False"
+        },
 
 
 
