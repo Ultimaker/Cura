@@ -16,10 +16,7 @@ Item
     property real padding: UM.Theme.getSize("default_margin").width
     property bool multipleExtruders: extrudersModel.count > 1
 
-    Cura.ExtrudersModel
-    {
-        id: extrudersModel
-    }
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     // Profile selector row
     GlobalProfileSelector

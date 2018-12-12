@@ -17,10 +17,12 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        model: CuraApplication.getExtrudersModelWithOptional()
+
+        Connections
         {
-            onModelChanged: control.color = getItem(control.currentIndex).color
-            addOptionalExtruder: true
+            target: model
+            onModelChanged: control.color = model.getItem(control.currentIndex).color
         }
 
         textRole: "name"
