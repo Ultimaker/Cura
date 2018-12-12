@@ -135,8 +135,6 @@ Item
                 id: rating
                 visible: details.type == "plugin"
                 packageId: details.id
-                rating: details.average_rating
-                numRatings: details.num_ratings
                 userRating: details.user_rating
                 enabled: toolbox.isInstalled(details.id) && Cura.API.account.isLoggedIn
 

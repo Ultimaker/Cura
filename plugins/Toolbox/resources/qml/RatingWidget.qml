@@ -10,8 +10,6 @@ Item
     property int indexHovered: -1
     property string packageId: ""
 
-    property int numRatings: 0
-
     property int userRating: 0
 
     signal rated(int rating)
@@ -87,14 +85,6 @@ Item
                     }
                     onClicked: rated(index + 1)  // Notify anyone who cares about this.
                 }
-            }
-            Label
-            {
-                text: "(" + numRatings + ")"
-                verticalAlignment: Text.AlignVCenter
-                height: parent.height
-                color: "#5a5a5a"
-                font: UM.Theme.getFont("small")
             }
         }
     }
