@@ -7,21 +7,31 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Column
+Item
 {
     id: base
     property var outputDevice: null
-    height: childrenRect.height + padding
-    spacing: UM.Theme.getSize("narrow_margin").height
+    height: childrenRect.height
 
     function forceModelUpdate()
     {
-        // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
+        // FIXME For now the model has to be removed and then created again, otherwise changes in the printer don't automatically update the UI
         configurationList.model = []
         if (outputDevice)
         {
             configurationList.model = outputDevice.uniqueConfigurations
         }
+    }
+
+    // This component will appear when there is no configurations (e.g. when loosing connection)
+    Label
+    {
+        width: parent.width
+        visible: configurationList.model.length == 0
+        text: "Configuration list empty. Probably because of lost connection"  // TODO change this to a proper component
+        horizontalAlignment: Text.AlignHCenter
+        wrapMode: Text.WordWrap
+        renderType: Text.NativeRendering
     }
 
     ScrollView

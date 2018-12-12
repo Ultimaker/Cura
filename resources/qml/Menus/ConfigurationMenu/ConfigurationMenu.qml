@@ -35,7 +35,6 @@ Cura.ExpandablePopup
     }
 
     contentPadding: UM.Theme.getSize("default_lining").width
-    contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
     enabled: Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants || Cura.MachineManager.hasVariantBuildplates; //Only let it drop down if there is any configuration that you could change.
 
     headerItem: Item
@@ -130,17 +129,18 @@ Cura.ExpandablePopup
     {
         id: popupItem
         width: UM.Theme.getSize("configuration_selector").width
-        height: implicitHeight //Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
+        height: implicitHeight  // Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
         padding: UM.Theme.getSize("default_margin").height
         spacing: UM.Theme.getSize("default_margin").height
 
-        property bool is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
+        property bool is_connected: false  // If current machine is connected to a printer. Only evaluated upon making popup visible.
+        property int configuration_method: ConfigurationMenu.ConfigurationMethod.Custom  // Type of configuration being used. Only evaluated upon making popup visible.
+
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected //Re-evaluate.
+            is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected  // Re-evaluate.
+            configuration_method = is_connected ? ConfigurationMenu.ConfigurationMethod.Auto : ConfigurationMenu.ConfigurationMethod.Custom  // Auto if connected to a printer at start-up, or Custom if not.
         }
-
-        property int configuration_method: is_connected ? ConfigurationMenu.ConfigurationMethod.Auto : ConfigurationMenu.ConfigurationMethod.Custom //Auto if connected to a printer at start-up, or Custom if not.
 
         Item
         {
