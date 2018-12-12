@@ -83,8 +83,9 @@ class ExtruderManager(QObject):
     #   \param index The index of the new active extruder.
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index: int) -> None:
-        self._active_extruder_index = index
-        self.activeExtruderChanged.emit()
+        if self._active_extruder_index != index:
+            self._active_extruder_index = index
+            self.activeExtruderChanged.emit()
 
     @pyqtProperty(int, notify = activeExtruderChanged)
     def activeExtruderIndex(self) -> int:
@@ -344,6 +345,7 @@ class ExtruderManager(QObject):
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
                 self.setActiveExtruderIndex(0)
+                self.activeExtruderChanged.emit()
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.

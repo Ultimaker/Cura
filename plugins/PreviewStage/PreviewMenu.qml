@@ -2,6 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
+import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3
 
 import UM 1.3 as UM
@@ -19,56 +20,67 @@ Item
         name: "cura"
     }
 
-
-    Row
+    // Item to ensure that all of the buttons are nicely centered.
+    Item
     {
-        id: stageMenuRow
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: stageMenuRow.width
         height: parent.height
 
-        Cura.ViewsSelector
+        RowLayout
         {
-            id: viewsSelector
+            id: stageMenuRow
+            width: Math.round(0.85 * previewMenu.width)
             height: parent.height
-            width: UM.Theme.getSize("views_selector").width
-            headerCornerSide: Cura.RoundedRectangle.Direction.Left
-        }
+            spacing: 0
 
-        // Separator line
-        Rectangle
-        {
-            height: parent.height
-            // If there is no viewPanel, we only need a single spacer, so hide this one.
-            visible: viewPanel.source != ""
-            width: visible ? UM.Theme.getSize("default_lining").width : 0
+            Cura.ViewsSelector
+            {
+                id: viewsSelector
+                headerCornerSide: Cura.RoundedRectangle.Direction.Left
+                Layout.minimumWidth: UM.Theme.getSize("views_selector").width
+                Layout.maximumWidth: UM.Theme.getSize("views_selector").width
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
 
-            color: UM.Theme.getColor("lining")
-        }
+            // Separator line
+            Rectangle
+            {
+                height: parent.height
+                // If there is no viewPanel, we only need a single spacer, so hide this one.
+                visible: viewPanel.source != ""
+                width: UM.Theme.getSize("default_lining").width
 
-        Loader
-        {
-            id: viewPanel
-            height: parent.height
-            width: childrenRect.width
-            source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
-        }
+                color: UM.Theme.getColor("lining")
+            }
 
-        // Separator line
-        Rectangle
-        {
-            height: parent.height
-            width: UM.Theme.getSize("default_lining").width
-            color: UM.Theme.getColor("lining")
-        }
+            Loader
+            {
+                id: viewPanel
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredWidth: stageMenuRow.width - viewsSelector.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
+                source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
+            }
 
-        Item
-        {
-            id: printSetupSelectorItem
-            // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
-            // a stage switch is done.
-            children: [printSetupSelector]
-            height: childrenRect.height
-            width: childrenRect.width
+            // Separator line
+            Rectangle
+            {
+                height: parent.height
+                width: UM.Theme.getSize("default_lining").width
+                color: UM.Theme.getColor("lining")
+            }
+
+            Item
+            {
+                id: printSetupSelectorItem
+                // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+                // a stage switch is done.
+                children: [printSetupSelector]
+                height: childrenRect.height
+                width: childrenRect.width
+            }
         }
     }
 }
