@@ -18,5 +18,10 @@
 		"guid":"4028c0f4-7122-4448-9e9c-1ede54c89e6c",
 		"spool_cost":78.65,
 		"spool_weight":1000
+	},
+	"blackbelt_pla": {
+		"guid":"3ed31896-4698-404e-9960-8daebc05885a",
+		"spool_cost":42.5,
+		"spool_weight":2200
 	}
 }
