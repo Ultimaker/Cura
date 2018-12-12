@@ -108,7 +108,7 @@ class DriveApiService:
             for chunk in download_package:
                 write_backup.write(chunk)
 
-        if not self._verifyMd5Hash(temporary_backup_file.name, backup.get("md5_hash")):
+        if not self._verifyMd5Hash(temporary_backup_file.name, backup.get("md5_hash", "")):
             # Don't restore the backup if the MD5 hashes do not match.
             # This can happen if the download was interrupted.
             Logger.log("w", "Remote and local MD5 hashes do not match, not restoring backup.")
