@@ -26,7 +26,7 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
-        height: UM.Theme.getSize("toolbox_detail_header").height
+        height: childrenRect.height + 3 * UM.Theme.getSize("default_margin").width
         Rectangle
         {
             id: thumbnail
@@ -62,8 +62,7 @@ Item
             text: details === null ? "" : (details.name || "")
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
-            wrapMode: Text.WordWrap
-            width: properties.width + values.width
+            width: contentWidth
             height: contentHeight
         }
 
