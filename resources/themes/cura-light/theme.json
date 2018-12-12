@@ -243,8 +243,6 @@
         "tooltip": [68, 192, 255, 255],
         "tooltip_text": [255, 255, 255, 255],
 
-        "tool_button_border": [255, 255, 255, 0],
-
         "message_background": [255, 255, 255, 255],
         "message_shadow": [0, 0, 0, 120],
         "message_border": [192, 193, 194, 255],
