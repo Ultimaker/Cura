@@ -14,8 +14,8 @@ Window
     modality: Qt.ApplicationModal
     flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
-    width: 720 * screenScaleFactor
-    height: 640 * screenScaleFactor
+    width: Math.floor(720 * screenScaleFactor)
+    height: Math.floor(640 * screenScaleFactor)
     minimumWidth: width
     maximumWidth: minimumWidth
     minimumHeight: height
@@ -95,6 +95,7 @@ Window
                 licenseDialog.show();
             }
         }
+        
         ToolboxLicenseDialog
         {
             id: licenseDialog

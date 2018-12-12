@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -51,6 +51,7 @@ Item
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("default_bold")
                 color: pluginInfo.color
+                renderType: Text.NativeRendering
             }
             Label
             {
@@ -60,6 +61,7 @@ Item
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: pluginInfo.color
+                renderType: Text.NativeRendering
             }
         }
         Column
@@ -88,6 +90,7 @@ Item
                 onLinkActivated: Qt.openUrlExternally("mailto:" + model.author_email + "?Subject=Cura: " + model.name + " Plugin")
                 color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
                 linkColor: UM.Theme.getColor("text_link")
+                renderType: Text.NativeRendering
             }
 
             Label
@@ -98,6 +101,7 @@ Item
                 color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignLeft
+                renderType: Text.NativeRendering
             }
         }
         ToolboxInstalledTileActions
