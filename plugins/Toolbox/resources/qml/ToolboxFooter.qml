@@ -2,21 +2,23 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.3
+
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Item
 {
     id: footer
     width: parent.width
     anchors.bottom: parent.bottom
-    height: visible ? Math.floor(UM.Theme.getSize("toolbox_footer").height) : 0
+    height: visible ? UM.Theme.getSize("toolbox_footer").height : 0
+
     Label
     {
         text: catalog.i18nc("@info", "You will need to restart Cura before changes in packages have effect.")
         color: UM.Theme.getColor("text")
-        height: Math.floor(UM.Theme.getSize("toolbox_footer_button").height)
+        height: UM.Theme.getSize("toolbox_footer_button").height
         verticalAlignment: Text.AlignVCenter
         anchors
         {
@@ -28,10 +30,10 @@ Item
         }
         renderType: Text.NativeRendering
     }
-    Button
+
+    Cura.PrimaryButton
     {
         id: restartButton
-        text: catalog.i18nc("@info:button", "Quit Cura")
         anchors
         {
             top: parent.top
@@ -39,27 +41,11 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
-        iconName: "dialog-restart"
+        height: UM.Theme.getSize("toolbox_footer_button").height
+        text: catalog.i18nc("@info:button", "Quit Cura")
         onClicked: toolbox.restart()
-        style: ButtonStyle
-        {
-            background: Rectangle
-            {
-                implicitWidth: UM.Theme.getSize("toolbox_footer_button").width
-                implicitHeight: Math.floor(UM.Theme.getSize("toolbox_footer_button").height)
-                color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
-            }
-            label: Label
-            {
-                color: UM.Theme.getColor("button_text")
-                font: UM.Theme.getFont("default_bold")
-                text: control.text
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                renderType: Text.NativeRendering
-            }
-        }
     }
+
     ToolboxShadow
     {
         visible: footer.visible
