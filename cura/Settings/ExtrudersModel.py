@@ -204,7 +204,12 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "enabled": True,
                     "color": "#ffffff",
                     "index": -1,
-                    "definition": ""
+                    "definition": "",
+                    "material": "",
+                    "variant": "",
+                    "stack": None,
+                    "material_brand": "",
+                    "color_name": "",
                 }
                 items.append(item)
             if self._items != items:
