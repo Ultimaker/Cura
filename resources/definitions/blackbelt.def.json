@@ -68,6 +68,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.25,
+                    "resolve": "extruderValue(0, 'blackbelt_z_offset_gap')",
                     "minimum_value": "0",
                     "maximum_value": "5",
                     "minimum_value_warning": "0.25",

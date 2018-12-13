@@ -444,7 +444,7 @@
         },
         "carve_multiple_volumes": {
             "enabled": false,
-            "value": "False"
+            "value": "True"
         },
 
 
