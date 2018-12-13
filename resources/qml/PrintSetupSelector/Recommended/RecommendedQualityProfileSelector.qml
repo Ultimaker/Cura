@@ -39,6 +39,7 @@ Item
     {
         target: Cura.QualityProfilesDropDownMenuModel
         onItemsChanged: qualityModel.update()
+        onDataChanged: qualityModel.update()
     }
 
     Connections {

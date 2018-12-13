@@ -20,67 +20,60 @@ Item
         name: "cura"
     }
 
-    // Item to ensure that all of the buttons are nicely centered.
-    Item
+    Row
     {
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: stageMenuRow.width
+        id: stageMenuRow
+        anchors.centerIn: parent
         height: parent.height
+        width: childrenRect.width
 
-        RowLayout
+        // We want this row to have a preferred with equals to the 85% of the parent
+        property int preferredWidth: Math.round(0.85 * previewMenu.width)
+
+        Cura.ViewsSelector
         {
-            id: stageMenuRow
-            width: Math.round(0.85 * previewMenu.width)
+            id: viewsSelector
             height: parent.height
-            spacing: 0
+            width: UM.Theme.getSize("views_selector").width
+            headerCornerSide: Cura.RoundedRectangle.Direction.Left
+        }
 
-            Cura.ViewsSelector
-            {
-                id: viewsSelector
-                headerCornerSide: Cura.RoundedRectangle.Direction.Left
-                Layout.minimumWidth: UM.Theme.getSize("views_selector").width
-                Layout.maximumWidth: UM.Theme.getSize("views_selector").width
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
+        // Separator line
+        Rectangle
+        {
+            height: parent.height
+            // If there is no viewPanel, we only need a single spacer, so hide this one.
+            visible: viewPanel.source != ""
+            width: visible ? UM.Theme.getSize("default_lining").width : 0
 
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                // If there is no viewPanel, we only need a single spacer, so hide this one.
-                visible: viewPanel.source != ""
-                width: UM.Theme.getSize("default_lining").width
+            color: UM.Theme.getColor("lining")
+        }
 
-                color: UM.Theme.getColor("lining")
-            }
+        // This component will grow freely up to complete the preferredWidth of the row.
+        Loader
+        {
+            id: viewPanel
+            height: parent.height
+            width: source != "" ? (stageMenuRow.preferredWidth - viewsSelector.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width) : 0
+            source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
+        }
 
-            Loader
-            {
-                id: viewPanel
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.preferredWidth: stageMenuRow.width - viewsSelector.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
-                source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
-            }
+        // Separator line
+        Rectangle
+        {
+            height: parent.height
+            width: UM.Theme.getSize("default_lining").width
+            color: UM.Theme.getColor("lining")
+        }
 
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
-            }
-
-            Item
-            {
-                id: printSetupSelectorItem
-                // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
-                // a stage switch is done.
-                children: [printSetupSelector]
-                height: childrenRect.height
-                width: childrenRect.width
-            }
+        Item
+        {
+            id: printSetupSelectorItem
+            // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+            // a stage switch is done.
+            children: [printSetupSelector]
+            height: childrenRect.height
+            width: childrenRect.width
         }
     }
 }
