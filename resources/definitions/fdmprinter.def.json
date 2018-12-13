@@ -3385,7 +3385,7 @@
                 "retraction_combing":
                 {
                     "label": "Combing Mode",
-                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases.",
+                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill.",
                     "type": "enum",
                     "options":
                     {
