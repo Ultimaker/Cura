@@ -7,6 +7,7 @@ from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
+from cura import CuraConstants
 from cura.API import Account
 from cura.NetworkClient import NetworkClient
 from ..Models import BaseModel
@@ -23,8 +24,7 @@ from .Models.CloudPrintJobResponse import CloudPrintJobResponse
 class CloudApiClient(NetworkClient):
 
     # The cloud URL to use for this remote cluster.
-    # TODO: Make sure that this URL goes to the live api before release
-    ROOT_PATH = "https://api-staging.ultimaker.com"
+    ROOT_PATH = CuraConstants.CuraCloudAPIRoot
     CLUSTER_API_ROOT = "{}/connect/v1".format(ROOT_PATH)
     CURA_API_ROOT = "{}/cura/v1".format(ROOT_PATH)
 
