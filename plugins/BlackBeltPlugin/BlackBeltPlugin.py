@@ -485,6 +485,11 @@ class BlackBeltPlugin(Extension):
                     edited_layer = "\n".join(lines) + "\n"
                     gcode_list[layer_number] = edited_layer
 
+            # HOTFIX: remove finalize bits before end gcode
+            end_gcode = gcode_list[len(gcode_list)-1]
+            end_gcode = end_gcode.replace("M140 S0\nM203 Z5\nM107", "") # TODO: regex magic
+            gcode_list[len(gcode_list)-1] = end_gcode
+
             # make repetitions
             if repetitions > 1 and len(gcode_list) > 2:
                 # gcode_list[0]: curaengine header
