@@ -49,7 +49,7 @@ class Toolbox(QObject, Extension):
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
         self._network_manager = None  # type: Optional[QNetworkAccessManager]
-        self._request_headers = [] # type: List[Tuple(bytes, bytes)]
+        self._request_headers = [] # type: List[Tuple[bytes, bytes]]
         self._updateRequestHeader()
 
 
