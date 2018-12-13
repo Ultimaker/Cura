@@ -36,9 +36,9 @@ Button
             anchors
             {
                 left: parent.left
-                leftMargin: 2 * parent.padding
+                leftMargin: UM.Theme.getSize("wide_margin").width
                 right: parent.right
-                rightMargin: 2 * parent.padding
+                rightMargin: UM.Theme.getSize("wide_margin").width
             }
 
             spacing: UM.Theme.getSize("default_margin").width
@@ -64,9 +64,9 @@ Button
             anchors
             {
                 left: parent.left
-                leftMargin: 2 * parent.padding
+                leftMargin: UM.Theme.getSize("wide_margin").width
                 right: parent.right
-                rightMargin: 2 * parent.padding
+                rightMargin: UM.Theme.getSize("wide_margin").width
             }
             height: visible ? Math.round(UM.Theme.getSize("default_lining").height / 2) : 0
             color: UM.Theme.getColor("lining")
@@ -79,9 +79,9 @@ Button
             anchors
             {
                 left: parent.left
-                leftMargin: 2 * parent.padding
+                leftMargin: UM.Theme.getSize("wide_margin").width
                 right: parent.right
-                rightMargin: 2 * parent.padding
+                rightMargin: UM.Theme.getSize("wide_margin").width
             }
             height: childrenRect.height
             visible: configuration.buildplateConfiguration != ""
@@ -101,7 +101,7 @@ Button
                 id: buildplateLabel
                 anchors.left: buildplateIcon.right
                 anchors.verticalCenter: buildplateIcon.verticalCenter
-                anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").height / 2)
+                anchors.leftMargin: UM.Theme.getSize("narrow_margin").height
                 text: configuration.buildplateConfiguration
                 renderType: Text.NativeRendering
                 color: UM.Theme.getColor("text")

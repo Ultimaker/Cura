@@ -28,7 +28,7 @@ Item
     {
         width: parent.width
         visible: configurationList.model.length == 0
-        height: label.height + 2 * UM.Theme.getSize("default_margin").height
+        height: label.height + UM.Theme.getSize("wide_margin").height
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.getSize("default_margin").height
 
