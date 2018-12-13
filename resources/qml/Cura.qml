@@ -284,7 +284,7 @@ UM.MainWindow
                     printSetupSelector.parent = stageMenu
                     printSetupSelector.visible = false
                 }
-                property item oldParent: null
+                property Item oldParent: null
 
                 // The printSetupSelector is defined here so that the setting list doesn't need to get re-instantiated
                 // Every time the stage is changed.
