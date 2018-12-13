@@ -54,7 +54,7 @@ Item
             {
                 text: model.name.toUpperCase()
                 checkable: true
-                checked: model.id == UM.Controller.activeStage.stageId
+                checked: UM.Controller.activeStage != null ? model.id == UM.Controller.activeStage.stageId : false
 
                 anchors.verticalCenter: parent.verticalCenter
                 exclusiveGroup: mainWindowHeaderMenuGroup
