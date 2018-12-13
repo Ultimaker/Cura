@@ -42,6 +42,7 @@ except ImportError:
 # ---------
 DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"  # type: str
 DEFAULT_CLOUD_API_VERSION = "1"  # type: str
+DEFAULT_CLOUD_ACCOUNT_API_ROOT = "https://account.ultimaker.com"  # type: str
 
 try:
     from cura.CuraVersion import CuraCloudAPIRoot  # type: ignore
@@ -52,3 +53,8 @@ try:
     from cura.CuraVersion import CuraCloudAPIVersion  # type: ignore
 except ImportError:
     CuraCloudAPIVersion = DEFAULT_CLOUD_API_VERSION
+
+try:
+    from cura.CuraVersion import CuraCloudAccountAPIRoot  # type: ignore
+except ImportError:
+    CuraCloudAccountAPIRoot = DEFAULT_CLOUD_ACCOUNT_API_ROOT
