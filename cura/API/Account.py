@@ -6,6 +6,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
 from UM.i18n import i18nCatalog
 from UM.Message import Message
+from cura import CuraConstants
 
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.Models import OAuth2Settings
@@ -37,7 +38,7 @@ class Account(QObject):
         self._logged_in = False
 
         self._callback_port = 32118
-        self._oauth_root = "https://account-staging.ultimaker.com"
+        self._oauth_root = CuraConstants.CuraCloudAccountAPIRoot
 
         self._oauth_settings = OAuth2Settings(
             OAUTH_SERVER_URL= self._oauth_root,
