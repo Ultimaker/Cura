@@ -153,9 +153,6 @@
         "material_bed_temperature": {
             "value": "max(extruderValues('default_material_bed_temperature'))"
         },
-        "material_flow": {
-            "resolve": "extruderValue(0, 'material_flow')"
-        },
 
 
         "layer_height_0": {
