@@ -228,8 +228,6 @@
         "tooltip": [68, 192, 255, 255],
         "tooltip_text": [255, 255, 255, 255],
 
-        "tool_button_border": [255, 255, 255, 0],
-
         "message_background": [255, 255, 255, 255],
         "message_shadow": [0, 0, 0, 120],
         "message_border": [192, 193, 194, 255],
@@ -366,7 +364,7 @@
         "machine_selector_widget_content": [25.0, 32.0],
         "machine_selector_icon": [2.66, 2.66],
 
-        "views_selector": [16.0, 4.5],
+        "views_selector": [23.0, 4.0],
 
         "printer_type_label": [3.5, 1.5],
 
@@ -437,7 +435,7 @@
         "slider_handle": [1.5, 1.5],
         "slider_layerview_size": [1.0, 26.0],
 
-        "layerview_menu_size": [15, 20],
+        "layerview_menu_size": [16.0, 4.0],
         "layerview_legend_size": [1.0, 1.0],
         "layerview_row": [11.0, 1.5],
         "layerview_row_spacing": [0.0, 0.5],
