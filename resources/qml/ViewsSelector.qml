@@ -19,14 +19,12 @@ Cura.ExpandablePopup
         onDataChanged: updateActiveView()
     }
 
-
     property var activeView: null
 
     function updateActiveView()
     {
         for (var index in viewModel.items)
         {
-
             if (viewModel.items[index].active)
             {
                 activeView = viewModel.items[index]
@@ -38,7 +36,6 @@ Cura.ExpandablePopup
 
     Component.onCompleted:
     {
-        updateActiveView()
         if (activeView == null)
         {
             UM.Controller.setActiveView(viewModel.getItem(0).id)
