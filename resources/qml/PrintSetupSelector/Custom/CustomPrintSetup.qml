@@ -113,9 +113,11 @@ Item
         }
         z: tabBar.z - 1
         // Don't show the border when only one extruder
+
         border.color: tabBar.visible ? UM.Theme.getColor("lining") : "transparent"
         border.width: UM.Theme.getSize("default_lining").width
 
+        color: UM.Theme.getColor("main_background")
         Cura.SettingView
         {
             anchors

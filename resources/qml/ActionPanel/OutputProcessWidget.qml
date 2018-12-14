@@ -41,7 +41,7 @@ Column
             {
                 left: parent.left
                 right: printInformationPanel.left
-                rightMargin: UM.Theme.getSize("thin_margin").height
+                rightMargin: printInformationPanel.visible ? UM.Theme.getSize("thin_margin").width : 0
             }
 
             Cura.IconWithText
