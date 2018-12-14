@@ -32,7 +32,7 @@ class ConnectionState(IntEnum):
     Connecting = 1
     Connected = 2
     Busy = 3
-    error = 4
+    Error = 4
 
 
 class ConnectionType(IntEnum):
