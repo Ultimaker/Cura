@@ -8,11 +8,13 @@ import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 Rectangle {
+    id: base
     property var iconSource: null;
     color: "#0a0850" // TODO: Theme!
     height: width;
     radius: Math.round(0.5 * width);
     width: 24 * screenScaleFactor;
+    property var enabled: true
 
     UM.RecolorImage {
         id: icon;
@@ -29,12 +31,18 @@ Rectangle {
     MouseArea {
         id: clickArea;
         anchors.fill: parent;
-        hoverEnabled: true;
+        hoverEnabled: base.enabled
         onClicked: {
-            if (OutputDevice.activeCameraUrl != "") {
-                OutputDevice.setActiveCameraUrl("");
-            } else {
-                OutputDevice.setActiveCameraUrl(modelData.cameraUrl);
+            if (base.enabled)
+            {
+                if (OutputDevice.activeCameraUrl != "")
+                {
+                    OutputDevice.setActiveCameraUrl("")
+                }
+                else
+                {
+                    OutputDevice.setActiveCameraUrl(modelData.cameraUrl)
+                }
             }
         }
     }

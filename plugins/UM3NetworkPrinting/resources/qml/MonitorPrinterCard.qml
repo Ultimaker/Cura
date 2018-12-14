@@ -25,6 +25,11 @@ Item
 
     property var borderSize: 1 * screenScaleFactor // TODO: Theme, and remove from here
 
+    // If the printer card's controls are enabled. This is used by the carousel
+    // to prevent opening the context menu or camera while the printer card is not
+    // "in focus"
+    property var enabled: true
+
     width: 834 * screenScaleFactor // TODO: Theme!
     height: childrenRect.height
 
@@ -124,6 +129,7 @@ Item
             printJob: printer.activePrintJob
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
+            enabled: base.enabled
         }
         CameraButton
         {
@@ -136,6 +142,7 @@ Item
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
             iconSource: "../svg/icons/camera.svg"
+            enabled: base.enabled
         }
     }
 
@@ -320,7 +327,7 @@ Item
             implicitHeight: 32 * screenScaleFactor // TODO: Theme!
             implicitWidth: 96 * screenScaleFactor // TODO: Theme!
             visible: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0
-            onClicked: overrideConfirmationDialog.open()
+            onClicked: base.enabled ? overrideConfirmationDialog.open() : {}
         }
     }
 

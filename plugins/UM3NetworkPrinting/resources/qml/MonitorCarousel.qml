@@ -124,6 +124,7 @@ Item
                 MonitorPrinterCard
                 {
                     printer: modelData
+                    enabled: model.index == currentIndex
                 }
             }
         }
