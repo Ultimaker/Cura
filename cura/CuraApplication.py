@@ -134,7 +134,7 @@ except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
-    CuraSDKVersion = "5.0.0"
+    CuraSDKVersion = "6.0.0"
 
 
 class CuraApplication(QtApplication):
