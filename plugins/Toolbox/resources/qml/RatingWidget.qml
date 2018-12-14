@@ -25,7 +25,10 @@ Item
         acceptedButtons: Qt.NoButton
         onExited:
         {
-            ratingWidget.indexHovered = -1
+            if(ratingWidget.canRate)
+            {
+                ratingWidget.indexHovered = -1
+            }
         }
 
         Row
@@ -87,7 +90,13 @@ Item
                             return "#5a5a5a"
                         }
                     }
-                    onClicked: rated(index + 1)  // Notify anyone who cares about this.
+                    onClicked:
+                    {
+                        if(ratingWidget.canRate)
+                        {
+                            rated(index + 1)  // Notify anyone who cares about this.
+                        }
+                    }
                 }
             }
         }
