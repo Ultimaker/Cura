@@ -45,7 +45,7 @@ Item
                 GradientStop
                 {
                     position: 1.0
-                    color: "#00f6f6f6"
+                    color: "#66f6f6f6"
                 }
             }
         }
@@ -190,7 +190,7 @@ Item
                 GradientStop
                 {
                     position: 0.0
-                    color: "#00f6f6f6"
+                    color: "#66f6f6f6"
                 }
                 GradientStop
                 {
