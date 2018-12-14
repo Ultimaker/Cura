@@ -172,8 +172,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if self._last_response_time and time() - self._last_response_time < self.CHECK_CLUSTER_INTERVAL:
             return  # avoid calling the cloud too often
 
-        Logger.log("i", "Requesting update for %s after %s", self._device_id,
-                   self._last_response_time and time() - self._last_response_time)
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
             self._api.getClusterStatus(self._device_id, self._onStatusCallFinished)

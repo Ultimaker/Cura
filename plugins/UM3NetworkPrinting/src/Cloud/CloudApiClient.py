@@ -4,11 +4,11 @@ import json
 from json import JSONDecodeError
 from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any
 
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt5.QtCore import QObject, QUrl
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 
 from UM.Logger import Logger
 from cura.API import Account
-from cura.NetworkClient import NetworkClient
 from .ResumableUpload import ResumableUpload
 from ..Models import BaseModel
 from .Models.CloudClusterResponse import CloudClusterResponse
@@ -21,7 +21,7 @@ from .Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
 #  Each method should only handle models instead of exposing Any HTTP details.
-class CloudApiClient(NetworkClient):
+class CloudApiClient:
 
     # The cloud URL to use for this remote cluster.
     # TODO: Make sure that this URL goes to the live api before release
@@ -34,6 +34,7 @@ class CloudApiClient(NetworkClient):
     #  \param on_error: The callback to be called whenever we receive errors from the server.
     def __init__(self, account: Account, on_error: Callable[[List[CloudErrorObject]], None]) -> None:
         super().__init__()
+        self._manager = QNetworkAccessManager()
         self._account = account
         self._on_error = on_error
 
@@ -46,14 +47,18 @@ class CloudApiClient(NetworkClient):
     #  \param on_finished: The function to be called after the result is parsed.
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
         url = "{}/clusters".format(self.CLUSTER_API_ROOT)
-        self.get(url, on_finished=self._wrapCallback(on_finished, CloudClusterResponse))
+        reply = self._manager.get(self._createEmptyRequest(url))
+        callback = self._wrapCallback(reply, on_finished, CloudClusterResponse)
+        reply.finished.connect(callback)
 
     ## Retrieves the status of the given cluster.
     #  \param cluster_id: The ID of the cluster.
     #  \param on_finished: The function to be called after the result is parsed.
     def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], Any]) -> None:
         url = "{}/clusters/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
-        self.get(url, on_finished=self._wrapCallback(on_finished, CloudClusterStatus))
+        reply = self._manager.get(self._createEmptyRequest(url))
+        callback = self._wrapCallback(reply, on_finished, CloudClusterStatus)
+        reply.finished.connect(callback)
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
@@ -62,7 +67,9 @@ class CloudApiClient(NetworkClient):
                       ) -> None:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
         body = json.dumps({"data": request.toDict()})
-        self.put(url, body, on_finished=self._wrapCallback(on_finished, CloudPrintJobResponse))
+        reply = self._manager.put(self._createEmptyRequest(url), body.encode())
+        callback = self._wrapCallback(reply, on_finished, CloudPrintJobResponse)
+        reply.finished.connect(callback)
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param upload_response: The object received after requesting an upload with `self.requestUpload`.
@@ -72,7 +79,7 @@ class CloudApiClient(NetworkClient):
     #  \param on_error: A function to be called if the upload fails. It receives a dict with the error.
     def uploadMesh(self, upload_response: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
                    on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
-        ResumableUpload(upload_response.upload_url, upload_response.content_type, mesh, on_finished,
+        ResumableUpload(self._manager, upload_response.upload_url, upload_response.content_type, mesh, on_finished,
                         on_progress, on_error).start()
 
     # Requests a cluster to print the given print job.
@@ -81,13 +88,17 @@ class CloudApiClient(NetworkClient):
     #  \param on_finished: The function to be called after the result is parsed.
     def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any]) -> None:
         url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
-        self.post(url, data = "", on_finished=self._wrapCallback(on_finished, CloudPrintResponse))
+        reply = self._manager.post(self._createEmptyRequest(url), b"")
+        callback = self._wrapCallback(reply, on_finished, CloudPrintResponse)
+        reply.finished.connect(callback)
 
     ##  We override _createEmptyRequest in order to add the user credentials.
     #   \param url: The URL to request
     #   \param content_type: The type of the body contents.
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
-        request = super()._createEmptyRequest(path, content_type)
+        request = QNetworkRequest(QUrl(path))
+        if content_type:
+            request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         if self._account.isLoggedIn:
             request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
         Logger.log("i", "Created request for URL %s. Logged in = %s", path, self._account.isLoggedIn)
@@ -132,10 +143,11 @@ class CloudApiClient(NetworkClient):
     #  \param model: The type of the model to convert the response to. It may either be a single record or a list.
     #  \return: A function that can be passed to the
     def _wrapCallback(self,
+                      reply: QNetworkReply,
                       on_finished: Callable[[Union[Model, List[Model]]], Any],
                       model: Type[Model],
                       ) -> Callable[[QNetworkReply], None]:
-        def parse(reply: QNetworkReply) -> None:
+        def parse() -> None:
             status_code, response = self._parseReply(reply)
             return self._parseModels(response, on_finished, model)
         return parse

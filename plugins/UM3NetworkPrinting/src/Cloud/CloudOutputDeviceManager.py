@@ -125,13 +125,14 @@ class CloudOutputDeviceManager:
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
     def _onApiError(self, errors: List[CloudErrorObject]) -> None:
-        message = ". ".join(e.title for e in errors)  # TODO: translate errors
-        Message(
-            text = message,
+        text = ". ".join(e.title for e in errors)  # TODO: translate errors
+        message = Message(
+            text = text,
             title = self.I18N_CATALOG.i18nc("@info:title", "Error"),
             lifetime = 10,
             dismissable = True
-        ).show()
+        )
+        message.show()
 
     def start(self):
         if self._running:
@@ -141,7 +142,6 @@ class CloudOutputDeviceManager:
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         self._update_timer.timeout.connect(self._getRemoteClusters)
-        self._api.start()
         self._onLoginStateChanged(is_logged_in = self._account.isLoggedIn)
 
     def stop(self):
@@ -152,5 +152,4 @@ class CloudOutputDeviceManager:
         # When switching machines we check if we have to activate a remote cluster.
         application.globalContainerStackChanged.disconnect(self._connectToActiveMachine)
         self._update_timer.timeout.disconnect(self._getRemoteClusters)
-        self._api.stop()
         self._onLoginStateChanged(is_logged_in = False)

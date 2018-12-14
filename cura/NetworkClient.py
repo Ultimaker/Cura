@@ -1,9 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from time import time
-from typing import Optional, Dict, Callable, List, Union, Tuple
+from typing import Optional, Dict, Callable, List, Union
 
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, QObject
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QHttpMultiPart, QNetworkRequest, QHttpPart, \
     QAuthenticator
 
@@ -13,9 +13,10 @@ from UM.Logger import Logger
 
 ##  Abstraction of QNetworkAccessManager for easier networking in Cura.
 #   This was originally part of NetworkedPrinterOutputDevice but was moved out for re-use in other classes.
-class NetworkClient:
+class NetworkClient(QObject):
     
     def __init__(self) -> None:
+        super().__init__()
 
         # Network manager instance to use for this client.
         self._manager = None  # type: Optional[QNetworkAccessManager]
@@ -29,11 +30,6 @@ class NetworkClient:
         application = Application.getInstance()
         self._user_agent = "%s/%s " % (application.getApplicationName(), application.getVersion())
 
-        # Uses to store callback methods for finished network requests.
-        # This allows us to register network calls with a callback directly instead of having to dissect the reply.
-        # The key is created out of a tuple (operation, url)
-        self._on_finished_callbacks = {}  # type: Dict[Tuple[int, str], Callable[[QNetworkReply], None]]
-
         # QHttpMultiPart objects need to be kept alive and not garbage collected during the
         # HTTP which uses them. We hold references to these QHttpMultiPart objects here.
         self._kept_alive_multiparts = {}  # type: Dict[QNetworkReply, QHttpMultiPart]
@@ -43,7 +39,6 @@ class NetworkClient:
         if self._manager:
             return
         self._manager = QNetworkAccessManager()
-        self._manager.finished.connect(self._handleOnFinished)
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
@@ -51,7 +46,6 @@ class NetworkClient:
     def stop(self) -> None:
         if not self._manager:
             return
-        self._manager.finished.disconnect(self._handleOnFinished)
         self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
         self._manager = None
 
@@ -69,32 +63,6 @@ class NetworkClient:
         self._last_request_time = time()
         return request
 
-    ##  Executes the correct callback method when a network request finishes.
-    def _handleOnFinished(self, reply: QNetworkReply) -> None:
-
-        Logger.log("i", "On finished %s %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
-
-        # Due to garbage collection, we need to cache certain bits of post operations.
-        # As we don't want to keep them around forever, delete them if we get a reply.
-        if reply.operation() == QNetworkAccessManager.PostOperation:
-            self._clearCachedMultiPart(reply)
-
-        # No status code means it never even reached remote.
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
-            return
-
-        # Not used by this class itself, but children might need it for better network handling.
-        # An example of this is the _update method in the NetworkedPrinterOutputDevice.
-        self._last_response_time = time()
-        
-        # Find the right callback and execute it.
-        # It always takes the full reply as single parameter.
-        callback_key = reply.operation(), reply.url().toString()
-        if callback_key in self._on_finished_callbacks:
-            self._on_finished_callbacks[callback_key](reply)
-        else:
-            Logger.log("w", "Received reply to URL %s but no callbacks are registered", reply.url())
-
     ##  Removes all cached Multi-Part items.
     def _clearCachedMultiPart(self, reply: QNetworkReply) -> None:
         if reply in self._kept_alive_multiparts:
@@ -104,12 +72,6 @@ class NetworkClient:
     @staticmethod
     def _onAuthenticationRequired(reply: QNetworkReply, authenticator: QAuthenticator) -> None:
         Logger.log("w", "Request to {} required authentication but was not given".format(reply.url().toString()))
-
-    ##  Register a method to be executed when the associated network request finishes.
-    def _registerOnFinishedCallback(self, reply: QNetworkReply,
-                                    on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        if on_finished is not None:
-            self._on_finished_callbacks[reply.operation(), reply.url().toString()] = on_finished
 
     ##  Add a part to a Multi-Part form.
     @staticmethod
@@ -144,13 +106,10 @@ class NetworkClient:
 
         body = data if isinstance(data, bytes) else data.encode()  # type: bytes
         reply = self._manager.put(request, body)
-        self._registerOnFinishedCallback(reply, on_finished)
-
+        callback = self._createCallback(reply, on_finished)
+        reply.finished.connect(callback)
         if on_progress is not None:
-            # TODO: Do we need to disconnect() as well?
             reply.uploadProgress.connect(on_progress)
-            reply.finished.connect(lambda r: Logger.log("i", "On finished %s %s", url, r))
-            reply.error.connect(lambda r: Logger.log("i", "On error %s %s", url, r))
 
     ## Sends a delete request to the given path.
     #  url: The path after the API prefix.
@@ -158,7 +117,8 @@ class NetworkClient:
     def delete(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         request = self._createEmptyRequest(url)
         reply = self._manager.deleteResource(request)
-        self._registerOnFinishedCallback(reply, on_finished)
+        callback = self._createCallback(reply, on_finished)
+        reply.finished.connect(callback)
 
     ## Sends a get request to the given path.
     #  \param url: The path after the API prefix.
@@ -166,7 +126,8 @@ class NetworkClient:
     def get(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         request = self._createEmptyRequest(url)
         reply = self._manager.get(request)
-        self._registerOnFinishedCallback(reply, on_finished)
+        callback = self._createCallback(reply, on_finished)
+        reply.finished.connect(callback)
 
     ## Sends a post request to the given path.
     #  \param url: The path after the API prefix.
@@ -180,9 +141,10 @@ class NetworkClient:
 
         body = data if isinstance(data, bytes) else data.encode()  # type: bytes
         reply = self._manager.post(request, body)
+        callback = self._createCallback(reply, on_finished)
+        reply.finished.connect(callback)
         if on_progress is not None:
             reply.uploadProgress.connect(on_progress)
-        self._registerOnFinishedCallback(reply, on_finished)
 
     ##  Does a POST request with form data to the given URL.
     def postForm(self, url: str, header_data: str, body_data: bytes,
@@ -205,10 +167,19 @@ class NetworkClient:
 
         reply = self._manager.post(request, multi_post_part)
 
+        def callback():
+            on_finished(reply)
+            self._clearCachedMultiPart(reply)
+
+        reply.finished.connect(callback)
+
         self._kept_alive_multiparts[reply] = multi_post_part
 
         if on_progress is not None:
             reply.uploadProgress.connect(on_progress)
             
-        self._registerOnFinishedCallback(reply, on_finished)
         return reply
+
+    @staticmethod
+    def _createCallback(reply: QNetworkReply, on_finished: Optional[Callable[[QNetworkReply], None]] = None):
+        return lambda: on_finished(reply)
