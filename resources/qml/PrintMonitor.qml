@@ -60,11 +60,7 @@ Rectangle
 
         anchors.fill: parent
 
-        Cura.ExtrudersModel
-        {
-            id: extrudersModel
-            simpleNames: true
-        }
+        property var extrudersModel: CuraApplication.getExtrudersModel()
 
         OutputDeviceHeader
         {
