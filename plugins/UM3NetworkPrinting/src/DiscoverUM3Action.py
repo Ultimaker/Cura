@@ -3,7 +3,7 @@
 
 import os.path
 import time
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
 
@@ -13,9 +13,11 @@ from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
 from cura.MachineAction import MachineAction
-from cura.PrinterOutputDevice import PrinterOutputDevice
 
 from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
+
+if TYPE_CHECKING:
+    from cura.PrinterOutputDevice import PrinterOutputDevice
 
 catalog = i18nCatalog("cura")
 
@@ -117,8 +119,10 @@ class DiscoverUM3Action(MachineAction):
             # Ensure that the connection states are refreshed.
             self._network_plugin.reCheckConnections()
 
+    # Associates the currently active machine with the given printer device. The network connection information will be
+    # stored into the metadata of the currently active machine.
     @pyqtSlot(QObject)
-    def setKey(self, printer_device: Optional[PrinterOutputDevice]) -> None:
+    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
         Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
