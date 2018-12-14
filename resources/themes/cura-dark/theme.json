@@ -17,6 +17,12 @@
         "border": [127, 127, 127, 255],
         "secondary": [95, 95, 95, 255],
 
+        "icon": [204, 204, 204, 255],
+        "toolbar_background": [39, 44, 48, 255],
+        "toolbar_button_active": [95, 95, 95, 255],
+        "toolbar_button_hover": [95, 95, 95, 255],
+        "toolbar_button_active_hover": [95, 95, 95, 255],
+
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
 

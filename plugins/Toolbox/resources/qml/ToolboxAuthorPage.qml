@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.3
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -59,6 +59,7 @@ Item
             wrapMode: Text.WordWrap
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height
+            renderType: Text.NativeRendering
         }
         Label
         {
@@ -70,6 +71,7 @@ Item
                 left: title.left
                 topMargin: UM.Theme.getSize("default_margin").height
             }
+            renderType: Text.NativeRendering
         }
         Column
         {
@@ -88,12 +90,14 @@ Item
                 text: catalog.i18nc("@label", "Website") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
             Label
             {
                 text: catalog.i18nc("@label", "Email") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
+                renderType: Text.NativeRendering
             }
         }
         Column
@@ -122,6 +126,7 @@ Item
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
+                renderType: Text.NativeRendering
             }
 
             Label
@@ -138,6 +143,7 @@ Item
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
+                renderType: Text.NativeRendering
             }
         }
         Rectangle

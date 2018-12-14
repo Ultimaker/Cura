@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os.path
 from UM.Application import Application
@@ -15,9 +15,5 @@ class PrepareStage(CuraStage):
         Application.getInstance().engineCreatedSignal.connect(self._engineCreated)
 
     def _engineCreated(self):
-        sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles),
-                                              "PrepareSidebar.qml")
-
         menu_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("PrepareStage"), "PrepareMenu.qml")
         self.addDisplayComponent("menu", menu_component_path)
-        self.addDisplayComponent("sidebar", sidebar_component_path)

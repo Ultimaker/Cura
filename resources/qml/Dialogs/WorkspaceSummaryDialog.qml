@@ -11,6 +11,7 @@ import Cura 1.0 as Cura
 
 UM.Dialog
 {
+    id: base
     title: catalog.i18nc("@title:window", "Save Project")
 
     minimumWidth: 500 * screenScaleFactor
@@ -49,7 +50,7 @@ UM.Dialog
         UM.SettingDefinitionsModel
         {
             id: definitionsModel
-            containerId: Cura.MachineManager.activeDefinitionId
+            containerId: base.visible ? Cura.MachineManager.activeDefinitionId: ""
             showAll: true
             exclude: ["command_line_settings"]
             showAncestors: true

@@ -81,9 +81,14 @@ class AuthorizationHelpers:
     #   \param access_token: The encoded JWT token.
     #   \return: Dict containing some profile data.
     def parseJWT(self, access_token: str) -> Optional["UserProfile"]:
-        token_request = requests.get("{}/check-token".format(self._settings.OAUTH_SERVER_URL), headers = {
-            "Authorization": "Bearer {}".format(access_token)
-        })
+        try:
+            token_request = requests.get("{}/check-token".format(self._settings.OAUTH_SERVER_URL), headers = {
+                "Authorization": "Bearer {}".format(access_token)
+            })
+        except ConnectionError:
+            # Connection was suddenly dropped. Nothing we can do about that.
+            Logger.logException("e", "Something failed while attempting to parse the JWT token")
+            return None
         if token_request.status_code not in (200, 201):
             Logger.log("w", "Could not retrieve token data from auth server: %s", token_request.text)
             return None

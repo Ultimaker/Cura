@@ -14,24 +14,28 @@ Cura.ExpandablePopup
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
 
-    property var viewModel: UM.ViewModel { }
-
-    property var activeView:
+    property var viewModel: UM.ViewModel
     {
-        for (var i = 0; i < viewModel.count; i++)
+        onDataChanged: updateActiveView()
+    }
+
+    property var activeView: null
+
+    function updateActiveView()
+    {
+        for (var index in viewModel.items)
         {
-            if (viewModel.items[i].active)
+            if (viewModel.items[index].active)
             {
-                return viewModel.items[i]
+                activeView = viewModel.items[index]
+                return
             }
         }
-        return null
+        activeView = null
     }
 
     Component.onCompleted:
     {
-        // Nothing was active, so just return the first one (the list is sorted by priority, so the most
-        // important one should be returned)
         if (activeView == null)
         {
             UM.Controller.setActiveView(viewModel.getItem(0).id)
@@ -43,7 +47,7 @@ Cura.ExpandablePopup
         Label
         {
             id: title
-            text: catalog.i18nc("@button", "View types")
+            text: catalog.i18nc("@label", "View types")
             verticalAlignment: Text.AlignVCenter
             height: parent.height
             elide: Text.ElideRight
