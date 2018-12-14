@@ -54,6 +54,8 @@ class AuthorizationService:
             self._user_profile = self._parseJWT()
         if not self._user_profile:
             # If there is still no user profile from the JWT, we have to log in again.
+            Logger.log("w", "The user profile could not be loaded. The user must log in again!")
+            self.deleteAuthData()
             return None
 
         return self._user_profile

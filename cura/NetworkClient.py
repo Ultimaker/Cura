@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from time import time
-from typing import Optional, Dict, Callable, List, Union
+from typing import Optional, Dict, Callable, List, Union, Tuple
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QHttpMultiPart, QNetworkRequest, QHttpPart, \
@@ -16,50 +16,63 @@ from UM.Logger import Logger
 class NetworkClient:
     
     def __init__(self) -> None:
-        
+
         # Network manager instance to use for this client.
         self._manager = None  # type: Optional[QNetworkAccessManager]
-        
+
         # Timings.
         self._last_manager_create_time = None  # type: Optional[float]
         self._last_response_time = None  # type: Optional[float]
         self._last_request_time = None  # type: Optional[float]
-        
+
         # The user agent of Cura.
         application = Application.getInstance()
         self._user_agent = "%s/%s " % (application.getApplicationName(), application.getVersion())
 
         # Uses to store callback methods for finished network requests.
         # This allows us to register network calls with a callback directly instead of having to dissect the reply.
-        self._on_finished_callbacks = {}  # type: Dict[str, Callable[[QNetworkReply], None]]
+        # The key is created out of a tuple (operation, url)
+        self._on_finished_callbacks = {}  # type: Dict[Tuple[int, str], Callable[[QNetworkReply], None]]
 
         # QHttpMultiPart objects need to be kept alive and not garbage collected during the
         # HTTP which uses them. We hold references to these QHttpMultiPart objects here.
         self._kept_alive_multiparts = {}  # type: Dict[QNetworkReply, QHttpMultiPart]
 
-    ##  Creates a network manager with all the required properties and event bindings.
-    def _createNetworkManager(self) -> None:
+    ##  Creates a network manager if needed, with all the required properties and event bindings.
+    def start(self) -> None:
         if self._manager:
-            self._manager.finished.disconnect(self.__handleOnFinished)
-            self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
+            return
         self._manager = QNetworkAccessManager()
-        self._manager.finished.connect(self.__handleOnFinished)
+        self._manager.finished.connect(self._handleOnFinished)
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+
+    ##  Destroys the network manager and event bindings.
+    def stop(self) -> None:
+        if not self._manager:
+            return
+        self._manager.finished.disconnect(self._handleOnFinished)
+        self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
+        self._manager = None
 
     ##  Create a new empty network request.
     #   Automatically adds the required HTTP headers.
     #   \param url: The URL to request
     #   \param content_type: The type of the body contents.
     def _createEmptyRequest(self, url: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
+        if not self._manager:
+            self.start()  # make sure the manager is created
         request = QNetworkRequest(QUrl(url))
         if content_type:
             request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
+        self._last_request_time = time()
         return request
 
     ##  Executes the correct callback method when a network request finishes.
-    def __handleOnFinished(self, reply: QNetworkReply) -> None:
+    def _handleOnFinished(self, reply: QNetworkReply) -> None:
+
+        Logger.log("i", "On finished %s %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
 
         # Due to garbage collection, we need to cache certain bits of post operations.
         # As we don't want to keep them around forever, delete them if we get a reply.
@@ -76,7 +89,7 @@ class NetworkClient:
         
         # Find the right callback and execute it.
         # It always takes the full reply as single parameter.
-        callback_key = reply.url().toString() + str(reply.operation())
+        callback_key = reply.operation(), reply.url().toString()
         if callback_key in self._on_finished_callbacks:
             self._on_finished_callbacks[callback_key](reply)
         else:
@@ -87,12 +100,6 @@ class NetworkClient:
         if reply in self._kept_alive_multiparts:
             del self._kept_alive_multiparts[reply]
 
-    ##  Makes sure the network manager is created.
-    def _validateManager(self) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
-        assert self._manager is not None
-
     ##  Callback for when the network manager detects that authentication is required but was not given.
     @staticmethod
     def _onAuthenticationRequired(reply: QNetworkReply, authenticator: QAuthenticator) -> None:
@@ -102,7 +109,7 @@ class NetworkClient:
     def _registerOnFinishedCallback(self, reply: QNetworkReply,
                                     on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         if on_finished is not None:
-            self._on_finished_callbacks[reply.url().toString() + str(reply.operation())] = on_finished
+            self._on_finished_callbacks[reply.operation(), reply.url().toString()] = on_finished
 
     ##  Add a part to a Multi-Part form.
     @staticmethod
@@ -133,33 +140,23 @@ class NetworkClient:
     def put(self, url: str, data: Union[str, bytes], content_type: Optional[str] = None,
             on_finished: Optional[Callable[[QNetworkReply], None]] = None,
             on_progress: Optional[Callable[[int, int], None]] = None) -> None:
-        self._validateManager()
-
         request = self._createEmptyRequest(url, content_type = content_type)
-        self._last_request_time = time()
-
-        if not self._manager:
-            return Logger.log("e", "No network manager was created to execute the PUT call with.")
 
         body = data if isinstance(data, bytes) else data.encode()  # type: bytes
         reply = self._manager.put(request, body)
         self._registerOnFinishedCallback(reply, on_finished)
 
         if on_progress is not None:
+            # TODO: Do we need to disconnect() as well?
             reply.uploadProgress.connect(on_progress)
+            reply.finished.connect(lambda r: Logger.log("i", "On finished %s %s", url, r))
+            reply.error.connect(lambda r: Logger.log("i", "On error %s %s", url, r))
 
     ## Sends a delete request to the given path.
     #  url: The path after the API prefix.
     #  on_finished: The function to be call when the response is received.
     def delete(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        self._validateManager()
-
         request = self._createEmptyRequest(url)
-        self._last_request_time = time()
-
-        if not self._manager:
-            return Logger.log("e", "No network manager was created to execute the DELETE call with.")
-
         reply = self._manager.deleteResource(request)
         self._registerOnFinishedCallback(reply, on_finished)
 
@@ -167,14 +164,7 @@ class NetworkClient:
     #  \param url: The path after the API prefix.
     #  \param on_finished: The function to be call when the response is received.
     def get(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
-        self._validateManager()
-
         request = self._createEmptyRequest(url)
-        self._last_request_time = time()
-
-        if not self._manager:
-            return Logger.log("e", "No network manager was created to execute the GET call with.")
-
         reply = self._manager.get(request)
         self._registerOnFinishedCallback(reply, on_finished)
 
@@ -186,13 +176,7 @@ class NetworkClient:
     def post(self, url: str, data: Union[str, bytes],
              on_finished: Optional[Callable[[QNetworkReply], None]],
              on_progress: Optional[Callable[[int, int], None]] = None) -> None:
-        self._validateManager()
-
         request = self._createEmptyRequest(url)
-        self._last_request_time = time()
-
-        if not self._manager:
-            return Logger.log("e", "Could not find manager.")
 
         body = data if isinstance(data, bytes) else data.encode()  # type: bytes
         reply = self._manager.post(request, body)
@@ -213,19 +197,11 @@ class NetworkClient:
     def postFormWithParts(self, target: str, parts: List[QHttpPart],
                           on_finished: Optional[Callable[[QNetworkReply], None]],
                           on_progress: Optional[Callable[[int, int], None]] = None) -> Optional[QNetworkReply]:
-        self._validateManager()
-        
         request = self._createEmptyRequest(target, content_type = None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
         
         for part in parts:
             multi_post_part.append(part)
-
-        self._last_request_time = time()
-        
-        if not self._manager:
-            Logger.log("e", "No network manager was created to execute the POST call with.")
-            return None
 
         reply = self._manager.post(request, multi_post_part)
 

@@ -51,44 +51,69 @@ class ResumableUpload(NetworkClient):
         return self._sent_bytes, last_byte
 
     def start(self) -> None:
+        super().start()
+        if self._finished:
+            self._sent_bytes = 0
+            self._retries = 0
+            self._finished = False
         self._uploadChunk()
+
+    def stop(self):
+        super().stop()
+        Logger.log("i", "Stopped uploading")
+        self._finished = True
 
     def _uploadChunk(self) -> None:
         if self._finished:
             raise ValueError("The upload is already finished")
 
         first_byte, last_byte = self._chunkRange()
-        Logger.log("i", "PUT %s - %s", first_byte, last_byte)
-        self.put(self._url, data = self._data[first_byte:last_byte], content_type = self._content_type,
-                 on_finished = self.finishedCallback, on_progress = self.progressCallback)
+        # self.put(self._url, data = self._data[first_byte:last_byte], content_type = self._content_type,
+        #          on_finished = self.finishedCallback, on_progress = self._progressCallback)
+        request = self._createEmptyRequest(self._url, content_type=self._content_type)
 
-    def progressCallback(self, bytes_sent: int, bytes_total: int) -> None:
+        reply = self._manager.put(request, self._data[first_byte:last_byte])
+        reply.finished.connect(lambda: self._finishedCallback(reply))
+        reply.uploadProgress.connect(self._progressCallback)
+        reply.error.connect(self._errorCallback)
+        if reply.isFinished():
+            self._finishedCallback(reply)
+
+    def _progressCallback(self, bytes_sent: int, bytes_total: int) -> None:
+        Logger.log("i", "Progress callback %s / %s", bytes_sent, bytes_total)
         if bytes_total:
             self._on_progress(int((self._sent_bytes + bytes_sent) / len(self._data) * 100))
 
-    def finishedCallback(self, reply: QNetworkReply) -> None:
+    def _errorCallback(self, reply: QNetworkReply) -> None:
+        body = bytes(reply.readAll()).decode()
+        Logger.log("e", "Received error while uploading: %s", body)
+        self.stop()
+        self._on_error()
+
+    def _finishedCallback(self, reply: QNetworkReply) -> None:
+        Logger.log("i", "Finished callback %s %s",
+                   reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
+
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
 
         if self._retries < self.MAX_RETRIES and status_code in self.RETRY_HTTP_CODES:
             self._retries += 1
-            Logger.log("i", "Retrying %s/%s request %s", tries, self.MAX_RETRIES, request.url)
+            Logger.log("i", "Retrying %s/%s request %s", self._retries, self.MAX_RETRIES, reply.url().toString())
             self._uploadChunk()
+            return
+
+        if status_code > 308:
+            self._errorCallback(reply)
             return
 
         body = bytes(reply.readAll()).decode()
         Logger.log("w", "status_code: %s, Headers: %s, body: %s", status_code,
                    [bytes(header).decode() for header in reply.rawHeaderList()], body)
 
-        if status_code > 308:
-            self._finished = True
-            Logger.log("e", "Received error while uploading: %s", body)
-            self._on_error()
-            return
-
         first_byte, last_byte = self._chunkRange()
         self._sent_bytes += last_byte - first_byte
-        self._finished = self._sent_bytes >= len(self._data)
-        if self._finished:
+        if self._sent_bytes >= len(self._data):
+            self.stop()
             self._on_finished()
         else:
             self._uploadChunk()

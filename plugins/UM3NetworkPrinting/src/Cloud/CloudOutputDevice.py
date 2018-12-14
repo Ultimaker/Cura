@@ -66,7 +66,7 @@ class T:
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 5.0  # seconds
+    CHECK_CLUSTER_INTERVAL = 50.0  # seconds
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
@@ -150,7 +150,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             return
 
         # Indicate we have started sending a job.
-        self._sending_job = True
         self.writeStarted.emit(self)
 
         mesh_format = MeshFormatHandler(file_handler, self.firmwareVersion)
@@ -173,6 +172,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if self._last_response_time and time() - self._last_response_time < self.CHECK_CLUSTER_INTERVAL:
             return  # avoid calling the cloud too often
 
+        Logger.log("i", "Requesting update for %s after %s", self._device_id,
+                   self._last_response_time and time() - self._last_response_time)
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
             self._api.getClusterStatus(self._device_id, self._onStatusCallFinished)
@@ -183,6 +184,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #   Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
         # Update all data from the cluster.
+        self._last_response_time = time()
         if self._received_printers != status.printers:
             self._received_printers = status.printers
             self._updatePrinters(status.printers)
@@ -289,7 +291,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
     #  \param job_id: The ID of the job.
     def _onPrintJobUploaded(self, job_id: str) -> None:
-        self._api.requestPrint(self._device_id, job_id, self._onUploadSuccess)
+        self._progress.update(100)
+        self._api.requestPrint(self._device_id, job_id, self._onPrintRequested)
 
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.
@@ -304,7 +307,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Shows a message when the upload has succeeded
     #  \param response: The response from the cloud API.
-    def _onUploadSuccess(self, response: CloudPrintResponse) -> None:
+    def _onPrintRequested(self, response: CloudPrintResponse) -> None:
         Logger.log("i", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
         self._progress.hide()
         Message(
@@ -312,7 +315,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             title = T.UPLOAD_SUCCESS_TITLE,
             lifetime = 5
         ).show()
-        self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeFinished.emit()
 
     ##  Gets the remote printers.
