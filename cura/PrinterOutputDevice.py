@@ -126,9 +126,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
 
-    def checkConnectionType(self, connection_type: ConnectionType) -> bool:
-        return connection_type == self._connection_type
-
     def getConnectionType(self) -> ConnectionType:
         return self._connection_type
 
