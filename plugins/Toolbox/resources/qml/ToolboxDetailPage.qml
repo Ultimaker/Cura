@@ -138,8 +138,8 @@ Item
             {
                 id: rating
                 visible: details.type == "plugin"
-                packageId: details.id
-                userRating: details.user_rating
+                packageId: details.id != undefined ? details.id: ""
+                userRating: details.user_rating != undefined ? details.user_rating: 0
                 canRate: toolbox.isInstalled(details.id) && Cura.API.account.isLoggedIn
 
                 onRated:
