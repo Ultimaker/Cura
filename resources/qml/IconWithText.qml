@@ -19,7 +19,6 @@ Item
     property alias color: label.color
     property alias text: label.text
     property alias font: label.font
-    property alias iconColor: icon.color
     property real margin: UM.Theme.getSize("narrow_margin").width
 
     // These properties can be used in combination with layouts.
