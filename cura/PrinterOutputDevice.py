@@ -70,7 +70,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the configuration of one of the printers has changed.
     uniqueConfigurationsChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, connection_type: ConnectionType, parent: QObject = None) -> None:
+    def __init__(self, device_id: str, connection_type: "ConnectionType", parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
@@ -119,18 +119,18 @@ class PrinterOutputDevice(QObject, OutputDevice):
         callback(QMessageBox.Yes)
 
     def isConnected(self) -> bool:
-        return self._connection_state != ConnectionState.Closed and self._connection_state != ConnectionState.error
+        return self._connection_state != ConnectionState.Closed and self._connection_state != ConnectionState.Error
 
-    def setConnectionState(self, connection_state: ConnectionState) -> None:
+    def setConnectionState(self, connection_state: "ConnectionState") -> None:
         if self._connection_state != connection_state:
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
 
-    def getConnectionType(self) -> ConnectionType:
+    def getConnectionType(self) -> "ConnectionType":
         return self._connection_type
 
     @pyqtProperty(str, notify = connectionStateChanged)
-    def connectionState(self) -> ConnectionState:
+    def connectionState(self) -> "ConnectionState":
         return self._connection_state
 
     def _update(self) -> None:
