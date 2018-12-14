@@ -129,10 +129,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def getConnectionType(self) -> ConnectionType:
         return self._connection_type
 
-    def setConnectionType(self, new_connection_type: ConnectionType) -> None:
-        if self._connection_type != new_connection_type:
-            self._connection_type = new_connection_type
-
     @pyqtProperty(str, notify = connectionStateChanged)
     def connectionState(self) -> ConnectionState:
         return self._connection_state
