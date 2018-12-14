@@ -36,7 +36,7 @@ class ConnectionState(IntEnum):
 
 
 class ConnectionType(IntEnum):
-    none = 0
+    Unknown = 0
     UsbConnection = 1
     NetworkConnection = 2
     ClusterConnection = 3
