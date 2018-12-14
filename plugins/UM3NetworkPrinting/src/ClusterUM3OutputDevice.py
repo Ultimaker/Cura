@@ -55,7 +55,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     clusterPrintersChanged = pyqtSignal()
 
     def __init__(self, device_id, address, properties, parent = None) -> None:
-        super().__init__(device_id = device_id, address = address, properties=properties, connection_type = ConnectionType.clusterConnection, parent = parent)
+        super().__init__(device_id = device_id, address = address, properties=properties, connection_type = ConnectionType.ClusterConnection, parent = parent)
         self._api_prefix = "/cluster-api/v1/"
 
         self._number_of_extruders = 2

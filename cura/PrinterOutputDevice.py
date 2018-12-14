@@ -28,18 +28,20 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The current processing state of the backend.
 class ConnectionState(IntEnum):
-    closed = 0
-    connecting = 1
-    connected = 2
-    busy = 3
+    Closed = 0
+    Connecting = 1
+    Connected = 2
+    Busy = 3
     error = 4
+
 
 class ConnectionType(IntEnum):
     none = 0
-    usbConnection = 1
-    networkConnection = 2
-    clusterConnection = 3
-    cloudConnection = 4
+    UsbConnection = 1
+    NetworkConnection = 2
+    ClusterConnection = 3
+    CloudConnection = 4
+
 
 ##  Printer output device adds extra interface options on top of output device.
 #
@@ -89,7 +91,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
-        self._connection_state = ConnectionState.closed #type: ConnectionState
+        self._connection_state = ConnectionState.Closed #type: ConnectionState
         self._connection_type = connection_type
 
         self._firmware_updater = None #type: Optional[FirmwareUpdater]
@@ -117,7 +119,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         callback(QMessageBox.Yes)
 
     def isConnected(self) -> bool:
-        return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
+        return self._connection_state != ConnectionState.Closed and self._connection_state != ConnectionState.error
 
     def setConnectionState(self, connection_state: ConnectionState) -> None:
         if self._connection_state != connection_state:
@@ -191,13 +193,13 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     ##  Attempt to establish connection
     def connect(self) -> None:
-        self.setConnectionState(ConnectionState.connecting)
+        self.setConnectionState(ConnectionState.Connecting)
         self._update_timer.start()
 
     ##  Attempt to close the connection
     def close(self) -> None:
         self._update_timer.stop()
-        self.setConnectionState(ConnectionState.closed)
+        self.setConnectionState(ConnectionState.Closed)
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self) -> None:
