@@ -17,11 +17,16 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        property var extrudersModel: CuraApplication.getExtrudersModel()
+
+        model: extrudersModel
+
+        Connections
         {
+            target: extrudersModel
             onModelChanged:
             {
-                control.color = getItem(control.currentIndex).color
+                control.color = extrudersModel.getItem(control.currentIndex).color
             }
         }
 

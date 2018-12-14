@@ -16,7 +16,7 @@ Item
 
     property QtObject qualityManager: CuraApplication.getQualityManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
-    property var extrudersModel: Cura.ExtrudersModel {}
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
