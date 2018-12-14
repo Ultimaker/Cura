@@ -30,9 +30,16 @@ Column
         model: UM.ContainerStacksModel
         {
             id: networkedPrintersModel
+            property var umConnectionTypes: [Cura.PrinterOutputDevice.NetworkConnection,
+                                             Cura.PrinterOutputDevice.ClusterConnection,
+                                             Cura.PrinterOutputDevice.CloudConnection
+                                             ]
             filter:
             {
-                "type": "machine", "um_network_key": "*", "hidden": "False", "um_connection_type": "[2,3,4]"
+                "type": "machine",
+                "um_network_key": "*",
+                "hidden": "False",
+                "um_connection_type": "[" + umConnectionTypes.join(",") + "]"
             }
         }
 

@@ -113,6 +113,7 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
+from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
 from UM.FlameProfiler import pyqtSlot
@@ -974,6 +975,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)
         qmlRegisterType(SidebarCustomMenuItemsModel, "Cura", 1, 0, "SidebarCustomMenuItemsModel")
+
+        qmlRegisterType(PrinterOutputDevice, "Cura", 1, 0, "PrinterOutputDevice")
 
         from cura.API import CuraAPI
         qmlRegisterSingletonType(CuraAPI, "Cura", 1, 1, "API", self.getCuraAPI)
