@@ -29,5 +29,6 @@ Row
         anchors.verticalCenter: starIcon.verticalCenter
         color: starIcon.color
         font: UM.Theme.getFont("small")
+        renderType: Text.NativeRendering
     }
 }
