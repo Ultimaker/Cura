@@ -63,11 +63,12 @@ Item
         width: 36 * screenScaleFactor // TODO: Theme!
         height: 72 * screenScaleFactor // TODO: Theme!
         visible: currentIndex > 0
+        hoverEnabled: true
         z: 10
         onClicked: navigateTo(currentIndex - 1)
         background: Rectangle
         {
-            color: "#ffffff" // TODO: Theme!
+            color: leftButton.hovered ? "#e8f2fc" : "#ffffff" // TODO: Theme!
             border.width: 1 * screenScaleFactor // TODO: Theme!
             border.color: "#cccccc" // TODO: Theme!
             radius: 2 * screenScaleFactor // TODO: Theme!
@@ -79,9 +80,9 @@ Item
             {
                 anchors.centerIn: parent
                 width: 18
-                height: 18
-                sourceSize.width: 18
-                sourceSize.height: 18
+                height: width
+                sourceSize.width: width
+                sourceSize.height: width
                 color: "#152950" // TODO: Theme!
                 source: UM.Theme.getIcon("arrow_left")
             }
@@ -135,9 +136,10 @@ Item
         z: 10
         visible: currentIndex < OutputDevice.printers.length - 1
         onClicked: navigateTo(currentIndex + 1)
+        hoverEnabled: true
         background: Rectangle
         {
-            color: "#ffffff" // TODO: Theme!
+            color: rightButton.hovered ? "#e8f2fc" : "#ffffff" // TODO: Theme!
             border.width: 1 * screenScaleFactor // TODO: Theme!
             border.color: "#cccccc" // TODO: Theme!
             radius: 2 * screenScaleFactor // TODO: Theme!
@@ -149,9 +151,9 @@ Item
             {
                 anchors.centerIn: parent
                 width: 18
-                height: 18
-                sourceSize.width: 18
-                sourceSize.height: 18
+                height: width
+                sourceSize.width: width
+                sourceSize.height: width
                 color: "#152950" // TODO: Theme!
                 source: UM.Theme.getIcon("arrow_right")
             }
