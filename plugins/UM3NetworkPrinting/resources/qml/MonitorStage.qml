@@ -48,32 +48,17 @@ Component
             }
         }
 
-        ScrollView
+        Item
         {
             id: printers
             anchors
             {
-                left: queue.left
-                right: queue.right
                 top: parent.top
                 topMargin: 48 * screenScaleFactor // TODO: Theme!
             }
+            width: parent.width
             height: 264 * screenScaleFactor // TODO: Theme!
-
-            Row
-            {
-                spacing: 60 * screenScaleFactor // TODO: Theme!
-                
-                Repeater
-                {
-                    model: OutputDevice.printers
-
-                    MonitorPrinterCard
-                    {
-                        printer: modelData
-                    }
-                }
-            }
+            MonitorCarousel {}
         }
 
         Item

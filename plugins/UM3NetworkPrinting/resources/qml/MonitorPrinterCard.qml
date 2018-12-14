@@ -26,7 +26,7 @@ Item
     property var borderSize: 1 * screenScaleFactor // TODO: Theme, and remove from here
 
     width: 834 * screenScaleFactor // TODO: Theme!
-    height: 216 * screenScaleFactor // TODO: Theme!
+    height: childrenRect.height
 
     // Printer portion
     Rectangle
