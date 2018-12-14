@@ -7,20 +7,55 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Column
+Item
 {
     id: base
     property var outputDevice: null
-    height: childrenRect.height + 2 * padding
-    spacing: UM.Theme.getSize("narrow_margin").height
+    height: childrenRect.height
 
     function forceModelUpdate()
     {
-        // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
+        // FIXME For now the model has to be removed and then created again, otherwise changes in the printer don't automatically update the UI
         configurationList.model = []
         if (outputDevice)
         {
             configurationList.model = outputDevice.uniqueConfigurations
+        }
+    }
+
+    // This component will appear when there is no configurations (e.g. when losing connection)
+    Item
+    {
+        width: parent.width
+        visible: configurationList.model.length == 0
+        height: label.height + UM.Theme.getSize("wide_margin").height
+        anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+        UM.RecolorImage
+        {
+            id: icon
+
+            anchors.left: parent.left
+            anchors.verticalCenter: label.verticalCenter
+
+            source: UM.Theme.getIcon("warning")
+            color: UM.Theme.getColor("warning")
+            width: UM.Theme.getSize("section_icon").width
+            height: width
+        }
+
+        Label
+        {
+            id: label
+            anchors.left: icon.right
+            anchors.right: parent.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "The configurations are not available because the printer is disconnected.")
+            color: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            wrapMode: Text.WordWrap
         }
     }
 
@@ -57,7 +92,6 @@ Column
             id: configurationList
             spacing: UM.Theme.getSize("narrow_margin").height
             width: container.width - ((height > container.maximumHeight) ? container.ScrollBar.vertical.background.width : 0) //Make room for scroll bar if there is any.
-            contentHeight: childrenRect.height
             height: childrenRect.height
 
             section.property: "modelData.printerType"

@@ -49,21 +49,6 @@
             "size": 0.7,
             "weight": 50,
             "family": "Noto Sans"
-        },
-        "button_tooltip": {
-            "size": 1.0,
-            "weight": 50,
-            "family": "Noto Sans"
-        },
-        "setting_category": {
-            "size": 1.15,
-            "weight": 63,
-            "family": "Noto Sans"
-        },
-        "action_button": {
-            "size": 1.15,
-            "weight": 50,
-            "family": "Noto Sans"
         }
     },
 
@@ -118,7 +103,7 @@
 
         "printer_type_label_background": [228, 228, 242, 255],
 
-        "text": [0, 0, 0, 255],
+        "text": [25, 25, 25, 255],
         "text_detail": [174, 174, 174, 128],
         "text_link": [50, 130, 255, 255],
         "text_inactive": [174, 174, 174, 255],
@@ -371,6 +356,7 @@
 
         "expandable_component_content_header": [0.0, 3.0],
 
+        "configuration_selector": [35.0, 4.0],
         "configuration_selector_mode_tabs": [0.0, 3.0],
 
         "action_panel_widget": [25.0, 0.0],
@@ -422,6 +408,7 @@
         "button_lining": [0, 0],
 
         "action_button": [15.0, 3.0],
+        "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
 
         "small_button": [2, 2],
