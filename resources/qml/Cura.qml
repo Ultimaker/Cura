@@ -252,7 +252,7 @@ UM.MainWindow
                 anchors
                 {
                     // Align to the top of the stageMenu since the stageMenu may not exist
-                    top: parent.top
+                    top: headerBackground.top
                     left: parent.left
                     right: parent.right
                     bottom: parent.bottom
