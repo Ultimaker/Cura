@@ -75,7 +75,7 @@ QtObject
                     width: Theme.getSize("standard_arrow").width
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.height: width
-                    color: control.enabled ? Theme.getColor("setting_category_text") : Theme.getColor("setting_category_disabled_text")
+                    color: control.enabled ? Theme.getColor("setting_control_button") : Theme.getColor("setting_category_disabled_text")
                     source: Theme.getIcon("arrow_bottom")
                 }
                 Label
@@ -392,7 +392,7 @@ QtObject
                     sourceSize.width: width + 5 * screenScaleFactor
                     sourceSize.height: width + 5 * screenScaleFactor
 
-                    color: Theme.getColor("setting_control_text");
+                    color: Theme.getColor("setting_control_button");
                 }
             }
         }
@@ -459,7 +459,7 @@ QtObject
                     sourceSize.width: width + 5 * screenScaleFactor
                     sourceSize.height: width + 5 * screenScaleFactor
 
-                    color: UM.Theme.getColor("setting_control_text")
+                    color: UM.Theme.getColor("setting_control_button")
                 }
             }
         }
@@ -662,7 +662,7 @@ QtObject
                             return UM.Theme.getColor("action_button_text");
                         }
                     }
-                    font: UM.Theme.getFont("action_button")
+                    font: UM.Theme.getFont("medium")
                     text: control.text
                 }
             }
