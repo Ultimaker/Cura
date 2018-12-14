@@ -12,6 +12,12 @@ Item
 {
     id: widget
 
+    function requestWriteToDevice()
+    {
+        UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName,
+            { "filter_by_machine": true, "preferred_mimetypes": Cura.MachineManager.activeMachine.preferred_output_file_formats });
+    }
+
     Cura.PrimaryButton
     {
         id: saveToButton
@@ -32,9 +38,8 @@ Item
 
         onClicked:
         {
-            forceActiveFocus();
-            UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName,
-                { "filter_by_machine": true, "preferred_mimetypes": Cura.MachineManager.activeMachine.preferred_output_file_formats });
+            forceActiveFocus()
+            widget.requestWriteToDevice()
         }
     }
 
@@ -81,6 +86,7 @@ Item
                     delegate: Cura.ActionButton
                     {
                         text: model.description
+                        visible: model.id != UM.OutputDeviceManager.activeDevice  // Don't show the active device in the list
                         color: "transparent"
                         cornerRadius: 0
                         hoverColor: UM.Theme.getColor("primary")
@@ -88,6 +94,7 @@ Item
                         onClicked:
                         {
                             UM.OutputDeviceManager.setActiveDevice(model.id)
+                            widget.requestWriteToDevice()
                             popup.close()
                         }
                     }

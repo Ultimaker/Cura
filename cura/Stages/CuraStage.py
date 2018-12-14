@@ -25,9 +25,5 @@ class CuraStage(Stage):
         return self.getDisplayComponent("main")
 
     @pyqtProperty(QUrl, constant = True)
-    def sidebarComponent(self) -> QUrl:
-        return self.getDisplayComponent("sidebar")
-
-    @pyqtProperty(QUrl, constant = True)
     def stageMenuComponent(self) -> QUrl:
         return self.getDisplayComponent("menu")

@@ -255,8 +255,8 @@
         "message_button_text": [255, 255, 255, 255],
         "message_button_text_hover": [255, 255, 255, 255],
         "message_button_text_active": [255, 255, 255, 255],
-        "message_progressbar_background": [200, 200, 200, 255],
-        "message_progressbar_control": [77, 182, 226, 255],
+        "message_progressbar_background": [245, 245, 245, 255],
+        "message_progressbar_control": [50, 130, 255, 255],
 
         "tool_panel_background": [255, 255, 255, 255],
 
