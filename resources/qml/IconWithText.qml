@@ -15,6 +15,7 @@ Item
 {
     property alias source: icon.source
     property alias iconSize: icon.width
+    property alias iconColor: icon.color
     property alias color: label.color
     property alias text: label.text
     property alias font: label.font
@@ -37,7 +38,7 @@ Item
     {
         id: icon
         width: UM.Theme.getSize("section_icon").width
-        height: UM.Theme.getSize("section_icon").height
+        height: width
 
         color: UM.Theme.getColor("icon")
 

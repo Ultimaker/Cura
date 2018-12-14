@@ -26,10 +26,7 @@ Cura.ExpandableComponent
 
     headerItem: PrintSetupSelectorHeader {}
 
-    Cura.ExtrudersModel
-    {
-        id: extrudersModel
-    }
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     contentItem: PrintSetupSelectorContents {}
 }
