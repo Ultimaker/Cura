@@ -16,6 +16,7 @@ Item
 
         color: UM.Theme.getColor("viewport_overlay")
         anchors.fill: parent
+        anchors.topMargin: Math.round(stageMenu.height / 2)
         MouseArea
         {
             anchors.fill: parent
@@ -29,8 +30,7 @@ Item
         id: monitorViewComponent
 
         anchors.fill: parent
-
-        height: parent.height
+        anchors.topMargin: Math.round(stageMenu.height / 2)
 
         property real maximumWidth: parent.width
         property real maximumHeight: parent.height
