@@ -39,8 +39,7 @@ class ConnectionType(IntEnum):
     Unknown = 0
     UsbConnection = 1
     NetworkConnection = 2
-    ClusterConnection = 3
-    CloudConnection = 4
+    CloudConnection = 3
 
 
 ##  Printer output device adds extra interface options on top of output device.

@@ -54,7 +54,7 @@ class PrintersModel(ListModel):
 
         for container_stack in container_stacks:
             connection_type = container_stack.getMetaDataEntry("connection_type")
-            has_remote_connection = connection_type in [str(ConnectionType.NetworkConnection), str(ConnectionType.CloudConnection), str(ConnectionType.ClusterConnection)]
+            has_remote_connection = connection_type in [str(ConnectionType.NetworkConnection), str(ConnectionType.CloudConnection)]
 
             # TODO: Remove reference to connect group name.
             items.append({"name": container_stack.getMetaDataEntry("connect_group_name", container_stack.getName()),
