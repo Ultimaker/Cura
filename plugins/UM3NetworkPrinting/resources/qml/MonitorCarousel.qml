@@ -82,7 +82,7 @@ Item
                 height: 18
                 sourceSize.width: 18
                 sourceSize.height: 18
-                color: "#666666" // TODO: Theme!
+                color: "#152950" // TODO: Theme!
                 source: UM.Theme.getIcon("arrow_left")
             }
         }
@@ -152,7 +152,7 @@ Item
                 height: 18
                 sourceSize.width: 18
                 sourceSize.height: 18
-                color: "#666666" // TODO: Theme!
+                color: "#152950" // TODO: Theme!
                 source: UM.Theme.getIcon("arrow_right")
             }
         }
