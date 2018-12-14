@@ -8,11 +8,13 @@ from typing import Dict, List, Optional, Set
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM import i18nCatalog
+from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
@@ -92,6 +94,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._device_id = device_id
         self._account = api_client.account
 
+        CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
+
         # We use the Cura Connect monitor tab to get most functionality right away.
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                                    "../../resources/qml/MonitorStage.qml")
@@ -115,6 +119,17 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # A set of the user's job IDs that have finished
         self._finished_jobs = set()  # type: Set[str]
+
+        # Reference to the uploaded print job
+        self._mesh = None  # type: Optional[bytes]
+        self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
+
+    def disconnect(self) -> None:
+        CuraApplication.getInstance().getBackend().backendStateChange.disconnect(self._onBackendStateChange)
+
+    def _onBackendStateChange(self, _: BackendState) -> None:
+        self._mesh = None
+        self._uploaded_print_job = None
 
     ## Gets the host name of this device
     @property
@@ -146,7 +161,16 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:
-            self._onUploadError(T.BLOCKED_UPLOADING)
+            Message(
+                text = T.BLOCKED_UPLOADING,
+                title = T.ERROR,
+                lifetime = 10,
+            ).show()
+            return
+
+        if self._uploaded_print_job:
+            # the mesh didn't change, let's not upload it again
+            self._api.requestPrint(self._device_id, self._uploaded_print_job.job_id, self._onPrintRequested)
             return
 
         # Indicate we have started sending a job.
@@ -157,14 +181,15 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             Logger.log("e", "Missing file or mesh writer!")
             return self._onUploadError(T.COULD_NOT_EXPORT)
 
-        mesh_bytes = mesh_format.getBytes(nodes)
+        mesh = mesh_format.getBytes(nodes)
 
+        self._mesh = mesh
         request = CloudPrintJobUploadRequest(
             job_name = file_name,
-            file_size = len(mesh_bytes),
+            file_size = len(mesh),
             content_type = mesh_format.mime_type,
         )
-        self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh_bytes, response))
+        self._api.requestUpload(request, self._onPrintJobCreated)
 
     ##  Called when the network data should be updated.
     def _update(self) -> None:
@@ -281,21 +306,22 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Uploads the mesh when the print job was registered with the cloud API.
     #  \param mesh: The bytes to upload.
     #  \param job_response: The response received from the cloud API.
-    def _onPrintJobCreated(self, mesh: bytes, job_response: CloudPrintJobResponse) -> None:
+    def _onPrintJobCreated(self, job_response: CloudPrintJobResponse) -> None:
         self._progress.show()
-        self._api.uploadMesh(job_response, mesh, lambda: self._onPrintJobUploaded(job_response.job_id),
-                             self._progress.update, self._onUploadError)
+        self._uploaded_print_job = job_response
+        self._api.uploadMesh(job_response, self._mesh, self._onPrintJobUploaded, self._progress.update,
+                             self._onUploadError)
 
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
-    #  \param job_id: The ID of the job.
-    def _onPrintJobUploaded(self, job_id: str) -> None:
+    def _onPrintJobUploaded(self) -> None:
         self._progress.update(100)
-        self._api.requestPrint(self._device_id, job_id, self._onPrintRequested)
+        self._api.requestPrint(self._device_id, self._uploaded_print_job.job_id, self._onPrintRequested)
 
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.
     def _onUploadError(self, message = None) -> None:
         self._progress.hide()
+        self._uploaded_print_job = None
         Message(
             text = message or T.UPLOAD_ERROR,
             title = T.ERROR,

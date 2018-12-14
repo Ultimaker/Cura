@@ -5,6 +5,7 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from UM.Scene.SceneNode import SceneNode
+from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from src.Cloud.CloudApiClient import CloudApiClient
@@ -26,6 +27,9 @@ class TestCloudOutputDevice(TestCase):
     def setUp(self):
         super().setUp()
         self.app = CuraApplication.getInstance()
+        self.backend = MagicMock(backendStateChange = Signal())
+        self.app.setBackend(self.backend)
+
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
         self.onError = MagicMock()

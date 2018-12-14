@@ -3,7 +3,7 @@
 from time import time
 from typing import Optional, Dict, Callable, List, Union
 
-from PyQt5.QtCore import QUrl, QObject
+from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QHttpMultiPart, QNetworkRequest, QHttpPart, \
     QAuthenticator
 
@@ -13,7 +13,7 @@ from UM.Logger import Logger
 
 ##  Abstraction of QNetworkAccessManager for easier networking in Cura.
 #   This was originally part of NetworkedPrinterOutputDevice but was moved out for re-use in other classes.
-class NetworkClient(QObject):
+class NetworkClient:
     
     def __init__(self) -> None:
         super().__init__()

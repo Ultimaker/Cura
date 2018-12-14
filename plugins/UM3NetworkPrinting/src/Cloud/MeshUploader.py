@@ -6,9 +6,10 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from typing import Optional, Callable, Any, Tuple
 
 from UM.Logger import Logger
+from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
-class ResumableUpload:
+class MeshUploader:
     MAX_RETRIES = 10
     BYTES_PER_REQUEST = 256 * 1024
     RETRY_HTTP_CODES = {500, 502, 503, 504}
@@ -18,11 +19,10 @@ class ResumableUpload:
     #  \param content_length: The total content length of the file, in bytes.
     #  \param http_method: The HTTP method to be used, e.g. "POST" or "PUT".
     #  \param timeout: The timeout for each chunk upload. Important: If None, no timeout is applied at all.
-    def __init__(self, manager: QNetworkAccessManager, url: str, content_type: str, data: bytes,
+    def __init__(self, manager: QNetworkAccessManager, print_job: CloudPrintJobResponse, data: bytes,
                  on_finished: Callable[[], Any], on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
         self._manager = manager
-        self._url = url
-        self._content_type = content_type
+        self._print_job = print_job
         self._data = data
 
         self._on_finished = on_finished
@@ -34,17 +34,21 @@ class ResumableUpload:
         self._finished = False
         self._reply = None  # type: Optional[QNetworkReply]
 
+    @property
+    def printJob(self):
+        return self._print_job
+
     ##  We override _createRequest in order to add the user credentials.
     #   \param url: The URL to request
     #   \param content_type: The type of the body contents.
     def _createRequest(self) -> QNetworkRequest:
-        request = QNetworkRequest(QUrl(self._url))
-        request.setHeader(QNetworkRequest.ContentTypeHeader, self._content_type)
+        request = QNetworkRequest(QUrl(self._print_job.upload_url))
+        request.setHeader(QNetworkRequest.ContentTypeHeader, self._print_job.content_type)
         
         first_byte, last_byte = self._chunkRange()
         content_range = "bytes {}-{}/{}".format(first_byte, last_byte - 1, len(self._data))
         request.setRawHeader(b"Content-Range", content_range.encode())
-        Logger.log("i", "Uploading %s to %s", content_range, self._url)
+        Logger.log("i", "Uploading %s to %s", content_range, self._print_job.upload_url)
 
         return request
 

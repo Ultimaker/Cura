@@ -4,12 +4,12 @@ import json
 from json import JSONDecodeError
 from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any
 
-from PyQt5.QtCore import QObject, QUrl
+from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 
 from UM.Logger import Logger
 from cura.API import Account
-from .ResumableUpload import ResumableUpload
+from .MeshUploader import MeshUploader
 from ..Models import BaseModel
 from .Models.CloudClusterResponse import CloudClusterResponse
 from .Models.CloudErrorObject import CloudErrorObject
@@ -37,6 +37,7 @@ class CloudApiClient:
         self._manager = QNetworkAccessManager()
         self._account = account
         self._on_error = on_error
+        self._upload = None  # type: Optional[MeshUploader]
 
     ## Gets the account used for the API.
     @property
@@ -77,10 +78,10 @@ class CloudApiClient:
     #  \param on_finished: The function to be called after the result is parsed. It receives the print job ID.
     #  \param on_progress: A function to be called during upload progress. It receives a percentage (0-100).
     #  \param on_error: A function to be called if the upload fails. It receives a dict with the error.
-    def uploadMesh(self, upload_response: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
+    def uploadMesh(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
                    on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
-        ResumableUpload(self._manager, upload_response.upload_url, upload_response.content_type, mesh, on_finished,
-                        on_progress, on_error).start()
+        self._upload = MeshUploader(self._manager, print_job, mesh, on_finished, on_progress, on_error)
+        self._upload.start()
 
     # Requests a cluster to print the given print job.
     #  \param cluster_id: The ID of the cluster.
