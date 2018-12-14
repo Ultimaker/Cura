@@ -205,6 +205,8 @@ class CuraApplication(QtApplication):
         self._container_manager = None
 
         self._object_manager = None
+        self._extruders_model = None
+        self._extruders_model_with_optional = None
         self._build_plate_model = None
         self._multi_build_plate_model = None
         self._setting_visibility_presets_model = None
@@ -861,6 +863,19 @@ class CuraApplication(QtApplication):
         if self._object_manager is None:
             self._object_manager = ObjectsModel.createObjectsModel()
         return self._object_manager
+
+    @pyqtSlot(result = QObject)
+    def getExtrudersModel(self, *args) -> "ExtrudersModel":
+        if self._extruders_model is None:
+            self._extruders_model = ExtrudersModel(self)
+        return self._extruders_model
+
+    @pyqtSlot(result = QObject)
+    def getExtrudersModelWithOptional(self, *args) -> "ExtrudersModel":
+        if self._extruders_model_with_optional is None:
+            self._extruders_model_with_optional = ExtrudersModel(self)
+            self._extruders_model_with_optional.setAddOptionalExtruder(True)
+        return self._extruders_model_with_optional
 
     @pyqtSlot(result = QObject)
     def getMultiBuildPlateModel(self, *args) -> MultiBuildPlateModel:

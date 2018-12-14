@@ -144,10 +144,7 @@ Item
         }
     }
 
-    Cura.ExtrudersModel
-    {
-        id: extrudersModel
-    }
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     UM.PointingRectangle
     {
