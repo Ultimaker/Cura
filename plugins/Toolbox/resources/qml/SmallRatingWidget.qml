@@ -14,7 +14,7 @@ Row
     {
         id: starIcon
         source: UM.Theme.getIcon("star_filled")
-        color: model.user_rating == 0  ? "#5a5a5a" : UM.Theme.getColor("primary")
+        color: model.user_rating == 0  ? UM.Theme.getColor("rating_star") : UM.Theme.getColor("primary")
         height: UM.Theme.getSize("rating_star").height
         width: UM.Theme.getSize("rating_star").width
     }

@@ -81,13 +81,13 @@ Item
                         {
                             if(!ratingWidget.canRate)
                             {
-                                return "#5a5a5a"
+                                return UM.Theme.getColor("rating_star")
                             }
                             if((ratingWidget.indexHovered >= 0 || ratingWidget.userRating > 0) && isStarFilled)
                             {
                                 return UM.Theme.getColor("primary")
                             }
-                            return "#5a5a5a"
+                            return UM.Theme.getColor("rating_star")
                         }
                     }
                     onClicked:

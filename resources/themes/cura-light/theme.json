@@ -160,6 +160,8 @@
 
         "extruder_button_material_border": [255, 255, 255, 255],
 
+        "rating_star": [90, 90, 90, 255],
+
         "sync_button_text": [120, 120, 120, 255],
         "sync_button_text_hovered": [0, 0, 0, 255],
 
