@@ -15,9 +15,6 @@ Component
     {
         id: monitorFrame
 
-        property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
-        property var cornerRadius: UM.Theme.getSize("monitor_corner_radius").width
-
         height: maximumHeight
         onVisibleChanged:
         {
@@ -39,11 +36,11 @@ Component
             gradient: Gradient {
                 GradientStop {
                     position: 0.0
-                    color: "#f6f6f6"
+                    color: "#f6f6f6" // TODO: Theme!
                 }
                 GradientStop {
                     position: 1.0
-                    color: "#ffffff"
+                    color: "#ffffff" // TODO: Theme!
                 }
             }
         }
