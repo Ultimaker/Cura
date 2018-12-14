@@ -34,7 +34,7 @@ Item
         id: printerInfo
         border
         {
-            color: "#EAEAEC" // TODO: Theme!
+            color: "#CCCCCC" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
         color: "white" // TODO: Theme!
@@ -151,7 +151,7 @@ Item
         }
         border
         {
-            color: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "#EAEAEC" // TODO: Theme!
+            color: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
         color: "white" // TODO: Theme!
