@@ -83,6 +83,8 @@
         "secondary": [240, 240, 240, 255],
         "secondary_shadow": [216, 216, 216, 255],
 
+        "icon": [8, 7, 63, 255],
+
         "primary_button": [38, 113, 231, 255],
         "primary_button_shadow": [27, 95, 202, 255],
         "primary_button_hover": [81, 145, 247, 255],

@@ -100,7 +100,7 @@ Item
                     source: UM.Theme.getIcon("load")
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
-                    color: UM.Theme.getColor("toolbar_button_text")
+                    color: UM.Theme.getColor("icon")
 
                     sourceSize.height: height
                 }
