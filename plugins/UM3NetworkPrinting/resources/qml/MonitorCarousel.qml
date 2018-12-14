@@ -108,7 +108,14 @@ Item
             width: 5 * tileWidth + 4 * tileSpacing
             x: 0
             z: 0
-            Behavior on x { NumberAnimation { duration: 100 } }
+            Behavior on x
+            {
+                NumberAnimation
+                {
+                    duration: 200
+                    easing.type: Easing.InOutCubic
+                }
+            }
             spacing: 60 * screenScaleFactor // TODO: Theme!
             
             Repeater
