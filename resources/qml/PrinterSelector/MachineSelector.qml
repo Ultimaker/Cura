@@ -41,7 +41,7 @@ Cura.ExpandablePopup
         }
         font: UM.Theme.getFont("medium")
         iconColor: UM.Theme.getColor("machine_selector_printer_icon")
-        iconSize: UM.Theme.getSize("machine_selector_icon").width
+        iconSize: source != "" ? UM.Theme.getSize("machine_selector_icon").width: 0
 
         UM.RecolorImage
         {
