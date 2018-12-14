@@ -57,7 +57,6 @@ Item
                 top: thumbnail.top
                 left: thumbnail.right
                 leftMargin: UM.Theme.getSize("default_margin").width
-                bottomMargin: UM.Theme.getSize("default_margin").height
             }
             text: details === null ? "" : (details.name || "")
             font: UM.Theme.getFont("large")
@@ -225,13 +224,6 @@ Item
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
             }
-        }
-        Rectangle
-        {
-            color: UM.Theme.getColor("lining")
-            width: parent.width
-            height: UM.Theme.getSize("default_lining").height
-            anchors.bottom: parent.bottom
         }
     }
     ToolboxDetailList
