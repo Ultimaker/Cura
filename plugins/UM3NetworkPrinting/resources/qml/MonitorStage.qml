@@ -34,16 +34,20 @@ Component
             name: "cura"
         }
 
-        LinearGradient {
+        LinearGradient
+        {
             anchors.fill: parent
-            gradient: Gradient {
-                GradientStop {
+            gradient: Gradient
+            {
+                GradientStop
+                {
                     position: 0.0
-                    color: "#f6f6f6"
+                    color: "#f6f6f6" // TODO: Theme!
                 }
-                GradientStop {
+                GradientStop
+                {
                     position: 1.0
-                    color: "#ffffff"
+                    color: "#ffffff" // TODO: Theme!
                 }
             }
         }
@@ -81,7 +85,8 @@ Component
             id: queue
             width: Math.min(834 * screenScaleFactor, maximumWidth)
 
-            anchors {
+            anchors
+            {
                 bottom: parent.bottom
                 horizontalCenter: parent.horizontalCenter
                 top: printers.bottom
@@ -210,7 +215,8 @@ Component
             ScrollView
             {
                 id: queuedPrintJobs
-                anchors {
+                anchors
+                {
                     bottom: parent.bottom
                     horizontalCenter: parent.horizontalCenter
                     top: printJobQueueHeadings.bottom
@@ -239,7 +245,8 @@ Component
             }
         }
 
-        PrinterVideoStream {
+        PrinterVideoStream
+        {
             anchors.fill: parent
             cameraUrl: OutputDevice.activeCameraUrl
             visible: OutputDevice.activeCameraUrl != ""

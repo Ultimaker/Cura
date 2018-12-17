@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Set
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
@@ -63,10 +64,10 @@ class SimpleModeSettingsManager(QObject):
 
     @pyqtSlot()
     def updateIsProfileUserCreated(self) -> None:
-        quality_changes_keys = set()
+        quality_changes_keys = set()  # type: Set[str]
 
         if not self._machine_manager.activeMachine:
-            return False
+            return
 
         global_stack = self._machine_manager.activeMachine
 
