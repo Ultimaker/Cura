@@ -13,8 +13,40 @@ Item {
     property string activeQualityDefinitionId: Cura.MachineManager.activeQualityDefinitionId;
     property bool isUM3: activeQualityDefinitionId == "ultimaker3" || activeQualityDefinitionId.match("ultimaker_") != null;
     property bool printerConnected: Cura.MachineManager.printerConnected;
-    property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands;
-    property bool authenticationRequested: printerConnected && (Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 || Cura.MachineManager.printerOutputDevices[0].authenticationState == 5); // AuthState.AuthenticationRequested or AuthenticationReceived.
+    property bool printerAcceptsCommands:
+    {
+        if (printerConnected && Cura.MachineManager.printerOutputDevices[0])
+        {
+            return Cura.MachineManager.printerOutputDevices[0].acceptsCommands
+        }
+        return false
+    }
+    property bool authenticationRequested:
+    {
+        if (printerConnected && Cura.MachineManager.printerOutputDevices[0])
+        {
+            var device = Cura.MachineManager.printerOutputDevices[0]
+            // AuthState.AuthenticationRequested or AuthState.AuthenticationReceived
+            return device.authenticationState == 2 || device.authenticationState == 5
+        }
+        return false
+    }
+    property var materialNames:
+    {
+        if (printerConnected && Cura.MachineManager.printerOutputDevices[0])
+        {
+            return Cura.MachineManager.printerOutputDevices[0].materialNames
+        }
+        return null
+    }
+    property var hotendIds:
+    {
+        if (printerConnected && Cura.MachineManager.printerOutputDevices[0])
+        {
+            return Cura.MachineManager.printerOutputDevices[0].hotendIds
+        }
+        return null
+    }
 
     UM.I18nCatalog {
         id: catalog;
@@ -94,7 +126,7 @@ Item {
             Column {
                 Repeater {
                     id: nozzleColumn;
-                    model: printerConnected ? Cura.MachineManager.printerOutputDevices[0].hotendIds : null;
+                    model: hotendIds
 
                     Label {
                         text: nozzleColumn.model[index];
@@ -105,7 +137,7 @@ Item {
             Column {
                 Repeater {
                     id: materialColumn;
-                    model: printerConnected ? Cura.MachineManager.printerOutputDevices[0].materialNames : null;
+                    model: materialNames
 
                     Label {
                         text: materialColumn.model[index];
