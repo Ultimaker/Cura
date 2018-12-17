@@ -21,7 +21,7 @@ Rectangle
     property bool hideView: Cura.MachineManager.activeMachineName == ""
 
     // Is there an output device for this printer?
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasRemoteConnection
     property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
@@ -205,7 +205,7 @@ Rectangle
         target: Cura.MachineManager
         onGlobalContainerChanged:
         {
-            base.isNetworkPrinter = Cura.MachineManager.activeMachineNetworkKey != ""
+            base.isNetworkPrinter = Cura.MachineManager.activeMachineHasRemoteConnection
             base.printerConnected = Cura.MachineManager.printerOutputDevices.length != 0
         }
     }

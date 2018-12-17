@@ -23,7 +23,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
@@ -520,6 +520,13 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def printerConnected(self):
         return bool(self._printer_output_devices)
+
+    @pyqtProperty(bool, notify=printerConnectedStatusChanged)
+    def activeMachineHasRemoteConnection(self) -> bool:
+        if self._global_container_stack:
+            connection_type = self._global_container_stack.getMetaDataEntry("connection_type")
+            return connection_type in [ConnectionType.NetworkConnection, ConnectionType.CloudConnection]
+        return False
 
     @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkKey(self) -> str:

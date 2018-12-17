@@ -134,7 +134,7 @@ Cura.ExpandablePopup
         property bool is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected //Re-evaluate.
+            is_connected = Cura.MachineManager.activeMachineHasRemoteConnection && Cura.MachineManager.printerConnected //Re-evaluate.
         }
 
         property int configuration_method: is_connected ? ConfigurationMenu.ConfigurationMethod.Auto : ConfigurationMenu.ConfigurationMethod.Custom //Auto if connected to a printer at start-up, or Custom if not.
