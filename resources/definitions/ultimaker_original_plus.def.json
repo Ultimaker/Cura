@@ -16,7 +16,8 @@
         {
             "0": "ultimaker_original_plus_extruder_0"
         },
-        "firmware_file": "MarlinUltimaker-UMOP-{baudrate}.hex"
+        "firmware_file": "MarlinUltimaker-UMOP-{baudrate}.hex",
+        "firmware_hbk_file": "MarlinUltimaker-UMOP-{baudrate}.hex"
     },
 
     "overrides": {
