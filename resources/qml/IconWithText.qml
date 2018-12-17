@@ -39,7 +39,7 @@ Item
         width: UM.Theme.getSize("section_icon").width
         height: width
 
-        color: label.color
+        color: UM.Theme.getColor("icon")
 
         anchors
         {
