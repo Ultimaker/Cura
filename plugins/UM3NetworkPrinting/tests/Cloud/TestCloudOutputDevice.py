@@ -7,6 +7,7 @@ from unittest.mock import patch, MagicMock
 from UM.Scene.SceneNode import SceneNode
 from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
+from cura.CuraConstants import CuraCloudAPIRoot
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from src.Cloud.CloudApiClient import CloudApiClient
 from src.Cloud.CloudOutputDevice import CloudOutputDevice
@@ -23,10 +24,9 @@ class TestCloudOutputDevice(TestCase):
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
     HOST_GUID = "e90ae0ac-1257-4403-91ee-a44c9b7e8050"
 
-    BASE_URL = "https://api-staging.ultimaker.com"
-    STATUS_URL = "{}/connect/v1/clusters/{}/status".format(BASE_URL, CLUSTER_ID)
-    PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(BASE_URL, CLUSTER_ID, JOB_ID)
-    REQUEST_UPLOAD_URL = "{}/cura/v1/jobs/upload".format(BASE_URL)
+    STATUS_URL = "{}/connect/v1/clusters/{}/status".format(CuraCloudAPIRoot, CLUSTER_ID)
+    PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(CuraCloudAPIRoot, CLUSTER_ID, JOB_ID)
+    REQUEST_UPLOAD_URL = "{}/cura/v1/jobs/upload".format(CuraCloudAPIRoot)
 
     def setUp(self):
         super().setUp()

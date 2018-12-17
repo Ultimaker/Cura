@@ -7,6 +7,7 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from cura.CuraApplication import CuraApplication
+from cura.CuraConstants import CuraCloudAPIRoot
 from src.Cloud.CloudApiClient import CloudApiClient
 from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from src.Cloud.Models.CloudClusterStatus import CloudClusterStatus
@@ -39,7 +40,7 @@ class TestCloudApiClient(TestCase):
         response = readFixture("getClusters")
         data = parseFixture("getClusters")["data"]
 
-        self.network.prepareReply("GET", "https://api-staging.ultimaker.com/connect/v1/clusters", 200, response)
+        self.network.prepareReply("GET", CuraCloudAPIRoot + "/connect/v1/clusters", 200, response)
         # the callback is a function that adds the result of the call to getClusters to the result list
         self.api.getClusters(lambda clusters: result.extend(clusters))
 
@@ -54,7 +55,7 @@ class TestCloudApiClient(TestCase):
         data = parseFixture("getClusterStatusResponse")["data"]
 
         self.network.prepareReply("GET",
-                                  "https://api-staging.ultimaker.com/connect/v1/clusters/R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC/status",
+                                  CuraCloudAPIRoot + "/connect/v1/clusters/R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC/status",
                                   200, response
                                   )
         self.api.getClusterStatus("R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC", lambda s: result.append(s))
@@ -69,7 +70,7 @@ class TestCloudApiClient(TestCase):
 
         response = readFixture("putJobUploadResponse")
 
-        self.network.prepareReply("PUT", "https://api-staging.ultimaker.com/cura/v1/jobs/upload", 200, response)
+        self.network.prepareReply("PUT", CuraCloudAPIRoot + "/cura/v1/jobs/upload", 200, response)
         request = CloudPrintJobUploadRequest(job_name = "job name", file_size = 143234, content_type = "text/plain")
         self.api.requestUpload(request, lambda r: results.append(r))
         self.network.flushReplies()
@@ -108,7 +109,7 @@ class TestCloudApiClient(TestCase):
         job_id = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
 
         self.network.prepareReply("POST",
-                                  "https://api-staging.ultimaker.com/connect/v1/clusters/{}/print/{}"
+                                  CuraCloudAPIRoot + "/connect/v1/clusters/{}/print/{}"
                                   .format(cluster_id, job_id),
                                   200, response)
 

@@ -4,6 +4,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from cura.CuraApplication import CuraApplication
+from cura.CuraConstants import CuraCloudAPIRoot
 from src.Cloud.CloudOutputDevice import CloudOutputDevice
 from src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 from tests.Cloud.Fixtures import parseFixture, readFixture
@@ -13,7 +14,7 @@ from .NetworkManagerMock import NetworkManagerMock
 class TestCloudOutputDeviceManager(TestCase):
     maxDiff = None
 
-    URL = "https://api-staging.ultimaker.com/connect/v1/clusters"
+    URL = CuraCloudAPIRoot + "/connect/v1/clusters"
 
     def setUp(self):
         super().setUp()
