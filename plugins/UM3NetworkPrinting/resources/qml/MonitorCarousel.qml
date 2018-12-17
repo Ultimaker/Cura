@@ -25,7 +25,7 @@ Item
         anchors
         {
             right: leftButton.left
-            rightMargin: 12 * screenScaleFactor
+            rightMargin: 12 * screenScaleFactor // TODO: Theme!
             left: parent.left
         }
         height: parent.height
@@ -40,14 +40,19 @@ Item
                 GradientStop
                 {
                     position: 0.0
-                    color: "#fff6f6f6"
+                    color: "#fff6f6f6" // TODO: Theme!
                 }
                 GradientStop
                 {
                     position: 1.0
-                    color: "#66f6f6f6"
+                    color: "#66f6f6f6" // TODO: Theme!
                 }
             }
+        }
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: navigateTo(currentIndex - 1)
         }
     }
 
@@ -58,7 +63,7 @@ Item
         {
             verticalCenter: parent.verticalCenter
             right: centerSection.left
-            rightMargin: 12 * screenScaleFactor
+            rightMargin: 12 * screenScaleFactor // TODO: Theme!
         }
         width: 36 * screenScaleFactor // TODO: Theme!
         height: 72 * screenScaleFactor // TODO: Theme!
@@ -79,10 +84,10 @@ Item
             UM.RecolorImage
             {
                 anchors.centerIn: parent
-                width: 18
-                height: width
-                sourceSize.width: width
-                sourceSize.height: width
+                width: 18 // TODO: Theme!
+                height: width // TODO: Theme!
+                sourceSize.width: width // TODO: Theme!
+                sourceSize.height: width // TODO: Theme!
                 color: "#152950" // TODO: Theme!
                 source: UM.Theme.getIcon("arrow_left")
             }
@@ -105,7 +110,7 @@ Item
         {
             id: tiles
             height: childrenRect.height
-            width: 5 * tileWidth + 4 * tileSpacing
+            width: 5 * tileWidth + 4 * tileSpacing // TODO: Theme!
             x: 0
             z: 0
             Behavior on x
@@ -137,7 +142,7 @@ Item
         {
             verticalCenter: parent.verticalCenter
             left: centerSection.right
-            leftMargin: 12 * screenScaleFactor
+            leftMargin: 12 * screenScaleFactor // TODO: Theme!
         }
         width: 36 * screenScaleFactor // TODO: Theme!
         height: 72 * screenScaleFactor // TODO: Theme!
@@ -158,10 +163,10 @@ Item
             UM.RecolorImage
             {
                 anchors.centerIn: parent
-                width: 18
-                height: width
-                sourceSize.width: width
-                sourceSize.height: width
+                width: 18 // TODO: Theme!
+                height: width // TODO: Theme!
+                sourceSize.width: width // TODO: Theme!
+                sourceSize.height: width // TODO: Theme!
                 color: "#152950" // TODO: Theme!
                 source: UM.Theme.getIcon("arrow_right")
             }
@@ -174,7 +179,7 @@ Item
         anchors
         {
             left: rightButton.right
-            leftMargin: 12 * screenScaleFactor
+            leftMargin: 12 * screenScaleFactor // TODO: Theme!
             right: parent.right
         }
         height: centerSection.height
@@ -190,14 +195,19 @@ Item
                 GradientStop
                 {
                     position: 0.0
-                    color: "#66f6f6f6"
+                    color: "#66f6f6f6" // TODO: Theme!
                 }
                 GradientStop
                 {
                     position: 1.0
-                    color: "#fff6f6f6"
+                    color: "#fff6f6f6" // TODO: Theme!
                 }
             }
+        }
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: navigateTo(currentIndex + 1)
         }
     }
 
@@ -223,7 +233,7 @@ Item
                         color: model.index == currentIndex ? "#777777" : "#d8d8d8" // TODO: Theme!
                         radius: Math.floor(width / 2)
                         width: 12 * screenScaleFactor // TODO: Theme!
-                        height: width
+                        height: width // TODO: Theme!
                     }
                     onClicked: navigateTo(model.index)
                 }
