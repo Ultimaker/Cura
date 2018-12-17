@@ -147,6 +147,8 @@
 
         "extruder_button_material_border": [255, 255, 255, 255],
 
+        "rating_star": [90, 90, 90, 255],
+
         "sync_button_text": [120, 120, 120, 255],
         "sync_button_text_hovered": [0, 0, 0, 255],
 
@@ -390,6 +392,7 @@
         "section": [0.0, 2],
         "section_icon": [1.6, 1.6],
         "section_icon_column": [2.8, 0.0],
+        "rating_star": [1.0, 1.0],
 
         "setting": [25.0, 1.8],
         "setting_control": [11.0, 2.0],
