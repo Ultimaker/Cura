@@ -6,7 +6,6 @@ from typing import List
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
-from cura.CuraApplication import CuraApplication
 from cura.CuraConstants import CuraCloudAPIRoot
 from src.Cloud.CloudApiClient import CloudApiClient
 from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
@@ -29,7 +28,6 @@ class TestCloudApiClient(TestCase):
         self.account = MagicMock()
         self.account.isLoggedIn.return_value = True
 
-        self.app = CuraApplication.getInstance()
         self.network = NetworkManagerMock()
         with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
             self.api = CloudApiClient(self.account, self._errorHandler)

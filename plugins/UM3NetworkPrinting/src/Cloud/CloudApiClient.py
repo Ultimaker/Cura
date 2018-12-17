@@ -52,7 +52,7 @@ class CloudApiClient:
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
         url = "{}/clusters".format(self.CLUSTER_API_ROOT)
         reply = self._manager.get(self._createEmptyRequest(url))
-        self._addCallbacks(reply, on_finished, CloudClusterResponse)
+        self._addCallback(reply, on_finished, CloudClusterResponse)
 
     ## Retrieves the status of the given cluster.
     #  \param cluster_id: The ID of the cluster.
@@ -60,7 +60,7 @@ class CloudApiClient:
     def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], Any]) -> None:
         url = "{}/clusters/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
         reply = self._manager.get(self._createEmptyRequest(url))
-        self._addCallbacks(reply, on_finished, CloudClusterStatus)
+        self._addCallback(reply, on_finished, CloudClusterStatus)
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
@@ -70,7 +70,7 @@ class CloudApiClient:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
         body = json.dumps({"data": request.toDict()})
         reply = self._manager.put(self._createEmptyRequest(url), body.encode())
-        self._addCallbacks(reply, on_finished, CloudPrintJobResponse)
+        self._addCallback(reply, on_finished, CloudPrintJobResponse)
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param upload_response: The object received after requesting an upload with `self.requestUpload`.
@@ -90,7 +90,7 @@ class CloudApiClient:
     def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any]) -> None:
         url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
         reply = self._manager.post(self._createEmptyRequest(url), b"")
-        self._addCallbacks(reply, on_finished, CloudPrintResponse)
+        self._addCallback(reply, on_finished, CloudPrintResponse)
 
     ##  We override _createEmptyRequest in order to add the user credentials.
     #   \param url: The URL to request
@@ -147,7 +147,7 @@ class CloudApiClient:
     #  \param on_finished: The callback in case the response is successful.
     #  \param model: The type of the model to convert the response to. It may either be a single record or a list.
     #  \return: A function that can be passed to the
-    def _addCallbacks(self,
+    def _addCallback(self,
                       reply: QNetworkReply,
                       on_finished: Union[Callable[[Model], Any], Callable[[List[Model]], Any]],
                       model: Type[Model],

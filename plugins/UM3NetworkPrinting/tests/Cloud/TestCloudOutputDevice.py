@@ -30,9 +30,13 @@ class TestCloudOutputDevice(TestCase):
 
     def setUp(self):
         super().setUp()
-        self.app = CuraApplication.getInstance()
-        self.backend = MagicMock(backendStateChange = Signal())
-        self.app.setBackend(self.backend)
+        self.app = MagicMock()
+
+        self.patches = [patch("UM.Qt.QtApplication.QtApplication.getInstance", return_value=self.app),
+                        patch("UM.Application.Application.getInstance", return_value=self.app)]
+        for patched_method in self.patches:
+            patched_method.start()
+
         self.cluster = CloudClusterResponse(self.CLUSTER_ID, self.HOST_GUID, self.HOST_NAME, is_online=True,
                                             status="active")
 
@@ -41,6 +45,7 @@ class TestCloudOutputDevice(TestCase):
         self.onError = MagicMock()
         with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
             self._api = CloudApiClient(self.account, self.onError)
+        
         self.device = CloudOutputDevice(self._api, self.cluster)
         self.cluster_status = parseFixture("getClusterStatusResponse")
         self.network.prepareReply("GET", self.STATUS_URL, 200, readFixture("getClusterStatusResponse"))
@@ -48,6 +53,8 @@ class TestCloudOutputDevice(TestCase):
     def tearDown(self):
         super().tearDown()
         self.network.flushReplies()
+        for patched_method in self.patches:
+            patched_method.stop()
 
     def test_status(self):
         self.device._update()
@@ -105,9 +112,8 @@ class TestCloudOutputDevice(TestCase):
         self.network.flushReplies()
         self.assertEqual([], self.device.printers)
 
-    @patch("cura.CuraApplication.CuraApplication.getGlobalContainerStack")
-    def test_print_to_cloud(self, global_container_stack_mock):
-        active_machine_mock = global_container_stack_mock.return_value
+    def test_print_to_cloud(self):
+        active_machine_mock = self.app.getGlobalContainerStack.return_value
         active_machine_mock.getMetaDataEntry.side_effect = {"file_formats": "application/gzip"}.get
 
         request_upload_response = parseFixture("putJobUploadResponse")
