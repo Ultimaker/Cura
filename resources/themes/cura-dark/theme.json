@@ -40,6 +40,8 @@
         "text_scene": [255, 255, 255, 162],
         "text_scene_hover": [255, 255, 255, 204],
 
+        "printer_type_label_background": [95, 95, 95, 255],
+
         "error": [212, 31, 53, 255],
         "disabled": [32, 32, 32, 255],
 
