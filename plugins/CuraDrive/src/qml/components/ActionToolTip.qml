@@ -14,7 +14,7 @@ ToolTip
 
     background: Rectangle
     {
-        color: UM.Theme.getColor("sidebar")
+        color: UM.Theme.getColor("main_background")
         border.color: UM.Theme.getColor("primary")
         border.width: 1 * screenScaleFactor
     }
@@ -23,7 +23,7 @@ ToolTip
     {
         text: tooltip.text
         color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 }

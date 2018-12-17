@@ -4,6 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0 // For the dropshadow
+
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
@@ -30,6 +31,7 @@ Button
     property color outlineDisabledColor: outlineColor
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
+    property alias busy: busyIndicator.visible
 
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
@@ -116,5 +118,18 @@ Button
         text: ""
         delay: 500
         visible: text != "" && button.hovered
+    }
+
+    BusyIndicator {
+        id: busyIndicator
+
+        anchors {
+            centerIn: parent
+        }
+
+        width: height
+        height: parent.height
+
+        visible: false
     }
 }

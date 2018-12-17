@@ -14,11 +14,11 @@ Window
     id: curaDriveDialog
     minimumWidth: Math.round(UM.Theme.getSize("modal_window_minimum").width)
     minimumHeight: Math.round(UM.Theme.getSize("modal_window_minimum").height)
-    maximumWidth: minimumWidth * 1.2
-    maximumHeight: minimumHeight * 1.2
+    maximumWidth: Math.round(minimumWidth * 1.2)
+    maximumHeight: Math.round(minimumHeight * 1.2)
     width: minimumWidth
     height: minimumHeight
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
     title: catalog.i18nc("@title:window", "Cura Backups")
 
     // Globally available.

@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -29,7 +30,7 @@ Item
         width: parent.width
         height: 50 * screenScaleFactor
 
-        ActionButton
+        Cura.ActionButton
         {
             color: "transparent"
             hoverColor: "transparent"
@@ -61,18 +62,18 @@ Item
             renderType: Text.NativeRendering
         }
 
-        ActionButton
+        Cura.SecondaryButton
         {
             text: catalog.i18nc("@button", "Restore")
-            color: "transparent"
-            hoverColor: "transparent"
-            textColor: UM.Theme.getColor("text")
-            textHoverColor: UM.Theme.getColor("text_link")
+//            color: "transparent"
+//            hoverColor: "transparent"
+//            textColor: UM.Theme.getColor("text")
+//            textHoverColor: UM.Theme.getColor("text_link")
             enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup
             onClicked: confirmRestoreDialog.visible = true
         }
 
-        ActionButton
+        Cura.ActionButton
         {
             color: "transparent"
             hoverColor: "transparent"

@@ -4,6 +4,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 import "../components"
 
@@ -13,7 +14,7 @@ RowLayout
     width: parent.width
     property bool showInfoButton: false
 
-    ActionButton
+    Cura.PrimaryButton
     {
         id: infoButton
         text: catalog.i18nc("@button", "Want more?")
@@ -22,7 +23,7 @@ RowLayout
         visible: backupListFooter.showInfoButton
     }
 
-    ActionButton
+    Cura.PrimaryButton
     {
         id: createBackupButton
         text: catalog.i18nc("@button", "Backup Now")
@@ -32,11 +33,12 @@ RowLayout
         busy: CuraDrive.isCreatingBackup
     }
 
-    ActionCheckBox
+    Cura.CheckBox
     {
         id: autoBackupEnabled
         checked: CuraDrive.autoBackupEnabled
         onClicked: CuraDrive.toggleAutoBackup(autoBackupEnabled.checked)
-        label: catalog.i18nc("@checkbox:description", "Automatically create a backup each day that Cura is started.")
+        text: catalog.i18nc("@checkbox:description", "Auto Backup")
+        tooltip: catalog.i18nc("@checkbox:description", "Automatically create a backup each day that Cura is started.")
     }
 }
