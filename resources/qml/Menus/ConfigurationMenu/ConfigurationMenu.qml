@@ -17,10 +17,7 @@ Cura.ExpandablePopup
 {
     id: base
 
-    Cura.ExtrudersModel
-    {
-        id: extrudersModel
-    }
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     UM.I18nCatalog
     {
@@ -34,6 +31,7 @@ Cura.ExpandablePopup
         Custom
     }
 
+    contentPadding: UM.Theme.getSize("default_lining").width
     enabled: Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants || Cura.MachineManager.hasVariantBuildplates; //Only let it drop down if there is any configuration that you could change.
 
     headerItem: Item
@@ -127,34 +125,41 @@ Cura.ExpandablePopup
     contentItem: Column
     {
         id: popupItem
-        width: base.width - 2 * UM.Theme.getSize("default_margin").width
-        height: implicitHeight //Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
+        width: UM.Theme.getSize("configuration_selector").width
+        height: implicitHeight  // Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
+        padding: UM.Theme.getSize("default_margin").height
         spacing: UM.Theme.getSize("default_margin").height
 
-        property bool is_connected: false //If current machine is connected to a printer. Only evaluated upon making popup visible.
+        property bool is_connected: false  // If current machine is connected to a printer. Only evaluated upon making popup visible.
+        property int configuration_method: ConfigurationMenu.ConfigurationMethod.Custom  // Type of configuration being used. Only evaluated upon making popup visible.
+        property int manual_selected_method: -1  // It stores the configuration method selected by the user. By default the selected method is
+
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected //Re-evaluate.
-        }
+            is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected  // Re-evaluate.
 
-        property int configuration_method: is_connected ? ConfigurationMenu.ConfigurationMethod.Auto : ConfigurationMenu.ConfigurationMethod.Custom //Auto if connected to a printer at start-up, or Custom if not.
+            // If the printer is not connected, we switch always to the custom mode. If is connected instead, the auto mode
+            // or the previous state is selected
+            configuration_method = is_connected ? (manual_selected_method == -1 ? ConfigurationMenu.ConfigurationMethod.Auto : manual_selected_method) : ConfigurationMenu.ConfigurationMethod.Custom
+        }
 
         Item
         {
-            width: parent.width
+            width: parent.width - 2 * parent.padding
             height:
             {
-                var height = 0;
-                if(autoConfiguration.visible)
+                var height = 0
+                if (autoConfiguration.visible)
                 {
-                    height += autoConfiguration.height;
+                    height += autoConfiguration.height
                 }
-                if(customConfiguration.visible)
+                if (customConfiguration.visible)
                 {
-                    height += customConfiguration.height;
+                    height += customConfiguration.height
                 }
-                return height;
+                return height
             }
+
             AutoConfiguration
             {
                 id: autoConfiguration
@@ -172,9 +177,9 @@ Cura.ExpandablePopup
         {
             id: separator
             visible: buttonBar.visible
-            x: -contentPadding
+            x: -parent.padding
 
-            width: base.width
+            width: parent.width
             height: UM.Theme.getSize("default_lining").height
 
             color: UM.Theme.getColor("lining")
@@ -186,7 +191,7 @@ Cura.ExpandablePopup
             id: buttonBar
             visible: popupItem.is_connected //Switching only makes sense if the "auto" part is possible.
 
-            width: parent.width
+            width: parent.width - 2 * parent.padding
             height: childrenRect.height
 
             Cura.SecondaryButton
@@ -200,7 +205,11 @@ Cura.ExpandablePopup
                 iconSource: UM.Theme.getIcon("arrow_right")
                 isIconOnRightSide: true
 
-                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Custom
+                onClicked:
+                {
+                    popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Custom
+                    popupItem.manual_selected_method = popupItem.configuration_method
+                }
             }
 
             Cura.SecondaryButton
@@ -211,8 +220,18 @@ Cura.ExpandablePopup
 
                 iconSource: UM.Theme.getIcon("arrow_left")
 
-                onClicked: popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Auto
+                onClicked:
+                {
+                    popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Auto
+                    popupItem.manual_selected_method = popupItem.configuration_method
+                }
             }
         }
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged: popupItem.manual_selected_method = -1  // When switching printers, reset the value of the manual selected method
     }
 }

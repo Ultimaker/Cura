@@ -27,7 +27,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: label
-            font: UM.Theme.getFont("setting_category")
+            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
         }
     }

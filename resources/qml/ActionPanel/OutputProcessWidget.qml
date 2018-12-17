@@ -41,7 +41,7 @@ Column
             {
                 left: parent.left
                 right: printInformationPanel.left
-                rightMargin: UM.Theme.getSize("thin_margin").height
+                rightMargin: printInformationPanel.visible ? UM.Theme.getSize("thin_margin").width : 0
             }
 
             Cura.IconWithText
@@ -119,8 +119,6 @@ Column
             }
 
             height: UM.Theme.getSize("action_button").height
-            leftPadding: UM.Theme.getSize("default_margin").width
-            rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Preview")
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")

@@ -16,10 +16,7 @@ Item
     property real padding: UM.Theme.getSize("default_margin").width
     property bool multipleExtruders: extrudersModel.count > 1
 
-    Cura.ExtrudersModel
-    {
-        id: extrudersModel
-    }
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     // Profile selector row
     GlobalProfileSelector
@@ -113,9 +110,11 @@ Item
         }
         z: tabBar.z - 1
         // Don't show the border when only one extruder
+
         border.color: tabBar.visible ? UM.Theme.getColor("lining") : "transparent"
         border.width: UM.Theme.getSize("default_lining").width
 
+        color: UM.Theme.getColor("main_background")
         Cura.SettingView
         {
             anchors

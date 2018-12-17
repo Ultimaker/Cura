@@ -12,15 +12,24 @@ SettingItem
     id: base
     property var focusItem: control
 
+    // Somehow if we directory set control.model to CuraApplication.getExtrudersModelWithOptional()
+    // and in the Connections.onModelChanged use control.model as a reference, it will complain about
+    // non-existing properties such as "onModelChanged" and "getItem". I guess if we access the model
+    // via "control.model", it gives back a generic/abstract model instance. To avoid this, we add
+    // this extra property to keep the ExtrudersModel and use this in the rest of the code.
+    property var extrudersWithOptionalModel: CuraApplication.getExtrudersModelWithOptional()
+
     contents: ComboBox
     {
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        model: base.extrudersWithOptionalModel
+
+        Connections
         {
-            onModelChanged: control.color = getItem(control.currentIndex).color
-            addOptionalExtruder: true
+            target: base.extrudersWithOptionalModel
+            onModelChanged: control.color = base.extrudersWithOptionalModel.getItem(control.currentIndex).color
         }
 
         textRole: "name"
@@ -102,7 +111,7 @@ SettingItem
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text");
+            color: UM.Theme.getColor("setting_control_button");
         }
 
         background: Rectangle
