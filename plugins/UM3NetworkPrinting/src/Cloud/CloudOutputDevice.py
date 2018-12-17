@@ -18,11 +18,11 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
-from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudProgressMessage import CloudProgressMessage
 from .CloudApiClient import CloudApiClient
+from .Models.CloudClusterResponse import CloudClusterResponse
 from .Models.CloudClusterStatus import CloudClusterStatus
 from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from .Models.CloudPrintResponse import CloudPrintResponse
