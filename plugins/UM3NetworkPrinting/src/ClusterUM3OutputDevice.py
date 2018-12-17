@@ -390,10 +390,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     ##  Called when the connection to the cluster changes.
     def connect(self) -> None:
-        pass
         # TODO: uncomment this once cloud implementation works for testing
         # super().connect()
         # self.sendMaterialProfiles()
+        pass
 
     def _onGetPreviewImageFinished(self, reply: QNetworkReply) -> None:
         reply_url = reply.url().toString()

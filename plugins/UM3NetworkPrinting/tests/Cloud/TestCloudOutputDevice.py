@@ -5,41 +5,58 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from UM.Scene.SceneNode import SceneNode
+from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
+from cura.CuraConstants import CuraCloudAPIRoot
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from src.Cloud.CloudApiClient import CloudApiClient
 from src.Cloud.CloudOutputDevice import CloudOutputDevice
+from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from tests.Cloud.Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
 
-@patch("cura.NetworkClient.QNetworkAccessManager")
 class TestCloudOutputDevice(TestCase):
+    maxDiff = None
+
     CLUSTER_ID = "RIZ6cZbWA_Ua7RZVJhrdVfVpf0z-MqaSHQE4v8aRTtYq"
     JOB_ID = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
+    HOST_GUID = "e90ae0ac-1257-4403-91ee-a44c9b7e8050"
 
-    BASE_URL = "https://api-staging.ultimaker.com"
-    STATUS_URL = "{}/connect/v1/clusters/{}/status".format(BASE_URL, CLUSTER_ID)
-    PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(BASE_URL, CLUSTER_ID, JOB_ID)
-    REQUEST_UPLOAD_URL = "{}/cura/v1/jobs/upload".format(BASE_URL)
+    STATUS_URL = "{}/connect/v1/clusters/{}/status".format(CuraCloudAPIRoot, CLUSTER_ID)
+    PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(CuraCloudAPIRoot, CLUSTER_ID, JOB_ID)
+    REQUEST_UPLOAD_URL = "{}/cura/v1/jobs/upload".format(CuraCloudAPIRoot)
 
     def setUp(self):
         super().setUp()
-        self.app = CuraApplication.getInstance()
+        self.app = MagicMock()
+
+        self.patches = [patch("UM.Qt.QtApplication.QtApplication.getInstance", return_value=self.app),
+                        patch("UM.Application.Application.getInstance", return_value=self.app)]
+        for patched_method in self.patches:
+            patched_method.start()
+
+        self.cluster = CloudClusterResponse(self.CLUSTER_ID, self.HOST_GUID, self.HOST_NAME, is_online=True,
+                                            status="active")
+
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
         self.onError = MagicMock()
-        self.device = CloudOutputDevice(CloudApiClient(self.account, self.onError), self.CLUSTER_ID, self.HOST_NAME)
+        with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
+            self._api = CloudApiClient(self.account, self.onError)
+        
+        self.device = CloudOutputDevice(self._api, self.cluster)
         self.cluster_status = parseFixture("getClusterStatusResponse")
         self.network.prepareReply("GET", self.STATUS_URL, 200, readFixture("getClusterStatusResponse"))
 
     def tearDown(self):
         super().tearDown()
         self.network.flushReplies()
+        for patched_method in self.patches:
+            patched_method.stop()
 
-    def test_status(self, network_mock):
-        network_mock.return_value = self.network
+    def test_status(self):
         self.device._update()
         self.network.flushReplies()
 
@@ -69,33 +86,34 @@ class TestCloudOutputDevice(TestCase):
         self.assertEqual({job["name"] for job in self.cluster_status["data"]["print_jobs"]},
                          {job.name for job in self.device.printJobs})
 
-    def test_remove_print_job(self, network_mock):
-        network_mock.return_value = self.network
+    def test_remove_print_job(self):
         self.device._update()
         self.network.flushReplies()
         self.assertEqual(1, len(self.device.printJobs))
 
         self.cluster_status["data"]["print_jobs"].clear()
         self.network.prepareReply("GET", self.STATUS_URL, 200, self.cluster_status)
+
+        self.device._last_request_time = None
         self.device._update()
         self.network.flushReplies()
         self.assertEqual([], self.device.printJobs)
 
-    def test_remove_printers(self, network_mock):
-        network_mock.return_value = self.network
+    def test_remove_printers(self):
         self.device._update()
         self.network.flushReplies()
         self.assertEqual(2, len(self.device.printers))
 
         self.cluster_status["data"]["printers"].clear()
         self.network.prepareReply("GET", self.STATUS_URL, 200, self.cluster_status)
+
+        self.device._last_request_time = None
         self.device._update()
         self.network.flushReplies()
         self.assertEqual([], self.device.printers)
 
-    @patch("cura.CuraApplication.CuraApplication.getGlobalContainerStack")
-    def test_print_to_cloud(self, global_container_stack_mock, network_mock):
-        active_machine_mock = global_container_stack_mock.return_value
+    def test_print_to_cloud(self):
+        active_machine_mock = self.app.getGlobalContainerStack.return_value
         active_machine_mock.getMetaDataEntry.side_effect = {"file_formats": "application/gzip"}.get
 
         request_upload_response = parseFixture("putJobUploadResponse")
@@ -104,7 +122,6 @@ class TestCloudOutputDevice(TestCase):
         self.network.prepareReply("PUT", request_upload_response["data"]["upload_url"], 201, b"{}")
         self.network.prepareReply("POST", self.PRINT_URL, 200, request_print_response)
 
-        network_mock.return_value = self.network
         file_handler = MagicMock()
         file_handler.getSupportedFileTypesWrite.return_value = [{
             "extension": "gcode.gz",
