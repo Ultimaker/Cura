@@ -75,6 +75,8 @@ Item
                     background: UM.RecolorImage
                     {
                         source: UM.Theme.getIcon(control.isStarFilled ? "star_filled" : "star_empty")
+                        sourceSize.width: width
+                        sourceSize.height: height
 
                         // Unfilled stars should always have the default color. Only filled stars should change on hover
                         color:
