@@ -42,12 +42,12 @@ Component
                 GradientStop
                 {
                     position: 0.0
-                    color: "#f6f6f6"
+                    color: "#f6f6f6" // TODO: Theme!
                 }
                 GradientStop
                 {
                     position: 1.0
-                    color: "#ffffff"
+                    color: "#ffffff" // TODO: Theme!
                 }
             }
         }
