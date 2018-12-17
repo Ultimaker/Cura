@@ -31,32 +31,16 @@ ListView
         text: model.name
         width: listView.width
         outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
+        checked:
+        {
+            // If the machine has a remote connection
+            var result = Cura.MachineManager.activeMachineId == model.id
+            if (Cura.MachineManager.activeMachineHasRemoteConnection)
+            {
+                result |= Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+            }
+            return result
+        }
     }
 }
-    /*
-
-
-
-    Repeater
-    {
-        id: networkedPrinters
-
-        model: Cura.PrintersModel
-        {
-            id: networkedPrintersModel
-        }
-
-        delegate: MachineSelectorButton
-        {
-            text: model.name //model.metadata["connect_group_name"]
-            //checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
-            outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-
-            Connections
-            {
-                target: Cura.MachineManager
-                onActiveMachineNetworkGroupNameChanged: checked = Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
-            }
-        }
-    }*/
-

@@ -56,10 +56,14 @@ class PrintersModel(ListModel):
             connection_type = container_stack.getMetaDataEntry("connection_type")
             has_remote_connection = connection_type in [str(ConnectionType.NetworkConnection), str(ConnectionType.CloudConnection)]
 
+            if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
+                continue
+
             # TODO: Remove reference to connect group name.
             items.append({"name": container_stack.getMetaDataEntry("connect_group_name", container_stack.getName()),
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
-                          "connectionType": connection_type})
+                          "connectionType": connection_type,
+                          "metadata": container_stack.getMetaData().copy()})
         items.sort(key=lambda i: not i["hasRemoteConnection"])
         self.setItems(items)

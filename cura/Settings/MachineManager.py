@@ -1321,17 +1321,18 @@ class MachineManager(QObject):
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
-        new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey})
+        new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey()})
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
                 return
-            new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
+            new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
             new_machine.setMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
             new_machine.setMetaDataEntry("hidden", False)
+            new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
         else:
-            Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey)
+            Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey())
             new_machine.setMetaDataEntry("hidden", False)
 
         # Set the current printer instance to hidden (the metadata entry must exist)
@@ -1391,10 +1392,10 @@ class MachineManager(QObject):
     #   After updating from 3.2 to 3.3 some group names may be temporary. If there is a mismatch in the name of the group
     #   then all the container stacks are updated, both the current and the hidden ones.
     def checkCorrectGroupName(self, device_id: str, group_name: str) -> None:
-        if self._global_container_stack and device_id == self.activeMachineNetworkKey:
+        if self._global_container_stack and device_id == self.activeMachineNetworkKey():
             # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
             if self.activeMachineNetworkGroupName != group_name:
-                metadata_filter = {"um_network_key": self.activeMachineNetworkKey}
+                metadata_filter = {"um_network_key": self.activeMachineNetworkKey()}
                 containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
                 for container in containers:
                     container.setMetaDataEntry("connect_group_name", group_name)
