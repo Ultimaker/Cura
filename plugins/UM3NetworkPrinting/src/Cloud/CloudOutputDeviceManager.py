@@ -73,7 +73,8 @@ class CloudOutputDeviceManager:
 
         removed_devices, added_clusters, updates = findChanges(self._remote_clusters, online_clusters)
 
-        Logger.log("i", "Parsed remote clusters to %s", online_clusters)
+        Logger.log("i", "Parsed remote clusters to %s", [cluster.toDict() for cluster in online_clusters.values()])
+        Logger.log("i", "Removed: %s, added: %s, updates: %s", len(removed_devices), len(added_clusters), len(updates))
 
         # Remove output devices that are gone
         for removed_cluster in removed_devices:
@@ -86,12 +87,12 @@ class CloudOutputDeviceManager:
         # Add an output device for each new remote cluster.
         # We only add when is_online as we don't want the option in the drop down if the cluster is not online.
         for added_cluster in added_clusters:
-            device = CloudOutputDevice(self._api, added_cluster.cluster_id, added_cluster.host_name)
+            device = CloudOutputDevice(self._api, added_cluster)
             self._output_device_manager.addOutputDevice(device)
             self._remote_clusters[added_cluster.cluster_id] = device
 
         for device, cluster in updates:
-            device.host_name = cluster.host_name
+            device.clusterData = cluster
 
         self._connectToActiveMachine()
 
@@ -99,6 +100,7 @@ class CloudOutputDeviceManager:
     def _connectToActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
+            Logger.log("i", "no active machine")
             return
 
         # Check if the stored cluster_id for the active machine is in our list of remote clusters.
@@ -107,6 +109,7 @@ class CloudOutputDeviceManager:
             device = self._remote_clusters[stored_cluster_id]
             if not device.isConnected():
                 device.connect()
+            Logger.log("i", "Device connected by metadata %s", stored_cluster_id)
         else:
             self._connectByNetworkKey(active_machine)
 
@@ -121,6 +124,8 @@ class CloudOutputDeviceManager:
         if device:
             active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
             device.connect()
+
+        Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received

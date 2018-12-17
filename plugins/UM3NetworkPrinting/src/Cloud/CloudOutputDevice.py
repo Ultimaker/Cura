@@ -18,6 +18,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
+from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudProgressMessage import CloudProgressMessage
@@ -84,17 +85,14 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #  \param api_client: The client that will run the API calls
     #  \param device_id: The ID of the device (i.e. the cluster_id for the cloud API)
     #  \param parent: The optional parent of this output device.
-    def __init__(self, api_client: CloudApiClient, device_id: str, host_name: str, parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, address = "", properties = {}, parent = parent)
+    def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
+        super().__init__(device_id = cluster.cluster_id, address = "", properties = {}, parent = parent)
         self._api = api_client
-        self._host_name = host_name
+        self._cluster = cluster
 
         self._setInterfaceElements()
 
-        self._device_id = device_id
         self._account = api_client.account
-
-        CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -124,7 +122,14 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._mesh = None  # type: Optional[bytes]
         self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
 
+    def connect(self) -> None:
+        super().connect()
+        Logger.log("i", "Connected to cluster %s", self.key)
+        CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
+
     def disconnect(self) -> None:
+        super().disconnect()
+        Logger.log("i", "Disconnected to cluster %s", self.key)
         CuraApplication.getInstance().getBackend().backendStateChange.disconnect(self._onBackendStateChange)
 
     def _onBackendStateChange(self, _: BackendState) -> None:
@@ -133,19 +138,19 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Gets the host name of this device
     @property
-    def host_name(self) -> str:
-        return self._host_name
+    def clusterData(self) -> CloudClusterResponse:
+        return self._cluster
 
     ## Updates the host name of the output device
-    @host_name.setter
-    def host_name(self, value: str) -> None:
-        self._host_name = value
+    @clusterData.setter
+    def clusterData(self, value: CloudClusterResponse) -> None:
+        self._cluster = value
 
     ## Checks whether the given network key is found in the cloud's host name
     def matchesNetworkKey(self, network_key: str) -> bool:
         # A network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
         # the host name should then be "ultimakersystem-aabbccdd0011"
-        return network_key.startswith(self._host_name)
+        return network_key.startswith(self.clusterData.host_name)
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
@@ -170,7 +175,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         if self._uploaded_print_job:
             # the mesh didn't change, let's not upload it again
-            self._api.requestPrint(self._device_id, self._uploaded_print_job.job_id, self._onPrintRequested)
+            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintRequested)
             return
 
         # Indicate we have started sending a job.
@@ -194,12 +199,15 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  Called when the network data should be updated.
     def _update(self) -> None:
         super()._update()
-        if self._last_response_time and time() - self._last_response_time < self.CHECK_CLUSTER_INTERVAL:
+        if self._last_request_time and time() - self._last_request_time < self.CHECK_CLUSTER_INTERVAL:
+            Logger.log("i", "Not updating: %s - %s < %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
             return  # avoid calling the cloud too often
 
+        Logger.log("i", "Updating: %s - %s >= %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
-            self._api.getClusterStatus(self._device_id, self._onStatusCallFinished)
+            self._last_request_time = time()
+            self._api.getClusterStatus(self.key, self._onStatusCallFinished)
         else:
             self.setAuthenticationState(AuthState.NotAuthenticated)
 
@@ -315,7 +323,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
     def _onPrintJobUploaded(self) -> None:
         self._progress.update(100)
-        self._api.requestPrint(self._device_id, self._uploaded_print_job.job_id, self._onPrintRequested)
+        self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintRequested)
 
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.

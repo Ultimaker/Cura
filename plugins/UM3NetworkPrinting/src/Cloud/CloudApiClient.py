@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from json import JSONDecodeError
+from time import time
 from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any
 
 from PyQt5.QtCore import QUrl
@@ -38,6 +39,8 @@ class CloudApiClient:
         self._account = account
         self._on_error = on_error
         self._upload = None  # type: Optional[MeshUploader]
+        # in order to avoid garbage collection we keep the callbacks in this list.
+        self._anti_gc_callbacks = []  # type: List[Callable[[QNetworkReply], None]]
 
     ## Gets the account used for the API.
     @property
@@ -49,8 +52,7 @@ class CloudApiClient:
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
         url = "{}/clusters".format(self.CLUSTER_API_ROOT)
         reply = self._manager.get(self._createEmptyRequest(url))
-        callback = self._wrapCallback(reply, on_finished, CloudClusterResponse)
-        reply.finished.connect(callback)
+        self._addCallbacks(reply, on_finished, CloudClusterResponse)
 
     ## Retrieves the status of the given cluster.
     #  \param cluster_id: The ID of the cluster.
@@ -58,8 +60,7 @@ class CloudApiClient:
     def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], Any]) -> None:
         url = "{}/clusters/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
         reply = self._manager.get(self._createEmptyRequest(url))
-        callback = self._wrapCallback(reply, on_finished, CloudClusterStatus)
-        reply.finished.connect(callback)
+        self._addCallbacks(reply, on_finished, CloudClusterStatus)
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
@@ -69,8 +70,7 @@ class CloudApiClient:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
         body = json.dumps({"data": request.toDict()})
         reply = self._manager.put(self._createEmptyRequest(url), body.encode())
-        callback = self._wrapCallback(reply, on_finished, CloudPrintJobResponse)
-        reply.finished.connect(callback)
+        self._addCallbacks(reply, on_finished, CloudPrintJobResponse)
 
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param upload_response: The object received after requesting an upload with `self.requestUpload`.
@@ -90,8 +90,7 @@ class CloudApiClient:
     def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any]) -> None:
         url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
         reply = self._manager.post(self._createEmptyRequest(url), b"")
-        callback = self._wrapCallback(reply, on_finished, CloudPrintResponse)
-        reply.finished.connect(callback)
+        self._addCallbacks(reply, on_finished, CloudPrintResponse)
 
     ##  We override _createEmptyRequest in order to add the user credentials.
     #   \param url: The URL to request
@@ -116,9 +115,10 @@ class CloudApiClient:
             Logger.log("i", "Received a reply %s from %s with %s", status_code, reply.url().toString(), response)
             return status_code, json.loads(response)
         except (UnicodeDecodeError, JSONDecodeError, ValueError) as err:
-            error = {"code": type(err).__name__, "title": str(err), "http_code": str(status_code)}
+            error = CloudErrorObject(code=type(err).__name__, title=str(err), http_code=str(status_code),
+                                     id=str(time()), http_status="500")
             Logger.logException("e", "Could not parse the stardust response: %s", error)
-            return status_code, {"errors": [error]}
+            return status_code, {"errors": [error.toDict()]}
 
     ## The generic type variable used to document the methods below.
     Model = TypeVar("Model", bound=BaseModel)
@@ -143,12 +143,15 @@ class CloudApiClient:
     #  \param on_finished: The callback in case the response is successful.
     #  \param model: The type of the model to convert the response to. It may either be a single record or a list.
     #  \return: A function that can be passed to the
-    def _wrapCallback(self,
+    def _addCallbacks(self,
                       reply: QNetworkReply,
                       on_finished: Callable[[Union[Model, List[Model]]], Any],
                       model: Type[Model],
-                      ) -> Callable[[QNetworkReply], None]:
+                      ) -> None:
         def parse() -> None:
             status_code, response = self._parseReply(reply)
+            self._anti_gc_callbacks.remove(parse)
             return self._parseModels(response, on_finished, model)
-        return parse
+
+        self._anti_gc_callbacks.append(parse)
+        reply.finished.connect(parse)
