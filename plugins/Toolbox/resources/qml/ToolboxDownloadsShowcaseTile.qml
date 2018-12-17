@@ -47,6 +47,7 @@ Rectangle
         height: UM.Theme.getSize("toolbox_heading_label").height
         width: parent.width - UM.Theme.getSize("default_margin").width
         wrapMode: Text.WordWrap
+        elide: Text.ElideRight
         font: UM.Theme.getFont("medium_bold")
     }
     UM.RecolorImage
