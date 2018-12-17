@@ -54,10 +54,8 @@ class TestCloudApiClient(TestCase):
         response = readFixture("getClusterStatusResponse")
         data = parseFixture("getClusterStatusResponse")["data"]
 
-        self.network.prepareReply("GET",
-                                  CuraCloudAPIRoot + "/connect/v1/clusters/R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC/status",
-                                  200, response
-                                  )
+        url = CuraCloudAPIRoot + "/connect/v1/clusters/R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC/status"
+        self.network.prepareReply("GET", url, 200, response)
         self.api.getClusterStatus("R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC", lambda s: result.append(s))
 
         self.network.flushReplies()
