@@ -9,16 +9,25 @@ from UM.Logger import Logger
 from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
+## Class responsible for uploading meshes to the cloud in separate requests.
 class MeshUploader:
+
+    # The maximum amount of times to retry if the server returns one of the RETRY_HTTP_CODES
     MAX_RETRIES = 10
-    BYTES_PER_REQUEST = 256 * 1024
+
+    # The HTTP codes that should trigger a retry.
     RETRY_HTTP_CODES = {500, 502, 503, 504}
 
-    ## Creates a resumable upload
-    #  \param url: The URL to which we shall upload.
-    #  \param content_length: The total content length of the file, in bytes.
-    #  \param http_method: The HTTP method to be used, e.g. "POST" or "PUT".
-    #  \param timeout: The timeout for each chunk upload. Important: If None, no timeout is applied at all.
+    # The amount of bytes to send per request
+    BYTES_PER_REQUEST = 256 * 1024
+
+    ## Creates a mesh upload object.
+    #  \param manager: The network access manager that will handle the HTTP requests.
+    #  \param print_job: The print job response that was returned by the cloud after registering the upload.
+    #  \param data: The mesh bytes to be uploaded.
+    #  \param on_finished: The method to be called when done.
+    #  \param on_progress: The method to be called when the progress changes (receives a percentage 0-100).
+    #  \param on_error: The method to be called when an error occurs.
     def __init__(self, manager: QNetworkAccessManager, print_job: CloudPrintJobResponse, data: bytes,
                  on_finished: Callable[[], Any], on_progress: Callable[[int], Any], on_error: Callable[[], Any]
                  ) -> None:
@@ -35,13 +44,12 @@ class MeshUploader:
         self._finished = False
         self._reply = None  # type: Optional[QNetworkReply]
 
+    ## Returns the print job for which this object was created.
     @property
     def printJob(self):
         return self._print_job
 
-    ##  We override _createRequest in order to add the user credentials.
-    #   \param url: The URL to request
-    #   \param content_type: The type of the body contents.
+    ##  Creates a network request to the print job upload URL, adding the needed content range header.
     def _createRequest(self) -> QNetworkRequest:
         request = QNetworkRequest(QUrl(self._print_job.upload_url))
         request.setHeader(QNetworkRequest.ContentTypeHeader, self._print_job.content_type)
@@ -53,21 +61,27 @@ class MeshUploader:
 
         return request
 
+    ## Determines the bytes that should be uploaded next.
+    #  \return: A tuple with the first and the last byte to upload.
     def _chunkRange(self) -> Tuple[int, int]:
         last_byte = min(len(self._data), self._sent_bytes + self.BYTES_PER_REQUEST)
         return self._sent_bytes, last_byte
 
+    ## Starts uploading the mesh.
     def start(self) -> None:
         if self._finished:
+            # reset state.
             self._sent_bytes = 0
             self._retries = 0
             self._finished = False
         self._uploadChunk()
 
+    ## Stops uploading the mesh, marking it as finished.
     def stop(self):
         Logger.log("i", "Stopped uploading")
         self._finished = True
 
+    ## Uploads a chunk of the mesh to the cloud.
     def _uploadChunk(self) -> None:
         if self._finished:
             raise ValueError("The upload is already finished")
@@ -75,16 +89,22 @@ class MeshUploader:
         first_byte, last_byte = self._chunkRange()
         request = self._createRequest()
 
+        # now send the reply and subscribe to the results
         self._reply = self._manager.put(request, self._data[first_byte:last_byte])
         self._reply.finished.connect(self._finishedCallback)
         self._reply.uploadProgress.connect(self._progressCallback)
         self._reply.error.connect(self._errorCallback)
 
+    ## Handles an update to the upload progress
+    #  \param bytes_sent: The amount of bytes sent in the current request.
+    #  \param bytes_total: The amount of bytes to send in the current request.
     def _progressCallback(self, bytes_sent: int, bytes_total: int) -> None:
         Logger.log("i", "Progress callback %s / %s", bytes_sent, bytes_total)
         if bytes_total:
-            self._on_progress(int((self._sent_bytes + bytes_sent) / len(self._data) * 100))
+            total_sent = self._sent_bytes + bytes_sent
+            self._on_progress(int(total_sent / len(self._data) * 100))
 
+    ## Handles an error uploading.
     def _errorCallback(self) -> None:
         reply = cast(QNetworkReply, self._reply)
         body = bytes(reply.readAll()).decode()
@@ -92,27 +112,33 @@ class MeshUploader:
         self.stop()
         self._on_error()
 
+    ## Checks whether a chunk of data was uploaded successfully, starting the next chunk if needed.
     def _finishedCallback(self) -> None:
         reply = cast(QNetworkReply, self._reply)
         Logger.log("i", "Finished callback %s %s",
                    reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)  # type: int
 
+        # check if we should retry the last chunk
         if self._retries < self.MAX_RETRIES and status_code in self.RETRY_HTTP_CODES:
             self._retries += 1
             Logger.log("i", "Retrying %s/%s request %s", self._retries, self.MAX_RETRIES, reply.url().toString())
             self._uploadChunk()
             return
 
+        # Http codes that are not to be retried are assumed to be errors.
         if status_code > 308:
             self._errorCallback()
             return
 
-        body = bytes(reply.readAll()).decode()
-        Logger.log("w", "status_code: %s, Headers: %s, body: %s", status_code,
-                   [bytes(header).decode() for header in reply.rawHeaderList()], body)
+        Logger.log("d", "status_code: %s, Headers: %s, body: %s", status_code,
+                   [bytes(header).decode() for header in reply.rawHeaderList()], bytes(reply.readAll()).decode())
+        self._chunkUploaded()
 
+    ## Handles a chunk of data being uploaded, starting the next chunk if needed.
+    def _chunkUploaded(self) -> None:
+        # We got a successful response. Let's start the next chunk or report the upload is finished.
         first_byte, last_byte = self._chunkRange()
         self._sent_bytes += last_byte - first_byte
         if self._sent_bytes >= len(self._data):
