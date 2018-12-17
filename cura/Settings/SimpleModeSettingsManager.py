@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
 from UM.Application import Application
 
@@ -16,12 +16,12 @@ class SimpleModeSettingsManager(QObject):
         self._is_profile_user_created = False  # True when profile was custom created by user
 
         self._machine_manager.activeStackValueChanged.connect(self._updateIsProfileCustomized)
-        self._machine_manager.activeQualityGroupChanged.connect(self._updateIsProfileUserCreated)
-        self._machine_manager.activeQualityChangesGroupChanged.connect(self._updateIsProfileUserCreated)
+        self._machine_manager.activeQualityGroupChanged.connect(self.updateIsProfileUserCreated)
+        self._machine_manager.activeQualityChangesGroupChanged.connect(self.updateIsProfileUserCreated)
 
         # update on create as the activeQualityChanged signal is emitted before this manager is created when Cura starts
         self._updateIsProfileCustomized()
-        self._updateIsProfileUserCreated()
+        self.updateIsProfileUserCreated()
 
     isProfileCustomizedChanged = pyqtSignal()
     isProfileUserCreatedChanged = pyqtSignal()
@@ -61,7 +61,8 @@ class SimpleModeSettingsManager(QObject):
     def isProfileUserCreated(self):
         return self._is_profile_user_created
 
-    def _updateIsProfileUserCreated(self):
+    @pyqtSlot()
+    def updateIsProfileUserCreated(self) -> None:
         quality_changes_keys = set()
 
         if not self._machine_manager.activeMachine:

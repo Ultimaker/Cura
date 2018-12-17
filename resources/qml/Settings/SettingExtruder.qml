@@ -17,11 +17,16 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        property var extrudersModel: CuraApplication.getExtrudersModel()
+
+        model: extrudersModel
+
+        Connections
         {
+            target: extrudersModel
             onModelChanged:
             {
-                control.color = getItem(control.currentIndex).color
+                control.color = extrudersModel.getItem(control.currentIndex).color
             }
         }
 
@@ -105,7 +110,7 @@ SettingItem
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text");
+            color: UM.Theme.getColor("setting_control_button");
         }
 
         background: Rectangle

@@ -49,6 +49,7 @@ Item
             anchors.centerIn: parent
             text: index + 1
             font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
             visible: extruderEnabled

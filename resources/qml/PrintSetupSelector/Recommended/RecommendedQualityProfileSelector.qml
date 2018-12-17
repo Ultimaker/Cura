@@ -39,6 +39,17 @@ Item
     {
         target: Cura.QualityProfilesDropDownMenuModel
         onItemsChanged: qualityModel.update()
+        onDataChanged:
+        {
+            // If a custom profile is selected and then a user decides to change any of setting the slider should show
+            // the reset button. After clicking the reset button the QualityProfilesDropDownMenuModel(ListModel) is
+            // updated before the property isProfileCustomized is called to update.
+            if (Cura.SimpleModeSettingsManager.isProfileCustomized)
+            {
+                Cura.SimpleModeSettingsManager.updateIsProfileUserCreated()
+            }
+            qualityModel.update()
+        }
     }
 
     Connections {
