@@ -41,7 +41,7 @@ class TestCloudOutputDeviceManager(TestCase):
         clusters = self.clusters_response.get("data", [])
         self.assertEqual([CloudOutputDevice] * len(clusters), [type(d) for d in devices])
         self.assertEqual({cluster["cluster_id"] for cluster in clusters}, {device.key for device in devices})
-        self.assertEqual({cluster["host_name"] for cluster in clusters}, {device.host_name for device in devices})
+        self.assertEqual(clusters, [device.clusterData.toDict() for device in devices])
 
         for device in clusters:
             device_manager.getOutputDevice(device["cluster_id"]).close()

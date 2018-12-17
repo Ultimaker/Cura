@@ -10,6 +10,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from src.Cloud.CloudApiClient import CloudApiClient
 from src.Cloud.CloudOutputDevice import CloudOutputDevice
+from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from tests.Cloud.Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
@@ -18,6 +19,7 @@ class TestCloudOutputDevice(TestCase):
     CLUSTER_ID = "RIZ6cZbWA_Ua7RZVJhrdVfVpf0z-MqaSHQE4v8aRTtYq"
     JOB_ID = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
+    HOST_GUID = "e90ae0ac-1257-4403-91ee-a44c9b7e8050"
 
     BASE_URL = "https://api-staging.ultimaker.com"
     STATUS_URL = "{}/connect/v1/clusters/{}/status".format(BASE_URL, CLUSTER_ID)
@@ -29,13 +31,15 @@ class TestCloudOutputDevice(TestCase):
         self.app = CuraApplication.getInstance()
         self.backend = MagicMock(backendStateChange = Signal())
         self.app.setBackend(self.backend)
+        self.cluster = CloudClusterResponse(self.CLUSTER_ID, self.HOST_GUID, self.HOST_NAME, is_online=True,
+                                            status="active")
 
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
         self.onError = MagicMock()
         with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
             self._api = CloudApiClient(self.account, self.onError)
-        self.device = CloudOutputDevice(self._api, self.CLUSTER_ID, self.HOST_NAME)
+        self.device = CloudOutputDevice(self._api, self.cluster)
         self.cluster_status = parseFixture("getClusterStatusResponse")
         self.network.prepareReply("GET", self.STATUS_URL, 200, readFixture("getClusterStatusResponse"))
 
@@ -81,7 +85,7 @@ class TestCloudOutputDevice(TestCase):
         self.cluster_status["data"]["print_jobs"].clear()
         self.network.prepareReply("GET", self.STATUS_URL, 200, self.cluster_status)
 
-        self.device._last_response_time = None
+        self.device._last_request_time = None
         self.device._update()
         self.network.flushReplies()
         self.assertEqual([], self.device.printJobs)
@@ -94,7 +98,7 @@ class TestCloudOutputDevice(TestCase):
         self.cluster_status["data"]["printers"].clear()
         self.network.prepareReply("GET", self.STATUS_URL, 200, self.cluster_status)
 
-        self.device._last_response_time = None
+        self.device._last_request_time = None
         self.device._update()
         self.network.flushReplies()
         self.assertEqual([], self.device.printers)
