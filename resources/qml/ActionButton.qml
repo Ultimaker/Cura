@@ -55,7 +55,7 @@ Button
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
-            color: button.hovered ? button.textHoverColor : button.textColor
+            color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor) : button.textDisabledColor
             visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
         }

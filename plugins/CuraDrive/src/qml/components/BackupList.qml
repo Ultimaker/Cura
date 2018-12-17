@@ -18,7 +18,7 @@ ListView
         BackupListItem
         {
             id: backupListItem
-            width: parent.width
+            width: parent.width - UM.Theme.getSize("default_margin").width  // Add a margin, otherwise the scrollbar is be on top of the right most component
         }
 
         Divider

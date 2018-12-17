@@ -26,17 +26,17 @@ Item
     RowLayout
     {
         id: dataRow
-        spacing: UM.Theme.getSize("default_margin").width * 2
+        spacing: UM.Theme.getSize("wide_margin").width
         width: parent.width
         height: 50 * screenScaleFactor
 
-        Cura.ActionButton
+        UM.SimpleButton
         {
-            color: "transparent"
-            hoverColor: "transparent"
-            textColor: UM.Theme.getColor("text")
-            textHoverColor: UM.Theme.getColor("primary")
-            iconSource: "../images/info.svg"
+            width: UM.Theme.getSize("section_icon").width
+            height: UM.Theme.getSize("section_icon").height
+            color: UM.Theme.getColor("small_button_text")
+            hoverColor: UM.Theme.getColor("small_button_text_hover")
+            iconSource: UM.Theme.getIcon("info")
             onClicked: backupListItem.showDetails = !backupListItem.showDetails
         }
 
@@ -65,21 +65,17 @@ Item
         Cura.SecondaryButton
         {
             text: catalog.i18nc("@button", "Restore")
-//            color: "transparent"
-//            hoverColor: "transparent"
-//            textColor: UM.Theme.getColor("text")
-//            textHoverColor: UM.Theme.getColor("text_link")
             enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup
             onClicked: confirmRestoreDialog.visible = true
         }
 
-        Cura.ActionButton
+        UM.SimpleButton
         {
-            color: "transparent"
-            hoverColor: "transparent"
-            textColor: UM.Theme.getColor("setting_validation_error")
-            textHoverColor: UM.Theme.getColor("setting_validation_error")
-            iconSource: "../images/delete.svg"
+            width: UM.Theme.getSize("message_close").width
+            height: UM.Theme.getSize("message_close").height
+            color: UM.Theme.getColor("small_button_text")
+            hoverColor: UM.Theme.getColor("small_button_text_hover")
+            iconSource: UM.Theme.getIcon("cross1")
             onClicked: confirmDeleteDialog.visible = true
         }
     }
