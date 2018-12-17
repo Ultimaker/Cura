@@ -72,12 +72,12 @@ class CloudApiClient:
         reply = self._manager.put(self._createEmptyRequest(url), body.encode())
         self._addCallback(reply, on_finished, CloudPrintJobResponse)
 
-    ## Requests the cloud to register the upload of a print job mesh.
-    #  \param upload_response: The object received after requesting an upload with `self.requestUpload`.
+    ## Uploads a print job mesh to the cloud.
+    #  \param print_job: The object received after requesting an upload with `self.requestUpload`.
     #  \param mesh: The mesh data to be uploaded.
-    #  \param on_finished: The function to be called after the result is parsed. It receives the print job ID.
+    #  \param on_finished: The function to be called after the upload is successful.
     #  \param on_progress: A function to be called during upload progress. It receives a percentage (0-100).
-    #  \param on_error: A function to be called if the upload fails. It receives a dict with the error.
+    #  \param on_error: A function to be called if the upload fails.
     def uploadMesh(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
                    on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
         self._upload = MeshUploader(self._manager, print_job, mesh, on_finished, on_progress, on_error)
@@ -134,24 +134,28 @@ class CloudApiClient:
             data = response["data"]
             if isinstance(data, list):
                 results = [model_class(**c) for c in data]  # type: List[CloudApiClient.Model]
-                cast(Callable[[List[CloudApiClient.Model]], Any], on_finished)(results)
+                on_finished_list = cast(Callable[[List[CloudApiClient.Model]], Any], on_finished)
+                on_finished_list(results)
             else:
                 result = model_class(**data)  # type: CloudApiClient.Model
-                cast(Callable[[CloudApiClient.Model], Any], on_finished)(result)
+                on_finished_item = cast(Callable[[CloudApiClient.Model], Any], on_finished)
+                on_finished_item(result)
         elif "errors" in response:
             self._on_error([CloudErrorObject(**error) for error in response["errors"]])
         else:
             Logger.log("e", "Cannot find data or errors in the cloud response: %s", response)
 
-    ## Wraps a callback function so that it includes the parsing of the response into the correct model.
-    #  \param on_finished: The callback in case the response is successful.
-    #  \param model: The type of the model to convert the response to. It may either be a single record or a list.
-    #  \return: A function that can be passed to the
+    ## Creates a callback function so that it includes the parsing of the response into the correct model.
+    #  The callback is added to the 'finished' signal of the reply.
+    #  \param reply: The reply that should be listened to.
+    #  \param on_finished: The callback in case the response is successful. Depending on the endpoint it will be either
+    #       a list or a single item.
+    #  \param model: The type of the model to convert the response to.
     def _addCallback(self,
-                      reply: QNetworkReply,
-                      on_finished: Union[Callable[[Model], Any], Callable[[List[Model]], Any]],
-                      model: Type[Model],
-                      ) -> None:
+                     reply: QNetworkReply,
+                     on_finished: Union[Callable[[Model], Any], Callable[[List[Model]], Any]],
+                     model: Type[Model],
+                     ) -> None:
         def parse() -> None:
             status_code, response = self._parseReply(reply)
             self._anti_gc_callbacks.remove(parse)

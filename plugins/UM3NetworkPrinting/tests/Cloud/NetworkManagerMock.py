@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-from typing import Dict, Tuple, Union, Optional
+from typing import Dict, Tuple, Union, Optional, Any
 from unittest.mock import MagicMock
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
@@ -53,7 +53,7 @@ class NetworkManagerMock:
     #  Since the methods are very simple and the same it didn't make sense to repeat the code.
     #  \param method: The method being called.
     #  \return The mocked function, if the method name is known. Defaults to the standard getattr function.
-    def __getattr__(self, method: str) -> any:
+    def __getattr__(self, method: str) -> Any:
         ## This mock implementation will simply return the reply from the prepared ones.
         # it raises a KeyError if requests are done without being prepared.
         def doRequest(request: QNetworkRequest, body: Optional[bytes] = None, *_):
