@@ -525,10 +525,9 @@ class MachineManager(QObject):
     def activeMachineHasRemoteConnection(self) -> bool:
         if self._global_container_stack:
             connection_type = self._global_container_stack.getMetaDataEntry("connection_type")
-            return connection_type in [ConnectionType.NetworkConnection, ConnectionType.CloudConnection]
+            return connection_type in [str(ConnectionType.NetworkConnection), str(ConnectionType.CloudConnection)]
         return False
 
-    @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("um_network_key", "")
@@ -756,7 +755,7 @@ class MachineManager(QObject):
                 self.setActiveMachine(other_machine_stacks[0]["id"])
 
         metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)[0]
-        network_key = metadata["um_network_key"] if "um_network_key" in metadata else None
+        network_key = metadata.get("um_network_key", None)
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
