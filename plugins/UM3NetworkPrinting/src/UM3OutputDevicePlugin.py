@@ -86,6 +86,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     ##  Start looking for devices on network.
     def start(self):
         self.startDiscovery()
+        self._cloud_output_device_manager.start()
 
     def startDiscovery(self):
         self.stop()
@@ -142,6 +143,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if self._zero_conf is not None:
             Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
+        self._cloud_output_device_manager.stop()
 
     def removeManualDevice(self, key, address = None):
         if key in self._discovered_devices:

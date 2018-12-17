@@ -1,13 +1,28 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-from typing import Dict, Tuple, Union, Optional
+from typing import Dict, Tuple, Union, Optional, Any
 from unittest.mock import MagicMock
 
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 
 from UM.Logger import Logger
 from UM.Signal import Signal
+
+
+class FakeSignal:
+    def __init__(self):
+        self._callbacks = []
+
+    def connect(self, callback):
+        self._callbacks.append(callback)
+
+    def disconnect(self, callback):
+        self._callbacks.remove(callback)
+
+    def emit(self, *args, **kwargs):
+        for callback in self._callbacks:
+            callback(*args, **kwargs)
 
 
 ## This class can be used to mock the QNetworkManager class and test the code using it.
@@ -27,7 +42,7 @@ class NetworkManagerMock:
     ## Initializes the network manager mock.
     def __init__(self) -> None:
         # a dict with the prepared replies, using the format {(http_method, url): reply}
-        self.replies = {}  # type: Dict[Tuple[str, str], QNetworkReply]
+        self.replies = {}  # type: Dict[Tuple[str, str], MagicMock]
         self.request_bodies = {}  # type: Dict[Tuple[str, str], bytes]
 
         # signals used in the network manager.
@@ -38,7 +53,7 @@ class NetworkManagerMock:
     #  Since the methods are very simple and the same it didn't make sense to repeat the code.
     #  \param method: The method being called.
     #  \return The mocked function, if the method name is known. Defaults to the standard getattr function.
-    def __getattr__(self, method: str) -> any:
+    def __getattr__(self, method: str) -> Any:
         ## This mock implementation will simply return the reply from the prepared ones.
         # it raises a KeyError if requests are done without being prepared.
         def doRequest(request: QNetworkRequest, body: Optional[bytes] = None, *_):
@@ -64,6 +79,8 @@ class NetworkManagerMock:
         reply_mock.url().toString.return_value = url
         reply_mock.operation.return_value = self._OPERATIONS[method]
         reply_mock.attribute.return_value = status_code
+        reply_mock.finished = FakeSignal()
+        reply_mock.isFinished.return_value = False
         reply_mock.readAll.return_value = response if isinstance(response, bytes) else json.dumps(response).encode()
         self.replies[method, url] = reply_mock
         Logger.log("i", "Prepared mock {}-response to {} {}", status_code, method, url)
@@ -76,7 +93,10 @@ class NetworkManagerMock:
 
     ## Emits the signal that the reply is ready to all prepared replies.
     def flushReplies(self) -> None:
-        for reply in self.replies.values():
+        for key, reply in self.replies.items():
+            Logger.log("i", "Flushing reply to {} {}", *key)
+            reply.isFinished.return_value = True
+            reply.finished.emit()
             self.finished.emit(reply)
         self.reset()
 

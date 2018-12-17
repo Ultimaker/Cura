@@ -3,22 +3,26 @@
 import os
 
 from time import time
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, cast
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM import i18nCatalog
+from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from .CloudProgressMessage import CloudProgressMessage
 from .CloudApiClient import CloudApiClient
+from .Models.CloudClusterResponse import CloudClusterResponse
 from .Models.CloudClusterStatus import CloudClusterStatus
 from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from .Models.CloudPrintResponse import CloudPrintResponse
@@ -43,9 +47,6 @@ class T:
 
     COULD_NOT_EXPORT = _I18N_CATALOG.i18nc("@info:status", "Could not export print job.")
 
-    SENDING_DATA_TEXT = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
-    SENDING_DATA_TITLE = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
-
     ERROR = _I18N_CATALOG.i18nc("@info:title", "Error")
     UPLOAD_ERROR = _I18N_CATALOG.i18nc("@info:text", "Could not upload the data to the printer.")
 
@@ -68,7 +69,7 @@ class T:
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 4.0  # seconds
+    CHECK_CLUSTER_INTERVAL = 50.0  # seconds
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
@@ -82,16 +83,15 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Creates a new cloud output device
     #  \param api_client: The client that will run the API calls
-    #  \param device_id: The ID of the device (i.e. the cluster_id for the cloud API)
+    #  \param cluster: The device response received from the cloud API.
     #  \param parent: The optional parent of this output device.
-    def __init__(self, api_client: CloudApiClient, device_id: str, host_name: str, parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, address = "", properties = {}, parent = parent)
+    def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
+        super().__init__(device_id = cluster.cluster_id, address = "", properties = {}, parent = parent)
         self._api = api_client
-        self._host_name = host_name
+        self._cluster = cluster
 
         self._setInterfaceElements()
 
-        self._device_id = device_id
         self._account = api_client.account
 
         # We use the Cura Connect monitor tab to get most functionality right away.
@@ -109,9 +109,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
 
         # We only allow a single upload at a time.
-        self._sending_job = False
-        # TODO: handle progress messages in another class.
-        self._progress_message = None  # type: Optional[Message]
+        self._progress = CloudProgressMessage()
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
         self._received_printers = None  # type: Optional[List[CloudClusterPrinterStatus]]
@@ -120,21 +118,42 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # A set of the user's job IDs that have finished
         self._finished_jobs = set()  # type: Set[str]
 
-    ## Gets the host name of this device
-    @property
-    def host_name(self) -> str:
-        return self._host_name
+        # Reference to the uploaded print job / mesh
+        self._mesh = None  # type: Optional[bytes]
+        self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
 
-    ## Updates the host name of the output device
-    @host_name.setter
-    def host_name(self, value: str) -> None:
-        self._host_name = value
+    ## Connects this device.
+    def connect(self) -> None:
+        super().connect()
+        Logger.log("i", "Connected to cluster %s", self.key)
+        CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
+
+    ## Disconnects the device
+    def disconnect(self) -> None:
+        super().disconnect()
+        Logger.log("i", "Disconnected to cluster %s", self.key)
+        CuraApplication.getInstance().getBackend().backendStateChange.disconnect(self._onBackendStateChange)
+
+    ## Resets the print job that was uploaded to force a new upload, runs whenever the user re-slices.
+    def _onBackendStateChange(self, _: BackendState) -> None:
+        self._mesh = None
+        self._uploaded_print_job = None
+
+    ## Gets the cluster response from which this device was created.
+    @property
+    def clusterData(self) -> CloudClusterResponse:
+        return self._cluster
+
+    ## Updates the cluster data from the cloud.
+    @clusterData.setter
+    def clusterData(self, value: CloudClusterResponse) -> None:
+        self._cluster = value
 
     ## Checks whether the given network key is found in the cloud's host name
     def matchesNetworkKey(self, network_key: str) -> bool:
         # A network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
         # the host name should then be "ultimakersystem-aabbccdd0011"
-        return network_key.startswith(self._host_name)
+        return network_key.startswith(self.clusterData.host_name)
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
@@ -145,16 +164,21 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self.setConnectionText(T.CONNECTED_VIA_CLOUD)
 
     ##  Called when Cura requests an output device to receive a (G-code) file.
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
 
         # Show an error message if we're already sending a job.
-        if self._sending_job:
-            self._onUploadError(T.BLOCKED_UPLOADING)
+        if self._progress.visible:
+            message = Message(text = T.BLOCKED_UPLOADING, title = T.ERROR, lifetime = 10)
+            message.show()
+            return
+
+        if self._uploaded_print_job:
+            # the mesh didn't change, let's not upload it again
+            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintRequested)
             return
 
         # Indicate we have started sending a job.
-        self._sending_job = True
         self.writeStarted.emit(self)
 
         mesh_format = MeshFormatHandler(file_handler, self.firmwareVersion)
@@ -162,24 +186,28 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             Logger.log("e", "Missing file or mesh writer!")
             return self._onUploadError(T.COULD_NOT_EXPORT)
 
-        mesh_bytes = mesh_format.getBytes(nodes)
+        mesh = mesh_format.getBytes(nodes)
 
+        self._mesh = mesh
         request = CloudPrintJobUploadRequest(
-            job_name = file_name,
-            file_size = len(mesh_bytes),
+            job_name = file_name or mesh_format.file_extension,
+            file_size = len(mesh),
             content_type = mesh_format.mime_type,
         )
-        self._api.requestUpload(request, lambda response: self._onPrintJobCreated(mesh_bytes, response))
+        self._api.requestUpload(request, self._onPrintJobCreated)
 
     ##  Called when the network data should be updated.
     def _update(self) -> None:
         super()._update()
-        if self._last_response_time and time() - self._last_response_time < self.CHECK_CLUSTER_INTERVAL:
+        if self._last_request_time and time() - self._last_request_time < self.CHECK_CLUSTER_INTERVAL:
+            Logger.log("i", "Not updating: %s - %s < %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
             return  # avoid calling the cloud too often
 
+        Logger.log("i", "Updating: %s - %s >= %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
-            self._api.getClusterStatus(self._device_id, self._onStatusCallFinished)
+            self._last_request_time = time()
+            self._api.getClusterStatus(self.key, self._onStatusCallFinished)
         else:
             self.setAuthenticationState(AuthState.NotAuthenticated)
 
@@ -187,6 +215,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #   Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
         # Update all data from the cluster.
+        self._last_response_time = time()
         if self._received_printers != status.printers:
             self._received_printers = status.printers
             self._updatePrinters(status.printers)
@@ -283,62 +312,41 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         model.updateAssignedPrinter(printer)
 
     ## Uploads the mesh when the print job was registered with the cloud API.
-    #  \param mesh: The bytes to upload.
     #  \param job_response: The response received from the cloud API.
-    def _onPrintJobCreated(self, mesh: bytes, job_response: CloudPrintJobResponse) -> None:
-        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._updateUploadProgress,
-                             lambda _: self._onUploadError(T.UPLOAD_ERROR))
+    def _onPrintJobCreated(self, job_response: CloudPrintJobResponse) -> None:
+        self._progress.show()
+        self._uploaded_print_job = job_response
+        mesh = cast(bytes, self._mesh)
+        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._progress.update, self._onUploadError)
 
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
-    #  \param job_id: The ID of the job.
-    def _onPrintJobUploaded(self, job_id: str) -> None:
-        self._api.requestPrint(self._device_id, job_id, self._onUploadSuccess)
-
-    ## Updates the progress of the mesh upload.
-    #  \param progress: The amount of percentage points uploaded until now (0-100).
-    def _updateUploadProgress(self, progress: int) -> None:
-        if not self._progress_message:
-            self._progress_message = Message(
-                text = T.SENDING_DATA_TEXT,
-                title = T.SENDING_DATA_TITLE,
-                progress = -1,
-                lifetime = 0,
-                dismissable = False,
-                use_inactivity_timer = False
-            )
-        self._progress_message.setProgress(progress)
-        self._progress_message.show()
-
-    ## Hides the upload progress bar
-    def _resetUploadProgress(self) -> None:
-        if self._progress_message:
-            self._progress_message.hide()
-            self._progress_message = None
+    def _onPrintJobUploaded(self) -> None:
+        self._progress.update(100)
+        print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
+        self._api.requestPrint(self.key, print_job.job_id, self._onPrintRequested)
 
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.
-    def _onUploadError(self, message: str = None) -> None:
-        self._resetUploadProgress()
-        if message:
-            Message(
-                text = message,
-                title = T.ERROR,
-                lifetime = 10
-            ).show()
-        self._sending_job = False  # the upload has finished so we're not sending a job anymore
+    def _onUploadError(self, message = None) -> None:
+        self._progress.hide()
+        self._uploaded_print_job = None
+        Message(
+            text = message or T.UPLOAD_ERROR,
+            title = T.ERROR,
+            lifetime = 10
+        ).show()
         self.writeError.emit()
 
     ## Shows a message when the upload has succeeded
     #  \param response: The response from the cloud API.
-    def _onUploadSuccess(self, response: CloudPrintResponse) -> None:
+    def _onPrintRequested(self, response: CloudPrintResponse) -> None:
         Logger.log("i", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
-        self._resetUploadProgress()
+        self._progress.hide()
         Message(
             text = T.UPLOAD_SUCCESS_TEXT,
             title = T.UPLOAD_SUCCESS_TITLE,
             lifetime = 5
         ).show()
-        self._sending_job = False  # the upload has finished so we're not sending a job anymore
         self.writeFinished.emit()
 
     ##  Gets the remote printers.

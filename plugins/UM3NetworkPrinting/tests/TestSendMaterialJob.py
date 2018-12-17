@@ -10,7 +10,7 @@ from PyQt5.QtCore import QByteArray
 
 from UM.MimeTypeDatabase import MimeType
 from UM.Application import Application
-from src.SendMaterialJob import SendMaterialJob
+from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
 
 
 @patch("builtins.open", lambda _, __: io.StringIO("<xml></xml>"))

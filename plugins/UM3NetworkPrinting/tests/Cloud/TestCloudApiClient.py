@@ -6,8 +6,10 @@ from typing import List
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
-from cura.CuraApplication import CuraApplication
+from cura.CuraConstants import CuraCloudAPIRoot
 from src.Cloud.CloudApiClient import CloudApiClient
+from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
+from src.Cloud.Models.CloudClusterStatus import CloudClusterStatus
 from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
 from src.Cloud.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from src.Cloud.Models.CloudErrorObject import CloudErrorObject
@@ -15,8 +17,9 @@ from tests.Cloud.Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
 
-@patch("cura.NetworkClient.QNetworkAccessManager")
 class TestCloudApiClient(TestCase):
+    maxDiff = None
+
     def _errorHandler(self, errors: List[CloudErrorObject]):
         raise Exception("Received unexpected error: {}".format(errors))
 
@@ -25,83 +28,74 @@ class TestCloudApiClient(TestCase):
         self.account = MagicMock()
         self.account.isLoggedIn.return_value = True
 
-        self.app = CuraApplication.getInstance()
         self.network = NetworkManagerMock()
-        self.api = CloudApiClient(self.account, self._errorHandler)
+        with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
+            self.api = CloudApiClient(self.account, self._errorHandler)
 
-    def test_GetClusters(self, network_mock):
-        network_mock.return_value = self.network
-
+    def test_getClusters(self):
         result = []
 
-        with open("{}/Fixtures/getClusters.json".format(os.path.dirname(__file__)), "rb") as f:
-            response = f.read()
+        response = readFixture("getClusters")
+        data = parseFixture("getClusters")["data"]
 
-        self.network.prepareReply("GET", "https://api-staging.ultimaker.com/connect/v1/clusters", 200, response)
+        self.network.prepareReply("GET", CuraCloudAPIRoot + "/connect/v1/clusters", 200, response)
         # the callback is a function that adds the result of the call to getClusters to the result list
         self.api.getClusters(lambda clusters: result.extend(clusters))
 
         self.network.flushReplies()
 
-        self.assertEqual(2, len(result))
+        self.assertEqual([CloudClusterResponse(**data[0]), CloudClusterResponse(**data[1])], result)
 
-    def test_getClusterStatus(self, network_mock):
-        network_mock.return_value = self.network
-
+    def test_getClusterStatus(self):
         result = []
 
-        with open("{}/Fixtures/getClusterStatusResponse.json".format(os.path.dirname(__file__)), "rb") as f:
-            response = f.read()
+        response = readFixture("getClusterStatusResponse")
+        data = parseFixture("getClusterStatusResponse")["data"]
 
-        self.network.prepareReply("GET",
-                                  "https://api-staging.ultimaker.com/connect/v1/clusters/R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC/status",
-                                  200, response
-                                  )
-        self.api.getClusterStatus("R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC", lambda status: result.append(status))
+        url = CuraCloudAPIRoot + "/connect/v1/clusters/R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC/status"
+        self.network.prepareReply("GET", url, 200, response)
+        self.api.getClusterStatus("R0YcLJwar1ugh0ikEZsZs8NWKV6vJP_LdYsXgXqAcaNC", lambda s: result.append(s))
 
         self.network.flushReplies()
 
-        self.assertEqual(len(result), 1)
-        status = result[0]
+        self.assertEqual([CloudClusterStatus(**data)], result)
 
-        self.assertEqual(len(status.printers), 2)
-        self.assertEqual(len(status.print_jobs), 1)
-
-    def test_requestUpload(self, network_mock):
-        network_mock.return_value = self.network
+    def test_requestUpload(self):
+        
         results = []
 
         response = readFixture("putJobUploadResponse")
 
-        self.network.prepareReply("PUT", "https://api-staging.ultimaker.com/cura/v1/jobs/upload", 200, response)
+        self.network.prepareReply("PUT", CuraCloudAPIRoot + "/cura/v1/jobs/upload", 200, response)
         request = CloudPrintJobUploadRequest(job_name = "job name", file_size = 143234, content_type = "text/plain")
         self.api.requestUpload(request, lambda r: results.append(r))
         self.network.flushReplies()
 
-        self.assertEqual(results[0].content_type, "text/plain")
-        self.assertEqual(results[0].status, "uploading")
+        self.assertEqual(["text/plain"], [r.content_type for r in results])
+        self.assertEqual(["uploading"], [r.status for r in results])
 
-    def test_uploadMesh(self, network_mock):
-        network_mock.return_value = self.network
+    def test_uploadMesh(self):
+        
         results = []
         progress = MagicMock()
 
         data = parseFixture("putJobUploadResponse")["data"]
         upload_response = CloudPrintJobResponse(**data)
 
-        self.network.prepareReply("PUT", upload_response.upload_url, 200,
-                                  b'{ data : "" }')  # Network client doesn't look into the reply
+        # Network client doesn't look into the reply
+        self.network.prepareReply("PUT", upload_response.upload_url, 200, b'{}')
 
-        self.api.uploadMesh(upload_response, b'', lambda job_id: results.append(job_id),
-                            progress.advance, progress.error)
+        mesh = ("1234" * 100000).encode()
+        self.api.uploadMesh(upload_response, mesh, lambda: results.append("sent"), progress.advance, progress.error)
 
-        self.network.flushReplies()
+        for _ in range(10):
+            self.network.flushReplies()
+            self.network.prepareReply("PUT", upload_response.upload_url, 200, b'{}')
 
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0], upload_response.job_id)
+        self.assertEqual(["sent"], results)
 
-    def test_requestPrint(self, network_mock):
-        network_mock.return_value = self.network
+    def test_requestPrint(self):
+        
         results = []
 
         response = readFixture("postJobPrintResponse")
@@ -111,7 +105,7 @@ class TestCloudApiClient(TestCase):
         job_id = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
 
         self.network.prepareReply("POST",
-                                  "https://api-staging.ultimaker.com/connect/v1/clusters/{}/print/{}"
+                                  CuraCloudAPIRoot + "/connect/v1/clusters/{}/print/{}"
                                   .format(cluster_id, job_id),
                                   200, response)
 
@@ -119,7 +113,6 @@ class TestCloudApiClient(TestCase):
 
         self.network.flushReplies()
 
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].job_id, job_id)
-        self.assertEqual(results[0].cluster_job_id, cluster_job_id)
-        self.assertEqual(results[0].status, "queued")
+        self.assertEqual([job_id], [r.job_id for r in results])
+        self.assertEqual([cluster_job_id], [r.cluster_job_id for r in results])
+        self.assertEqual(["queued"], [r.status for r in results])
