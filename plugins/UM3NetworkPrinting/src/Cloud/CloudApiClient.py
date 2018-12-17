@@ -3,7 +3,7 @@
 import json
 from json import JSONDecodeError
 from time import time
-from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any
+from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any, cast
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
@@ -40,7 +40,7 @@ class CloudApiClient:
         self._on_error = on_error
         self._upload = None  # type: Optional[MeshUploader]
         # in order to avoid garbage collection we keep the callbacks in this list.
-        self._anti_gc_callbacks = []  # type: List[Callable[[QNetworkReply], None]]
+        self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
     ## Gets the account used for the API.
     @property
@@ -128,12 +128,16 @@ class CloudApiClient:
     #  \param on_finished: The callback in case the response is successful.
     #  \param model_class: The type of the model to convert the response to. It may either be a single record or a list.
     def _parseModels(self, response: Dict[str, Any],
-                     on_finished: Callable[[Union[Model, List[Model]]], Any],
+                     on_finished: Union[Callable[[Model], Any], Callable[[List[Model]], Any]],
                      model_class: Type[Model]) -> None:
         if "data" in response:
             data = response["data"]
-            result = [model_class(**c) for c in data] if isinstance(data, list) else model_class(**data)
-            on_finished(result)
+            if isinstance(data, list):
+                results = [model_class(**c) for c in data]  # type: List[CloudApiClient.Model]
+                cast(Callable[[List[CloudApiClient.Model]], Any], on_finished)(results)
+            else:
+                result = model_class(**data)  # type: CloudApiClient.Model
+                cast(Callable[[CloudApiClient.Model], Any], on_finished)(result)
         elif "errors" in response:
             self._on_error([CloudErrorObject(**error) for error in response["errors"]])
         else:
@@ -145,7 +149,7 @@ class CloudApiClient:
     #  \return: A function that can be passed to the
     def _addCallbacks(self,
                       reply: QNetworkReply,
-                      on_finished: Callable[[Union[Model, List[Model]]], Any],
+                      on_finished: Union[Callable[[Model], Any], Callable[[List[Model]], Any]],
                       model: Type[Model],
                       ) -> None:
         def parse() -> None:

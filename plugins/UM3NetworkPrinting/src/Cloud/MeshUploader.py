@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
-from typing import Optional, Callable, Any, Tuple
+from typing import Optional, Callable, Any, Tuple, cast
 
 from UM.Logger import Logger
 from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
@@ -20,7 +20,8 @@ class MeshUploader:
     #  \param http_method: The HTTP method to be used, e.g. "POST" or "PUT".
     #  \param timeout: The timeout for each chunk upload. Important: If None, no timeout is applied at all.
     def __init__(self, manager: QNetworkAccessManager, print_job: CloudPrintJobResponse, data: bytes,
-                 on_finished: Callable[[], Any], on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
+                 on_finished: Callable[[], Any], on_progress: Callable[[int], Any], on_error: Callable[[], Any]
+                 ) -> None:
         self._manager = manager
         self._print_job = print_job
         self._data = data
@@ -85,20 +86,22 @@ class MeshUploader:
             self._on_progress(int((self._sent_bytes + bytes_sent) / len(self._data) * 100))
 
     def _errorCallback(self) -> None:
-        body = bytes(self._reply.readAll()).decode()
+        reply = cast(QNetworkReply, self._reply)
+        body = bytes(reply.readAll()).decode()
         Logger.log("e", "Received error while uploading: %s", body)
         self.stop()
         self._on_error()
 
     def _finishedCallback(self) -> None:
+        reply = cast(QNetworkReply, self._reply)
         Logger.log("i", "Finished callback %s %s",
-                   self._reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), self._reply.url().toString())
+                   reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
 
-        status_code = self._reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
 
         if self._retries < self.MAX_RETRIES and status_code in self.RETRY_HTTP_CODES:
             self._retries += 1
-            Logger.log("i", "Retrying %s/%s request %s", self._retries, self.MAX_RETRIES, self._reply.url().toString())
+            Logger.log("i", "Retrying %s/%s request %s", self._retries, self.MAX_RETRIES, reply.url().toString())
             self._uploadChunk()
             return
 
@@ -106,9 +109,9 @@ class MeshUploader:
             self._errorCallback()
             return
 
-        body = bytes(self._reply.readAll()).decode()
+        body = bytes(reply.readAll()).decode()
         Logger.log("w", "status_code: %s, Headers: %s, body: %s", status_code,
-                   [bytes(header).decode() for header in self._reply.rawHeaderList()], body)
+                   [bytes(header).decode() for header in reply.rawHeaderList()], body)
 
         first_byte, last_byte = self._chunkRange()
         self._sent_bytes += last_byte - first_byte

@@ -3,7 +3,7 @@
 import os
 
 from time import time
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, cast
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 
@@ -161,7 +161,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self.setConnectionText(T.CONNECTED_VIA_CLOUD)
 
     ##  Called when Cura requests an output device to receive a (G-code) file.
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mime_types: bool = False,
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
                      file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
 
         # Show an error message if we're already sending a job.
@@ -190,7 +190,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         self._mesh = mesh
         request = CloudPrintJobUploadRequest(
-            job_name = file_name,
+            job_name = file_name or mesh_format.file_extension,
             file_size = len(mesh),
             content_type = mesh_format.mime_type,
         )
@@ -317,13 +317,14 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onPrintJobCreated(self, job_response: CloudPrintJobResponse) -> None:
         self._progress.show()
         self._uploaded_print_job = job_response
-        self._api.uploadMesh(job_response, self._mesh, self._onPrintJobUploaded, self._progress.update,
-                             self._onUploadError)
+        mesh = cast(bytes, self._mesh)
+        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._progress.update, self._onUploadError)
 
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
     def _onPrintJobUploaded(self) -> None:
         self._progress.update(100)
-        self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintRequested)
+        print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
+        self._api.requestPrint(self.key, print_job.job_id, self._onPrintRequested)
 
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.

@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from time import time
-from typing import Optional, Dict, Callable, List, Union
+from typing import Optional, Dict, Callable, List, Union, cast
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QHttpMultiPart, QNetworkRequest, QHttpPart, \
@@ -19,7 +19,7 @@ class NetworkClient:
         super().__init__()
 
         # Network manager instance to use for this client.
-        self._manager = None  # type: Optional[QNetworkAccessManager]
+        self.__manager = None  # type: Optional[QNetworkAccessManager]
 
         # Timings.
         self._last_manager_create_time = None  # type: Optional[float]
@@ -34,20 +34,26 @@ class NetworkClient:
         # HTTP which uses them. We hold references to these QHttpMultiPart objects here.
         self._kept_alive_multiparts = {}  # type: Dict[QNetworkReply, QHttpMultiPart]
 
+        # in order to avoid garbage collection we keep the callbacks in this list.
+        self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
+
     ##  Creates a network manager if needed, with all the required properties and event bindings.
     def start(self) -> None:
-        if self._manager:
-            return
-        self._manager = QNetworkAccessManager()
-        self._last_manager_create_time = time()
-        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+        if not self.__manager:
+            self.__manager = QNetworkAccessManager()
+            self._last_manager_create_time = time()
+            self.__manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
     ##  Destroys the network manager and event bindings.
     def stop(self) -> None:
-        if not self._manager:
-            return
-        self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
-        self._manager = None
+        if self.__manager:
+            self.__manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
+            self.__manager = None
+
+    @property
+    def _manager(self) -> QNetworkAccessManager:
+        self.start()
+        return cast(QNetworkAccessManager, self.__manager)
 
     ##  Create a new empty network request.
     #   Automatically adds the required HTTP headers.
@@ -94,13 +100,13 @@ class NetworkClient:
         return self._createFormPart(content_header, data, content_type)
 
     ## Sends a put request to the given path.
-    #  url: The path after the API prefix.
-    #  data: The data to be sent in the body
-    #  content_type: The content type of the body data.
-    #  on_finished: The function to call when the response is received.
-    #  on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
-    def put(self, url: str, data: Union[str, bytes], content_type: Optional[str] = None,
-            on_finished: Optional[Callable[[QNetworkReply], None]] = None,
+    #  \param url: The path after the API prefix.
+    #  \param data: The data to be sent in the body
+    #  \param content_type: The content type of the body data.
+    #  \param on_finished: The function to call when the response is received.
+    #  \param on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
+    def put(self, url: str, data: Union[str, bytes], content_type: str,
+            on_finished: Callable[[QNetworkReply], None],
             on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         request = self._createEmptyRequest(url, content_type = content_type)
 
@@ -114,7 +120,7 @@ class NetworkClient:
     ## Sends a delete request to the given path.
     #  url: The path after the API prefix.
     #  on_finished: The function to be call when the response is received.
-    def delete(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+    def delete(self, url: str, on_finished: Callable[[QNetworkReply], None]) -> None:
         request = self._createEmptyRequest(url)
         reply = self._manager.deleteResource(request)
         callback = self._createCallback(reply, on_finished)
@@ -123,7 +129,7 @@ class NetworkClient:
     ## Sends a get request to the given path.
     #  \param url: The path after the API prefix.
     #  \param on_finished: The function to be call when the response is received.
-    def get(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+    def get(self, url: str, on_finished: Callable[[QNetworkReply], None]) -> None:
         request = self._createEmptyRequest(url)
         reply = self._manager.get(request)
         callback = self._createCallback(reply, on_finished)
@@ -135,7 +141,7 @@ class NetworkClient:
     #  \param on_finished: The function to call when the response is received.
     #  \param on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
     def post(self, url: str, data: Union[str, bytes],
-             on_finished: Optional[Callable[[QNetworkReply], None]],
+             on_finished: Callable[[QNetworkReply], None],
              on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         request = self._createEmptyRequest(url)
 
@@ -180,6 +186,9 @@ class NetworkClient:
             
         return reply
 
-    @staticmethod
-    def _createCallback(reply: QNetworkReply, on_finished: Optional[Callable[[QNetworkReply], None]] = None):
-        return lambda: on_finished(reply)
+    def _createCallback(self, reply: QNetworkReply, on_finished: Callable[[QNetworkReply], None]) -> Callable[[], None]:
+        def callback():
+            on_finished(reply)
+            self._anti_gc_callbacks.remove(callback)
+        self._anti_gc_callbacks.append(callback)
+        return callback
