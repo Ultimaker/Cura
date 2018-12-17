@@ -83,7 +83,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Creates a new cloud output device
     #  \param api_client: The client that will run the API calls
-    #  \param device_id: The ID of the device (i.e. the cluster_id for the cloud API)
+    #  \param cluster: The device response received from the cloud API.
     #  \param parent: The optional parent of this output device.
     def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
         super().__init__(device_id = cluster.cluster_id, address = "", properties = {}, parent = parent)
@@ -118,30 +118,33 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # A set of the user's job IDs that have finished
         self._finished_jobs = set()  # type: Set[str]
 
-        # Reference to the uploaded print job
+        # Reference to the uploaded print job / mesh
         self._mesh = None  # type: Optional[bytes]
         self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
 
+    ## Connects this device.
     def connect(self) -> None:
         super().connect()
         Logger.log("i", "Connected to cluster %s", self.key)
         CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
 
+    ## Disconnects the device
     def disconnect(self) -> None:
         super().disconnect()
         Logger.log("i", "Disconnected to cluster %s", self.key)
         CuraApplication.getInstance().getBackend().backendStateChange.disconnect(self._onBackendStateChange)
 
+    ## Resets the print job that was uploaded to force a new upload, runs whenever the user re-slices.
     def _onBackendStateChange(self, _: BackendState) -> None:
         self._mesh = None
         self._uploaded_print_job = None
 
-    ## Gets the host name of this device
+    ## Gets the cluster response from which this device was created.
     @property
     def clusterData(self) -> CloudClusterResponse:
         return self._cluster
 
-    ## Updates the host name of the output device
+    ## Updates the cluster data from the cloud.
     @clusterData.setter
     def clusterData(self, value: CloudClusterResponse) -> None:
         self._cluster = value
@@ -166,11 +169,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:
-            Message(
-                text = T.BLOCKED_UPLOADING,
-                title = T.ERROR,
-                lifetime = 10,
-            ).show()
+            message = Message(text = T.BLOCKED_UPLOADING, title = T.ERROR, lifetime = 10)
+            message.show()
             return
 
         if self._uploaded_print_job:
@@ -312,7 +312,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         model.updateAssignedPrinter(printer)
 
     ## Uploads the mesh when the print job was registered with the cloud API.
-    #  \param mesh: The bytes to upload.
     #  \param job_response: The response received from the cloud API.
     def _onPrintJobCreated(self, job_response: CloudPrintJobResponse) -> None:
         self._progress.show()

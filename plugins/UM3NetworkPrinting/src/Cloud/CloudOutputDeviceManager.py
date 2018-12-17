@@ -139,6 +139,7 @@ class CloudOutputDeviceManager:
         )
         message.show()
 
+    ## Starts running the cloud output device manager, thus periodically requesting cloud data.
     def start(self):
         if self._running:
             return
@@ -149,6 +150,7 @@ class CloudOutputDeviceManager:
         self._update_timer.timeout.connect(self._getRemoteClusters)
         self._onLoginStateChanged(is_logged_in = self._account.isLoggedIn)
 
+    ## Stops running the cloud output device manager.
     def stop(self):
         if not self._running:
             return
