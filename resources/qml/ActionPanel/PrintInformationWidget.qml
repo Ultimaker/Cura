@@ -12,10 +12,10 @@ UM.RecolorImage
     id: widget
 
     source: UM.Theme.getIcon("info")
-    width: UM.Theme.getSize("section_icon").width
+    width: visible ? UM.Theme.getSize("section_icon").width : 0
     height: UM.Theme.getSize("section_icon").height
 
-    color: popup.opened ? UM.Theme.getColor("primary") : UM.Theme.getColor("text_medium")
+    color: UM.Theme.getColor("icon")
 
     MouseArea
     {

@@ -42,7 +42,7 @@ Button
             }
             text: machineSelectorButton.text
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("action_button")
+            font: UM.Theme.getFont("medium")
             visible: text != ""
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter

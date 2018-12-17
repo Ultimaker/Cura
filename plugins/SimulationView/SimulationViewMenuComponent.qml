@@ -163,7 +163,7 @@ Cura.ExpandableComponent
 
         Repeater
         {
-            model: Cura.ExtrudersModel{}
+            model: CuraApplication.getExtrudersModel()
 
             CheckBox
             {
