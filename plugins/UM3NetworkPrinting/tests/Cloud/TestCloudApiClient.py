@@ -18,6 +18,8 @@ from .NetworkManagerMock import NetworkManagerMock
 
 
 class TestCloudApiClient(TestCase):
+    maxDiff = None
+
     def _errorHandler(self, errors: List[CloudErrorObject]):
         raise Exception("Received unexpected error: {}".format(errors))
 

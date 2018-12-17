@@ -16,6 +16,8 @@ from .NetworkManagerMock import NetworkManagerMock
 
 
 class TestCloudOutputDevice(TestCase):
+    maxDiff = None
+
     CLUSTER_ID = "RIZ6cZbWA_Ua7RZVJhrdVfVpf0z-MqaSHQE4v8aRTtYq"
     JOB_ID = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
