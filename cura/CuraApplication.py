@@ -130,6 +130,16 @@ if TYPE_CHECKING:
 numpy.seterr(all = "ignore")
 
 
+try:
+    from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
+except ImportError:
+    CuraAppDisplayName = "Ultimaker Cura"
+    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
+    CuraDebugMode = False
+    CuraSDKVersion = "6.0.0"
+
+
 class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
