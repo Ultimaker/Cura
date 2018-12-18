@@ -29,7 +29,7 @@ message Object
     bytes normals = 3; //An array of 3 floats.
     bytes indices = 4; //An array of ints.
     repeated Setting settings = 5; // Setting override per object, overruling the global settings.
-    string name = 6; 
+    string name = 6; //Mesh name
 }
 
 message Progress
@@ -108,8 +108,9 @@ message PrintTimeMaterialEstimates { // The print time for each feature and mate
     float time_travel = 9;
     float time_retract = 10;
     float time_support_interface = 11;
+    float time_prime_tower = 12;
 
-    repeated MaterialEstimates materialEstimates = 12; // materialEstimates data
+    repeated MaterialEstimates materialEstimates = 13; // materialEstimates data
 }
 
 message MaterialEstimates {
