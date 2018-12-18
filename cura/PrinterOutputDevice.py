@@ -56,6 +56,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     # Put ConnectionType here with Q_ENUMS() so it can be registered as a QML type and accessible via QML, and there is
     # no need to remember what those Enum integer values mean.
+    ConnectionType = ConnectionType
     Q_ENUMS(ConnectionType)
 
     printersChanged = pyqtSignal()
@@ -133,7 +134,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def getConnectionType(self) -> "ConnectionType":
         return self._connection_type
 
-    @pyqtProperty(str, notify = connectionStateChanged)
+    @pyqtProperty(int, constant = True)
+    def connectionType(self) -> "ConnectionType":
+        return self._connection_type
+
+    @pyqtProperty(int, notify = connectionStateChanged)
     def connectionState(self) -> "ConnectionState":
         return self._connection_state
 

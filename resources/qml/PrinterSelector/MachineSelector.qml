@@ -11,9 +11,10 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasRemoteConnection
-    property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasRemoteConnection
+    property bool isCloudPrinter: machineSelector.outputDevice.connectionType == Cura.PrinterOutputDevice.CloudConnection
+    property bool isPrinterConnected: Cura.MachineManager.printerConnected
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
@@ -52,7 +53,7 @@ Cura.ExpandablePopup
                 leftMargin: UM.Theme.getSize("thick_margin").width
             }
 
-            source: UM.Theme.getIcon("printer_connected")
+            source: machineSelector.isCloudPrinter ? UM.Theme.getIcon("printer_connected") : UM.Theme.getIcon("printer_connected")
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 

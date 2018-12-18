@@ -17,6 +17,7 @@ from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutputDevice import ConnectionType
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
@@ -86,7 +87,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #  \param cluster: The device response received from the cloud API.
     #  \param parent: The optional parent of this output device.
     def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
-        super().__init__(device_id = cluster.cluster_id, address = "", properties = {}, parent = parent)
+        super().__init__(device_id = cluster.cluster_id, address = "",
+                         connection_type = ConnectionType.CloudConnection, properties = {}, parent = parent)
         self._api = api_client
         self._cluster = cluster
 
