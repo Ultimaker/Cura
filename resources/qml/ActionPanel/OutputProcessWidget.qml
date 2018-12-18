@@ -120,6 +120,8 @@ Column
 
             height: UM.Theme.getSize("action_button").height
             text: catalog.i18nc("@button", "Preview")
+            tooltip: text
+            fixedWidthMode: true
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
             visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
