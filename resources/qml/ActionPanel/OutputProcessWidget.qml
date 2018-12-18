@@ -119,9 +119,9 @@ Column
             }
 
             height: UM.Theme.getSize("action_button").height
-            leftPadding: UM.Theme.getSize("default_margin").width
-            rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Preview")
+            tooltip: text
+            fixedWidthMode: true
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
             visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"

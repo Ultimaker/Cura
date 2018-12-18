@@ -283,6 +283,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
+            global_container_stack.setMetaDataEntry("connection_type", device.getConnectionType().value)
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 

@@ -13,6 +13,7 @@ Item {
     property var printJob: null;
     property var started: isStarted(printJob);
     property var assigned: isAssigned(printJob);
+    property var enabled: true
 
     Button {
         id: button;
@@ -31,8 +32,8 @@ Item {
             verticalAlignment: Text.AlignVCenter;
         }
         height: width;
-        hoverEnabled: true;
-        onClicked: parent.switchPopupState();
+        hoverEnabled: base.enabled
+        onClicked: base.enabled ? parent.switchPopupState() : {}
         text: "\u22EE"; //Unicode; Three stacked points.
         visible: {
             if (!printJob) {

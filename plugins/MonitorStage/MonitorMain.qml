@@ -35,6 +35,6 @@ Item
         property real maximumWidth: parent.width
         property real maximumHeight: parent.height
 
-        sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
+        sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem : null
     }
 }

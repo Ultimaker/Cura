@@ -26,7 +26,7 @@ Item
 
     ExpandableCard
     {
-        borderColor: printJob.configurationChanges.length !== 0 ? "#f5a623" : "#EAEAEC" // TODO: Theme!
+        borderColor: printJob.configurationChanges.length !== 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
         headerItem: Row
         {
             height: 48 * screenScaleFactor // TODO: Theme!

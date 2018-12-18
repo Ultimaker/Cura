@@ -123,6 +123,17 @@ UM.MainWindow
                     }
                 }
             }
+
+              // This is a placehoder for adding a pattern in the header
+             Image
+             {
+                 id: backgroundPattern
+                 anchors.fill: parent
+                 fillMode: Image.Tile
+                 source: UM.Theme.getImage("header_pattern")
+                 horizontalAlignment: Image.AlignLeft
+                 verticalAlignment: Image.AlignTop
+             }
         }
 
         MainWindowHeader
@@ -252,7 +263,7 @@ UM.MainWindow
                 anchors
                 {
                     // Align to the top of the stageMenu since the stageMenu may not exist
-                    top: parent.top
+                    top: stageMenu.source ? stageMenu.verticalCenter : parent.top
                     left: parent.left
                     right: parent.right
                     bottom: parent.bottom

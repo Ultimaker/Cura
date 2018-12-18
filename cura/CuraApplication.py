@@ -51,6 +51,7 @@ from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
+from cura.PrintersModel import PrintersModel
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
@@ -113,6 +114,7 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
+from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
 from UM.FlameProfiler import pyqtSlot
@@ -134,7 +136,7 @@ except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
-    CuraSDKVersion = "5.0.0"
+    CuraSDKVersion = "6.0.0"
 
 
 class CuraApplication(QtApplication):
@@ -969,6 +971,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+        qmlRegisterType(PrintersModel, "Cura", 1, 0, "PrintersModel")
 
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
@@ -989,6 +992,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)
         qmlRegisterType(SidebarCustomMenuItemsModel, "Cura", 1, 0, "SidebarCustomMenuItemsModel")
+
+        qmlRegisterType(PrinterOutputDevice, "Cura", 1, 0, "PrinterOutputDevice")
 
         from cura.API import CuraAPI
         qmlRegisterSingletonType(CuraAPI, "Cura", 1, 1, "API", self.getCuraAPI)
