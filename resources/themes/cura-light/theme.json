@@ -229,7 +229,7 @@
         "checkbox_disabled": [223, 223, 223, 255],
         "checkbox_text": [35, 35, 35, 255],
 
-        "tooltip": [68, 192, 255, 255],
+        "tooltip": [25, 25, 25, 255],
         "tooltip_text": [255, 255, 255, 255],
 
         "message_background": [255, 255, 255, 255],
@@ -495,7 +495,7 @@
         "toolbox_back_button": [4.0, 2.0],
         "toolbox_installed_tile": [1.0, 8.0],
         "toolbox_property_label": [1.0, 2.0],
-        "toolbox_heading_label": [1.0, 4.0],
+        "toolbox_heading_label": [1.0, 3.8],
         "toolbox_header": [1.0, 4.0],
         "toolbox_header_highlight": [0.25, 0.25],
         "toolbox_progress_bar": [8.0, 0.5],
