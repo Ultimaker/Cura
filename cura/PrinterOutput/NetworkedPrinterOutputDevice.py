@@ -6,7 +6,7 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode #For typing.
 from cura.CuraApplication import CuraApplication
 
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
@@ -28,8 +28,8 @@ class AuthState(IntEnum):
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
 
-    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, parent = parent)
+    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.NetworkConnection, parent: QObject = None) -> None:
+        super().__init__(device_id = device_id, connection_type = connection_type, parent = parent)
         self._manager = None    # type: Optional[QNetworkAccessManager]
         self._last_manager_create_time = None       # type: Optional[float]
         self._recreate_network_manager_time = 30
@@ -125,7 +125,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             if self._connection_state_before_timeout is None:
                 self._connection_state_before_timeout = self._connection_state
 
-            self.setConnectionState(ConnectionState.closed)
+            self.setConnectionState(ConnectionState.Closed)
 
             # We need to check if the manager needs to be re-created. If we don't, we get some issues when OSX goes to
             # sleep.
@@ -133,7 +133,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                 if self._last_manager_create_time is None or time() - self._last_manager_create_time > self._recreate_network_manager_time:
                     self._createNetworkManager()
                 assert(self._manager is not None)
-        elif self._connection_state == ConnectionState.closed:
+        elif self._connection_state == ConnectionState.Closed:
             # Go out of timeout.
             if self._connection_state_before_timeout is not None:   # sanity check, but it should never be None here
                 self.setConnectionState(self._connection_state_before_timeout)
@@ -285,8 +285,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_response_time = time()
 
-        if self._connection_state == ConnectionState.connecting:
-            self.setConnectionState(ConnectionState.connected)
+        if self._connection_state == ConnectionState.Connecting:
+            self.setConnectionState(ConnectionState.Connected)
 
         callback_key = reply.url().toString() + str(reply.operation())
         try:

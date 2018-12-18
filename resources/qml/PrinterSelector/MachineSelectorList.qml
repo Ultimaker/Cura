@@ -7,78 +7,40 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Column
+ListView
 {
-    id: machineSelectorList
+    id: listView
+    height: childrenRect.height
+    model: Cura.PrintersModel {}
+    section.property: "hasRemoteConnection"
 
-    Label
+    section.delegate: Label
     {
-        text: catalog.i18nc("@label", "Connected printers")
-        visible: networkedPrintersModel.items.length > 0
-        leftPadding: UM.Theme.getSize("default_margin").width
+        text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Preset printers")
+        width: parent.width
         height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
+        leftPadding: UM.Theme.getSize("default_margin").width
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("text_medium")
         verticalAlignment: Text.AlignVCenter
     }
 
-    Repeater
+    delegate: MachineSelectorButton
     {
-        id: networkedPrinters
+        text: model.name
+        width: listView.width
+        outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-        model: UM.ContainerStacksModel
+        checked:
         {
-            id: networkedPrintersModel
-            filter:
+            // If the machine has a remote connection
+            var result = Cura.MachineManager.activeMachineId == model.id
+            if (Cura.MachineManager.activeMachineHasRemoteConnection)
             {
-                "type": "machine", "um_network_key": "*", "hidden": "False"
+                result |= Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
             }
-        }
-
-        delegate: MachineSelectorButton
-        {
-            text: model.metadata["connect_group_name"]
-            checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
-            outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-
-            Connections
-            {
-                target: Cura.MachineManager
-                onActiveMachineNetworkGroupNameChanged: checked = Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
-            }
-        }
-    }
-
-    Label
-    {
-        text: catalog.i18nc("@label", "Preset printers")
-        visible: virtualPrintersModel.items.length > 0
-        leftPadding: UM.Theme.getSize("default_margin").width
-        height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
-        renderType: Text.NativeRendering
-        font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text_medium")
-        verticalAlignment: Text.AlignVCenter
-    }
-
-    Repeater
-    {
-        id: virtualPrinters
-
-        model: UM.ContainerStacksModel
-        {
-            id: virtualPrintersModel
-            filter:
-            {
-                "type": "machine", "um_network_key": null
-            }
-        }
-
-        delegate: MachineSelectorButton
-        {
-            text: model.name
-            checked: Cura.MachineManager.activeMachineId == model.id
+            return result
         }
     }
 }

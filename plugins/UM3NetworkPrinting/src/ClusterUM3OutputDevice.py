@@ -22,6 +22,7 @@ from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationM
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutputDevice import ConnectionType
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .SendMaterialJob import SendMaterialJob
@@ -54,7 +55,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     clusterPrintersChanged = pyqtSignal()
 
     def __init__(self, device_id, address, properties, parent = None) -> None:
-        super().__init__(device_id = device_id, address = address, properties=properties, parent = parent)
+        super().__init__(device_id = device_id, address = address, properties=properties, connection_type = ConnectionType.NetworkConnection, parent = parent)
         self._api_prefix = "/cluster-api/v1/"
 
         self._number_of_extruders = 2
