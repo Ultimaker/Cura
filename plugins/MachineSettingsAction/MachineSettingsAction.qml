@@ -14,19 +14,8 @@ Cura.MachineAction
 {
     id: base
     property var extrudersModel: CuraApplication.getExtrudersModel()
-    property int extruderTabsCount: 0
 
     property var activeMachineId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.id : ""
-
-    Connections
-    {
-        target: base.extrudersModel
-        onModelChanged:
-        {
-            var extruderCount = base.extrudersModel.count;
-            base.extruderTabsCount = extruderCount;
-        }
-    }
 
     Connections
     {
@@ -357,11 +346,11 @@ Cura.MachineAction
             Repeater
             {
                 id: extruderTabsRepeater
-                model: base.extruderTabsCount
+                model: base.extrudersModel
 
                 Tab
                 {
-                    title: base.extrudersModel.getItem(index).name
+                    title: model.name
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
                     Column
