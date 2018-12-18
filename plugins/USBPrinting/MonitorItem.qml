@@ -17,6 +17,7 @@ Component
             width: parent.width * 0.3
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            color: UM.Theme.getColor("main_background")
 
             Cura.PrintMonitor
             {
