@@ -144,6 +144,7 @@ Item
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: UM.Theme.getSize("thin_margin").height
                             renderType: Text.NativeRendering
+                            color: UM.Theme.getColor("quality_slider_available")
                         }
                     }
                 }

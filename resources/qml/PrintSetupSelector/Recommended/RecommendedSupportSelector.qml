@@ -156,9 +156,10 @@ Item
     }
 
     //: Model used to populate the extrudelModel
-    Cura.ExtrudersModel
+    property var extruders: CuraApplication.getExtrudersModel()
+    Connections
     {
-        id: extruders
+        target: extruders
         onModelChanged: populateExtruderModel()
     }
 

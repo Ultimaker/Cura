@@ -17,6 +17,12 @@
         "border": [127, 127, 127, 255],
         "secondary": [95, 95, 95, 255],
 
+        "icon": [204, 204, 204, 255],
+        "toolbar_background": [39, 44, 48, 255],
+        "toolbar_button_active": [95, 95, 95, 255],
+        "toolbar_button_hover": [95, 95, 95, 255],
+        "toolbar_button_active_hover": [95, 95, 95, 255],
+
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
 
@@ -93,11 +99,11 @@
         "scrollbar_handle_hover": [255, 255, 255, 255],
         "scrollbar_handle_down": [255, 255, 255, 255],
 
-        "setting_category": [39, 44, 48, 255],
-        "setting_category_disabled": [39, 44, 48, 255],
-        "setting_category_hover": [39, 44, 48, 255],
-        "setting_category_active": [39, 44, 48, 255],
-        "setting_category_active_hover": [39, 44, 48, 255],
+        "setting_category": [75, 80, 83, 255],
+        "setting_category_disabled": [75, 80, 83, 255],
+        "setting_category_hover": [75, 80, 83, 255],
+        "setting_category_active": [75, 80, 83, 255],
+        "setting_category_active_hover": [75, 80, 83, 255],
         "setting_category_text": [255, 255, 255, 152],
         "setting_category_disabled_text": [255, 255, 255, 101],
         "setting_category_hover_text": [255, 255, 255, 204],
