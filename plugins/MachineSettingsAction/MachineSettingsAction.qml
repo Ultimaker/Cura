@@ -348,6 +348,17 @@ Cura.MachineAction
                 id: extruderTabsRepeater
                 model: base.extrudersModel
 
+
+                onItemAdded:
+                {
+                    settingsTabs.addTab(index + 1, item)
+                }
+
+                onItemRemoved:
+                {
+                    settingsTabs.removeTab(index + 1)
+                }
+
                 Tab
                 {
                     title: model.name
