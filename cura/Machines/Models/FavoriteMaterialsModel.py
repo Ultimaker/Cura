@@ -1,10 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Logger import Logger
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
-
+##  Model that shows the list of favorite materials.
 class FavoriteMaterialsModel(BaseMaterialsModel):
     def __init__(self, parent = None):
         super().__init__(parent)
