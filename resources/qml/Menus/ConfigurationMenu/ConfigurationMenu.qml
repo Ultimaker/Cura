@@ -136,7 +136,7 @@ Cura.ExpandablePopup
 
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineNetworkKey !== "" && Cura.MachineManager.printerConnected  // Re-evaluate.
+            is_connected = Cura.MachineManager.activeMachineHasRemoteConnection && Cura.MachineManager.printerConnected //Re-evaluate.
 
             // If the printer is not connected, we switch always to the custom mode. If is connected instead, the auto mode
             // or the previous state is selected
