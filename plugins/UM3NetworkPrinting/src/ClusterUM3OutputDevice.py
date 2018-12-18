@@ -3,7 +3,6 @@
 
 from typing import Any, cast, Tuple, Union, Optional, Dict, List
 from time import time
-from datetime import datetime
 
 import io  # To create the correct buffers for sending data to the printer.
 import json
@@ -16,7 +15,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 
 from UM.Message import Message
-from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode  # For typing.
 
 from cura.CuraApplication import CuraApplication
@@ -25,8 +23,9 @@ from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationM
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from plugins.UM3NetworkPrinting.src.Cloud.Utils import formatTimeCompleted, formatDateCompleted
+from cura.PrinterOutputDevice import ConnectionType
 
+from .Cloud.Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from .ConfigurationChangeModel import ConfigurationChangeModel
 from .MeshFormatHandler import MeshFormatHandler
@@ -51,7 +50,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     _clusterPrintersChanged = pyqtSignal()
 
     def __init__(self, device_id, address, properties, parent = None) -> None:
-        super().__init__(device_id = device_id, address = address, properties=properties, parent = parent)
+        super().__init__(device_id = device_id, address = address, properties=properties, connection_type = ConnectionType.NetworkConnection, parent = parent)
         self._api_prefix = "/cluster-api/v1/"
 
         self._number_of_extruders = 2

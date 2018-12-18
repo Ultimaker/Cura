@@ -4,7 +4,7 @@
 from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl, Q_ENUMS
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Logger import Logger
@@ -28,11 +28,18 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The current processing state of the backend.
 class ConnectionState(IntEnum):
-    closed = 0
-    connecting = 1
-    connected = 2
-    busy = 3
-    error = 4
+    Closed = 0
+    Connecting = 1
+    Connected = 2
+    Busy = 3
+    Error = 4
+
+
+class ConnectionType(IntEnum):
+    Unknown = 0
+    UsbConnection = 1
+    NetworkConnection = 2
+    CloudConnection = 3
 
 
 ##  Printer output device adds extra interface options on top of output device.
@@ -46,6 +53,11 @@ class ConnectionState(IntEnum):
 #   For all other uses it should be used in the same way as a "regular" OutputDevice.
 @signalemitter
 class PrinterOutputDevice(QObject, OutputDevice):
+
+    # Put ConnectionType here with Q_ENUMS() so it can be registered as a QML type and accessible via QML, and there is
+    # no need to remember what those Enum integer values mean.
+    Q_ENUMS(ConnectionType)
+
     printersChanged = pyqtSignal()
     connectionStateChanged = pyqtSignal(str)
     acceptsCommandsChanged = pyqtSignal()
@@ -62,7 +74,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the configuration of one of the printers has changed.
     uniqueConfigurationsChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, parent: QObject = None) -> None:
+    def __init__(self, device_id: str, connection_type: "ConnectionType" = ConnectionType.Unknown, parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
@@ -83,7 +95,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
-        self._connection_state = ConnectionState.closed #type: ConnectionState
+        self._connection_state = ConnectionState.Closed #type: ConnectionState
+        self._connection_type = connection_type
 
         self._firmware_updater = None #type: Optional[FirmwareUpdater]
         self._firmware_name = None #type: Optional[str]
@@ -110,15 +123,18 @@ class PrinterOutputDevice(QObject, OutputDevice):
         callback(QMessageBox.Yes)
 
     def isConnected(self) -> bool:
-        return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
+        return self._connection_state != ConnectionState.Closed and self._connection_state != ConnectionState.Error
 
-    def setConnectionState(self, connection_state: ConnectionState) -> None:
+    def setConnectionState(self, connection_state: "ConnectionState") -> None:
         if self._connection_state != connection_state:
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
 
+    def getConnectionType(self) -> "ConnectionType":
+        return self._connection_type
+
     @pyqtProperty(str, notify = connectionStateChanged)
-    def connectionState(self) -> ConnectionState:
+    def connectionState(self) -> "ConnectionState":
         return self._connection_state
 
     def _update(self) -> None:
@@ -175,13 +191,13 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     ##  Attempt to establish connection
     def connect(self) -> None:
-        self.setConnectionState(ConnectionState.connecting)
+        self.setConnectionState(ConnectionState.Connecting)
         self._update_timer.start()
 
     ##  Attempt to close the connection
     def close(self) -> None:
         self._update_timer.stop()
-        self.setConnectionState(ConnectionState.closed)
+        self.setConnectionState(ConnectionState.Closed)
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self) -> None:

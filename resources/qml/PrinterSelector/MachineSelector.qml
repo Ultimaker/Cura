@@ -11,7 +11,7 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasRemoteConnection
     property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
@@ -98,6 +98,12 @@ Cura.ExpandablePopup
                     scroll.height = Math.min(height, maximumHeight)
                     popup.height = scroll.height + buttonRow.height
                 }
+                Component.onCompleted:
+                {
+                    scroll.height = Math.min(height, maximumHeight)
+                    popup.height = scroll.height + buttonRow.height
+                }
+
             }
         }
 
