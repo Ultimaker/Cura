@@ -136,13 +136,13 @@ class DiscoverUM3Action(MachineAction):
                 global_container_stack.removeMetaDataEntry("network_authentication_key")
                 CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = printer_device.key)
 
-                if "um_connection_type" in meta_data:
-                    previous_connection_type = meta_data["um_connection_type"]
-                    global_container_stack.setMetaDataEntry("um_connection_type", printer_device.getConnectionType().value)
-                    CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_connection_type", value = previous_connection_type, new_value = printer_device.getConnectionType().value)
+                if "connection_type" in meta_data:
+                    previous_connection_type = meta_data["connection_type"]
+                    global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
+                    CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connection_type", value = previous_connection_type, new_value = printer_device.getConnectionType().value)
             else:
                 global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-                global_container_stack.setMetaDataEntry("um_connection_type", printer_device.getConnectionType().value)
+                global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.

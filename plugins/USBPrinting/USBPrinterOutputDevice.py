@@ -29,7 +29,7 @@ catalog = i18nCatalog("cura")
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
-        super().__init__(serial_port, connection_type=ConnectionType.UsbConnection)
+        super().__init__(serial_port, connection_type = ConnectionType.UsbConnection)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))

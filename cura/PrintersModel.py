@@ -54,7 +54,7 @@ class PrintersModel(ListModel):
 
         for container_stack in container_stacks:
             connection_type = container_stack.getMetaDataEntry("connection_type")
-            has_remote_connection = connection_type in [str(ConnectionType.NetworkConnection), str(ConnectionType.CloudConnection)]
+            has_remote_connection = connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
 
             if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
                 continue
