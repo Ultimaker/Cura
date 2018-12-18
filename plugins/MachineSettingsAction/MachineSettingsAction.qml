@@ -13,9 +13,21 @@ import Cura 1.0 as Cura
 Cura.MachineAction
 {
     id: base
-    property var extrudersModel: CuraApplication.getExtrudersModel()
+    property var extrudersModel: Cura.ExtrudersModel{} // Do not retrieve the Model from a backend. Otherwise the tabs
+                                                       // in tabView will not removed/updated. Probably QML bug
+    property int extruderTabsCount: 0
 
     property var activeMachineId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.id : ""
+
+    Connections
+    {
+        target: base.extrudersModel
+        onModelChanged:
+        {
+            var extruderCount = base.extrudersModel.count;
+            base.extruderTabsCount = extruderCount;
+        }
+    }
 
     Connections
     {
@@ -346,22 +358,11 @@ Cura.MachineAction
             Repeater
             {
                 id: extruderTabsRepeater
-                model: base.extrudersModel
-
-
-                onItemAdded:
-                {
-                    settingsTabs.addTab(index + 1, item)
-                }
-
-                onItemRemoved:
-                {
-                    settingsTabs.removeTab(index + 1)
-                }
+                model: base.extruderTabsCount
 
                 Tab
                 {
-                    title: model.name
+                    title: base.extrudersModel.getItem(index).name
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
                     Column
