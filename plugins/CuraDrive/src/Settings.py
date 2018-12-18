@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 from UM import i18nCatalog
 
-from cura import CuraConstants
+from cura import UltimakerCloudAuthentication
 
 
 class Settings:
@@ -9,7 +9,7 @@ class Settings:
     Keeps the application settings.
     """
     DRIVE_API_VERSION = 1
-    DRIVE_API_URL = "{}/cura-drive/v{}".format(CuraConstants.CuraCloudAPIRoot, str(DRIVE_API_VERSION))
+    DRIVE_API_URL = "{}/cura-drive/v{}".format(UltimakerCloudAuthentication.CuraCloudAPIRoot, str(DRIVE_API_VERSION))
 
     AUTO_BACKUP_ENABLED_PREFERENCE_KEY = "cura_drive/auto_backup_enabled"
     AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY = "cura_drive/auto_backup_date"

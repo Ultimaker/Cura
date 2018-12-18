@@ -115,7 +115,7 @@ from cura.ObjectsModel import ObjectsModel
 
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
-from cura import CuraConstants
+from cura import ApplicationMetadata
 
 from UM.FlameProfiler import pyqtSlot
 from UM.Decorators import override
@@ -164,11 +164,11 @@ class CuraApplication(QtApplication):
 
     def __init__(self, *args, **kwargs):
         super().__init__(name = "cura",
-                         app_display_name = CuraConstants.CuraAppDisplayName,
-                         version = CuraConstants.CuraVersion,
-                         api_version = CuraConstants.CuraSDKVersion,
-                         buildtype = CuraConstants.CuraBuildType,
-                         is_debug_mode = CuraConstants.CuraDebugMode,
+                         app_display_name = ApplicationMetadata.CuraAppDisplayName,
+                         version = ApplicationMetadata.CuraVersion,
+                         api_version = ApplicationMetadata.CuraSDKVersion,
+                         buildtype = ApplicationMetadata.CuraBuildType,
+                         is_debug_mode = ApplicationMetadata.CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
@@ -953,7 +953,7 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraApplication", self)
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
-        engine.rootContext().setContextProperty("CuraSDKVersion", CuraConstants.CuraSDKVersion)
+        engine.rootContext().setContextProperty("CuraSDKVersion", ApplicationMetadata.CuraSDKVersion)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 

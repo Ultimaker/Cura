@@ -16,8 +16,8 @@ from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
 
-import cura
-from cura import CuraConstants
+from cura import ApplicationMetadata
+from cura import UltimakerCloudAuthentication
 from cura.CuraApplication import CuraApplication
 
 from .AuthorsModel import AuthorsModel
@@ -39,9 +39,9 @@ class Toolbox(QObject, Extension):
 
         self._application = application  # type: CuraApplication
 
-        self._sdk_version = CuraConstants.CuraSDKVersion  # type: Union[str, int]
-        self._cloud_api_version = CuraConstants.CuraCloudAPIVersion  # type: int
-        self._cloud_api_root = CuraConstants.CuraCloudAPIRoot  # type: str
+        self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
+        self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: int
+        self._cloud_api_root = UltimakerCloudAuthentication.CuraCloudAPIRoot  # type: str
         self._api_url = None  # type: Optional[str]
 
         # Network:
