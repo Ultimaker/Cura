@@ -11,7 +11,6 @@ ListView
 {
     id: listView
     height: childrenRect.height
-    width: 200
     model: Cura.PrintersModel {}
     section.property: "hasRemoteConnection"
 
@@ -19,6 +18,7 @@ ListView
     {
         text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Preset printers")
         width: parent.width
+        height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
         leftPadding: UM.Theme.getSize("default_margin").width
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("medium")
