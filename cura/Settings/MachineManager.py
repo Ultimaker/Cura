@@ -1529,6 +1529,10 @@ class MachineManager(QObject):
     def activeQualityChangesGroup(self) -> Optional["QualityChangesGroup"]:
         return self._current_quality_changes_group
 
+    @pyqtProperty(bool, notify = activeQualityChangesGroupChanged)
+    def hasCustomQuality(self) -> bool:
+        return self._current_quality_changes_group is not None
+
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityOrQualityChangesName(self) -> str:
         name = empty_quality_container.getName()
