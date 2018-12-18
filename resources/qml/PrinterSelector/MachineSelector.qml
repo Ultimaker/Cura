@@ -53,7 +53,7 @@ Cura.ExpandablePopup
                 leftMargin: UM.Theme.getSize("thick_margin").width
             }
 
-            source: machineSelector.isCloudPrinter ? UM.Theme.getIcon("printer_connected") : UM.Theme.getIcon("printer_connected")
+            source: machineSelector.isCloudPrinter ? UM.Theme.getIcon("printer_cloud_connected") : UM.Theme.getIcon("printer_connected")
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
