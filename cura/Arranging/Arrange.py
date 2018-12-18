@@ -66,6 +66,11 @@ class Arrange:
                 continue
             vertices = vertices.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
             points = copy.deepcopy(vertices._points)
+
+            # After scaling (like up to 0.1 mm) the node might not have points
+            if len(points) == 0:
+                continue
+
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
             arranger.place(0, 0, shape_arr)
 
