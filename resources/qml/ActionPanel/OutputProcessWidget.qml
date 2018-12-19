@@ -123,6 +123,8 @@ Column
             tooltip: text
             fixedWidthMode: true
 
+            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
+
             onClicked: UM.Controller.setActiveStage("PreviewStage")
             visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
 

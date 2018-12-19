@@ -31,6 +31,8 @@ Button
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
 
+    property alias toolTipContentAlignment: tooltip.contentAlignment
+
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
     // we elide the text to the right so the text will be cut off with the three dots at the end.

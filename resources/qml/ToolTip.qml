@@ -5,14 +5,26 @@ import QtQuick 2.7
 import QtQuick.Controls 2.3
 
 import UM 1.0 as UM
+import Cura 1.0 as Cura
 
 ToolTip
 {
+
+    enum ContentAlignment
+    {
+        AlignLeft,
+        AlignRight
+    }
+
     // This property indicates when the tooltip has to show, for instance when a button is hovered
     property bool show: false
 
+    // Defines the alignment of the content, by default to the left
+    property int contentAlignment: Cura.ToolTip.ContentAlignment.AlignRight
+
     property alias tooltipText: tooltip.text
-    property var targetPoint: Qt.point(0, 0)
+    property var targetPoint: Qt.point(parent.x, y + Math.round(height/2))
+
 
     id: tooltip
     text: ""
@@ -20,13 +32,24 @@ ToolTip
     visible: text != "" && show
     font: UM.Theme.getFont("default")
 
+    x:
+    {
+        if (contentAlignment == Cura.ToolTip.ContentAlignment.AlignLeft)
+        {
+            return (label.width + Math.round(UM.Theme.getSize("default_arrow").width * 1.2) + padding * 2) * -1
+        }
+        return parent.width + Math.round(UM.Theme.getSize("default_arrow").width * 1.2 + padding)
+    }
+
+    y: Math.round(parent.height / 2 - label.height / 2 ) - padding
+
+    padding: 2
+
     background: UM.PointingRectangle
     {
         id: backgroundRect
         color: UM.Theme.getColor("tooltip")
-
         target: Qt.point(targetPoint.x - tooltip.x, targetPoint.y - tooltip.y)
-
         arrowSize: UM.Theme.getSize("default_arrow").width
     }
 
