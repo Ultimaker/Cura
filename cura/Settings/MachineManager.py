@@ -192,17 +192,20 @@ class MachineManager(QObject):
         self._current_printer_configuration.extruderConfigurations = []
         for extruder in self._global_container_stack.extruders.values():
             extruder_configuration = ExtruderConfigurationModel()
+
             # For compare just the GUID is needed at this moment
-            mat_type = extruder.material.getMetaDataEntry("material") if extruder.material != empty_material_container else None
-            mat_guid = extruder.material.getMetaDataEntry("GUID") if extruder.material != empty_material_container else None
-            mat_color = extruder.material.getMetaDataEntry("color_name") if extruder.material != empty_material_container else None
-            mat_brand = extruder.material.getMetaDataEntry("brand") if extruder.material != empty_material_container else None
-            mat_name = extruder.material.getMetaDataEntry("name") if extruder.material != empty_material_container else None
+            is_empty_material = extruder.material.getId() == empty_variant_container.getId()
+
+            mat_type = extruder.material.getMetaDataEntry("material") if not is_empty_material else None
+            mat_guid = extruder.material.getMetaDataEntry("GUID") if not is_empty_material else None
+            mat_color = extruder.material.getMetaDataEntry("color_name") if not is_empty_material else None
+            mat_brand = extruder.material.getMetaDataEntry("brand") if not is_empty_material else None
+            mat_name = extruder.material.getMetaDataEntry("name") if not is_empty_material else None
             material_model = MaterialOutputModel(mat_guid, mat_type, mat_color, mat_brand, mat_name)
 
             extruder_configuration.position = int(extruder.getMetaDataEntry("position"))
             extruder_configuration.material = material_model
-            extruder_configuration.hotendID = extruder.variant.getName() if extruder.variant != empty_variant_container else None
+            extruder_configuration.hotendID = extruder.variant.getName() if extruder.variant.getId() != empty_variant_container.getId() else None
             self._current_printer_configuration.extruderConfigurations.append(extruder_configuration)
 
         # An empty build plate configuration from the network printer is presented as an empty string, so use "" for an
