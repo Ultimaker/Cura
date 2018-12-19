@@ -81,28 +81,28 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._printers = []  # type: List[PrinterOutputModel]
         self._unique_configurations = []   # type: List[ConfigurationModel]
 
-        self._monitor_view_qml_path = "" #type: str
-        self._monitor_component = None #type: Optional[QObject]
-        self._monitor_item = None #type: Optional[QObject]
+        self._monitor_view_qml_path = ""  # type: str
+        self._monitor_component = None  # type: Optional[QObject]
+        self._monitor_item = None  # type: Optional[QObject]
 
-        self._control_view_qml_path = "" #type: str
-        self._control_component = None #type: Optional[QObject]
-        self._control_item = None #type: Optional[QObject]
+        self._control_view_qml_path = ""  # type: str
+        self._control_component = None  # type: Optional[QObject]
+        self._control_item = None  # type: Optional[QObject]
 
-        self._accepts_commands = False #type: bool
+        self._accepts_commands = False  # type: bool
 
-        self._update_timer = QTimer() #type: QTimer
+        self._update_timer = QTimer()  # type: QTimer
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
-        self._connection_state = ConnectionState.Closed #type: ConnectionState
-        self._connection_type = connection_type
+        self._connection_state = ConnectionState.Closed  # type: ConnectionState
+        self._connection_type = connection_type  # type: ConnectionType
 
-        self._firmware_updater = None #type: Optional[FirmwareUpdater]
-        self._firmware_name = None #type: Optional[str]
-        self._address = "" #type: str
-        self._connection_text = "" #type: str
+        self._firmware_updater = None  # type: Optional[FirmwareUpdater]
+        self._firmware_name = None  # type: Optional[str]
+        self._address = ""  # type: str
+        self._connection_text = ""  # type: str
         self.printersChanged.connect(self._onPrintersChanged)
         QtApplication.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._updateUniqueConfigurations)
 
@@ -130,9 +130,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._connection_state != connection_state:
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
-
-    def getConnectionType(self) -> "ConnectionType":
-        return self._connection_type
 
     @pyqtProperty(int, constant = True)
     def connectionType(self) -> "ConnectionType":

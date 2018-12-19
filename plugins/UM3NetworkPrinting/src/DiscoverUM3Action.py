@@ -138,11 +138,11 @@ class DiscoverUM3Action(MachineAction):
 
                 if "connection_type" in meta_data:
                     previous_connection_type = meta_data["connection_type"]
-                    global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
-                    CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connection_type", value = previous_connection_type, new_value = printer_device.getConnectionType().value)
+                    global_container_stack.setMetaDataEntry("connection_type", printer_device.connectionType.value)
+                    CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connection_type", value = previous_connection_type, new_value = printer_device.connectionType.value)
             else:
                 global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-                global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
+                global_container_stack.setMetaDataEntry("connection_type", printer_device.connectionType.value)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
