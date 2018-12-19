@@ -90,25 +90,13 @@ Button
                 height: childrenRect.height
                 visible: configuration.buildplateConfiguration != ""
 
-                UM.RecolorImage
-                {
-                    id: buildplateIcon
-                    anchors.left: parent.left
-                    width: UM.Theme.getSize("main_window_header_button_icon").width
-                    height: UM.Theme.getSize("main_window_header_button_icon").height
-                    source: UM.Theme.getIcon("buildplate")
-                    color: UM.Theme.getColor("text")
-                }
-
-                Label
+                // Show the type of buildplate. The first letter is capitalized
+                Cura.IconWithText
                 {
                     id: buildplateLabel
-                    anchors.left: buildplateIcon.right
-                    anchors.verticalCenter: buildplateIcon.verticalCenter
-                    anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").height / 2)
-                    text: configuration.buildplateConfiguration
-                    renderType: Text.NativeRendering
-                    color: UM.Theme.getColor("text")
+                    source: UM.Theme.getIcon("buildplate")
+                    text: configuration.buildplateConfiguration.charAt(0).toUpperCase() + configuration.buildplateConfiguration.substr(1)
+                    anchors.left: parent.left
                 }
             }
         }
