@@ -14,7 +14,12 @@ Item
     property var tileWidth: 834 * screenScaleFactor // TODO: Theme!
     property var tileHeight: 216 * screenScaleFactor // TODO: Theme!
     property var tileSpacing: 60 * screenScaleFactor // TODO: Theme!
-    property var maxOffset: (OutputDevice.printers.length - 1) * (tileWidth + tileSpacing)
+
+    // Array/model of printers to populate the carousel with
+    property var printers: []
+
+    // Maximum distance the carousel can be shifted
+    property var maxOffset: (printers.length - 1) * (tileWidth + tileSpacing)
 
     height: centerSection.height
     width: maximumWidth
@@ -129,7 +134,7 @@ Item
             
             Repeater
             {
-                model: OutputDevice.printers
+                model: printers
                 MonitorPrinterCard
                 {
                     printer: modelData
@@ -151,7 +156,7 @@ Item
         width: 36 * screenScaleFactor // TODO: Theme!
         height: 72 * screenScaleFactor // TODO: Theme!
         z: 10
-        visible: currentIndex < OutputDevice.printers.length - 1
+        visible: currentIndex < printers.length - 1
         onClicked: navigateTo(currentIndex + 1)
         hoverEnabled: true
         background: Rectangle
@@ -227,7 +232,7 @@ Item
         spacing: 8 * screenScaleFactor // TODO: Theme!
         Repeater
         {
-            model: OutputDevice.printers
+            model: printers
             Button
             {
                 background: Rectangle
@@ -243,7 +248,7 @@ Item
     }
 
     function navigateTo( i ) {
-        if (i >= 0 && i < OutputDevice.printers.length)
+        if (i >= 0 && i < printers.length)
         {
             tiles.x = -1 * i * (tileWidth + tileSpacing)
             currentIndex = i
