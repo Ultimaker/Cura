@@ -178,6 +178,7 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
+        self.printerConnectedStatusChanged.emit()
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
     def currentConfiguration(self) -> ConfigurationModel:
@@ -520,7 +521,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
-    def printerConnected(self):
+    def printerConnected(self) -> bool:
         return bool(self._printer_output_devices)
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
@@ -532,9 +533,10 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasCloudConnection(self) -> bool:
-        if not self.activeMachineHasRemoteConnection:
-            return False
-        output_device = next(iter(self.printerOutputDevices), None)  # type: Optional[PrinterOutputDevice]
+        # A cloud connection is only available if the active output device actually is a cloud connected device.
+        # We cannot simply use the connection_type metadata entry as that's always set to 'NetworkConnection'
+        # if there was a network connection during setup, which is always the case.
+        output_device = next(iter(self._printer_output_devices), None)  # type: Optional[PrinterOutputDevice]
         if not output_device:
             return False
         return output_device.connectionType == ConnectionType.CloudConnection

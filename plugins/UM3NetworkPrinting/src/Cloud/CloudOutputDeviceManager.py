@@ -50,7 +50,7 @@ class CloudOutputDeviceManager:
 
     #  Called when the uses logs in or out
     def _onLoginStateChanged(self, is_logged_in: bool) -> None:
-        Logger.log("i", "Log in state changed to %s", is_logged_in)
+        Logger.log("d", "Log in state changed to %s", is_logged_in)
         if is_logged_in:
             if not self._update_timer.isActive():
                 self._update_timer.start()
@@ -64,7 +64,7 @@ class CloudOutputDeviceManager:
 
     ##  Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
-        Logger.log("i", "Retrieving remote clusters")
+        Logger.log("d", "Retrieving remote clusters")
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
     ##  Callback for when the request for getting the clusters. is finished.
@@ -73,8 +73,8 @@ class CloudOutputDeviceManager:
 
         removed_devices, added_clusters, updates = findChanges(self._remote_clusters, online_clusters)
 
-        Logger.log("i", "Parsed remote clusters to %s", [cluster.toDict() for cluster in online_clusters.values()])
-        Logger.log("i", "Removed: %s, added: %s, updates: %s", len(removed_devices), len(added_clusters), len(updates))
+        Logger.log("d", "Parsed remote clusters to %s", [cluster.toDict() for cluster in online_clusters.values()])
+        Logger.log("d", "Removed: %s, added: %s, updates: %s", len(removed_devices), len(added_clusters), len(updates))
 
         # Remove output devices that are gone
         for removed_cluster in removed_devices:
@@ -100,7 +100,7 @@ class CloudOutputDeviceManager:
     def _connectToActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
-            Logger.log("i", "no active machine")
+            Logger.log("d", "no active machine")
             return
 
         # Check if the stored cluster_id for the active machine is in our list of remote clusters.
@@ -109,7 +109,7 @@ class CloudOutputDeviceManager:
             device = self._remote_clusters[stored_cluster_id]
             if not device.isConnected():
                 device.connect()
-            Logger.log("i", "Device connected by metadata %s", stored_cluster_id)
+            Logger.log("d", "Device connected by metadata %s", stored_cluster_id)
         else:
             self._connectByNetworkKey(active_machine)
 

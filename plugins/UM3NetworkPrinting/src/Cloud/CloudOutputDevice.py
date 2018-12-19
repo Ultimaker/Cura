@@ -65,8 +65,6 @@ class T:
 #   Currently it only supports viewing the printer and print job status and adding a new job to the queue.
 #   As such, those methods have been implemented here.
 #   Note that this device represents a single remote cluster, not a list of multiple clusters.
-#
-#   TODO: figure our how the QML interface for the cluster networking should operate with this limited functionality.
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
@@ -202,10 +200,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _update(self) -> None:
         super()._update()
         if self._last_request_time and time() - self._last_request_time < self.CHECK_CLUSTER_INTERVAL:
-            Logger.log("i", "Not updating: %s - %s < %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
             return  # avoid calling the cloud too often
 
-        Logger.log("i", "Updating: %s - %s >= %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
+        Logger.log("d", "Updating: %s - %s >= %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
             self._last_request_time = time()
@@ -342,7 +339,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Shows a message when the upload has succeeded
     #  \param response: The response from the cloud API.
     def _onPrintRequested(self, response: CloudPrintResponse) -> None:
-        Logger.log("i", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
+        Logger.log("d", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
         self._progress.hide()
         Message(
             text = T.UPLOAD_SUCCESS_TEXT,

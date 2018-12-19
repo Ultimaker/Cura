@@ -101,7 +101,7 @@ class CloudApiClient:
             request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         if self._account.isLoggedIn:
             request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
-        Logger.log("i", "Created request for URL %s. Logged in = %s", path, self._account.isLoggedIn)
+        # Logger.log("i", "Created request for URL %s. Logged in = %s", path, self._account.isLoggedIn)
         return request
 
     ## Parses the given JSON network reply into a status code and a dictionary, handling unexpected errors as well.
@@ -112,7 +112,7 @@ class CloudApiClient:
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         try:
             response = bytes(reply.readAll()).decode()
-            Logger.log("i", "Received a reply %s from %s with %s", status_code, reply.url().toString(), response)
+            # Logger.log("i", "Received a reply %s from %s with %s", status_code, reply.url().toString(), response)
             return status_code, json.loads(response)
         except (UnicodeDecodeError, JSONDecodeError, ValueError) as err:
             error = CloudErrorObject(code=type(err).__name__, title=str(err), http_code=str(status_code),
