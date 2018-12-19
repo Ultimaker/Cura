@@ -1197,10 +1197,17 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
-    def _setVariantNode(self, position: str, container_node: "ContainerNode") -> None:
-        if container_node.getContainer() is None or self._global_container_stack is None:
+    #
+    # Sets the extruder at the given position of the active machine to use the given variant.
+    # If container_node is None, the variant will be set to empty.
+    #
+    def _setVariantNode(self, position: str, container_node: Optional["ContainerNode"]) -> None:
+        if self._global_container_stack is None:
             return
-        self._global_container_stack.extruders[position].variant = container_node.getContainer()
+        container = empty_variant_container
+        if container_node is not None:
+            container = container_node.getContainer()
+        self._global_container_stack.extruders[position].variant = container
         self.activeVariantChanged.emit()
 
     def _setGlobalVariant(self, container_node: "ContainerNode") -> None:
