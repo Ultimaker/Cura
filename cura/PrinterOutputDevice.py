@@ -1,19 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from enum import IntEnum
+from typing import Callable, List, Optional, Union
 
 from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl, Q_ENUMS
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
 from UM.FlameProfiler import pyqtSlot
-
-from enum import IntEnum  # For the connection state tracking.
-from typing import Callable, List, Optional, Union
 
 MYPY = False
 if MYPY:
