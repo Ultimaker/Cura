@@ -534,7 +534,7 @@ class MachineManager(QObject):
     def activeMachineHasCloudConnection(self) -> bool:
         if not self.activeMachineHasRemoteConnection:
             return False
-        output_device = next(iter(self.printerOutputDevices), None)  # type: PrinterOutputDevice
+        output_device = next(iter(self.printerOutputDevices), None)  # type: Optional[PrinterOutputDevice]
         if not output_device:
             return False
         return output_device.connectionType == ConnectionType.CloudConnection
