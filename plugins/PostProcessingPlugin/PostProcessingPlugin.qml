@@ -301,6 +301,7 @@ UM.Dialog
                     top: scriptSpecsHeader.bottom
                     topMargin: settingsPanel.textMargin
                     left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
                     right: parent.right
                     bottom: parent.bottom
                 }
@@ -318,7 +319,8 @@ UM.Dialog
                         containerId: manager.selectedScriptDefinitionId
                         showAll: true
                     }
-                    delegate:Loader
+
+                    delegate: Loader
                     {
                         id: settingLoader
 
@@ -329,18 +331,17 @@ UM.Dialog
                             {
                                 if(model.type != undefined)
                                 {
-                                    return UM.Theme.getSize("section").height;
+                                    return UM.Theme.getSize("section").height
                                 }
                                 else
                                 {
-                                    return 0;
+                                    return 0
                                 }
                             }
                             else
                             {
-                                return 0;
+                                return 0
                             }
-
                         }
                         Behavior on height { NumberAnimation { duration: 100 } }
                         opacity: provider.properties.enabled == "True" ? 1 : 0
@@ -363,7 +364,7 @@ UM.Dialog
                             settingLoader.item.showRevertButton = false
                             settingLoader.item.showInheritButton = false
                             settingLoader.item.showLinkedSettingIcon = false
-                            settingLoader.item.doDepthIndentation = true
+                            settingLoader.item.doDepthIndentation = false
                             settingLoader.item.doQualityUserSettingEmphasis = false
                         }
 
