@@ -358,7 +358,7 @@ Cura.ExpandableComponent
             width: parent.width
             height: UM.Theme.getSize("layerview_row").height
 
-            Label
+            Label //Minimum value.
             {
                 text:
                 {
@@ -383,9 +383,10 @@ Cura.ExpandableComponent
                 renderType: Text.NativeRendering
             }
 
-            Label
+            Label //Unit in the middle.
             {
-                text: {
+                text:
+                {
                     if (UM.SimulationView.layerActivity && CuraApplication.platformActivity)
                     {
                         // Feedrate selected
@@ -407,7 +408,7 @@ Cura.ExpandableComponent
                 font: UM.Theme.getFont("default")
             }
 
-            Label
+            Label //Maximum value.
             {
                 text: {
                     if (UM.SimulationView.layerActivity && CuraApplication.platformActivity)
