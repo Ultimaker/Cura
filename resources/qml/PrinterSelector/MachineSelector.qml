@@ -13,7 +13,7 @@ Cura.ExpandablePopup
 
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasRemoteConnection
-    property bool isCloudPrinter: machineSelector.outputDevice.connectionType == Cura.PrinterOutputDevice.CloudConnection
+    property bool isCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
     property bool isPrinterConnected: Cura.MachineManager.printerConnected
 
     contentPadding: UM.Theme.getSize("default_lining").width

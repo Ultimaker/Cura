@@ -530,6 +530,15 @@ class MachineManager(QObject):
             return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
         return False
 
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineHasCloudConnection(self) -> bool:
+        if not self.activeMachineHasRemoteConnection:
+            return False
+        output_device = next(iter(self.printerOutputDevices), None)  # type: PrinterOutputDevice
+        if not output_device:
+            return False
+        return output_device.connectionType == ConnectionType.CloudConnection
+
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("um_network_key", "")
