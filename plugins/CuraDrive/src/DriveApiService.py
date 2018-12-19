@@ -43,7 +43,7 @@ class DriveApiService:
             Logger.log("w", "Could not get access token.")
             return []
 
-        backup_list_request = requests.get(self.GET_BACKUPS_URL, headers={
+        backup_list_request = requests.get(self.GET_BACKUPS_URL, headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
         if backup_list_request.status_code > 299:
@@ -55,12 +55,12 @@ class DriveApiService:
 
     def createBackup(self) -> None:
         """Create a backup and upload it to CuraDrive cloud storage."""
-        self.onCreatingStateChanged.emit(is_creating=True)
+        self.onCreatingStateChanged.emit(is_creating = True)
 
         # Create the backup.
         backup_zip_file, backup_meta_data = self._cura_api.backups.createBackup()
         if not backup_zip_file or not backup_meta_data:
-            self.onCreatingStateChanged.emit(is_creating=False, error_message="Could not create backup.")
+            self.onCreatingStateChanged.emit(is_creating = False, error_message = "Could not create backup.")
             return
 
         # Create an upload entry for the backup.
@@ -68,7 +68,7 @@ class DriveApiService:
         backup_meta_data["description"] = "{}.backup.{}.cura.zip".format(timestamp, backup_meta_data["cura_release"])
         backup_upload_url = self._requestBackupUpload(backup_meta_data, len(backup_zip_file))
         if not backup_upload_url:
-            self.onCreatingStateChanged.emit(is_creating=False, error_message="Could not upload backup.")
+            self.onCreatingStateChanged.emit(is_creating = False, error_message = "Could not upload backup.")
             return
 
         # Upload the backup to storage.
@@ -83,29 +83,29 @@ class DriveApiService:
         """
         if job.backup_upload_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.onCreatingStateChanged.emit(is_creating=False, error_message=job.backup_upload_error_message)
+            self.onCreatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
         else:
-            self.onCreatingStateChanged.emit(is_creating=False)
+            self.onCreatingStateChanged.emit(is_creating = False)
 
     def restoreBackup(self, backup: Dict[str, Any]) -> None:
         """
         Restore a previously exported backup from cloud storage.
         :param backup: A dict containing an entry from the API list response.
         """
-        self.onRestoringStateChanged.emit(is_restoring=True)
+        self.onRestoringStateChanged.emit(is_restoring = True)
         download_url = backup.get("download_url")
         if not download_url:
             # If there is no download URL, we can't restore the backup.
             return self._emitRestoreError()
 
-        download_package = requests.get(download_url, stream=True)
+        download_package = requests.get(download_url, stream = True)
         if download_package.status_code != 200:
             # Something went wrong when attempting to download the backup.
             Logger.log("w", "Could not download backup from url %s: %s", download_url, download_package.text)
             return self._emitRestoreError()
 
         # We store the file in a temporary path fist to ensure integrity.
-        temporary_backup_file = NamedTemporaryFile(delete=False)
+        temporary_backup_file = NamedTemporaryFile(delete = False)
         with open(temporary_backup_file.name, "wb") as write_backup:
             for chunk in download_package:
                 write_backup.write(chunk)
@@ -119,13 +119,13 @@ class DriveApiService:
         # Tell Cura to place the backup back in the user data folder.
         with open(temporary_backup_file.name, "rb") as read_backup:
             self._cura_api.backups.restoreBackup(read_backup.read(), backup.get("data"))
-            self.onRestoringStateChanged.emit(is_restoring=False)
+            self.onRestoringStateChanged.emit(is_restoring = False)
 
     def _emitRestoreError(self, error_message: str = Settings.translatable_messages["backup_restore_error_message"]):
         """Helper method for emitting a signal when restoring failed."""
         self.onRestoringStateChanged.emit(
-            is_restoring=False,
-            error_message=error_message
+            is_restoring = False,
+            error_message = error_message
         )
 
     @staticmethod
@@ -137,7 +137,7 @@ class DriveApiService:
         :return: Success or not.
         """
         with open(file_path, "rb") as read_backup:
-            local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars=b"_-").decode("utf-8")
+            local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
             return known_hash == local_md5_hash
 
     def deleteBackup(self, backup_id: str) -> bool:
@@ -171,12 +171,12 @@ class DriveApiService:
             Logger.log("w", "Could not get access token.")
             return None
         
-        backup_upload_request = requests.put(self.PUT_BACKUP_URL, json={
+        backup_upload_request = requests.put(self.PUT_BACKUP_URL, json = {
             "data": {
                 "backup_size": backup_size,
                 "metadata": backup_metadata
             }
-        }, headers={
+        }, headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
         
