@@ -1368,15 +1368,12 @@ class MachineManager(QObject):
                                                                                        configuration.buildplateConfiguration,
                                                                                        extruder_configuration.material.guid)
 
-                if variant_container_node:
+                # If the remote machine has an empty variant, do nothing
+                if variant_container_node is not None:
                     self._setVariantNode(position, variant_container_node)
-                else:
-                    self._global_container_stack.extruders[position].variant = empty_variant_container
-
-                if material_container_node:
+                # Same as above. If the remote machine has an empty material, do nothing
+                if material_container_node is not None:
                     self._setMaterial(position, material_container_node)
-                else:
-                    self._global_container_stack.extruders[position].material = empty_material_container
                 self.updateMaterialWithVariant(position)
 
             if configuration.buildplateConfiguration is not None:
