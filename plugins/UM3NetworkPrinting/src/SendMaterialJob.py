@@ -101,11 +101,10 @@ class SendMaterialJob(Job):
                 continue
 
             file_name = os.path.basename(file_path)
-            material_id = urllib.parse.unquote_plus(mime_type.stripExtension(file_name))
+            material_id = urllib.parse.unquote_plus(mime_type.stripExtension(file_name)).lower()
             if material_id not in materials_to_send:
                 # If the material does not have to be sent we skip it.
                 continue
-
             self._sendMaterialFile(file_path, file_name, material_id)
 
     ##  Send a single material file to the printer.
@@ -182,6 +181,7 @@ class SendMaterialJob(Job):
 
                 # Create a new local material
                 local_material = LocalMaterial(**material)
+                local_material.id = material["base_file"].lower()  # Don't compare each profile, only base materials.
 
                 if local_material.GUID not in result or \
                         local_material.version > result.get(local_material.GUID).version:
