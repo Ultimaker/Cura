@@ -10,6 +10,9 @@ import Cura 1.0 as Cura
 
 RowLayout
 {
+    property string enabledText: catalog.i18nc("@label:Should be short", "On")
+    property string disabledText: catalog.i18nc("@label:Should be short", "Off")
+
     Cura.IconWithText
     {
         source: UM.Theme.getIcon("category_layer_height")

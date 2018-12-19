@@ -49,21 +49,6 @@
             "size": 0.7,
             "weight": 50,
             "family": "Noto Sans"
-        },
-        "button_tooltip": {
-            "size": 1.0,
-            "weight": 50,
-            "family": "Noto Sans"
-        },
-        "setting_category": {
-            "size": 1.15,
-            "weight": 63,
-            "family": "Noto Sans"
-        },
-        "action_button": {
-            "size": 1.15,
-            "weight": 50,
-            "family": "Noto Sans"
         }
     },
 
@@ -80,8 +65,10 @@
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
         "border": [127, 127, 127, 255],
-        "secondary": [245, 245, 245, 255],
+        "secondary": [240, 240, 240, 255],
         "secondary_shadow": [216, 216, 216, 255],
+
+        "icon": [8, 7, 63, 255],
 
         "primary_button": [38, 113, 231, 255],
         "primary_button_shadow": [27, 95, 202, 255],
@@ -116,7 +103,7 @@
 
         "printer_type_label_background": [228, 228, 242, 255],
 
-        "text": [0, 0, 0, 255],
+        "text": [25, 25, 25, 255],
         "text_detail": [174, 174, 174, 128],
         "text_link": [50, 130, 255, 255],
         "text_inactive": [174, 174, 174, 255],
@@ -129,6 +116,7 @@
 
         "error": [255, 140, 0, 255],
         "warning": [245, 166, 35, 255],
+        "disabled": [229, 229, 229, 255],
 
         "toolbar_button_text": [8, 7, 63, 255],
         "toolbar_button_hover": [232, 242, 252, 255],
@@ -149,7 +137,7 @@
         "small_button_active": [10, 8, 80, 255],
         "small_button_active_hover": [10, 8, 80, 255],
         "small_button_text": [102, 102, 102, 255],
-        "small_button_text_hover": [255, 255, 255, 255],
+        "small_button_text_hover": [8, 7, 63, 255],
         "small_button_text_active": [255, 255, 255, 255],
         "small_button_text_active_hover": [255, 255, 255, 255],
 
@@ -158,6 +146,8 @@
         "button_tooltip_text": [192, 193, 194, 255],
 
         "extruder_button_material_border": [255, 255, 255, 255],
+
+        "rating_star": [90, 90, 90, 255],
 
         "sync_button_text": [120, 120, 120, 255],
         "sync_button_text_hovered": [0, 0, 0, 255],
@@ -182,18 +172,18 @@
         "scrollbar_handle_hover": [50, 130, 255, 255],
         "scrollbar_handle_down": [50, 130, 255, 255],
 
-        "setting_category": [245, 245, 245, 255],
+        "setting_category": [240, 240, 240, 255],
         "setting_category_disabled": [255, 255, 255, 255],
         "setting_category_hover": [232, 242, 252, 255],
-        "setting_category_active": [245, 245, 245, 255],
+        "setting_category_active": [240, 240, 240, 255],
         "setting_category_active_hover": [232, 242, 252, 255],
         "setting_category_text": [35, 35, 35, 255],
         "setting_category_disabled_text": [24, 41, 77, 101],
         "setting_category_hover_text": [35, 35, 35, 255],
         "setting_category_active_text": [35, 35, 35, 255],
         "setting_category_active_hover_text": [35, 35, 35, 255],
-        "setting_category_border": [245, 245, 245, 255],
-        "setting_category_disabled_border": [245, 245, 245, 255],
+        "setting_category_border": [240, 240, 240, 255],
+        "setting_category_disabled_border": [240, 240, 240, 255],
         "setting_category_hover_border": [50, 130, 255, 255],
         "setting_category_active_border": [50, 130, 255, 255],
         "setting_category_active_hover_border": [50, 130, 255, 255],
@@ -204,9 +194,8 @@
         "setting_control_border": [199, 199, 199, 255],
         "setting_control_border_highlight": [50, 130, 255, 255],
         "setting_control_text": [35, 35, 35, 255],
-        "setting_control_depth_line": [199, 199, 199, 255],
-        "setting_control_button": [199, 199, 199, 255],
-        "setting_control_button_hover": [70, 84, 113, 255],
+        "setting_control_button": [102, 102, 102, 255],
+        "setting_control_button_hover": [8, 7, 63, 255],
         "setting_control_disabled": [245, 245, 245, 255],
         "setting_control_disabled_text": [127, 127, 127, 255],
         "setting_control_disabled_border": [127, 127, 127, 255],
@@ -240,23 +229,23 @@
         "checkbox_disabled": [223, 223, 223, 255],
         "checkbox_text": [35, 35, 35, 255],
 
-        "tooltip": [19, 19, 19, 255],
+        "tooltip": [25, 25, 25, 255],
         "tooltip_text": [255, 255, 255, 255],
-
-        "tool_button_border": [255, 255, 255, 0],
 
         "message_background": [255, 255, 255, 255],
         "message_shadow": [0, 0, 0, 120],
-        "message_border": [127, 127, 127, 255],
+        "message_border": [192, 193, 194, 255],
         "message_text": [0, 0, 0, 255],
-        "message_button": [50, 130, 255, 255],
-        "message_button_hover": [50, 130, 255, 255],
-        "message_button_active": [50, 130, 255, 255],
+        "message_close": [102, 102, 102, 255],
+        "message_close_hover": [8, 7, 63, 255],
+        "message_button": [38, 113, 231, 255],
+        "message_button_hover": [81, 145, 247, 255],
+        "message_button_active": [38, 113, 231, 255],
         "message_button_text": [255, 255, 255, 255],
         "message_button_text_hover": [255, 255, 255, 255],
         "message_button_text_active": [255, 255, 255, 255],
-        "message_progressbar_background": [200, 200, 200, 255],
-        "message_progressbar_control": [77, 182, 226, 255],
+        "message_progressbar_background": [245, 245, 245, 255],
+        "message_progressbar_control": [50, 130, 255, 255],
 
         "tool_panel_background": [255, 255, 255, 255],
 
@@ -273,7 +262,7 @@
         "z_axis": [0, 255, 0, 255],
         "all_axis": [255, 255, 255, 255],
 
-        "viewport_background": [245, 245, 245, 255],
+        "viewport_background": [250, 250, 250, 255],
         "volume_outline": [50, 130, 255, 255],
         "buildplate": [244, 244, 244, 255],
         "buildplate_grid": [129, 131, 134, 255],
@@ -347,7 +336,7 @@
     },
 
     "sizes": {
-        "window_minimum_size": [106, 66],
+        "window_minimum_size": [100, 60],
 
         "main_window_header": [0.0, 4.0],
         "main_window_header_button": [8, 2.35],
@@ -361,23 +350,25 @@
         "print_setup_mode_toggle": [0.0, 2.0],
         "print_setup_item": [0.0, 2.0],
         "print_setup_extruder_box": [0.0, 6.0],
-        "print_setup_widget_header": [0.0, 3.0],
         "print_setup_slider_groove": [0.16, 0.16],
         "print_setup_slider_handle": [1.0, 1.0],
         "print_setup_slider_tickmarks": [0.32, 0.32],
         "print_setup_big_item": [28, 2.5],
         "print_setup_icon": [1.2, 1.2],
 
+        "expandable_component_content_header": [0.0, 3.0],
+
+        "configuration_selector": [35.0, 4.0],
         "configuration_selector_mode_tabs": [0.0, 3.0],
 
-        "action_panel_widget": [25.0, 0.0],
+        "action_panel_widget": [26.0, 0.0],
         "action_panel_information_widget": [20.0, 0.0],
 
         "machine_selector_widget": [20.0, 4.0],
         "machine_selector_widget_content": [25.0, 32.0],
         "machine_selector_icon": [2.66, 2.66],
 
-        "views_selector": [16.0, 4.5],
+        "views_selector": [23.0, 4.0],
 
         "printer_type_label": [3.5, 1.5],
 
@@ -401,6 +392,7 @@
         "section": [0.0, 2],
         "section_icon": [1.6, 1.6],
         "section_icon_column": [2.8, 0.0],
+        "rating_star": [1.0, 1.0],
 
         "setting": [25.0, 1.8],
         "setting_control": [11.0, 2.0],
@@ -419,6 +411,7 @@
         "button_lining": [0, 0],
 
         "action_button": [15.0, 3.0],
+        "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
 
         "small_button": [2, 2],
@@ -447,7 +440,7 @@
         "slider_handle": [1.5, 1.5],
         "slider_layerview_size": [1.0, 26.0],
 
-        "layerview_menu_size": [15, 20],
+        "layerview_menu_size": [16.0, 4.0],
         "layerview_legend_size": [1.0, 1.0],
         "layerview_row": [11.0, 1.5],
         "layerview_row_spacing": [0.0, 0.5],
@@ -477,6 +470,8 @@
         "message_shadow": [0, 0],
         "message_margin": [0, 1.0],
         "message_inner_margin": [1.5, 1.5],
+        "message_radius": [0.25, 0.25],
+        "message_button_radius": [0.15, 0.15],
 
         "infill_button_margin": [0.5, 0.5],
 
@@ -500,7 +495,7 @@
         "toolbox_back_button": [4.0, 2.0],
         "toolbox_installed_tile": [1.0, 8.0],
         "toolbox_property_label": [1.0, 2.0],
-        "toolbox_heading_label": [1.0, 4.0],
+        "toolbox_heading_label": [1.0, 3.8],
         "toolbox_header": [1.0, 4.0],
         "toolbox_header_highlight": [0.25, 0.25],
         "toolbox_progress_bar": [8.0, 0.5],

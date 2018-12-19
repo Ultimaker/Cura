@@ -88,12 +88,14 @@ class MachineManager(QObject):
 
         self._onGlobalContainerChanged()
 
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
+        extruder_manager = self._application.getExtruderManager()
+
+        extruder_manager.activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
         self._onActiveExtruderStackChanged()
 
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeMaterialChanged)
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeVariantChanged)
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeQualityChanged)
+        extruder_manager.activeExtruderChanged.connect(self.activeMaterialChanged)
+        extruder_manager.activeExtruderChanged.connect(self.activeVariantChanged)
+        extruder_manager.activeExtruderChanged.connect(self.activeQualityChanged)
 
         self.globalContainerChanged.connect(self.activeStackChanged)
         self.globalValueChanged.connect(self.activeStackValueChanged)
@@ -1526,6 +1528,10 @@ class MachineManager(QObject):
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self) -> Optional["QualityChangesGroup"]:
         return self._current_quality_changes_group
+
+    @pyqtProperty(bool, notify = activeQualityChangesGroupChanged)
+    def hasCustomQuality(self) -> bool:
+        return self._current_quality_changes_group is not None
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityOrQualityChangesName(self) -> str:

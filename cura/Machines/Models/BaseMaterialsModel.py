@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional, Dict, Set
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 from UM.Qt.ListModel import ListModel
@@ -9,6 +10,9 @@ from UM.Qt.ListModel import ListModel
 #  Those 2 models are used by the material drop down menu to show generic materials and branded materials separately.
 #  The extruder position defined here is being used to bound a menu to the correct extruder. This is used in the top
 #  bar menu "Settings" -> "Extruder nr" -> "Material" -> this menu
+from cura.Machines.MaterialNode import MaterialNode
+
+
 class BaseMaterialsModel(ListModel):
 
     extruderPositionChanged = pyqtSignal()
@@ -54,8 +58,8 @@ class BaseMaterialsModel(ListModel):
         self._extruder_position = 0
         self._extruder_stack = None
 
-        self._available_materials = None
-        self._favorite_ids = None
+        self._available_materials = None  # type: Optional[Dict[str, MaterialNode]]
+        self._favorite_ids = set()  # type: Set[str]
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
@@ -102,8 +106,10 @@ class BaseMaterialsModel(ListModel):
             return False
         
         extruder_stack = global_stack.extruders[extruder_position]
-
-        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
+        available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
+        if available_materials == self._available_materials:
+            return False
+        self._available_materials = available_materials
         if self._available_materials is None:
             return False
 

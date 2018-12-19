@@ -67,7 +67,7 @@ Item
                     toolItem: UM.RecolorImage
                     {
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
-                        color: UM.Theme.getColor("toolbar_button_text")
+                        color: UM.Theme.getColor("icon")
 
                         sourceSize: UM.Theme.getSize("button_icon")
                     }
@@ -144,10 +144,7 @@ Item
         }
     }
 
-    Cura.ExtrudersModel
-    {
-        id: extrudersModel
-    }
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     UM.PointingRectangle
     {

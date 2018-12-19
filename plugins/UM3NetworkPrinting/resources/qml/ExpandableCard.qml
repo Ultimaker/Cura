@@ -16,9 +16,9 @@ Item
 
     property bool expanded: false
     property var borderWidth: 1
-    property color borderColor: "#EAEAEC"
+    property color borderColor: "#CCCCCC"
     property color headerBackgroundColor: "white"
-    property color headerHoverColor: "#f5f5f5"
+    property color headerHoverColor: "#e8f2fc"
     property color drawerBackgroundColor: "white"
     property alias headerItem: header.children
     property alias drawerItem: drawer.children

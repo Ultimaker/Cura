@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -67,6 +67,7 @@ Item
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
         }
 
         TableView
@@ -99,6 +100,7 @@ Item
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text")
                     font: UM.Theme.getFont("default_bold")
+                    renderType: Text.NativeRendering
                 }
                 Rectangle
                 {
@@ -118,6 +120,7 @@ Item
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text_medium")
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
                 }
             }
             itemDelegate: Item
@@ -130,6 +133,7 @@ Item
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text_medium")
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -144,6 +148,7 @@ Item
                     elide: Text.ElideRight
                     color: UM.Theme.getColor("text_medium")
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -232,5 +237,6 @@ Item
         color: UM.Theme.getColor("text")
         linkColor: UM.Theme.getColor("text_link")
         onLinkActivated: Qt.openUrlExternally(link)
+        renderType: Text.NativeRendering
     }
 }

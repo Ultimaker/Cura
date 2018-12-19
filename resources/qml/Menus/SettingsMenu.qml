@@ -16,10 +16,11 @@ Menu
 
     Instantiator
     {
-        model: Cura.ExtrudersModel { simpleNames: true }
+        model: Cura.MachineManager.activeMachine.extruderList
+
         Menu
         {
-            title: model.name
+            title: modelData.name
 
             NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
             MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }

@@ -3,8 +3,8 @@
 
 from collections import defaultdict
 import threading
-from typing import Any, Dict, Optional, Set, TYPE_CHECKING
-from PyQt5.QtCore import pyqtProperty, pyqtSlot
+from typing import Any, Dict, Optional, Set, TYPE_CHECKING, List
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
@@ -42,12 +42,22 @@ class GlobalStack(CuraContainerStack):
         # Per thread we have our own resolving_settings, or strange things sometimes occur.
         self._resolving_settings = defaultdict(set) #type: Dict[str, Set[str]] # keys are thread names
 
+    extrudersChanged = pyqtSignal()
+
     ##  Get the list of extruders of this stack.
     #
     #   \return The extruders registered with this stack.
-    @pyqtProperty("QVariantMap")
+    @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruders(self) -> Dict[str, "ExtruderStack"]:
         return self._extruders
+
+    @pyqtProperty("QVariantList", notify = extrudersChanged)
+    def extruderList(self) -> List["ExtruderStack"]:
+        result_tuple_list = sorted(list(self.extruders.items()), key=lambda x: int(x[0]))
+        result_list = [item[1] for item in result_tuple_list]
+
+        machine_extruder_count = self.getProperty("machine_extruder_count", "value")
+        return result_list[:machine_extruder_count]
 
     @classmethod
     def getLoadingPriority(cls) -> int:

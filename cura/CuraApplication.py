@@ -134,7 +134,7 @@ except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
-    CuraSDKVersion = "5.0.0"
+    CuraSDKVersion = "6.0.0"
 
 
 class CuraApplication(QtApplication):
@@ -181,7 +181,6 @@ class CuraApplication(QtApplication):
         # Variables set from CLI
         self._files_to_open = []
         self._use_single_instance = False
-        self._trigger_early_crash = False  # For debug only
 
         self._single_instance = None
 
@@ -206,6 +205,8 @@ class CuraApplication(QtApplication):
         self._container_manager = None
 
         self._object_manager = None
+        self._extruders_model = None
+        self._extruders_model_with_optional = None
         self._build_plate_model = None
         self._multi_build_plate_model = None
         self._setting_visibility_presets_model = None
@@ -292,7 +293,10 @@ class CuraApplication(QtApplication):
             sys.exit(0)
 
         self._use_single_instance = self._cli_args.single_instance
-        self._trigger_early_crash = self._cli_args.trigger_early_crash
+        # FOR TESTING ONLY
+        if self._cli_args.trigger_early_crash:
+            assert not "This crash is triggered by the trigger_early_crash command line argument."
+
         for filename in self._cli_args.file:
             self._files_to_open.append(os.path.abspath(filename))
 
@@ -859,6 +863,19 @@ class CuraApplication(QtApplication):
         if self._object_manager is None:
             self._object_manager = ObjectsModel.createObjectsModel()
         return self._object_manager
+
+    @pyqtSlot(result = QObject)
+    def getExtrudersModel(self, *args) -> "ExtrudersModel":
+        if self._extruders_model is None:
+            self._extruders_model = ExtrudersModel(self)
+        return self._extruders_model
+
+    @pyqtSlot(result = QObject)
+    def getExtrudersModelWithOptional(self, *args) -> "ExtrudersModel":
+        if self._extruders_model_with_optional is None:
+            self._extruders_model_with_optional = ExtrudersModel(self)
+            self._extruders_model_with_optional.setAddOptionalExtruder(True)
+        return self._extruders_model_with_optional
 
     @pyqtSlot(result = QObject)
     def getMultiBuildPlateModel(self, *args) -> MultiBuildPlateModel:

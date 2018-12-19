@@ -23,8 +23,8 @@ Item
     {
         id: header
         text: catalog.i18nc("@header", "Custom")
-        font: UM.Theme.getFont("large")
-        color: UM.Theme.getColor("text")
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("small_button_text")
         height: contentHeight
         renderType: Text.NativeRendering
 
@@ -36,10 +36,55 @@ Item
         }
     }
 
+    //Printer type selector.
+    Item
+    {
+        id: printerTypeSelectorRow
+        visible:
+        {
+            return Cura.MachineManager.printerOutputDevices.length >= 1 //If connected...
+                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount != null //...and we have configuration information...
+                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1; //...and there is more than one type of printer in the configuration list.
+        }
+        height: visible ? childrenRect.height : 0
+
+        anchors
+        {
+            left: parent.left
+            right: parent.right
+            top: header.bottom
+            topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
+        }
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Printer")
+            width: Math.round(parent.width * 0.3) - UM.Theme.getSize("default_margin").width
+            height: contentHeight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            anchors.verticalCenter: printerTypeSelector.verticalCenter
+            anchors.left: parent.left
+        }
+
+        OldControls.ToolButton
+        {
+            id: printerTypeSelector
+            text: Cura.MachineManager.activeMachineDefinitionName
+            tooltip: Cura.MachineManager.activeMachineDefinitionName
+            height: UM.Theme.getSize("print_setup_big_item").height
+            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.print_setup_header_button
+
+            menu: Cura.PrinterTypeMenu { }
+        }
+    }
+
     UM.TabRow
     {
         id: tabBar
-        anchors.top: header.bottom
+        anchors.top: printerTypeSelectorRow.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: extrudersModel.count > 1
 
@@ -177,7 +222,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_item").height
+                height: UM.Theme.getSize("print_setup_big_item").height
                 visible: Cura.MachineManager.hasMaterials
 
                 Label
@@ -201,7 +246,7 @@ Item
                     text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
 
-                    height: UM.Theme.getSize("setting_control").height
+                    height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
 
                     style: UM.Theme.styles.print_setup_header_button
@@ -215,7 +260,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_item").height
+                height: UM.Theme.getSize("print_setup_big_item").height
                 visible: Cura.MachineManager.hasVariants
 
                 Label
@@ -235,7 +280,7 @@ Item
                     text: Cura.MachineManager.activeVariantName
                     tooltip: Cura.MachineManager.activeVariantName
 
-                    height: UM.Theme.getSize("setting_control").height
+                    height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
                     style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true;

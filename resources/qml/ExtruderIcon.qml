@@ -23,7 +23,7 @@ Item
         anchors.fill: parent
 
         source: UM.Theme.getIcon("extruder_button")
-        color: extruderEnabled ? materialColor: "gray"
+        color: extruderEnabled ? materialColor: UM.Theme.getColor("disabled")
     }
 
     Rectangle
@@ -49,6 +49,7 @@ Item
             anchors.centerIn: parent
             text: index + 1
             font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
             visible: extruderEnabled

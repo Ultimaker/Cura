@@ -26,6 +26,7 @@ Item
 
     ExpandableCard
     {
+        borderColor: printJob.configurationChanges.length !== 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
         headerItem: Row
         {
             height: 48 * screenScaleFactor // TODO: Theme!
@@ -96,6 +97,7 @@ Item
                         return ""
                     }
                     visible: printJob
+                    width: 120 * screenScaleFactor // TODO: Theme!
 
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!

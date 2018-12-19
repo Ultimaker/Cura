@@ -20,7 +20,7 @@ Row
     {
         materialColor: printCoreConfiguration.material.color
         anchors.verticalCenter: parent.verticalCenter
-        extruderEnabled: printCoreConfiguration.material.name !== "" && printCoreConfiguration.hotendID !== ""
+        extruderEnabled: printCoreConfiguration.material.brand !== "" && printCoreConfiguration.hotendID !== ""
     }
 
     Column
@@ -36,7 +36,7 @@ Row
         }
         Label
         {
-            text: printCoreConfiguration.material.name ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
+            text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("default")
