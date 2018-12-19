@@ -123,9 +123,10 @@ class DiscoverUM3Action(MachineAction):
     # stored into the metadata of the currently active machine.
     @pyqtSlot(QObject)
     def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
-        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
         if not printer_device:
             return
+
+        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
 
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if not global_container_stack:
