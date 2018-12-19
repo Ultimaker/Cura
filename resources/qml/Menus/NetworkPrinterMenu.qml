@@ -7,11 +7,14 @@ import QtQuick.Controls 1.4
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Instantiator {
-    model: UM.ContainerStacksModel {
+Instantiator
+{
+    model: UM.ContainerStacksModel
+    {
         filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
     }
-    MenuItem {
+    MenuItem
+    {
         // TODO: Use printer_group icon when it's a cluster. Not use it for now since it doesn't look as expected
 //        iconSource: UM.Theme.getIcon("printer_single")
         text: model.metadata["connect_group_name"]

@@ -229,7 +229,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
     def uniquePrinterTypes(self) -> List[str]:
-        return list(set([configuration.printerType for configuration in self._unique_configurations]))
+        return list(sorted(set([configuration.printerType for configuration in self._unique_configurations])))
 
     def _onPrintersChanged(self) -> None:
         for printer in self._printers:
