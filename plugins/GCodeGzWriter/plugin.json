@@ -1,8 +1,8 @@
 {
     "name": "Compressed G-code Writer",
     "author": "Ultimaker B.V.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Writes g-code to a compressed archive.",
-    "api": 5,
+    "api": "6.0",
     "i18n-catalog": "cura"
 }

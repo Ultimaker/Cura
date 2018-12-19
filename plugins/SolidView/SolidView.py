@@ -12,7 +12,6 @@ from UM.Math.Color import Color
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ExtrudersModel import ExtrudersModel
 
 import math
 
@@ -29,12 +28,15 @@ class SolidView(View):
         self._non_printing_shader = None
         self._support_mesh_shader = None
 
-        self._extruders_model = ExtrudersModel()
+        self._extruders_model = None
         self._theme = None
 
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
+
+        if not self._extruders_model:
+            self._extruders_model = Application.getInstance().getExtrudersModel()
 
         if not self._theme:
             self._theme = Application.getInstance().getTheme()

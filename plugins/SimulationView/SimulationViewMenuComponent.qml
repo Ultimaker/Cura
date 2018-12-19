@@ -15,7 +15,6 @@ Cura.ExpandableComponent
 {
     id: base
 
-    width: UM.Theme.getSize("layerview_menu_size").width
     contentHeaderTitle: catalog.i18nc("@label", "Color scheme")
 
     Connections
@@ -35,14 +34,36 @@ Cura.ExpandableComponent
         }
     }
 
-    headerItem: Label
+    headerItem: Item
     {
-        id: layerViewTypesLabel
-        text: catalog.i18nc("@label", "Color scheme")
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("setting_control_text")
-        height: base.height
-        verticalAlignment: Text.AlignVCenter
+        Label
+        {
+            id: colorSchemeLabel
+            text: catalog.i18nc("@label", "Color scheme")
+            verticalAlignment: Text.AlignVCenter
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_medium")
+            renderType: Text.NativeRendering
+        }
+
+        Label
+        {
+            text: layerTypeCombobox.currentText
+            verticalAlignment: Text.AlignVCenter
+            anchors
+            {
+                left: colorSchemeLabel.right
+                leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
+            }
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
+        }
     }
 
     contentItem: Column
@@ -125,7 +146,7 @@ Cura.ExpandableComponent
         Label
         {
             id: compatibilityModeLabel
-            text: catalog.i18nc("@label","Compatibility Mode")
+            text: catalog.i18nc("@label", "Compatibility Mode")
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             visible: UM.SimulationView.compatibilityMode
@@ -136,13 +157,13 @@ Cura.ExpandableComponent
 
         Item  // Spacer
         {
-            height: Math.round(UM.Theme.getSize("default_margin").width / 2)
+            height: UM.Theme.getSize("narrow_margin").width
             width: width
         }
 
         Repeater
         {
-            model: Cura.ExtrudersModel{}
+            model: CuraApplication.getExtrudersModel()
 
             CheckBox
             {
@@ -161,17 +182,16 @@ Cura.ExpandableComponent
 
                 style: UM.Theme.styles.checkbox
 
-                Rectangle
+
+                UM.RecolorImage
                 {
+                    id: swatch
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: extrudersModelCheckBox.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
+                    source: UM.Theme.getIcon("extruder_button")
                     color: model.color
-                    radius: Math.round(width / 2)
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: !viewSettings.show_legend && !viewSettings.show_gradient
                 }
 
                 Label
@@ -201,25 +221,25 @@ Cura.ExpandableComponent
                 Component.onCompleted:
                 {
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Travels"),
+                        label: catalog.i18nc("@label", "Travels"),
                         initialValue: viewSettings.show_travel_moves,
                         preference: "layerview/show_travel_moves",
                         colorId:  "layerview_move_combing"
                     });
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Helpers"),
+                        label: catalog.i18nc("@label", "Helpers"),
                         initialValue: viewSettings.show_helpers,
                         preference: "layerview/show_helpers",
                         colorId:  "layerview_support"
                     });
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Shell"),
+                        label: catalog.i18nc("@label", "Shell"),
                         initialValue: viewSettings.show_skin,
                         preference: "layerview/show_skin",
                         colorId:  "layerview_inset_0"
                     });
                     typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Show Infill"),
+                        label: catalog.i18nc("@label", "Infill"),
                         initialValue: viewSettings.show_infill,
                         preference: "layerview/show_infill",
                         colorId:  "layerview_infill"

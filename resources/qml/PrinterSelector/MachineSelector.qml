@@ -11,7 +11,7 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasRemoteConnection
     property bool isPrinterConnected: Cura.MachineManager.printerConnected
     property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
@@ -24,49 +24,24 @@ Cura.ExpandablePopup
         name: "cura"
     }
 
-    headerItem: Item
+    headerItem: Cura.IconWithText
     {
-        implicitHeight: icon.height
-
-        UM.RecolorImage
+        text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+        source:
         {
-            id: icon
-
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-
-            source:
+            if (isNetworkPrinter)
             {
-                if (isNetworkPrinter)
+                if (machineSelector.outputDevice != null && machineSelector.outputDevice.clusterSize > 1)
                 {
-                    if (machineSelector.outputDevice != null && machineSelector.outputDevice.clusterSize > 1)
-                    {
-                        return UM.Theme.getIcon("printer_group")
-                    }
-                    return UM.Theme.getIcon("printer_single")
+                    return UM.Theme.getIcon("printer_group")
                 }
-                return ""
+                return UM.Theme.getIcon("printer_single")
             }
-            width: UM.Theme.getSize("machine_selector_icon").width
-            height: width
-
-            color: UM.Theme.getColor("machine_selector_printer_icon")
-            visible: source != ""
+            return ""
         }
-
-        Label
-        {
-            id: label
-            anchors.left: icon.visible ? icon.right : parent.left
-            anchors.right: parent.right
-            anchors.leftMargin: UM.Theme.getSize("thin_margin").width
-            anchors.verticalCenter: icon.verticalCenter
-            text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
-            elide: Text.ElideRight
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-        }
+        font: UM.Theme.getFont("medium")
+        iconColor: UM.Theme.getColor("machine_selector_printer_icon")
+        iconSize: source != "" ? UM.Theme.getSize("machine_selector_icon").width: 0
 
         UM.RecolorImage
         {
@@ -123,6 +98,12 @@ Cura.ExpandablePopup
                     scroll.height = Math.min(height, maximumHeight)
                     popup.height = scroll.height + buttonRow.height
                 }
+                Component.onCompleted:
+                {
+                    scroll.height = Math.min(height, maximumHeight)
+                    popup.height = scroll.height + buttonRow.height
+                }
+
             }
         }
 

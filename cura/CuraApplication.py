@@ -51,6 +51,7 @@ from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
+from cura.PrintersModel import PrintersModel
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
@@ -113,6 +114,7 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
+from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
 from UM.FlameProfiler import pyqtSlot
@@ -134,7 +136,7 @@ except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
-    CuraSDKVersion = "5.0.0"
+    CuraSDKVersion = "6.0.0"
 
 
 class CuraApplication(QtApplication):
@@ -205,6 +207,8 @@ class CuraApplication(QtApplication):
         self._container_manager = None
 
         self._object_manager = None
+        self._extruders_model = None
+        self._extruders_model_with_optional = None
         self._build_plate_model = None
         self._multi_build_plate_model = None
         self._setting_visibility_presets_model = None
@@ -863,6 +867,19 @@ class CuraApplication(QtApplication):
         return self._object_manager
 
     @pyqtSlot(result = QObject)
+    def getExtrudersModel(self, *args) -> "ExtrudersModel":
+        if self._extruders_model is None:
+            self._extruders_model = ExtrudersModel(self)
+        return self._extruders_model
+
+    @pyqtSlot(result = QObject)
+    def getExtrudersModelWithOptional(self, *args) -> "ExtrudersModel":
+        if self._extruders_model_with_optional is None:
+            self._extruders_model_with_optional = ExtrudersModel(self)
+            self._extruders_model_with_optional.setAddOptionalExtruder(True)
+        return self._extruders_model_with_optional
+
+    @pyqtSlot(result = QObject)
     def getMultiBuildPlateModel(self, *args) -> MultiBuildPlateModel:
         if self._multi_build_plate_model is None:
             self._multi_build_plate_model = MultiBuildPlateModel(self)
@@ -954,6 +971,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+        qmlRegisterType(PrintersModel, "Cura", 1, 0, "PrintersModel")
 
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
@@ -974,6 +992,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)
         qmlRegisterType(SidebarCustomMenuItemsModel, "Cura", 1, 0, "SidebarCustomMenuItemsModel")
+
+        qmlRegisterType(PrinterOutputDevice, "Cura", 1, 0, "PrinterOutputDevice")
 
         from cura.API import CuraAPI
         qmlRegisterSingletonType(CuraAPI, "Cura", 1, 1, "API", self.getCuraAPI)

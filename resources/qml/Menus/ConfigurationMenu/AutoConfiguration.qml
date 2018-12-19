@@ -16,8 +16,8 @@ Item
     {
         id: header
         text: catalog.i18nc("@header", "Configurations")
-        font: UM.Theme.getFont("large_bold")
-        color: UM.Theme.getColor("text")
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("small_button_text")
         height: contentHeight
         renderType: Text.NativeRendering
 

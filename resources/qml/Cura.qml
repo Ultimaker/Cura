@@ -123,6 +123,17 @@ UM.MainWindow
                     }
                 }
             }
+
+              // This is a placehoder for adding a pattern in the header
+             Image
+             {
+                 id: backgroundPattern
+                 anchors.fill: parent
+                 fillMode: Image.Tile
+                 source: UM.Theme.getImage("header_pattern")
+                 horizontalAlignment: Image.AlignLeft
+                 verticalAlignment: Image.AlignTop
+             }
         }
 
         MainWindowHeader
@@ -252,7 +263,7 @@ UM.MainWindow
                 anchors
                 {
                     // Align to the top of the stageMenu since the stageMenu may not exist
-                    top: parent.top
+                    top: stageMenu.source ? stageMenu.verticalCenter : parent.top
                     left: parent.left
                     right: parent.right
                     bottom: parent.bottom
@@ -278,16 +289,33 @@ UM.MainWindow
                 height: UM.Theme.getSize("stage_menu").height
                 source: UM.Controller.activeStage != null ? UM.Controller.activeStage.stageMenuComponent : ""
 
+                //  HACK: This is to ensure that the parent never gets set to null, as this wreaks havoc on the focus.
+                function onParentDestroyed()
+                {
+                    printSetupSelector.parent = stageMenu
+                    printSetupSelector.visible = false
+                }
+                property Item oldParent: null
+
                 // The printSetupSelector is defined here so that the setting list doesn't need to get re-instantiated
                 // Every time the stage is changed.
                 property var printSetupSelector: Cura.PrintSetupSelector
                 {
-                    width: UM.Theme.getSize("print_setup_widget").width
-                    height: UM.Theme.getSize("stage_menu").height
-                    headerCornerSide: RoundedRectangle.Direction.Right
+                   width: UM.Theme.getSize("print_setup_widget").width
+                   height: UM.Theme.getSize("stage_menu").height
+                   headerCornerSide: RoundedRectangle.Direction.Right
+                   onParentChanged:
+                   {
+                       if(stageMenu.oldParent !=null)
+                       {
+                           stageMenu.oldParent.Component.destruction.disconnect(stageMenu.onParentDestroyed)
+                       }
+                       stageMenu.oldParent = parent
+                       visible = parent != stageMenu
+                       parent.Component.destruction.connect(stageMenu.onParentDestroyed)
+                   }
                 }
             }
-
             UM.MessageStack
             {
                 anchors

@@ -2,6 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
+import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3
 
 import UM 1.3 as UM
@@ -19,12 +20,15 @@ Item
         name: "cura"
     }
 
-
     Row
     {
         id: stageMenuRow
         anchors.centerIn: parent
         height: parent.height
+        width: childrenRect.width
+
+        // We want this row to have a preferred with equals to the 85% of the parent
+        property int preferredWidth: Math.round(0.85 * previewMenu.width)
 
         Cura.ViewsSelector
         {
@@ -45,11 +49,12 @@ Item
             color: UM.Theme.getColor("lining")
         }
 
+        // This component will grow freely up to complete the preferredWidth of the row.
         Loader
         {
             id: viewPanel
             height: parent.height
-            width: childrenRect.width
+            width: source != "" ? (stageMenuRow.preferredWidth - viewsSelector.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width) : 0
             source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
         }
 

@@ -12,7 +12,7 @@ import Cura 1.0 as Cura
 import "PrinterOutput"
 
 
-Rectangle
+Item
 {
     id: base
     UM.I18nCatalog { id: catalog; name: "cura"}
@@ -60,11 +60,7 @@ Rectangle
 
         anchors.fill: parent
 
-        Cura.ExtrudersModel
-        {
-            id: extrudersModel
-            simpleNames: true
-        }
+        property var extrudersModel: CuraApplication.getExtrudersModel()
 
         OutputDeviceHeader
         {

@@ -14,106 +14,101 @@ Button
     property var configuration: null
     hoverEnabled: true
 
-    height: background.height
-
     background: Rectangle
     {
-        height: childrenRect.height
         color: parent.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-        border.color: (parent.checked || parent.hovered) ? UM.Theme.getColor("primary") : UM.Theme.getColor("lining")
-        border.width: parent.checked ? UM.Theme.getSize("thick_lining").width : UM.Theme.getSize("default_lining").width
+        border.color: parent.checked ? UM.Theme.getColor("primary") : UM.Theme.getColor("lining")
+        border.width: UM.Theme.getSize("default_lining").width
         radius: UM.Theme.getSize("default_radius").width
+    }
 
-        Column
+    contentItem: Column
+    {
+        id: contentColumn
+        width: parent.width
+        padding: UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("narrow_margin").height
+
+        Row
         {
-            id: contentColumn
-            width: parent.width
-            padding: UM.Theme.getSize("wide_margin").width
-            spacing: UM.Theme.getSize("narrow_margin").height
+            id: extruderRow
 
-            Row
+            anchors
             {
-                id: extruderRow
-
-                anchors
-                {
-                    left: parent.left
-                    leftMargin: parent.padding
-                    right: parent.right
-                    rightMargin: parent.padding
-                }
-                height: childrenRect.height
-
-                spacing: UM.Theme.getSize("default_margin").width
-
-                Repeater
-                {
-                    id: repeater
-                    height: childrenRect.height
-                    model: configuration.extruderConfigurations
-                    delegate: PrintCoreConfiguration
-                    {
-                        width: Math.round(parent.width / 2)
-                        printCoreConfiguration: modelData
-                    }
-                }
+                left: parent.left
+                leftMargin: UM.Theme.getSize("wide_margin").width
+                right: parent.right
+                rightMargin: UM.Theme.getSize("wide_margin").width
             }
 
-            //Buildplate row separator
-            Rectangle
+            spacing: UM.Theme.getSize("default_margin").width
+
+            Repeater
             {
-                id: separator
-
-                visible: buildplateInformation.visible
-                anchors
+                id: repeater
+                model: configuration.extruderConfigurations
+                delegate: PrintCoreConfiguration
                 {
-                    left: parent.left
-                    leftMargin: parent.padding
-                    right: parent.right
-                    rightMargin: parent.padding
-                }
-                height: visible ? Math.round(UM.Theme.getSize("default_lining").height / 2) : 0
-                color: UM.Theme.getColor("lining")
-            }
-
-            Item
-            {
-                id: buildplateInformation
-
-                anchors
-                {
-                    left: parent.left
-                    leftMargin: parent.padding
-                    right: parent.right
-                    rightMargin: parent.padding
-                }
-                height: childrenRect.height
-                visible: configuration.buildplateConfiguration != ""
-
-                // Show the type of buildplate. The first letter is capitalized
-                Cura.IconWithText
-                {
-                    id: buildplateLabel
-                    source: UM.Theme.getIcon("buildplate")
-                    text: configuration.buildplateConfiguration.charAt(0).toUpperCase() + configuration.buildplateConfiguration.substr(1)
-                    anchors.left: parent.left
+                    width: Math.round(parent.width / 2)
+                    printCoreConfiguration: modelData
                 }
             }
         }
 
-        Connections
+        //Buildplate row separator
+        Rectangle
         {
-            target: Cura.MachineManager
-            onCurrentConfigurationChanged:
+            id: separator
+
+            visible: buildplateInformation.visible
+            anchors
             {
-                configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
+                left: parent.left
+                leftMargin: UM.Theme.getSize("wide_margin").width
+                right: parent.right
+                rightMargin: UM.Theme.getSize("wide_margin").width
             }
+            height: visible ? Math.round(UM.Theme.getSize("default_lining").height / 2) : 0
+            color: UM.Theme.getColor("lining")
         }
 
-        Component.onCompleted:
+        Item
+        {
+            id: buildplateInformation
+
+            anchors
+            {
+                left: parent.left
+                leftMargin: UM.Theme.getSize("wide_margin").width
+                right: parent.right
+                rightMargin: UM.Theme.getSize("wide_margin").width
+            }
+            height: childrenRect.height
+            visible: configuration.buildplateConfiguration != ""
+
+            // Show the type of buildplate. The first letter is capitalized
+            Cura.IconWithText
+            {
+                id: buildplateLabel
+                source: UM.Theme.getIcon("buildplate")
+                text: configuration.buildplateConfiguration.charAt(0).toUpperCase() + configuration.buildplateConfiguration.substr(1)
+                anchors.left: parent.left
+            }
+        }
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onCurrentConfigurationChanged:
         {
             configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
         }
+    }
+
+    Component.onCompleted:
+    {
+        configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
     }
 
     onClicked:

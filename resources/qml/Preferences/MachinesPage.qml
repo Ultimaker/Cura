@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -91,7 +91,7 @@ UM.ManagementPage
 
                 Item
                 {
-                    width: childrenRect.width + 2 * screenScaleFactor
+                    width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                     height: childrenRect.height
                     Button
                     {

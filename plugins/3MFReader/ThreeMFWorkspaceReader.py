@@ -794,7 +794,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Clear all existing containers
             quality_changes_info.global_info.container.clear()
             for container_info in quality_changes_info.extruder_info_dict.values():
-                container_info.container.clear()
+                if container_info.container:
+                    container_info.container.clear()
 
             # Loop over everything and override the existing containers
             global_info = quality_changes_info.global_info

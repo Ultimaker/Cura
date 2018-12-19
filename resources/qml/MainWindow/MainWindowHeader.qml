@@ -54,16 +54,23 @@ Item
             {
                 text: model.name.toUpperCase()
                 checkable: true
-                checked: model.active
+                checked: UM.Controller.activeStage !== null && model.id == UM.Controller.activeStage.stageId
+
                 anchors.verticalCenter: parent.verticalCenter
                 exclusiveGroup: mainWindowHeaderMenuGroup
                 style: UM.Theme.styles.main_window_header_tab
                 height: UM.Theme.getSize("main_window_header_button").height
-                onClicked: UM.Controller.setActiveStage(model.id)
                 iconSource: model.stage.iconSource
 
                 property color overlayColor: "transparent"
                 property string overlayIconSource: ""
+
+                // This is a trick to assure the activeStage is correctly changed. It doesn't work propertly if done in the onClicked (see CURA-6028)
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: UM.Controller.setActiveStage(model.id)
+                }
             }
         }
 
