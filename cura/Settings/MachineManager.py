@@ -300,6 +300,7 @@ class MachineManager(QObject):
         self.activeMaterialChanged.emit()
 
         self.rootMaterialChanged.emit()
+        self.numberExtrudersEnabledChanged.emit()
 
     def _onContainersChanged(self, container: ContainerInterface) -> None:
         self._instance_container_timer.start()
