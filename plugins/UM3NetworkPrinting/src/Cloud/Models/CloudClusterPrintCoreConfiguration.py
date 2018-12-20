@@ -10,7 +10,7 @@ from .BaseCloudModel import BaseCloudModel
 
 ##  Class representing a cloud cluster printer configuration
 #  Spec: https://api-staging.ultimaker.com/connect/v1/spec
-class CloudClusterPrinterConfiguration(BaseCloudModel):
+class CloudClusterPrintCoreConfiguration(BaseCloudModel):
     ## Creates a new cloud cluster printer configuration object
     #  \param extruder_index: The position of the extruder on the machine as list index. Numbered from left to right.
     #  \param material: The material of a configuration object in a cluster printer. May be in a dict or an object.
@@ -18,10 +18,9 @@ class CloudClusterPrinterConfiguration(BaseCloudModel):
     #  \param print_core_id: The type of print core inserted at this position, e.g. 'AA 0.4'.
     def __init__(self, extruder_index: int,
                  material: Union[None, Dict[str, Any], CloudClusterPrinterConfigurationMaterial],
-                 nozzle_diameter: Optional[str] = None, print_core_id: Optional[str] = None, **kwargs) -> None:
+                 print_core_id: Optional[str] = None, **kwargs) -> None:
         self.extruder_index = extruder_index
         self.material = self.parseModel(CloudClusterPrinterConfigurationMaterial, material) if material else None
-        self.nozzle_diameter = nozzle_diameter
         self.print_core_id = print_core_id
         super().__init__(**kwargs)
 

@@ -4,10 +4,13 @@ from typing import List, Optional, Union, Dict, Any
 
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
-from .CloudClusterPrinterConfiguration import CloudClusterPrinterConfiguration
+from src.ConfigurationChangeModel import ConfigurationChangeModel
+from .CloudClusterBuildPlate import CloudClusterBuildPlate
+from .CloudClusterPrintJobConfigurationChange import CloudClusterPrintJobConfigurationChange
+from .CloudClusterPrintJobImpediment import CloudClusterPrintJobImpediment
+from .CloudClusterPrintCoreConfiguration import CloudClusterPrintCoreConfiguration
 from .CloudClusterPrintJobConstraint import CloudClusterPrintJobConstraints
 from .BaseCloudModel import BaseCloudModel
-
 
 ##  Class representing a print job
 from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
@@ -34,15 +37,29 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
     #  \param time_elapsed: The remaining printing time in seconds.
     #  \param time_total: The total printing time in seconds.
     #  \param uuid: UUID of this print job. Should be used for identification purposes.
+    #  \param deleted_at: The time when this print job was deleted.
+    #  \param printed_on_uuid: UUID of the printer used to print this job.
+    #  \param configuration_changes_required: List of configuration changes the printer this job is associated with
+    #       needs to make in order to be able to print this job
+    #  \param build_plate: The build plate (type) this job needs to be printed on.
+    #  \param compatible_machine_families: Family names of machines suitable for this print job
+    #  \param impediments_to_printing: A list of reasons that prevent this job from being printed on the associated
+    #       printer
     def __init__(self, created_at: str, force: bool, machine_variant: str, name: str, started: bool, status: str,
                  time_total: int, uuid: str,
-                 configuration: List[Union[Dict[str, Any], CloudClusterPrinterConfiguration]],
+                 configuration: List[Union[Dict[str, Any], CloudClusterPrintCoreConfiguration]],
                  constraints: List[Union[Dict[str, Any], CloudClusterPrintJobConstraints]],
                  last_seen: Optional[float] = None, network_error_count: Optional[int] = None,
                  owner: Optional[str] = None, printer_uuid: Optional[str] = None, time_elapsed: Optional[int] = None,
-                 assigned_to: Optional[str] = None, **kwargs) -> None:
+                 assigned_to: Optional[str] = None, deleted_at: Optional[str] = None,
+                 printed_on_uuid: Optional[str] = None,
+                 configuration_changes_required: List[
+                     Union[Dict[str, Any], CloudClusterPrintJobConfigurationChange]] = None,
+                 build_plate: Optional[str] = None, compatible_machine_families: List[str] = None,
+                 impediments_to_printing: List[Union[Dict[str, Any], CloudClusterPrintJobImpediment]] = None,
+                 **kwargs) -> None:
         self.assigned_to = assigned_to
-        self.configuration = self.parseModels(CloudClusterPrinterConfiguration, configuration)
+        self.configuration = self.parseModels(CloudClusterPrintCoreConfiguration, configuration)
         self.constraints = self.parseModels(CloudClusterPrintJobConstraints, constraints)
         self.created_at = created_at
         self.force = force
@@ -57,6 +74,14 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
         self.time_elapsed = time_elapsed
         self.time_total = time_total
         self.uuid = uuid
+        self.deleted_at = deleted_at
+        self.printed_on_uuid = printed_on_uuid
+        self.configuration_changes_required = self.parseModels(CloudClusterPrintJobConfigurationChange,
+                                                               configuration_changes_required)
+        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate)
+        self.compatible_machine_families = compatible_machine_families
+        self.impediments_to_printing = self.parseModels(CloudClusterPrintJobImpediment, impediments_to_printing)
+
         super().__init__(**kwargs)
 
     ## Creates an UM3 print job output model based on this cloud cluster print job.
@@ -77,11 +102,28 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
     ## Updates an UM3 print job output model based on this cloud cluster print job.
     #  \param model: The model to update.
     def updateOutputModel(self, model: UM3PrintJobOutputModel) -> None:
-        # TODO: Add `compatible_machine_families` to the cloud, than add model.setCompatibleMachineFamilies()
-        # TODO: Add `impediments_to_printing` to the cloud, see ClusterUM3OutputDevice._updatePrintJob
-        # TODO: Use model.updateConfigurationChanges, see ClusterUM3OutputDevice#_createConfigurationChanges
         model.updateConfiguration(self._createConfigurationModel())
         model.updateTimeTotal(self.time_total)
         model.updateTimeElapsed(self.time_elapsed)
         model.updateOwner(self.owner)
         model.updateState(self.status)
+        model.setCompatibleMachineFamilies(self.compatible_machine_families)
+        model.updateTimeTotal(self.time_total)
+        model.updateTimeElapsed(self.time_elapsed)
+        model.updateOwner(self.owner)
+
+        status_set_by_impediment = False
+        for impediment in self.impediments_to_printing:
+            if impediment.severity == "UNFIXABLE":  # TODO: impediment.severity is defined as int, this will not work, is there a translation?
+                status_set_by_impediment = True
+                model.updateState("error")
+                break
+
+        if not status_set_by_impediment:
+            model.updateState(self.status)
+
+        model.updateConfigurationChanges([ConfigurationChangeModel(type_of_change=change.type_of_change,
+                                                                   index=change.index,
+                                                                   target_name=change.target_name,
+                                                                   origin_name=change.origin_name)
+                                          for change in self.configuration_changes_required])
