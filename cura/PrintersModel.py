@@ -53,9 +53,8 @@ class PrintersModel(ListModel):
         container_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
 
         for container_stack in container_stacks:
-            connection_type = container_stack.getMetaDataEntry("connection_type")
-            has_remote_connection = connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
-
+            connection_type = container_stack.getMetaDataEntry("connection_type", 0)
+            has_remote_connection = int(connection_type) in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
             if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
                 continue
 
