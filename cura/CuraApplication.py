@@ -434,7 +434,8 @@ class CuraApplication(QtApplication):
     def startSplashWindowPhase(self) -> None:
         super().startSplashWindowPhase()
 
-        self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
+        if not self.getIsHeadLess():
+            self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
             # Misc.:
