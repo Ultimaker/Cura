@@ -1390,13 +1390,6 @@ class MachineManager(QObject):
         if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
-    ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
-    def replaceContainersMetadata(self, key: str, value: str, new_value: str) -> None:
-        machines = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
-        for machine in machines:
-            if machine.getMetaDataEntry(key) == value:
-                machine.setMetaDataEntry(key, new_value)
-
     ##  This method checks if the name of the group stored in the definition container is correct.
     #   After updating from 3.2 to 3.3 some group names may be temporary. If there is a mismatch in the name of the group
     #   then all the container stacks are updated, both the current and the hidden ones.

@@ -8,6 +8,7 @@ from UM.Signal import Signal, signalemitter
 from UM.Version import Version
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
+from .util import updateMetadataForNetworkGroupMachines
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
 from PyQt5.QtCore import QUrl
@@ -281,9 +282,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
-            global_container_stack.setMetaDataEntry("connection_type", device.getConnectionType().value)
+        global_stack = Application.getInstance().getMachineManager().activeMachine
+        if global_stack and device.getId() == global_stack.getMetaDataEntry("um_network_key"):
+            updateMetadataForNetworkGroupMachines(device.getId(), None,
+                                                  {"connection_type": device.getConnectionType().value})
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 

@@ -15,6 +15,7 @@ from cura.CuraApplication import CuraApplication
 from cura.MachineAction import MachineAction
 
 from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
+from .util import updateMetadataForNetworkGroupMachines
 
 if TYPE_CHECKING:
     from cura.PrinterOutputDevice import PrinterOutputDevice
@@ -102,18 +103,14 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot(str)
     def setGroupName(self, group_name: str) -> None:
         Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "connect_group_name" in meta_data:
-                previous_connect_group_name = meta_data["connect_group_name"]
-                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
-                # Find all the places where there is the same group name and change it accordingly
-                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connect_group_name", value = previous_connect_group_name, new_value = group_name)
-            else:
-                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
-            # Set the default value for "hidden", which is used when you have a group with multiple types of printers
-            global_container_stack.setMetaDataEntry("hidden", False)
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        if global_stack:
+            current_group_name = global_stack.getMetaDataEntry("connect_group_name")
+            new_metadata = {"connect_group_name": group_name,
+                            "hidden": False}
+            updateMetadataForNetworkGroupMachines(None, current_group_name, new_metadata)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
@@ -124,25 +121,16 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot(QObject)
     def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
         Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "um_network_key" in meta_data:
-                previous_network_key= meta_data["um_network_key"]
-                global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-                # Delete old authentication data.
-                Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
-                global_container_stack.removeMetaDataEntry("network_authentication_id")
-                global_container_stack.removeMetaDataEntry("network_authentication_key")
-                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = printer_device.key)
 
-                if "connection_type" in meta_data:
-                    previous_connection_type = meta_data["connection_type"]
-                    global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
-                    CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connection_type", value = previous_connection_type, new_value = printer_device.getConnectionType().value)
-            else:
-                global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-                global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+
+        global_stack = machine_manager.activeMachine
+        if global_stack:
+            old_network_key = global_stack.getMetaDataEntry("um_network_key")
+            new_metadata = {"um_network_key": printer_device.key,
+                            "connection_type": printer_device.getConnectionType().value,
+                            }
+            updateMetadataForNetworkGroupMachines(old_network_key, None, new_metadata)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
