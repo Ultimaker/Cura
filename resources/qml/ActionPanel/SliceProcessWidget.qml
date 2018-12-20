@@ -134,7 +134,6 @@ Column
         onPreferenceChanged:
         {
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
-            print(prepareButtons.autoSlice, autoSlice)
             if(prepareButtons.autoSlice != autoSlice)
             {
                 prepareButtons.autoSlice = autoSlice
