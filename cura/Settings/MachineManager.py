@@ -527,10 +527,15 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasRemoteConnection(self) -> bool:
-        if self._global_container_stack:
-            connection_type = self._global_container_stack.getMetaDataEntry("connection_type")
-            return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
-        return False
+        return self.activeMachineHasActiveNetworkConnection or self.activeMachineHasActiveCloudConnection
+        # if self._global_container_stack:
+        #     connection_type = self._global_container_stack.getMetaDataEntry("connection_type")
+        #     return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
+        # return False
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineIsGroup(self) -> bool:
+        return self._printer_output_devices and self._printer_output_devices[0].clusterSize > 1
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasActiveNetworkConnection(self) -> bool:

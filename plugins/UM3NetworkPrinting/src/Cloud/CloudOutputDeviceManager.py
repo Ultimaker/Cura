@@ -121,10 +121,11 @@ class CloudOutputDeviceManager:
             return
 
         device = next((c for c in self._remote_clusters.values() if c.matchesNetworkKey(local_network_key)), None)
-        if device:
-            active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-            device.connect()
+        if not device:
+            return
 
+        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        device.connect()
         Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
 
     ## Handles an API error received from the cloud.
