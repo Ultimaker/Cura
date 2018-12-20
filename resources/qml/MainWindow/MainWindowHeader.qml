@@ -30,7 +30,8 @@ Item
         width: UM.Theme.getSize("logo").width
         height: UM.Theme.getSize("logo").height
 
-        mipmap: true
+        sourceSize.width: width
+        sourceSize.height: height
     }
 
     Row
