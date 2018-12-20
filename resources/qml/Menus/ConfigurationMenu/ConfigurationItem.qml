@@ -14,6 +14,23 @@ Button
     property var configuration: null
     hoverEnabled: true
 
+    property bool isValidMaterial:
+    {
+        var extruderConfigurations = configuration.extruderConfigurations
+
+        for (var index = 0; index < extruderConfigurations.length; index++)
+        {
+            var name = extruderConfigurations[index].material.brand ? extruderConfigurations[index].material.name : ""
+
+            if (name == "" || name == "Unknown")
+            {
+                hoverEnabled = false
+                return false
+            }
+        }
+        return true
+    }
+
     background: Rectangle
     {
         color: parent.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
@@ -40,17 +57,100 @@ Button
                 right: parent.right
                 rightMargin: UM.Theme.getSize("wide_margin").width
             }
-
+            height: childrenRect.height
             spacing: UM.Theme.getSize("default_margin").width
 
             Repeater
             {
                 id: repeater
-                model: configuration.extruderConfigurations
+                model:
+                {
+                    if (configurationItem.isValidMaterial)
+                    {
+                        return configuration.extruderConfigurations
+                    }
+                    return []
+                }
+
                 delegate: PrintCoreConfiguration
                 {
                     width: Math.round(parent.width / 2)
                     printCoreConfiguration: modelData
+                }
+            }
+
+            // Unknown material
+            Rectangle
+            {
+                id: unknownMaterial
+                height: unknownMaterialMessage.height + UM.Theme.getSize("thin_margin").width / 2
+                width: parent.width
+
+                anchors.top: parent.top
+                anchors.topMargin:
+                {
+                    return UM.Theme.getSize("thin_margin").width / 2
+                }
+
+                visible: !configurationItem.isValidMaterial
+
+                UM.RecolorImage
+                {
+                    id: icon
+                    anchors.verticalCenter: unknownMaterialMessage.verticalCenter
+
+                    source: UM.Theme.getIcon("warning")
+                    color: UM.Theme.getColor("warning")
+                    width: UM.Theme.getSize("section_icon").width
+                    height: width
+                }
+
+                Label
+                {
+                    id: unknownMaterialMessage
+                    text:
+                    {
+                        var extruderConfigurations = configuration.extruderConfigurations
+                        var unknownMaterials = []
+                        for (var index = 0; index < extruderConfigurations.length; index++)
+                        {
+                            var name = extruderConfigurations[index].material.brand ? extruderConfigurations[index].material.name : ""
+
+                            if (name == "" || name == "Unknown")
+                            {
+                                unknownMaterials.push(extruderConfigurations[index].material.brand ? extruderConfigurations[index].material.brand : "Unknown Brand")
+                            }
+                        }
+
+                        unknownMaterials = "<b>" + unknownMaterials + "</b>"
+                        var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile.");
+                        var result = draftResult.arg(unknownMaterials).arg("<a href=' '>" + catalog.i18nc("@label","Marketplace") + "</a> ")
+
+                        return result
+                    }
+                    width: extruderRow.width
+
+                    anchors.left: icon.right
+                    anchors.right: unknownMaterial.right
+                    anchors.leftMargin: UM.Theme.getSize("wide_margin").height
+                    anchors.top: unknownMaterial.top
+
+                    wrapMode: Text.WordWrap
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    linkColor: UM.Theme.getColor("text_link")
+
+                    onLinkActivated:
+                    {
+                        Cura.Actions.browsePackages.trigger()
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: unknownMaterialMessage.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    acceptedButtons: Qt.NoButton
                 }
             }
         }
