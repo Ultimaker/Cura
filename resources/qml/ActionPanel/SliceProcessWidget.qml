@@ -134,10 +134,14 @@ Column
         onPreferenceChanged:
         {
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
-            prepareButtons.autoSlice = autoSlice
-            if(autoSlice)
+            print(prepareButtons.autoSlice, autoSlice)
+            if(prepareButtons.autoSlice != autoSlice)
             {
-                CuraApplication.backend.forceSlice()
+                prepareButtons.autoSlice = autoSlice
+                if(autoSlice)
+                {
+                    CuraApplication.backend.forceSlice()
+                }
             }
         }
     }
