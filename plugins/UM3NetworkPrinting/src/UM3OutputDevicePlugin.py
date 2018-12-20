@@ -35,12 +35,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf = None
         self._zero_conf_browser = None
 
-        # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-        self.addDeviceSignal.connect(self._onAddDevice)
-        self.removeDeviceSignal.connect(self._onRemoveDevice)
-
-        Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
-
         self._discovered_devices = {}
         
         self._network_manager = QNetworkAccessManager()
@@ -70,6 +64,18 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._service_changed_request_queue = Queue()
         self._service_changed_request_event = Event()
         self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
+
+        from cura.CuraApplication import CuraApplication
+        CuraApplication.getInstance().initializationFinished.connect(self._initialize)
+
+    def _initialize(self) -> None:
+        # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+        self.addDeviceSignal.connect(self._onAddDevice)
+        self.removeDeviceSignal.connect(self._onRemoveDevice)
+
+        Application.getInstance().getMachineManager().globalContainerChanged.connect(self.reCheckConnections)
+
+        # Start zeroconf thread
         self._service_changed_request_thread.start()
 
     def getDiscoveredDevices(self):
