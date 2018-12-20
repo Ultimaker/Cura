@@ -101,6 +101,6 @@ Button
     {
         id: tooltip
         tooltipText: base.text
-        show: base.hovered
+        visible: base.hovered
     }
 }

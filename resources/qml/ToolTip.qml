@@ -9,15 +9,11 @@ import Cura 1.0 as Cura
 
 ToolTip
 {
-
     enum ContentAlignment
     {
         AlignLeft,
         AlignRight
     }
-
-    // This property indicates when the tooltip has to show, for instance when a button is hovered
-    property bool show: false
 
     // Defines the alignment of the content, by default to the left
     property int contentAlignment: Cura.ToolTip.ContentAlignment.AlignRight
@@ -25,12 +21,13 @@ ToolTip
     property alias tooltipText: tooltip.text
     property var targetPoint: Qt.point(parent.x, y + Math.round(height/2))
 
-
     id: tooltip
     text: ""
     delay: 500
-    visible: text != "" && show
     font: UM.Theme.getFont("default")
+    
+    // If the text is not set, just set the height to 0 to prevent it from showing
+    height: text != "" ? label.contentHeight + 2 * UM.Theme.getSize("thin_margin").width: 0
 
     x:
     {
@@ -43,7 +40,7 @@ ToolTip
 
     y: Math.round(parent.height / 2 - label.height / 2 ) - padding
 
-    padding: 2
+    padding: UM.Theme.getSize("thin_margin").width
 
     background: UM.PointingRectangle
     {

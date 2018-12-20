@@ -115,6 +115,6 @@ Button
     Cura.ToolTip
     {
         id: tooltip
-        show: button.hovered
+        visible: button.hovered
     }
 }
