@@ -3,10 +3,9 @@
 
 from UM.Qt.ListModel import ListModel
 
-from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal
+from PyQt5.QtCore import Qt
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
 
 from cura.PrinterOutputDevice import ConnectionType
 
