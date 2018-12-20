@@ -87,10 +87,7 @@ Button
                 width: parent.width
 
                 anchors.top: parent.top
-                anchors.topMargin:
-                {
-                    return UM.Theme.getSize("thin_margin").width / 2
-                }
+                anchors.topMargin: UM.Theme.getSize("thin_margin").width / 2
 
                 visible: !configurationItem.isValidMaterial
 
