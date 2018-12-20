@@ -529,7 +529,10 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasRemoteConnection(self) -> bool:
         if self._global_container_stack:
-            connection_type = self._global_container_stack.getMetaDataEntry("connection_type")
+            # If the stack was just loaded from a file, its metadata entries will all be str, so we need to convert
+            # it to int to check.
+            default = ConnectionType.Unknown.value
+            connection_type = int(self._global_container_stack.getMetaDataEntry("connection_type", default))
             return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
         return False
 
