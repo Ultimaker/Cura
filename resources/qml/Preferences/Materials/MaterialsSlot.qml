@@ -73,11 +73,9 @@ Rectangle
             if (materialSlot.is_favorite)
             {
                 base.materialManager.removeFavorite(material.root_material_id)
-                materialSlot.is_favorite = false
                 return
             }
             base.materialManager.addFavorite(material.root_material_id)
-            materialSlot.is_favorite = true
             return
         }
         style: ButtonStyle
