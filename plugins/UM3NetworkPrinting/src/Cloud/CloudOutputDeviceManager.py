@@ -88,7 +88,6 @@ class CloudOutputDeviceManager:
         # We only add when is_online as we don't want the option in the drop down if the cluster is not online.
         for added_cluster in added_clusters:
             device = CloudOutputDevice(self._api, added_cluster)
-            self._output_device_manager.addOutputDevice(device)
             self._remote_clusters[added_cluster.cluster_id] = device
 
         for device, cluster in updates:
@@ -103,17 +102,20 @@ class CloudOutputDeviceManager:
             Logger.log("d", "no active machine")
             return
 
+        # Remove all output devices that we have registered.
+        for stored_cluster_id in self._remote_clusters:
+            self._output_device_manager.removeOutputDevice(stored_cluster_id)
+
         # Check if the stored cluster_id for the active machine is in our list of remote clusters.
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         if stored_cluster_id in self._remote_clusters:
             device = self._remote_clusters[stored_cluster_id]
-            if not device.isConnected():
-                device.connect()
-            Logger.log("d", "Device connected by metadata %s", stored_cluster_id)
+            self._connectToOutputDevice(device)
+            Logger.log("d", "Device connected by metadata cluster ID %s", stored_cluster_id)
         else:
             self._connectByNetworkKey(active_machine)
 
-    ##  Tries to match the
+    ## Tries to match the local network key to the cloud cluster host name.
     def _connectByNetworkKey(self, active_machine: GlobalStack) -> None:
         # Check if the active printer has a local network connection and match this key to the remote cluster.
         local_network_key = active_machine.getMetaDataEntry("um_network_key")
@@ -124,9 +126,15 @@ class CloudOutputDeviceManager:
         if not device:
             return
 
-        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        device.connect()
         Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
+        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        self._connectToOutputDevice(device)
+
+    ## Connects to an output device and makes sure it is registered in the output device manager.
+    def _connectToOutputDevice(self, device: CloudOutputDevice) -> None:
+        if not device.isConnected():
+            device.connect()
+        self._output_device_manager.addOutputDevice(device)
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
