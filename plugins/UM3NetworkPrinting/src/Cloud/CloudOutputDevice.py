@@ -246,7 +246,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if self._printers and not self._active_printer:
             self.setActivePrinter(self._printers[0])
 
-        self.printersChanged.emit()  # TODO: Make this more efficient by not updating every request
+        if added_printers or removed_printers or updated_printers:
+            self.printersChanged.emit()
 
     ## Updates the local list of print jobs with the list received from the cloud.
     #  \param jobs: The print jobs received from the cloud.
@@ -302,10 +303,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Updates the printer assignment for the given print job model.
     def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:
         printer = next((p for p in self._printers if printer_uuid == p.key), None)
-
         if not printer:
-            return Logger.log("w", "Missing printer %s for job %s in %s", model.assignedPrinter, model.key,
-                              [p.key for p in self._printers])
+            Logger.log("w", "Missing printer %s for job %s in %s", model.assignedPrinter, model.key,
+                            [p.key for p in self._printers])
+            return
 
         printer.updateActivePrintJob(model)
         model.updateAssignedPrinter(printer)
@@ -329,11 +330,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onUploadError(self, message = None) -> None:
         self._progress.hide()
         self._uploaded_print_job = None
-        Message(
-            text = message or T.UPLOAD_ERROR,
-            title = T.ERROR,
-            lifetime = 10
-        ).show()
+        Message(text = message or T.UPLOAD_ERROR, title = T.ERROR, lifetime = 10).show()
         self.writeError.emit()
 
     ## Shows a message when the upload has succeeded
@@ -341,11 +338,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onPrintRequested(self, response: CloudPrintResponse) -> None:
         Logger.log("d", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
         self._progress.hide()
-        Message(
-            text = T.UPLOAD_SUCCESS_TEXT,
-            title = T.UPLOAD_SUCCESS_TITLE,
-            lifetime = 5
-        ).show()
+        Message(text = T.UPLOAD_SUCCESS_TEXT, title = T.UPLOAD_SUCCESS_TITLE, lifetime = 5).show()
         self.writeFinished.emit()
 
     ##  Gets the remote printers.

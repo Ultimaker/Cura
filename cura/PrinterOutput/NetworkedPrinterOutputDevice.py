@@ -150,6 +150,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
+    ##  This method was only available privately before, but it was actually called from SendMaterialJob.py.
+    #   We now have a public equivalent as well. We did not remove the private one as plugins might be using that.
+    def createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
+        return self._createFormPart(content_header, data, content_type)
+
     def _createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
         part = QHttpPart()
 

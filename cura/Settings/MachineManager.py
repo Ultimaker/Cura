@@ -533,14 +533,14 @@ class MachineManager(QObject):
         return False
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
-    def activeMachineHasCloudConnection(self) -> bool:
-        # A cloud connection is only available if the active output device actually is a cloud connected device.
-        # We cannot simply use the connection_type metadata entry as that's always set to 'NetworkConnection'
-        # if there was a network connection during setup, which is always the case.
-        output_device = next(iter(self._printer_output_devices), None)  # type: Optional[PrinterOutputDevice]
-        if not output_device:
-            return False
-        return output_device.connectionType == ConnectionType.CloudConnection
+    def activeMachineHasActiveNetworkConnection(self) -> bool:
+        # A network connection is only available if any output device is actually a network connected device.
+        return any(d.connectionType == ConnectionType.NetworkConnection for d in self._printer_output_devices)
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineHasActiveCloudConnection(self) -> bool:
+        # A cloud connection is only available if any output device actually is a cloud connected device.
+        return any(d.connectionType == ConnectionType.CloudConnection for d in self._printer_output_devices)
 
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
