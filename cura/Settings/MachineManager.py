@@ -531,7 +531,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
-        return self._printer_output_devices and self._printer_output_devices[0].clusterSize > 1
+        return bool(self._printer_output_devices) and self._printer_output_devices[0].clusterSize > 1
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasActiveNetworkConnection(self) -> bool:
