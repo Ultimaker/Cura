@@ -166,15 +166,12 @@ class TestSendMaterialJob(TestCase):
 
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    @patch("cura.Machines.MaterialManager")
-    @patch("cura.Settings.CuraContainerRegistry")
-    @patch("UM.Application")
-    def test__onGetRemoteMaterials_withNoUpdate(self, application_mock, container_registry_mock,
-                                                material_manager_mock):
+    @patch("UM.Application.Application.getInstance")
+    def test__onGetRemoteMaterials_withNoUpdate(self, application_mock):
         reply_mock = MagicMock()
         device_mock = MagicMock()
-        application_mock.getContainerRegistry.return_value = container_registry_mock
-        application_mock.getMaterialManager.return_value = material_manager_mock
+        container_registry_mock = application_mock.getContainerRegistry.return_value
+        material_manager_mock = application_mock.getMaterialManager.return_value
 
         device_mock.createFormPart.return_value = "_xXx_"
 
@@ -217,15 +214,12 @@ class TestSendMaterialJob(TestCase):
              call.postFormWithParts(target = "materials/", parts = ["_xXx_"], on_finished = job.sendingFinished)],
             device_mock.method_calls)
 
-    @patch("cura.Machines.MaterialManager.MaterialManager")
-    @patch("cura.Settings.CuraContainerRegistry")
-    @patch("UM.Application")
-    def test__onGetRemoteMaterials_withNewMaterial(self, application_mock, container_registry_mock,
-                                                   material_manager_mock):
+    @patch("UM.Application.Application.getInstance")
+    def test__onGetRemoteMaterials_withNewMaterial(self, application_mock):
         reply_mock = MagicMock()
         device_mock = MagicMock()
-        application_mock.getContainerRegistry.return_value = container_registry_mock
-        application_mock.getMaterialManager.return_value = material_manager_mock
+        container_registry_mock = application_mock.getContainerRegistry.return_value
+        material_manager_mock = application_mock.getMaterialManager.return_value
 
         container_registry_mock.getContainerFilePathById = lambda x: _FILES_MAP.get(x)
 
