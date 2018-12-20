@@ -4,7 +4,7 @@ from typing import List, Optional, Union, Dict, Any
 
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
-from src.ConfigurationChangeModel import ConfigurationChangeModel
+from plugins.UM3NetworkPrinting.src.ConfigurationChangeModel import ConfigurationChangeModel
 from .CloudClusterBuildPlate import CloudClusterBuildPlate
 from .CloudClusterPrintJobConfigurationChange import CloudClusterPrintJobConfigurationChange
 from .CloudClusterPrintJobImpediment import CloudClusterPrintJobImpediment
@@ -122,8 +122,10 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
         if not status_set_by_impediment:
             model.updateState(self.status)
 
-        model.updateConfigurationChanges([ConfigurationChangeModel(type_of_change=change.type_of_change,
-                                                                   index=change.index,
-                                                                   target_name=change.target_name,
-                                                                   origin_name=change.origin_name)
-                                          for change in self.configuration_changes_required])
+        model.updateConfigurationChanges(
+            [ConfigurationChangeModel(
+                type_of_change=change.type_of_change,
+                index=change.index,
+                target_name=change.target_name,
+                origin_name=change.origin_name)
+             for change in self.configuration_changes_required])
