@@ -6,9 +6,9 @@ from typing import Dict, TYPE_CHECKING, Set
 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
+from UM.Application import Application
 from UM.Job import Job
 from UM.Logger import Logger
-from cura.CuraApplication import CuraApplication
 
 # Absolute imports don't work in plugins
 from .Models import ClusterMaterial, LocalMaterial
@@ -34,7 +34,6 @@ class SendMaterialJob(Job):
     #
     #   \param reply The reply from the printer, a json file.
     def _onGetRemoteMaterials(self, reply: QNetworkReply) -> None:
-
         # Got an error from the HTTP request. If we did not receive a 200 something happened.
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
             Logger.log("e", "Error fetching materials from printer: %s", reply.errorString())
@@ -49,7 +48,6 @@ class SendMaterialJob(Job):
     #
     #   \param remote_materials_by_guid The remote materials by GUID.
     def _sendMissingMaterials(self, remote_materials_by_guid: Dict[str, ClusterMaterial]) -> None:
-
         # Collect local materials
         local_materials_by_guid = self._getLocalMaterials()
         if len(local_materials_by_guid) == 0:
@@ -88,8 +86,8 @@ class SendMaterialJob(Job):
     #
     #   \param materials_to_send A set with id's of materials that must be sent.
     def _sendMaterials(self, materials_to_send: Set[str]) -> None:
-        container_registry = CuraApplication.getInstance().getContainerRegistry()
-        material_manager = CuraApplication.getInstance().getMaterialManager()
+        container_registry = Application.getInstance().getContainerRegistry()
+        material_manager = Application.getInstance().getMaterialManager()
         material_group_dict = material_manager.getAllMaterialGroups()
 
         for root_material_id in material_group_dict:
@@ -167,7 +165,7 @@ class SendMaterialJob(Job):
     #   \return a dictionary of LocalMaterial objects by GUID
     def _getLocalMaterials(self) -> Dict[str, LocalMaterial]:
         result = {}  # type: Dict[str, LocalMaterial]
-        material_manager = CuraApplication.getInstance().getMaterialManager()
+        material_manager = Application.getInstance().getMaterialManager()
 
         material_group_dict = material_manager.getAllMaterialGroups()
 
