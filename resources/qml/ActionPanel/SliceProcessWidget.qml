@@ -109,6 +109,7 @@ Column
             fixedWidthMode: true
             anchors.fill: parent
             text: catalog.i18nc("@button", "Slice")
+            tooltip: catalog.i18nc("@label", "Start the slicing process")
             enabled: widget.backendState != UM.Backend.Error
             visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
             onClicked: sliceOrStopSlicing()
