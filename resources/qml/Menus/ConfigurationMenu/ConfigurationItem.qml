@@ -20,7 +20,7 @@ Button
 
         for (var index = 0; index < extruderConfigurations.length; index++)
         {
-            var name = extruderConfigurations[index].material.brand ? extruderConfigurations[index].material.name : ""
+            var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
 
             if (name == "" || name == "Unknown")
             {
@@ -111,7 +111,7 @@ Button
                         var unknownMaterials = []
                         for (var index = 0; index < extruderConfigurations.length; index++)
                         {
-                            var name = extruderConfigurations[index].material.brand ? extruderConfigurations[index].material.name : ""
+                            var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
 
                             if (name == "" || name == "Unknown")
                             {
