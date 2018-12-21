@@ -5317,6 +5317,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "prime_tower_brim_enable":
+                {
+                    "label": "Prime Tower Brim",
+                    "description": "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "ooze_shield_enabled":
                 {
                     "label": "Enable Ooze Shield",

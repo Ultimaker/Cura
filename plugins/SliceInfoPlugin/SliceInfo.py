@@ -251,6 +251,7 @@ class SliceInfo(QObject, Extension):
 
             # Prime tower settings
             print_settings["prime_tower_enable"] = global_stack.getProperty("prime_tower_enable", "value")
+            print_settings["prime_tower_brim_enable"] = global_stack.getProperty("prime_tower_brim_enable", "value")
 
             # Infill settings
             print_settings["infill_sparse_density"] = global_stack.getProperty("infill_sparse_density", "value")
