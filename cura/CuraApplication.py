@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional, Callable
+from typing import cast, TYPE_CHECKING, Optional, Callable, List
 
 import numpy
 
@@ -665,12 +665,12 @@ class CuraApplication(QtApplication):
 
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
-    def _loadPlugins(self):
+    def _loadPlugins(self) -> None:
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
 
         if Platform.isLinux():
-            lib_suffixes = {"", "64", "32", "x32"} #A few common ones on different distributions.
+            lib_suffixes = {"", "64", "32", "x32"}  # A few common ones on different distributions.
         else:
             lib_suffixes = {""}
         for suffix in lib_suffixes:
@@ -1267,62 +1267,75 @@ class CuraApplication(QtApplication):
 
     ##  Arrange all objects.
     @pyqtSlot()
-    def arrangeObjectsToAllBuildPlates(self):
-        nodes = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+    def arrangeObjectsToAllBuildPlates(self) -> None:
+        nodes_to_arrange = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
             if not isinstance(node, SceneNode):
                 continue
+
             if not node.getMeshData() and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+
+            parent_node = node.getParent()
+            if parent_node and parent_node.callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
+
             if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
+
+            bounding_box = node.getBoundingBox()
             # Skip nodes that are too big
-            if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
-                nodes.append(node)
-        job = ArrangeObjectsAllBuildPlatesJob(nodes)
+            if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
+                nodes_to_arrange.append(node)
+        job = ArrangeObjectsAllBuildPlatesJob(nodes_to_arrange)
         job.start()
         self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     # Single build plate
     @pyqtSlot()
-    def arrangeAll(self):
-        nodes = []
+    def arrangeAll(self) -> None:
+        nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
             if not isinstance(node, SceneNode):
                 continue
+
             if not node.getMeshData() and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
+
+            parent_node = node.getParent()
+            if parent_node and parent_node.callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+
             if not node.isSelectable():
                 continue  # i.e. node with layer data
+
             if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
+
             if node.callDecoration("getBuildPlateNumber") == active_build_plate:
                 # Skip nodes that are too big
-                if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
-                    nodes.append(node)
-        self.arrange(nodes, fixed_nodes = [])
+                bounding_box = node.getBoundingBox()
+                if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
+                    nodes_to_arrange.append(node)
+        self.arrange(nodes_to_arrange, fixed_nodes = [])
 
     ##  Arrange a set of nodes given a set of fixed nodes
     #   \param nodes nodes that we have to place
     #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes
-    def arrange(self, nodes, fixed_nodes):
+    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode]) -> None:
         min_offset = self.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
         job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8))
         job.start()
 
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
-    def reloadAll(self):
+    def reloadAll(self) -> None:
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         has_merged_nodes = False
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, CuraSceneNode) or not node.getMeshData() :
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+            if not isinstance(node, CuraSceneNode) or not node.getMeshData():
                 if node.getName() == "MergedMesh":
                     has_merged_nodes = True
                 continue
@@ -1336,7 +1349,7 @@ class CuraApplication(QtApplication):
             file_name = node.getMeshData().getFileName()
             if file_name:
                 job = ReadMeshJob(file_name)
-                job._node = node
+                job._node = node  # type: ignore
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:
                     job.finished.connect(self.updateOriginOfMergedMeshes)
@@ -1345,20 +1358,8 @@ class CuraApplication(QtApplication):
             else:
                 Logger.log("w", "Unable to reload data because we don't have a filename.")
 
-
-    ##  Get logging data of the backend engine
-    #   \returns \type{string} Logging data
-    @pyqtSlot(result = str)
-    def getEngineLog(self):
-        log = ""
-
-        for entry in self.getBackend().getLog():
-            log += entry.decode()
-
-        return log
-
     @pyqtSlot("QStringList")
-    def setExpandedCategories(self, categories):
+    def setExpandedCategories(self, categories: List[str]) -> None:
         categories = list(set(categories))
         categories.sort()
         joined = ";".join(categories)
@@ -1369,7 +1370,7 @@ class CuraApplication(QtApplication):
     expandedCategoriesChanged = pyqtSignal()
 
     @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
-    def expandedCategories(self):
+    def expandedCategories(self) -> List[str]:
         return self.getPreferences().getValue("cura/categories_expanded").split(";")
 
     @pyqtSlot()
@@ -1419,13 +1420,12 @@ class CuraApplication(QtApplication):
 
 
     ##  Updates origin position of all merged meshes
-    #   \param jobNode \type{Job} empty object which passed which is required by JobQueue
-    def updateOriginOfMergedMeshes(self, jobNode):
+    def updateOriginOfMergedMeshes(self, _):
         group_nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if isinstance(node, CuraSceneNode) and node.getName() == "MergedMesh":
 
-                #checking by name might be not enough, the merged mesh should has "GroupDecorator" decorator
+                # Checking by name might be not enough, the merged mesh should has "GroupDecorator" decorator
                 for decorator in node.getDecorators():
                     if isinstance(decorator, GroupDecorator):
                         group_nodes.append(node)
@@ -1469,7 +1469,7 @@ class CuraApplication(QtApplication):
 
 
     @pyqtSlot()
-    def groupSelected(self):
+    def groupSelected(self) -> None:
         # Create a group-node
         group_node = CuraSceneNode()
         group_decorator = GroupDecorator()
@@ -1485,7 +1485,8 @@ class CuraApplication(QtApplication):
         # Remove nodes that are directly parented to another selected node from the selection so they remain parented
         selected_nodes = Selection.getAllSelectedObjects().copy()
         for node in selected_nodes:
-            if node.getParent() in selected_nodes and not node.getParent().callDecoration("isGroup"):
+            parent = node.getParent()
+            if parent is not None and node in selected_nodes and not node.callDecoration("isGroup"):
                 Selection.remove(node)
 
         # Move selected nodes into the group-node
@@ -1497,7 +1498,7 @@ class CuraApplication(QtApplication):
         Selection.add(group_node)
 
     @pyqtSlot()
-    def ungroupSelected(self):
+    def ungroupSelected(self) -> None:
         selected_objects = Selection.getAllSelectedObjects().copy()
         for node in selected_objects:
             if node.callDecoration("isGroup"):
@@ -1520,7 +1521,7 @@ class CuraApplication(QtApplication):
                 # Note: The group removes itself from the scene once all its children have left it,
                 # see GroupDecorator._onChildrenChanged
 
-    def _createSplashScreen(self):
+    def _createSplashScreen(self) -> Optional[CuraSplashScreen.CuraSplashScreen]:
         if self._is_headless:
             return None
         return CuraSplashScreen.CuraSplashScreen()
