@@ -36,7 +36,7 @@ class CuraActions(QObject):
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
         # So instead, defer the call to the next run of the event loop, since that does work.
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
-        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/support/software")], {})
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
