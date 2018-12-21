@@ -12,7 +12,7 @@ Button
     id: configurationItem
 
     property var configuration: null
-    hoverEnabled: true
+    hoverEnabled: isValidMaterial
 
     property bool isValidMaterial:
     {
@@ -24,7 +24,6 @@ Button
 
             if (name == "" || name == "Unknown")
             {
-                hoverEnabled = false
                 return false
             }
         }
