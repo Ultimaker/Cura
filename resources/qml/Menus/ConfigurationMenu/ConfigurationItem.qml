@@ -18,7 +18,7 @@ Button
     {
         var extruderConfigurations = configuration.extruderConfigurations
 
-        for (var index = 0; index < extruderConfigurations.length; index++)
+        for (var index in extruderConfigurations)
         {
             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
 
@@ -109,7 +109,7 @@ Button
                     {
                         var extruderConfigurations = configuration.extruderConfigurations
                         var unknownMaterials = []
-                        for (var index = 0; index < extruderConfigurations.length; index++)
+                        for (var index in extruderConfigurations)
                         {
                             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
 
@@ -144,7 +144,8 @@ Button
                     }
                 }
 
-                MouseArea {
+                MouseArea
+                {
                     anchors.fill: parent
                     cursorShape: unknownMaterialMessage.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                     acceptedButtons: Qt.NoButton
