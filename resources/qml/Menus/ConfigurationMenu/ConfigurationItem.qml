@@ -62,19 +62,13 @@ Button
             Repeater
             {
                 id: repeater
-                model:
-                {
-                    if (configurationItem.isValidMaterial)
-                    {
-                        return configuration.extruderConfigurations
-                    }
-                    return []
-                }
+                model: configuration.extruderConfigurations
 
                 delegate: PrintCoreConfiguration
                 {
                     width: Math.round(parent.width / 2)
                     printCoreConfiguration: modelData
+                    visible: configurationItem.isValidMaterial
                 }
             }
 
