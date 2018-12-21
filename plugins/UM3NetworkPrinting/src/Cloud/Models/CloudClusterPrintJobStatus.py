@@ -76,11 +76,17 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
         self.uuid = uuid
         self.deleted_at = deleted_at
         self.printed_on_uuid = printed_on_uuid
-        self.configuration_changes_required = self.parseModels(CloudClusterPrintJobConfigurationChange,
-                                                               configuration_changes_required)
+        if configuration_changes_required:
+            self.configuration_changes_required = self.parseModels(CloudClusterPrintJobConfigurationChange,
+                                                                   configuration_changes_required)
+        else:
+            self.configuration_changes_required = []
         self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate)
         self.compatible_machine_families = compatible_machine_families
-        self.impediments_to_printing = self.parseModels(CloudClusterPrintJobImpediment, impediments_to_printing)
+        if impediments_to_printing:
+            self.impediments_to_printing = self.parseModels(CloudClusterPrintJobImpediment, impediments_to_printing)
+        else:
+            self.impediments_to_printing = []
 
         super().__init__(**kwargs)
 
