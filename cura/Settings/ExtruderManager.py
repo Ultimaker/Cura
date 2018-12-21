@@ -344,7 +344,9 @@ class ExtruderManager(QObject):
             self._fixSingleExtrusionMachineExtruderDefinition(global_stack)
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
-                self.setActiveExtruderIndex(0)
+
+                # Set it directly instead of using setActiveExtruder, since we want to force the signal to emitted.
+                self._active_extruder_index =  0
                 self.activeExtruderChanged.emit()
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
