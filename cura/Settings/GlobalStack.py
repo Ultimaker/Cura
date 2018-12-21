@@ -97,6 +97,7 @@ class GlobalStack(CuraContainerStack):
             return
 
         self._extruders[position] = extruder
+        self.extrudersChanged.emit()
         Logger.log("i", "Extruder[%s] added to [%s] at position [%s]", extruder.id, self.id, position)
 
     ##  Overridden from ContainerStack
