@@ -73,7 +73,7 @@ Button
             }
 
             // Unknown material
-            Rectangle
+            Item
             {
                 id: unknownMaterial
                 height: unknownMaterialMessage.height + UM.Theme.getSize("thin_margin").width / 2
