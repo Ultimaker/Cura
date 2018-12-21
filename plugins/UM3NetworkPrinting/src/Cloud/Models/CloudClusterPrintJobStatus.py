@@ -55,7 +55,8 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
                  printed_on_uuid: Optional[str] = None,
                  configuration_changes_required: List[
                      Union[Dict[str, Any], CloudClusterPrintJobConfigurationChange]] = None,
-                 build_plate: Optional[str] = None, compatible_machine_families: List[str] = None,
+                 build_plate: Union[Dict[str, Any], CloudClusterBuildPlate] = None,
+                 compatible_machine_families: List[str] = None,
                  impediments_to_printing: List[Union[Dict[str, Any], CloudClusterPrintJobImpediment]] = None,
                  **kwargs) -> None:
         self.assigned_to = assigned_to
@@ -76,17 +77,14 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
         self.uuid = uuid
         self.deleted_at = deleted_at
         self.printed_on_uuid = printed_on_uuid
-        if configuration_changes_required:
-            self.configuration_changes_required = self.parseModels(CloudClusterPrintJobConfigurationChange,
-                                                                   configuration_changes_required)
-        else:
-            self.configuration_changes_required = []
-        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate)
-        self.compatible_machine_families = compatible_machine_families
-        if impediments_to_printing:
-            self.impediments_to_printing = self.parseModels(CloudClusterPrintJobImpediment, impediments_to_printing)
-        else:
-            self.impediments_to_printing = []
+
+        self.configuration_changes_required = self.parseModels(CloudClusterPrintJobConfigurationChange,
+                                                               configuration_changes_required) \
+            if configuration_changes_required else []
+        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate) if build_plate else None
+        self.compatible_machine_families = compatible_machine_families if compatible_machine_families else []
+        self.impediments_to_printing = self.parseModels(CloudClusterPrintJobImpediment, impediments_to_printing) \
+            if impediments_to_printing else []
 
         super().__init__(**kwargs)
 
@@ -120,7 +118,8 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
 
         status_set_by_impediment = False
         for impediment in self.impediments_to_printing:
-            if impediment.severity == "UNFIXABLE":  # TODO: impediment.severity is defined as int, this will not work, is there a translation?
+            # TODO: impediment.severity is defined as int, this will not work, is there a translation?
+            if impediment.severity == "UNFIXABLE":
                 status_set_by_impediment = True
                 model.updateState("error")
                 break
@@ -130,8 +129,8 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
 
         model.updateConfigurationChanges(
             [ConfigurationChangeModel(
-                type_of_change=change.type_of_change,
-                index=change.index,
-                target_name=change.target_name,
-                origin_name=change.origin_name)
-             for change in self.configuration_changes_required])
+                type_of_change = change.type_of_change,
+                index = change.index if change.index else 0,
+                target_name = change.target_name if change.target_name else "",
+                origin_name = change.origin_name if change.origin_name else "")
+                for change in self.configuration_changes_required])

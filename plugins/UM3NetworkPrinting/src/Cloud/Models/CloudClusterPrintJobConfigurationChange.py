@@ -15,9 +15,8 @@ class CloudClusterPrintJobConfigurationChange(BaseCloudModel):
     #  \param origin_id: Original/current material guid or hotend id
     #  \param target_name: Target material name or hotend id
     #  \param origin_name: Original/current material name or hotend id
-    def __init__(self, type_of_change: Optional[str] = None, index: Optional[int] = None,
-                 target_id: Optional[str] = None,origin_id: Optional[str] = None,
-                 target_name: Optional[str] = None,origin_name: Optional[str] = None,
+    def __init__(self, type_of_change: str, target_id: str, origin_id: str,
+                 index: Optional[int] = None, target_name: Optional[str] = None, origin_name: Optional[str] = None,
                  **kwargs) -> None:
         self.type_of_change = type_of_change
         self.index = index

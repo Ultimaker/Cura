@@ -33,7 +33,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
                  configuration: List[Union[Dict[str, Any], CloudClusterPrintCoreConfiguration]],
                  reserved_by: Optional[str] = None, maintenance_required: Optional[bool] = None,
                  firmware_update_status: Optional[str] = None, latest_available_firmware: Optional[str] = None,
-                 build_plate: Optional[str] = None, **kwargs) -> None:
+                 build_plate: Union[Dict[str, Any], CloudClusterBuildPlate] = None, **kwargs) -> None:
 
         self.configuration = self.parseModels(CloudClusterPrintCoreConfiguration, configuration)
         self.enabled = enabled
@@ -48,7 +48,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
         self.maintenance_required = maintenance_required
         self.firmware_update_status = firmware_update_status
         self.latest_available_firmware = latest_available_firmware
-        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate)
+        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate) if build_plate else None
         super().__init__(**kwargs)
 
     ## Creates a new output model.
