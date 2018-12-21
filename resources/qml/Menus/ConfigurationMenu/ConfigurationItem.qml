@@ -216,6 +216,9 @@ Button
 
     onClicked:
     {
-        Cura.MachineManager.applyRemoteConfiguration(configuration)
+        if(isValidMaterial)
+        {
+            Cura.MachineManager.applyRemoteConfiguration(configuration);
+        }
     }
 }
