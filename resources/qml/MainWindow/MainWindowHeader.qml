@@ -29,6 +29,9 @@ Item
         source: UM.Theme.getImage("logo")
         width: UM.Theme.getSize("logo").width
         height: UM.Theme.getSize("logo").height
+
+        sourceSize.width: width
+        sourceSize.height: height
     }
 
     Row

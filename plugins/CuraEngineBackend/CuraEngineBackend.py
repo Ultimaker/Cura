@@ -229,6 +229,7 @@ class CuraEngineBackend(QObject, Backend):
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
+            self.setState(BackendState.Done)
             return
 
         if self._process_layers_job:
@@ -410,7 +411,7 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartJobResult.NothingToSlice:
             if self._application.platformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."),
+                self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."),
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.setState(BackendState.Error)
