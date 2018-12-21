@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -39,14 +39,22 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self._machine_manager = self._application.getMachineManager()
         self._quality_manager = Application.getInstance().getQualityManager()
 
-        self._application.globalContainerStackChanged.connect(self._update)
-        self._machine_manager.activeQualityGroupChanged.connect(self._update)
-        self._machine_manager.extruderChanged.connect(self._update)
-        self._quality_manager.qualitiesUpdated.connect(self._update)
+        self._application.globalContainerStackChanged.connect(self._onChange)
+        self._machine_manager.activeQualityGroupChanged.connect(self._onChange)
+        self._machine_manager.extruderChanged.connect(self._onChange)
+        self._quality_manager.qualitiesUpdated.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
 
+        self._update_timer = QTimer()  # type: QTimer
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
+
         self._update()
+
+    def _onChange(self) -> None:
+        self._update_timer.start()
 
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
