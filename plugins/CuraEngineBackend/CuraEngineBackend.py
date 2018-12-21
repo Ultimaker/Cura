@@ -86,8 +86,8 @@ class CuraEngineBackend(QObject, Backend):
         self._layer_view_active = False #type: bool
         self._onActiveViewChanged()
 
-        self._stored_layer_data = [] #type: List[Arcus.PythonMessage]
-        self._stored_optimized_layer_data = {} #type: Dict[int, List[Arcus.PythonMessage]] # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
+        self._stored_layer_data = []  # type: List[Arcus.PythonMessage]
+        self._stored_optimized_layer_data = {}  # type: Dict[int, List[Arcus.PythonMessage]] # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
 
         self._scene = self._application.getController().getScene() #type: Scene
         self._scene.sceneChanged.connect(self._onSceneChanged)
@@ -246,7 +246,7 @@ class CuraEngineBackend(QObject, Backend):
         num_objects = self._numObjectsPerBuildPlate()
 
         self._stored_layer_data = []
-        self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
+
 
         if build_plate_to_be_sliced not in num_objects or num_objects[build_plate_to_be_sliced] == 0:
             self._scene.gcode_dict[build_plate_to_be_sliced] = [] #type: ignore #Because we created this attribute above.
@@ -254,7 +254,7 @@ class CuraEngineBackend(QObject, Backend):
             if self._build_plates_to_be_sliced:
                 self.slice()
             return
-
+        self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
         if self._application.getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
             self._application.getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
 
