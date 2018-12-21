@@ -16,7 +16,7 @@ Button
     property alias iconSource: buttonIconLeft.source
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
-    property alias tooltip: tooltip.text
+    property alias tooltip: tooltip.tooltipText
     property alias cornerSide: backgroundRect.cornerSide
 
     property color color: UM.Theme.getColor("primary")
@@ -30,6 +30,8 @@ Button
     property color outlineDisabledColor: outlineColor
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
+
+    property alias toolTipContentAlignment: tooltip.contentAlignment
 
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
     // Be careful when using fixedWidthMode, the translated texts can be too long that they won't fit. In any case,
@@ -110,11 +112,9 @@ Button
         z: backgroundRect.z - 1
     }
 
-    ToolTip
+    Cura.ToolTip
     {
         id: tooltip
-        text: ""
-        delay: 500
-        visible: text != "" && button.hovered
+        visible: button.hovered
     }
 }
