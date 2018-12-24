@@ -385,6 +385,7 @@ class MachineManager(QObject):
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance()._globalContainerStackChanged()
         self._initMachineState(global_stack)
+        self._onGlobalContainerChanged()
 
         self.__emitChangedSignals()
 

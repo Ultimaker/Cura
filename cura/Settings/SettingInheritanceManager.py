@@ -249,6 +249,7 @@ class SettingInheritanceManager(QObject):
         if self._global_container_stack:
             self._global_container_stack.containersChanged.connect(self._onContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+        self._onActiveExtruderChanged()
 
     def _onContainersChanged(self, container):
         self._update_timer.start()
