@@ -165,6 +165,14 @@ Item
                     {
                         h = 200 * screenScaleFactor;
                     }
+
+                    //Absolute mouse Y position in the window, to prevent it from going outside the window.
+                    var mouse_absolute_y = mapToGlobal(mouseX, mouseY).y - UM.Preferences.getValue("general/window_top");
+                    if(mouse_absolute_y > base.height)
+                    {
+                        h -= mouse_absolute_y - base.height;
+                    }
+
                     UM.Preferences.setValue("view/settings_list_height", h);
                 }
             }
