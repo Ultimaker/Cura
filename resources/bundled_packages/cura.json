@@ -356,7 +356,7 @@
             }
         }
     },
-   "PreviewStage": {
+    "PreviewStage": {
         "package_info": {
             "package_id": "PreviewStage",
             "package_type": "plugin",
@@ -1409,7 +1409,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PC",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/pc",
             "author": {
