@@ -10,7 +10,7 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: material_type_section
     property var materialType

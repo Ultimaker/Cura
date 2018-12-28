@@ -15,7 +15,7 @@ Rectangle
     id: materialSlot
     property var material: null
     property var hovered: false
-    property var is_favorite: material != null ? material.is_favorite : false
+    property var is_favorite: material != null && material.is_favorite
 
     height: UM.Theme.getSize("favorites_row").height
     width: parent.width
@@ -73,11 +73,9 @@ Rectangle
             if (materialSlot.is_favorite)
             {
                 base.materialManager.removeFavorite(material.root_material_id)
-                materialSlot.is_favorite = false
                 return
             }
             base.materialManager.addFavorite(material.root_material_id)
-            materialSlot.is_favorite = true
             return
         }
         style: ButtonStyle

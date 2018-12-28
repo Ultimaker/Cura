@@ -18,6 +18,10 @@ Item
 
     height: centerSection.height
     width: maximumWidth
+    
+    // Enable keyboard navigation
+    Keys.onLeftPressed: navigateTo(currentIndex - 1)
+    Keys.onRightPressed: navigateTo(currentIndex + 1)
 
     Item
     {

@@ -16,11 +16,19 @@ Item
 
         color: UM.Theme.getColor("viewport_overlay")
         anchors.fill: parent
+
+        // This mouse area is to prevent mouse clicks to be passed onto the scene.
         MouseArea
         {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
             onWheel: wheel.accepted = true
+        }
+
+        // Disable dropping files into Cura when the monitor page is active
+        DropArea
+        {
+            anchors.fill: parent
         }
     }
 
