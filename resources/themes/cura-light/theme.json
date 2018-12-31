@@ -11,7 +11,7 @@
         },
         "large_bold": {
             "size": 1.35,
-            "weight": 60,
+            "weight": 63,
             "family": "Noto Sans"
         },
         "medium": {
@@ -21,7 +21,7 @@
         },
         "medium_bold": {
             "size": 1.16,
-            "weight": 60,
+            "weight": 63,
             "family": "Noto Sans"
         },
         "default": {
@@ -31,7 +31,7 @@
         },
         "default_bold": {
             "size": 0.95,
-            "weight": 60,
+            "weight": 63,
             "family": "Noto Sans"
         },
         "default_italic": {
