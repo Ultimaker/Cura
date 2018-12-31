@@ -10,9 +10,9 @@ import Cura 1.0 as Cura
 ListView
 {
     id: listView
-    height: childrenRect.height
-    model: Cura.PrintersModel {}
+    model: Cura.GlobalStacksModel {}
     section.property: "hasRemoteConnection"
+    property real contentHeight: childrenRect.height
 
     section.delegate: Label
     {
