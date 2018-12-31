@@ -36,7 +36,7 @@ class ConnectionState(IntEnum):
 
 
 class ConnectionType(IntEnum):
-    Unknown = 0
+    NotConnected = 0
     UsbConnection = 1
     NetworkConnection = 2
     CloudConnection = 3
@@ -74,7 +74,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the configuration of one of the printers has changed.
     uniqueConfigurationsChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, connection_type: "ConnectionType" = ConnectionType.Unknown, parent: QObject = None) -> None:
+    def __init__(self, device_id: str, connection_type: "ConnectionType" = ConnectionType.NotConnected, parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
