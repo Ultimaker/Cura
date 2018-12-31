@@ -93,14 +93,16 @@ Cura.ExpandablePopup
                 width: scroll.width - scroll.leftPadding - scroll.rightPadding
                 property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
 
-                onHeightChanged:
+                // We use an extra property here, since we only want to to be informed about the content size changes.
+                onContentHeightChanged:
                 {
-                    scroll.height = Math.min(height, maximumHeight)
+                    scroll.height = Math.min(contentHeight, maximumHeight)
                     popup.height = scroll.height + buttonRow.height
                 }
+
                 Component.onCompleted:
                 {
-                    scroll.height = Math.min(height, maximumHeight)
+                    scroll.height = Math.min(contentHeight, maximumHeight)
                     popup.height = scroll.height + buttonRow.height
                 }
 
