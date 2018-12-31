@@ -11,7 +11,6 @@ import Cura 1.0 as Cura
 Item
 {
     id: customPrintSetup
-    height: childrenRect.height + padding
 
     property real padding: UM.Theme.getSize("default_margin").width
     property bool multipleExtruders: extrudersModel.count > 1
@@ -98,15 +97,15 @@ Item
 
     Rectangle
     {
-        height: UM.Theme.getSize("print_setup_widget").height
         anchors
         {
             top: tabBar.visible ? tabBar.bottom : globalProfileRow.bottom
+            topMargin: -UM.Theme.getSize("default_lining").width
             left: parent.left
             leftMargin: parent.padding
             right: parent.right
             rightMargin: parent.padding
-            topMargin: -UM.Theme.getSize("default_lining").width
+            bottom: parent.bottom
         }
         z: tabBar.z - 1
         // Don't show the border when only one extruder

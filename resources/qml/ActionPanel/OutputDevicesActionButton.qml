@@ -93,7 +93,6 @@ Item
                         onClicked:
                         {
                             UM.OutputDeviceManager.setActiveDevice(model.id)
-                            widget.requestWriteToDevice()
                             popup.close()
                         }
                     }

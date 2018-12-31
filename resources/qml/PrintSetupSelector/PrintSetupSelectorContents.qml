@@ -15,7 +15,7 @@ Item
     id: content
 
     width: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
-    height: childrenRect.height
+    height: contents.height + buttonRow.height
 
     enum Mode
     {
@@ -71,6 +71,15 @@ Item
                 right: parent.right
                 top: parent.top
             }
+            height: UM.Preferences.getValue("view/settings_list_height") - UM.Theme.getSize("default_margin").height
+            Connections
+            {
+                target: UM.Preferences
+                onPreferenceChanged:
+                {
+                    customPrintSetup.height = UM.Preferences.getValue("view/settings_list_height");
+                }
+            }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
         }
     }
@@ -94,13 +103,14 @@ Item
 
         anchors
         {
-            top: buttonsSeparator.bottom
+            bottom: parent.bottom
             left: parent.left
             right: parent.right
         }
 
         Cura.SecondaryButton
         {
+            id: recommendedButton
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.margins: parent.padding
@@ -124,6 +134,48 @@ Item
             isIconOnRightSide: true
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
             onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Custom
+        }
+
+        //Invisible area at the bottom with which you can resize the panel.
+        MouseArea
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+                top: recommendedButton.bottom
+                topMargin: UM.Theme.getSize("default_lining").height
+            }
+            cursorShape: Qt.SplitVCursor
+            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
+            drag
+            {
+                target: parent
+                axis: Drag.YAxis
+            }
+            onMouseYChanged:
+            {
+                if(drag.active)
+                {
+                    // position of mouse relative to dropdown  align vertical centre of mouse area to cursor
+                    //      v------------------------------v   v------------v
+                    var h = mouseY + buttonRow.y + content.y - height / 2 | 0;
+                    if(h < 200 * screenScaleFactor) //Enforce a minimum size.
+                    {
+                        h = 200 * screenScaleFactor;
+                    }
+
+                    //Absolute mouse Y position in the window, to prevent it from going outside the window.
+                    var mouse_absolute_y = mapToGlobal(mouseX, mouseY).y - UM.Preferences.getValue("general/window_top");
+                    if(mouse_absolute_y > base.height)
+                    {
+                        h -= mouse_absolute_y - base.height;
+                    }
+
+                    UM.Preferences.setValue("view/settings_list_height", h);
+                }
+            }
         }
     }
 }
