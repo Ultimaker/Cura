@@ -163,9 +163,9 @@ Item
             id: rangleHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x + parent.width + UM.Theme.getSize("default_margin").width
+            x: parent.x - width - UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width + width, y + height / 2)
+            target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
 
             // custom properties
