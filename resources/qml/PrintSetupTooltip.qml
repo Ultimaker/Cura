@@ -41,7 +41,8 @@ UM.PointingRectangle {
         base.opacity = 0;
     }
 
-    Label {
+    Label
+    {
         id: label;
         anchors {
             top: parent.top;

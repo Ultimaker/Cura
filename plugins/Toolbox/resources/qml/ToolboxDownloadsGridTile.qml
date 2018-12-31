@@ -112,7 +112,7 @@ Item
             elide: Text.ElideRight
             width: parent.width
             wrapMode: Text.WordWrap
-            color: UM.Theme.getColor("text_medium")
+            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             anchors.top: name.bottom
             anchors.bottom: rating.top
