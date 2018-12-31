@@ -1404,7 +1404,7 @@ class CuraApplication(QtApplication):
         selected_nodes = Selection.getAllSelectedObjects().copy()
         for node in selected_nodes:
             parent = node.getParent()
-            if parent is not None and node in selected_nodes and not node.callDecoration("isGroup"):
+            if parent is not None and parent in selected_nodes and not parent.callDecoration("isGroup"):
                 Selection.remove(node)
 
         # Move selected nodes into the group-node
