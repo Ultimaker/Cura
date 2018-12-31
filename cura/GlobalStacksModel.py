@@ -42,14 +42,8 @@ class GlobalStacksModel(ListModel):
         if isinstance(container, GlobalStack):
             self._update()
 
-    ##  Handler for container name change events.
-    def _onContainerNameChanged(self):
-        self._update()
-
     def _update(self) -> None:
         items = []
-        for container in self._container_stacks:
-            container.nameChanged.disconnect(self._onContainerNameChanged)
 
         container_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
 
