@@ -487,7 +487,7 @@
         "toolbox_detail_header": [1.0, 14.0],
         "toolbox_detail_tile": [1.0, 8.0],
         "toolbox_back_column": [6.0, 1.0],
-        "toolbox_back_button": [4.0, 2.0],
+        "toolbox_back_button": [6.0, 2.0],
         "toolbox_installed_tile": [1.0, 8.0],
         "toolbox_property_label": [1.0, 2.0],
         "toolbox_heading_label": [1.0, 3.8],
