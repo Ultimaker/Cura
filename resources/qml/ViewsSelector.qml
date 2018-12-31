@@ -68,7 +68,7 @@ Cura.ExpandablePopup
             }
             height: parent.height
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
         }
