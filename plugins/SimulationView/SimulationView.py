@@ -50,7 +50,7 @@ catalog = i18nCatalog("cura")
 
 ## View used to display g-code paths.
 class SimulationView(CuraView):
-    # Must match SimulationView.qml
+    # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
