@@ -105,10 +105,22 @@ Button
                         for (var index in extruderConfigurations)
                         {
                             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
-
                             if (name == "" || name == "Unknown")
                             {
-                                unknownMaterials.push(extruderConfigurations[index].material.brand ? extruderConfigurations[index].material.brand : "Unknown Brand")
+                                var materialType = extruderConfigurations[index].material.type
+                                if (extruderConfigurations[index].material.type == "")
+                                {
+                                    materialType = "Unknown"
+                                }
+
+                                var brand = extruderConfigurations[index].material.brand
+                                if (brand == "")
+                                {
+                                    brand = "Unknown"
+                                }
+
+                                name = materialType + " (" + brand + ")"
+                                unknownMaterials.push(name)
                             }
                         }
 
