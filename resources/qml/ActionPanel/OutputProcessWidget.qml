@@ -51,7 +51,7 @@ Column
 
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("large_bold")
             }
 
             Cura.IconWithText
