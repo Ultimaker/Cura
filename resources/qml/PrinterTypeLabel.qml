@@ -29,7 +29,7 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
         renderType: Text.NativeRendering
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text")
     }
 }
