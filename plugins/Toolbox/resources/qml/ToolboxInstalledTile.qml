@@ -49,13 +49,14 @@ Item
                 width: parent.width
                 height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
                 wrapMode: Text.WordWrap
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("large_bold")
                 color: pluginInfo.color
                 renderType: Text.NativeRendering
             }
             Label
             {
                 text: model.description
+                font: UM.Theme.getFont("default")
                 maximumLineCount: 3
                 elide: Text.ElideRight
                 width: parent.width
@@ -82,6 +83,7 @@ Item
                         return model.author_name
                     }
                 }
+                font: UM.Theme.getFont("medium")
                 width: parent.width
                 height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
                 wrapMode: Text.WordWrap
@@ -96,6 +98,7 @@ Item
             Label
             {
                 text: model.version
+                font: UM.Theme.getFont("default")
                 width: parent.width
                 height: UM.Theme.getSize("toolbox_property_label").height
                 color: UM.Theme.getColor("text")
