@@ -11,7 +11,7 @@ ListView
 {
     id: listView
     height: childrenRect.height
-    model: Cura.PrintersModel {}
+    model: Cura.GlobalStacksModel {}
     section.property: "hasRemoteConnection"
 
     section.delegate: Label

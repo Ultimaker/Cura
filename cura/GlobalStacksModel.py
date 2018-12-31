@@ -12,7 +12,8 @@ from cura.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.GlobalStack import GlobalStack
 
-class PrintersModel(ListModel):
+
+class GlobalStacksModel(ListModel):
     NameRole = Qt.UserRole + 1
     IdRole = Qt.UserRole + 2
     HasRemoteConnectionRole = Qt.UserRole + 3
