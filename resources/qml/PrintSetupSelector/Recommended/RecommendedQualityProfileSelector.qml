@@ -272,6 +272,7 @@ Item
                         return Math.round((settingsColumnWidth / qualityModel.totalTicks) * index - (width / 2))
                     }
                 }
+                font: UM.Theme.getFont("default")
             }
         }
     }

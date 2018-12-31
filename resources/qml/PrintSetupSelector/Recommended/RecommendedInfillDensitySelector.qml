@@ -141,6 +141,7 @@ Item
                         Label
                         {
                             text: index
+                            font: UM.Theme.getFont("default")
                             visible: (index % 20) == 0 // Only show steps of 20%
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: UM.Theme.getSize("thin_margin").height
