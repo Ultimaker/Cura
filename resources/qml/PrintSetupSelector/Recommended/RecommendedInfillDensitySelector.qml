@@ -63,6 +63,7 @@ Item
         anchors.left: parent.left
         source: UM.Theme.getIcon("category_infill")
         text: catalog.i18nc("@label", "Infill") + " (%)"
+        font: UM.Theme.getFont("medium")
         width: labelColumnWidth
     }
 

@@ -173,6 +173,7 @@ Item
             id: qualityRowTitle
             source: UM.Theme.getIcon("category_layer_height")
             text: catalog.i18nc("@label", "Layer Height")
+            font: UM.Theme.getFont("medium")
             anchors.left: parent.left
             anchors.right: customisedSettings.left
         }
