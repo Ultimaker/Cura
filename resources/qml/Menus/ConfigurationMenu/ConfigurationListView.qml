@@ -51,7 +51,7 @@ Item
             anchors.left: icon.right
             anchors.right: parent.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "The configurations are not available because the printer is disconnected.")
+            text: catalog.i18nc("@label", "Downloading the configurations from the remote printer")
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
