@@ -64,8 +64,6 @@ class MachineManager(QObject):
 
         self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
 
-        self.machine_extruder_material_update_dict = collections.defaultdict(list) #type: Dict[str, List[Callable[[], None]]]
-
         self._instance_container_timer = QTimer()  # type: QTimer
         self._instance_container_timer.setInterval(250)
         self._instance_container_timer.setSingleShot(True)
@@ -274,11 +272,6 @@ class MachineManager(QObject):
             for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
                 extruder_stack.containersChanged.connect(self._onContainersChanged)
-
-            if self._global_container_stack.getId() in self.machine_extruder_material_update_dict:
-                for func in self.machine_extruder_material_update_dict[self._global_container_stack.getId()]:
-                    self._application.callLater(func)
-                del self.machine_extruder_material_update_dict[self._global_container_stack.getId()]
 
         self.activeQualityGroupChanged.emit()
 
