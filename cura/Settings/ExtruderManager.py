@@ -301,12 +301,7 @@ class ExtruderManager(QObject):
         global_stack = self._application.getGlobalContainerStack()
         if not global_stack:
             return []
-
-        result_tuple_list = sorted(list(global_stack.extruders.items()), key = lambda x: int(x[0]))
-        result_list = [item[1] for item in result_tuple_list]
-
-        machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-        return result_list[:machine_extruder_count]
+        return global_stack.extruderList
 
     def _globalContainerStackChanged(self) -> None:
         # If the global container changed, the machine changed and might have extruders that were not registered yet
