@@ -187,7 +187,7 @@ Button
                 rightMargin: UM.Theme.getSize("wide_margin").width
             }
             height: childrenRect.height
-            visible: configuration.buildplateConfiguration != ""
+            visible: configuration.buildplateConfiguration != "" && false //Buildplate is disabled as long as we have no printers that properly support buildplate swapping (so we can't test).
 
             UM.RecolorImage
             {
