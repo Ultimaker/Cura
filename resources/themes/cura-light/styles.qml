@@ -256,7 +256,7 @@ QtObject
                     source: control.iconSource
                     width: Theme.getSize("button_icon").width
                     height: Theme.getSize("button_icon").height
-                    color: Theme.getColor("toolbar_button_text")
+                    color: Theme.getColor("icon")
 
                     sourceSize: Theme.getSize("button_icon")
                 }
