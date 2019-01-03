@@ -135,6 +135,7 @@ Column
             visible: !sliceButton.visible
             onClicked: sliceOrStopSlicing()
         }
+
         Item
         {
             id: additionalComponents
