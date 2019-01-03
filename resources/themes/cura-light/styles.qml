@@ -585,6 +585,7 @@ QtObject
                     text: control.unit ? control.unit : ""
                     color: Theme.getColor("setting_unit");
                     font: Theme.getFont("default");
+                    renderType: Text.NativeRendering
                 }
             }
         }
