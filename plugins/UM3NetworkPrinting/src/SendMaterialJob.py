@@ -97,7 +97,7 @@ class SendMaterialJob(Job):
 
             file_path = container_registry.getContainerFilePathById(root_material_id)
             if not file_path:
-                Logger.log("e", "Cannot get file path for material container [%s]", root_material_id)
+                Logger.log("w", "Cannot get file path for material container [%s]", root_material_id)
                 continue
 
             file_name = os.path.basename(file_path)
