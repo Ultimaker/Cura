@@ -64,7 +64,7 @@ Item
     property alias iconSize: collapseButton.height
 
     // Is the "drawer" open?
-    readonly property alias expanded: contentContainer.visible
+    property alias expanded: contentContainer.visible
 
     // What should the radius of the header be. This is also influenced by the headerCornerSide
     property alias headerRadius: background.radius
