@@ -48,7 +48,7 @@ Item
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
-            font: UM.Theme.getFont("very_small")
+            font: UM.Theme.getFont("small")
             color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
@@ -66,7 +66,7 @@ Item
             sourceSize.height: width
             source: UM.Theme.getIcon("cross1")
             visible: !extruderEnabled
-            color: "black"
+            color: UM.Theme.getColor("text")
         }
     }
 }

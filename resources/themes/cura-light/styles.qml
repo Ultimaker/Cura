@@ -207,8 +207,8 @@ QtObject
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
 
-                        text: control.text;
-                        font: Theme.getFont("button_tooltip")
+                        text: control.text
+                        font: Theme.getFont("default")
                         color: Theme.getColor("tooltip_text")
                     }
                 }

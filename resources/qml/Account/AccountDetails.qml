@@ -44,7 +44,7 @@ Column
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
         text: loggedIn ? profile["username"] : catalog.i18nc("@label", "Please log in or create an account to\nenjoy all features of Ultimaker Cura.")
-        font: loggedIn ? UM.Theme.getFont("large") : UM.Theme.getFont("default")
+        font: loggedIn ? UM.Theme.getFont("large_bold") : UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
     }
 

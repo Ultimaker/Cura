@@ -168,7 +168,7 @@ Item
         anchors.leftMargin: UM.Theme.getSize("thick_margin").width
 
         color: base.statusColor
-        font: UM.Theme.getFont("large")
+        font: UM.Theme.getFont("large_bold")
         text: statusText
     }
 
@@ -179,7 +179,7 @@ Item
         anchors.right: progressBar.right
 
         color: base.statusColor
-        font: UM.Theme.getFont("large")
+        font: UM.Theme.getFont("large_bold")
         text: Math.round(progress) + "%"
         visible: showProgress
     }

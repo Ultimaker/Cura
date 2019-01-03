@@ -44,9 +44,9 @@ Column
     {
         id: autoSlicingLabel
         width: parent.width
-        visible: prepareButtons.autoSlice && (widget.backendState == UM.Backend.Processing || widget.backendState == UM.Backend.NotStarted)
+        visible: progressBar.visible
 
-        text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
+        text: catalog.i18nc("@label:PrintjobStatus", "Slicing...")
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
