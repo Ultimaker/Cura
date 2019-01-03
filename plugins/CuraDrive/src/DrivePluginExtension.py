@@ -7,8 +7,10 @@ from typing import Optional
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
+from UM.Application import Application
 from UM.Extension import Extension
 from UM.Message import Message
+from cura.CuraApplication import CuraApplication
 
 from .Settings import Settings
 from .DriveApiService import DriveApiService
@@ -34,11 +36,8 @@ class DrivePluginExtension(QObject, Extension):
     
     DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
 
-    def __init__(self, application):
+    def __init__(self):
         super(DrivePluginExtension, self).__init__()
-        
-        # Re-usable instance of application.
-        self._application = application
 
         # Local data caching for the UI.
         self._drive_window = None  # type: Optional[QObject]
@@ -47,12 +46,11 @@ class DrivePluginExtension(QObject, Extension):
         self._is_creating_backup = False
 
         # Initialize services.
-        self._preferences = self._application.getPreferences()
-        self._cura_api = self._application.getCuraAPI()
-        self._drive_api_service = DriveApiService(self._cura_api)
+        self._preferences = CuraApplication.getInstance().getPreferences()
+        self._drive_api_service = DriveApiService()
 
         # Attach signals.
-        self._cura_api.account.loginStateChanged.connect(self._onLoginStateChanged)
+        CuraApplication.getInstance().getCuraAPI().account.loginStateChanged.connect(self._onLoginStateChanged)
         self._drive_api_service.onRestoringStateChanged.connect(self._onRestoringStateChanged)
         self._drive_api_service.onCreatingStateChanged.connect(self._onCreatingStateChanged)
 
@@ -65,7 +63,7 @@ class DrivePluginExtension(QObject, Extension):
         self._updateMenuItems()
 
         # Make auto-backup on boot if required.
-        self._application.engineCreatedSignal.connect(self._autoBackup)
+        CuraApplication.getInstance().engineCreatedSignal.connect(self._autoBackup)
 
     def showDriveWindow(self) -> None:
         """Show the Drive UI popup window."""
@@ -81,7 +79,7 @@ class DrivePluginExtension(QObject, Extension):
         :return: The popup window object.
         """
         path = os.path.join(os.path.dirname(__file__), "qml", "main.qml")
-        return self._application.createQmlComponent(path, {"CuraDrive": self})
+        return CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
     
     def _updateMenuItems(self) -> None:
         """Update the menu items."""

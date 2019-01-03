@@ -12,16 +12,14 @@ import requests
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
+from cura.CuraApplication import CuraApplication
 
 from .UploadBackupJob import UploadBackupJob
 from .Settings import Settings
 
 
+## The DriveApiService is responsible for interacting with the CuraDrive API and Cura's backup handling.
 class DriveApiService:
-    """
-    The DriveApiService is responsible for interacting with the CuraDrive API and Cura's backup handling.
-    """
-
     GET_BACKUPS_URL = "{}/backups".format(Settings.DRIVE_API_URL)
     PUT_BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
     DELETE_BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
@@ -32,9 +30,8 @@ class DriveApiService:
     # Emit signal when creating backup started or finished.
     onCreatingStateChanged = Signal()
 
-    def __init__(self, cura_api) -> None:
-        """Create a new instance of the Drive API service and set the cura_api object."""
-        self._cura_api = cura_api
+    def __init__(self) -> None:
+        self._cura_api = CuraApplication.getInstance().getCuraAPI()
 
     def getBackups(self) -> List[Dict[str, Any]]:
         """Get all backups from the API."""
