@@ -7,7 +7,6 @@ from UM.Job import Job
 from UM.Logger import Logger
 from UM.Message import Message
 
-from .Settings import Settings
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -15,10 +14,8 @@ catalog = i18nCatalog("cura")
 class UploadBackupJob(Job):
     MESSAGE_TITLE = catalog.i18nc("@info:title", "Backups")
 
-    """
-    This job is responsible for uploading the backup file to cloud storage.
-    As it can take longer than some other tasks, we schedule this using a Cura Job.
-    """
+    # This job is responsible for uploading the backup file to cloud storage.
+    # As it can take longer than some other tasks, we schedule this using a Cura Job.
     def __init__(self, signed_upload_url: str, backup_zip: bytes) -> None:
         super().__init__()
         self._signed_upload_url = signed_upload_url
@@ -33,7 +30,7 @@ class UploadBackupJob(Job):
         backup_upload = requests.put(self._signed_upload_url, data = self._backup_zip)
         upload_message.hide()
 
-        if backup_upload.status_code not in (200, 201):
+        if backup_upload.status_code >= 300:
             self.backup_upload_error_message = backup_upload.text
             Logger.log("w", "Could not upload backup file: %s", backup_upload.text)
             Message(catalog.i18nc("@info:backup_status", "There was an error while uploading your backup."), title = self.MESSAGE_TITLE).show()
