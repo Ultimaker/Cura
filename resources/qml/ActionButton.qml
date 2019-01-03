@@ -120,12 +120,11 @@ Button
         visible: text != "" && button.hovered
     }
 
-    BusyIndicator {
+    BusyIndicator
+    {
         id: busyIndicator
 
-        anchors {
-            centerIn: parent
-        }
+        anchors.centerIn: parent
 
         width: height
         height: parent.height

@@ -13,11 +13,12 @@ CheckBox
 
     property alias tooltip: tooltip.text
 
-    indicator: Rectangle {
+    indicator: Rectangle
+    {
         implicitWidth: UM.Theme.getSize("checkbox").width
         implicitHeight: UM.Theme.getSize("checkbox").height
         x: 0
-        y: Math.round(parent.height / 2 - height / 2)
+        anchors.verticalCenter: parent.verticalCenter
         color: UM.Theme.getColor("main_background")
         radius: UM.Theme.getSize("checkbox_radius").width
         border.width: UM.Theme.getSize("default_lining").width
@@ -37,7 +38,8 @@ CheckBox
         }
     }
 
-    contentItem: Label {
+    contentItem: Label
+    {
         anchors
         {
             left: checkbox.indicator.right
