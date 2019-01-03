@@ -57,7 +57,7 @@
             "display_name": "Cura Backups",
             "description": "Backup and restore your configuration.",
             "package_version": "1.2.0",
-            "sdk_version": 5,
+            "sdk_version": 6,
             "website": "https://ultimaker.com",
             "author": {
                 "author_id": "UltimakerPackages",
