@@ -44,7 +44,7 @@ Item
 
         Label
         {
-            text: new Date(model["generated_time"]).toLocaleString(UM.Preferences.getValue("general/language"))
+            text: new Date(modelData.generated_time).toLocaleString(UM.Preferences.getValue("general/language"))
             color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             Layout.minimumWidth: 100 * screenScaleFactor
@@ -55,7 +55,7 @@ Item
 
         Label
         {
-            text: model["data"]["description"]
+            text: modelData.metadata.description
             color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             Layout.minimumWidth: 100 * screenScaleFactor
@@ -85,7 +85,7 @@ Item
     BackupListItemDetails
     {
         id: backupDetails
-        backupDetailsData: model
+        backupDetailsData: modelData
         width: parent.width
         visible: parent.showDetails
         anchors.top: dataRow.bottom
@@ -97,7 +97,7 @@ Item
         title: catalog.i18nc("@dialog:title", "Delete Backup")
         text: catalog.i18nc("@dialog:info", "Are you sure you want to delete this backup? This cannot be undone.")
         standardButtons: StandardButton.Yes | StandardButton.No
-        onYes: CuraDrive.deleteBackup(model["backup_id"])
+        onYes: CuraDrive.deleteBackup(modelData.backup_id)
     }
 
     MessageDialog
@@ -106,6 +106,6 @@ Item
         title: catalog.i18nc("@dialog:title", "Restore Backup")
         text: catalog.i18nc("@dialog:info", "You will need to restart Cura before your backup is restored. Do you want to close Cura now?")
         standardButtons: StandardButton.Yes | StandardButton.No
-        onYes: CuraDrive.restoreBackup(model["backup_id"])
+        onYes: CuraDrive.restoreBackup(modelData.backup_id)
     }
 }

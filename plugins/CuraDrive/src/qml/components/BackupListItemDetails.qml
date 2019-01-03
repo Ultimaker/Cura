@@ -19,7 +19,7 @@ ColumnLayout
     {
         iconSource: "../images/cura.svg"
         label: catalog.i18nc("@backuplist:label", "Cura Version")
-        value: backupDetailsData["data"]["cura_release"]
+        value: backupDetailsData.metadata.cura_release
     }
 
     // Machine count.
@@ -27,7 +27,7 @@ ColumnLayout
     {
         iconSource: "../images/printer.svg"
         label: catalog.i18nc("@backuplist:label", "Machines")
-        value: backupDetailsData["data"]["machine_count"]
+        value: backupDetailsData.metadata.machine_count
     }
 
     // Meterial count.
@@ -35,7 +35,7 @@ ColumnLayout
     {
         iconSource: "../images/material.svg"
         label: catalog.i18nc("@backuplist:label", "Materials")
-        value: backupDetailsData["data"]["material_count"]
+        value: backupDetailsData.metadata.material_count
     }
 
     // Meterial count.
@@ -43,7 +43,7 @@ ColumnLayout
     {
         iconSource: "../images/profile.svg"
         label: catalog.i18nc("@backuplist:label", "Profiles")
-        value: backupDetailsData["data"]["profile_count"]
+        value: backupDetailsData.metadata.profile_count
     }
 
     // Meterial count.
@@ -51,7 +51,7 @@ ColumnLayout
     {
         iconSource: "../images/plugin.svg"
         label: catalog.i18nc("@backuplist:label", "Plugins")
-        value: backupDetailsData["data"]["plugin_count"]
+        value: backupDetailsData.metadata.plugin_count
     }
 
     // Spacer.

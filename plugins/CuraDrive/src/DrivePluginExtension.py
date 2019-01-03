@@ -3,18 +3,17 @@
 
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
-from UM.Application import Application
 from UM.Extension import Extension
+from UM.Logger import Logger
 from UM.Message import Message
 from cura.CuraApplication import CuraApplication
 
 from .Settings import Settings
 from .DriveApiService import DriveApiService
-from .models.BackupListModel import BackupListModel
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -45,7 +44,7 @@ class DrivePluginExtension(QObject, Extension):
 
         # Local data caching for the UI.
         self._drive_window = None  # type: Optional[QObject]
-        self._backups_list_model = BackupListModel()
+        self._backups = []
         self._is_restoring_backup = False
         self._is_creating_backup = False
 
@@ -126,13 +125,13 @@ class DrivePluginExtension(QObject, Extension):
     def autoBackupEnabled(self) -> bool:
         return bool(self._preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY))
 
-    @pyqtProperty(QObject, notify = backupsChanged)
-    def backups(self) -> BackupListModel:
-        return self._backups_list_model
+    @pyqtProperty("QVariantList", notify = backupsChanged)
+    def backups(self) -> List:
+        return self._backups
 
     @pyqtSlot(name = "refreshBackups")
     def refreshBackups(self) -> None:
-        self._backups_list_model.loadBackups(self._drive_api_service.getBackups())
+        self._backups = self._drive_api_service.getBackups()
         self.backupsChanged.emit()
 
     @pyqtProperty(bool, notify = restoringStateChanged)
@@ -145,9 +144,11 @@ class DrivePluginExtension(QObject, Extension):
 
     @pyqtSlot(str, name = "restoreBackup")
     def restoreBackup(self, backup_id: str) -> None:
-        index = self._backups_list_model.find("backup_id", backup_id)
-        backup = self._backups_list_model.getItem(index)
-        self._drive_api_service.restoreBackup(backup)
+        for backup in self._backups:
+            if backup.get("backup_id") == backup_id:
+                self._drive_api_service.restoreBackup(backup)
+                return
+        Logger.log("w", "Unable to find backup with the ID %s", backup_id)
 
     @pyqtSlot(name = "createBackup")
     def createBackup(self) -> None:
