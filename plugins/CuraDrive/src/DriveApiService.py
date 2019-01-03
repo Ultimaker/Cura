@@ -34,7 +34,6 @@ class DriveApiService:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
 
     def getBackups(self) -> List[Dict[str, Any]]:
-        """Get all backups from the API."""
         access_token = self._cura_api.account.accessToken
         if not access_token:
             Logger.log("w", "Could not get access token.")
@@ -43,6 +42,7 @@ class DriveApiService:
         backup_list_request = requests.get(self.GET_BACKUPS_URL, headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
+        
         if backup_list_request.status_code > 299:
             Logger.log("w", "Could not get backups list from remote: %s", backup_list_request.text)
             Message(Settings.translatable_messages["get_backups_error"], title = Settings.MESSAGE_TITLE,
@@ -51,7 +51,6 @@ class DriveApiService:
         return backup_list_request.json()["data"]
 
     def createBackup(self) -> None:
-        """Create a backup and upload it to CuraDrive cloud storage."""
         self.onCreatingStateChanged.emit(is_creating = True)
 
         # Create the backup.
@@ -74,10 +73,6 @@ class DriveApiService:
         upload_backup_job.start()
 
     def _onUploadFinished(self, job: "UploadBackupJob") -> None:
-        """
-        Callback handler for the upload job.
-        :param job: The executed job.
-        """
         if job.backup_upload_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
             self.onCreatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
@@ -85,10 +80,6 @@ class DriveApiService:
             self.onCreatingStateChanged.emit(is_creating = False)
 
     def restoreBackup(self, backup: Dict[str, Any]) -> None:
-        """
-        Restore a previously exported backup from cloud storage.
-        :param backup: A dict containing an entry from the API list response.
-        """
         self.onRestoringStateChanged.emit(is_restoring = True)
         download_url = backup.get("download_url")
         if not download_url:
@@ -119,30 +110,22 @@ class DriveApiService:
             self.onRestoringStateChanged.emit(is_restoring = False)
 
     def _emitRestoreError(self, error_message: str = Settings.translatable_messages["backup_restore_error_message"]):
-        """Helper method for emitting a signal when restoring failed."""
         self.onRestoringStateChanged.emit(
             is_restoring = False,
             error_message = error_message
         )
 
+    #   Verify the MD5 hash of a file.
+    #   \param file_path Full path to the file.
+    #   \param known_hash The known MD5 hash of the file.
+    #   \return: Success or not.
     @staticmethod
     def _verifyMd5Hash(file_path: str, known_hash: str) -> bool:
-        """
-        Verify the MD5 hash of a file.
-        :param file_path: Full path to the file.
-        :param known_hash: The known MD5 hash of the file.
-        :return: Success or not.
-        """
         with open(file_path, "rb") as read_backup:
             local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
             return known_hash == local_md5_hash
 
     def deleteBackup(self, backup_id: str) -> bool:
-        """
-        Delete a backup from the server by ID.
-        :param backup_id: The ID of the backup to delete.
-        :return: Success bool.
-        """
         access_token = self._cura_api.account.accessToken
         if not access_token:
             Logger.log("w", "Could not get access token.")
@@ -156,13 +139,12 @@ class DriveApiService:
             return False
         return True
 
+    #   Request a backup upload slot from the API.
+    #   \param backup_metadata: A dict containing some meta data about the backup.
+    #   \param backup_size The size of the backup file in bytes.
+    #   \return: The upload URL for the actual backup file if successful, otherwise None.
     def _requestBackupUpload(self, backup_metadata: Dict[str, Any], backup_size: int) -> Optional[str]:
-        """
-        Request a backup upload slot from the API.
-        :param backup_metadata: A dict containing some meta data about the backup.
-        :param backup_size: The size of the backup file in bytes.
-        :return: The upload URL for the actual backup file if successful, otherwise None.
-        """
+
         access_token = self._cura_api.account.accessToken
         if not access_token:
             Logger.log("w", "Could not get access token.")
@@ -176,8 +158,9 @@ class DriveApiService:
         }, headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
-        
-        if backup_upload_request.status_code > 299:
+
+        # Any status code of 300 or above indicates an error.
+        if backup_upload_request.status_code >= 300:
             Logger.log("w", "Could not request backup upload: %s", backup_upload_request.text)
             return None
         
