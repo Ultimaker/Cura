@@ -39,7 +39,7 @@ Row
             text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text")
         }
         Label

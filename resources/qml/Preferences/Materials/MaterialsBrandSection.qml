@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
@@ -10,7 +10,7 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: brand_section
     
@@ -69,11 +69,7 @@ Rectangle
             }
             style: ButtonStyle
             {
-                background: Rectangle
-                {
-                    anchors.fill: parent
-                    color: "transparent"
-                }
+                background: Item { }
             }
         }
     }

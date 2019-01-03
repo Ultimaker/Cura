@@ -30,7 +30,7 @@ Row
         width: contentWidth
         anchors.verticalCenter: starIcon.verticalCenter
         color: starIcon.color
-        font: UM.Theme.getFont("small")
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 }

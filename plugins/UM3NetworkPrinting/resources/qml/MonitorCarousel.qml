@@ -18,6 +18,10 @@ Item
 
     height: centerSection.height
     width: maximumWidth
+    
+    // Enable keyboard navigation
+    Keys.onLeftPressed: navigateTo(currentIndex - 1)
+    Keys.onRightPressed: navigateTo(currentIndex + 1)
 
     Item
     {
@@ -211,7 +215,7 @@ Item
         }
     }
 
-    Item
+    Row
     {
         id: navigationDots
         anchors
@@ -220,23 +224,20 @@ Item
             top: centerSection.bottom
             topMargin: 36 * screenScaleFactor // TODO: Theme!
         }
-        Row
+        spacing: 8 * screenScaleFactor // TODO: Theme!
+        Repeater
         {
-            spacing: 8 * screenScaleFactor // TODO: Theme!
-            Repeater
+            model: OutputDevice.printers
+            Button
             {
-                model: OutputDevice.printers
-                Button
+                background: Rectangle
                 {
-                    background: Rectangle
-                    {
-                        color: model.index == currentIndex ? "#777777" : "#d8d8d8" // TODO: Theme!
-                        radius: Math.floor(width / 2)
-                        width: 12 * screenScaleFactor // TODO: Theme!
-                        height: width // TODO: Theme!
-                    }
-                    onClicked: navigateTo(model.index)
+                    color: model.index == currentIndex ? "#777777" : "#d8d8d8" // TODO: Theme!
+                    radius: Math.floor(width / 2)
+                    width: 12 * screenScaleFactor // TODO: Theme!
+                    height: width // TODO: Theme!
                 }
+                onClicked: navigateTo(model.index)
             }
         }
     }

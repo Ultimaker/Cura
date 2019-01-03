@@ -61,8 +61,13 @@ Item
                 id: labelStyle
                 text: control.text
                 color: control.enabled ? (control.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")) : UM.Theme.getColor("text_inactive")
-                font: UM.Theme.getFont("default_bold")
-                horizontalAlignment: Text.AlignRight
+                font: UM.Theme.getFont("medium_bold")
+                horizontalAlignment: Text.AlignLeft
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
                 width: control.width
                 renderType: Text.NativeRendering
             }

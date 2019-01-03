@@ -24,6 +24,11 @@ Component
             }
         }
         width: maximumWidth
+        
+        // Enable keyboard navigation. NOTE: This is done here so that we can also potentially
+        // forward to the queue items in the future. (Deleting selected print job, etc.)
+        Keys.forwardTo: carousel
+        Component.onCompleted: forceActiveFocus()
 
         UM.I18nCatalog
         {
@@ -59,7 +64,9 @@ Component
             }
             width: parent.width
             height: 264 * screenScaleFactor // TODO: Theme!
-            MonitorCarousel {}
+            MonitorCarousel {
+                id: carousel
+            }
         }
 
         MonitorQueue

@@ -22,7 +22,7 @@ Column
         text: gridArea.heading
         width: parent.width
         color: UM.Theme.getColor("text_medium")
-        font: UM.Theme.getFont("medium")
+        font: UM.Theme.getFont("large")
         renderType: Text.NativeRendering
     }
     Grid

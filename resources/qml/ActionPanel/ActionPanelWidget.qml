@@ -23,6 +23,7 @@ Rectangle
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
     radius: UM.Theme.getSize("default_radius").width
+    z: 10
 
     property bool outputAvailable: UM.Backend.state == UM.Backend.Done || UM.Backend.state == UM.Backend.Disabled
 

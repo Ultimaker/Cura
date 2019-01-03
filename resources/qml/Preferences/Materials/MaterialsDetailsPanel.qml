@@ -65,7 +65,7 @@ Item
 
             Label {
                 text: materialProperties.name
-                font: UM.Theme.getFont("large")
+                font: UM.Theme.getFont("large_bold")
             }
         }
 

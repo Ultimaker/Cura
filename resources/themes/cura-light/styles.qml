@@ -207,8 +207,8 @@ QtObject
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
 
-                        text: control.text;
-                        font: Theme.getFont("button_tooltip")
+                        text: control.text
+                        font: Theme.getFont("default")
                         color: Theme.getColor("tooltip_text")
                     }
                 }
@@ -256,7 +256,7 @@ QtObject
                     source: control.iconSource
                     width: Theme.getSize("button_icon").width
                     height: Theme.getSize("button_icon").height
-                    color: Theme.getColor("toolbar_button_text")
+                    color: Theme.getColor("icon")
 
                     sourceSize: Theme.getSize("button_icon")
                 }
