@@ -27,9 +27,12 @@ class UploadBackupJob(Job):
         self.backup_upload_error_message = ""
 
     def run(self) -> None:
-        Message(catalog.i18nc("@info:backup_status", "Uploading your backup..."), title = self.MESSAGE_TITLE).show()
+        upload_message = Message(catalog.i18nc("@info:backup_status", "Uploading your backup..."), title = self.MESSAGE_TITLE, progress = -1)
+        upload_message.show()
 
         backup_upload = requests.put(self._signed_upload_url, data = self._backup_zip)
+        upload_message.hide()
+
         if backup_upload.status_code not in (200, 201):
             self.backup_upload_error_message = backup_upload.text
             Logger.log("w", "Could not upload backup file: %s", backup_upload.text)
