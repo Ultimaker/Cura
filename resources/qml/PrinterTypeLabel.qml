@@ -19,6 +19,7 @@ Item
     {
         anchors.fill: parent
         color: UM.Theme.getColor("printer_type_label_background")
+        radius: UM.Theme.getSize("checkbox_radius").width
     }
 
     Label

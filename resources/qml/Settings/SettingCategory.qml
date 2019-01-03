@@ -73,7 +73,7 @@ Button
             text: definition.label
             textFormat: Text.PlainText
             renderType: Text.NativeRendering
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("medium_bold")
             color:
             {
                 if (!base.enabled)

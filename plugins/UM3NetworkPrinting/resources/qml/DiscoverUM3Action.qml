@@ -28,7 +28,7 @@ Cura.MachineAction
                 // Check if there is another instance with the same key
                 if (!manager.existsKey(printerKey))
                 {
-                    manager.setKey(printerKey)
+                    manager.associateActiveMachineWithPrinterDevice(base.selectedDevice)
                     manager.setGroupName(printerName)   // TODO To change when the groups have a name
                     completed()
                 }
@@ -223,7 +223,7 @@ Cura.MachineAction
                     width: parent.width
                     wrapMode: Text.WordWrap
                     text: base.selectedDevice ? base.selectedDevice.name : ""
-                    font: UM.Theme.getFont("large")
+                    font: UM.Theme.getFont("large_bold")
                     elide: Text.ElideRight
                     renderType: Text.NativeRendering
                 }

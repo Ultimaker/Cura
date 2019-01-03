@@ -25,7 +25,7 @@ Item
             right: globalProfileSelection.left
         }
         text: catalog.i18nc("@label", "Profile")
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("text")
         verticalAlignment: Text.AlignVCenter
     }

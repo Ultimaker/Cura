@@ -39,17 +39,6 @@ Item
     {
         target: Cura.QualityProfilesDropDownMenuModel
         onItemsChanged: qualityModel.update()
-        onDataChanged:
-        {
-            // If a custom profile is selected and then a user decides to change any of setting the slider should show
-            // the reset button. After clicking the reset button the QualityProfilesDropDownMenuModel(ListModel) is
-            // updated before the property isProfileCustomized is called to update.
-            if (Cura.SimpleModeSettingsManager.isProfileCustomized)
-            {
-                Cura.SimpleModeSettingsManager.updateIsProfileUserCreated()
-            }
-            qualityModel.update()
-        }
     }
 
     Connections {
@@ -97,7 +86,7 @@ Item
                 if (Cura.MachineManager.activeQualityType == qualityItem.quality_type)
                 {
                     // set to -1 when switching to user created profile so all ticks are clickable
-                    if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
+                    if (Cura.MachineManager.hasCustomQuality)
                     {
                         qualityModel.qualitySliderActiveIndex = -1
                     }
@@ -184,6 +173,7 @@ Item
             id: qualityRowTitle
             source: UM.Theme.getIcon("category_layer_height")
             text: catalog.i18nc("@label", "Layer Height")
+            font: UM.Theme.getFont("medium")
             anchors.left: parent.left
             anchors.right: customisedSettings.left
         }
@@ -192,7 +182,7 @@ Item
         {
             id: customisedSettings
 
-            visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
+            visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
             height: visible ? UM.Theme.getSize("print_setup_icon").height : 0
             width: height
             anchors
@@ -282,6 +272,7 @@ Item
                         return Math.round((settingsColumnWidth / qualityModel.totalTicks) * index - (width / 2))
                     }
                 }
+                font: UM.Theme.getFont("default")
             }
         }
     }
@@ -358,7 +349,7 @@ Item
             {
                 anchors.fill: parent
                 hoverEnabled: true
-                enabled: !Cura.SimpleModeSettingsManager.isProfileUserCreated
+                enabled: !Cura.MachineManager.hasCustomQuality
                 onEntered:
                 {
                     var tooltipContent = catalog.i18nc("@tooltip", "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile")
@@ -417,7 +408,7 @@ Item
                     implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
                     implicitHeight: implicitWidth
                     radius: Math.round(implicitWidth / 2)
-                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
+                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.MachineManager.hasCustomQuality && qualityModel.existingQualityProfile
                 }
             }
 
@@ -441,7 +432,7 @@ Item
                 anchors.fill: parent
                 hoverEnabled: true
                 acceptedButtons: Qt.NoButton
-                enabled: !Cura.SimpleModeSettingsManager.isProfileUserCreated
+                enabled: !Cura.MachineManager.hasCustomQuality
             }
         }
 
@@ -451,7 +442,7 @@ Item
         {
             anchors.fill: parent
             hoverEnabled: true
-            visible: Cura.SimpleModeSettingsManager.isProfileUserCreated
+            visible: Cura.MachineManager.hasCustomQuality
 
             onEntered:
             {

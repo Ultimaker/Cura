@@ -13,6 +13,8 @@ Component
     {
         Rectangle
         {
+            color: UM.Theme.getColor("main_background")
+
             anchors.right: parent.right
             width: parent.width * 0.3
             anchors.top: parent.top

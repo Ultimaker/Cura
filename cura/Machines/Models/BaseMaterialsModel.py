@@ -106,10 +106,7 @@ class BaseMaterialsModel(ListModel):
             return False
         
         extruder_stack = global_stack.extruders[extruder_position]
-        available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
-        if available_materials == self._available_materials:
-            return False
-        self._available_materials = available_materials
+        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
         if self._available_materials is None:
             return False
 

@@ -29,4 +29,7 @@ Cura.ExpandableComponent
     property var extrudersModel: CuraApplication.getExtrudersModel()
 
     contentItem: PrintSetupSelectorContents {}
+
+    onExpandedChanged: UM.Preferences.setValue("view/settings_visible", expanded)
+    Component.onCompleted: expanded = UM.Preferences.getValue("view/settings_visible")
 }
