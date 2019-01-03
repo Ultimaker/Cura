@@ -27,6 +27,7 @@ Item
         visible: enableSupportCheckBox.visible
         source: UM.Theme.getIcon("category_support")
         text: catalog.i18nc("@label", "Support")
+        font: UM.Theme.getFont("medium")
         width: labelColumnWidth
     }
 

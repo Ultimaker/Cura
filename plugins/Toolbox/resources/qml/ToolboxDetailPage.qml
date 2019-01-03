@@ -59,7 +59,7 @@ Item
                 leftMargin: UM.Theme.getSize("default_margin").width
             }
             text: details === null ? "" : (details.name || "")
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
