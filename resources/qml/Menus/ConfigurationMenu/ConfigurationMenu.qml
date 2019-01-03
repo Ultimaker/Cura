@@ -61,6 +61,27 @@ Cura.ExpandablePopup
                     width: height
                 }
 
+                // Label that shows the name of the variant
+                Label
+                {
+                    id: variantLabel
+
+                    visible: Cura.MachineManager.hasVariants
+
+                    text: model.variant
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+
+                    anchors
+                    {
+                        left: extruderIcon.right
+                        leftMargin: UM.Theme.getSize("default_margin").width
+                        verticalCenter: parent.verticalCenter
+                    }
+                }
+
                 // Label for the brand of the material
                 Label
                 {
@@ -74,7 +95,7 @@ Cura.ExpandablePopup
 
                     anchors
                     {
-                        left: extruderIcon.right
+                        left: variantLabel.visible ? variantLabel.right : extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
                         right: parent.right
                         rightMargin: UM.Theme.getSize("default_margin").width
@@ -92,7 +113,7 @@ Cura.ExpandablePopup
 
                     anchors
                     {
-                        left: extruderIcon.right
+                        left: variantLabel.visible ? variantLabel.right : extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
                         right: parent.right
                         rightMargin: UM.Theme.getSize("default_margin").width
