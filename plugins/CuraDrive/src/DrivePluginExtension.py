@@ -16,6 +16,9 @@ from .Settings import Settings
 from .DriveApiService import DriveApiService
 from .models.BackupListModel import BackupListModel
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 
 class DrivePluginExtension(QObject, Extension):
     """
@@ -37,7 +40,8 @@ class DrivePluginExtension(QObject, Extension):
     DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
 
     def __init__(self):
-        super(DrivePluginExtension, self).__init__()
+        QObject.__init__(self, None)
+        Extension.__init__(self)
 
         # Local data caching for the UI.
         self._drive_window = None  # type: Optional[QObject]
@@ -59,8 +63,8 @@ class DrivePluginExtension(QObject, Extension):
         self._preferences.addPreference(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY, datetime.now()
                                         .strftime(self.DATE_FORMAT))
         
-        # Register menu items.
-        self._updateMenuItems()
+        # Register the menu item
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Manage backups"), self.showDriveWindow)
 
         # Make auto-backup on boot if required.
         CuraApplication.getInstance().engineCreatedSignal.connect(self._autoBackup)
@@ -68,59 +72,41 @@ class DrivePluginExtension(QObject, Extension):
     def showDriveWindow(self) -> None:
         """Show the Drive UI popup window."""
         if not self._drive_window:
-            self._drive_window = self.createDriveWindow()
+            path = os.path.join(os.path.dirname(__file__), "qml", "main.qml")
+            self._drive_window = CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
         self.refreshBackups()
         if self._drive_window:
             self._drive_window.show()
 
-    def createDriveWindow(self) -> Optional["QObject"]:
-        """
-        Create an instance of the Drive UI popup window.
-        :return: The popup window object.
-        """
-        path = os.path.join(os.path.dirname(__file__), "qml", "main.qml")
-        return CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
-    
-    def _updateMenuItems(self) -> None:
-        """Update the menu items."""
-        self.addMenuItem(Settings.translatable_messages["extension_menu_entry"], self.showDriveWindow)
-
     def _autoBackup(self) -> None:
-        """Automatically make a backup on boot if enabled."""
-        if self._preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY) and self._lastBackupTooLongAgo():
+        if self._preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY) and self._isLastBackupTooLongAgo():
             self.createBackup()
             
-    def _lastBackupTooLongAgo(self) -> bool:
-        """Check if the last backup was longer than 1 day ago."""
+    def _isLastBackupTooLongAgo(self) -> bool:
         current_date = datetime.now()
         last_backup_date = self._getLastBackupDate()
         date_diff = current_date - last_backup_date
         return date_diff.days > 1
 
     def _getLastBackupDate(self) -> "datetime":
-        """Get the last backup date as datetime object."""
         last_backup_date = self._preferences.getValue(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY)
         return datetime.strptime(last_backup_date, self.DATE_FORMAT)
 
     def _storeBackupDate(self) -> None:
-        """Store the current date as last backup date."""
         backup_date = datetime.now().strftime(self.DATE_FORMAT)
         self._preferences.setValue(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY, backup_date)
 
     def _onLoginStateChanged(self, logged_in: bool = False) -> None:
-        """Callback handler for changes in the login state."""
         if logged_in:
             self.refreshBackups()
 
     def _onRestoringStateChanged(self, is_restoring: bool = False, error_message: str = None) -> None:
-        """Callback handler for changes in the restoring state."""
         self._is_restoring_backup = is_restoring
         self.restoringStateChanged.emit()
         if error_message:
             Message(error_message, title = Settings.MESSAGE_TITLE, lifetime = 5).show()
 
     def _onCreatingStateChanged(self, is_creating: bool = False, error_message: str = None) -> None:
-        """Callback handler for changes in the creation state."""
         self._is_creating_backup = is_creating
         self.creatingStateChanged.emit()
         if error_message:
@@ -133,69 +119,41 @@ class DrivePluginExtension(QObject, Extension):
 
     @pyqtSlot(bool, name = "toggleAutoBackup")
     def toggleAutoBackup(self, enabled: bool) -> None:
-        """Enable or disable the auto-backup feature."""
         self._preferences.setValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY, enabled)
         self.preferencesChanged.emit()
 
     @pyqtProperty(bool, notify = preferencesChanged)
     def autoBackupEnabled(self) -> bool:
-        """Check if auto-backup is enabled or not."""
         return bool(self._preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY))
 
     @pyqtProperty(QObject, notify = backupsChanged)
     def backups(self) -> BackupListModel:
-        """
-        Get a list of the backups.
-        :return: The backups as Qt List Model.
-        """
         return self._backups_list_model
 
     @pyqtSlot(name = "refreshBackups")
     def refreshBackups(self) -> None:
-        """
-        Forcefully refresh the backups list.
-        """
         self._backups_list_model.loadBackups(self._drive_api_service.getBackups())
         self.backupsChanged.emit()
 
     @pyqtProperty(bool, notify = restoringStateChanged)
     def isRestoringBackup(self) -> bool:
-        """
-        Get the current restoring state.
-        :return: Boolean if we are restoring or not.
-        """
         return self._is_restoring_backup
 
     @pyqtProperty(bool, notify = creatingStateChanged)
     def isCreatingBackup(self) -> bool:
-        """
-        Get the current creating state.
-        :return: Boolean if we are creating or not.
-        """
         return self._is_creating_backup
 
     @pyqtSlot(str, name = "restoreBackup")
     def restoreBackup(self, backup_id: str) -> None:
-        """
-        Download and restore a backup by ID.
-        :param backup_id: The ID of the backup.
-        """
         index = self._backups_list_model.find("backup_id", backup_id)
         backup = self._backups_list_model.getItem(index)
         self._drive_api_service.restoreBackup(backup)
 
     @pyqtSlot(name = "createBackup")
     def createBackup(self) -> None:
-        """
-        Create a new backup.
-        """
         self._drive_api_service.createBackup()
 
     @pyqtSlot(str, name = "deleteBackup")
     def deleteBackup(self, backup_id: str) -> None:
-        """
-        Delete a backup by ID.
-        :param backup_id: The ID of the backup.
-        """
         self._drive_api_service.deleteBackup(backup_id)
         self.refreshBackups()
