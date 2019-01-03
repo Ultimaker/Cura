@@ -176,6 +176,24 @@ Item
                     UM.Preferences.setValue("view/settings_list_height", h);
                 }
             }
+
+            UM.RecolorImage
+            {
+                width: parent.width * 0.05
+                sourceSize.height: height
+                sourceSize.width: width
+                anchors
+                {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("thick_lining").height
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.getSize("thick_lining").height
+                }
+
+                source: UM.Theme.getIcon("grip_lines")
+                color: UM.Theme.getColor("lining")
+            }
         }
     }
 }
