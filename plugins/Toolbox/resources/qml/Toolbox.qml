@@ -38,7 +38,7 @@ Window
         {
             id: mainView
             width: parent.width
-            z: -1
+            z: parent.z - 1
             anchors
             {
                 top: header.bottom
