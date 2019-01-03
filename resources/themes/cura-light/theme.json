@@ -113,7 +113,6 @@
         "warning": [245, 166, 35, 255],
         "disabled": [229, 229, 229, 255],
 
-        "toolbar_button_text": [8, 7, 63, 255],
         "toolbar_button_hover": [232, 242, 252, 255],
         "toolbar_button_active": [232, 242, 252, 255],
         "toolbar_button_active_hover": [232, 242, 252, 255],

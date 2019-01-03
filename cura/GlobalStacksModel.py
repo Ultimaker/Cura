@@ -12,7 +12,8 @@ from cura.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.GlobalStack import GlobalStack
 
-class PrintersModel(ListModel):
+
+class GlobalStacksModel(ListModel):
     NameRole = Qt.UserRole + 1
     IdRole = Qt.UserRole + 2
     HasRemoteConnectionRole = Qt.UserRole + 3
@@ -41,21 +42,14 @@ class PrintersModel(ListModel):
         if isinstance(container, GlobalStack):
             self._update()
 
-    ##  Handler for container name change events.
-    def _onContainerNameChanged(self):
-        self._update()
-
     def _update(self) -> None:
         items = []
-        for container in self._container_stacks:
-            container.nameChanged.disconnect(self._onContainerNameChanged)
 
         container_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
 
         for container_stack in container_stacks:
-            connection_type = container_stack.getMetaDataEntry("connection_type")
+            connection_type = int(container_stack.getMetaDataEntry("connection_type", ConnectionType.NotConnected.value))
             has_remote_connection = connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
-
             if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
                 continue
 

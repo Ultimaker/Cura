@@ -620,8 +620,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         if material_group_list is None:
             material_name = i18n_catalog.i18nc("@label:material", "Empty") if len(material_data.get("guid", "")) == 0 \
                         else i18n_catalog.i18nc("@label:material", "Unknown")
+
             return MaterialOutputModel(guid = material_data.get("guid", ""),
-                                        type = material_data.get("type", ""),
+                                        type = material_data.get("material", ""),
                                         color = material_data.get("color", ""),
                                         brand = material_data.get("brand", ""),
                                         name = material_data.get("name", material_name)

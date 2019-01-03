@@ -408,7 +408,7 @@ Item
                     {
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                        text: section == "true" ? catalog.i18nc("@label", "Protected profiles") : catalog.i18nc("@label", "Custom profiles")
+                        text: section == "true" ? catalog.i18nc("@label", "Default profiles") : catalog.i18nc("@label", "Custom profiles")
                         font.bold: true
                     }
                 }
