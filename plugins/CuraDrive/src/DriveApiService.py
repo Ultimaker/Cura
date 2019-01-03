@@ -17,6 +17,9 @@ from cura.CuraApplication import CuraApplication
 from .UploadBackupJob import UploadBackupJob
 from .Settings import Settings
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 
 ## The DriveApiService is responsible for interacting with the CuraDrive API and Cura's backup handling.
 class DriveApiService:
@@ -42,11 +45,10 @@ class DriveApiService:
         backup_list_request = requests.get(self.GET_BACKUPS_URL, headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
-        
-        if backup_list_request.status_code > 299:
+
+        if backup_list_request.status_code >= 300:
             Logger.log("w", "Could not get backups list from remote: %s", backup_list_request.text)
-            Message(Settings.translatable_messages["get_backups_error"], title = Settings.MESSAGE_TITLE,
-                    lifetime = 10).show()
+            Message(catalog.i18nc("@info:backup_status", "There was an error listing your backups."), title = Settings.MESSAGE_TITLE).show()
             return []
         return backup_list_request.json()["data"]
 
@@ -87,7 +89,7 @@ class DriveApiService:
             return self._emitRestoreError()
 
         download_package = requests.get(download_url, stream = True)
-        if download_package.status_code != 200:
+        if download_package.status_code >= 300:
             # Something went wrong when attempting to download the backup.
             Logger.log("w", "Could not download backup from url %s: %s", download_url, download_package.text)
             return self._emitRestoreError()
@@ -109,11 +111,10 @@ class DriveApiService:
             self._cura_api.backups.restoreBackup(read_backup.read(), backup.get("data"))
             self.onRestoringStateChanged.emit(is_restoring = False)
 
-    def _emitRestoreError(self, error_message: str = Settings.translatable_messages["backup_restore_error_message"]):
-        self.onRestoringStateChanged.emit(
-            is_restoring = False,
-            error_message = error_message
-        )
+    def _emitRestoreError(self):
+        self.onRestoringStateChanged.emit(is_restoring = False,
+                                          error_message = catalog.i18nc("@info:backup_status",
+                                                                         "There was an error trying to restore your backup."))
 
     #   Verify the MD5 hash of a file.
     #   \param file_path Full path to the file.
@@ -134,7 +135,7 @@ class DriveApiService:
         delete_backup = requests.delete("{}/{}".format(self.DELETE_BACKUP_URL, backup_id), headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
-        if delete_backup.status_code > 299:
+        if delete_backup.status_code >= 300:
             Logger.log("w", "Could not delete backup: %s", delete_backup.text)
             return False
         return True

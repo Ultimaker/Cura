@@ -19,7 +19,7 @@ class Settings:
     I18N_CATALOG_ID = "cura"
     I18N_CATALOG = i18nCatalog(I18N_CATALOG_ID)
 
-    MESSAGE_TITLE = I18N_CATALOG.i18nc("@info:title", "Backups"),
+    MESSAGE_TITLE = I18N_CATALOG.i18nc("@info:title", "Backups")
 
     # Translatable messages for the entire plugin.
     translatable_messages = {
