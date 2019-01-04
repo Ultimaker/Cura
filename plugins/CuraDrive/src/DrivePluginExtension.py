@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -41,7 +41,7 @@ class DrivePluginExtension(QObject, Extension):
 
         # Local data caching for the UI.
         self._drive_window = None  # type: Optional[QObject]
-        self._backups = []
+        self._backups = []  # type: List[Dict[str, Any]]
         self._is_restoring_backup = False
         self._is_creating_backup = False
 

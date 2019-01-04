@@ -31,9 +31,6 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
-    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"  # type: str
-    DEFAULT_CLOUD_API_VERSION = 1  # type: int
-
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
 
