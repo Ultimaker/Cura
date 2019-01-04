@@ -14,7 +14,7 @@ Item
 {
     id: backupsPage
     anchors.fill: parent
-    anchors.margins: UM.Theme.getSize("default_margin").width * 3
+    anchors.margins: UM.Theme.getSize("wide_margin").width
 
     ColumnLayout
     {
