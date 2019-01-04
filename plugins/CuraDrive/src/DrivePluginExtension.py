@@ -18,11 +18,8 @@ from .DriveApiService import DriveApiService
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-
+# The DivePluginExtension provides functionality to backup and restore your Cura configuration to Ultimaker's cloud.
 class DrivePluginExtension(QObject, Extension):
-    """
-    The DivePluginExtension provides functionality to backup and restore your Cura configuration to Ultimaker's cloud.
-    """
 
     # Signal emitted when the list of backups changed.
     backupsChanged = pyqtSignal()
@@ -38,7 +35,7 @@ class DrivePluginExtension(QObject, Extension):
     
     DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
 
-    def __init__(self):
+    def __init__(self) -> None:
         QObject.__init__(self, None)
         Extension.__init__(self)
 
@@ -69,7 +66,6 @@ class DrivePluginExtension(QObject, Extension):
         CuraApplication.getInstance().engineCreatedSignal.connect(self._autoBackup)
 
     def showDriveWindow(self) -> None:
-        """Show the Drive UI popup window."""
         if not self._drive_window:
             path = os.path.join(os.path.dirname(__file__), "qml", "main.qml")
             self._drive_window = CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
