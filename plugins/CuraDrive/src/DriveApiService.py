@@ -11,7 +11,7 @@ import requests
 
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Signal import Signal
+from UM.Signal import Signal, signalemitter
 from cura.CuraApplication import CuraApplication
 
 from .UploadBackupJob import UploadBackupJob
@@ -22,6 +22,7 @@ catalog = i18nCatalog("cura")
 
 
 ## The DriveApiService is responsible for interacting with the CuraDrive API and Cura's backup handling.
+@signalemitter
 class DriveApiService:
     BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
 
