@@ -27,7 +27,7 @@ Window
     UM.I18nCatalog
     {
         id: catalog
-        name: "cura_drive"
+        name: "cura"
     }
 
     WelcomePage

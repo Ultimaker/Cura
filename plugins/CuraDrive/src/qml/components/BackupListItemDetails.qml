@@ -11,7 +11,7 @@ ColumnLayout
 {
     id: backupDetails
     width: parent.width
-    spacing: 10 * screenScaleFactor
+    spacing: UM.Theme.getSize("default_margin").width
     property var backupDetailsData
 
     // Cura version

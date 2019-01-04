@@ -10,12 +10,14 @@ import Cura 1.1 as Cura
 
 import "../components"
 
+
 Column
 {
     id: welcomePage
     spacing: UM.Theme.getSize("wide_margin").height
     width: parent.width
-    topPadding: 150 * screenScaleFactor
+    height: childrenRect.height
+    anchors.centerIn: parent
 
     Image
     {
@@ -51,3 +53,4 @@ Column
         fixedWidthMode: true
     }
 }
+

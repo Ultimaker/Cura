@@ -13,9 +13,9 @@ RowLayout
     width: parent.width
     height: 40 * screenScaleFactor
 
-    property var iconSource
-    property var label
-    property var value
+    property alias iconSource: icon.source
+    property alias label: detailName.text
+    property alias value: detailValue.text
 
     // Spacing.
     Item
@@ -23,16 +23,18 @@ RowLayout
         width: 40 * screenScaleFactor
     }
 
-    Icon
+    UM.RecolorImage
     {
+        id: icon
         width: 18 * screenScaleFactor
-        iconSource: detailsRow.iconSource
+        height: width
+        source: ""
         color: UM.Theme.getColor("text")
     }
 
     Label
     {
-        text: detailsRow.label
+        id: detailName
         color: UM.Theme.getColor("text")
         elide: Text.ElideRight
         Layout.minimumWidth: 50 * screenScaleFactor
@@ -43,7 +45,7 @@ RowLayout
 
     Label
     {
-        text: detailsRow.value
+        id: detailValue
         color: UM.Theme.getColor("text")
         elide: Text.ElideRight
         Layout.minimumWidth: 50 * screenScaleFactor
