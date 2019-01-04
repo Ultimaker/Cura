@@ -17,6 +17,7 @@ from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.CuraApplication import CuraApplication
+from cura.Scene.ConvexHullNode import ConvexHullNode
 
 from . import XRayPass
 
@@ -41,6 +42,10 @@ class XRayView(View):
             self._xray_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgb()))
 
         for node in BreadthFirstIterator(scene.getRoot()):
+            # We do not want to render ConvexHullNode as it conflicts with the bottom of the X-Ray (z-fighting).
+            if type(node) is ConvexHullNode:
+                continue
+
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
                     renderer.queueNode(node,
