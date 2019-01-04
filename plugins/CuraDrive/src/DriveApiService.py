@@ -47,7 +47,7 @@ class DriveApiService:
 
         if backup_list_request.status_code >= 300:
             Logger.log("w", "Could not get backups list from remote: %s", backup_list_request.text)
-            Message(catalog.i18nc("@info:backup_status", "There was an error listing your backups."), title = Settings.MESSAGE_TITLE).show()
+            Message(catalog.i18nc("@info:backup_status", "There was an error listing your backups."), title = catalog.i18nc("@info:title", "Backup")).show()
             return []
         return backup_list_request.json()["data"]
 

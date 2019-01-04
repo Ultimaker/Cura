@@ -103,13 +103,13 @@ class DrivePluginExtension(QObject, Extension):
         self._is_restoring_backup = is_restoring
         self.restoringStateChanged.emit()
         if error_message:
-            Message(error_message, title = Settings.MESSAGE_TITLE, lifetime = 5).show()
+            Message(error_message, title = catalog.i18nc("@info:title", "Backup")).show()
 
     def _onCreatingStateChanged(self, is_creating: bool = False, error_message: str = None) -> None:
         self._is_creating_backup = is_creating
         self.creatingStateChanged.emit()
         if error_message:
-            Message(error_message, title = Settings.MESSAGE_TITLE, lifetime = 5).show()
+            Message(error_message, title = catalog.i18nc("@info:title", "Backup")).show()
         else:
             self._storeBackupDate()
         if not is_creating:
