@@ -83,9 +83,11 @@ class AuthorizationService:
         if not self.getUserProfile():
             # We check if we can get the user profile.
             # If we can't get it, that means the access token (JWT) was invalid or expired.
+            Logger.log("w", "Unable to get the user profile.")
             return None
 
         if self._auth_data is None:
+            Logger.log("d", "No auth data to retrieve the access_token from")
             return None
 
         return self._auth_data.access_token
@@ -120,7 +122,7 @@ class AuthorizationService:
             "redirect_uri": self._settings.CALLBACK_URL,
             "scope": self._settings.CLIENT_SCOPES,
             "response_type": "code",
-            "state": "CuraDriveIsAwesome",
+            "state": "(.Y.)",
             "code_challenge": challenge_code,
             "code_challenge_method": "S512"
         })

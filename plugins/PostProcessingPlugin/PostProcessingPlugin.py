@@ -32,7 +32,8 @@ class PostProcessingPlugin(QObject, Extension):
     def __init__(self, parent = None) -> None:
         QObject.__init__(self, parent)
         Extension.__init__(self)
-        self.addMenuItem(i18n_catalog.i18n("Modify G-Code"), self.showPopup)
+        self.setMenuName(i18n_catalog.i18nc("@item:inmenu", "Post Processing"))
+        self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Modify G-Code"), self.showPopup)
         self._view = None
 
         # Loaded scripts are all scripts that can be used
@@ -54,14 +55,14 @@ class PostProcessingPlugin(QObject, Extension):
     def selectedScriptDefinitionId(self) -> Optional[str]:
         try:
             return self._script_list[self._selected_script_index].getDefinitionId()
-        except:
+        except IndexError:
             return ""
 
     @pyqtProperty(str, notify=selectedIndexChanged)
     def selectedScriptStackId(self) -> Optional[str]:
         try:
             return self._script_list[self._selected_script_index].getStackId()
-        except:
+        except IndexError:
             return ""
 
     ##  Execute all post-processing scripts on the gcode.

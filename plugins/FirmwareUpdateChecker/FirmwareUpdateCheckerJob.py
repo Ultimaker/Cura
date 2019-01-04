@@ -93,6 +93,11 @@ class FirmwareUpdateCheckerJob(Job):
 
                 current_version = self.getCurrentVersion()
 
+                # This case indicates that was an error checking the version.
+                # It happens for instance when not connected to internet.
+                if current_version == self.ZERO_VERSION:
+                    return
+
                 # If it is the first time the version is checked, the checked_version is ""
                 setting_key_str = getSettingsKeyForMachine(machine_id)
                 checked_version = Version(Application.getInstance().getPreferences().getValue(setting_key_str))

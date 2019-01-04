@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
@@ -134,7 +134,7 @@ UM.PreferencesPage
             UM.PluginsModel { id: plugins }
 
             //: Language selection label
-            UM.I18nCatalog{id: catalog; name:"cura"}
+            UM.I18nCatalog{id: catalog; name: "cura"}
 
             Label
             {
@@ -151,7 +151,6 @@ UM.PreferencesPage
                 {
                     id: languageLabel
                     text: catalog.i18nc("@label","Language:")
-                    anchors.verticalCenter: languageComboBox.verticalCenter
                 }
 
                 ComboBox
@@ -171,7 +170,7 @@ UM.PreferencesPage
                             append({ text: "日本語", code: "ja_JP" })
                             append({ text: "한국어", code: "ko_KR" })
                             append({ text: "Nederlands", code: "nl_NL" })
-                            append({ text: "Polski", code: "pl_PL" })
+                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
                             append({ text: "Português do Brasil", code: "pt_BR" })
                             append({ text: "Português", code: "pt_PT" })
                             append({ text: "Русский", code: "ru_RU" })
@@ -219,7 +218,6 @@ UM.PreferencesPage
                 {
                     id: currencyLabel
                     text: catalog.i18nc("@label","Currency:")
-                    anchors.verticalCenter: currencyField.verticalCenter
                 }
 
                 TextField
@@ -233,7 +231,6 @@ UM.PreferencesPage
                 {
                     id: themeLabel
                     text: catalog.i18nc("@label","Theme:")
-                    anchors.verticalCenter: themeComboBox.verticalCenter
                 }
 
                 ComboBox

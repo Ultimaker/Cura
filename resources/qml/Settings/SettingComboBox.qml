@@ -35,6 +35,7 @@ SettingItem
                 return UM.Theme.getColor("setting_control")
             }
 
+            radius: UM.Theme.getSize("setting_control_radius").width
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
@@ -62,7 +63,7 @@ SettingItem
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text")
+            color: UM.Theme.getColor("setting_control_button")
         }
 
         contentItem: Label

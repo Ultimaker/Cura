@@ -61,9 +61,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"最初に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最初に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -75,9 +73,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"最後に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最後に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1123,7 +1119,7 @@ msgstr "上層/底層ポリゴンに接合"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr ""
+msgstr "互いに次に実行する上層/底層スキンパスに接合します。同心円のパターンの場合、この設定を有効にすることにより、移動時間が短縮されますが、インフィルまでの途中で接合があるため、この機能で上層面の品質が損なわれることがあります。"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1326,9 +1322,7 @@ msgstr "ZシームX"
 #: fdmprinter.def.json
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr ""
-"レイヤー内の各印刷を開始するX座\n"
-"標の位置。"
+msgstr "レイヤー内の各印刷を開始するX座\n標の位置。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
@@ -1569,7 +1563,7 @@ msgstr "インフィルパターン"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "印刷用インフィル材料のパターン。代替層のラインとジグザグの面詰めスワップ方向、材料コストを削減します。グリッド、トライアングル、トライ六角、キュービック、オクテット、クォーターキュービック、クロスと同心円のパターンは、すべてのレイヤーを完全に印刷されます。ジャイロイド、キュービック、クォーターキュービック、オクテットのインフィルは、各レイヤーを変更して各方向の強度をより均等な分布にします。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1637,7 +1631,7 @@ msgstr "3Dクロス"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "ジャイロイド"
 
 # msgstr "クロス3D"
 #: fdmprinter.def.json
@@ -1711,9 +1705,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"インフィルエリア周辺に外壁を追加します。このような壁は、上層/底層ラインにたるみを作ります。つまり、一部の外壁材料の費用で同じ品質を実現するためには、必要な上層/底層スキンが少ないことを意味します。\n"
-"この機能は、インフィルポリゴン接合と組み合わせて、構成が正しい場合、移動または引き戻しが必要なく、すべてのインフィルを1つの押出経路に接続することができます。"
+msgstr "インフィルエリア周辺に外壁を追加します。このような壁は、上層/底層ラインにたるみを作ります。つまり、一部の外壁材料の費用で同じ品質を実現するためには、必要な上層/底層スキンが少ないことを意味します。\nこの機能は、インフィルポリゴン接合と組み合わせて、構成が正しい場合、移動または引き戻しが必要なく、すべてのインフィルを1つの押出経路に接続することができます。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1816,9 +1808,7 @@ msgstr "インフィル優先"
 #: fdmprinter.def.json
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
-msgstr ""
-"壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\n"
-"はじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます。"
+msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\nはじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます。"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -3374,32 +3364,32 @@ msgstr "対応するインフィルラインの向きです。サポートイン
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
 msgid "Enable Support Brim"
-msgstr ""
+msgstr "サポートブリムを有効にする"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable description"
 msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "最初の層のインフィルエリア内ブリムを生成します。このブリムは、サポートの周囲ではなく、サポートの下に印刷されます。この設定を有効にすると、サポートのビルドプレートへの吸着性が高まります。"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width label"
 msgid "Support Brim Width"
-msgstr ""
+msgstr "サポートブリムの幅"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "サポートの下に印刷されるブリムの幅。ブリムが大きいほど、追加材料の費用でビルドプレートへの接着性が強化されます。"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
 msgid "Support Brim Line Count"
-msgstr ""
+msgstr "サポートブリムのライン数"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "サポートブリムに使用される線の数。ブリムの線数を増やすと、追加材料の費用でビルドプレートへの接着性が強化されます。"
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3964,9 +3954,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"スカートと印刷の最初の層の間の水平距離。\n"
-"これは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
+msgstr "スカートと印刷の最初の層の間の水平距離。\nこれは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4001,12 +3989,12 @@ msgstr "ブリムに使用される線数。ブリムの線数は、ビルドプ
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr ""
+msgstr "ブリム交換サポート"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
-msgstr ""
+msgstr "スペースがサポートで埋まっている場合でも、モデルの周辺にブリムを印刷します。これにより、サポートの最初の層の一部のエリアがブリムになります。"
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"

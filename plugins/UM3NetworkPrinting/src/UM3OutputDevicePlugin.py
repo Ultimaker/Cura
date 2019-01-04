@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
@@ -283,6 +283,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
+            global_container_stack.setMetaDataEntry("connection_type", device.getConnectionType().value)
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 
@@ -325,13 +326,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     ##  Handler for zeroConf detection.
     #   Return True or False indicating if the process succeeded.
-    #   Note that this function can take over 3 seconds to complete. Be carefull calling it from the main thread.
+    #   Note that this function can take over 3 seconds to complete. Be careful
+    #   calling it from the main thread.
     def _onServiceChanged(self, zero_conf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
-            Logger.log("d", "Bonjour service added: %s" % name)
-
             # First try getting info from zero-conf cache
-            info = ServiceInfo(service_type, name, properties={})
+            info = ServiceInfo(service_type, name, properties = {})
             for record in zero_conf.cache.entries_with_name(name.lower()):
                 info.update_record(zero_conf, time(), record)
 
@@ -342,7 +342,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
             # Request more data if info is not complete
             if not info.address:
-                Logger.log("d", "Trying to get address of %s", name)
                 info = zero_conf.get_service_info(service_type, name)
 
             if info:

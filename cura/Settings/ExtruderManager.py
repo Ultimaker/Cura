@@ -63,7 +63,7 @@ class ExtruderManager(QObject):
         if not self._application.getGlobalContainerStack():
             return None  # No active machine, so no active extruder.
         try:
-            return self._extruder_trains[self._application.getGlobalContainerStack().getId()][str(self._active_extruder_index)].getId()
+            return self._extruder_trains[self._application.getGlobalContainerStack().getId()][str(self.activeExtruderIndex)].getId()
         except KeyError:  # Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
@@ -83,8 +83,9 @@ class ExtruderManager(QObject):
     #   \param index The index of the new active extruder.
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index: int) -> None:
-        self._active_extruder_index = index
-        self.activeExtruderChanged.emit()
+        if self._active_extruder_index != index:
+            self._active_extruder_index = index
+            self.activeExtruderChanged.emit()
 
     @pyqtProperty(int, notify = activeExtruderChanged)
     def activeExtruderIndex(self) -> int:
@@ -144,7 +145,7 @@ class ExtruderManager(QObject):
 
     @pyqtSlot(result = QObject)
     def getActiveExtruderStack(self) -> Optional["ExtruderStack"]:
-        return self.getExtruderStack(self._active_extruder_index)
+        return self.getExtruderStack(self.activeExtruderIndex)
 
     ##  Get an extruder stack by index
     def getExtruderStack(self, index) -> Optional["ExtruderStack"]:
@@ -300,12 +301,7 @@ class ExtruderManager(QObject):
         global_stack = self._application.getGlobalContainerStack()
         if not global_stack:
             return []
-
-        result_tuple_list = sorted(list(global_stack.extruders.items()), key = lambda x: int(x[0]))
-        result_list = [item[1] for item in result_tuple_list]
-
-        machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-        return result_list[:machine_extruder_count]
+        return global_stack.extruderList
 
     def _globalContainerStackChanged(self) -> None:
         # If the global container changed, the machine changed and might have extruders that were not registered yet
@@ -344,6 +340,7 @@ class ExtruderManager(QObject):
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
                 self.setActiveExtruderIndex(0)
+                self.activeExtruderChanged.emit()
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.

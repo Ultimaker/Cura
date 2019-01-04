@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -21,8 +21,10 @@ UM.ManagementPage
 
     function activeMachineIndex()
     {
-        for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
+        for(var i = 0; i < model.count; i++)
+        {
+            if (model.getItem(i).id == Cura.MachineManager.activeMachineId)
+            {
                 return i;
             }
         }
@@ -47,7 +49,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
-            enabled: base.currentItem != null && model.rowCount() > 1
+            enabled: base.currentItem != null && model.count > 1
             onClicked: confirmDialog.open();
         },
         Button
@@ -68,7 +70,7 @@ UM.ManagementPage
         {
             id: machineName
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             width: parent.width
             elide: Text.ElideRight
         }
@@ -89,7 +91,7 @@ UM.ManagementPage
 
                 Item
                 {
-                    width: childrenRect.width + 2 * screenScaleFactor
+                    width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                     height: childrenRect.height
                     Button
                     {

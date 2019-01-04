@@ -11,8 +11,8 @@ It is now possible to specify the cooling fan to use if your printer has multipl
 *Settings refactor
 The CuraEngine has been refactored to create a more testable, future-proof way of storing and representing settings. This makes slicing faster, and future development easier.
 
-*Print core CC Red 0.6
-The new print core CC Red 0.6 is selectable when the Ultimaker S5 profile is active. This print core is optimized for use with abrasive materials and composites.
+*Print core CC 0.6
+The new print core CC 0.6 is selectable when the Ultimaker S5 profile is active. This print core is optimized for use with abrasive materials and composites.
 
 *File name and layer display
 Added M117 commands to GCODE to give real-time information about the print job file name and layer number shown on the printer’s display when printing via USB. Contributed by adecastilho.
