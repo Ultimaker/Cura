@@ -17,7 +17,7 @@ ColumnLayout
     // Cura version
     BackupListItemDetailsRow
     {
-        iconSource: "../images/cura.svg"
+        iconSource: UM.Theme.getIcon("application")
         label: catalog.i18nc("@backuplist:label", "Cura Version")
         value: backupDetailsData.metadata.cura_release
     }
@@ -25,7 +25,7 @@ ColumnLayout
     // Machine count.
     BackupListItemDetailsRow
     {
-        iconSource: "../images/printer.svg"
+        iconSource: UM.Theme.getIcon("printer_single")
         label: catalog.i18nc("@backuplist:label", "Machines")
         value: backupDetailsData.metadata.machine_count
     }
@@ -41,7 +41,7 @@ ColumnLayout
     // Profile count.
     BackupListItemDetailsRow
     {
-        iconSource: UM.Theme.getIcon("profile")
+        iconSource: UM.Theme.getIcon("settings")
         label: catalog.i18nc("@backuplist:label", "Profiles")
         value: backupDetailsData.metadata.profile_count
     }
