@@ -112,14 +112,13 @@ class DrivePluginExtension(QObject, Extension):
             Message(error_message, title = catalog.i18nc("@info:title", "Backup")).show()
         else:
             self._storeBackupDate()
-        if not is_creating:
+        if not is_creating and not error_message:
             # We've finished creating a new backup, to the list has to be updated.
             self.refreshBackups()
 
     @pyqtSlot(bool, name = "toggleAutoBackup")
     def toggleAutoBackup(self, enabled: bool) -> None:
         self._preferences.setValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY, enabled)
-        self.preferencesChanged.emit()
 
     @pyqtProperty(bool, notify = preferencesChanged)
     def autoBackupEnabled(self) -> bool:
