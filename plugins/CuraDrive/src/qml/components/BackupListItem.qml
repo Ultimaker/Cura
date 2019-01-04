@@ -50,6 +50,7 @@ Item
             Layout.minimumWidth: 100 * screenScaleFactor
             Layout.maximumWidth: 500 * screenScaleFactor
             Layout.fillWidth: true
+            font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
         }
 
@@ -61,6 +62,7 @@ Item
             Layout.minimumWidth: 100 * screenScaleFactor
             Layout.maximumWidth: 500 * screenScaleFactor
             Layout.fillWidth: true
+            font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
         }
 

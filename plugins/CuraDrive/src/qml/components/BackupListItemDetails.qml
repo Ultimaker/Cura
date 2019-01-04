@@ -58,6 +58,6 @@ ColumnLayout
     Item
     {
         width: parent.width
-        height: 10 * screenScaleFactor
+        height: UM.Theme.getSize("default_margin").height
     }
 }

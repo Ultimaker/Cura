@@ -17,12 +17,6 @@ RowLayout
     property alias label: detailName.text
     property alias value: detailValue.text
 
-    // Spacing.
-    Item
-    {
-        width: 40 * screenScaleFactor
-    }
-
     UM.RecolorImage
     {
         id: icon
@@ -40,6 +34,7 @@ RowLayout
         Layout.minimumWidth: 50 * screenScaleFactor
         Layout.maximumWidth: 100 * screenScaleFactor
         Layout.fillWidth: true
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 
@@ -51,6 +46,7 @@ RowLayout
         Layout.minimumWidth: 50 * screenScaleFactor
         Layout.maximumWidth: 100 * screenScaleFactor
         Layout.fillWidth: true
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 }
