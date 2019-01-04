@@ -26,10 +26,11 @@ ScrollView
                 width: parent.width
             }
 
-            Divider
+            Rectangle
             {
-                width: parent.width
-                anchors.top: backupListItem.bottom
+                id: divider
+                color: UM.Theme.getColor("lining")
+                height: UM.Theme.getSize("default_lining").height
             }
         }
     }
