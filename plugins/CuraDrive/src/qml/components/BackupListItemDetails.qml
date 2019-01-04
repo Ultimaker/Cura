@@ -30,26 +30,26 @@ ColumnLayout
         value: backupDetailsData.metadata.machine_count
     }
 
-    // Meterial count.
+    // Material count
     BackupListItemDetailsRow
     {
-        iconSource: "../images/material.svg"
+        iconSource: UM.Theme.getIcon("category_material")
         label: catalog.i18nc("@backuplist:label", "Materials")
         value: backupDetailsData.metadata.material_count
     }
 
-    // Meterial count.
+    // Profile count.
     BackupListItemDetailsRow
     {
-        iconSource: "../images/profile.svg"
+        iconSource: UM.Theme.getIcon("profile")
         label: catalog.i18nc("@backuplist:label", "Profiles")
         value: backupDetailsData.metadata.profile_count
     }
 
-    // Meterial count.
+    // Plugin count.
     BackupListItemDetailsRow
     {
-        iconSource: "../images/plugin.svg"
+        iconSource: UM.Theme.getIcon("plugin")
         label: catalog.i18nc("@backuplist:label", "Plugins")
         value: backupDetailsData.metadata.plugin_count
     }
