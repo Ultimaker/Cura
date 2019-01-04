@@ -58,6 +58,7 @@ message Polygon {
         MoveCombingType = 8;
         MoveRetractionType = 9;
         SupportInterfaceType = 10;
+        PrimeTowerType = 11;
     }
     Type type = 1; // Type of move
     bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)

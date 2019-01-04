@@ -137,6 +137,7 @@ class ProcessSlicedLayersJob(Job):
                 extruder = polygon.extruder
 
                 line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
+
                 line_types = line_types.reshape((-1,1))
 
                 points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
