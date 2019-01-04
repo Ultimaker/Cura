@@ -3,8 +3,10 @@
 
 from .src.DrivePluginExtension import DrivePluginExtension
 
+
 def getMetaData():
     return {}
+
 
 def register(app):
     return {"extension": DrivePluginExtension()}

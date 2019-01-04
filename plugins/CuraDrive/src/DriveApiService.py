@@ -110,7 +110,7 @@ class DriveApiService:
             self._cura_api.backups.restoreBackup(read_backup.read(), backup.get("metadata", {}))
             self.restoringStateChanged.emit(is_restoring = False)
 
-    def _emitRestoreError(self):
+    def _emitRestoreError(self) -> None:
         self.restoringStateChanged.emit(is_restoring = False,
                                         error_message = catalog.i18nc("@info:backup_status",
                                                                          "There was an error trying to restore your backup."))
@@ -144,7 +144,6 @@ class DriveApiService:
     #   \param backup_size The size of the backup file in bytes.
     #   \return: The upload URL for the actual backup file if successful, otherwise None.
     def _requestBackupUpload(self, backup_metadata: Dict[str, Any], backup_size: int) -> Optional[str]:
-
         access_token = self._cura_api.account.accessToken
         if not access_token:
             Logger.log("w", "Could not get access token.")

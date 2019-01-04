@@ -121,7 +121,7 @@ class DrivePluginExtension(QObject, Extension):
         return bool(self._preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY))
 
     @pyqtProperty("QVariantList", notify = backupsChanged)
-    def backups(self) -> List:
+    def backups(self) -> List[Dict[str, Any]]:
         return self._backups
 
     @pyqtSlot(name = "refreshBackups")
