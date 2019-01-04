@@ -107,7 +107,7 @@ class DriveApiService:
 
         # Tell Cura to place the backup back in the user data folder.
         with open(temporary_backup_file.name, "rb") as read_backup:
-            self._cura_api.backups.restoreBackup(read_backup.read(), backup.get("data"))
+            self._cura_api.backups.restoreBackup(read_backup.read(), backup.get("metadata", {}))
             self.restoringStateChanged.emit(is_restoring = False)
 
     def _emitRestoreError(self):
