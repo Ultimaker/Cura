@@ -51,8 +51,8 @@ class DrivePluginExtension(QObject, Extension):
 
         # Attach signals.
         CuraApplication.getInstance().getCuraAPI().account.loginStateChanged.connect(self._onLoginStateChanged)
-        self._drive_api_service.onRestoringStateChanged.connect(self._onRestoringStateChanged)
-        self._drive_api_service.onCreatingStateChanged.connect(self._onCreatingStateChanged)
+        self._drive_api_service.restoringStateChanged.connect(self._onRestoringStateChanged)
+        self._drive_api_service.creatingStateChanged.connect(self._onCreatingStateChanged)
 
         # Register preferences.
         self._preferences.addPreference(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY, False)

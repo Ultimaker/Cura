@@ -27,10 +27,10 @@ class DriveApiService:
     BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
 
     # Emit signal when restoring backup started or finished.
-    onRestoringStateChanged = Signal()
+    restoringStateChanged = Signal()
 
     # Emit signal when creating backup started or finished.
-    onCreatingStateChanged = Signal()
+    creatingStateChanged = Signal()
 
     def __init__(self) -> None:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
@@ -52,12 +52,12 @@ class DriveApiService:
         return backup_list_request.json()["data"]
 
     def createBackup(self) -> None:
-        self.onCreatingStateChanged.emit(is_creating = True)
+        self.creatingStateChanged.emit(is_creating = True)
 
         # Create the backup.
         backup_zip_file, backup_meta_data = self._cura_api.backups.createBackup()
         if not backup_zip_file or not backup_meta_data:
-            self.onCreatingStateChanged.emit(is_creating = False, error_message = "Could not create backup.")
+            self.creatingStateChanged.emit(is_creating = False, error_message ="Could not create backup.")
             return
 
         # Create an upload entry for the backup.
@@ -65,7 +65,7 @@ class DriveApiService:
         backup_meta_data["description"] = "{}.backup.{}.cura.zip".format(timestamp, backup_meta_data["cura_release"])
         backup_upload_url = self._requestBackupUpload(backup_meta_data, len(backup_zip_file))
         if not backup_upload_url:
-            self.onCreatingStateChanged.emit(is_creating = False, error_message = "Could not upload backup.")
+            self.creatingStateChanged.emit(is_creating = False, error_message ="Could not upload backup.")
             return
 
         # Upload the backup to storage.
@@ -76,12 +76,12 @@ class DriveApiService:
     def _onUploadFinished(self, job: "UploadBackupJob") -> None:
         if job.backup_upload_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.onCreatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
+            self.creatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
         else:
-            self.onCreatingStateChanged.emit(is_creating = False)
+            self.creatingStateChanged.emit(is_creating = False)
 
     def restoreBackup(self, backup: Dict[str, Any]) -> None:
-        self.onRestoringStateChanged.emit(is_restoring = True)
+        self.restoringStateChanged.emit(is_restoring = True)
         download_url = backup.get("download_url")
         if not download_url:
             # If there is no download URL, we can't restore the backup.
@@ -108,11 +108,11 @@ class DriveApiService:
         # Tell Cura to place the backup back in the user data folder.
         with open(temporary_backup_file.name, "rb") as read_backup:
             self._cura_api.backups.restoreBackup(read_backup.read(), backup.get("data"))
-            self.onRestoringStateChanged.emit(is_restoring = False)
+            self.restoringStateChanged.emit(is_restoring = False)
 
     def _emitRestoreError(self):
-        self.onRestoringStateChanged.emit(is_restoring = False,
-                                          error_message = catalog.i18nc("@info:backup_status",
+        self.restoringStateChanged.emit(is_restoring = False,
+                                        error_message = catalog.i18nc("@info:backup_status",
                                                                          "There was an error trying to restore your backup."))
 
     #   Verify the MD5 hash of a file.
