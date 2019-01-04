@@ -23,9 +23,7 @@ catalog = i18nCatalog("cura")
 
 ## The DriveApiService is responsible for interacting with the CuraDrive API and Cura's backup handling.
 class DriveApiService:
-    GET_BACKUPS_URL = "{}/backups".format(Settings.DRIVE_API_URL)
-    PUT_BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
-    DELETE_BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
+    BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
 
     # Emit signal when restoring backup started or finished.
     onRestoringStateChanged = Signal()
@@ -42,7 +40,7 @@ class DriveApiService:
             Logger.log("w", "Could not get access token.")
             return []
 
-        backup_list_request = requests.get(self.GET_BACKUPS_URL, headers = {
+        backup_list_request = requests.get(self.BACKUP_URL, headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
 
@@ -132,7 +130,7 @@ class DriveApiService:
             Logger.log("w", "Could not get access token.")
             return False
 
-        delete_backup = requests.delete("{}/{}".format(self.DELETE_BACKUP_URL, backup_id), headers = {
+        delete_backup = requests.delete("{}/{}".format(self.BACKUP_URL, backup_id), headers = {
             "Authorization": "Bearer {}".format(access_token)
         })
         if delete_backup.status_code >= 300:
@@ -151,7 +149,7 @@ class DriveApiService:
             Logger.log("w", "Could not get access token.")
             return None
         
-        backup_upload_request = requests.put(self.PUT_BACKUP_URL, json = {
+        backup_upload_request = requests.put(self.BACKUP_URL, json = {
             "data": {
                 "backup_size": backup_size,
                 "metadata": backup_metadata
