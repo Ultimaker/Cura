@@ -67,7 +67,7 @@ Component
             MonitorCarousel
             {
                 id: carousel
-                printers: OutputDevice.printers
+                printers: OutputDevice.printers.concat([null])
             }
         }
 
