@@ -29,6 +29,7 @@ RowLayout
             }
             return ""
         }
+        font: UM.Theme.getFont("medium")
 
         UM.SettingPropertyProvider
         {
@@ -43,6 +44,7 @@ RowLayout
     {
         source: UM.Theme.getIcon("category_infill")
         text: Cura.MachineManager.activeStack ? parseInt(infillDensity.properties.value) + "%" : "0%"
+        font: UM.Theme.getFont("medium")
 
         UM.SettingPropertyProvider
         {
@@ -57,6 +59,7 @@ RowLayout
     {
         source: UM.Theme.getIcon("category_support")
         text: supportEnabled.properties.value == "True" ? enabledText : disabledText
+        font: UM.Theme.getFont("medium")
 
         UM.SettingPropertyProvider
         {
@@ -71,6 +74,7 @@ RowLayout
     {
         source: UM.Theme.getIcon("category_adhesion")
         text: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none" ? enabledText : disabledText
+        font: UM.Theme.getFont("medium")
 
         UM.SettingPropertyProvider
         {

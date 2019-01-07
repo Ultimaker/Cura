@@ -299,6 +299,7 @@ class MachineManager(QObject):
         self.activeMaterialChanged.emit()
 
         self.rootMaterialChanged.emit()
+        self.numberExtrudersEnabledChanged.emit()
 
     def _onContainersChanged(self, container: ContainerInterface) -> None:
         self._instance_container_timer.start()
@@ -526,7 +527,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasRemoteConnection(self) -> bool:
         if self._global_container_stack:
-            connection_type = self._global_container_stack.getMetaDataEntry("connection_type")
+            connection_type = int(self._global_container_stack.getMetaDataEntry("connection_type", ConnectionType.NotConnected.value))
             return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
         return False
 

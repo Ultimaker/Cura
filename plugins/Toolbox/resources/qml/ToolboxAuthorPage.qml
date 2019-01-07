@@ -55,7 +55,7 @@ Item
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
             text: details.name || ""
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             wrapMode: Text.WordWrap
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height

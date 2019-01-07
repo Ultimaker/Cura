@@ -96,4 +96,11 @@ Button
             height: UM.Theme.getSize("button_icon").height
         }
     }
+
+    Cura.ToolTip
+    {
+        id: tooltip
+        tooltipText: base.text
+        visible: base.hovered
+    }
 }

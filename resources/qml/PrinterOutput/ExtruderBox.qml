@@ -80,7 +80,7 @@ Item
             id: extruderCurrentTemperature
             text: Math.round(extruderModel.hotendTemperature) + "°C"
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             anchors.right: extruderTargetTemperature.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width

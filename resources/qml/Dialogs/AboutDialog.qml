@@ -51,7 +51,7 @@ UM.Dialog
         id: version
 
         text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
-        font: UM.Theme.getFont("large")
+        font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
         anchors.right : logo.right
         anchors.top: logo.bottom

@@ -6,17 +6,17 @@
     "fonts": {
         "large": {
             "size": 1.35,
-            "weight": 63,
+            "weight": 40,
             "family": "Noto Sans"
         },
-        "large_nonbold": {
+        "large_bold": {
             "size": 1.35,
-            "weight": 50,
+            "weight": 63,
             "family": "Noto Sans"
         },
         "medium": {
             "size": 1.16,
-            "weight": 50,
+            "weight": 40,
             "family": "Noto Sans"
         },
         "medium_bold": {
@@ -25,29 +25,24 @@
             "family": "Noto Sans"
         },
         "default": {
-            "size": 1.0,
-            "weight": 50,
+            "size": 0.95,
+            "weight": 40,
             "family": "Noto Sans"
         },
         "default_bold": {
-            "size": 1.0,
+            "size": 0.95,
             "weight": 63,
             "family": "Noto Sans"
         },
         "default_italic": {
-            "size": 1.0,
-            "weight": 50,
+            "size": 0.95,
+            "weight": 40,
             "italic": true,
             "family": "Noto Sans"
         },
         "small": {
-            "size": 0.85,
-            "weight": 50,
-            "family": "Noto Sans"
-        },
-        "very_small": {
             "size": 0.7,
-            "weight": 50,
+            "weight": 40,
             "family": "Noto Sans"
         }
     },
@@ -118,7 +113,6 @@
         "warning": [245, 166, 35, 255],
         "disabled": [229, 229, 229, 255],
 
-        "toolbar_button_text": [8, 7, 63, 255],
         "toolbar_button_hover": [232, 242, 252, 255],
         "toolbar_button_active": [232, 242, 252, 255],
         "toolbar_button_active_hover": [232, 242, 252, 255],
@@ -303,7 +297,7 @@
         "printer_config_mismatch": [127, 127, 127, 255],
 
         "toolbox_header_button_text_active": [0, 0, 0, 255],
-        "toolbox_header_button_text_inactive": [128, 128, 128, 255],
+        "toolbox_header_button_text_inactive": [0, 0, 0, 255],
         "toolbox_header_button_text_hovered": [0, 0, 0, 255],
 
         "favorites_header_bar": [245, 245, 245, 255],
@@ -492,7 +486,7 @@
         "toolbox_detail_header": [1.0, 14.0],
         "toolbox_detail_tile": [1.0, 8.0],
         "toolbox_back_column": [6.0, 1.0],
-        "toolbox_back_button": [4.0, 2.0],
+        "toolbox_back_button": [6.0, 2.0],
         "toolbox_installed_tile": [1.0, 8.0],
         "toolbox_property_label": [1.0, 2.0],
         "toolbox_heading_label": [1.0, 3.8],

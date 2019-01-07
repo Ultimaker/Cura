@@ -81,7 +81,7 @@ Item
                     text: printer && printer.name ? printer.name : ""
                     color: "#414054" // TODO: Theme!
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("large") // 16pt, bold
+                    font: UM.Theme.getFont("large_bold") // 16pt, bold
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -185,7 +185,7 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 color: "#414054" // TODO: Theme!
-                font: UM.Theme.getFont("large") // 16pt, bold
+                font: UM.Theme.getFont("large_bold") // 16pt, bold
                 text: {
                     if (printer && printer.state == "disabled")
                     {
@@ -236,7 +236,7 @@ Item
                     id: printerJobNameLabel
                     color: printer.activePrintJob && printer.activePrintJob.isActive ? "#414054" : "#babac1" // TODO: Theme!
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("large") // 16pt, bold
+                    font: UM.Theme.getFont("large_bold") // 16pt, bold
                     text: base.printer.activePrintJob ? base.printer.activePrintJob.name : "Untitled" // TODO: I18N
                     width: parent.width
 
