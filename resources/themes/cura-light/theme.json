@@ -288,6 +288,7 @@
         "layerview_move_combing": [0, 0, 255, 255],
         "layerview_move_retraction": [128, 128, 255, 255],
         "layerview_support_interface": [64, 192, 255, 255],
+        "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
         "tab_status_connected": [50, 130, 255, 255],
