@@ -18,6 +18,7 @@ from .DriveApiService import DriveApiService
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+
 # The DivePluginExtension provides functionality to backup and restore your Cura configuration to Ultimaker's cloud.
 class DrivePluginExtension(QObject, Extension):
 
@@ -32,7 +33,7 @@ class DrivePluginExtension(QObject, Extension):
 
     # Signal emitted when preferences changed (like auto-backup).
     preferencesChanged = pyqtSignal()
-    
+
     DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
 
     def __init__(self) -> None:
@@ -46,7 +47,7 @@ class DrivePluginExtension(QObject, Extension):
         self._is_creating_backup = False
 
         # Initialize services.
-        self._preferences = CuraApplication.getInstance().getPreferences()
+        preferences = CuraApplication.getInstance().getPreferences()
         self._drive_api_service = DriveApiService()
 
         # Attach signals.
@@ -55,10 +56,10 @@ class DrivePluginExtension(QObject, Extension):
         self._drive_api_service.creatingStateChanged.connect(self._onCreatingStateChanged)
 
         # Register preferences.
-        self._preferences.addPreference(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY, False)
-        self._preferences.addPreference(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY, datetime.now()
-                                        .strftime(self.DATE_FORMAT))
-        
+        preferences.addPreference(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY, False)
+        preferences.addPreference(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY,
+                                  datetime.now().strftime(self.DATE_FORMAT))
+
         # Register the menu item
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Manage backups"), self.showDriveWindow)
 
@@ -74,9 +75,10 @@ class DrivePluginExtension(QObject, Extension):
             self._drive_window.show()
 
     def _autoBackup(self) -> None:
-        if self._preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY) and self._isLastBackupTooLongAgo():
+        preferences = CuraApplication.getInstance().getPreferences()
+        if preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY) and self._isLastBackupTooLongAgo():
             self.createBackup()
-            
+
     def _isLastBackupTooLongAgo(self) -> bool:
         current_date = datetime.now()
         last_backup_date = self._getLastBackupDate()
@@ -84,12 +86,14 @@ class DrivePluginExtension(QObject, Extension):
         return date_diff.days > 1
 
     def _getLastBackupDate(self) -> "datetime":
-        last_backup_date = self._preferences.getValue(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY)
+        preferences = CuraApplication.getInstance().getPreferences()
+        last_backup_date = preferences.getValue(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY)
         return datetime.strptime(last_backup_date, self.DATE_FORMAT)
 
     def _storeBackupDate(self) -> None:
         backup_date = datetime.now().strftime(self.DATE_FORMAT)
-        self._preferences.setValue(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY, backup_date)
+        preferences = CuraApplication.getInstance().getPreferences()
+        preferences.setValue(Settings.AUTO_BACKUP_LAST_DATE_PREFERENCE_KEY, backup_date)
 
     def _onLoginStateChanged(self, logged_in: bool = False) -> None:
         if logged_in:
@@ -114,11 +118,13 @@ class DrivePluginExtension(QObject, Extension):
 
     @pyqtSlot(bool, name = "toggleAutoBackup")
     def toggleAutoBackup(self, enabled: bool) -> None:
-        self._preferences.setValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY, enabled)
+        preferences = CuraApplication.getInstance().getPreferences()
+        preferences.setValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY, enabled)
 
     @pyqtProperty(bool, notify = preferencesChanged)
     def autoBackupEnabled(self) -> bool:
-        return bool(self._preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY))
+        preferences = CuraApplication.getInstance().getPreferences()
+        return bool(preferences.getValue(Settings.AUTO_BACKUP_ENABLED_PREFERENCE_KEY))
 
     @pyqtProperty("QVariantList", notify = backupsChanged)
     def backups(self) -> List[Dict[str, Any]]:
