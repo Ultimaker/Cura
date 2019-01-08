@@ -7,6 +7,7 @@ from typing import Dict, List, Optional, Set, cast
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 
+from UM import i18nCatalog
 from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
@@ -30,8 +31,10 @@ from .Models.CloudPrintResponse import CloudPrintResponse
 from .Models.CloudPrintJobResponse import CloudPrintJobResponse
 from .Models.CloudClusterPrinterStatus import CloudClusterPrinterStatus
 from .Models.CloudClusterPrintJobStatus import CloudClusterPrintJobStatus
-from .Translations import Translations
 from .Utils import findChanges, formatDateCompleted, formatTimeCompleted
+
+
+I18N_CATALOG = i18nCatalog("cura")
 
 
 ##  The cloud output device is a network output device that works remotely but has limited functionality.
@@ -132,9 +135,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _setInterfaceElements(self) -> None:
         self.setPriority(2)  # make sure we end up below the local networking and above 'save to file'
         self.setName(self._id)
-        self.setShortDescription(Translations.PRINT_VIA_CLOUD_BUTTON)
-        self.setDescription(Translations.PRINT_VIA_CLOUD_TOOLTIP)
-        self.setConnectionText(Translations.CONNECTED_VIA_CLOUD)
+        self.setShortDescription(I18N_CATALOG.i18nc("@action:button", "Print via Cloud"))
+        self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print via Cloud"))
+        self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected via Cloud"))
 
     ##  Called when Cura requests an output device to receive a (G-code) file.
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
@@ -142,7 +145,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:
-            message = Message(text = Translations.BLOCKED_UPLOADING, title = Translations.ERROR, lifetime = 10)
+            message = Message(
+                text = I18N_CATALOG.i18nc("@info:status", "Sending new jobs (temporarily) blocked, still sending the previous print job."),
+                title = I18N_CATALOG.i18nc("@info:title", "Cloud error"),
+                lifetime = 10
+            )
             message.show()
             return
 
@@ -157,7 +164,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         mesh_format = MeshFormatHandler(file_handler, self.firmwareVersion)
         if not mesh_format.is_valid:
             Logger.log("e", "Missing file or mesh writer!")
-            return self._onUploadError(Translations.COULD_NOT_EXPORT)
+            return self._onUploadError(I18N_CATALOG.i18nc("@info:status", "Could not export print job."))
 
         mesh = mesh_format.getBytes(nodes)
 
@@ -265,11 +272,14 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             if job.state == "wait_cleanup" and job.key not in self._finished_jobs and job.owner == user_name:
                 self._finished_jobs.add(job.key)
                 Message(
-                    title = Translations.JOB_COMPLETED_TITLE,
-                    text = (Translations.JOB_COMPLETED_PRINTER.format(printer_name=job.assignedPrinter.name,
-                                                                      job_name=job.name)
-                            if job.assignedPrinter else
-                            Translations.JOB_COMPLETED_NO_PRINTER.format(job_name=job.name)),
+                    title = I18N_CATALOG.i18nc("@info:status", "Print finished"),
+                    text = (I18N_CATALOG.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.").format(
+                        printer_name = job.assignedPrinter.name,
+                        job_name = job.name
+                    ) if job.assignedPrinter else
+                            I18N_CATALOG.i18nc("@info:status", "The print job '{job_name}' was finished.").format(
+                                job_name = job.name
+                            )),
                 ).show()
 
         # Ensure UI gets updated
@@ -305,7 +315,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onUploadError(self, message = None) -> None:
         self._progress.hide()
         self._uploaded_print_job = None
-        Message(text = message or Translations.UPLOAD_ERROR, title = Translations.ERROR, lifetime = 10).show()
+        Message(
+            text = message or I18N_CATALOG.i18nc("@info:text", "Could not upload the data to the printer."),
+            title = I18N_CATALOG.i18nc("@info:title", "Cloud error"),
+            lifetime = 10
+        ).show()
         self.writeError.emit()
 
     ## Shows a message when the upload has succeeded
@@ -313,7 +327,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onPrintRequested(self, response: CloudPrintResponse) -> None:
         Logger.log("d", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
         self._progress.hide()
-        Message(text = Translations.UPLOAD_SUCCESS_TEXT, title = Translations.UPLOAD_SUCCESS_TITLE, lifetime = 5).show()
+        Message(
+            text = I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
+            title = I18N_CATALOG.i18nc("@info:title", "Data Sent"),
+            lifetime = 5
+        ).show()
         self.writeFinished.emit()
 
     ##  Gets the remote printers.
