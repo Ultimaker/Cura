@@ -12,7 +12,7 @@ from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from src.Cloud.Models.CloudClusterStatus import CloudClusterStatus
 from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
 from src.Cloud.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from src.Cloud.Models.CloudErrorObject import CloudErrorObject
+from src.Cloud.Models.CloudError import CloudError
 from tests.Cloud.Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
@@ -20,7 +20,7 @@ from .NetworkManagerMock import NetworkManagerMock
 class TestCloudApiClient(TestCase):
     maxDiff = None
 
-    def _errorHandler(self, errors: List[CloudErrorObject]):
+    def _errorHandler(self, errors: List[CloudError]):
         raise Exception("Received unexpected error: {}".format(errors))
 
     def setUp(self):

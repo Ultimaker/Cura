@@ -18,6 +18,7 @@ from enum import IntEnum
 import os  # To get the username
 import gzip
 
+
 class AuthState(IntEnum):
     NotAuthenticated = 1
     AuthenticationRequested = 2
@@ -207,7 +208,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = time()
 
         if not self._manager:
-            return Logger.log("e", "No network manager was created to execute the PUT call with.")
+            Logger.log("e", "No network manager was created to execute the PUT call with.")
+            return
 
         body = data if isinstance(data, bytes) else data.encode()  # type: bytes
         reply = self._manager.put(request, body)

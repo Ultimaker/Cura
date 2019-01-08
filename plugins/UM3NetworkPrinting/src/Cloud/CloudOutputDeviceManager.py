@@ -13,7 +13,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from .Models.CloudClusterResponse import CloudClusterResponse
-from .Models.CloudErrorObject import CloudErrorObject
+from .Models.CloudError import CloudError
 from .Utils import findChanges
 
 
@@ -138,7 +138,7 @@ class CloudOutputDeviceManager:
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
-    def _onApiError(self, errors: List[CloudErrorObject]) -> None:
+    def _onApiError(self, errors: List[CloudError]) -> None:
         text = ". ".join(e.title for e in errors)  # TODO: translate errors
         message = Message(
             text = text,

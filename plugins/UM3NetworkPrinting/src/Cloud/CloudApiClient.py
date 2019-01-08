@@ -14,11 +14,15 @@ from cura.API import Account
 from .MeshUploader import MeshUploader
 from ..Models import BaseModel
 from .Models.CloudClusterResponse import CloudClusterResponse
-from .Models.CloudErrorObject import CloudErrorObject
+from .Models.CloudError import CloudError
 from .Models.CloudClusterStatus import CloudClusterStatus
 from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from .Models.CloudPrintResponse import CloudPrintResponse
 from .Models.CloudPrintJobResponse import CloudPrintJobResponse
+
+
+## The generic type variable used to document the methods below.
+CloudApiClientModel = TypeVar("Model", bound = BaseModel)
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
@@ -33,7 +37,7 @@ class CloudApiClient:
     ## Initializes a new cloud API client.
     #  \param account: The user's account object
     #  \param on_error: The callback to be called whenever we receive errors from the server.
-    def __init__(self, account: Account, on_error: Callable[[List[CloudErrorObject]], None]) -> None:
+    def __init__(self, account: Account, on_error: Callable[[List[CloudError]], None]) -> None:
         super().__init__()
         self._manager = QNetworkAccessManager()
         self._account = account
@@ -115,33 +119,31 @@ class CloudApiClient:
             # Logger.log("i", "Received a reply %s from %s with %s", status_code, reply.url().toString(), response)
             return status_code, json.loads(response)
         except (UnicodeDecodeError, JSONDecodeError, ValueError) as err:
-            error = CloudErrorObject(code=type(err).__name__, title=str(err), http_code=str(status_code),
-                                     id=str(time()), http_status="500")
+            error = CloudError(code=type(err).__name__, title=str(err), http_code=str(status_code),
+                               id=str(time()), http_status="500")
             Logger.logException("e", "Could not parse the stardust response: %s", error)
             return status_code, {"errors": [error.toDict()]}
-
-    ## The generic type variable used to document the methods below.
-    Model = TypeVar("Model", bound=BaseModel)
 
     ## Parses the given models and calls the correct callback depending on the result.
     #  \param response: The response from the server, after being converted to a dict.
     #  \param on_finished: The callback in case the response is successful.
     #  \param model_class: The type of the model to convert the response to. It may either be a single record or a list.
     def _parseModels(self, response: Dict[str, Any],
-                     on_finished: Union[Callable[[Model], Any], Callable[[List[Model]], Any]],
-                     model_class: Type[Model]) -> None:
+                     on_finished: Union[Callable[[CloudApiClientModel], Any],
+                                        Callable[[List[CloudApiClientModel]], Any]],
+                     model_class: Type[CloudApiClientModel]) -> None:
         if "data" in response:
             data = response["data"]
             if isinstance(data, list):
-                results = [model_class(**c) for c in data]  # type: List[CloudApiClient.Model]
-                on_finished_list = cast(Callable[[List[CloudApiClient.Model]], Any], on_finished)
+                results = [model_class(**c) for c in data]  # type: List[CloudApiClientModel]
+                on_finished_list = cast(Callable[[List[CloudApiClientModel]], Any], on_finished)
                 on_finished_list(results)
             else:
-                result = model_class(**data)  # type: CloudApiClient.Model
-                on_finished_item = cast(Callable[[CloudApiClient.Model], Any], on_finished)
+                result = model_class(**data)  # type: CloudApiClientModel
+                on_finished_item = cast(Callable[[CloudApiClientModel], Any], on_finished)
                 on_finished_item(result)
         elif "errors" in response:
-            self._on_error([CloudErrorObject(**error) for error in response["errors"]])
+            self._on_error([CloudError(**error) for error in response["errors"]])
         else:
             Logger.log("e", "Cannot find data or errors in the cloud response: %s", response)
 
@@ -153,8 +155,9 @@ class CloudApiClient:
     #  \param model: The type of the model to convert the response to.
     def _addCallback(self,
                      reply: QNetworkReply,
-                     on_finished: Union[Callable[[Model], Any], Callable[[List[Model]], Any]],
-                     model: Type[Model],
+                     on_finished: Union[Callable[[CloudApiClientModel], Any],
+                                        Callable[[List[CloudApiClientModel]], Any]],
+                     model: Type[CloudApiClientModel],
                      ) -> None:
         def parse() -> None:
             status_code, response = self._parseReply(reply)
