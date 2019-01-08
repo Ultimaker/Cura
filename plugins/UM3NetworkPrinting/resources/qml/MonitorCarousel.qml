@@ -230,6 +230,7 @@ Item
             topMargin: 36 * screenScaleFactor // TODO: Theme!
         }
         spacing: 8 * screenScaleFactor // TODO: Theme!
+        visible: printers.length > 1
         Repeater
         {
             model: printers
