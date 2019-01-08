@@ -6,7 +6,7 @@
     "fonts": {
         "large": {
             "size": 1.35,
-            "weight": 40,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "large_bold": {
@@ -16,7 +16,7 @@
         },
         "medium": {
             "size": 1.16,
-            "weight": 40,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "medium_bold": {
@@ -25,24 +25,24 @@
             "family": "Noto Sans"
         },
         "default": {
-            "size": 0.95,
-            "weight": 40,
+            "size": 1.0,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "default_bold": {
-            "size": 0.95,
+            "size": 1.0,
             "weight": 63,
             "family": "Noto Sans"
         },
         "default_italic": {
-            "size": 0.95,
-            "weight": 40,
+            "size": 1.0,
+            "weight": 50,
             "italic": true,
             "family": "Noto Sans"
         },
         "small": {
             "size": 0.7,
-            "weight": 40,
+            "weight": 50,
             "family": "Noto Sans"
         }
     },
