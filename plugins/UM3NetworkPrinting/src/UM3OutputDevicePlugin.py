@@ -118,7 +118,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if key == um_network_key:
                 if not self._discovered_devices[key].isConnected():
                     Logger.log("d", "Attempting to connect with [%s]" % key)
-                    active_machine.setMetaDataEntry("connection_type", self._discovered_devices[key].getConnectionType().value)
+                    active_machine.setMetaDataEntry("connection_type", self._discovered_devices[key].connectionType.value)
                     self._discovered_devices[key].connect()
                     self._discovered_devices[key].connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
                 else:
