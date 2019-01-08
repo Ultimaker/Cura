@@ -144,7 +144,6 @@ Item
             topMargin: 12 * screenScaleFactor // TODO: Theme!
         }
         style: UM.Theme.styles.scrollview
-        visible: OutputDevice.receivedPrintJobs
         width: parent.width
 
         ListView
@@ -160,7 +159,7 @@ Item
                 }
                 printJob: modelData
             }
-            model: OutputDevice.queuedPrintJobs
+            model: OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs : [null,null]
             spacing: 6  // TODO: Theme!
         }
     }

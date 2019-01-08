@@ -26,6 +26,7 @@ Item
 
     ExpandableCard
     {
+        enabled: printJob != null
         borderColor: printJob.configurationChanges.length !== 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
         headerItem: Row
         {
@@ -41,32 +42,56 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            Label
+            Item
             {
-                text: printJob && printJob.name ? printJob.name : ""
-                color: "#374355"
-                elide: Text.ElideRight
-                font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.verticalCenter: parent.verticalCenter
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
-
-                // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
+                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+                Rectangle
+                {
+                    color: "#eeeeee"
+                    width: Math.round(parent.width / 2)
+                    height: parent.height
+                    visible: !printJob
+                }
+                Label
+                {
+                    text: printJob && printJob.name ? printJob.name : ""
+                    color: "#374355"
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("medium") // 14pt, regular
+                    visible: printJob
+
+                    // FIXED-LINE-HEIGHT:
+                    height: parent.height
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
-            
-            Label
-            {
-                text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
-                color: "#374355"
-                elide: Text.ElideRight
-                font: UM.Theme.getFont("medium") // 14pt, regular
-                anchors.verticalCenter: parent.verticalCenter
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
 
-                // FIXED-LINE-HEIGHT:
+            Item
+            {
+                anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
+                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+                Rectangle
+                {
+                    color: "#eeeeee"
+                    width: Math.round(parent.width / 3)
+                    height: parent.height
+                    visible: !printJob
+                }
+                Label
+                {
+                    text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
+                    color: "#374355"
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("medium") // 14pt, regular
+                    visible: printJob
+
+                    // FIXED-LINE-HEIGHT:
+                    height: 18 * screenScaleFactor // TODO: Theme!
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
 
             Item
@@ -74,6 +99,14 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: This should be childrenRect.height but QML throws warnings
                 width: childrenRect.width
+
+                Rectangle
+                {
+                    color: "#eeeeee"
+                    width: 72 * screenScaleFactor // TODO: Theme!
+                    height: parent.height
+                    visible: !printJob
+                }
 
                 Label
                 {
@@ -100,7 +133,7 @@ Item
                     width: 120 * screenScaleFactor // TODO: Theme!
 
                     // FIXED-LINE-HEIGHT:
-                    height: 18 * screenScaleFactor // TODO: Theme!
+                    height: parent.height
                     verticalAlignment: Text.AlignVCenter
                 }
 
@@ -115,6 +148,7 @@ Item
                     }
                     height: childrenRect.height
                     spacing: 6 // TODO: Theme!
+                    visible: printJob
 
                     Repeater
                     {
