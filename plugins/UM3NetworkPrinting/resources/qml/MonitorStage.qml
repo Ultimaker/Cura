@@ -67,7 +67,7 @@ Component
             MonitorCarousel
             {
                 id: carousel
-                printers: OutputDevice.printers.concat([null])
+                printers: OutputDevice.receivedPrintJobs ? OutputDevice.printers : [null]
             }
         }
 

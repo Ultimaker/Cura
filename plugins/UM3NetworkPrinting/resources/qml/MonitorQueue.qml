@@ -159,7 +159,7 @@ Item
                 }
                 printJob: modelData
             }
-            model: OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs.concat([null,null]) : [null,null]
+            model: OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs : [null,null]
             spacing: 6  // TODO: Theme!
         }
     }
