@@ -45,6 +45,8 @@ class DriveApiService:
             "Authorization": "Bearer {}".format(access_token)
         })
 
+        # HTTP status 300s mean redirection. 400s and 500s are errors.
+        # Technically 300s are not errors, but the use case here relies on "requests" to handle redirects automatically.
         if backup_list_request.status_code >= 300:
             Logger.log("w", "Could not get backups list from remote: %s", backup_list_request.text)
             Message(catalog.i18nc("@info:backup_status", "There was an error listing your backups."), title = catalog.i18nc("@info:title", "Backup")).show()
