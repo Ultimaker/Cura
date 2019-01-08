@@ -373,7 +373,7 @@
             }
         }
     },
-   "PreviewStage": {
+    "PreviewStage": {
         "package_info": {
             "package_id": "PreviewStage",
             "package_type": "plugin",

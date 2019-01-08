@@ -40,8 +40,7 @@ Column
             anchors
             {
                 left: parent.left
-                right: printInformationPanel.left
-                rightMargin: printInformationPanel.visible ? UM.Theme.getSize("thin_margin").width : 0
+                right: parent.right
             }
 
             Cura.IconWithText
@@ -51,7 +50,15 @@ Column
 
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("large_bold")
+
+                PrintInformationWidget
+                {
+                    id: printInformationPanel
+                    visible: !preSlicedData
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.contentWidth + UM.Theme.getSize("default_margin").width
+                }
             }
 
             Cura.IconWithText
@@ -84,20 +91,43 @@ Column
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
+
+                Item
+                {
+                    id: additionalComponents
+                    width: childrenRect.width
+                    anchors.right: parent.right
+                    height: parent.height
+                    Row
+                    {
+                        id: additionalComponentsRow
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        spacing: UM.Theme.getSize("default_margin").width
+                    }
+                }
+                Component.onCompleted: addAdditionalComponents("saveButton")
+
+                Connections
+                {
+                    target: CuraApplication
+                    onAdditionalComponentsChanged: addAdditionalComponents("saveButton")
+                }
+
+                function addAdditionalComponents (areaId)
+                {
+                    if(areaId == "saveButton")
+                    {
+                        for (var component in CuraApplication.additionalComponents["saveButton"])
+                        {
+                            CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
+                        }
+                    }
+                }
             }
         }
 
-        PrintInformationWidget
-        {
-            id: printInformationPanel
-            visible: !preSlicedData
 
-            anchors
-            {
-                right: parent.right
-                verticalCenter: timeAndCostsInformation.verticalCenter
-            }
-        }
     }
 
     Item
@@ -127,9 +157,6 @@ Column
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
             visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
-
-            shadowEnabled: true
-            shadowColor: UM.Theme.getColor("action_button_disabled_shadow")
         }
 
         Cura.OutputDevicesActionButton

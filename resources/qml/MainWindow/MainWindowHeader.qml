@@ -102,6 +102,7 @@ Item
         {
             id: label
             text: marketplaceButton.text
+            font: UM.Theme.getFont("default")
             color: marketplaceButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
             width: contentWidth
             verticalAlignment: Text.AlignVCenter

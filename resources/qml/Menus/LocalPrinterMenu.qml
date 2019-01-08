@@ -9,7 +9,7 @@ import Cura 1.0 as Cura
 
 Instantiator
 {
-    model: Cura.PrintersModel {}
+    model: Cura.GlobalStacksModel {}
 
     MenuItem
     {

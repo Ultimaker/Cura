@@ -200,4 +200,3 @@ class DiscoverUM3Action(MachineAction):
 
         # Create extra components
         CuraApplication.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
-        CuraApplication.getInstance().addAdditionalComponent("machinesDetailPane", self.__additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))

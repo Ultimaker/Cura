@@ -1,4 +1,5 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 1.4
@@ -7,31 +8,27 @@ import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 
-Item
+// We show a nice overlay on the 3D viewer when the current output device has no monitor view
+Rectangle
 {
-    // We show a nice overlay on the 3D viewer when the current output device has no monitor view
-    Rectangle
+    id: viewportOverlay
+
+    color: UM.Theme.getColor("viewport_overlay")
+    anchors.fill: parent
+
+    // This mouse area is to prevent mouse clicks to be passed onto the scene.
+    MouseArea
     {
-        id: viewportOverlay
-
-        color: UM.Theme.getColor("viewport_overlay")
         anchors.fill: parent
-
-        // This mouse area is to prevent mouse clicks to be passed onto the scene.
-        MouseArea
-        {
-            anchors.fill: parent
-            acceptedButtons: Qt.AllButtons
-            onWheel: wheel.accepted = true
-        }
-
-        // Disable dropping files into Cura when the monitor page is active
-        DropArea
-        {
-            anchors.fill: parent
-        }
+        acceptedButtons: Qt.AllButtons
+        onWheel: wheel.accepted = true
     }
 
+    // Disable dropping files into Cura when the monitor page is active
+    DropArea
+    {
+        anchors.fill: parent
+    }
     Loader
     {
         id: monitorViewComponent

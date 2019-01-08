@@ -223,7 +223,7 @@ Cura.MachineAction
                     width: parent.width
                     wrapMode: Text.WordWrap
                     text: base.selectedDevice ? base.selectedDevice.name : ""
-                    font: UM.Theme.getFont("large")
+                    font: UM.Theme.getFont("large_bold")
                     elide: Text.ElideRight
                     renderType: Text.NativeRendering
                 }

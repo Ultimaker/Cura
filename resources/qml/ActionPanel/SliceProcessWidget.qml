@@ -44,9 +44,9 @@ Column
     {
         id: autoSlicingLabel
         width: parent.width
-        visible: prepareButtons.autoSlice && (widget.backendState == UM.Backend.Processing || widget.backendState == UM.Backend.NotStarted)
+        visible: progressBar.visible
 
-        text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
+        text: catalog.i18nc("@label:PrintjobStatus", "Slicing...")
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
@@ -107,7 +107,13 @@ Column
         {
             id: sliceButton
             fixedWidthMode: true
-            anchors.fill: parent
+
+            height: parent.height
+
+            anchors.right: additionalComponents.left
+            anchors.rightMargin: additionalComponents.width != 0 ? UM.Theme.getSize("default_margin").width : 0
+            anchors.left: parent.left
+
             text: catalog.i18nc("@button", "Slice")
             tooltip: catalog.i18nc("@label", "Start the slicing process")
             enabled: widget.backendState != UM.Backend.Error
@@ -119,11 +125,47 @@ Column
         {
             id: cancelButton
             fixedWidthMode: true
-            anchors.fill: parent
+            height: parent.height
+            anchors.left: parent.left
+
+            anchors.right: additionalComponents.left
+            anchors.rightMargin: additionalComponents.width != 0 ? UM.Theme.getSize("default_margin").width : 0
             text: catalog.i18nc("@button", "Cancel")
             enabled: sliceButton.enabled
             visible: !sliceButton.visible
             onClicked: sliceOrStopSlicing()
+        }
+
+        Item
+        {
+            id: additionalComponents
+            width: childrenRect.width
+            anchors.right: parent.right
+            height: parent.height
+            Row
+            {
+                id: additionalComponentsRow
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: UM.Theme.getSize("default_margin").width
+            }
+        }
+        Component.onCompleted: prepareButtons.addAdditionalComponents("saveButton")
+
+        Connections
+        {
+            target: CuraApplication
+            onAdditionalComponentsChanged: prepareButtons.addAdditionalComponents("saveButton")
+        }
+
+        function addAdditionalComponents (areaId)
+        {
+            if(areaId == "saveButton")
+            {
+                for (var component in CuraApplication.additionalComponents["saveButton"])
+                {
+                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
+                }
+            }
         }
     }
 
