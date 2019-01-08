@@ -30,6 +30,7 @@ Item
         CheckBox
         {
             id: disableButton
+            anchors.verticalCenter: pluginInfo.verticalCenter
             checked: isEnabled
             visible: model.type == "plugin"
             width: visible ? UM.Theme.getSize("checkbox").width : 0
