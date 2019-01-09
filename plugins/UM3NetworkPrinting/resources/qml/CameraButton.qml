@@ -9,12 +9,14 @@ import Cura 1.0 as Cura
 
 Rectangle {
     id: base
+
+    property var enabled: true
+
     property var iconSource: null;
-    color: "#0a0850" // TODO: Theme!
+    color: !enabled ? "#cccccc" : "#0a0850" // TODO: Theme!
     height: width;
     radius: Math.round(0.5 * width);
     width: 24 * screenScaleFactor;
-    property var enabled: true
 
     UM.RecolorImage {
         id: icon;
