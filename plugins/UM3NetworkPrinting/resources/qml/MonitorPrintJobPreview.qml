@@ -16,22 +16,27 @@ Item
     width: size
     height: size
 
-    // Actual content
-    Image
+    Rectangle
     {
-        id: previewImage
         anchors.fill: parent
-        opacity:
+        color: printJob ? "transparent" : "#eeeeee" // TODO: Theme!
+        radius: 8 // TODO: Theme!
+        Image
         {
-            if (printJob && (printJob.state == "error" || printJob.configurationChanges.length > 0 || !printJob.isActive))
+            id: previewImage
+            anchors.fill: parent
+            opacity:
             {
-                return 0.5
+                if (printJob && (printJob.state == "error" || printJob.configurationChanges.length > 0 || !printJob.isActive))
+                {
+                    return 0.5
+                }
+                return 1.0
             }
-            return 1.0
+            source: printJob ? printJob.previewImageUrl : ""
         }
-        source: printJob ? printJob.previewImageUrl : ""
-        visible: printJob
     }
+
 
     UM.RecolorImage
     {

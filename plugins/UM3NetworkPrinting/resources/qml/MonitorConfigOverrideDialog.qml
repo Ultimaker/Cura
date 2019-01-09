@@ -54,7 +54,7 @@ UM.Dialog
         wrapMode: Text.WordWrap
         text:
         {
-            if (!printer.activePrintJob)
+            if (!printer || !printer.activePrintJob)
             {
                 return ""
             }
