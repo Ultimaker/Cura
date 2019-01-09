@@ -39,7 +39,7 @@ Item
             {
                 color: modelData && modelData.activeMaterial ? modelData.activeMaterial.color : "#eeeeee" // TODO: Theme!
                 material: modelData && modelData.activeMaterial ? modelData.activeMaterial.name : ""
-                position: modelData && modelData.position ? modelData.position : -1 // Use negative one to create empty extruder number
+                position: modelData && typeof(modelData.position) === "number" ? modelData.position : -1 // Use negative one to create empty extruder number
                 printCore: modelData ? modelData.hotendID : ""
 
                 // Keep things responsive!
