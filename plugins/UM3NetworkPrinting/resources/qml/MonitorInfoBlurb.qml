@@ -3,7 +3,6 @@
 
 import QtQuick 2.3
 import QtQuick.Controls 2.0
-import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
 /**
@@ -22,7 +21,13 @@ Item
         id: popUp
 
         // If the pop-up won't fit in the window, flip it
-        direction: target.y + target.height + contentWrapper.implicitHeight < monitorFrame.height ? "top" : "bottom"
+        direction:
+        {
+            var availableSpace = monitorFrame.height
+            var targetPosition = target.mapToItem(null, 0, 0)
+            var requiredSpace = targetPosition.y + target.height + contentWrapper.implicitHeight
+            return requiredSpace < availableSpace ? "top" : "bottom"
+        }
 
         // Use dark grey for info blurbs and white for context menus
         color: "#191919" // TODO: Theme!
