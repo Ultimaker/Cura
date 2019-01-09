@@ -156,9 +156,6 @@ Item
                 }
                 height: 72 * screenScaleFactor // TODO: Theme!te theRect's x property
             }
-
-            // TODO: Make this work.
-            PropertyAnimation { target: printerConfiguration; property: "visible"; to: 0; loops: Animation.Infinite; duration: 500 }
         }
 
         
