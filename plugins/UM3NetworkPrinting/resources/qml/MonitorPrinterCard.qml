@@ -170,7 +170,8 @@ Item
             printJob: printer ? printer.activePrintJob : null
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
-            enabled: base.enabled
+            // enabled: base.enabled
+            enabled: false
             visible: printer
         }
         CameraButton
@@ -184,7 +185,8 @@ Item
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
             iconSource: "../svg/icons/camera.svg"
-            enabled: base.enabled
+            // enabled: base.enabled
+            enabled: false
             visible: printer
         }
     }
