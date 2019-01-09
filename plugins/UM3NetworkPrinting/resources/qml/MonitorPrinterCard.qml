@@ -7,13 +7,11 @@ import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
 
 /**
- * A Printer Card is has two main components: the printer portion and the print
- * job portion, the latter being paired in the UI when a print job is paired
- * a printer in-cluster.
+ * A Printer Card is has two main components: the printer portion and the print job portion, the latter being paired in
+ * the UI when a print job is paired a printer in-cluster.
  *
- * NOTE: For most labels, a fixed height with vertical alignment is used to make
- * layouts more deterministic (like the fixed-size textboxes used in original
- * mock-ups). This is also a stand-in for CSS's 'line-height' property. Denoted
+ * NOTE: For most labels, a fixed height with vertical alignment is used to make layouts more deterministic (like the
+ * fixed-size textboxes used in original mock-ups). This is also a stand-in for CSS's 'line-height' property. Denoted
  * with '// FIXED-LINE-HEIGHT:'.
  */
 Item
@@ -25,9 +23,8 @@ Item
 
     property var borderSize: 1 * screenScaleFactor // TODO: Theme, and remove from here
 
-    // If the printer card's controls are enabled. This is used by the carousel
-    // to prevent opening the context menu or camera while the printer card is not
-    // "in focus"
+    // If the printer card's controls are enabled. This is used by the carousel to prevent opening the context menu or
+    // camera while the printer card is not "in focus"
     property var enabled: true
 
     width: 834 * screenScaleFactor // TODO: Theme!
@@ -217,6 +214,7 @@ Item
         }
         border
         {
+            // TODO: Fix line length
             color: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "transparent" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
