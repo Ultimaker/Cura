@@ -683,7 +683,11 @@ class MaterialManager(QObject):
 
     @pyqtSlot(str)
     def removeFavorite(self, root_material_id: str) -> None:
-        self._favorites.remove(root_material_id)
+        try:
+            self._favorites.remove(root_material_id)
+        except KeyError:
+            Logger.log("w", "Could not delete material %s from favorites as it was already deleted", root_material_id)
+            return
         self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
