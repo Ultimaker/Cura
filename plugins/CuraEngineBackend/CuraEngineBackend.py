@@ -833,7 +833,10 @@ class CuraEngineBackend(QObject, Backend):
             self._onChanged()
 
     def _onProcessLayersFinished(self, job: ProcessSlicedLayersJob) -> None:
-        del self._stored_optimized_layer_data[job.getBuildPlate()]
+        if job.getBuildPlate() in self._stored_optimized_layer_data:
+            del self._stored_optimized_layer_data[job.getBuildPlate()]
+        else:
+            Logger.log("w", "The optimized layer data was already deleted for buildplate %s", job.getBuildPlate())
         self._process_layers_job = None
         Logger.log("d", "See if there is more to slice(2)...")
         self._invokeSlice()
