@@ -156,10 +156,9 @@ Item
         }
 
         
-
-        PrintJobContextMenu
+        MonitorContextMenuButton
         {
-            id: contextButton
+            id: contextMenuButton
             anchors
             {
                 right: parent.right
@@ -167,16 +166,49 @@ Item
                 top: parent.top
                 topMargin: 12 * screenScaleFactor // TODO: Theme!
             }
-            printJob: printer ? printer.activePrintJob : null
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
             // enabled: base.enabled
             enabled: false
-            visible: printer
+            onClicked: enabled ? contextMenu.switchPopupState() : {}
+            visible:
+            {
+                if (!printer || !printer.activePrintJob) {
+                    return false
+                }
+                var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+                return states.indexOf(printer.activePrintJob.state) !== -1
+            }
         }
+
+        MonitorPrinterContextMenu
+        {
+            id: contextMenu
+            printJob: printer ? printer.activePrintJob : null
+            target: contextMenuButton
+        }
+
+        // For cloud printing, add this mouse area over the disabled contextButton to indicate that it's not available
+        MouseArea
+        {
+            id: contextMenuDisabledButtonArea
+            anchors.fill: contextMenuButton
+            hoverEnabled: contextMenuButton.visible && !contextMenuButton.enabled
+            onEntered: contextMenuDisabledInfo.open()
+            onExited: contextMenuDisabledInfo.close()
+            enabled: !contextMenuButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: contextMenuDisabledInfo
+            text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
+            target: contextMenuButton
+        }
+
         CameraButton
         {
-            id: cameraButton;
+            id: cameraButton
             anchors
             {
                 right: parent.right
@@ -188,6 +220,24 @@ Item
             // enabled: base.enabled
             enabled: false
             visible: printer
+        }
+
+        // For cloud printing, add this mouse area over the disabled cameraButton to indicate that it's not available
+        MouseArea
+        {
+            id: cameraDisabledButtonArea
+            anchors.fill: cameraButton
+            hoverEnabled: cameraButton.visible && !cameraButton.enabled
+            onEntered: cameraDisabledInfo.open()
+            onExited: cameraDisabledInfo.close()
+            enabled: !cameraButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: cameraDisabledInfo
+            text: catalog.i18nc("@info", "The webcam is not available because you are monitoring a cloud printer.")
+            target: cameraButton
         }
     }
 
