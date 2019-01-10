@@ -155,7 +155,6 @@ Item
             }
         }
 
-        
         MonitorContextMenuButton
         {
             id: contextMenuButton
@@ -181,7 +180,7 @@ Item
             }
         }
 
-        MonitorPrinterContextMenu
+        MonitorContextMenu
         {
             id: contextMenu
             printJob: printer ? printer.activePrintJob : null
