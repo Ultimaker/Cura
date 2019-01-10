@@ -21,15 +21,8 @@ Item
     {
         id: popUp
 
-        // If the pop-up won't fit in the window, flip it
-        direction:
-        {
-            var availableSpace = monitorFrame.height
-            var targetPosition = target.mapToItem(null, 0, 0)
-            var requiredSpace = targetPosition.y + target.height + contentWrapper.implicitHeight
-            console.log("available space", availableSpace - targetPosition.y + target.height)
-            return requiredSpace < availableSpace ? "top" : "bottom"
-        }
+        // Which way should the pop-up point? Default is up, but will flip when required
+        direction: "up"
 
         // Use dark grey for info blurbs and white for context menus
         color: "#ffffff" // TODO: Theme!
@@ -60,7 +53,7 @@ Item
                     }
                     text: catalog.i18nc("@label", "Move to top");
                     visible: {
-                        if (printJob && printJob.state == "queued" && !assigned) {
+                        if (printJob && printJob.state == "queued" && !isAssigned(printJob)) {
                             if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
                                 return OutputDevice.queuedPrintJobs[0].key != printJob.key;
                             }
@@ -179,5 +172,11 @@ Item
     }
     function close() {
         popUp.close()
+    }
+    function isAssigned(job) {
+        if (!job) {
+            return false;
+        }
+        return job.assignedPrinter ? true : false;
     }
 }

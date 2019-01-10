@@ -197,9 +197,7 @@ Popup
     }
 
     function recalculateOrientation() {
-                // Flip direction if there is not enough screen space
         var availableSpace
-
         var targetPosition = target.mapToItem(monitorFrame, 0, 0)
 
         // Stupid pop-up logic causes the pop-up to resize, so let's compute what it SHOULD be

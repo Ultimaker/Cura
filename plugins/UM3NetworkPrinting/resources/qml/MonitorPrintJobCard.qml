@@ -27,7 +27,7 @@ Item
     ExpandableCard
     {
         enabled: printJob != null
-        borderColor: printJob.configurationChanges.length !== 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
+        borderColor: printJob && printJob.configurationChanges.length !== 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
         headerItem: Row
         {
             height: 48 * screenScaleFactor // TODO: Theme!
@@ -177,8 +177,7 @@ Item
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
                 buildplate: "Glass"
-                configurations:
-                [
+                configurations: !base.printJob ? [null, null] : [
                     base.printJob.configuration.extruderConfigurations[0],
                     base.printJob.configuration.extruderConfigurations[1]
                 ]
@@ -241,7 +240,7 @@ Item
     MonitorContextMenu
     {
         id: contextMenu
-        printJob: printer ? printer.activePrintJob : null
+        printJob: base.printJob ? base.printJob : null
         target: contextMenuButton
     }
 
