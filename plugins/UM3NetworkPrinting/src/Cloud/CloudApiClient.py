@@ -9,7 +9,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 
 from UM.Logger import Logger
-from cura import CuraConstants
+from cura import UltimakerCloudAuthentication
 from cura.API import Account
 from .MeshUploader import MeshUploader
 from ..Models import BaseModel
@@ -30,7 +30,7 @@ CloudApiClientModel = TypeVar("Model", bound = BaseModel)
 class CloudApiClient:
 
     # The cloud URL to use for this remote cluster.
-    ROOT_PATH = CuraConstants.CuraCloudAPIRoot
+    ROOT_PATH = UltimakerCloudAuthentication.CuraCloudAPIRoot
     CLUSTER_API_ROOT = "{}/connect/v1".format(ROOT_PATH)
     CURA_API_ROOT = "{}/cura/v1".format(ROOT_PATH)
 

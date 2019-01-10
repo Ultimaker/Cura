@@ -1,4 +1,6 @@
 // Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
@@ -11,42 +13,40 @@ RowLayout
     width: parent.width
     height: 40 * screenScaleFactor
 
-    property var iconSource
-    property var label
-    property var value
+    property alias iconSource: icon.source
+    property alias label: detailName.text
+    property alias value: detailValue.text
 
-    // Spacing.
-    Item
+    UM.RecolorImage
     {
-        width: 40 * screenScaleFactor
-    }
-
-    Icon
-    {
+        id: icon
         width: 18 * screenScaleFactor
-        iconSource: detailsRow.iconSource
+        height: width
+        source: ""
         color: UM.Theme.getColor("text")
     }
 
     Label
     {
-        text: detailsRow.label
+        id: detailName
         color: UM.Theme.getColor("text")
         elide: Text.ElideRight
         Layout.minimumWidth: 50 * screenScaleFactor
         Layout.maximumWidth: 100 * screenScaleFactor
         Layout.fillWidth: true
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 
     Label
     {
-        text: detailsRow.value
+        id: detailValue
         color: UM.Theme.getColor("text")
         elide: Text.ElideRight
         Layout.minimumWidth: 50 * screenScaleFactor
         Layout.maximumWidth: 100 * screenScaleFactor
         Layout.fillWidth: true
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
 }

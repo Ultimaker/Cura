@@ -1,4 +1,6 @@
 // Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
@@ -8,12 +10,14 @@ import Cura 1.1 as Cura
 
 import "../components"
 
+
 Column
 {
     id: welcomePage
     spacing: UM.Theme.getSize("wide_margin").height
     width: parent.width
-    topPadding: 150 * screenScaleFactor
+    height: childrenRect.height
+    anchors.centerIn: parent
 
     Image
     {
@@ -38,11 +42,15 @@ Column
         renderType: Text.NativeRendering
     }
 
-    ActionButton
+    Cura.PrimaryButton
     {
         id: loginButton
-        onClicked: Cura.API.account.login()
-        text: catalog.i18nc("@button", "Sign In")
+        width: UM.Theme.getSize("account_button").width
+        height: UM.Theme.getSize("account_button").height
         anchors.horizontalCenter: parent.horizontalCenter
+        text: catalog.i18nc("@button", "Sign in")
+        onClicked: Cura.API.account.login()
+        fixedWidthMode: true
     }
 }
+

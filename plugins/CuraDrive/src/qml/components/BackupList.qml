@@ -1,31 +1,37 @@
 // Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 import UM 1.1 as UM
 
-ListView
+ScrollView
 {
-    id: backupList
+    property alias model: backupList.model
     width: parent.width
-    clip: true
-    delegate: Item
+    ListView
     {
+        id: backupList
         width: parent.width
-        height: childrenRect.height
-
-        BackupListItem
-        {
-            id: backupListItem
-            width: parent.width
-        }
-
-        Divider
+        delegate: Item
         {
             width: parent.width
-            anchors.top: backupListItem.bottom
+            height: childrenRect.height
+
+            BackupListItem
+            {
+                id: backupListItem
+                width: parent.width
+            }
+
+            Rectangle
+            {
+                id: divider
+                color: UM.Theme.getColor("lining")
+                height: UM.Theme.getSize("default_lining").height
+            }
         }
     }
-    ScrollBar.vertical: RightSideScrollBar {}
 }

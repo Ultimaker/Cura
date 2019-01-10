@@ -1,4 +1,6 @@
 // Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
@@ -12,11 +14,11 @@ Item
 {
     id: backupsPage
     anchors.fill: parent
-    anchors.margins: UM.Theme.getSize("default_margin").width * 3
+    anchors.margins: UM.Theme.getSize("wide_margin").width
 
     ColumnLayout
     {
-        spacing: UM.Theme.getSize("default_margin").height * 2
+        spacing: UM.Theme.getSize("wide_margin").height
         width: parent.width
         anchors.fill: parent
 

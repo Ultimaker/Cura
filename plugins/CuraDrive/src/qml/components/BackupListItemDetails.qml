@@ -1,4 +1,6 @@
 // Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
@@ -9,53 +11,53 @@ ColumnLayout
 {
     id: backupDetails
     width: parent.width
-    spacing: 10 * screenScaleFactor
+    spacing: UM.Theme.getSize("default_margin").width
     property var backupDetailsData
 
     // Cura version
     BackupListItemDetailsRow
     {
-        iconSource: "../images/cura.svg"
+        iconSource: UM.Theme.getIcon("application")
         label: catalog.i18nc("@backuplist:label", "Cura Version")
-        value: backupDetailsData["data"]["cura_release"]
+        value: backupDetailsData.metadata.cura_release
     }
 
     // Machine count.
     BackupListItemDetailsRow
     {
-        iconSource: "../images/printer.svg"
+        iconSource: UM.Theme.getIcon("printer_single")
         label: catalog.i18nc("@backuplist:label", "Machines")
-        value: backupDetailsData["data"]["machine_count"]
+        value: backupDetailsData.metadata.machine_count
     }
 
-    // Meterial count.
+    // Material count
     BackupListItemDetailsRow
     {
-        iconSource: "../images/material.svg"
+        iconSource: UM.Theme.getIcon("category_material")
         label: catalog.i18nc("@backuplist:label", "Materials")
-        value: backupDetailsData["data"]["material_count"]
+        value: backupDetailsData.metadata.material_count
     }
 
-    // Meterial count.
+    // Profile count.
     BackupListItemDetailsRow
     {
-        iconSource: "../images/profile.svg"
+        iconSource: UM.Theme.getIcon("settings")
         label: catalog.i18nc("@backuplist:label", "Profiles")
-        value: backupDetailsData["data"]["profile_count"]
+        value: backupDetailsData.metadata.profile_count
     }
 
-    // Meterial count.
+    // Plugin count.
     BackupListItemDetailsRow
     {
-        iconSource: "../images/plugin.svg"
+        iconSource: UM.Theme.getIcon("plugin")
         label: catalog.i18nc("@backuplist:label", "Plugins")
-        value: backupDetailsData["data"]["plugin_count"]
+        value: backupDetailsData.metadata.plugin_count
     }
 
     // Spacer.
     Item
     {
         width: parent.width
-        height: 10 * screenScaleFactor
+        height: UM.Theme.getSize("default_margin").height
     }
 }

@@ -1,14 +1,12 @@
-# Copyright (c) 2017 Ultimaker B.V.
-import os
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-is_testing = os.getenv('ENV_NAME', "development") == "testing"
+from .src.DrivePluginExtension import DrivePluginExtension
 
-# Only load the whole plugin when not running tests as __init__.py is automatically loaded by PyTest
-if not is_testing:
-    from .src.DrivePluginExtension import DrivePluginExtension
 
-    def getMetaData():
-        return {}
+def getMetaData():
+    return {}
 
-    def register(app):
-        return {"extension": DrivePluginExtension(app)}
+
+def register(app):
+    return {"extension": DrivePluginExtension()}

@@ -194,7 +194,7 @@ Column
         shortcut: "Ctrl+P"
         onTriggered:
         {
-            if (prepareButton.enabled)
+            if (sliceButton.enabled)
             {
                 sliceOrStopSlicing()
             }
