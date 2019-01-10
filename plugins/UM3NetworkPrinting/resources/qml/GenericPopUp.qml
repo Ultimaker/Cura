@@ -168,22 +168,6 @@ Popup
         visible = true
     }
     closePolicy: closeOnClick ? Popup.CloseOnPressOutside : Popup.NoAutoClose
-    // enter: Transition
-    // {
-    //     NumberAnimation
-    //     {
-    //         duration: 75
-    //         property: "visible"
-    //     }
-    // }
-    // exit: Transition
-    // {
-    //     NumberAnimation
-    //     {
-    //         duration: 75
-    //         property: "visible"
-    //     }
-    // }
 
     clip: true
 
