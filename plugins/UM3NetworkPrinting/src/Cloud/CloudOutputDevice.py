@@ -44,7 +44,7 @@ I18N_CATALOG = i18nCatalog("cura")
 class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 50.0  # seconds
+    CHECK_CLUSTER_INTERVAL = 20.0  # seconds
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()

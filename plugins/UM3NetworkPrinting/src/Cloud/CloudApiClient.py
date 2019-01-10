@@ -22,7 +22,7 @@ from .Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## The generic type variable used to document the methods below.
-CloudApiClientModel = TypeVar("Model", bound = BaseModel)
+CloudApiClientModel = TypeVar("CloudApiClientModel", bound = BaseModel)
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
