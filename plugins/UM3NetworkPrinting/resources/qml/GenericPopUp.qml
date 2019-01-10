@@ -214,13 +214,6 @@ Popup
                 break
             case "down":
                 availableSpace = targetPosition.y
-                // if (availableSpace < realHeight)
-                // {
-                //     if (direction != originalDirection)
-                //     {
-                        
-                //     }
-                // }
                 direction = availableSpace < realHeight ? "up" : originalDirection
                 break
             case "right":
