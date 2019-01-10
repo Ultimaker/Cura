@@ -31,6 +31,13 @@ Column
         id: information
         width: parent.width
         height: childrenRect.height
+        
+        PrintInformationWidget
+        {
+            id: printInformationPanel
+            visible: !preSlicedData
+            anchors.right: parent.right
+        }
 
         Column
         {
@@ -51,14 +58,6 @@ Column
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
                 font: UM.Theme.getFont("large_bold")
-
-                PrintInformationWidget
-                {
-                    id: printInformationPanel
-                    visible: !preSlicedData
-                    anchors.left: parent.left
-                    anchors.leftMargin: parent.contentWidth + UM.Theme.getSize("default_margin").width
-                }
             }
 
             Cura.IconWithText
@@ -91,43 +90,8 @@ Column
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
-
-                Item
-                {
-                    id: additionalComponents
-                    width: childrenRect.width
-                    anchors.right: parent.right
-                    height: parent.height
-                    Row
-                    {
-                        id: additionalComponentsRow
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                        spacing: UM.Theme.getSize("default_margin").width
-                    }
-                }
-                Component.onCompleted: addAdditionalComponents("saveButton")
-
-                Connections
-                {
-                    target: CuraApplication
-                    onAdditionalComponentsChanged: addAdditionalComponents("saveButton")
-                }
-
-                function addAdditionalComponents (areaId)
-                {
-                    if(areaId == "saveButton")
-                    {
-                        for (var component in CuraApplication.additionalComponents["saveButton"])
-                        {
-                            CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
-                        }
-                    }
-                }
             }
         }
-
-
     }
 
     Item
