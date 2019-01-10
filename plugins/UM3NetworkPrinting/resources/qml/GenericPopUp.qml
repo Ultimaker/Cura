@@ -44,6 +44,8 @@ Popup
      */
     property var color: "#ffffff" // TODO: Theme!
 
+    Component.onCompleted: recalculatePosition()
+
     background: Item
     {
         anchors.fill: parent
@@ -127,25 +129,61 @@ Popup
         }
     }
 
+    visible: false
     onClosed: visible = false
-    onOpened: visible = true
+    onOpened:
+    {
+        // Flip direction if there is not enough screen space
+        var availableSpace
+
+        var targetPosition = target.mapToItem(monitorFrame, 0, 0)
+
+        var requiredSpace = contentItem.implicitHeight + 2 * padding + 8 * screenScaleFactor
+
+        switch(direction)
+        {
+            case "top":
+                availableSpace = monitorFrame.height - (targetPosition.y + target.height)
+                // console.log("Needs", requiredSpace, "has got", availableSpace)
+                if (availableSpace < requiredSpace)
+                {
+                    // console.log("putting point on bottom")
+                    direction = "bottom"
+                }
+                break
+            case "bottom":
+                availableSpace = targetPosition.y
+                // console.log("Needs", requiredSpace, "has got", availableSpace)
+                if (availableSpace < requiredSpace)
+                {
+                    // console.log("putting point on top")
+                    direction = "top"
+                }
+                break
+        }
+
+        recalculatePosition()
+
+        // Show the pop up
+        visible = true
+    }
     closePolicy: closeOnClick ? Popup.CloseOnPressOutside : Popup.NoAutoClose
-    enter: Transition
-    {
-        NumberAnimation
-        {
-            duration: 75
-            property: "visible"
-        }
-    }
-    exit: Transition
-    {
-        NumberAnimation
-        {
-            duration: 75
-            property: "visible"
-        }
-    }
+    // enter: Transition
+    // {
+    //     NumberAnimation
+    //     {
+    //         duration: 75
+    //         property: "visible"
+    //     }
+    // }
+    // exit: Transition
+    // {
+    //     NumberAnimation
+    //     {
+    //         duration: 75
+    //         property: "visible"
+    //     }
+    // }
 
     clip: true
 
@@ -155,48 +193,35 @@ Popup
     leftPadding:   direction == "left"   ? padding + 8 * screenScaleFactor : padding
     rightPadding:  direction == "right"  ? padding + 8 * screenScaleFactor : padding
 
-    transformOrigin:
-    {
-        switch(direction)
-        {
-            case "top":
-                return Popup.Top
-            case "bottom":
-                return Popup.Bottom
-            case "right":
-                return Popup.Right
-            case "left":
-                return Popup.Left
-            default:
-                direction = "bottom"
-                return Popup.Bottom
+    function recalculatePosition() {
+
+        // Stupid pop-up logic causes the pop-up to resize, so let's compute what it SHOULD be
+        const realWidth = contentItem.implicitWidth + leftPadding + rightPadding
+        const realHeight = contentItem.implicitHeight + topPadding + bottomPadding
+
+        var centered = {
+            x: target.x + target.width / 2 - realWidth / 2,
+            y: target.y + target.height / 2 - realHeight / 2
         }
-    }
 
-    visible: false;
-
-    x:
-    {
         switch(direction)
         {
             case "left":
-                return target.x + target.width + 4 * screenScaleFactor
+                x = target.x + target.width
+                y = centered.y
+                break
             case "right":
-                return target.x - base.width - 4 * screenScaleFactor
-            default:
-                return target.x + target.width / 2 - base.width / 2
-        }
-    }
-    y:
-    {
-        switch(direction)
-        {
+                x = target.x - realWidth
+                y = centered.y
+                break
             case "top":
-                return target.y + target.height + 4 * screenScaleFactor
+                x = centered.x
+                y = target.y + target.height
+                break
             case "bottom":
-                return target.y - base.height - 4 * screenScaleFactor
-            default:
-                return target.y + target.height / 2 - base.height / 2
+                x = centered.x
+                y = target.y - realHeight
+                break
         }
     }
 }

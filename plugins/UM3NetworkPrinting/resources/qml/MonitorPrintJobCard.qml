@@ -198,18 +198,68 @@ Item
         }
     }
 
-    PrintJobContextMenu
+    // PrintJobContextMenu
+    // {
+    //     id: contextButton
+    //     anchors
+    //     {
+    //         right: parent.right;
+    //         rightMargin: 8 * screenScaleFactor // TODO: Theme!
+    //         top: parent.top
+    //         topMargin: 8 * screenScaleFactor // TODO: Theme!
+    //     }
+    //     printJob: base.printJob
+    //     width: 32 * screenScaleFactor // TODO: Theme!
+    //     height: 32 * screenScaleFactor // TODO: Theme!
+    // }
+
+    MonitorContextMenuButton
     {
-        id: contextButton
+        id: contextMenuButton
         anchors
         {
-            right: parent.right;
+            right: parent.right
             rightMargin: 8 * screenScaleFactor // TODO: Theme!
             top: parent.top
             topMargin: 8 * screenScaleFactor // TODO: Theme!
         }
-        printJob: base.printJob
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
+        // enabled: base.enabled
+        enabled: false
+        onClicked: enabled ? contextMenu.switchPopupState() : {}
+        visible:
+        {
+            if (!printJob) {
+                return false
+            }
+            var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+            return states.indexOf(printJob.state) !== -1
+        }
+    }
+
+    MonitorContextMenu
+    {
+        id: contextMenu
+        printJob: printer ? printer.activePrintJob : null
+        target: contextMenuButton
+    }
+
+    // For cloud printing, add this mouse area over the disabled contextButton to indicate that it's not available
+    MouseArea
+    {
+        id: contextMenuDisabledButtonArea
+        anchors.fill: contextMenuButton
+        hoverEnabled: contextMenuButton.visible && !contextMenuButton.enabled
+        onEntered: contextMenuDisabledInfo.open()
+        onExited: contextMenuDisabledInfo.close()
+        enabled: !contextMenuButton.enabled
+    }
+
+    MonitorInfoBlurb
+    {
+        id: contextMenuDisabledInfo
+        text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
+        target: contextMenuButton
     }
 }

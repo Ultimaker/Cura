@@ -20,14 +20,7 @@ Item
     {
         id: popUp
 
-        // If the pop-up won't fit in the window, flip it
-        direction:
-        {
-            var availableSpace = monitorFrame.height
-            var targetPosition = target.mapToItem(null, 0, 0)
-            var requiredSpace = targetPosition.y + target.height + contentWrapper.implicitHeight
-            return requiredSpace < availableSpace ? "top" : "bottom"
-        }
+        direction: "top"
 
         // Use dark grey for info blurbs and white for context menus
         color: "#191919" // TODO: Theme!
