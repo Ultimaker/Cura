@@ -9,9 +9,9 @@ import QtGraphicalEffects 1.0
 import UM 1.3 as UM
 
 /**
- * This is a generic pop-up element which can be supplied with a target and a content
- * item. The content item will appear to the left, right, above, or below the target
- * depending on the value of the direction property
+ * This is a generic pop-up element which can be supplied with a target and a content item. The
+ * content item will appear to the left, right, above, or below the target depending on the value of
+ * the direction property
  */
 Popup
 {
@@ -23,14 +23,20 @@ Popup
     property var target
 
     /**
-     * Which side of the target should the contentItem appear on?
+     * Which direction should the pop-up "point"?
      * Possible values include:
-     *   - "top"
-     *   - "bottom"
+     *   - "up"
+     *   - "down"
      *   - "left"
      *   - "right"
      */
-    property string direction: "bottom"
+    property string direction: "down"
+
+    /**
+     * We save the default direction so that if a pop-up was flipped but later has space (i.e. it
+     * moved), we can unflip it back to the default direction.
+     */
+    property string originalDirection: ""
 
     /**
      * Should the popup close when you click outside it? For example, this is
@@ -44,7 +50,13 @@ Popup
      */
     property var color: "#ffffff" // TODO: Theme!
 
-    Component.onCompleted: recalculatePosition()
+    Component.onCompleted:
+    {
+        recalculatePosition()
+
+        // Set the direction here so it's only set once and never mutated
+        originalDirection = (' ' + direction).slice(1)
+    }
 
     background: Item
     {
@@ -92,9 +104,9 @@ Popup
                     {
                         switch(direction)
                         {
-                            case "top":
+                            case "up":
                                 return bloop.top
-                            case "bottom":
+                            case "down":
                                 return bloop.bottom
                             default:
                                 return bloop.verticalCenter
@@ -118,10 +130,10 @@ Popup
                 anchors
                 {
                     fill: parent
-                    leftMargin:   direction == "left"   ? 8 * screenScaleFactor : 0
-                    rightMargin:  direction == "right"  ? 8 * screenScaleFactor : 0
-                    topMargin:    direction == "top"    ? 8 * screenScaleFactor : 0
-                    bottomMargin: direction == "bottom" ? 8 * screenScaleFactor : 0
+                    leftMargin:   direction == "left"  ? 8 * screenScaleFactor : 0
+                    rightMargin:  direction == "right" ? 8 * screenScaleFactor : 0
+                    topMargin:    direction == "up"    ? 8 * screenScaleFactor : 0
+                    bottomMargin: direction == "down"  ? 8 * screenScaleFactor : 0
                 }
                 color: base.color
                 width: parent.width
@@ -133,35 +145,10 @@ Popup
     onClosed: visible = false
     onOpened:
     {
-        // Flip direction if there is not enough screen space
-        var availableSpace
+        // Flip orientation if necessary
+        recalculateOrientation()
 
-        var targetPosition = target.mapToItem(monitorFrame, 0, 0)
-
-        var requiredSpace = contentItem.implicitHeight + 2 * padding + 8 * screenScaleFactor
-
-        switch(direction)
-        {
-            case "top":
-                availableSpace = monitorFrame.height - (targetPosition.y + target.height)
-                // console.log("Needs", requiredSpace, "has got", availableSpace)
-                if (availableSpace < requiredSpace)
-                {
-                    // console.log("putting point on bottom")
-                    direction = "bottom"
-                }
-                break
-            case "bottom":
-                availableSpace = targetPosition.y
-                // console.log("Needs", requiredSpace, "has got", availableSpace)
-                if (availableSpace < requiredSpace)
-                {
-                    // console.log("putting point on top")
-                    direction = "top"
-                }
-                break
-        }
-
+        // Fix position if necessary
         recalculatePosition()
 
         // Show the pop up
@@ -172,10 +159,10 @@ Popup
     clip: true
 
     padding: UM.Theme.getSize("monitor_shadow_radius").width
-    topPadding:    direction == "top"    ? padding + 8 * screenScaleFactor : padding
-    bottomPadding: direction == "bottom" ? padding + 8 * screenScaleFactor : padding
-    leftPadding:   direction == "left"   ? padding + 8 * screenScaleFactor : padding
-    rightPadding:  direction == "right"  ? padding + 8 * screenScaleFactor : padding
+    topPadding:    direction == "up"    ? padding + 8 * screenScaleFactor : padding
+    bottomPadding: direction == "down"  ? padding + 8 * screenScaleFactor : padding
+    leftPadding:   direction == "left"  ? padding + 8 * screenScaleFactor : padding
+    rightPadding:  direction == "right" ? padding + 8 * screenScaleFactor : padding
 
     function recalculatePosition() {
 
@@ -198,13 +185,51 @@ Popup
                 x = target.x - realWidth
                 y = centered.y
                 break
-            case "top":
+            case "up":
                 x = centered.x
                 y = target.y + target.height
                 break
-            case "bottom":
+            case "down":
                 x = centered.x
                 y = target.y - realHeight
+                break
+        }
+    }
+
+    function recalculateOrientation() {
+                // Flip direction if there is not enough screen space
+        var availableSpace
+
+        var targetPosition = target.mapToItem(monitorFrame, 0, 0)
+
+        // Stupid pop-up logic causes the pop-up to resize, so let's compute what it SHOULD be
+        const realWidth = contentItem.implicitWidth + leftPadding + rightPadding
+        const realHeight = contentItem.implicitHeight + topPadding + bottomPadding
+
+        switch(originalDirection)
+        {
+            case "up":
+                availableSpace = monitorFrame.height - (targetPosition.y + target.height)
+                direction = availableSpace < realHeight ? "down" : originalDirection
+                break
+            case "down":
+                availableSpace = targetPosition.y
+                // if (availableSpace < realHeight)
+                // {
+                //     if (direction != originalDirection)
+                //     {
+                        
+                //     }
+                // }
+                direction = availableSpace < realHeight ? "up" : originalDirection
+                break
+            case "right":
+                availableSpace = targetPosition.x
+                direction = availableSpace < realWidth ? "left" : originalDirection
+                break
+            case "left":
+                availableSpace = monitorFrame.width - (targetPosition.x + target.width)
+                direction = availableSpace < realWidth ? "right" : originalDirection
                 break
         }
     }

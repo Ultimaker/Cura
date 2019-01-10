@@ -20,7 +20,8 @@ Item
     {
         id: popUp
 
-        direction: "top"
+        // Which way should the pop-up point? Default is up, but will flip when required
+        direction: "up"
 
         // Use dark grey for info blurbs and white for context menus
         color: "#191919" // TODO: Theme!
