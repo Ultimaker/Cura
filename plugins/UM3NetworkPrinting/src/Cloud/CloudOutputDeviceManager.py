@@ -41,7 +41,7 @@ class CloudOutputDeviceManager:
         self._account = application.getCuraAPI().account  # type: Account
         self._api = CloudApiClient(self._account, self._onApiError)
 
-        # create a timer to update the remote cluster list
+        # Create a timer to update the remote cluster list
         self._update_timer = QTimer(application)
         self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
         self._update_timer.setSingleShot(False)
@@ -99,7 +99,6 @@ class CloudOutputDeviceManager:
     def _connectToActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
-            Logger.log("d", "no active machine")
             return
 
         # Remove all output devices that we have registered.
@@ -143,8 +142,7 @@ class CloudOutputDeviceManager:
         message = Message(
             text = text,
             title = self.I18N_CATALOG.i18nc("@info:title", "Error"),
-            lifetime = 10,
-            dismissable = True
+            lifetime = 10
         )
         message.show()
 

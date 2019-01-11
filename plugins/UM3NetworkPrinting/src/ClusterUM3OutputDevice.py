@@ -64,7 +64,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/MonitorStage.qml")
 
-        # trigger the printersChanged signal when the private signal is triggered
+        # Trigger the printersChanged signal when the private signal is triggered
         self.printersChanged.connect(self._clusterPrintersChanged)
 
         self._accepts_commands = True  # type: bool

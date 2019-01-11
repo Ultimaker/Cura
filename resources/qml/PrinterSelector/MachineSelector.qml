@@ -29,11 +29,16 @@ Cura.ExpandablePopup
         text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
         source:
         {
-            if (isGroup) {
+            if (isGroup)
+            {
                 return UM.Theme.getIcon("printer_group")
-            } else if (isNetworkPrinter || isCloudPrinter) {
+            }
+            else if (isNetworkPrinter || isCloudPrinter)
+            {
                 return UM.Theme.getIcon("printer_single")
-            } else {
+            }
+            else
+            {
                 return ""
             }
         }
@@ -52,11 +57,16 @@ Cura.ExpandablePopup
 
             source:
             {
-                if (isNetworkPrinter) {
+                if (isNetworkPrinter)
+                {
                     return UM.Theme.getIcon("printer_connected")
-                } else if (isCloudPrinter) {
+                }
+                else if (isCloudPrinter)
+                {
                     return UM.Theme.getIcon("printer_cloud_connected")
-                } else {
+                }
+                else
+                {
                     return ""
                 }
             }

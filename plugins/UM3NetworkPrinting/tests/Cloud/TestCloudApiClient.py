@@ -39,7 +39,7 @@ class TestCloudApiClient(TestCase):
         data = parseFixture("getClusters")["data"]
 
         self.network.prepareReply("GET", CuraCloudAPIRoot + "/connect/v1/clusters", 200, response)
-        # the callback is a function that adds the result of the call to getClusters to the result list
+        # The callback is a function that adds the result of the call to getClusters to the result list
         self.api.getClusters(lambda clusters: result.extend(clusters))
 
         self.network.flushReplies()

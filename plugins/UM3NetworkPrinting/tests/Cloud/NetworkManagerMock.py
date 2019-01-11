@@ -30,7 +30,7 @@ class FakeSignal:
 #  Any requests not prepared beforehand will cause KeyErrors.
 class NetworkManagerMock:
 
-    # an enumeration of the supported operations and their code for the network access manager.
+    # An enumeration of the supported operations and their code for the network access manager.
     _OPERATIONS = {
         "GET": QNetworkAccessManager.GetOperation,
         "POST": QNetworkAccessManager.PostOperation,
@@ -41,11 +41,11 @@ class NetworkManagerMock:
 
     ## Initializes the network manager mock.
     def __init__(self) -> None:
-        # a dict with the prepared replies, using the format {(http_method, url): reply}
+        # A dict with the prepared replies, using the format {(http_method, url): reply}
         self.replies = {}  # type: Dict[Tuple[str, str], MagicMock]
         self.request_bodies = {}  # type: Dict[Tuple[str, str], bytes]
 
-        # signals used in the network manager.
+        # Signals used in the network manager.
         self.finished = Signal()
         self.authenticationRequired = Signal()
 
@@ -55,7 +55,7 @@ class NetworkManagerMock:
     #  \return The mocked function, if the method name is known. Defaults to the standard getattr function.
     def __getattr__(self, method: str) -> Any:
         ## This mock implementation will simply return the reply from the prepared ones.
-        # it raises a KeyError if requests are done without being prepared.
+        #  it raises a KeyError if requests are done without being prepared.
         def doRequest(request: QNetworkRequest, body: Optional[bytes] = None, *_):
             key = method.upper(), request.url().toString()
             if body:

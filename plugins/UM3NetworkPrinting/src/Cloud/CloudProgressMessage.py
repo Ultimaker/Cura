@@ -30,8 +30,3 @@ class CloudProgressMessage(Message):
         if not self._visible:
             super().show()
         self.setProgress(percentage)
-
-    ## Returns a boolean indicating whether the message is currently visible.
-    @property
-    def visible(self) -> bool:
-        return self._visible

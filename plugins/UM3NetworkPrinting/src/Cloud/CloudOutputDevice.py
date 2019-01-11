@@ -95,7 +95,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._finished_jobs = set()  # type: Set[str]
 
         # Reference to the uploaded print job / mesh
-        self._mesh = None  # type: Optional[bytes]
+        self._tool_path = None  # type: Optional[bytes]
         self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
 
     ## Connects this device.
@@ -112,7 +112,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Resets the print job that was uploaded to force a new upload, runs whenever the user re-slices.
     def _onBackendStateChange(self, _: BackendState) -> None:
-        self._mesh = None
+        self._tool_path = None
         self._uploaded_print_job = None
 
     ## Gets the cluster response from which this device was created.
@@ -133,7 +133,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
-        self.setPriority(2)  # make sure we end up below the local networking and above 'save to file'
+        self.setPriority(2)  # Make sure we end up below the local networking and above 'save to file'
         self.setName(self._id)
         self.setShortDescription(I18N_CATALOG.i18nc("@action:button", "Print via Cloud"))
         self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print via Cloud"))
@@ -154,8 +154,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             return
 
         if self._uploaded_print_job:
-            # the mesh didn't change, let's not upload it again
-            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintRequested)
+            # The mesh didn't change, let's not upload it again
+            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted)
             return
 
         # Indicate we have started sending a job.
@@ -168,7 +168,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         mesh = mesh_format.getBytes(nodes)
 
-        self._mesh = mesh
+        self._tool_path = mesh
         request = CloudPrintJobUploadRequest(
             job_name = file_name or mesh_format.file_extension,
             file_size = len(mesh),
@@ -180,7 +180,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _update(self) -> None:
         super()._update()
         if self._last_request_time and time() - self._last_request_time < self.CHECK_CLUSTER_INTERVAL:
-            return  # avoid calling the cloud too often
+            return  # Avoid calling the cloud too often
 
         Logger.log("d", "Updating: %s - %s >= %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
         if self._account.isLoggedIn:
@@ -226,7 +226,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if self._printers and not self._active_printer:
             self.setActivePrinter(self._printers[0])
 
-        if added_printers or removed_printers or updated_printers:
+        if added_printers or removed_printers:
             self.printersChanged.emit()
 
     ## Updates the local list of print jobs with the list received from the cloud.
@@ -253,7 +253,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We only have to update when jobs are added or removed
         # updated jobs push their changes via their output model
-        if added_jobs or removed_jobs or updated_jobs:
+        if added_jobs or removed_jobs:
             self.printJobsChanged.emit()
 
     ## Registers a new print job received via the cloud API.
@@ -268,6 +268,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Handles the event of a change in a print job state
     def _onPrintJobStateChanged(self) -> None:
         user_name = self._getUserName()
+        # TODO: confirm that notifications in Cura are still required
         for job in self._print_jobs:
             if job.state == "wait_cleanup" and job.key not in self._finished_jobs and job.owner == user_name:
                 self._finished_jobs.add(job.key)
@@ -281,9 +282,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
                                 job_name = job.name
                             )),
                 ).show()
-
-        # Ensure UI gets updated
-        self.printJobsChanged.emit()
 
     ## Updates the printer assignment for the given print job model.
     def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:
@@ -301,18 +299,18 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _onPrintJobCreated(self, job_response: CloudPrintJobResponse) -> None:
         self._progress.show()
         self._uploaded_print_job = job_response
-        mesh = cast(bytes, self._mesh)
-        self._api.uploadToolPath(job_response, mesh, self._onPrintJobUploaded, self._progress.update, self._onUploadError)
+        tool_path = cast(bytes, self._tool_path)
+        self._api.uploadToolPath(job_response, tool_path, self._onPrintJobUploaded, self._progress.update, self._onUploadError)
 
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
     def _onPrintJobUploaded(self) -> None:
         self._progress.update(100)
         print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
-        self._api.requestPrint(self.key, print_job.job_id, self._onPrintRequested)
+        self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted)
 
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.
-    def _onUploadError(self, message = None) -> None:
+    def _onUploadError(self, message: str = None) -> None:
         self._progress.hide()
         self._uploaded_print_job = None
         Message(
@@ -324,7 +322,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Shows a message when the upload has succeeded
     #  \param response: The response from the cloud API.
-    def _onPrintRequested(self, response: CloudPrintResponse) -> None:
+    def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
         Logger.log("d", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
         self._progress.hide()
         Message(
