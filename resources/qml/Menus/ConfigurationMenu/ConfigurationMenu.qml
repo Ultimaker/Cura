@@ -199,17 +199,28 @@ Cura.ExpandablePopup
                 text: catalog.i18nc("@label", "See the material compatibility chart")
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_link")
+                linkColor: UM.Theme.getColor("text_link")
                 anchors.left: externalLinkIcon.right
                 anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+                renderType: Text.NativeRendering
 
                 MouseArea
                 {
                     anchors.fill: parent
+                    hoverEnabled: true
                     onClicked:
                     {
                         // open the material URL with web browser
                         var url = "https://ultimaker.com/incoming-links/cura/material-compatibilty"
                         Qt.openUrlExternally(url)
+                    }
+                    onEntered:
+                    {
+                        materialInfoLabel.font.underline = true
+                    }
+                    onExited:
+                    {
+                        materialInfoLabel.font.underline = false
                     }
                 }
             }
