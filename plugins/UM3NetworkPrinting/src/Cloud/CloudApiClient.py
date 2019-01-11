@@ -76,14 +76,14 @@ class CloudApiClient:
         reply = self._manager.put(self._createEmptyRequest(url), body.encode())
         self._addCallback(reply, on_finished, CloudPrintJobResponse)
 
-    ## Uploads a print job mesh to the cloud.
+    ## Uploads a print job tool path to the cloud.
     #  \param print_job: The object received after requesting an upload with `self.requestUpload`.
-    #  \param mesh: The mesh data to be uploaded.
+    #  \param mesh: The tool path data to be uploaded.
     #  \param on_finished: The function to be called after the upload is successful.
     #  \param on_progress: A function to be called during upload progress. It receives a percentage (0-100).
     #  \param on_error: A function to be called if the upload fails.
-    def uploadMesh(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
-                   on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
+    def uploadToolPath(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
+                       on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
         self._upload = MeshUploader(self._manager, print_job, mesh, on_finished, on_progress, on_error)
         self._upload.start()
 

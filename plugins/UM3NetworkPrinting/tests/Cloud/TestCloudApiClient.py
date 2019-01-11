@@ -74,7 +74,7 @@ class TestCloudApiClient(TestCase):
         self.assertEqual(["text/plain"], [r.content_type for r in results])
         self.assertEqual(["uploading"], [r.status for r in results])
 
-    def test_uploadMesh(self):
+    def test_uploadToolPath(self):
         
         results = []
         progress = MagicMock()
@@ -86,7 +86,7 @@ class TestCloudApiClient(TestCase):
         self.network.prepareReply("PUT", upload_response.upload_url, 200, b'{}')
 
         mesh = ("1234" * 100000).encode()
-        self.api.uploadMesh(upload_response, mesh, lambda: results.append("sent"), progress.advance, progress.error)
+        self.api.uploadToolPath(upload_response, mesh, lambda: results.append("sent"), progress.advance, progress.error)
 
         for _ in range(10):
             self.network.flushReplies()

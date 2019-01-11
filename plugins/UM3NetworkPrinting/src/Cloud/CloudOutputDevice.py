@@ -302,7 +302,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._progress.show()
         self._uploaded_print_job = job_response
         mesh = cast(bytes, self._mesh)
-        self._api.uploadMesh(job_response, mesh, self._onPrintJobUploaded, self._progress.update, self._onUploadError)
+        self._api.uploadToolPath(job_response, mesh, self._onPrintJobUploaded, self._progress.update, self._onUploadError)
 
     ## Requests the print to be sent to the printer when we finished uploading the mesh.
     def _onPrintJobUploaded(self) -> None:
