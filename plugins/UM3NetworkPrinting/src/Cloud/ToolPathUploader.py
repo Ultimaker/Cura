@@ -10,7 +10,7 @@ from .Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## Class responsible for uploading meshes to the cloud in separate requests.
-class MeshUploader:
+class ToolPathUploader:
 
     # The maximum amount of times to retry if the server returns one of the RETRY_HTTP_CODES
     MAX_RETRIES = 10

@@ -11,7 +11,7 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from UM.Logger import Logger
 from cura import UltimakerCloudAuthentication
 from cura.API import Account
-from .MeshUploader import MeshUploader
+from .ToolPathUploader import ToolPathUploader
 from ..Models import BaseModel
 from .Models.CloudClusterResponse import CloudClusterResponse
 from .Models.CloudError import CloudError
@@ -42,7 +42,7 @@ class CloudApiClient:
         self._manager = QNetworkAccessManager()
         self._account = account
         self._on_error = on_error
-        self._upload = None  # type: Optional[MeshUploader]
+        self._upload = None  # type: Optional[ToolPathUploader]
         # In order to avoid garbage collection we keep the callbacks in this list.
         self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
@@ -84,7 +84,7 @@ class CloudApiClient:
     #  \param on_error: A function to be called if the upload fails.
     def uploadToolPath(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
                        on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
-        self._upload = MeshUploader(self._manager, print_job, mesh, on_finished, on_progress, on_error)
+        self._upload = ToolPathUploader(self._manager, print_job, mesh, on_finished, on_progress, on_error)
         self._upload.start()
 
     # Requests a cluster to print the given print job.

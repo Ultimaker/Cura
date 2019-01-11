@@ -131,8 +131,7 @@ class CloudOutputDeviceManager:
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
     def _connectToOutputDevice(self, device: CloudOutputDevice) -> None:
-        if not device.isConnected():
-            device.connect()
+        device.connect()
         self._output_device_manager.addOutputDevice(device)
 
     ## Handles an API error received from the cloud.

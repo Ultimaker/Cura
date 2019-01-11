@@ -100,6 +100,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Connects this device.
     def connect(self) -> None:
+        if self.isConnected():
+            return
         super().connect()
         Logger.log("i", "Connected to cluster %s", self.key)
         CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)

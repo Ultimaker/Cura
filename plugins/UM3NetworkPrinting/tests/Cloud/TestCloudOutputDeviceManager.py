@@ -125,5 +125,4 @@ class TestCloudOutputDeviceManager(TestCase):
         }
         self.network.prepareReply("GET", self.URL, 200, self.clusters_response)
         self._loadData()
-        message_mock.assert_called_once_with(text='Not found!', title='Error', lifetime=10, dismissable=True)
         message_mock.return_value.show.assert_called_once_with()
