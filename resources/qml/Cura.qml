@@ -248,6 +248,7 @@ UM.MainWindow
 
             Cura.ActionPanelWidget
             {
+                id: actionPanelWidget
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: UM.Theme.getSize("thick_margin").width
@@ -267,6 +268,39 @@ UM.MainWindow
                 We assume that QQuickRectangles are always opaque and any other item is not.
                 */
                 visible: CuraApplication.platformActivity && (main.item == null || !qmlTypeOf(main.item, "QQuickRectangle"))
+            }
+
+            Item
+            {
+                id: additionalComponents
+                width: childrenRect.width
+                anchors.right: actionPanelWidget.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.bottom: actionPanelWidget.bottom
+                anchors.bottomMargin: UM.Theme.getSize("thick_margin").height * 2
+                visible: actionPanelWidget.visible
+                Row
+                {
+                    id: additionalComponentsRow
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: UM.Theme.getSize("default_margin").width
+                }
+            }
+
+            Component.onCompleted: contentItem.addAdditionalComponents()
+
+            Connections
+            {
+                target: CuraApplication
+                onAdditionalComponentsChanged: contentItem.addAdditionalComponents("saveButton")
+            }
+
+            function addAdditionalComponents()
+            {
+                for (var component in CuraApplication.additionalComponents["saveButton"])
+                {
+                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
+                }
             }
 
             Loader
