@@ -10,6 +10,8 @@ DEFAULT_CLOUD_ACCOUNT_API_ROOT = "https://account.ultimaker.com"  # type: str
 
 try:
     from cura.CuraVersion import CuraCloudAPIRoot  # type: ignore
+    if CuraCloudAPIRoot == "":
+        CuraCloudAPIRoot = DEFAULT_CLOUD_API_ROOT
 except ImportError:
     CuraCloudAPIRoot = DEFAULT_CLOUD_API_ROOT
 
@@ -20,5 +22,7 @@ except ImportError:
 
 try:
     from cura.CuraVersion import CuraCloudAccountAPIRoot  # type: ignore
+    if CuraCloudAccountAPIRoot == "":
+        CuraCloudAccountAPIRoot = DEFAULT_CLOUD_ACCOUNT_API_ROOT
 except ImportError:
     CuraCloudAccountAPIRoot = DEFAULT_CLOUD_ACCOUNT_API_ROOT
