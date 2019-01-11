@@ -11,13 +11,15 @@ ScrollView
 {
     property alias model: backupList.model
     width: parent.width
+    clip: true
     ListView
     {
         id: backupList
         width: parent.width
         delegate: Item
         {
-            width: parent.width
+            // Add a margin, otherwise the scrollbar is on top of the right most component
+            width: parent.width - UM.Theme.getSize("default_margin").width
             height: childrenRect.height
 
             BackupListItem
