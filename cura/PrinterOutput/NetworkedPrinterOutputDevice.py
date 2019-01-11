@@ -194,11 +194,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         assert (self._manager is not None)
 
     ## Sends a put request to the given path.
-    #  url: The path after the API prefix.
-    #  data: The data to be sent in the body
-    #  content_type: The content type of the body data.
-    #  on_finished: The function to call when the response is received.
-    #  on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
+    #  \param url: The path after the API prefix.
+    #  \param data: The data to be sent in the body
+    #  \param content_type: The content type of the body data.
+    #  \param on_finished: The function to call when the response is received.
+    #  \param on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
     def put(self, url: str, data: Union[str, bytes], content_type: Optional[str] = None,
             on_finished: Optional[Callable[[QNetworkReply], None]] = None,
             on_progress: Optional[Callable[[int, int], None]] = None) -> None:
@@ -219,8 +219,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             reply.uploadProgress.connect(on_progress)
 
     ## Sends a delete request to the given path.
-    #  url: The path after the API prefix.
-    #  on_finished: The function to be call when the response is received.
+    #  \param url: The path after the API prefix.
+    #  \param on_finished: The function to be call when the response is received.
     def delete(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         self._validateManager()
 

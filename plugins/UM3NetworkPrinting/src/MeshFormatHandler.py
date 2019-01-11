@@ -13,11 +13,7 @@ from UM.i18n import i18nCatalog
 from cura.CuraApplication import CuraApplication
 
 
-## Class that contains all the translations for this module.
-class T:
-    # The translation catalog for this module.
-    _I18N_CATALOG = i18nCatalog("cura")
-    NO_FORMATS_AVAILABLE = _I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!")
+I18N_CATALOG = i18nCatalog("cura")
 
 
 ## This class is responsible for choosing the formats used by the connected clusters.
@@ -106,7 +102,9 @@ class MeshFormatHandler:
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError(T.NO_FORMATS_AVAILABLE)
+            raise OutputDeviceError.WriteRequestFailedError(
+                I18N_CATALOG.i18nc("@info:status", "There are no file formats available to write with!")
+            )
         return file_formats[0]
 
     ## Gets the file writer for the given file handler and mime type.

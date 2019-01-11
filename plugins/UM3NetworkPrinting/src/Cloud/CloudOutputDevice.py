@@ -107,7 +107,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ## Disconnects the device
     def disconnect(self) -> None:
         super().disconnect()
-        Logger.log("i", "Disconnected to cluster %s", self.key)
+        Logger.log("i", "Disconnected from cluster %s", self.key)
         CuraApplication.getInstance().getBackend().backendStateChange.disconnect(self._onBackendStateChange)
 
     ## Resets the print job that was uploaded to force a new upload, runs whenever the user re-slices.

@@ -43,7 +43,7 @@ class CloudApiClient:
         self._account = account
         self._on_error = on_error
         self._upload = None  # type: Optional[MeshUploader]
-        # in order to avoid garbage collection we keep the callbacks in this list.
+        # In order to avoid garbage collection we keep the callbacks in this list.
         self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
     ## Gets the account used for the API.
@@ -105,7 +105,6 @@ class CloudApiClient:
             request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         if self._account.isLoggedIn:
             request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
-        # Logger.log("i", "Created request for URL %s. Logged in = %s", path, self._account.isLoggedIn)
         return request
 
     ## Parses the given JSON network reply into a status code and a dictionary, handling unexpected errors as well.
@@ -116,7 +115,6 @@ class CloudApiClient:
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         try:
             response = bytes(reply.readAll()).decode()
-            # Logger.log("i", "Received a reply %s from %s with %s", status_code, reply.url().toString(), response)
             return status_code, json.loads(response)
         except (UnicodeDecodeError, JSONDecodeError, ValueError) as err:
             error = CloudError(code=type(err).__name__, title=str(err), http_code=str(status_code),

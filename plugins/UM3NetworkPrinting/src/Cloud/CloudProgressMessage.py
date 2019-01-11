@@ -4,20 +4,15 @@ from UM import i18nCatalog
 from UM.Message import Message
 
 
-## Class that contains all the translations for this module.
-class T:
-    _I18N_CATALOG = i18nCatalog("cura")
-
-    SENDING_DATA_TEXT = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
-    SENDING_DATA_TITLE = _I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster")
+I18N_CATALOG = i18nCatalog("cura")
 
 
 ## Class responsible for showing a progress message while a mesh is being uploaded to the cloud.
 class CloudProgressMessage(Message):
     def __init__(self):
         super().__init__(
-            text = T.SENDING_DATA_TEXT,
-            title = T.SENDING_DATA_TITLE,
+            text = I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster"),
+            title = I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster"),
             progress = -1,
             lifetime = 0,
             dismissable = False,
