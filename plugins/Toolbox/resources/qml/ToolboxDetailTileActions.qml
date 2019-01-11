@@ -91,5 +91,10 @@ Column
         target: toolbox
         onInstallChanged: installed = toolbox.isInstalled(model.id)
         onMetadataChanged: canUpdate = toolbox.canUpdate(model.id)
+        onFilterChanged:
+        {
+            installed = toolbox.isInstalled(model.id)
+            canUpdate = toolbox.canUpdate(model.id)
+        }
     }
 }
