@@ -228,7 +228,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = time()
 
         if not self._manager:
-            return Logger.log("e", "No network manager was created to execute the DELETE call with.")
+            Logger.log("e", "No network manager was created to execute the DELETE call with.")
+            return
 
         reply = self._manager.deleteResource(request)
         self._registerOnFinishedCallback(reply, on_finished)
@@ -243,7 +244,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = time()
 
         if not self._manager:
-            return Logger.log("e", "No network manager was created to execute the GET call with.")
+            Logger.log("e", "No network manager was created to execute the GET call with.")
+            return
 
         reply = self._manager.get(request)
         self._registerOnFinishedCallback(reply, on_finished)
@@ -262,7 +264,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = time()
 
         if not self._manager:
-            return Logger.log("e", "Could not find manager.")
+            Logger.log("e", "Could not find manager.")
+            return
 
         body = data if isinstance(data, bytes) else data.encode()  # type: bytes
         reply = self._manager.post(request, body)
