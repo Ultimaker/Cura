@@ -197,21 +197,6 @@ Item
         }
     }
 
-    // PrintJobContextMenu
-    // {
-    //     id: contextButton
-    //     anchors
-    //     {
-    //         right: parent.right;
-    //         rightMargin: 8 * screenScaleFactor // TODO: Theme!
-    //         top: parent.top
-    //         topMargin: 8 * screenScaleFactor // TODO: Theme!
-    //     }
-    //     printJob: base.printJob
-    //     width: 32 * screenScaleFactor // TODO: Theme!
-    //     height: 32 * screenScaleFactor // TODO: Theme!
-    // }
-
     MonitorContextMenuButton
     {
         id: contextMenuButton
@@ -224,8 +209,7 @@ Item
         }
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
-        // enabled: base.enabled
-        enabled: false
+        enabled: base.enabled // TODO: Add cloud logic here!
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
