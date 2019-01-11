@@ -136,9 +136,9 @@ Cura.ExpandablePopup
 
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineHasRemoteConnection && Cura.MachineManager.printerConnected //Re-evaluate.
+            is_connected = Cura.MachineManager.activeMachineHasRemoteConnection && Cura.MachineManager.printerConnected && Cura.MachineManager.printerOutputDevices[0].uniqueConfigurations.length > 0 //Re-evaluate.
 
-            // If the printer is not connected, we switch always to the custom mode. If is connected instead, the auto mode
+            // If the printer is not connected or does not have configurations, we switch always to the custom mode. If is connected instead, the auto mode
             // or the previous state is selected
             configuration_method = is_connected ? (manual_selected_method == -1 ? ConfigurationMenu.ConfigurationMethod.Auto : manual_selected_method) : ConfigurationMenu.ConfigurationMethod.Custom
         }
