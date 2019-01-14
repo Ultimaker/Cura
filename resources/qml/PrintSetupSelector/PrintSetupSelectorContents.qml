@@ -81,7 +81,7 @@ Item
                         Math.min
                         (
                             UM.Preferences.getValue("view/settings_list_height"),
-                            base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height)
+                            base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height)
                         );
                 }
             }
