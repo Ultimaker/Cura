@@ -42,7 +42,7 @@ class CloudOutputDeviceManager:
         self._api = CloudApiClient(self._account, self._onApiError)
 
         # Create a timer to update the remote cluster list
-        self._update_timer = QTimer(application)
+        self._update_timer = QTimer()
         self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
         self._update_timer.setSingleShot(False)
 
