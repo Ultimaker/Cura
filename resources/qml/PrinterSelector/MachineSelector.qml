@@ -30,7 +30,7 @@ Cura.ExpandablePopup
         {
             if (isNetworkPrinter && Cura.MachineManager.activeMachineNetworkGroupName != "")
             {
-                Cura.MachineManager.activeMachineNetworkGroupName
+                return Cura.MachineManager.activeMachineNetworkGroupName
             }
             return Cura.MachineManager.activeMachineName
         }
