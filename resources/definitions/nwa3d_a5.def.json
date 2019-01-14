@@ -19,7 +19,7 @@
         "machine_extruder_trains": 
         {
             "0": "nwa3d_a5_extruder_0"
-        },
+        }
     },
   
     "overrides": {
