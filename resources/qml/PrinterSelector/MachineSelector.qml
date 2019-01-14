@@ -26,7 +26,14 @@ Cura.ExpandablePopup
 
     headerItem: Cura.IconWithText
     {
-        text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+        text:
+        {
+            if (isNetworkPrinter && Cura.MachineManager.activeMachineNetworkGroupName != "")
+            {
+                return Cura.MachineManager.activeMachineNetworkGroupName
+            }
+            return Cura.MachineManager.activeMachineName
+        }
         source:
         {
             if (isNetworkPrinter)
