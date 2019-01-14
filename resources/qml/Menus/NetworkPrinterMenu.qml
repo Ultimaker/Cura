@@ -12,10 +12,18 @@ Instantiator
     model: Cura.GlobalStacksModel {}
     MenuItem
     {
-        text: model.metadata["connect_group_name"]
+        property string connectGroupName:
+        {
+            if("connect_group_name" in model.metadata)
+            {
+                return model.metadata["connect_group_name"]
+            }
+            return ""
+        }
+        text: connectGroupName
         checkable: true
         visible: model.hasRemoteConnection
-        checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+        checked: Cura.MachineManager.activeMachineNetworkGroupName == connectGroupName
         exclusiveGroup: group
         onTriggered: Cura.MachineManager.setActiveMachine(model.id)
     }
