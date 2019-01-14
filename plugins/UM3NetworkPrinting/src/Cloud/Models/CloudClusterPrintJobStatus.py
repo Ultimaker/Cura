@@ -3,17 +3,15 @@
 from typing import List, Optional, Union, Dict, Any
 
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
-from plugins.UM3NetworkPrinting.src.ConfigurationChangeModel import ConfigurationChangeModel
+from ...UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from ...ConfigurationChangeModel import ConfigurationChangeModel
+from ..CloudOutputController import CloudOutputController
+from .BaseCloudModel import BaseCloudModel
 from .CloudClusterBuildPlate import CloudClusterBuildPlate
 from .CloudClusterPrintJobConfigurationChange import CloudClusterPrintJobConfigurationChange
 from .CloudClusterPrintJobImpediment import CloudClusterPrintJobImpediment
 from .CloudClusterPrintCoreConfiguration import CloudClusterPrintCoreConfiguration
 from .CloudClusterPrintJobConstraint import CloudClusterPrintJobConstraints
-from .BaseCloudModel import BaseCloudModel
-
-##  Class representing a print job
-from plugins.UM3NetworkPrinting.src.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 
 ## Model for the status of a single print job in a cluster.
