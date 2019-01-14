@@ -117,6 +117,8 @@ from cura.ObjectsModel import ObjectsModel
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
+from cura import ApplicationMetadata
+
 from UM.FlameProfiler import pyqtSlot
 from UM.Decorators import override
 
@@ -164,11 +166,11 @@ class CuraApplication(QtApplication):
 
     def __init__(self, *args, **kwargs):
         super().__init__(name = "cura",
-                         app_display_name = CuraAppDisplayName,
-                         version = CuraVersion,
-                         api_version = CuraSDKVersion,
-                         buildtype = CuraBuildType,
-                         is_debug_mode = CuraDebugMode,
+                         app_display_name = ApplicationMetadata.CuraAppDisplayName,
+                         version = ApplicationMetadata.CuraVersion,
+                         api_version = ApplicationMetadata.CuraSDKVersion,
+                         buildtype = ApplicationMetadata.CuraBuildType,
+                         is_debug_mode = ApplicationMetadata.CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
@@ -500,7 +502,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
-        preferences.addPreference("view/settings_list_height", 600)
+        preferences.addPreference("view/settings_list_height", 400)
         preferences.addPreference("view/settings_visible", False)
         preferences.addPreference("cura/currency", "€")
         preferences.addPreference("cura/material_settings", "{}")
@@ -955,7 +957,7 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraApplication", self)
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
-        engine.rootContext().setContextProperty("CuraSDKVersion", CuraSDKVersion)
+        engine.rootContext().setContextProperty("CuraSDKVersion", ApplicationMetadata.CuraSDKVersion)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 

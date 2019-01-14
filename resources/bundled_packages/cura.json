@@ -50,6 +50,23 @@
             }
         }
     },
+    "CuraDrive": {
+        "package_info": {
+            "package_id": "CuraDrive",
+            "package_type": "plugin",
+            "display_name": "Cura Backups",
+            "description": "Backup and restore your configuration.",
+            "package_version": "1.2.0",
+            "sdk_version": 6,
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "CuraEngineBackend": {
         "package_info": {
             "package_id": "CuraEngineBackend",

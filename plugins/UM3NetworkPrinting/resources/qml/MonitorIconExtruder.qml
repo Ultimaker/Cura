@@ -56,5 +56,6 @@ Item
         x: Math.round(size * 0.25) * screenScaleFactor
         y: Math.round(size * 0.15625) * screenScaleFactor
         // TODO: Once 'size' is themed, screenScaleFactor won't be needed
+        visible: position >= 0
     }
 }

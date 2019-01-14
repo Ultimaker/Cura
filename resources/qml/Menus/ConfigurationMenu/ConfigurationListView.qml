@@ -23,7 +23,7 @@ Item
         }
     }
 
-    // This component will appear when there is no configurations (e.g. when losing connection)
+    // This component will appear when there are no configurations (e.g. when losing connection or when they are being loaded)
     Item
     {
         width: parent.width
@@ -51,7 +51,11 @@ Item
             anchors.left: icon.right
             anchors.right: parent.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "Downloading the configurations from the remote printer")
+            // There are two cases that we want to diferenciate, one is when Cura is loading the configurations and the
+            // other when the connection was lost
+            text: Cura.MachineManager.printerConnected ?
+                    catalog.i18nc("@label", "Loading available configurations from the printer...") :
+                    catalog.i18nc("@label", "The configurations are not available because the printer is disconnected.")
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering

@@ -33,16 +33,24 @@ Item
     width: 834 * screenScaleFactor // TODO: Theme!
     height: childrenRect.height
 
-    // Printer portion
     Rectangle
     {
-        id: printerInfo
+        id: background
+        anchors.fill: parent
+        color: "#FFFFFF" // TODO: Theme!
         border
         {
             color: "#CCCCCC" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
-        color: "white" // TODO: Theme!
+        radius: 2 * screenScaleFactor // TODO: Theme!
+    }
+
+    // Printer portion
+    Item
+    {
+        id: printerInfo
+
         width: parent.width
         height: 144 * screenScaleFactor // TODO: Theme!
 
@@ -56,15 +64,22 @@ Item
             }
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
-            Image
+            Rectangle
             {
                 id: printerImage
                 width: 108 * screenScaleFactor // TODO: Theme!
                 height: 108 * screenScaleFactor // TODO: Theme!
-                fillMode: Image.PreserveAspectFit
-                source: "../png/" + printer.type + ".png"
-                mipmap: true
+                color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
+                radius: 8 // TODO: Theme!
+                Image
+                {
+                    anchors.fill: parent
+                    fillMode: Image.PreserveAspectFit
+                    source: printer ? "../png/" + printer.type + ".png" : ""
+                    mipmap: true
+                }
             }
+            
 
             Item
             {
@@ -75,20 +90,38 @@ Item
                 width: 180 * screenScaleFactor // TODO: Theme!
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
 
-                Label
+                Rectangle
                 {
                     id: printerNameLabel
-                    text: printer && printer.name ? printer.name : ""
-                    color: "#414054" // TODO: Theme!
-                    elide: Text.ElideRight
-                    font: UM.Theme.getFont("large_bold") // 16pt, bold
-                    width: parent.width
-
-                    // FIXED-LINE-HEIGHT:
+                    // color: "#414054" // TODO: Theme!
+                    color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
                     height: 18 * screenScaleFactor // TODO: Theme!
-                    verticalAlignment: Text.AlignVCenter
+                    width: parent.width
+                    radius: 2 * screenScaleFactor // TODO: Theme!
+                    
+                    Label
+                    {
+                        text: printer && printer.name ? printer.name : ""
+                        color: "#414054" // TODO: Theme!
+                        elide: Text.ElideRight
+                        font: UM.Theme.getFont("large") // 16pt, bold
+                        width: parent.width
+                        visible: printer
+
+                        // FIXED-LINE-HEIGHT:
+                        height: parent.height
+                        verticalAlignment: Text.AlignVCenter
+                    }
                 }
 
+                Rectangle
+                {
+                    color: "#eeeeee" // TODO: Theme!
+                    height: 18 * screenScaleFactor // TODO: Theme!
+                    radius: 2 * screenScaleFactor // TODO: Theme!
+                    visible: !printer
+                    width: 48 * screenScaleFactor // TODO: Theme!
+                }
                 MonitorPrinterPill
                 {
                     id: printerFamilyPill
@@ -98,7 +131,7 @@ Item
                         topMargin: 6 * screenScaleFactor // TODO: Theme!
                         left: printerNameLabel.left
                     }
-                    text: printer.type
+                    text: printer ? printer.type : ""
                 }
             }
 
@@ -106,15 +139,29 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: "Glass"
+                buildplate: printer ? "Glass" : null // 'Glass' as a default
                 configurations:
-                [
-                    base.printer.printerConfiguration.extruderConfigurations[0],
-                    base.printer.printerConfiguration.extruderConfigurations[1]
-                ]
-                height: 72 * screenScaleFactor // TODO: Theme!
+                {
+                    var configs = []
+                    if (printer)
+                    {
+                        configs.push(printer.printerConfiguration.extruderConfigurations[0])
+                        configs.push(printer.printerConfiguration.extruderConfigurations[1])
+                    }
+                    else
+                    {
+                        configs.push(null, null)
+                    }
+                    return configs
+                }
+                height: 72 * screenScaleFactor // TODO: Theme!te theRect's x property
             }
+
+            // TODO: Make this work.
+            PropertyAnimation { target: printerConfiguration; property: "visible"; to: 0; loops: Animation.Infinite; duration: 500 }
         }
+
+        
 
         PrintJobContextMenu
         {
@@ -126,10 +173,11 @@ Item
                 top: parent.top
                 topMargin: 12 * screenScaleFactor // TODO: Theme!
             }
-            printJob: printer.activePrintJob
+            printJob: printer ? printer.activePrintJob : null
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
             enabled: base.enabled
+            visible: printer
         }
         CameraButton
         {
@@ -143,9 +191,23 @@ Item
             }
             iconSource: "../svg/icons/camera.svg"
             enabled: base.enabled
+            visible: printer
         }
     }
 
+
+    // Divider
+    Rectangle
+    {
+        anchors
+        {
+            top: printJobInfo.top
+            left: printJobInfo.left
+            right: printJobInfo.right
+        }
+        height: borderSize // Remove once themed
+        color: background.border.color
+    }
 
     // Print job portion
     Rectangle
@@ -158,10 +220,10 @@ Item
         }
         border
         {
-            color: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
+            color: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "transparent" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
-        color: "white" // TODO: Theme!
+        color: "transparent" // TODO: Theme!
         height: 84 * screenScaleFactor + borderSize // TODO: Remove once themed
         width: parent.width
 
@@ -184,9 +246,12 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                color: "#414054" // TODO: Theme!
+                color: printer ? "#414054" : "#aaaaaa" // TODO: Theme!
                 font: UM.Theme.getFont("large_bold") // 16pt, bold
                 text: {
+                    if (!printer) {
+                        return catalog.i18nc("@label:status", "Loading...")
+                    }
                     if (printer && printer.state == "disabled")
                     {
                         return catalog.i18nc("@label:status", "Unavailable")
@@ -215,10 +280,10 @@ Item
                 MonitorPrintJobPreview
                 {
                     anchors.centerIn: parent
-                    printJob: base.printer.activePrintJob
+                    printJob: printer ? printer.activePrintJob : null
                     size: parent.height
                 }
-                visible: printer.activePrintJob
+                visible: printer && printer.activePrintJob && !printerStatus.visible
             }
 
             Item
@@ -229,15 +294,15 @@ Item
                 }
                 width: 180 * screenScaleFactor // TODO: Theme!
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
-                visible: printer.activePrintJob
+                visible: printer && printer.activePrintJob && !printerStatus.visible
 
                 Label
                 {
                     id: printerJobNameLabel
-                    color: printer.activePrintJob && printer.activePrintJob.isActive ? "#414054" : "#babac1" // TODO: Theme!
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? "#414054" : "#babac1" // TODO: Theme!
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("large_bold") // 16pt, bold
-                    text: base.printer.activePrintJob ? base.printer.activePrintJob.name : "Untitled" // TODO: I18N
+                    font: UM.Theme.getFont("large") // 16pt, bold
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.name : "Untitled" // TODO: I18N
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -254,10 +319,10 @@ Item
                         topMargin: 6 * screenScaleFactor // TODO: Theme!
                         left: printerJobNameLabel.left
                     }
-                    color: printer.activePrintJob && printer.activePrintJob.isActive ? "#53657d" : "#babac1" // TODO: Theme!
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? "#53657d" : "#babac1" // TODO: Theme!
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default") // 12pt, regular
-                    text: printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -272,8 +337,8 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                printJob: printer.activePrintJob
-                visible: printer.activePrintJob && printer.activePrintJob.configurationChanges.length === 0
+                printJob: printer && printer.activePrintJob
+                visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length === 0 && !printerStatus.visible
             }
 
             Label
@@ -284,7 +349,7 @@ Item
                 }
                 font: UM.Theme.getFont("default")
                 text: "Requires configuration changes"
-                visible: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0
+                visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
 
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
@@ -326,7 +391,7 @@ Item
             }
             implicitHeight: 32 * screenScaleFactor // TODO: Theme!
             implicitWidth: 96 * screenScaleFactor // TODO: Theme!
-            visible: printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0
+            visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
             onClicked: base.enabled ? overrideConfirmationDialog.open() : {}
         }
     }

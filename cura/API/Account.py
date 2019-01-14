@@ -6,6 +6,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
 from UM.i18n import i18nCatalog
 from UM.Message import Message
+from cura import UltimakerCloudAuthentication
 
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.Models import OAuth2Settings
@@ -37,15 +38,16 @@ class Account(QObject):
         self._logged_in = False
 
         self._callback_port = 32118
-        self._oauth_root = "https://account.ultimaker.com"
-        self._cloud_api_root = "https://api.ultimaker.com"
+        self._oauth_root = UltimakerCloudAuthentication.CuraCloudAccountAPIRoot
 
         self._oauth_settings = OAuth2Settings(
             OAUTH_SERVER_URL= self._oauth_root,
             CALLBACK_PORT=self._callback_port,
             CALLBACK_URL="http://localhost:{}/callback".format(self._callback_port),
             CLIENT_ID="um----------------------------ultimaker_cura",
-            CLIENT_SCOPES="account.user.read drive.backup.read drive.backup.write packages.download packages.rating.read packages.rating.write",
+            CLIENT_SCOPES="account.user.read drive.backup.read drive.backup.write packages.download "
+                          "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write "
+                          "cura.printjob.read cura.printjob.write cura.mesh.read cura.mesh.write",
             AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)

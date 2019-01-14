@@ -34,16 +34,16 @@ Item
         {
             background: Rectangle
             {
-                color: printJob && printJob.isActive ? "#e4e4f2" : "#f3f3f9" // TODO: Theme!
+                color: "#f5f5f5" // TODO: Theme!
                 implicitHeight: visible ? 8 * screenScaleFactor : 0 // TODO: Theme!
                 implicitWidth: 180 * screenScaleFactor // TODO: Theme!
-                radius: 4 * screenScaleFactor // TODO: Theme!
+                radius: 2 * screenScaleFactor // TODO: Theme!
             }
             progress: Rectangle
             {
                 id: progressItem;
-                color: printJob && printJob.isActive ? "#0a0850" : "#9392b2" // TODO: Theme!
-                radius: 4 * screenScaleFactor // TODO: Theme!
+                color: printJob && printJob.isActive ? "#3282ff" : "#CCCCCC" // TODO: Theme!
+                radius: 2 * screenScaleFactor // TODO: Theme!
             }
         }
     }

@@ -42,8 +42,8 @@ Item
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
-            color: UM.Theme.getColor("primary")
-            source: "../svg/icons/external_link.svg"
+            color: UM.Theme.getColor("text_link")
+            source: UM.Theme.getIcon("external_link")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
         }
@@ -56,10 +56,11 @@ Item
                 leftMargin: 6 * screenScaleFactor // TODO: Theme!
                 verticalCenter: externalLinkIcon.verticalCenter
             }
-            color: UM.Theme.getColor("primary")
+            color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("default") // 12pt, regular
-            linkColor: UM.Theme.getColor("primary")
+            linkColor: UM.Theme.getColor("text_link")
             text: catalog.i18nc("@label link to connect manager", "Manage queue in Cura Connect")
+            renderType: Text.NativeRendering
         }
     }
 
@@ -144,7 +145,6 @@ Item
             topMargin: 12 * screenScaleFactor // TODO: Theme!
         }
         style: UM.Theme.styles.scrollview
-        visible: OutputDevice.receivedPrintJobs
         width: parent.width
 
         ListView
@@ -160,7 +160,7 @@ Item
                 }
                 printJob: modelData
             }
-            model: OutputDevice.queuedPrintJobs
+            model: OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs : [null,null]
             spacing: 6  // TODO: Theme!
         }
     }

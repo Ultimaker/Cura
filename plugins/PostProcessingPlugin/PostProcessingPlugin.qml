@@ -488,7 +488,7 @@ UM.Dialog
     {
         objectName: "postProcessingSaveAreaButton"
         visible: activeScriptsList.count > 0
-        height: UM.Theme.getSize("save_button_save_to_button").height
+        height: UM.Theme.getSize("action_button").height
         width: height
         tooltip: catalog.i18nc("@info:tooltip", "Change active post-processing scripts")
         onClicked: dialog.show()

@@ -376,6 +376,7 @@ Item
 
             width: true ? (parent.width * 0.4) | 0 : parent.width
             frameVisible: true
+            clip: true
 
             ListView
             {

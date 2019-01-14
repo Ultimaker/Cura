@@ -124,16 +124,16 @@ UM.MainWindow
                 }
             }
 
-              // This is a placehoder for adding a pattern in the header
-             Image
-             {
-                 id: backgroundPattern
-                 anchors.fill: parent
-                 fillMode: Image.Tile
-                 source: UM.Theme.getImage("header_pattern")
-                 horizontalAlignment: Image.AlignLeft
-                 verticalAlignment: Image.AlignTop
-             }
+            // This is a placehoder for adding a pattern in the header
+            Image
+            {
+                id: backgroundPattern
+                anchors.fill: parent
+                fillMode: Image.Tile
+                source: UM.Theme.getImage("header_pattern")
+                horizontalAlignment: Image.AlignLeft
+                verticalAlignment: Image.AlignTop
+            }
         }
 
         MainWindowHeader
@@ -248,11 +248,59 @@ UM.MainWindow
 
             Cura.ActionPanelWidget
             {
+                id: actionPanelWidget
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.rightMargin: UM.Theme.getSize("thick_margin").width
                 anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
-                visible: CuraApplication.platformActivity
+
+                /*
+                Show this panel only if there is something on the build plate, and there is NOT an opaque item in front of the build plate.
+                This cannot be solved by Z indexing! If you want to try solving this, please increase this counter when you're done:
+                Number of people having tried to fix this by z-indexing: 2
+                The problem arises from the following render order requirements:
+                - The stage menu must be rendered above the stage main.
+                - The stage main must be rendered above the action panel (because the monitor page must be rendered above the action panel).
+                - The action panel must be rendered above the expandable components drop-down.
+                However since the expandable components drop-downs are child elements of the stage menu,
+                they can't be rendered lower than elements that are lower than the stage menu.
+                Therefore we opted to forego the second requirement and hide the action panel instead when something obscures it (except the expandable components).
+                We assume that QQuickRectangles are always opaque and any other item is not.
+                */
+                visible: CuraApplication.platformActivity && (main.item == null || !qmlTypeOf(main.item, "QQuickRectangle"))
+            }
+
+            Item
+            {
+                id: additionalComponents
+                width: childrenRect.width
+                anchors.right: actionPanelWidget.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.bottom: actionPanelWidget.bottom
+                anchors.bottomMargin: UM.Theme.getSize("thick_margin").height * 2
+                visible: actionPanelWidget.visible
+                Row
+                {
+                    id: additionalComponentsRow
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: UM.Theme.getSize("default_margin").width
+                }
+            }
+
+            Component.onCompleted: contentItem.addAdditionalComponents()
+
+            Connections
+            {
+                target: CuraApplication
+                onAdditionalComponentsChanged: contentItem.addAdditionalComponents("saveButton")
+            }
+
+            function addAdditionalComponents()
+            {
+                for (var component in CuraApplication.additionalComponents["saveButton"])
+                {
+                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
+                }
             }
 
             Loader
@@ -814,5 +862,22 @@ UM.MainWindow
                 addMachineDialog.open();
             }
         }
+    }
+
+    /**
+     * Function to check whether a QML object has a certain type.
+     * Taken from StackOverflow: https://stackoverflow.com/a/28384228 and
+     * adapted to our code style.
+     * Licensed under CC BY-SA 3.0.
+     * \param obj The QtObject to get the name of.
+     * \param class_name (str) The name of the class to check against. Has to be
+     * the QtObject class name, not the QML entity name.
+     */
+    function qmlTypeOf(obj, class_name)
+    {
+        //className plus "(" is the class instance without modification.
+        //className plus "_QML" is the class instance with user-defined properties.
+        var str = obj.toString();
+        return str.indexOf(class_name + "(") == 0 || str.indexOf(class_name + "_QML") == 0;
     }
 }
