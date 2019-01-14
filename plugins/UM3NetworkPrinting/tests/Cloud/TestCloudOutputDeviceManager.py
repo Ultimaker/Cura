@@ -4,10 +4,10 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from UM.OutputDevice.OutputDeviceManager import OutputDeviceManager
-from cura.CuraConstants import CuraCloudAPIRoot
-from src.Cloud.CloudOutputDevice import CloudOutputDevice
-from src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
-from tests.Cloud.Fixtures import parseFixture, readFixture
+from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
+from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
+from ...src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
+from .Fixtures import parseFixture, readFixture
 from .NetworkManagerMock import NetworkManagerMock, FakeSignal
 
 

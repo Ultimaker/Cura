@@ -1,19 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import os
 from typing import List
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
-from cura.CuraConstants import CuraCloudAPIRoot
-from src.Cloud.CloudApiClient import CloudApiClient
-from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
-from src.Cloud.Models.CloudClusterStatus import CloudClusterStatus
-from src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
-from src.Cloud.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from src.Cloud.Models.CloudError import CloudError
-from tests.Cloud.Fixtures import readFixture, parseFixture
+from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
+from ...src.Cloud.CloudApiClient import CloudApiClient
+from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
+from ...src.Cloud.Models.CloudClusterStatus import CloudClusterStatus
+from ...src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
+from ...src.Cloud.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from ...src.Cloud.Models.CloudError import CloudError
+from .Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
 

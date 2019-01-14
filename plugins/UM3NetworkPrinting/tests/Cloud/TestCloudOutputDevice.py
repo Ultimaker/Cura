@@ -5,14 +5,12 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from UM.Scene.SceneNode import SceneNode
-from UM.Signal import Signal
-from cura.CuraApplication import CuraApplication
-from cura.CuraConstants import CuraCloudAPIRoot
+from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from src.Cloud.CloudApiClient import CloudApiClient
-from src.Cloud.CloudOutputDevice import CloudOutputDevice
-from src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
-from tests.Cloud.Fixtures import readFixture, parseFixture
+from ...src.Cloud.CloudApiClient import CloudApiClient
+from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
+from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
+from .Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
 
