@@ -235,12 +235,17 @@ class Toolbox(QObject, Extension):
 
     def _convertPluginMetadata(self, plugin_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         try:
+            highest_sdk_version_supported = Version(0)
+            for supported_version in plugin_data["plugin"]["supported_sdk_versions"]:
+                if supported_version > highest_sdk_version_supported:
+                    highest_sdk_version_supported = supported_version
+
             formatted = {
                 "package_id": plugin_data["id"],
                 "package_type": "plugin",
                 "display_name": plugin_data["plugin"]["name"],
                 "package_version": plugin_data["plugin"]["version"],
-                "sdk_version": plugin_data["plugin"]["api"],
+                "sdk_version": highest_sdk_version_supported,
                 "author": {
                     "author_id": plugin_data["plugin"]["author"],
                     "display_name": plugin_data["plugin"]["author"]
