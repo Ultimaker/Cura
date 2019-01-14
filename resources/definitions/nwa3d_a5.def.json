@@ -1,6 +1,6 @@
 {
     "name": "NWA3D A5",
-    "version": 1,
+    "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
