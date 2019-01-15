@@ -19,11 +19,6 @@ class CloudProgressMessage(Message):
             use_inactivity_timer = False
         )
 
-    ## Returns a boolean indicating whether this message is currently visible
-    @property
-    def visible(self) -> bool:
-        return self._visible
-
     ## Shows the progress message.
     def show(self):
         self.setProgress(0)

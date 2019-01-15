@@ -101,7 +101,9 @@ class CloudOutputDeviceManager:
         if not active_machine:
             return
 
-        # Remove all output devices that we have registered. TODO: Why??
+        # Remove all output devices that we have registered.
+        # This is needed because when we switch machines we can only leave
+        # output devices that are meant for that machine.
         for stored_cluster_id in self._remote_clusters:
             self._output_device_manager.removeOutputDevice(stored_cluster_id)
 
