@@ -104,7 +104,7 @@ Item
     {
         id: buttonRow
         property real padding: UM.Theme.getSize("default_margin").width
-        height: childrenRect.height + 2 * padding
+        height: recommendedButton.height + 2 * padding
 
         anchors
         {
@@ -149,9 +149,8 @@ Item
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
-                top: recommendedButton.bottom
-                topMargin: UM.Theme.getSize("default_lining").height
             }
+            height: childrenRect.height
             cursorShape: Qt.SplitVCursor
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
             drag
@@ -182,15 +181,29 @@ Item
                 }
             }
 
-            UM.RecolorImage
+            Rectangle
             {
-                width: parent.width * 0.05
-                height: parent.height * 0.3
+                width: parent.width
+                height: UM.Theme.getSize("narrow_margin").height
+                color: UM.Theme.getColor("secondary")
 
-                anchors.centerIn: parent
+                Rectangle
+                {
+                    anchors.bottom: parent.top
+                    width: parent.width
+                    height: UM.Theme.getSize("default_lining").height
+                    color: UM.Theme.getColor("lining")
+                }
 
-                source: UM.Theme.getIcon("grip_lines")
-                color: UM.Theme.getColor("lining")
+                UM.RecolorImage
+                {
+                    width: UM.Theme.getSize("drag_icon").width
+                    height: UM.Theme.getSize("drag_icon").height
+                    anchors.centerIn: parent
+
+                    source: UM.Theme.getIcon("resize")
+                    color: UM.Theme.getColor("small_button_text")
+                }
             }
         }
     }
