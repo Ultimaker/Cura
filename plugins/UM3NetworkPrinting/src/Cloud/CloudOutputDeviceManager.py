@@ -26,7 +26,7 @@ class CloudOutputDeviceManager:
     META_CLUSTER_ID = "um_cloud_cluster_id"
 
     # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 50.0  # seconds
+    CHECK_CLUSTER_INTERVAL = 30.0  # seconds
 
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
