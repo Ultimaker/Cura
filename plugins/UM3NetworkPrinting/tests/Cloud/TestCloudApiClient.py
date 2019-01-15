@@ -28,7 +28,7 @@ class TestCloudApiClient(TestCase):
         self.account.isLoggedIn.return_value = True
 
         self.network = NetworkManagerMock()
-        with patch("plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
+        with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
             self.api = CloudApiClient(self.account, self._errorHandler)
 
     def test_getClusters(self):
