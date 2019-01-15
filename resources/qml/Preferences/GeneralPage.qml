@@ -746,6 +746,11 @@ UM.PreferencesPage
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
+                    if (preference !== "info/send_slice_info")
+                    {
+                        return;
+                    }
+
                     sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 }
             }

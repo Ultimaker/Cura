@@ -130,6 +130,11 @@ Item
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "cura/expanded_types" && preference !== "cura/expanded_brands")
+            {
+                return;
+            }
+
             expanded = materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
         }
     }

@@ -71,6 +71,11 @@ Item
             target: UM.Preferences
             onPreferenceChanged:
             {
+                if (preference !== "view/only_show_top_layers" && preference !== "view/top_layer_count" && ! preference.match("layerview/"))
+                {
+                    return;
+                }
+
                 playButton.pauseSimulation()
             }
         }
