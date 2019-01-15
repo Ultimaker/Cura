@@ -5,7 +5,6 @@ from unittest.mock import patch, MagicMock
 
 from UM.OutputDevice.OutputDeviceManager import OutputDeviceManager
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
-from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
 from ...src.Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 from .Fixtures import parseFixture, readFixture
 from .NetworkManagerMock import NetworkManagerMock, FakeSignal
@@ -29,8 +28,10 @@ class TestCloudOutputDeviceManager(TestCase):
 
         self.network = NetworkManagerMock()
         self.timer = MagicMock(timeout = FakeSignal())
-        with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network), \
-                patch("src.Cloud.CloudOutputDeviceManager.QTimer", return_value = self.timer):
+        with patch("plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient.QNetworkAccessManager",
+                   return_value = self.network), \
+                patch("plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager.QTimer",
+                      return_value = self.timer):
             self.manager = CloudOutputDeviceManager()
         self.clusters_response = parseFixture("getClusters")
         self.network.prepareReply("GET", self.URL, 200, readFixture("getClusters"))
@@ -53,16 +54,12 @@ class TestCloudOutputDeviceManager(TestCase):
         self.network.flushReplies()
         # get the created devices
         devices = self.device_manager.getOutputDevices()
-        # get the server data
-        clusters = self.clusters_response.get("data", [])
-        self.assertEqual([CloudOutputDevice] * len(clusters), [type(d) for d in devices])
-        self.assertEqual({cluster["cluster_id"] for cluster in clusters}, {device.key for device in devices})
-        self.assertEqual(clusters, sorted((device.clusterData.toDict() for device in devices),
-                                          key=lambda device_dict: device_dict["host_version"]))
+        # TODO: Check active device
 
-        for device in clusters:
-            self.device_manager.getOutputDevice(device["cluster_id"]).close()
-            self.device_manager.removeOutputDevice(device["cluster_id"])
+        response_clusters = self.clusters_response.get("data", [])
+        manager_clusters = sorted([device.clusterData.toDict() for device in self.manager._remote_clusters.values()],
+                                  key=lambda cluster: cluster['cluster_id'], reverse=True)
+        self.assertEqual(response_clusters, manager_clusters)
 
     ## Runs the initial request to retrieve the clusters.
     def _loadData(self):
@@ -100,7 +97,7 @@ class TestCloudOutputDeviceManager(TestCase):
         self._loadData()
 
         self.assertTrue(self.device_manager.getOutputDevice(cluster1["cluster_id"]).isConnected())
-        self.assertFalse(self.device_manager.getOutputDevice(cluster2["cluster_id"]).isConnected())
+        self.assertIsNone(self.device_manager.getOutputDevice(cluster2["cluster_id"]))
         self.assertEquals([], active_machine_mock.setMetaDataEntry.mock_calls)
 
     def test_device_connects_by_network_key(self):
@@ -112,13 +109,12 @@ class TestCloudOutputDeviceManager(TestCase):
 
         self._loadData()
 
-        self.assertEqual([False, True],
-                         [self.device_manager.getOutputDevice(cluster["cluster_id"]).isConnected()
-                          for cluster in (cluster1, cluster2)])
+        self.assertIsNone(self.device_manager.getOutputDevice(cluster1["cluster_id"]))
+        self.assertTrue(self.device_manager.getOutputDevice(cluster2["cluster_id"]).isConnected())
 
         active_machine_mock.setMetaDataEntry.assert_called_with("um_cloud_cluster_id", cluster2["cluster_id"])
 
-    @patch("src.Cloud.CloudOutputDeviceManager.Message")
+    @patch("plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager.Message")
     def test_api_error(self, message_mock):
         self.clusters_response = {
             "errors": [{"id": "notFound", "title": "Not found!", "http_status": "404", "code": "notFound"}]

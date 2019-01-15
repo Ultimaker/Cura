@@ -5,7 +5,7 @@
 # Constants used for the Cloud API
 # ---------
 DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"  # type: str
-DEFAULT_CLOUD_API_VERSION = 1  # type: int
+DEFAULT_CLOUD_API_VERSION = "1"  # type: str
 DEFAULT_CLOUD_ACCOUNT_API_ROOT = "https://account.ultimaker.com"  # type: str
 
 try:

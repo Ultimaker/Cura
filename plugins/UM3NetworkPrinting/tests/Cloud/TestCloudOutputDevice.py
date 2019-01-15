@@ -41,7 +41,8 @@ class TestCloudOutputDevice(TestCase):
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
         self.onError = MagicMock()
-        with patch("src.Cloud.CloudApiClient.QNetworkAccessManager", return_value = self.network):
+        with patch("plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient.QNetworkAccessManager",
+                   return_value = self.network):
             self._api = CloudApiClient(self.account, self.onError)
         
         self.device = CloudOutputDevice(self._api, self.cluster)
