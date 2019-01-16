@@ -40,7 +40,7 @@ Item
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             wrapMode: Label.WordWrap
-            visible: backupList.count == 0
+            visible: backupList.model.length == 0
             Layout.fillWidth: true
             Layout.fillHeight: true
             renderType: Text.NativeRendering
@@ -62,14 +62,14 @@ Item
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             wrapMode: Label.WordWrap
-            visible: backupList.count > 4
+            visible: backupList.model.length > 4
             renderType: Text.NativeRendering
         }
 
         BackupListFooter
         {
             id: backupListFooter
-            showInfoButton: backupList.count > 4
+            showInfoButton: backupList.model.length > 4
         }
     }
 }
