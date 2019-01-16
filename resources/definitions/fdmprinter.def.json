@@ -3395,7 +3395,7 @@
                         "infill": "Within Infill"
                     },
                     "default_value": "all",
-                    "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
+                    "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('infill' if 'infill' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
