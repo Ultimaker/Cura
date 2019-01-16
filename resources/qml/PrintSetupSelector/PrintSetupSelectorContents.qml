@@ -104,7 +104,7 @@ Item
     {
         id: buttonRow
         property real padding: UM.Theme.getSize("default_margin").width
-        height: recommendedButton.height + 2 * padding
+        height: recommendedButton.height + 2 * padding + (draggableArea.visible ? draggableArea.height : 0)
 
         anchors
         {
@@ -144,6 +144,7 @@ Item
         //Invisible area at the bottom with which you can resize the panel.
         MouseArea
         {
+            id: draggableArea
             anchors
             {
                 left: parent.left
