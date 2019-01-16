@@ -1,0 +1,17 @@
+{
+    "data": [{
+        "cluster_id": "RIZ6cZbWA_Ua7RZVJhrdVfVpf0z-MqaSHQE4v8aRTtYq",
+        "host_guid": "e90ae0ac-1257-4403-91ee-a44c9b7e8050",
+        "host_name": "ultimakersystem-ccbdd30044ec",
+        "host_version": "5.0.0.20170101",
+        "is_online": true,
+        "status": "active"
+    }, {
+        "cluster_id": "NWKV6vJP_LdYsXgXqAcaNCR0YcLJwar1ugh0ikEZsZs8",
+        "host_guid": "e0ace90a-91ee-1257-4403-e8050a44c9b7",
+        "host_name": "ultimakersystem-30044ecccbdd",
+        "host_version": "5.1.2.20180807",
+        "is_online": true,
+        "status": "active"
+    }]
+}

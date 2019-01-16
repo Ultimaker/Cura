@@ -8,6 +8,7 @@ class BaseModel:
         self.__dict__.update(kwargs)
         self.validate()
 
+    # Validates the model, raising an exception if the model is invalid.
     def validate(self) -> None:
         pass
 
@@ -34,7 +35,9 @@ class LocalMaterial(BaseModel):
         self.version = version  # type: int
         super().__init__(**kwargs)
 
+    #
     def validate(self) -> None:
+        super().validate()
         if not self.GUID:
             raise ValueError("guid is required on LocalMaterial")
         if not self.version:
