@@ -12,11 +12,15 @@ DEFAULT_CURA_SDK_VERSION = "6.0.0"
 
 try:
     from cura.CuraVersion import CuraAppDisplayName  # type: ignore
+    if CuraAppDisplayName == "":
+        CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
 except ImportError:
     CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
 
 try:
     from cura.CuraVersion import CuraVersion  # type: ignore
+    if CuraVersion == "":
+        CuraVersion = DEFAULT_CURA_VERSION
 except ImportError:
     CuraVersion = DEFAULT_CURA_VERSION  # [CodeStyle: Reflecting imported value]
 
@@ -32,5 +36,7 @@ except ImportError:
 
 try:
     from cura.CuraVersion import CuraSDKVersion  # type: ignore
+    if CuraSDKVersion == "":
+        CuraSDKVersion = DEFAULT_CURA_SDK_VERSION
 except ImportError:
     CuraSDKVersion = DEFAULT_CURA_SDK_VERSION
