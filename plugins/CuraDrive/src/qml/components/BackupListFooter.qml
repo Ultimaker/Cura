@@ -30,7 +30,7 @@ RowLayout
         id: createBackupButton
         text: catalog.i18nc("@button", "Backup Now")
         iconSource: UM.Theme.getIcon("plus")
-        enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup && !backupListFooter.showInfoButton
+        enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup
         onClicked: CuraDrive.createBackup()
         busy: CuraDrive.isCreatingBackup
     }

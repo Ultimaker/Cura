@@ -131,6 +131,7 @@ if TYPE_CHECKING:
 
 numpy.seterr(all = "ignore")
 
+
 try:
     from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
 except ImportError:

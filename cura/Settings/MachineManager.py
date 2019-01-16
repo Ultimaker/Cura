@@ -176,6 +176,7 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
+        self.printerConnectedStatusChanged.emit()
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
     def currentConfiguration(self) -> ConfigurationModel:
@@ -514,7 +515,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
-    def printerConnected(self):
+    def printerConnected(self) -> bool:
         return bool(self._printer_output_devices)
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
@@ -523,6 +524,20 @@ class MachineManager(QObject):
             connection_type = int(self._global_container_stack.getMetaDataEntry("connection_type", ConnectionType.NotConnected.value))
             return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
         return False
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineIsGroup(self) -> bool:
+        return bool(self._printer_output_devices) and len(self._printer_output_devices[0].printers) > 1
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineHasActiveNetworkConnection(self) -> bool:
+        # A network connection is only available if any output device is actually a network connected device.
+        return any(d.connectionType == ConnectionType.NetworkConnection for d in self._printer_output_devices)
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineHasActiveCloudConnection(self) -> bool:
+        # A cloud connection is only available if any output device actually is a cloud connected device.
+        return any(d.connectionType == ConnectionType.CloudConnection for d in self._printer_output_devices)
 
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:

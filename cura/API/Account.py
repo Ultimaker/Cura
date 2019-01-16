@@ -62,6 +62,11 @@ class Account(QObject):
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.loadAuthDataFromPreferences()
 
+    ## Returns a boolean indicating whether the given authentication is applied against staging or not.
+    @property
+    def is_staging(self) -> bool:
+        return "staging" in self._oauth_root
+
     @pyqtProperty(bool, notify=loginStateChanged)
     def isLoggedIn(self) -> bool:
         return self._logged_in
