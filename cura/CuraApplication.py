@@ -117,7 +117,7 @@ from cura.ObjectsModel import ObjectsModel
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
-from cura import ApplicationMetadata
+from cura import ApplicationMetadata, UltimakerCloudAuthentication
 
 from UM.FlameProfiler import pyqtSlot
 from UM.Decorators import override
@@ -130,16 +130,6 @@ if TYPE_CHECKING:
 
 
 numpy.seterr(all = "ignore")
-
-
-try:
-    from cura.CuraVersion import CuraAppDisplayName, CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion  # type: ignore
-except ImportError:
-    CuraAppDisplayName = "Ultimaker Cura"
-    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-    CuraBuildType = ""
-    CuraDebugMode = False
-    CuraSDKVersion = "6.0.0"
 
 
 class CuraApplication(QtApplication):
@@ -265,6 +255,14 @@ class CuraApplication(QtApplication):
         self._container_registry = None # type: CuraContainerRegistry
         from cura.CuraPackageManager import CuraPackageManager
         self._package_manager_class = CuraPackageManager
+
+    @pyqtProperty(str, constant=True)
+    def ultimakerCloudApiRootUrl(self) -> str:
+        return UltimakerCloudAuthentication.CuraCloudAPIRoot
+
+    @pyqtProperty(str, constant = True)
+    def ultimakerCloudAccountRootUrl(self) -> str:
+        return UltimakerCloudAuthentication.CuraCloudAccountAPIRoot
 
     # Adds command line options to the command line parser. This should be called after the application is created and
     # before the pre-start.
