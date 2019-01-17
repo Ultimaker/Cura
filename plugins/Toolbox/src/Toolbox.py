@@ -649,6 +649,7 @@ class Toolbox(QObject, Extension):
                             Logger.log("w", "Received invalid JSON for %s.", response_type)
                             break
                     else:
+                        Logger.log("w", "Unable to connect with the server, we got a response code %s while trying to connect to %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
                         self.setViewPage("errored")
                         self.resetDownload()
         elif reply.operation() == QNetworkAccessManager.PutOperation:
