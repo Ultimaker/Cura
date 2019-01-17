@@ -6,7 +6,7 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
-from ...src.Cloud.CloudApiClient import CloudApiClient
+from ...src.Cloud import CloudApiClient
 from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from ...src.Cloud.Models.CloudClusterStatus import CloudClusterStatus
 from ...src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
@@ -31,8 +31,8 @@ class TestCloudApiClient(TestCase):
         self.account.isLoggedIn.return_value = True
 
         self.network = NetworkManagerMock()
-        with patch("CloudApiClient.QNetworkAccessManager", return_value = self.network):
-            self.api = CloudApiClient(self.account, self._errorHandler)
+        with patch.object(CloudApiClient, 'QNetworkAccessManager', return_value = self.network):
+            self.api = CloudApiClient.CloudApiClient(self.account, self._errorHandler)
 
     def test_getClusters(self):
         result = []
