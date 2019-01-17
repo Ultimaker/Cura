@@ -68,6 +68,11 @@ Item
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
         }
+
+        RecommendedTroubleshootingGuides
+        {
+            width: parent.width
+        }
     }
 
     UM.SettingPropertyProvider

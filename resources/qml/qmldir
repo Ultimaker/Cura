@@ -15,4 +15,5 @@ ViewsSelector 1.0 ViewsSelector.qml
 ToolbarButton 1.0 ToolbarButton.qml
 SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
+CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
 ToolTip 1.0 ToolTip.qml

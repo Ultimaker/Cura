@@ -64,29 +64,33 @@ Cura.ExpandablePopup
                 // Label for the brand of the material
                 Label
                 {
-                    id: brandNameLabel
+                    id: typeAndBrandNameLabel
 
-                    text: model.material_brand
+                    text: model.material_brand + " " + model.material
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text_inactive")
+                    color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
                     anchors
                     {
+                        top: extruderIcon.top
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
                         right: parent.right
                         rightMargin: UM.Theme.getSize("default_margin").width
                     }
                 }
-
-                // Label that shows the name of the material
+                // Label that shows the name of the variant
                 Label
                 {
-                    text: model.material
+                    id: variantLabel
+
+                    visible: Cura.MachineManager.hasVariants
+
+                    text: model.variant
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("medium")
+                    font: UM.Theme.getFont("default_bold")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
@@ -94,9 +98,7 @@ Cura.ExpandablePopup
                     {
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
-                        rightMargin: UM.Theme.getSize("default_margin").width
-                        top: brandNameLabel.bottom
+                        top: typeAndBrandNameLabel.bottom
                     }
                 }
             }
@@ -136,9 +138,9 @@ Cura.ExpandablePopup
 
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineHasRemoteConnection && Cura.MachineManager.printerConnected //Re-evaluate.
+            is_connected = Cura.MachineManager.activeMachineHasRemoteConnection && Cura.MachineManager.printerConnected && Cura.MachineManager.printerOutputDevices[0].uniqueConfigurations.length > 0 //Re-evaluate.
 
-            // If the printer is not connected, we switch always to the custom mode. If is connected instead, the auto mode
+            // If the printer is not connected or does not have configurations, we switch always to the custom mode. If is connected instead, the auto mode
             // or the previous state is selected
             configuration_method = is_connected ? (manual_selected_method == -1 ? ConfigurationMenu.ConfigurationMethod.Auto : manual_selected_method) : ConfigurationMenu.ConfigurationMethod.Custom
         }
@@ -170,6 +172,59 @@ Cura.ExpandablePopup
             {
                 id: customConfiguration
                 visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
+            }
+        }
+
+        Item
+        {
+            height: visible ? childrenRect.height: 0
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            width: childrenRect.width + UM.Theme.getSize("default_margin").width
+            visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
+            UM.RecolorImage
+            {
+                id: externalLinkIcon
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                height: materialInfoLabel.height
+                width: height
+                sourceSize.height: width
+                color: UM.Theme.getColor("text_link")
+                source: UM.Theme.getIcon("external_link")
+            }
+
+            Label
+            {
+                id: materialInfoLabel
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label", "See the material compatibility chart")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text_link")
+                linkColor: UM.Theme.getColor("text_link")
+                anchors.left: externalLinkIcon.right
+                anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+                renderType: Text.NativeRendering
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked:
+                    {
+                        // open the material URL with web browser
+                        var url = "https://ultimaker.com/incoming-links/cura/material-compatibilty"
+                        Qt.openUrlExternally(url)
+                    }
+                    onEntered:
+                    {
+                        materialInfoLabel.font.underline = true
+                    }
+                    onExited:
+                    {
+                        materialInfoLabel.font.underline = false
+                    }
+                }
             }
         }
 

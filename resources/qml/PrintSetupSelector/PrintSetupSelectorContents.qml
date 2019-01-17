@@ -77,7 +77,17 @@ Item
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
-                    customPrintSetup.height = UM.Preferences.getValue("view/settings_list_height");
+                    if (preference !== "view/settings_list_height" && preference !== "general/window_height" && preference !== "general/window_state")
+                    {
+                        return;
+                    }
+
+                    customPrintSetup.height =
+                        Math.min
+                        (
+                            UM.Preferences.getValue("view/settings_list_height"),
+                            base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height)
+                        );
                 }
             }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom

@@ -4,6 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0 // For the dropshadow
+
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
@@ -30,6 +31,7 @@ Button
     property color outlineDisabledColor: outlineColor
     property alias shadowColor: shadow.color
     property alias shadowEnabled: shadow.visible
+    property alias busy: busyIndicator.visible
 
     property alias toolTipContentAlignment: tooltip.contentAlignment
 
@@ -55,7 +57,7 @@ Button
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
-            color: button.hovered ? button.textHoverColor : button.textColor
+            color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor) : button.textDisabledColor
             visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -116,5 +118,17 @@ Button
     {
         id: tooltip
         visible: button.hovered
+    }
+
+    BusyIndicator
+    {
+        id: busyIndicator
+
+        anchors.centerIn: parent
+
+        width: height
+        height: parent.height
+
+        visible: false
     }
 }

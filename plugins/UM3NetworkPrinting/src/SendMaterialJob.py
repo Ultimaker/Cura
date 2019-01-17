@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import os
-from typing import Dict, TYPE_CHECKING, Set
+from typing import Dict, TYPE_CHECKING, Set, Optional
 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
@@ -145,7 +145,7 @@ class SendMaterialJob(Job):
     #   \return a dictionary of ClusterMaterial objects by GUID
     #   \throw KeyError Raised when on of the materials does not include a valid guid
     @classmethod
-    def _parseReply(cls, reply: QNetworkReply) -> Dict[str, ClusterMaterial]:
+    def _parseReply(cls, reply: QNetworkReply) -> Optional[Dict[str, ClusterMaterial]]:
         try:
             remote_materials = json.loads(reply.readAll().data().decode("utf-8"))
             return {material["guid"]: ClusterMaterial(**material) for material in remote_materials}
@@ -157,6 +157,7 @@ class SendMaterialJob(Job):
             Logger.log("e", "Request material storage on printer: Printer's answer had an incorrect value.")
         except TypeError:
             Logger.log("e", "Request material storage on printer: Printer's answer was missing a required value.")
+        return None
 
     ##  Retrieves a list of local materials
     #
@@ -182,7 +183,8 @@ class SendMaterialJob(Job):
                 local_material.id = root_material_id
 
                 if local_material.GUID not in result or \
-                        local_material.version > result.get(local_material.GUID).version:
+                        local_material.GUID not in result or \
+                        local_material.version > result[local_material.GUID].version:
                     result[local_material.GUID] = local_material
 
             except KeyError:

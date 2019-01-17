@@ -110,8 +110,7 @@ Column
 
             height: parent.height
 
-            anchors.right: additionalComponents.left
-            anchors.rightMargin: additionalComponents.width != 0 ? UM.Theme.getSize("default_margin").width : 0
+            anchors.right: parent.right
             anchors.left: parent.left
 
             text: catalog.i18nc("@button", "Slice")
@@ -128,44 +127,11 @@ Column
             height: parent.height
             anchors.left: parent.left
 
-            anchors.right: additionalComponents.left
-            anchors.rightMargin: additionalComponents.width != 0 ? UM.Theme.getSize("default_margin").width : 0
+            anchors.right: parent.right
             text: catalog.i18nc("@button", "Cancel")
             enabled: sliceButton.enabled
             visible: !sliceButton.visible
             onClicked: sliceOrStopSlicing()
-        }
-
-        Item
-        {
-            id: additionalComponents
-            width: childrenRect.width
-            anchors.right: parent.right
-            height: parent.height
-            Row
-            {
-                id: additionalComponentsRow
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: UM.Theme.getSize("default_margin").width
-            }
-        }
-        Component.onCompleted: prepareButtons.addAdditionalComponents("saveButton")
-
-        Connections
-        {
-            target: CuraApplication
-            onAdditionalComponentsChanged: prepareButtons.addAdditionalComponents("saveButton")
-        }
-
-        function addAdditionalComponents (areaId)
-        {
-            if(areaId == "saveButton")
-            {
-                for (var component in CuraApplication.additionalComponents["saveButton"])
-                {
-                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
-                }
-            }
         }
     }
 
@@ -176,6 +142,11 @@ Column
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "general/auto_slice")
+            {
+                return;
+            }
+
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
             if(prepareButtons.autoSlice != autoSlice)
             {
@@ -194,7 +165,7 @@ Column
         shortcut: "Ctrl+P"
         onTriggered:
         {
-            if (prepareButton.enabled)
+            if (sliceButton.enabled)
             {
                 sliceOrStopSlicing()
             }

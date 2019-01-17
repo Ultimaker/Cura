@@ -50,6 +50,23 @@
             }
         }
     },
+    "CuraDrive": {
+        "package_info": {
+            "package_id": "CuraDrive",
+            "package_type": "plugin",
+            "display_name": "Cura Backups",
+            "description": "Backup and restore your configuration.",
+            "package_version": "1.2.0",
+            "sdk_version": 6,
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "CuraEngineBackend": {
         "package_info": {
             "package_id": "CuraEngineBackend",
@@ -703,6 +720,23 @@
             "display_name": "Version Upgrade 3.4 to 3.5",
             "description": "Upgrades configurations from Cura 3.4 to Cura 3.5.",
             "package_version": "1.0.1",
+            "sdk_version": "6.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
+    "VersionUpgrade35to40": {
+        "package_info": {
+            "package_id": "VersionUpgrade35to40",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 3.5 to 4.0",
+            "description": "Upgrades configurations from Cura 3.5 to Cura 4.0.",
+            "package_version": "1.0.0",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com",
             "author": {

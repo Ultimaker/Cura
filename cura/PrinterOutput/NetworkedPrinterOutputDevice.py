@@ -4,6 +4,7 @@
 from UM.FileHandler.FileHandler import FileHandler #For typing.
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode #For typing.
+from cura.API import Account
 from cura.CuraApplication import CuraApplication
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
@@ -11,11 +12,12 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, Conne
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
 from time import time
-from typing import Any, Callable, Dict, List, Optional
+from typing import Callable, Dict, List, Optional, Union
 from enum import IntEnum
 
 import os  # To get the username
 import gzip
+
 
 class AuthState(IntEnum):
     NotAuthenticated = 1
@@ -41,7 +43,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._api_prefix = ""
         self._address = address
         self._properties = properties
-        self._user_agent = "%s/%s " % (CuraApplication.getInstance().getApplicationName(), CuraApplication.getInstance().getVersion())
+        self._user_agent = "%s/%s " % (CuraApplication.getInstance().getApplicationName(),
+                                       CuraApplication.getInstance().getVersion())
 
         self._onFinishedCallbacks = {}      # type: Dict[str, Callable[[QNetworkReply], None]]
         self._authentication_state = AuthState.NotAuthenticated
@@ -55,7 +58,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._gcode = []                    # type: List[str]
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     def setAuthenticationState(self, authentication_state: AuthState) -> None:
@@ -143,10 +147,12 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + target)
         request = QNetworkRequest(url)
         if content_type is not None:
-            request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+            request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
+    ##  This method was only available privately before, but it was actually called from SendMaterialJob.py.
+    #   We now have a public equivalent as well. We did not remove the private one as plugins might be using that.
     def createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
         return self._createFormPart(content_header, data, content_type)
 
@@ -163,9 +169,15 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         part.setBody(data)
         return part
 
-    ##  Convenience function to get the username from the OS.
-    #   The code was copied from the getpass module, as we try to use as little dependencies as possible.
+    ##  Convenience function to get the username, either from the cloud or from the OS.
     def _getUserName(self) -> str:
+        # check first if we are logged in with the Ultimaker Account
+        account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
+        if account and account.isLoggedIn:
+            return account.userName
+
+        # Otherwise get the username from the US
+        # The code below was copied from the getpass module, as we try to use as little dependencies as possible.
         for name in ("LOGNAME", "USER", "LNAME", "USERNAME"):
             user = os.environ.get(name)
             if user:
@@ -181,49 +193,89 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             self._createNetworkManager()
         assert (self._manager is not None)
 
-    def put(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+    ## Sends a put request to the given path.
+    #  \param url: The path after the API prefix.
+    #  \param data: The data to be sent in the body
+    #  \param content_type: The content type of the body data.
+    #  \param on_finished: The function to call when the response is received.
+    #  \param on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
+    def put(self, url: str, data: Union[str, bytes], content_type: Optional[str] = None,
+            on_finished: Optional[Callable[[QNetworkReply], None]] = None,
+            on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.put(request, data.encode())
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def delete(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        request = self._createEmptyRequest(url, content_type = content_type)
+        self._last_request_time = time()
+
+        if not self._manager:
+            Logger.log("e", "No network manager was created to execute the PUT call with.")
+            return
+
+        body = data if isinstance(data, bytes) else data.encode()  # type: bytes
+        reply = self._manager.put(request, body)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+        if on_progress is not None:
+            reply.uploadProgress.connect(on_progress)
+
+    ## Sends a delete request to the given path.
+    #  \param url: The path after the API prefix.
+    #  \param on_finished: The function to be call when the response is received.
+    def delete(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.deleteResource(request)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def get(self, target: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
+        request = self._createEmptyRequest(url)
+        self._last_request_time = time()
+
+        if not self._manager:
+            Logger.log("e", "No network manager was created to execute the DELETE call with.")
+            return
+
+        reply = self._manager.deleteResource(request)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+    ## Sends a get request to the given path.
+    #  \param url: The path after the API prefix.
+    #  \param on_finished: The function to be call when the response is received.
+    def get(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.get(request)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def post(self, target: str, data: str, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
+        request = self._createEmptyRequest(url)
+        self._last_request_time = time()
+
+        if not self._manager:
+            Logger.log("e", "No network manager was created to execute the GET call with.")
+            return
+
+        reply = self._manager.get(request)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+    ## Sends a post request to the given path.
+    #  \param url: The path after the API prefix.
+    #  \param data: The data to be sent in the body
+    #  \param on_finished: The function to call when the response is received.
+    #  \param on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
+    def post(self, url: str, data: Union[str, bytes],
+             on_finished: Optional[Callable[[QNetworkReply], None]],
+             on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         self._validateManager()
-        request = self._createEmptyRequest(target)
-        self._last_request_time = time()
-        if self._manager is not None:
-            reply = self._manager.post(request, data.encode())
-            if on_progress is not None:
-                reply.uploadProgress.connect(on_progress)
-            self._registerOnFinishedCallback(reply, on_finished)
-        else:
-            Logger.log("e", "Could not find manager.")
 
-    def postFormWithParts(self, target: str, parts: List[QHttpPart], on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> QNetworkReply:
+        request = self._createEmptyRequest(url)
+        self._last_request_time = time()
+
+        if not self._manager:
+            Logger.log("e", "Could not find manager.")
+            return
+
+        body = data if isinstance(data, bytes) else data.encode()  # type: bytes
+        reply = self._manager.post(request, body)
+        if on_progress is not None:
+            reply.uploadProgress.connect(on_progress)
+        self._registerOnFinishedCallback(reply, on_finished)
+
+    def postFormWithParts(self, target: str, parts: List[QHttpPart],
+                          on_finished: Optional[Callable[[QNetworkReply], None]],
+                          on_progress: Optional[Callable[[int, int], None]] = None) -> QNetworkReply:
         self._validateManager()
         request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)

@@ -11,9 +11,9 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasRemoteConnection
-    property bool isPrinterConnected: Cura.MachineManager.printerConnected
-    property var outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasActiveNetworkConnection
+    property bool isCloudPrinter: Cura.MachineManager.activeMachineHasActiveCloudConnection
+    property bool isGroup: Cura.MachineManager.activeMachineIsGroup
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
@@ -26,18 +26,28 @@ Cura.ExpandablePopup
 
     headerItem: Cura.IconWithText
     {
-        text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+        text:
+        {
+            if (isNetworkPrinter && Cura.MachineManager.activeMachineNetworkGroupName != "")
+            {
+                return Cura.MachineManager.activeMachineNetworkGroupName
+            }
+            return Cura.MachineManager.activeMachineName
+        }
         source:
         {
-            if (isNetworkPrinter)
+            if (isGroup)
             {
-                if (machineSelector.outputDevice != null && machineSelector.outputDevice.clusterSize > 1)
-                {
-                    return UM.Theme.getIcon("printer_group")
-                }
+                return UM.Theme.getIcon("printer_group")
+            }
+            else if (isNetworkPrinter || isCloudPrinter)
+            {
                 return UM.Theme.getIcon("printer_single")
             }
-            return ""
+            else
+            {
+                return ""
+            }
         }
         font: UM.Theme.getFont("medium")
         iconColor: UM.Theme.getColor("machine_selector_printer_icon")
@@ -52,12 +62,27 @@ Cura.ExpandablePopup
                 leftMargin: UM.Theme.getSize("thick_margin").width
             }
 
-            source: UM.Theme.getIcon("printer_connected")
+            source:
+            {
+                if (isNetworkPrinter)
+                {
+                    return UM.Theme.getIcon("printer_connected")
+                }
+                else if (isCloudPrinter)
+                {
+                    return UM.Theme.getIcon("printer_cloud_connected")
+                }
+                else
+                {
+                    return ""
+                }
+            }
+
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
             color: UM.Theme.getColor("primary")
-            visible: isNetworkPrinter && isPrinterConnected
+            visible: isNetworkPrinter || isCloudPrinter
 
             // Make a themable circle in the background so we can change it in other themes
             Rectangle
