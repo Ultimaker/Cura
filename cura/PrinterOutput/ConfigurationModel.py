@@ -54,7 +54,7 @@ class ConfigurationModel(QObject):
         for configuration in self._extruder_configurations:
             if configuration is None:
                 return False
-        return self._printer_type is not None
+        return self._printer_type != ""
 
     def __str__(self):
         message_chunks = []

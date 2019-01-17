@@ -5,6 +5,8 @@ from UM.Application import Application
 from typing import Any
 import numpy
 
+from UM.Logger import Logger
+
 
 class LayerPolygon:
     NoneType = 0
@@ -18,7 +20,8 @@ class LayerPolygon:
     MoveCombingType = 8
     MoveRetractionType = 9
     SupportInterfaceType = 10
-    __number_of_types = 11
+    PrimeTower = 11
+    __number_of_types = 12
 
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
 
@@ -33,7 +36,8 @@ class LayerPolygon:
         self._extruder = extruder
         self._types = line_types
         for i in range(len(self._types)):
-            if self._types[i] >= self.__number_of_types: #Got faulty line data from the engine.
+            if self._types[i] >= self.__number_of_types: # Got faulty line data from the engine.
+                Logger.log("w", "Found an unknown line type: %s", i)
                 self._types[i] = self.NoneType
         self._data = data
         self._line_widths = line_widths
@@ -236,7 +240,8 @@ class LayerPolygon:
                 theme.getColor("layerview_support_infill").getRgbF(), # SupportInfillType
                 theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
                 theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
-                theme.getColor("layerview_support_interface").getRgbF()  # SupportInterfaceType
+                theme.getColor("layerview_support_interface").getRgbF(),  # SupportInterfaceType
+                theme.getColor("layerview_prime_tower").getRgbF()
             ])
 
         return cls.__color_map

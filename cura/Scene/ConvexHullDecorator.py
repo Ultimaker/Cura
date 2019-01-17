@@ -187,7 +187,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
             for child in self._node.getChildren():
                 child_hull = child.callDecoration("_compute2DConvexHull")
                 if child_hull:
-                    points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    try:
+                        points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    except ValueError:
+                        pass
 
                 if points.size < 3:
                     return None
@@ -239,7 +242,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
                 vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
                     numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-                _, idx = numpy.unique(vertex_byte_view, return_index=True)
+                _, idx = numpy.unique(vertex_byte_view, return_index = True)
                 vertex_data = vertex_data[idx]  # Select the unique rows by index.
 
                 hull = Polygon(vertex_data)
@@ -272,7 +275,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         head_and_fans = self._getHeadAndFans().intersectionConvexHulls(mirrored)
 
         # Min head hull is used for the push free
-        convex_hull = self._compute2DConvexHeadFull()
+        convex_hull = self._compute2DConvexHull()
         if convex_hull:
             return convex_hull.getMinkowskiHull(head_and_fans)
         return None

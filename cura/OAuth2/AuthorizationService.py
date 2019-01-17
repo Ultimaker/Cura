@@ -52,8 +52,11 @@ class AuthorizationService:
         if not self._user_profile:
             # If no user profile was stored locally, we try to get it from JWT.
             self._user_profile = self._parseJWT()
-        if not self._user_profile:
+
+        if not self._user_profile and self._auth_data:
             # If there is still no user profile from the JWT, we have to log in again.
+            Logger.log("w", "The user profile could not be loaded. The user must log in again!")
+            self.deleteAuthData()
             return None
 
         return self._user_profile
@@ -83,9 +86,11 @@ class AuthorizationService:
         if not self.getUserProfile():
             # We check if we can get the user profile.
             # If we can't get it, that means the access token (JWT) was invalid or expired.
+            Logger.log("w", "Unable to get the user profile.")
             return None
 
         if self._auth_data is None:
+            Logger.log("d", "No auth data to retrieve the access_token from")
             return None
 
         return self._auth_data.access_token

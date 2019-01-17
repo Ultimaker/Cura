@@ -1,0 +1,19 @@
+module Cura
+
+MachineSelector 1.0 MachineSelector.qml
+CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
+PrintSetupSelector 1.0 PrintSetupSelector.qml
+ActionButton 1.0 ActionButton.qml
+MaterialMenu 1.0 MaterialMenu.qml
+NozzleMenu 1.0 NozzleMenu.qml
+ActionPanelWidget 1.0 ActionPanelWidget.qml
+IconWithText 1.0 IconWithText.qml
+OutputDevicesActionButton 1.0 OutputDevicesActionButton.qml
+ExpandableComponent 1.0 ExpandableComponent.qml
+PrinterTypeLabel 1.0 PrinterTypeLabel.qml
+ViewsSelector 1.0 ViewsSelector.qml
+ToolbarButton 1.0 ToolbarButton.qml
+SettingView 1.0 SettingView.qml
+ProfileMenu 1.0 ProfileMenu.qml
+CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
+ToolTip 1.0 ToolTip.qml

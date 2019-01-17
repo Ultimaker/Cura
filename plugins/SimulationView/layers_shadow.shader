@@ -45,19 +45,23 @@ fragment =
 
     void main()
     {
-        if ((u_show_travel_moves == 0) && (v_line_type >= 7.5) && (v_line_type <= 9.5)) {  // actually, 8 and 9
+        if ((u_show_travel_moves == 0) && (v_line_type >= 7.5) && (v_line_type <= 9.5))
+        {  // actually, 8 and 9
             // discard movements
             discard;
         }
-        // support: 4, 5, 7, 10
+        // support: 4, 5, 7, 10, 11
         if ((u_show_helpers == 0) && (
             ((v_line_type >= 3.5) && (v_line_type <= 4.5)) ||
             ((v_line_type >= 6.5) && (v_line_type <= 7.5)) ||
             ((v_line_type >= 9.5) && (v_line_type <= 10.5)) ||
-            ((v_line_type >= 4.5) && (v_line_type <= 5.5))
-            )) {
+            ((v_line_type >= 4.5) && (v_line_type <= 5.5)) ||
+            ((v_line_type >= 10.5) && (v_line_type <= 11.5))
+            ))
+        {
             discard;
         }
+
         // skin: 1, 2, 3
         if ((u_show_skin == 0) && (
             (v_line_type >= 0.5) && (v_line_type <= 3.5)
@@ -65,7 +69,8 @@ fragment =
             discard;
         }
         // infill:
-        if ((u_show_infill == 0) && (v_line_type >= 5.5) && (v_line_type <= 6.5)) {
+        if ((u_show_infill == 0) && (v_line_type >= 5.5) && (v_line_type <= 6.5))
+        {
             // discard movements
             discard;
         }
@@ -117,12 +122,13 @@ fragment41core =
             // discard movements
             discard;
         }
-        // helpers: 4, 5, 7, 10
+        // helpers: 4, 5, 7, 10, 11
         if ((u_show_helpers == 0) && (
             ((v_line_type >= 3.5) && (v_line_type <= 4.5)) ||
             ((v_line_type >= 6.5) && (v_line_type <= 7.5)) ||
             ((v_line_type >= 9.5) && (v_line_type <= 10.5)) ||
-            ((v_line_type >= 4.5) && (v_line_type <= 5.5))
+            ((v_line_type >= 4.5) && (v_line_type <= 5.5)) ||
+            ((v_line_type >= 10.5) && (v_line_type <= 11.5))
             )) {
             discard;
         }

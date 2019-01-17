@@ -17,10 +17,16 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        property var extrudersModel: CuraApplication.getExtrudersModel()
+
+        model: extrudersModel
+
+        Connections
         {
-            onModelChanged: {
-                control.color = getItem(control.currentIndex).color;
+            target: extrudersModel
+            onModelChanged:
+            {
+                control.color = extrudersModel.getItem(control.currentIndex).color
             }
         }
 
@@ -104,7 +110,7 @@ SettingItem
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text");
+            color: UM.Theme.getColor("setting_control_button");
         }
 
         background: Rectangle
@@ -113,14 +119,15 @@ SettingItem
             {
                 if (!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled");
+                    return UM.Theme.getColor("setting_control_disabled")
                 }
                 if (control.hovered || base.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_highlight");
+                    return UM.Theme.getColor("setting_control_highlight")
                 }
-                return UM.Theme.getColor("setting_control");
+                return UM.Theme.getColor("setting_control")
             }
+            radius: UM.Theme.getSize("setting_control_radius").width
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
@@ -153,20 +160,18 @@ SettingItem
             elide: Text.ElideLeft
             verticalAlignment: Text.AlignVCenter
 
-            background: Rectangle
+            background: UM.RecolorImage
             {
                 id: swatch
-                height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                height: Math.round(parent.height / 2)
                 width: height
-
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
+                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                radius: Math.round(width / 2)
-
+                sourceSize.width: width
+                sourceSize.height: height
+                source: UM.Theme.getIcon("extruder_button")
                 color: control.color
             }
         }
@@ -219,20 +224,18 @@ SettingItem
                 verticalAlignment: Text.AlignVCenter
                 rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
-                background: Rectangle
+                background: UM.RecolorImage
                 {
                     id: swatch
-                    height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                    height: Math.round(parent.height / 2)
                     width: height
-
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
+                    anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                    radius: Math.round(width / 2)
-
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    source: UM.Theme.getIcon("extruder_button")
                     color: control.model.getItem(index).color
                 }
             }

@@ -137,6 +137,7 @@ class ProcessSlicedLayersJob(Job):
                 extruder = polygon.extruder
 
                 line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
+
                 line_types = line_types.reshape((-1,1))
 
                 points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
@@ -195,7 +196,7 @@ class ProcessSlicedLayersJob(Job):
         if extruders:
             material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:
-                position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
+                position = int(extruder.getMetaDataEntry("position", default = "0"))
                 try:
                     default_color = ExtrudersModel.defaultColors[position]
                 except IndexError:

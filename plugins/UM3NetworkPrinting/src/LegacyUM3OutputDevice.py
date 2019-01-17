@@ -7,6 +7,7 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutp
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -43,7 +44,7 @@ i18n_catalog = i18nCatalog("cura")
 #   5. As a final step, we verify the authentication, as this forces the QT manager to setup the authenticator.
 class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def __init__(self, device_id, address: str, properties, parent = None) -> None:
-        super().__init__(device_id = device_id, address = address, properties = properties, parent = parent)
+        super().__init__(device_id = device_id, address = address, properties = properties, connection_type =  ConnectionType.NetworkConnection, parent = parent)
         self._api_prefix = "/api/v1/"
         self._number_of_extruders = 2
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -13,7 +13,8 @@ import Cura 1.0 as Cura
 Cura.MachineAction
 {
     id: base
-    property var extrudersModel: Cura.ExtrudersModel{}
+    property var extrudersModel: Cura.ExtrudersModel{} // Do not retrieve the Model from a backend. Otherwise the tabs
+                                                       // in tabView will not removed/updated. Probably QML bug
     property int extruderTabsCount: 0
 
     property var activeMachineId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.id : ""
@@ -23,7 +24,7 @@ Cura.MachineAction
         target: base.extrudersModel
         onModelChanged:
         {
-            var extruderCount = base.extrudersModel.rowCount();
+            var extruderCount = base.extrudersModel.count;
             base.extruderTabsCount = extruderCount;
         }
     }
