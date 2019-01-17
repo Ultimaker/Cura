@@ -13,7 +13,7 @@ Item
 {
     id: tipsCell
     anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-    anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 2)
+    anchors.topMargin: Math.round(UM.Theme.getSize("default_margin").height * 2)
     anchors.left: parent.left
     width: parent.width
     height: tipsText.contentHeight * tipsText.lineCount
@@ -22,9 +22,9 @@ Item
     {
         id: tipsText
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.top: parent.top
         wrapMode: Text.WordWrap
         text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting")
