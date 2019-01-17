@@ -28,10 +28,8 @@ class TestCloudOutputDeviceManager(TestCase):
 
         self.network = NetworkManagerMock()
         self.timer = MagicMock(timeout = FakeSignal())
-        with patch("plugins.UM3NetworkPrinting.src.Cloud.CloudApiClient.QNetworkAccessManager",
-                   return_value = self.network), \
-                patch("plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager.QTimer",
-                      return_value = self.timer):
+        with patch("CloudApiClient.QNetworkAccessManager", return_value = self.network), \
+                patch("CloudOutputDeviceManager.QTimer", return_value = self.timer):
             self.manager = CloudOutputDeviceManager()
         self.clusters_response = parseFixture("getClusters")
         self.network.prepareReply("GET", self.URL, 200, readFixture("getClusters"))
@@ -114,7 +112,7 @@ class TestCloudOutputDeviceManager(TestCase):
 
         active_machine_mock.setMetaDataEntry.assert_called_with("um_cloud_cluster_id", cluster2["cluster_id"])
 
-    @patch("plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager.Message")
+    @patch("CloudOutputDeviceManager.Message")
     def test_api_error(self, message_mock):
         self.clusters_response = {
             "errors": [{"id": "notFound", "title": "Not found!", "http_status": "404", "code": "notFound"}]

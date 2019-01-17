@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import copy
 import io
 import json
 from unittest import TestCase, mock
@@ -14,7 +13,7 @@ from UM.Application import Application
 from cura.Machines.MaterialGroup import MaterialGroup
 from cura.Machines.MaterialNode import MaterialNode
 
-from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
+from ..src.SendMaterialJob import SendMaterialJob
 
 _FILES_MAP = {"generic_pla_white": "/materials/generic_pla_white.xml.fdm_material",
               "generic_pla_black": "/materials/generic_pla_black.xml.fdm_material",
