@@ -5,6 +5,7 @@ import QtQuick 2.3
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 /**
  * A Printer Card is has two main components: the printer portion and the print job portion, the latter being paired in
@@ -26,6 +27,10 @@ Item
     // If the printer card's controls are enabled. This is used by the carousel to prevent opening the context menu or
     // camera while the printer card is not "in focus"
     property var enabled: true
+
+    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
+    // they might not need to though.
+    property bool cloudConnection: Cura.MachineManager.activeMachineHasActiveCloudConnection
 
     width: 834 * screenScaleFactor // TODO: Theme!
     height: childrenRect.height
@@ -167,8 +172,8 @@ Item
             }
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
-            // enabled: base.enabled
-            enabled: false
+            enabled: !cloudConnection
+            
             onClicked: enabled ? contextMenu.switchPopupState() : {}
             visible:
             {
@@ -216,8 +221,7 @@ Item
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
             iconSource: "../svg/icons/camera.svg"
-            // enabled: base.enabled
-            enabled: false
+            enabled: !cloudConnection
             visible: printer
         }
 

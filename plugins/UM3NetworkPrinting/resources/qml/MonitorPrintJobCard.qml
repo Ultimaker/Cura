@@ -4,6 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 /**
  * A Print Job Card is essentially just a filled-in Expandable Card item. All
@@ -20,6 +21,10 @@ Item
 
     // The print job which all other data is derived from
     property var printJob: null
+
+    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
+    // they might not need to though.
+    property bool cloudConnection: Cura.MachineManager.activeMachineHasActiveCloudConnection
 
     width: parent.width
     height: childrenRect.height
@@ -209,7 +214,7 @@ Item
         }
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
-        enabled: base.enabled // TODO: Add cloud logic here!
+        enabled: !cloudConnection
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
