@@ -130,5 +130,15 @@ Button
         height: parent.height
 
         visible: false
+
+        RotationAnimator
+        {
+            target: busyIndicator.contentItem
+            running: busyIndicator.visible && busyIndicator.running
+            from: 0
+            to: 360
+            loops: Animation.Infinite
+            duration: 2500
+        }
     }
 }
