@@ -16,7 +16,7 @@ Row
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
         text: catalog.i18nc("@button", "Create account")
-        onClicked: Qt.openUrlExternally("https://account.ultimaker.com/app/create")
+        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
         fixedWidthMode: true
     }
 
