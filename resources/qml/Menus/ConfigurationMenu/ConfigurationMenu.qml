@@ -64,29 +64,33 @@ Cura.ExpandablePopup
                 // Label for the brand of the material
                 Label
                 {
-                    id: brandNameLabel
+                    id: typeAndBrandNameLabel
 
-                    text: model.material_brand
+                    text: model.material_brand + " " + model.material
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text_inactive")
+                    color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
                     anchors
                     {
+                        top: extruderIcon.top
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
                         right: parent.right
                         rightMargin: UM.Theme.getSize("default_margin").width
                     }
                 }
-
-                // Label that shows the name of the material
+                // Label that shows the name of the variant
                 Label
                 {
-                    text: model.material
+                    id: variantLabel
+
+                    visible: Cura.MachineManager.hasVariants
+
+                    text: model.variant
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("medium")
+                    font: UM.Theme.getFont("default_bold")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
@@ -94,9 +98,7 @@ Cura.ExpandablePopup
                     {
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
-                        rightMargin: UM.Theme.getSize("default_margin").width
-                        top: brandNameLabel.bottom
+                        top: typeAndBrandNameLabel.bottom
                     }
                 }
             }

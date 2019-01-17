@@ -77,6 +77,11 @@ Item
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
+                    if (preference !== "view/settings_list_height" && preference !== "general/window_height" && preference !== "general/window_state")
+                    {
+                        return;
+                    }
+
                     customPrintSetup.height =
                         Math.min
                         (
