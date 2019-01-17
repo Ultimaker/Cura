@@ -20,7 +20,7 @@ Menu
             text:
             {
                 var full_text = (model.layer_height != "") ? model.name + " - " + model.layer_height + model.layer_height_unit : model.name
-                full_text += model.is_experimental ? " - Experimental" : ""
+                full_text += model.is_experimental ? " - " + catalog.i18nc("@label", "Experimental") : ""
                 return full_text
             }
             checkable: true
