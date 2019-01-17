@@ -47,7 +47,7 @@ class VersionUpgrade40to41(VersionUpgrade):
 
         # Update version number.
         parser["general"]["version"] = "4"
-        parser["metadata"]["setting_version"] = "6"
+        parser["metadata"]["setting_version"] = "7"
 
         result = io.StringIO()
         parser.write(result)
@@ -62,7 +62,7 @@ class VersionUpgrade40to41(VersionUpgrade):
         parser["general"]["version"] = "6"
         if "metadata" not in parser:
             parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "6"
+        parser["metadata"]["setting_version"] = "7"
 
         result = io.StringIO()
         parser.write(result)
@@ -75,7 +75,7 @@ class VersionUpgrade40to41(VersionUpgrade):
 
         # Update version number.
         parser["general"]["version"] = "4"
-        parser["metadata"]["setting_version"] = "6"
+        parser["metadata"]["setting_version"] = "7"
 
         #Update the name of the quality profile.
         if parser["containers"]["4"] in _renamed_quality_profiles:
