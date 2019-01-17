@@ -142,6 +142,11 @@ Column
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "general/auto_slice")
+            {
+                return;
+            }
+
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
             if(prepareButtons.autoSlice != autoSlice)
             {
