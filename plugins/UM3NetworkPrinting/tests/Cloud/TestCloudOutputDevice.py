@@ -7,7 +7,7 @@ from unittest.mock import patch, MagicMock
 from UM.Scene.SceneNode import SceneNode
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from ...src.Cloud.CloudApiClient import CloudApiClient
+from ...src.Cloud import CloudApiClient
 from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
 from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from .Fixtures import readFixture, parseFixture
@@ -41,19 +41,20 @@ class TestCloudOutputDevice(TestCase):
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
         self.onError = MagicMock()
-        with patch("CloudApiClient.QNetworkAccessManager",
-                   return_value = self.network):
-            self._api = CloudApiClient(self.account, self.onError)
+        with patch.object(CloudApiClient, "QNetworkAccessManager", return_value = self.network):
+            self._api = CloudApiClient.CloudApiClient(self.account, self.onError)
         
         self.device = CloudOutputDevice(self._api, self.cluster)
         self.cluster_status = parseFixture("getClusterStatusResponse")
         self.network.prepareReply("GET", self.STATUS_URL, 200, readFixture("getClusterStatusResponse"))
 
     def tearDown(self):
-        super().tearDown()
-        self.network.flushReplies()
-        for patched_method in self.patches:
-            patched_method.stop()
+        try:
+            super().tearDown()
+            self.network.flushReplies()
+        finally:
+            for patched_method in self.patches:
+                patched_method.stop()
 
     def test_status(self):
         self.device._update()
