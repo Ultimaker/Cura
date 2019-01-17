@@ -44,7 +44,6 @@ class FirmwareUpdateCheckerJob(Job):
             result = response.read().decode("utf-8")
         except URLError:
             Logger.log("w", "Could not reach '{0}', if this URL is old, consider removal.".format(url))
-
         return result
 
     def parseVersionResponse(self, response: str) -> Version:

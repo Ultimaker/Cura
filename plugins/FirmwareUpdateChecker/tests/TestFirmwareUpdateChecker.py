@@ -2,10 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest
-import json
 
-import unittest.mock
-from cura.CuraApplication import CuraApplication
+from unittest.mock import MagicMock
 
 from UM.Version import Version
 
@@ -18,7 +16,7 @@ json_data = \
             {
                 "id": 1,
                 "name": "ned",
-                "check_urls": ["http://urlecho.appspot.com/echo?status=200&body=5.1.2.3"],
+                "check_urls": [""],
                 "update_url": "https://ultimaker.com/en/resources/20500-upgrade-firmware",
                 "version_parser": "default"
             },
@@ -26,7 +24,7 @@ json_data = \
             {
                 "id": 3,
                 "name": "olivia",
-                "check_urls": ["http://urlecho.appspot.com/echo?status=200&body=4.3.2.1", "https://this-url-clearly-doesnt-exist.net"],
+                "check_urls": [""],
                 "update_url": "https://ultimaker.com/en/resources/20500-upgrade-firmware",
                 "version_parser": "default"
             },
@@ -34,14 +32,11 @@ json_data = \
             {
                 "id": 5,
                 "name": "emmerson",
-                "check_urls": ["http://urlecho.appspot.com/echo?status=200&body=0.2.2.2", "http://urlecho.appspot.com/echo?status=200&body=6.7.8.1"],
+                "check_urls": [""],
                 "update_url": "https://ultimaker.com/en/resources/20500-upgrade-firmware",
                 "version_parser": "default"
             }
     }
-
-def dummyCallback():
-    pass
 
 @pytest.mark.parametrize("name, id", [
     ("ned"     , 1),
@@ -63,7 +58,6 @@ def test_FirmwareUpdateCheckerLookup(id, name):
 ])
 def test_FirmwareUpdateCheckerJob_getCurrentVersion(name, version):
     machine_data = json_data.get(name)
-    job = FirmwareUpdateCheckerJob(False, name, machine_data, dummyCallback)
-    job._headers = {"User-Agent": "Cura-UnitTests 0"}
-
+    job = FirmwareUpdateCheckerJob(False, name, machine_data, MagicMock)
+    job.getUrlResponse = MagicMock(return_value = str(version))  # Pretend like we got a good response from the server
     assert job.getCurrentVersion() == version
