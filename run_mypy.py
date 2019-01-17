@@ -29,7 +29,6 @@ def where(exe_name: str, search_path: str = os.getenv("PATH")) -> str:
 
 
 def findModules(path):
-    return ["UM3NetworkPrinting"]
     result = []
     for entry in os.scandir(path):
         if entry.is_dir() and os.path.exists(os.path.join(path, entry.name, "__init__.py")):
