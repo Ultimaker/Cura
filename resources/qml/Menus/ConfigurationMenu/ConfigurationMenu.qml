@@ -61,6 +61,26 @@ Cura.ExpandablePopup
                     width: height
                 }
 
+                // Label for the brand of the material
+                Label
+                {
+                    id: typeAndBrandNameLabel
+
+                    text: model.material_brand + " " + model.material
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+
+                    anchors
+                    {
+                        top: extruderIcon.top
+                        left: extruderIcon.right
+                        leftMargin: UM.Theme.getSize("default_margin").width
+                        right: parent.right
+                        rightMargin: UM.Theme.getSize("default_margin").width
+                    }
+                }
                 // Label that shows the name of the variant
                 Label
                 {
@@ -70,7 +90,7 @@ Cura.ExpandablePopup
 
                     text: model.variant
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("medium")
+                    font: UM.Theme.getFont("default_bold")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
@@ -78,46 +98,7 @@ Cura.ExpandablePopup
                     {
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
-                        verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                // Label for the brand of the material
-                Label
-                {
-                    id: brandNameLabel
-
-                    text: model.material_brand
-                    elide: Text.ElideRight
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text_inactive")
-                    renderType: Text.NativeRendering
-
-                    anchors
-                    {
-                        left: variantLabel.visible ? variantLabel.right : extruderIcon.right
-                        leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
-                        rightMargin: UM.Theme.getSize("default_margin").width
-                    }
-                }
-
-                // Label that shows the name of the material
-                Label
-                {
-                    text: model.material
-                    elide: Text.ElideRight
-                    font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
-
-                    anchors
-                    {
-                        left: variantLabel.visible ? variantLabel.right : extruderIcon.right
-                        leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
-                        rightMargin: UM.Theme.getSize("default_margin").width
-                        top: brandNameLabel.bottom
+                        top: typeAndBrandNameLabel.bottom
                     }
                 }
             }
