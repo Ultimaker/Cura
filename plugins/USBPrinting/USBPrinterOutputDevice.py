@@ -1,12 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import os
 
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.GenericOutputController import GenericOutputController
@@ -28,7 +29,7 @@ catalog = i18nCatalog("cura")
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
-        super().__init__(serial_port)
+        super().__init__(serial_port, connection_type = ConnectionType.UsbConnection)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
@@ -48,7 +49,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._baud_rate = baud_rate
 
-        self._all_baud_rates = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
+        self._all_baud_rates = [115200, 250000, 500000, 230400, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
         self._update_thread = Thread(target = self._update, daemon = True)
@@ -64,7 +65,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._accepts_commands = True
 
         self._paused = False
-        self._printer_busy = False # when printer is preheating and waiting (M190/M109), or when waiting for action on the printer
+        self._printer_busy = False  # When printer is preheating and waiting (M190/M109), or when waiting for action on the printer
 
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
@@ -76,6 +77,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._firmware_name_requested = False
         self._firmware_updater = AvrFirmwareUpdater(self)
+
+        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MonitorItem.qml")
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
 
@@ -176,7 +179,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 return
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
-        self.setConnectionState(ConnectionState.connected)
+        self.setConnectionState(ConnectionState.Connected)
         self._update_thread.start()
 
     def _onGlobalContainerStackChanged(self):
@@ -205,7 +208,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._sendCommand(command)
 
     def _sendCommand(self, command: Union[str, bytes]):
-        if self._serial is None or self._connection_state != ConnectionState.connected:
+        if self._serial is None or self._connection_state != ConnectionState.Connected:
             return
 
         new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode() # type: bytes
@@ -219,7 +222,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._command_received.set()
 
     def _update(self):
-        while self._connection_state == ConnectionState.connected and self._serial is not None:
+        while self._connection_state == ConnectionState.Connected and self._serial is not None:
             try:
                 line = self._serial.readline()
             except:

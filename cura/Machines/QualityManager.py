@@ -16,7 +16,7 @@ from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
 
 if TYPE_CHECKING:
-    from UM.Settings.DefinitionContainer import DefinitionContainer
+    from UM.Settings.Interfaces import DefinitionContainerInterface
     from cura.Settings.GlobalStack import GlobalStack
     from .QualityChangesGroup import QualityChangesGroup
     from cura.CuraApplication import CuraApplication
@@ -235,7 +235,7 @@ class QualityManager(QObject):
 
                 for quality_type, quality_node in node.quality_type_map.items():
                     quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
-                    quality_group.node_for_global = quality_node
+                    quality_group.setGlobalNode(quality_node)
                     quality_group_dict[quality_type] = quality_group
                 break
 
@@ -337,7 +337,7 @@ class QualityManager(QObject):
 
                         quality_group = quality_group_dict[quality_type]
                         if position not in quality_group.nodes_for_extruders:
-                            quality_group.nodes_for_extruders[position] = quality_node
+                            quality_group.setExtruderNode(position, quality_node)
 
                 # If the machine has its own specific qualities, for extruders, it should skip the global qualities
                 # and use the material/variant specific qualities.
@@ -367,7 +367,7 @@ class QualityManager(QObject):
             if node and node.quality_type_map:
                 for quality_type, quality_node in node.quality_type_map.items():
                     quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
-                    quality_group.node_for_global = quality_node
+                    quality_group.setGlobalNode(quality_node)
                     quality_group_dict[quality_type] = quality_group
                 break
 
@@ -538,7 +538,7 @@ class QualityManager(QObject):
 #      Example: for an Ultimaker 3 Extended, it has "quality_definition = ultimaker3". This means Ultimaker 3 Extended
 #               shares the same set of qualities profiles as Ultimaker 3.
 #
-def getMachineDefinitionIDForQualitySearch(machine_definition: "DefinitionContainer",
+def getMachineDefinitionIDForQualitySearch(machine_definition: "DefinitionContainerInterface",
                                            default_definition_id: str = "fdmprinter") -> str:
     machine_definition_id = default_definition_id
     if parseBool(machine_definition.getMetaDataEntry("has_machine_quality", False)):

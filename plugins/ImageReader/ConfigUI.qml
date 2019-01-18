@@ -20,7 +20,7 @@ UM.Dialog
 
     GridLayout
     {
-        UM.I18nCatalog{id: catalog; name:"cura"}
+        UM.I18nCatalog{id: catalog; name: "cura"}
         anchors.fill: parent;
         Layout.fillWidth: true
         columnSpacing: 16 * screenScaleFactor

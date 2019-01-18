@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -36,12 +36,19 @@ Item
         var pg_name = "printingGuidelines"
         return (pg_name in packageData.links) ? packageData.links[pg_name] : undefined
     }
+
+    property var materialWebsiteUrl:
+    {
+        var pg_name = "website"
+        return (pg_name in packageData.links) ? packageData.links[pg_name] : undefined
+    }
     anchors.topMargin: UM.Theme.getSize("default_margin").height
     height: visible ? childrenRect.height : 0
 
     visible: packageData.type == "material" &&
         (packageData.has_configs || technicalDataSheetUrl !== undefined ||
-            safetyDataSheetUrl !== undefined || printingGuidelinesUrl !== undefined)
+            safetyDataSheetUrl !== undefined || printingGuidelinesUrl !== undefined ||
+            materialWebsiteUrl !== undefined)
 
     Item
     {
@@ -60,6 +67,7 @@ Item
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
         }
 
         TableView
@@ -83,7 +91,7 @@ Item
             model: packageData.supported_configs
             headerDelegate: Rectangle
             {
-                color: UM.Theme.getColor("sidebar")
+                color: UM.Theme.getColor("main_background")
                 height: UM.Theme.getSize("toolbox_chart_row").height
                 Label
                 {
@@ -92,6 +100,7 @@ Item
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text")
                     font: UM.Theme.getFont("default_bold")
+                    renderType: Text.NativeRendering
                 }
                 Rectangle
                 {
@@ -111,6 +120,7 @@ Item
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text_medium")
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
                 }
             }
             itemDelegate: Item
@@ -123,6 +133,7 @@ Item
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text_medium")
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -137,6 +148,7 @@ Item
                     elide: Text.ElideRight
                     color: UM.Theme.getColor("text_medium")
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -180,7 +192,8 @@ Item
         anchors.top: combatibilityItem.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
         visible: base.technicalDataSheetUrl !== undefined ||
-            base.safetyDataSheetUrl !== undefined || base.printingGuidelinesUrl !== undefined
+            base.safetyDataSheetUrl !== undefined || base.printingGuidelinesUrl !== undefined ||
+            base.materialWebsiteUrl !== undefined
         height: visible ? contentHeight : 0
         text:
         {
@@ -208,11 +221,22 @@ Item
                 var pg_name = catalog.i18nc("@action:label", "Printing Guidelines")
                 result += "<a href='%1'>%2</a>".arg(base.printingGuidelinesUrl).arg(pg_name)
             }
+            if (base.materialWebsiteUrl !== undefined)
+            {
+                if (result.length > 0)
+                {
+                    result += "<br/>"
+                }
+                var pg_name = catalog.i18nc("@action:label", "Website")
+                result += "<a href='%1'>%2</a>".arg(base.materialWebsiteUrl).arg(pg_name)
+            }
+
             return result
         }
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
         linkColor: UM.Theme.getColor("text_link")
         onLinkActivated: Qt.openUrlExternally(link)
+        renderType: Text.NativeRendering
     }
 }

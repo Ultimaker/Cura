@@ -302,6 +302,10 @@ class MaterialManager(QObject):
     def getMaterialGroupListByGUID(self, guid: str) -> Optional[List[MaterialGroup]]:
         return self._guid_material_groups_map.get(guid)
 
+    # Returns a dict of all material groups organized by root_material_id.
+    def getAllMaterialGroups(self) -> Dict[str, "MaterialGroup"]:
+        return self._material_group_map
+
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
@@ -679,7 +683,11 @@ class MaterialManager(QObject):
 
     @pyqtSlot(str)
     def removeFavorite(self, root_material_id: str) -> None:
-        self._favorites.remove(root_material_id)
+        try:
+            self._favorites.remove(root_material_id)
+        except KeyError:
+            Logger.log("w", "Could not delete material %s from favorites as it was already deleted", root_material_id)
+            return
         self.materialsUpdated.emit()
 
         # Ensure all settings are saved.

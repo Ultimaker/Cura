@@ -1,7 +1,8 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To get version numbers from config files.
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
 
@@ -30,7 +31,7 @@ _machines_with_machine_quality = {
         "materials": { "generic_abs", "generic_cpe", "generic_pla", "generic_pva", "generic_cpe_plus", "generic_nylon", "generic_pc", "generic_tpu" },
         "variants": { "0.25 mm", "0.4 mm", "0.6 mm", "0.8 mm" }
     }
-}
+} # type: Dict[str, Dict[str, Set[str]]]
 
 ##  How to translate material names from the old version to the new.
 _material_translations = {
@@ -41,7 +42,7 @@ _material_translations = {
     "Nylon": "generic_nylon",
     "PC": "generic_pc",
     "TPU": "generic_tpu",
-}
+} # type: Dict[str, str]
 
 ##  How to translate material names for in the profile names.
 _material_translations_profiles = {
@@ -52,17 +53,17 @@ _material_translations_profiles = {
     "Nylon": "nylon",
     "PC": "pc",
     "TPU": "tpu",
-}
+} # type: Dict[str, str]
 
 ##  How to translate printer names from the old version to the new.
 _printer_translations = {
     "ultimaker2plus": "ultimaker2_plus"
-}
+} # type: Dict[str, str]
 
 _printer_translations_profiles = {
     "ultimaker2plus": "um2p", #Does NOT get included in PLA profiles!
     "ultimaker2_extended_plus": "um2ep" #Has no profiles for CPE+, Nylon, PC and TPU!
-}
+} # type: Dict[str, str]
 
 ##  How to translate profile names from the old version to the new.
 #
@@ -116,13 +117,13 @@ _profile_translations = {
     "tpu_0.25_high": "um2p_tpu_0.25_high",
     "tpu_0.4_normal": "um2p_tpu_0.4_normal",
     "tpu_0.6_fast": "um2p_tpu_0.6_fast"
-}
+} # type: Dict[str, str]
 
 ##  Settings that are no longer in the new version.
 _removed_settings = {
     "fill_perimeter_gaps",
     "support_area_smoothing"
-}
+} # type: Set[str]
 
 ##  How to translate setting names from the old version to the new.
 _setting_name_translations = {
@@ -142,7 +143,7 @@ _setting_name_translations = {
     "support_roof_line_distance": "support_interface_line_distance",
     "support_roof_line_width": "support_interface_line_width",
     "support_roof_pattern": "support_interface_pattern"
-}
+} # type: Dict[str, str]
 
 ##  Custom profiles become quality_changes. This dictates which quality to base
 #   the quality_changes profile on.
@@ -190,7 +191,7 @@ _quality_fallbacks = {
             #No TPU.
         }
     }
-}
+} # type: Dict[str, Dict[str, Dict[str, str]]]
 
 ##  How to translate variants of specific machines from the old version to the
 #   new.
@@ -207,7 +208,7 @@ _variant_translations = {
         "0.6 mm": "ultimaker2_extended_plus_0.6",
         "0.8 mm": "ultimaker2_extended_plus_0.8"
     }
-}
+} # type: Dict[str, Dict[str, str]]
 
 ##  How to translate variant names for in the profile names.
 _variant_translations_profiles = {
@@ -215,7 +216,7 @@ _variant_translations_profiles = {
     "0.4 mm": "0.4",
     "0.6 mm": "0.6",
     "0.8 mm": "0.8"
-}
+} # type: Dict[str, str]
 
 ##  Cura 2.2's material profiles use a different naming scheme for variants.
 #
@@ -233,7 +234,7 @@ _variant_translations_materials = {
         "0.6 mm": "ultimaker2_plus_0.6_mm",
         "0.8 mm": "ultimaker2_plus_0.8_mm"
     }
-}
+} # type: Dict[str, Dict[str, str]]
 
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
@@ -245,12 +246,12 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   number is stored in general/version, so get the data from that key.
     #
     #   \param serialised The contents of a config file.
-    #   \return \type{int} The version number of that config file.
-    def getCfgVersion(self, serialised):
+    #   \return The version number of that config file.
+    def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
+        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
     ##  Gets the fallback quality to use for a specific machine-variant-material
@@ -263,7 +264,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \param variant The variant ID of the user's configuration in 2.2.
     #   \param material The material ID of the user's configuration in 2.2.
     @staticmethod
-    def getQualityFallback(machine, variant, material):
+    def getQualityFallback(machine: str, variant: str, material: str) -> str:
         if machine not in _quality_fallbacks:
             return "normal"
         if variant not in _quality_fallbacks[machine]:
@@ -277,14 +278,14 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   This is required to test if profiles should be converted to a quality
     #   profile or a quality-changes profile.
     @staticmethod
-    def builtInProfiles():
+    def builtInProfiles() -> Iterable[str]:
         return _profile_translations.keys()
 
     ##  Gets a set of the machines which now have per-material quality profiles.
     #
     #   \return A set of machine identifiers.
     @staticmethod
-    def machinesWithMachineQuality():
+    def machinesWithMachineQuality() -> Dict[str, Dict[str, Set[str]]]:
         return _machines_with_machine_quality
 
     ##  Converts machine instances from format version 1 to version 2.
@@ -295,10 +296,10 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return A tuple containing the new filename and the serialised machine
     #   instance in version 2, or None if the input was not of the correct
     #   format.
-    def upgradeMachineInstance(self, serialised, filename):
+    def upgradeMachineInstance(self, serialised: str, filename: str) -> Optional[Tuple[List[str], List[str]]]:
         machine_instance = MachineInstance.importFrom(serialised, filename)
         if not machine_instance: #Invalid file format.
-            return filename, None
+            return None
         return machine_instance.export()
 
     ##  Converts preferences from format version 2 to version 3.
@@ -309,10 +310,10 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return A tuple containing the new filename and the serialised
     #   preferences in version 3, or None if the input was not of the correct
     #   format.
-    def upgradePreferences(self, serialised, filename):
+    def upgradePreferences(self, serialised: str, filename: str) -> Optional[Tuple[List[str], List[str]]]:
         preferences = Preferences.importFrom(serialised, filename)
         if not preferences: #Invalid file format.
-            return filename, None
+            return None
         return preferences.export()
 
     ##  Converts profiles from format version 1 to version 2.
@@ -322,10 +323,10 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   extension.
     #   \return A tuple containing the new filename and the serialised profile
     #   in version 2, or None if the input was not of the correct format.
-    def upgradeProfile(self, serialised, filename):
+    def upgradeProfile(self, serialised: str, filename: str) -> Optional[Tuple[List[str], List[str]]]:
         profile = Profile.importFrom(serialised, filename)
         if not profile: # Invalid file format.
-            return filename, None
+            return None
         return profile.export()
 
     ##  Translates a material name for the change from Cura 2.1 to 2.2.
@@ -333,7 +334,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \param material A material name in Cura 2.1.
     #   \return The name of the corresponding material in Cura 2.2.
     @staticmethod
-    def translateMaterial(material):
+    def translateMaterial(material: str) -> str:
         if material in _material_translations:
             return _material_translations[material]
         return material
@@ -345,7 +346,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The name of the corresponding material in the quality profiles
     #   in Cura 2.2.
     @staticmethod
-    def translateMaterialForProfiles(material):
+    def translateMaterialForProfiles(material: str) -> str:
         if material in _material_translations_profiles:
             return _material_translations_profiles[material]
         return material
@@ -356,7 +357,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \param printer A printer name in Cura 2.1.
     #   \return The name of the corresponding printer in Cura 2.2.
     @staticmethod
-    def translatePrinter(printer):
+    def translatePrinter(printer: str) -> str:
         if printer in _printer_translations:
             return _printer_translations[printer]
         return printer #Doesn't need to be translated.
@@ -367,7 +368,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \param printer A printer name in 2.1.
     #   \return The name of the corresponding printer in Cura 2.2.
     @staticmethod
-    def translatePrinterForProfile(printer):
+    def translatePrinterForProfile(printer: str) -> str:
         if printer in _printer_translations_profiles:
             return _printer_translations_profiles[printer]
         return printer
@@ -378,7 +379,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \param profile A profile name in the old version.
     #   \return The corresponding profile name in the new version.
     @staticmethod
-    def translateProfile(profile):
+    def translateProfile(profile: str) -> str:
         if profile in _profile_translations:
             return _profile_translations[profile]
         return profile #Doesn't need to be translated.
@@ -392,7 +393,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \param settings A dictionary of settings (as key-value pairs) to update.
     #   \return The same dictionary.
     @staticmethod
-    def translateSettings(settings):
+    def translateSettings(settings: Dict[str, str]) -> Dict[str, str]:
         new_settings = {}
         for key, value in settings.items():
             if key in _removed_settings:
@@ -414,7 +415,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \param setting The name of a setting in Cura 2.1.
     #   \return The name of the corresponding setting in Cura 2.2.
     @staticmethod
-    def translateSettingName(setting):
+    def translateSettingName(setting: str) -> str:
         if setting in _setting_name_translations:
             return _setting_name_translations[setting]
         return setting #Doesn't need to be translated.
@@ -426,7 +427,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   2.2's naming.
     #   \return The name of the corresponding variant in Cura 2.2.
     @staticmethod
-    def translateVariant(variant, machine):
+    def translateVariant(variant: str, machine: str) -> str:
         if machine in _variant_translations and variant in _variant_translations[machine]:
             return _variant_translations[machine][variant]
         return variant
@@ -440,7 +441,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The name of the corresponding variant for in material profiles
     #   in Cura 2.2.
     @staticmethod
-    def translateVariantForMaterials(variant, machine):
+    def translateVariantForMaterials(variant: str, machine: str) -> str:
         if machine in _variant_translations_materials and variant in _variant_translations_materials[machine]:
             return _variant_translations_materials[machine][variant]
         return variant
@@ -452,7 +453,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The name of the corresponding variant for in quality profiles in
     #   Cura 2.2.
     @staticmethod
-    def translateVariantForProfiles(variant):
+    def translateVariantForProfiles(variant: str) -> str:
         if variant in _variant_translations_profiles:
             return _variant_translations_profiles[variant]
         return variant
