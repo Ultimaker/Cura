@@ -4,7 +4,7 @@
 # ---------
 # Genearl constants used in Cura
 # ---------
-DEFAUKT_CURA_APP_NAME = "cura"
+DEFAULT_CURA_APP_NAME = "cura"
 DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
 DEFAULT_CURA_VERSION = "master"
 DEFAULT_CURA_BUILD_TYPE = ""
