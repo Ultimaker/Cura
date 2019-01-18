@@ -7,21 +7,20 @@
         "visible": true,
         "author": "Patrick Glatt",
         "manufacturer": "Anycubic",
-		"category": "Other",
+	"category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "anycubic_chiron_platform.obj",
-		"platform_texture": "anycubic-chiron.png",
+	"platform_texture": "anycubic-chiron.png",
         "has_materials": true,
-		"preferred_material": "generic_pla",
+	"preferred_material": "generic_pla",
         "has_machine_quality": true,
-		"quality_definition": "anycubic_chiron",
-		"preferred_quality_type": "normal",
+	"quality_definition": "anycubic_chiron",
+	"preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
             "0": "anycubic_chiron_extruder_0"
-        },
-		"firmware_file": "CHIRON.hex" 
+        },	
     },
 
     "overrides":
@@ -54,16 +53,16 @@
         {
             "default_value": 35
         },	
-		"machine_head_with_fans_polygon":
-		{
-			"default_value": 
-			[
-				[-45, 50], 
-				[-45, -45], 
-				[45, 50], 
-				[45, -45]
-			]
-		},
+	"machine_head_with_fans_polygon":
+	{
+	    "default_value": 
+		[
+			[-45, 50], 
+			[-45, -45], 
+			[45, 50], 
+			[45, -45]
+		]
+	},
         "machine_gcode_flavor":
         {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -75,6 +74,6 @@
         "machine_end_gcode":
         {
             "default_value": 	"G91 ;Change to relative positioning mode for filament retraction and nozzle lifting\nG1 F200 E-4;Retract the filament a bit before lifting the nozzle\nG1 F1000 Z5;Lift nozzle 5mm\nG90 ;Change to absolute positioning mode to prepare for part rermoval\nG1 X0 Y400 ;Move the print to max y pos for part rermoval\nM104 S0 ; Turn off hotend\nM106 S0 ; Turn off cooling fan\nM140 S0 ; Turn off bed\nM84 ; Disable motors\n"							
-		}
+	}
     }
 }
