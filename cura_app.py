@@ -9,6 +9,7 @@ import os
 import sys
 
 from UM.Platform import Platform
+from cura.ApplicationMetadata import CuraAppName
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
@@ -20,11 +21,6 @@ parser.add_argument("--debug",
 known_args = vars(parser.parse_known_args()[0])
 
 if not known_args["debug"]:
-    try:
-        from cura.CuraVersion import CuraAppName  # type: ignore
-    except ImportError:
-        CuraAppName = "cura"
-
     def get_cura_dir_path():
         if Platform.isWindows():
             return os.path.expanduser("~/AppData/Roaming/" + CuraAppName)
