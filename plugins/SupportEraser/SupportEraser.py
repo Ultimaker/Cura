@@ -98,7 +98,7 @@ class SupportEraser(Tool):
 
         node.setName("Eraser")
         node.setSelectable(True)
-        mesh = self._createCube(10)
+        mesh = self._createCube(Vector(10, position.y, 10))
         node.setMeshData(mesh.build())
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
@@ -162,19 +162,21 @@ class SupportEraser(Tool):
 
         self._had_selection = has_selection
 
-    def _createCube(self, size):
+    def _createCube(self, size: Vector):
         mesh = MeshBuilder()
 
         # Can't use MeshBuilder.addCube() because that does not get per-vertex normals
         # Per-vertex normals require duplication of vertices
-        s = size / 2
+        X = size.x / 2
+        Y = size.y
+        Z = size.z / 2
         verts = [ # 6 faces with 4 corners each
-            [-s, -s,  s], [-s,  s,  s], [ s,  s,  s], [ s, -s,  s],
-            [-s,  s, -s], [-s, -s, -s], [ s, -s, -s], [ s,  s, -s],
-            [ s, -s, -s], [-s, -s, -s], [-s, -s,  s], [ s, -s,  s],
-            [-s,  s, -s], [ s,  s, -s], [ s,  s,  s], [-s,  s,  s],
-            [-s, -s,  s], [-s, -s, -s], [-s,  s, -s], [-s,  s,  s],
-            [ s, -s, -s], [ s, -s,  s], [ s,  s,  s], [ s,  s, -s]
+            [-X, -Y,  Z], [-X,  0,  Z], [ X,  0,  Z], [ X, -Y,  Z],
+            [-X,  0,  -Z], [-X, -Y,  -Z], [ X, -Y,  -Z], [ X,  0,  -Z],
+            [ X, -Y,  -Z], [-X, -Y,  -Z], [-X, -Y,  Z], [ X, -Y,  Z],
+            [-X,  0,  -Z], [ X,  0,  -Z], [ X,  0,  Z], [-X,  0,  Z],
+            [-X, -Y,  Z], [-X, -Y,  -Z], [-X,  0,  -Z], [-X,  0,  Z],
+            [ X, -Y,  -Z], [ X, -Y,  Z], [ X,  0,  Z], [ X,  0,  -Z]
         ]
         mesh.setVertices(numpy.asarray(verts, dtype=numpy.float32))
 
