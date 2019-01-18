@@ -83,7 +83,7 @@ Item
         {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            enabled: !isCurrentItemActivated
+            enabled: !isCurrentItemActivated && Cura.MachineManager.hasMaterials
             onClicked:
             {
                 forceActiveFocus()
