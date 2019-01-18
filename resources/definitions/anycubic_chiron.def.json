@@ -21,6 +21,7 @@
         {
             "0": "anycubic_chiron_extruder_0"
         },	
+	"firmware_file": "MarlinChiron.hex" 
     },
 
     "overrides":
