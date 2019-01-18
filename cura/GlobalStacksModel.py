@@ -1,16 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from PyQt5.QtCore import pyqtProperty, Qt
+
 from UM.Qt.ListModel import ListModel
-
-from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal
-
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
 
 from cura.PrinterOutputDevice import ConnectionType
-
-from cura.Settings.GlobalStack import GlobalStack
 
 
 class GlobalStacksModel(ListModel):
@@ -38,6 +34,8 @@ class GlobalStacksModel(ListModel):
 
     ##  Handler for container added/removed events from registry
     def _onContainerChanged(self, container):
+        from cura.Settings.GlobalStack import GlobalStack  # otherwise circular imports
+
         # We only need to update when the added / removed container GlobalStack
         if isinstance(container, GlobalStack):
             self._update()
