@@ -1,12 +1,12 @@
 {
     "id": "CR-X",
     "version": 2,
-    "name": "Creality CR-X",
+    "name": "Creality3D CR-X",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "SRC",
-        "manufacturer": "Creality",
+        "manufacturer": "Creality3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "cr-x.stl",
@@ -19,7 +19,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Creality CR-X" },
+        "machine_name": { "default_value": "Creality3D CR-X" },
 		"machine_extruder_count": { "default_value": 2 },
         "machine_heated_bed": { "default_value": true },
         "machine_width": { "default_value": 300 },
