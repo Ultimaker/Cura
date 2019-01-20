@@ -4,7 +4,7 @@
     "name": "Left Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Creality CR-X",
+        "machine": "Creality3D CR-X",
         "position": "0"
     },
 
