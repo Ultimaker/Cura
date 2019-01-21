@@ -32,14 +32,14 @@ Item
     Rectangle {
         id: background
         anchors.fill: parent
-        color: printerNameLabel.visible ? "#e4e4f2" : "#eeeeee"// TODO: Theme!
+        color: printerNameLabel.visible ? UM.Theme.getColor("monitor_printer_family_tag") : UM.Theme.getColor("monitor_skeleton_loading")
         radius: 2 * screenScaleFactor // TODO: Theme!
     }
 
     Label {
         id: printerNameLabel
         anchors.centerIn: parent
-        color: "#535369" // TODO: Theme!
+        color: UM.Theme.getColor("monitor_text_primary")
         text: tagText
         font.pointSize: 10 // TODO: Theme!
         visible: text !== ""

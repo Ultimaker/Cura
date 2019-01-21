@@ -39,6 +39,7 @@ Item
     {
         id: positionLabel
         font: UM.Theme.getFont("small")
+        color: UM.Theme.getColor("monitor_text_primary")
         height: Math.round(size / 2)
         horizontalAlignment: Text.AlignHCenter
         text: position + 1

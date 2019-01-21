@@ -18,14 +18,14 @@ Item {
     Button {
         id: button;
         background: Rectangle {
-            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+            color: UM.Theme.getColor("monitor_card_hover"); // TODO: Theme!
             height: button.height;
             opacity: button.down || button.hovered ? 1 : 0;
             radius: Math.round(0.5 * width);
             width: button.width;
         }
         contentItem: Label {
-            color: UM.Theme.getColor("monitor_context_menu_dots");
+            color: UM.Theme.getColor("monitor_text_primary")
             font.pixelSize: 32 * screenScaleFactor;
             horizontalAlignment: Text.AlignHCenter;
             text: button.text;
@@ -74,7 +74,7 @@ Item {
                         right: bloop.right;
                         rightMargin: 24 * screenScaleFactor;
                     }
-                    color: UM.Theme.getColor("monitor_context_menu_background");
+                    color: UM.Theme.getColor("monitor_context_menu")
                     height: 14 * screenScaleFactor;
                     transform: Rotation {
                         angle: 45;
@@ -91,7 +91,7 @@ Item {
                         top: parent.top;
                         topMargin: 8 * screenScaleFactor; // Because of the shadow + point
                     }
-                    color: UM.Theme.getColor("monitor_context_menu_background");
+                    color: UM.Theme.getColor("monitor_context_menu");
                     width: parent.width;
                 }
             }

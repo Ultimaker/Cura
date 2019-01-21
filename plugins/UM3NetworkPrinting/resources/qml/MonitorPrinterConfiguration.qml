@@ -37,7 +37,7 @@ Item
 
             MonitorExtruderConfiguration
             {
-                color: modelData && modelData.activeMaterial ? modelData.activeMaterial.color : "#eeeeee" // TODO: Theme!
+                color: modelData && modelData.activeMaterial ? modelData.activeMaterial.color : UM.Theme.getColor("monitor_skeleton_loading")
                 material: modelData && modelData.activeMaterial ? modelData.activeMaterial.name : ""
                 position: modelData && typeof(modelData.position) === "number" ? modelData.position : -1 // Use negative one to create empty extruder number
                 printCore: modelData ? modelData.hotendID : ""

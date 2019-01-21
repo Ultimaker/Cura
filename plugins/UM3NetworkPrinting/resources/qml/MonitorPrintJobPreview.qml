@@ -19,7 +19,7 @@ Item
     Rectangle
     {
         anchors.fill: parent
-        color: printJob ? "transparent" : "#eeeeee" // TODO: Theme!
+        color: printJob ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
         radius: 8 // TODO: Theme!
         Image
         {

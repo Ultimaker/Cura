@@ -49,12 +49,12 @@ Item
                 GradientStop
                 {
                     position: 0.0
-                    color: "#fff6f6f6" // TODO: Theme!
+                    color: UM.Theme.getColor("monitor_stage_background")
                 }
                 GradientStop
                 {
                     position: 1.0
-                    color: "#66f6f6f6" // TODO: Theme!
+                    color: UM.Theme.getColor("monitor_stage_background_fade")
                 }
             }
         }
@@ -82,9 +82,9 @@ Item
         onClicked: navigateTo(currentIndex - 1)
         background: Rectangle
         {
-            color: leftButton.hovered ? "#e8f2fc" : "#ffffff" // TODO: Theme!
+            color: leftButton.hovered ? UM.Theme.getColor("monitor_card_hover") : UM.Theme.getColor("monitor_card_background")
             border.width: 1 * screenScaleFactor // TODO: Theme!
-            border.color: "#cccccc" // TODO: Theme!
+            border.color: UM.Theme.getColor("monitor_card_border")
             radius: 2 * screenScaleFactor // TODO: Theme!
         }
         contentItem: Item
@@ -97,7 +97,7 @@ Item
                 height: width // TODO: Theme!
                 sourceSize.width: width // TODO: Theme!
                 sourceSize.height: width // TODO: Theme!
-                color: "#152950" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_text_primary")
                 source: UM.Theme.getIcon("arrow_left")
             }
         }
@@ -161,9 +161,9 @@ Item
         hoverEnabled: true
         background: Rectangle
         {
-            color: rightButton.hovered ? "#e8f2fc" : "#ffffff" // TODO: Theme!
+            color: rightButton.hovered ? UM.Theme.getColor("monitor_card_hover") : UM.Theme.getColor("monitor_card_background")
             border.width: 1 * screenScaleFactor // TODO: Theme!
-            border.color: "#cccccc" // TODO: Theme!
+            border.color: UM.Theme.getColor("monitor_card_border")
             radius: 2 * screenScaleFactor // TODO: Theme!
         }
         contentItem: Item
@@ -176,7 +176,7 @@ Item
                 height: width // TODO: Theme!
                 sourceSize.width: width // TODO: Theme!
                 sourceSize.height: width // TODO: Theme!
-                color: "#152950" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_text_primary")
                 source: UM.Theme.getIcon("arrow_right")
             }
         }
@@ -204,12 +204,12 @@ Item
                 GradientStop
                 {
                     position: 0.0
-                    color: "#66f6f6f6" // TODO: Theme!
+                    color: UM.Theme.getColor("monitor_stage_background_fade")
                 }
                 GradientStop
                 {
                     position: 1.0
-                    color: "#fff6f6f6" // TODO: Theme!
+                    color: UM.Theme.getColor("monitor_stage_background")
                 }
             }
         }
@@ -238,7 +238,7 @@ Item
             {
                 background: Rectangle
                 {
-                    color: model.index == currentIndex ? "#777777" : "#d8d8d8" // TODO: Theme!
+                    color: model.index == currentIndex ? UM.Theme.getColor("monitor_carousel_dot_current") : UM.Theme.getColor("monitor_carousel_dot")
                     radius: Math.floor(width / 2)
                     width: 12 * screenScaleFactor // TODO: Theme!
                     height: width // TODO: Theme!
