@@ -176,7 +176,7 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: "Glass" // TODO: I18N
+                buildplate: catalog.i18nc("@label", "Glass")
                 configurations:
                 [
                     base.printJob.configuration.extruderConfigurations[0],

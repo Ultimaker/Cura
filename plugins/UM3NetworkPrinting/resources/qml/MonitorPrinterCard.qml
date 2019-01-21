@@ -302,7 +302,7 @@ Item
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("large") // 16pt, bold
-                    text: printer && printer.activePrintJob ? printer.activePrintJob.name : "Untitled" // TODO: I18N
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.name : catalog.i18nc("@label", "Untitled")
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -322,7 +322,7 @@ Item
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default") // 12pt, regular
-                    text: printer && printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.owner : catalog.i18nc("@label", "Anonymous")
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -348,7 +348,7 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 font: UM.Theme.getFont("default")
-                text: "Requires configuration changes" // TODO: I18N
+                text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
 
                 // FIXED-LINE-HEIGHT:
