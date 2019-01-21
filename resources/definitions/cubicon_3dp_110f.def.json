@@ -8,7 +8,7 @@
         "manufacturer": "Cubicon",
         "visible": true,
         "file_formats": "text/x-gcode",
-        "platform": "cubicon_single_platform.stl",
+        "platform": "",
         "supports_usb_connection": false,
         "machine_extruder_trains": {
             "0": "cubicon_3dp_110f_extruder_0"
