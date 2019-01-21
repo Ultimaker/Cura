@@ -18,7 +18,7 @@ Item {
     Button {
         id: button;
         background: Rectangle {
-            color: UM.Theme.getColor("viewport_background"); // TODO: Theme!
+            color: UM.Theme.getColor("viewport_background")
             height: button.height;
             opacity: button.down || button.hovered ? 1 : 0;
             radius: Math.round(0.5 * width);

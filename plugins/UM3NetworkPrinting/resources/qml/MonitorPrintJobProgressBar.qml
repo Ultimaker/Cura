@@ -34,16 +34,16 @@ Item
         {
             background: Rectangle
             {
-                color: "#f5f5f5" // TODO: Theme!
                 implicitHeight: visible ? 8 * screenScaleFactor : 0 // TODO: Theme!
+                color: UM.Theme.getColor("progressbar_background")
                 implicitWidth: 180 * screenScaleFactor // TODO: Theme!
                 radius: 2 * screenScaleFactor // TODO: Theme!
             }
             progress: Rectangle
             {
                 id: progressItem;
-                color: printJob && printJob.isActive ? "#3282ff" : "#CCCCCC" // TODO: Theme!
                 radius: 2 * screenScaleFactor // TODO: Theme!
+                color: printJob && printJob.isActive ? UM.Theme.getColor("progressbar_control") : UM.Theme.getColor("progressbar_disabled")
             }
         }
     }
@@ -56,7 +56,7 @@ Item
             leftMargin: 18 * screenScaleFactor // TODO: Theme!
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
-        color: printJob && printJob.isActive ? "#374355" : "#babac1" // TODO: Theme!
+        color: printJob && printJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("text_inactive")
         width: contentWidth
         font: UM.Theme.getFont("medium") // 14pt, regular
 
@@ -72,7 +72,7 @@ Item
             left: percentLabel.right
             leftMargin: 18 * screenScaleFactor // TODO: Theme!
         }
-        color: "#374355" // TODO: Theme!
+        color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("medium") // 14pt, regular
         text:
         {

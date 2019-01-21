@@ -9,30 +9,35 @@ import Cura 1.0 as Cura
 
 Rectangle {
     id: base
-    property var iconSource: null;
-    color: "#0a0850" // TODO: Theme!
-    height: width;
-    radius: Math.round(0.5 * width);
-    width: 24 * screenScaleFactor;
     property var enabled: true
+    property var iconSource: null
 
-    UM.RecolorImage {
-        id: icon;
-        anchors {
-            horizontalCenter: parent.horizontalCenter;
-            verticalCenter: parent.verticalCenter;
+    color: UM.Theme.getColor("small_button_active")
+    height: UM.Theme.getSize("small_button").height
+    radius: Math.round(0.5 * width)
+    width: UM.Theme.getSize("small_button").width
+
+    UM.RecolorImage
+    {
+        id: icon
+        anchors
+        {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
         }
-        color: UM.Theme.getColor("primary_text");
-        height: width;
-        source: iconSource;
-        width: Math.round(parent.width / 2);
+        color: UM.Theme.getColor("small_button_text_active")
+        height: Math.round(parent.height / 2)
+        source: iconSource
+        width: Math.round(parent.width / 2)
     }
 
-    MouseArea {
-        id: clickArea;
-        anchors.fill: parent;
+    MouseArea
+    {
+        id: clickArea
+        anchors.fill: parent
         hoverEnabled: base.enabled
-        onClicked: {
+        onClicked:
+        {
             if (base.enabled)
             {
                 if (OutputDevice.activeCameraUrl != "")
