@@ -7,8 +7,7 @@ from unittest.mock import MagicMock
 
 from UM.Version import Version
 
-from plugins.FirmwareUpdateChecker.FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
-from plugins.FirmwareUpdateChecker.FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup
+import FirmwareUpdateChecker
 
 json_data = \
     {
@@ -44,7 +43,7 @@ json_data = \
     ("emmerson", 5),
 ])
 def test_FirmwareUpdateCheckerLookup(id, name):
-    lookup = FirmwareUpdateCheckerLookup(name, json_data.get(name))
+    lookup = FirmwareUpdateChecker.FirmwareUpdateCheckerLookup.FirmwareUpdateCheckerLookup(name, json_data.get(name))
 
     assert lookup.getMachineName() == name
     assert lookup.getMachineId() == id
@@ -58,6 +57,6 @@ def test_FirmwareUpdateCheckerLookup(id, name):
 ])
 def test_FirmwareUpdateCheckerJob_getCurrentVersion(name, version):
     machine_data = json_data.get(name)
-    job = FirmwareUpdateCheckerJob(False, name, machine_data, MagicMock)
+    job = FirmwareUpdateChecker.FirmwareUpdateCheckerJob.FirmwareUpdateCheckerJob(False, name, machine_data, MagicMock)
     job.getUrlResponse = MagicMock(return_value = str(version))  # Pretend like we got a good response from the server
     assert job.getCurrentVersion() == version
