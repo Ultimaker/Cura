@@ -49,7 +49,7 @@ Item
                 width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
                 Rectangle
                 {
-                    color: UM.Theme.getColor("secondary")
+                    color: "#eeeeee"
                     width: Math.round(parent.width / 2)
                     height: parent.height
                     visible: !printJob
@@ -57,7 +57,7 @@ Item
                 Label
                 {
                     text: printJob && printJob.name ? printJob.name : ""
-                    color: UM.Theme.getColor("text")
+                    color: "#374355"
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -75,7 +75,7 @@ Item
                 width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
                 Rectangle
                 {
-                    color: UM.Theme.getColor("secondary")
+                    color: "#eeeeee"
                     width: Math.round(parent.width / 3)
                     height: parent.height
                     visible: !printJob
@@ -83,7 +83,7 @@ Item
                 Label
                 {
                     text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
-                    color: UM.Theme.getColor("text")
+                    color: "#374355"
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -102,7 +102,7 @@ Item
 
                 Rectangle
                 {
-                    color: UM.Theme.getColor("secondary")
+                    color: "#eeeeee"
                     width: 72 * screenScaleFactor // TODO: Theme!
                     height: parent.height
                     visible: !printJob
@@ -112,7 +112,7 @@ Item
                 {
                     id: printerAssignmentLabel
                     anchors.verticalCenter: parent.verticalCenter
-                    color: UM.Theme.getColor("text")
+                    color: "#374355"
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     text: {
@@ -186,7 +186,7 @@ Item
             }
             Label {
                 text: printJob && printJob.owner ? printJob.owner : ""
-                color: UM.Theme.getColor("text")
+                color: "#374355" // TODO: Theme!
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.top: printerConfiguration.top

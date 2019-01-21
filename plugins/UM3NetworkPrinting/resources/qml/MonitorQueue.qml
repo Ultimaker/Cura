@@ -94,7 +94,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Print jobs")
-            color: UM.Theme.getColor("text_scene")
+            color: "#666666"
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -108,7 +108,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Total print time")
-            color: UM.Theme.getColor("text_scene")
+            color: "#666666"
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -122,7 +122,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Waiting for")
-            color: UM.Theme.getColor("text_scene")
+            color: "#666666"
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter

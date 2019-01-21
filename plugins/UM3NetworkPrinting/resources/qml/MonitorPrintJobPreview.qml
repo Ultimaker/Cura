@@ -19,7 +19,7 @@ Item
     Rectangle
     {
         anchors.fill: parent
-        color: printJob ? "transparent" : UM.Theme.getColor("secondary")
+        color: printJob ? "transparent" : "#eeeeee" // TODO: Theme!
         radius: 8 // TODO: Theme!
         Image
         {

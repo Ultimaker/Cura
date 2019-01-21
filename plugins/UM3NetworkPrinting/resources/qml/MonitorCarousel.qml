@@ -82,9 +82,9 @@ Item
         onClicked: navigateTo(currentIndex - 1)
         background: Rectangle
         {
-            color: leftButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+            color: leftButton.hovered ? "#e8f2fc" : "#ffffff" // TODO: Theme!
             border.width: 1 * screenScaleFactor // TODO: Theme!
-            border.color: UM.Theme.getColor("wide_lining")
+            border.color: "#cccccc" // TODO: Theme!
             radius: 2 * screenScaleFactor // TODO: Theme!
         }
         contentItem: Item
@@ -94,10 +94,10 @@ Item
             {
                 anchors.centerIn: parent
                 width: 18 // TODO: Theme!
-                height: width
-                sourceSize.width: width
-                sourceSize.height: width
-                color: UM.Theme.getColor("text")
+                height: width // TODO: Theme!
+                sourceSize.width: width // TODO: Theme!
+                sourceSize.height: width // TODO: Theme!
+                color: "#152950" // TODO: Theme!
                 source: UM.Theme.getIcon("arrow_left")
             }
         }

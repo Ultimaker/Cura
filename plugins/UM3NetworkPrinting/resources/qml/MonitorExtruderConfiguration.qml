@@ -36,7 +36,7 @@ Item
     MonitorIconExtruder
     {
         id: extruderIcon
-        color: UM.Theme.getColor("secondary")
+        color: "#eeeeee" // TODO: Theme!
         position: 0
     }
 
@@ -48,8 +48,8 @@ Item
             left: extruderIcon.right
             leftMargin: 12 * screenScaleFactor // TODO: Theme!
         }
+        color: materialLabel.visible > 0 ? "transparent" : "#eeeeee" // TODO: Theme!
         height: 18 * screenScaleFactor // TODO: Theme!
-        color: materialLabel.visible > 0 ? "transparent" : UM.Theme.getColor("secondary")
         width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
 
@@ -57,7 +57,7 @@ Item
         {
             id: materialLabel
             
-            color: UM.Theme.getColor("text")
+            color: "#191919" // TODO: Theme!
             elide: Text.ElideRight
             font: UM.Theme.getFont("default") // 12pt, regular
             text: ""
@@ -77,8 +77,8 @@ Item
             left: materialLabelWrapper.left
             bottom: parent.bottom
         }
+        color: printCoreLabel.visible > 0 ? "transparent" : "#eeeeee" // TODO: Theme!
         height: 18 * screenScaleFactor // TODO: Theme!
-        color: printCoreLabel.visible > 0 ? "transparent" : UM.Theme.getColor("secondary")
         width: Math.max(printCoreLabel.contentWidth, 36 * screenScaleFactor) // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
 
@@ -86,7 +86,7 @@ Item
         {
             id: printCoreLabel
             
-            color: UM.Theme.getColor("text")
+            color: "#191919" // TODO: Theme!
             elide: Text.ElideRight
             font: UM.Theme.getFont("default_bold") // 12pt, bold
             text: ""

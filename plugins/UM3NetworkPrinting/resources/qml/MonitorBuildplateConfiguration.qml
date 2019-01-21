@@ -49,7 +49,7 @@ Item
             {
                 id: buildplateIcon
                 anchors.centerIn: parent
-                color: UM.Theme.getColor("small_button_active")
+                color: "#0a0850" // TODO: Theme! (Standard purple)
                 height: parent.height
                 source: "../svg/icons/buildplate.svg"
                 width: height
@@ -60,7 +60,7 @@ Item
         Label
         {
             id: buildplateLabel
-            color: UM.Theme.getColor("text")
+            color: "#191919" // TODO: Theme!
             elide: Text.ElideRight
             font: UM.Theme.getFont("default") // 12pt, regular
             text: buildplate ? buildplate : ""

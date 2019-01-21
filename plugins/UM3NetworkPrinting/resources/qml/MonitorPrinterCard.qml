@@ -69,7 +69,7 @@ Item
                 id: printerImage
                 width: 108 * screenScaleFactor // TODO: Theme!
                 height: 108 * screenScaleFactor // TODO: Theme!
-                color: printer ? "transparent" : UM.Theme.getColor("secondary")
+                color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
                 radius: 8 // TODO: Theme!
                 Image
                 {
@@ -94,8 +94,8 @@ Item
                 {
                     id: printerNameLabel
                     // color: "#414054" // TODO: Theme!
+                    color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
                     height: 18 * screenScaleFactor // TODO: Theme!
-                    color: printer ? "transparent" : UM.Theme.getColor("secondary")
                     width: parent.width
                     radius: 2 * screenScaleFactor // TODO: Theme!
                     
@@ -116,8 +116,8 @@ Item
 
                 Rectangle
                 {
+                    color: "#eeeeee" // TODO: Theme!
                     height: 18 * screenScaleFactor // TODO: Theme!
-                    color: UM.Theme.getColor("secondary")
                     radius: 2 * screenScaleFactor // TODO: Theme!
                     visible: !printer
                     width: 48 * screenScaleFactor // TODO: Theme!
