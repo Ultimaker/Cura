@@ -12,7 +12,7 @@
         "has_materials": false,
         "machine_extruder_trains":
         {
-            "0": "creatable_d3_extruder"
+            "0": "creatable_d3_extruder_0"
         }
     },
 

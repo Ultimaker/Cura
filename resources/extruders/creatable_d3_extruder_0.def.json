@@ -1,5 +1,5 @@
 {
-    "id": "creatable_d3_extruder",
+    "id": "creatable_d3_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
