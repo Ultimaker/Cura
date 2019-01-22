@@ -5320,9 +5320,9 @@
                 "prime_tower_brim_enable":
                 {
                     "label": "Prime Tower Brim",
-                    "description": "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't.",
+                    "description": "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type.",
                     "type": "bool",
-                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') == 'none')",
+                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') != 'raft')",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
