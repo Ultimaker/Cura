@@ -93,7 +93,6 @@ Item
                 Rectangle
                 {
                     id: printerNameLabel
-                    // color: "#414054" // TODO: Theme!
                     color: printer ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
                     height: 18 * screenScaleFactor // TODO: Theme!
                     width: parent.width
