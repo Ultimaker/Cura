@@ -9,7 +9,6 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "rostock_platform.stl",
-        "has_materials": false,
         "machine_extruder_trains":
         {
             "0": "creatable_d3_extruder_0"
