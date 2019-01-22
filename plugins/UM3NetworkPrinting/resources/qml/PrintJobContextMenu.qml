@@ -18,7 +18,7 @@ Item {
     Button {
         id: button;
         background: Rectangle {
-            color: UM.Theme.getColor("monitor_card_hover"); // TODO: Theme!
+            color: UM.Theme.getColor("monitor_card_hover")
             height: button.height;
             opacity: button.down || button.hovered ? 1 : 0;
             radius: Math.round(0.5 * width);
