@@ -90,6 +90,23 @@ Column
             property var printMaterialCosts: PrintInformation.materialCosts
             property var printMaterialNames: PrintInformation.materialNames
 
+            function putBreaksIfLong(item)
+            {
+                var result = ""
+
+                const max_length = 13  // No longer than 13 -> 'WWWWWWWWWWWWWW' doesn't fit.
+                for(var c = 0; c < item.length; c += max_length)
+                {
+                    if (c > 0)
+                    {
+                        result += "<br>"
+                    }
+                    result += item.substring(c, c + max_length)
+                }
+
+                return result
+            }
+
             function formatRow(items)
             {
                 var rowHTML = "<tr>"
@@ -97,7 +114,7 @@ Column
                 {
                     if (item == 0)
                     {
-                        rowHTML += "<td valign=\"bottom\">%1</td>".arg(items[item])
+                        rowHTML += "<td valign=\"bottom\">%1</td>".arg(putBreaksIfLong(items[item]))
                     }
                     else
                     {
