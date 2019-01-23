@@ -13,6 +13,7 @@ from UM.FileHandler.WriteFileJob import WriteFileJob  # To call the file writer 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
+from UM.Qt.Duration import Duration, DurationFormat
 
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode  # For typing.
@@ -345,6 +346,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(int, result = str)
     def getDateCompleted(self, time_remaining: int) -> str:
         return formatDateCompleted(time_remaining)
+
+    @pyqtSlot(int, result = str)
+    def formatDuration(self, seconds: int) -> str:
+        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
 
     @pyqtSlot(str)
     def sendJobToTop(self, print_job_uuid: str) -> None:
