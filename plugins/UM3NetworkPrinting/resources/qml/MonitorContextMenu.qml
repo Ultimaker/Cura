@@ -25,7 +25,7 @@ Item
         direction: "up"
 
         // Use dark grey for info blurbs and white for context menus
-        color: "#ffffff" // TODO: Theme!
+        color: UM.Theme.getColor("monitor_context_menu")
 
         contentItem: Item
         {
