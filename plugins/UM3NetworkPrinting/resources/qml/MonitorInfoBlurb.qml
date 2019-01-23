@@ -24,7 +24,7 @@ Item
         direction: "up"
 
         // Use dark grey for info blurbs and white for context menus
-        color: "#191919" // TODO: Theme!
+        color: UM.Theme.getColor("monitor_tooltip")
 
         contentItem: Item
         {
@@ -38,7 +38,7 @@ Item
                 text: ""
                 wrapMode: Text.WordWrap
                 width: 240 * screenScaleFactor // TODO: Theme!
-                color: "white" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_tooltip_text")
                 font: UM.Theme.getFont("default")
             }
         }
