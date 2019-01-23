@@ -18,7 +18,7 @@ Button
         width: base.width
     }
     contentItem: Label {
-        color: UM.Theme.getColor("monitor_context_menu_dots")
+        color: UM.Theme.getColor("monitor_text_primary")
         font.pixelSize: 32 * screenScaleFactor
         horizontalAlignment: Text.AlignHCenter
         text: base.text
