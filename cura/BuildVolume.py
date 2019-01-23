@@ -1043,6 +1043,12 @@ class BuildVolume(SceneNode):
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
+        max_length_available = 0.5 * min(
+            self._global_container_stack.getProperty("machine_width", "value"),
+            self._global_container_stack.getProperty("machine_depth", "value")
+        )
+        bed_adhesion_size = min(bed_adhesion_size, max_length_available)
+
         support_expansion = 0
         support_enabled = self._global_container_stack.getProperty("support_enable", "value")
         support_offset = self._global_container_stack.getProperty("support_offset", "value")
