@@ -5,15 +5,14 @@ import QtQuick 2.3
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 /**
- * A Printer Card is has two main components: the printer portion and the print
- * job portion, the latter being paired in the UI when a print job is paired
- * a printer in-cluster.
+ * A Printer Card is has two main components: the printer portion and the print job portion, the latter being paired in
+ * the UI when a print job is paired a printer in-cluster.
  *
- * NOTE: For most labels, a fixed height with vertical alignment is used to make
- * layouts more deterministic (like the fixed-size textboxes used in original
- * mock-ups). This is also a stand-in for CSS's 'line-height' property. Denoted
+ * NOTE: For most labels, a fixed height with vertical alignment is used to make layouts more deterministic (like the
+ * fixed-size textboxes used in original mock-ups). This is also a stand-in for CSS's 'line-height' property. Denoted
  * with '// FIXED-LINE-HEIGHT:'.
  */
 Item
@@ -25,10 +24,13 @@ Item
 
     property var borderSize: 1 * screenScaleFactor // TODO: Theme, and remove from here
 
-    // If the printer card's controls are enabled. This is used by the carousel
-    // to prevent opening the context menu or camera while the printer card is not
-    // "in focus"
+    // If the printer card's controls are enabled. This is used by the carousel to prevent opening the context menu or
+    // camera while the printer card is not "in focus"
     property var enabled: true
+
+    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
+    // they might not need to though.
+    property bool cloudConnection: Cura.MachineManager.activeMachineHasActiveCloudConnection
 
     width: 834 * screenScaleFactor // TODO: Theme!
     height: childrenRect.height
@@ -155,16 +157,11 @@ Item
                 }
                 height: 72 * screenScaleFactor // TODO: Theme!te theRect's x property
             }
-
-            // TODO: Make this work.
-            PropertyAnimation { target: printerConfiguration; property: "visible"; to: 0; loops: Animation.Infinite; duration: 500 }
         }
 
-        
-
-        PrintJobContextMenu
+        MonitorContextMenuButton
         {
-            id: contextButton
+            id: contextMenuButton
             anchors
             {
                 right: parent.right
@@ -172,15 +169,49 @@ Item
                 top: parent.top
                 topMargin: 12 * screenScaleFactor // TODO: Theme!
             }
-            printJob: printer ? printer.activePrintJob : null
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
-            enabled: base.enabled
-            visible: printer
+            enabled: !cloudConnection
+            
+            onClicked: enabled ? contextMenu.switchPopupState() : {}
+            visible:
+            {
+                if (!printer || !printer.activePrintJob) {
+                    return false
+                }
+                var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+                return states.indexOf(printer.activePrintJob.state) !== -1
+            }
         }
+
+        MonitorContextMenu
+        {
+            id: contextMenu
+            printJob: printer ? printer.activePrintJob : null
+            target: contextMenuButton
+        }
+
+        // For cloud printing, add this mouse area over the disabled contextButton to indicate that it's not available
+        MouseArea
+        {
+            id: contextMenuDisabledButtonArea
+            anchors.fill: contextMenuButton
+            hoverEnabled: contextMenuButton.visible && !contextMenuButton.enabled
+            onEntered: contextMenuDisabledInfo.open()
+            onExited: contextMenuDisabledInfo.close()
+            enabled: !contextMenuButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: contextMenuDisabledInfo
+            text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
+            target: contextMenuButton
+        }
+
         CameraButton
         {
-            id: cameraButton;
+            id: cameraButton
             anchors
             {
                 right: parent.right
@@ -189,8 +220,26 @@ Item
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
             iconSource: "../svg/icons/camera.svg"
-            enabled: base.enabled
+            enabled: !cloudConnection
             visible: printer
+        }
+
+        // For cloud printing, add this mouse area over the disabled cameraButton to indicate that it's not available
+        MouseArea
+        {
+            id: cameraDisabledButtonArea
+            anchors.fill: cameraButton
+            hoverEnabled: cameraButton.visible && !cameraButton.enabled
+            onEntered: cameraDisabledInfo.open()
+            onExited: cameraDisabledInfo.close()
+            enabled: !cameraButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: cameraDisabledInfo
+            text: catalog.i18nc("@info", "The webcam is not available because you are monitoring a cloud printer.")
+            target: cameraButton
         }
     }
 
