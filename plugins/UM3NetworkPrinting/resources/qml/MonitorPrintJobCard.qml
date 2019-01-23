@@ -27,7 +27,7 @@ Item
     ExpandableCard
     {
         enabled: printJob != null
-        borderColor: printJob.configurationChanges.length !== 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
+        borderColor: printJob && printJob.configurationChanges.length !== 0 ? UM.Theme.getColor("warning") : UM.Theme.getColor("monitor_card_border")
         headerItem: Row
         {
             height: 48 * screenScaleFactor // TODO: Theme!
@@ -49,7 +49,7 @@ Item
                 width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
                 Rectangle
                 {
-                    color: "#eeeeee"
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     width: Math.round(parent.width / 2)
                     height: parent.height
                     visible: !printJob
@@ -57,7 +57,7 @@ Item
                 Label
                 {
                     text: printJob && printJob.name ? printJob.name : ""
-                    color: "#374355"
+                    color: UM.Theme.getColor("monitor_text_primary")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -75,7 +75,7 @@ Item
                 width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
                 Rectangle
                 {
-                    color: "#eeeeee"
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     width: Math.round(parent.width / 3)
                     height: parent.height
                     visible: !printJob
@@ -83,7 +83,7 @@ Item
                 Label
                 {
                     text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
-                    color: "#374355"
+                    color: UM.Theme.getColor("monitor_text_primary")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -102,7 +102,7 @@ Item
 
                 Rectangle
                 {
-                    color: "#eeeeee"
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     width: 72 * screenScaleFactor // TODO: Theme!
                     height: parent.height
                     visible: !printJob
@@ -112,7 +112,7 @@ Item
                 {
                     id: printerAssignmentLabel
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "#374355"
+                    color: UM.Theme.getColor("monitor_text_primary")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     text: {
@@ -176,7 +176,7 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: "Glass"
+                buildplate: catalog.i18nc("@label", "Glass")
                 configurations:
                 [
                     base.printJob.configuration.extruderConfigurations[0],
@@ -186,7 +186,7 @@ Item
             }
             Label {
                 text: printJob && printJob.owner ? printJob.owner : ""
-                color: "#374355" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_text_primary")
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.top: printerConfiguration.top

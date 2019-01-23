@@ -36,7 +36,7 @@ Item
     MonitorIconExtruder
     {
         id: extruderIcon
-        color: "#eeeeee" // TODO: Theme!
+        color: UM.Theme.getColor("monitor_skeleton_loading")
         position: 0
     }
 
@@ -48,7 +48,7 @@ Item
             left: extruderIcon.right
             leftMargin: 12 * screenScaleFactor // TODO: Theme!
         }
-        color: materialLabel.visible > 0 ? "transparent" : "#eeeeee" // TODO: Theme!
+        color: materialLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
         height: 18 * screenScaleFactor // TODO: Theme!
         width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
@@ -57,7 +57,7 @@ Item
         {
             id: materialLabel
             
-            color: "#191919" // TODO: Theme!
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("default") // 12pt, regular
             text: ""
@@ -77,7 +77,7 @@ Item
             left: materialLabelWrapper.left
             bottom: parent.bottom
         }
-        color: printCoreLabel.visible > 0 ? "transparent" : "#eeeeee" // TODO: Theme!
+        color: printCoreLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
         height: 18 * screenScaleFactor // TODO: Theme!
         width: Math.max(printCoreLabel.contentWidth, 36 * screenScaleFactor) // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
@@ -86,7 +86,7 @@ Item
         {
             id: printCoreLabel
             
-            color: "#191919" // TODO: Theme!
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("default_bold") // 12pt, bold
             text: ""

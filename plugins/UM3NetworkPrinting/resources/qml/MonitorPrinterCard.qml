@@ -37,10 +37,10 @@ Item
     {
         id: background
         anchors.fill: parent
-        color: "#FFFFFF" // TODO: Theme!
+        color: UM.Theme.getColor("monitor_card_background")
         border
         {
-            color: "#CCCCCC" // TODO: Theme!
+            color: UM.Theme.getColor("monitor_card_border")
             width: borderSize // TODO: Remove once themed
         }
         radius: 2 * screenScaleFactor // TODO: Theme!
@@ -69,7 +69,7 @@ Item
                 id: printerImage
                 width: 108 * screenScaleFactor // TODO: Theme!
                 height: 108 * screenScaleFactor // TODO: Theme!
-                color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
+                color: printer ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
                 radius: 8 // TODO: Theme!
                 Image
                 {
@@ -93,8 +93,7 @@ Item
                 Rectangle
                 {
                     id: printerNameLabel
-                    // color: "#414054" // TODO: Theme!
-                    color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
+                    color: printer ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
                     height: 18 * screenScaleFactor // TODO: Theme!
                     width: parent.width
                     radius: 2 * screenScaleFactor // TODO: Theme!
@@ -102,7 +101,7 @@ Item
                     Label
                     {
                         text: printer && printer.name ? printer.name : ""
-                        color: "#414054" // TODO: Theme!
+                        color: UM.Theme.getColor("monitor_text_primary")
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("large") // 16pt, bold
                         width: parent.width
@@ -116,7 +115,7 @@ Item
 
                 Rectangle
                 {
-                    color: "#eeeeee" // TODO: Theme!
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     height: 18 * screenScaleFactor // TODO: Theme!
                     radius: 2 * screenScaleFactor // TODO: Theme!
                     visible: !printer
@@ -220,7 +219,7 @@ Item
         }
         border
         {
-            color: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "transparent" // TODO: Theme!
+            color: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? UM.Theme.getColor("warning") : "transparent" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
         color: "transparent" // TODO: Theme!
@@ -246,7 +245,7 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                color: printer ? "#414054" : "#aaaaaa" // TODO: Theme!
+                color: printer ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                 font: UM.Theme.getFont("large_bold") // 16pt, bold
                 text: {
                     if (!printer) {
@@ -299,10 +298,10 @@ Item
                 Label
                 {
                     id: printerJobNameLabel
-                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? "#414054" : "#babac1" // TODO: Theme!
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("large") // 16pt, bold
-                    text: printer && printer.activePrintJob ? printer.activePrintJob.name : "Untitled" // TODO: I18N
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.name : catalog.i18nc("@label", "Untitled")
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -319,10 +318,10 @@ Item
                         topMargin: 6 * screenScaleFactor // TODO: Theme!
                         left: printerJobNameLabel.left
                     }
-                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? "#53657d" : "#babac1" // TODO: Theme!
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default") // 12pt, regular
-                    text: printer && printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.owner : catalog.i18nc("@label", "Anonymous")
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -348,7 +347,7 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 font: UM.Theme.getFont("default")
-                text: "Requires configuration changes"
+                text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
 
                 // FIXED-LINE-HEIGHT:
@@ -368,13 +367,13 @@ Item
             }
             background: Rectangle
             {
-                color: "#d8d8d8" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_secondary_button_shadow")
                 radius: 2 * screenScaleFactor // Todo: Theme!
                 Rectangle
                 {
                     anchors.fill: parent
                     anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                    color: detailsButton.hovered ? "#e4e4e4" : "#f0f0f0" // TODO: Theme!
+                    color: detailsButton.hovered ? UM.Theme.getColor("monitor_secondary_button_hover") : UM.Theme.getColor("monitor_secondary_button")
                     radius: 2 * screenScaleFactor // Todo: Theme!
                 }
             }
@@ -382,9 +381,9 @@ Item
             {
                 anchors.fill: parent
                 anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                color: "#1e66d7" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_secondary_button_text")
                 font: UM.Theme.getFont("medium") // 14pt, regular
-                text: "Details" // TODO: I18NC!
+                text: catalog.i18nc("@action:button","Details");
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
