@@ -176,13 +176,15 @@ SettingItem
             }
         }
 
-        popup: Popup {
+        popup: Popup
+        {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
             implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
-            contentItem: ListView {
+            contentItem: ListView
+            {
                 clip: true
                 implicitHeight: contentHeight
                 model: control.popup.visible ? control.delegateModel : null
@@ -191,7 +193,8 @@ SettingItem
                 ScrollIndicator.vertical: ScrollIndicator { }
             }
 
-            background: Rectangle {
+            background: Rectangle
+            {
                 color: UM.Theme.getColor("setting_control")
                 border.color: UM.Theme.getColor("setting_control_border")
             }
@@ -213,9 +216,11 @@ SettingItem
                 renderType: Text.NativeRendering
                 color:
                 {
-                    if (model.enabled) {
+                    if (model.enabled)
+                    {
                         UM.Theme.getColor("setting_control_text")
-                    } else {
+                    } else
+                    {
                         UM.Theme.getColor("action_button_disabled_text");
                     }
                 }

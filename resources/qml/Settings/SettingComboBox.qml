@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2019 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.0
@@ -24,11 +24,13 @@ SettingItem
         {
             color:
             {
-                if (!enabled) {
+                if (!enabled)
+                {
                     return UM.Theme.getColor("setting_control_disabled")
                 }
 
-                if (control.hovered || control.activeFocus) {
+                if (control.hovered || control.activeFocus)
+                {
                     return UM.Theme.getColor("setting_control_highlight")
                 }
 
@@ -39,11 +41,13 @@ SettingItem
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
-                if (!enabled) {
+                if (!enabled)
+                {
                     return UM.Theme.getColor("setting_control_disabled_border")
                 }
 
-                if (control.hovered || control.activeFocus) {
+                if (control.hovered || control.activeFocus)
+                {
                     return UM.Theme.getColor("setting_control_border_highlight")
                 }
 
@@ -82,13 +86,15 @@ SettingItem
             verticalAlignment: Text.AlignVCenter
         }
 
-        popup: Popup {
+        popup: Popup
+        {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
             implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
-            contentItem: ListView {
+            contentItem: ListView
+            {
                 clip: true
                 implicitHeight: contentHeight
                 model: control.popup.visible ? control.delegateModel : null
@@ -97,7 +103,8 @@ SettingItem
                 ScrollIndicator.vertical: ScrollIndicator { }
             }
 
-            background: Rectangle {
+            background: Rectangle
+            {
                 color: UM.Theme.getColor("setting_control")
                 border.color: UM.Theme.getColor("setting_control_border")
             }
@@ -164,19 +171,23 @@ SettingItem
             {
                 // FIXME this needs to go away once 'resolve' is combined with 'value' in our data model.
                 var value = undefined;
-                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1)) {
+                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1))
+                {
                     // We have a resolve function. Indicates that the setting is not settable per extruder and that
                     // we have to choose between the resolved value (default) and the global value
                     // (if user has explicitly set this).
                     value = base.resolve;
                 }
 
-                if (value == undefined) {
+                if (value == undefined)
+                {
                     value = propertyProvider.properties.value;
                 }
 
-                for(var i = 0; i < control.model.length; ++i) {
-                    if(control.model[i].key == value) {
+                for(var i = 0; i < control.model.length; ++i)
+                {
+                    if(control.model[i].key == value)
+                    {
                         return i;
                     }
                 }
