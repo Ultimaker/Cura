@@ -238,7 +238,8 @@
         "monitor_progress_bar_deactive": [102, 102, 102, 255],
         "monitor_progress_bar_empty": [67, 67, 67, 255],
 
-        "monitor_tooltips": [25, 25, 25, 255],
+        "monitor_tooltip": [25, 25, 25, 255],
+        "monitor_tooltip_text": [229, 229, 229, 255],
         "monitor_context_menu": [67, 67, 67, 255],
         "monitor_context_menu_hover": [30, 102, 215, 255],
 
