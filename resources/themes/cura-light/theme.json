@@ -399,27 +399,40 @@
         "favorites_header_text_hover": [31, 36, 39, 255],
         "favorites_row_selected": [196, 239, 255, 255],
 
-        "monitor_card_background_inactive": [240, 240, 240, 255],
+        "monitor_printer_family_tag": [228, 228, 242, 255],
+        "monitor_text_primary": [65, 64, 84, 255],
+        "monitor_text_disabled": [238, 238, 238, 255],
+        "monitor_text_link": [50, 130, 255, 255],
+        "monitor_icon_primary": [10, 8, 80, 255],
+        "monitor_icon_accent": [255, 255, 255, 255],
+
+        "monitor_secondary_button_hover": [228, 228, 228, 255],
+        "monitor_secondary_button": [240, 240, 240, 255],
+        "monitor_secondary_button_text": [30, 102, 215, 255],
+        "monitor_secondary_button_shadow": [216, 216, 216, 255],
+
+        "monitor_card_border": [192, 193, 194, 255],
         "monitor_card_background": [255, 255, 255, 255],
-        "monitor_context_menu_background": [255, 255, 255, 255],
-        "monitor_context_menu_dots": [154, 154, 154, 255],
-        "monitor_context_menu_highlight": [245, 245, 245, 255],
-        "monitor_image_overlay": [0, 0, 0, 255],
-        "monitor_lining_heavy": [0, 0, 0, 255],
-        "monitor_lining_light": [230, 230, 230, 255],
-        "monitor_pill_background": [245, 245, 245, 255],
+        "monitor_card_hover": [232, 242, 252, 255],
+
+        "monitor_stage_background": [246, 246, 246, 255],
+        "monitor_stage_background_fade": [246, 246, 246, 102],
+
+        "monitor_progress_bar_fill": [50, 130, 255, 255],
+        "monitor_progress_bar_deactive": [192, 193, 194, 255],
+        "monitor_progress_bar_empty": [245, 245, 245, 255],
+
+        "monitor_tooltips": [25, 25, 25, 255],
+        "monitor_context_menu": [255, 255, 255, 255],
+        "monitor_context_menu_hover": [245, 245, 245, 255],
+
+        "monitor_skeleton_loading": [238, 238, 238, 255],
         "monitor_placeholder_image": [230, 230, 230, 255],
-        "monitor_printer_icon_inactive": [154, 154, 154, 255],
-        "monitor_printer_icon": [50, 130, 255, 255],
-        "monitor_progress_background_text": [0,0,0,255],
-        "monitor_progress_background": [245, 245, 245, 255],
-        "monitor_progress_fill_inactive": [154, 154, 154, 255],
-        "monitor_progress_fill_text": [255,255,255,255],
-        "monitor_progress_fill": [50, 130, 255, 255],
-        "monitor_shadow": [0, 0, 0, 63],
-        "monitor_skeleton_fill": [245, 245, 245, 255],
-        "monitor_skeleton_fill_dark": [216, 216, 216, 255],
-        "monitor_text_inactive": [154, 154, 154, 255]
+        "monitor_image_overlay": [0, 0, 0, 255],
+        "monitor_shadow": [220, 220, 220, 255],
+
+        "monitor_carousel_dot": [216, 216, 216, 255],
+        "monitor_carousel_dot_current": [119, 119, 119, 255]
     },
 
     "sizes": {
@@ -442,11 +455,12 @@
         "print_setup_slider_tickmarks": [0.32, 0.32],
         "print_setup_big_item": [28, 2.5],
         "print_setup_icon": [1.2, 1.2],
+        "drag_icon": [1.416, 0.25],
 
         "expandable_component_content_header": [0.0, 3.0],
 
         "configuration_selector": [35.0, 4.0],
-        "configuration_selector_mode_tabs": [0.0, 3.0],
+        "configuration_selector_mode_tabs": [1.0, 3.0],
 
         "action_panel_widget": [26.0, 0.0],
         "action_panel_information_widget": [20.0, 0.0],

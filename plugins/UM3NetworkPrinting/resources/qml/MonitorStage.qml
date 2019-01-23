@@ -11,7 +11,7 @@ import QtGraphicalEffects 1.0
 // This is the root component for the monitor stage.
 Component
 {
-    Item
+    Rectangle
     {
         id: monitorFrame
 
@@ -24,6 +24,7 @@ Component
             }
         }
         width: maximumWidth
+        color: UM.Theme.getColor("monitor_stage_background")
         
         // Enable keyboard navigation. NOTE: This is done here so that we can also potentially
         // forward to the queue items in the future. (Deleting selected print job, etc.)
@@ -34,24 +35,6 @@ Component
         {
             id: catalog
             name: "cura"
-        }
-
-        LinearGradient
-        {
-            anchors.fill: parent
-            gradient: Gradient
-            {
-                GradientStop
-                {
-                    position: 0.0
-                    color: "#f6f6f6" // TODO: Theme!
-                }
-                GradientStop
-                {
-                    position: 1.0
-                    color: "#ffffff" // TODO: Theme!
-                }
-            }
         }
 
         Item

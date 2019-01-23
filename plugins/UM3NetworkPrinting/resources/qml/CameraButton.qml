@@ -13,7 +13,7 @@ Rectangle {
     property var enabled: true
 
     property var iconSource: null;
-    color: !enabled ? "#cccccc" : "#0a0850" // TODO: Theme!
+    color: UM.Theme.getColor("monitor_icon_primary")
     height: width;
     radius: Math.round(0.5 * width);
     width: 24 * screenScaleFactor;
@@ -24,7 +24,7 @@ Rectangle {
             horizontalCenter: parent.horizontalCenter;
             verticalCenter: parent.verticalCenter;
         }
-        color: UM.Theme.getColor("primary_text");
+        color: UM.Theme.getColor("monitor_icon_accent");
         height: width;
         source: iconSource;
         width: Math.round(parent.width / 2);

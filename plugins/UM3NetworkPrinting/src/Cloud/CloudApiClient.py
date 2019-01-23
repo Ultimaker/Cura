@@ -119,7 +119,7 @@ class CloudApiClient:
         except (UnicodeDecodeError, JSONDecodeError, ValueError) as err:
             error = CloudError(code=type(err).__name__, title=str(err), http_code=str(status_code),
                                id=str(time()), http_status="500")
-            Logger.logException("e", "Could not parse the stardust response: %s", error)
+            Logger.logException("e", "Could not parse the stardust response: %s", error.toDict())
             return status_code, {"errors": [error.toDict()]}
 
     ## Parses the given models and calls the correct callback depending on the result.

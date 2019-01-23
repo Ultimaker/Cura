@@ -22,7 +22,7 @@ Item
             left: queuedPrintJobs.left
             top: parent.top
         }
-        color: UM.Theme.getColor("text")
+        color: UM.Theme.getColor("monitor_text_primary")
         font: UM.Theme.getFont("large")
         text: catalog.i18nc("@label", "Queued")
     }
@@ -42,7 +42,7 @@ Item
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
-            color: UM.Theme.getColor("text_link")
+            color: UM.Theme.getColor("monitor_text_link")
             source: UM.Theme.getIcon("external_link")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
@@ -56,9 +56,9 @@ Item
                 leftMargin: 6 * screenScaleFactor // TODO: Theme!
                 verticalCenter: externalLinkIcon.verticalCenter
             }
-            color: UM.Theme.getColor("text_link")
+            color: UM.Theme.getColor("monitor_text_link")
             font: UM.Theme.getFont("default") // 12pt, regular
-            linkColor: UM.Theme.getColor("text_link")
+            linkColor: UM.Theme.getColor("monitor_text_link")
             text: catalog.i18nc("@label link to connect manager", "Manage queue in Cura Connect")
             renderType: Text.NativeRendering
         }
@@ -94,7 +94,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Print jobs")
-            color: "#666666"
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -108,7 +108,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Total print time")
-            color: "#666666"
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -122,7 +122,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Waiting for")
-            color: "#666666"
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter

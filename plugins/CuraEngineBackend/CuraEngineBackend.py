@@ -151,7 +151,7 @@ class CuraEngineBackend(QObject, Backend):
         if self._multi_build_plate_model:
             self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveViewChanged)
 
-        self._application.globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._application.getMachineManager().globalContainerChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         # extruder enable / disable. Actually wanted to use machine manager here, but the initialization order causes it to crash
@@ -821,7 +821,7 @@ class CuraEngineBackend(QObject, Backend):
                 extruder.propertyChanged.disconnect(self._onSettingChanged)
                 extruder.containersChanged.disconnect(self._onChanged)
 
-        self._global_container_stack = self._application.getGlobalContainerStack()
+        self._global_container_stack = self._application.getMachineManager().activeMachine
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.

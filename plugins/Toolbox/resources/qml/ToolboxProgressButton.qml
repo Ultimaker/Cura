@@ -62,17 +62,6 @@ Item
                 readyAction()
             }
         }
-    }
-
-    AnimatedImage
-    {
-        id: loader
-        visible: active
-        source: visible ? "../images/loading.gif" : ""
-        width: UM.Theme.getSize("toolbox_loader").width
-        height: UM.Theme.getSize("toolbox_loader").height
-        anchors.right: button.left
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        anchors.verticalCenter: button.verticalCenter
+        busy: active
     }
 }

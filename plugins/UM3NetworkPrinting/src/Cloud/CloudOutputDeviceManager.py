@@ -138,10 +138,10 @@ class CloudOutputDeviceManager:
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
-    def _onApiError(self, errors: List[CloudError]) -> None:
-        text = ". ".join(e.title for e in errors)  # TODO: translate errors
+    def _onApiError(self, errors: List[CloudError] = None) -> None:
+        Logger.log("w", str(errors))
         message = Message(
-            text = text,
+            text = self.I18N_CATALOG.i18nc("@info:description", "There was an error connecting to the cloud."),
             title = self.I18N_CATALOG.i18nc("@info:title", "Error"),
             lifetime = 10
         )

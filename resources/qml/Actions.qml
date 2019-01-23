@@ -58,6 +58,7 @@ Item
 
     property alias showProfileFolder: showProfileFolderAction;
     property alias documentation: documentationAction;
+    property alias showTroubleshooting: showTroubleShootingAction
     property alias reportBug: reportBugAction;
     property alias about: aboutAction;
 
@@ -69,18 +70,26 @@ Item
 
     UM.I18nCatalog{id: catalog; name: "cura"}
 
+
+    Action
+    {
+        id: showTroubleShootingAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting")
+        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting Guide");
+    }
+
     Action
     {
         id:toggleFullScreenAction
         shortcut: StandardKey.FullScreen;
-        text: catalog.i18nc("@action:inmenu","Toggle Full Screen");
+        text: catalog.i18nc("@action:inmenu", "Toggle Full Screen");
         iconName: "view-fullscreen";
     }
 
     Action
     {
         id: undoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Undo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
         onTriggered: UM.OperationStack.undo();
