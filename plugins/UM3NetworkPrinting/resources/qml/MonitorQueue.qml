@@ -57,9 +57,9 @@ Item
                 verticalCenter: externalLinkIcon.verticalCenter
             }
             color: UM.Theme.getColor("monitor_text_link")
-            font: UM.Theme.getFont("default") // 12pt, regular
+            font: UM.Theme.getFont("medium") // 14pt, regular
             linkColor: UM.Theme.getColor("monitor_text_link")
-            text: catalog.i18nc("@label link to connect manager", "Manage queue in Cura Connect")
+            text: catalog.i18nc("@label link to connect manager", "Go to Cura Connect")
             renderType: Text.NativeRendering
         }
     }
@@ -172,6 +172,89 @@ Item
                 return OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs : [null,null]
             }
             spacing: 6  // TODO: Theme!
+        }
+    }
+
+    Rectangle
+    {
+        anchors
+        {
+            horizontalCenter: parent.horizontalCenter
+            top: printJobQueueHeadings.bottom
+            topMargin: 12 * screenScaleFactor // TODO: Theme!
+        }
+        height: 48 * screenScaleFactor // TODO: Theme!
+        width: parent.width
+        color: UM.Theme.getColor("monitor_card_background")
+        border.color: UM.Theme.getColor("monitor_card_border")
+        radius: 2 * screenScaleFactor // TODO: Theme!
+
+        visible: printJobList.model.length == 0
+
+        Row
+        {
+            anchors
+            {
+                left: parent.left
+                leftMargin: 18 * screenScaleFactor // TODO: Theme!
+                verticalCenter: parent.verticalCenter
+            }
+            spacing: 18 * screenScaleFactor // TODO: Theme!
+            height: 18 * screenScaleFactor // TODO: Theme!
+
+            Label
+            {
+                text: "All jobs are printed."
+                color: UM.Theme.getColor("monitor_text_primary")
+                font: UM.Theme.getFont("medium") // 14pt, regular
+            }
+
+            Item
+            {
+                id: viewPrintHistoryLabel
+                
+                height: 18 * screenScaleFactor // TODO: Theme!
+                width: childrenRect.width
+
+                UM.RecolorImage
+                {
+                    id: printHistoryIcon
+                    anchors.verticalCenter: manageQueueLabel.verticalCenter
+                    color: UM.Theme.getColor("monitor_text_link")
+                    source: UM.Theme.getIcon("external_link")
+                    width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
+                    height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
+                }
+                Label
+                {
+                    id: viewPrintHistoryText
+                    anchors
+                    {
+                        left: printHistoryIcon.right
+                        leftMargin: 6 * screenScaleFactor // TODO: Theme!
+                        verticalCenter: printHistoryIcon.verticalCenter
+                    }
+                    color: UM.Theme.getColor("monitor_text_link")
+                    font: UM.Theme.getFont("medium") // 14pt, regular
+                    linkColor: UM.Theme.getColor("monitor_text_link")
+                    text: catalog.i18nc("@label link to connect manager", "View print history")
+                    renderType: Text.NativeRendering
+                }
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
+                    onEntered:
+                    {
+                        viewPrintHistoryText.font.underline = true
+                    }
+                    onExited:
+                    {
+                        viewPrintHistoryText.font.underline = false
+                    }
+                }
+            }
         }
     }
 }
