@@ -219,7 +219,7 @@ Item
                 UM.RecolorImage
                 {
                     id: printHistoryIcon
-                    anchors.verticalCenter: manageQueueLabel.verticalCenter
+                    anchors.verticalCenter: parent.verticalCenter
                     color: UM.Theme.getColor("monitor_text_link")
                     source: UM.Theme.getIcon("external_link")
                     width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)

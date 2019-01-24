@@ -146,7 +146,7 @@
         "wide_lining": [245, 245, 245, 255],
         "thick_lining": [127, 127, 127, 255],
         "lining": [192, 193, 194, 255],
-        "viewport_overlay": [0, 0, 0, 192],
+        "viewport_overlay": [246, 246, 246, 255],
 
         "primary": [50, 130, 255, 255],
         "primary_shadow": [64, 47, 205, 255],
