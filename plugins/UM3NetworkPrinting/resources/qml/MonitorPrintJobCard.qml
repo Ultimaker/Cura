@@ -217,6 +217,14 @@ Item
         height: 32 * screenScaleFactor // TODO: Theme!
         enabled: !cloudConnection
         onClicked: enabled ? contextMenu.switchPopupState() : {}
+        visible:
+        {
+            if (!printJob) {
+                return false
+            }
+            var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+            return states.indexOf(printJob.state) !== -1
+        }
     }
 
     MonitorContextMenu
