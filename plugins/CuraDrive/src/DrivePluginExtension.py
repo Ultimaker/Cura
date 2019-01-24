@@ -68,7 +68,7 @@ class DrivePluginExtension(QObject, Extension):
 
     def showDriveWindow(self) -> None:
         if not self._drive_window:
-            plugin_dir_path = CuraApplication.getInstance().getPluginRegistry().getPluginPath("CuraDrive")
+            plugin_dir_path = CuraApplication.getInstance().getPluginRegistry().getPluginPath(self.getPluginId())
             path = os.path.join(plugin_dir_path, "src", "qml", "main.qml")
             self._drive_window = CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
         self.refreshBackups()
