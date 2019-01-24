@@ -64,8 +64,10 @@ Component
             }
             width: parent.width
             height: 264 * screenScaleFactor // TODO: Theme!
-            MonitorCarousel {
+            MonitorCarousel
+            {
                 id: carousel
+                printers: OutputDevice.receivedPrintJobs ? OutputDevice.printers : [null]
             }
         }
 

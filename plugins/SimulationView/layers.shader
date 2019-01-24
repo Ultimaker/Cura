@@ -49,12 +49,13 @@ fragment =
             // discard movements
             discard;
         }
-        // support: 4, 5, 7, 10
+        // support: 4, 5, 7, 10, 11 (prime tower)
         if ((u_show_helpers == 0) && (
             ((v_line_type >= 3.5) && (v_line_type <= 4.5)) ||
+            ((v_line_type >= 4.5) && (v_line_type <= 5.5)) ||
             ((v_line_type >= 6.5) && (v_line_type <= 7.5)) ||
             ((v_line_type >= 9.5) && (v_line_type <= 10.5)) ||
-            ((v_line_type >= 4.5) && (v_line_type <= 5.5))
+            ((v_line_type >= 10.5) && (v_line_type <= 11.5))
             )) {
             discard;
         }

@@ -15,6 +15,7 @@ Item
     id: base
 
     property bool expanded: false
+    property bool enabled: true
     property var borderWidth: 1
     property color borderColor: "#CCCCCC"
     property color headerBackgroundColor: "white"
@@ -34,7 +35,7 @@ Item
             color: borderColor
             width: borderWidth
         }
-        color: headerMouseArea.containsMouse ? headerHoverColor : headerBackgroundColor
+        color: base.enabled && headerMouseArea.containsMouse ? headerHoverColor : headerBackgroundColor
         height: childrenRect.height
         width: parent.width
         Behavior on color
@@ -50,8 +51,12 @@ Item
     {
         id: headerMouseArea
         anchors.fill: header
-        onClicked: base.expanded = !base.expanded
-        hoverEnabled: true
+        onClicked:
+        {
+            if (!base.enabled) return
+            base.expanded = !base.expanded
+        }
+        hoverEnabled: base.enabled
     }
 
     Rectangle

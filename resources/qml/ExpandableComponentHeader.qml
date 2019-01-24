@@ -25,7 +25,7 @@ Cura.RoundedRectangle
     {
         id: headerLabel
         text: ""
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("medium")
         renderType: Text.NativeRendering
         verticalAlignment: Text.AlignVCenter
         color: UM.Theme.getColor("small_button_text")

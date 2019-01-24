@@ -28,6 +28,7 @@
 
         "machine_selector_bar": [39, 44, 48, 255],
         "machine_selector_active": [39, 44, 48, 255],
+        "machine_selector_printer_icon": [204, 204, 204, 255],
 
         "text": [255, 255, 255, 204],
         "text_detail": [255, 255, 255, 172],

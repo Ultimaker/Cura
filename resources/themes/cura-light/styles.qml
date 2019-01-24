@@ -207,8 +207,8 @@ QtObject
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
 
-                        text: control.text;
-                        font: Theme.getFont("button_tooltip")
+                        text: control.text
+                        font: Theme.getFont("default")
                         color: Theme.getColor("tooltip_text")
                     }
                 }
@@ -256,7 +256,7 @@ QtObject
                     source: control.iconSource
                     width: Theme.getSize("button_icon").width
                     height: Theme.getSize("button_icon").height
-                    color: Theme.getColor("toolbar_button_text")
+                    color: Theme.getColor("icon")
 
                     sourceSize: Theme.getSize("button_icon")
                 }
@@ -478,7 +478,7 @@ QtObject
                 color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : (control.enabled ? Theme.getColor("checkbox") : Theme.getColor("checkbox_disabled"))
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : UM.Theme.getSize("checkbox_radius").width
+                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : Theme.getSize("checkbox_radius").width
 
                 border.width: Theme.getSize("default_lining").width
                 border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border")
@@ -585,6 +585,7 @@ QtObject
                     text: control.unit ? control.unit : ""
                     color: Theme.getColor("setting_unit");
                     font: Theme.getFont("default");
+                    renderType: Text.NativeRendering
                 }
             }
         }

@@ -31,6 +31,13 @@ Column
         id: information
         width: parent.width
         height: childrenRect.height
+        
+        PrintInformationWidget
+        {
+            id: printInformationPanel
+            visible: !preSlicedData
+            anchors.right: parent.right
+        }
 
         Column
         {
@@ -40,8 +47,7 @@ Column
             anchors
             {
                 left: parent.left
-                right: printInformationPanel.left
-                rightMargin: printInformationPanel.visible ? UM.Theme.getSize("thin_margin").width : 0
+                right: parent.right
             }
 
             Cura.IconWithText
@@ -51,7 +57,7 @@ Column
 
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
                 source: UM.Theme.getIcon("clock")
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("medium_bold")
             }
 
             Cura.IconWithText
@@ -86,18 +92,6 @@ Column
                 source: UM.Theme.getIcon("spool")
             }
         }
-
-        PrintInformationWidget
-        {
-            id: printInformationPanel
-            visible: !preSlicedData
-
-            anchors
-            {
-                right: parent.right
-                verticalCenter: timeAndCostsInformation.verticalCenter
-            }
-        }
     }
 
     Item
@@ -123,11 +117,10 @@ Column
             tooltip: text
             fixedWidthMode: true
 
+            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
+
             onClicked: UM.Controller.setActiveStage("PreviewStage")
             visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
-
-            shadowEnabled: true
-            shadowColor: UM.Theme.getColor("action_button_disabled_shadow")
         }
 
         Cura.OutputDevicesActionButton

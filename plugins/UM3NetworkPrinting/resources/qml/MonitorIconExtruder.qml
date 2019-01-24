@@ -19,7 +19,7 @@ Item
     property int position: 0
 
     // The extruder icon size; NOTE: This shouldn't need to be changed
-    property int size: 32 // TODO: Theme!
+    property int size: 32 * screenScaleFactor // TODO: Theme!
 
     // THe extruder icon source; NOTE: This shouldn't need to be changed
     property string iconSource: "../svg/icons/extruder.svg"
@@ -35,26 +35,17 @@ Item
         width: size
     }
 
-    /*
-     * The label uses some "fancy" math to ensure that if you change the overall
-     * icon size, the number scales with it. That is to say, the font properties
-     * are linked to the icon size, NOT the theme. And that's intentional.
-     */
     Label
     {
         id: positionLabel
-        font
-        {
-            pointSize: Math.round(size * 0.3125)
-            weight: Font.Bold
-        }
-        height: Math.round(size / 2) * screenScaleFactor
+        font: UM.Theme.getFont("small")
+        height: Math.round(size / 2)
         horizontalAlignment: Text.AlignHCenter
         text: position + 1
         verticalAlignment: Text.AlignVCenter
-        width: Math.round(size / 2) * screenScaleFactor
-        x: Math.round(size * 0.25) * screenScaleFactor
-        y: Math.round(size * 0.15625) * screenScaleFactor
-        // TODO: Once 'size' is themed, screenScaleFactor won't be needed
+        width: Math.round(size / 2)
+        x: Math.round(size * 0.25)
+        y: Math.round(size * 0.15625)
+        visible: position >= 0
     }
 }

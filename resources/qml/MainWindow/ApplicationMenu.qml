@@ -85,14 +85,6 @@ Item
 
         Menu
         {
-            id: plugin_menu
-            title: catalog.i18nc("@title:menu menubar:toplevel", "&Marketplace")
-
-            MenuItem { action: Cura.Actions.browsePackages }
-        }
-
-        Menu
-        {
             id: preferencesMenu
             title: catalog.i18nc("@title:menu menubar:toplevel", "P&references")
 
@@ -105,6 +97,7 @@ Item
             title: catalog.i18nc("@title:menu menubar:toplevel", "&Help")
 
             MenuItem { action: Cura.Actions.showProfileFolder }
+            MenuItem { action: Cura.Actions.showTroubleshooting}
             MenuItem { action: Cura.Actions.documentation }
             MenuItem { action: Cura.Actions.reportBug }
             MenuSeparator { }

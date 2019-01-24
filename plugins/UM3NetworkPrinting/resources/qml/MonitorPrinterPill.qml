@@ -27,12 +27,12 @@ Item
     }
 
     implicitHeight: 18 * screenScaleFactor // TODO: Theme!
-    implicitWidth: printerNameLabel.contentWidth + 12 // TODO: Theme!
+    implicitWidth: Math.max(printerNameLabel.contentWidth + 12 * screenScaleFactor, 36 * screenScaleFactor) // TODO: Theme!
 
     Rectangle {
         id: background
         anchors.fill: parent
-        color: "#e4e4f2" // TODO: Theme!
+        color: printerNameLabel.visible ? "#e4e4f2" : "#eeeeee"// TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
     }
 
@@ -41,6 +41,7 @@ Item
         anchors.centerIn: parent
         color: "#535369" // TODO: Theme!
         text: tagText
-        font.pointSize: 10
+        font.pointSize: 10 // TODO: Theme!
+        visible: text !== ""
     }
 }

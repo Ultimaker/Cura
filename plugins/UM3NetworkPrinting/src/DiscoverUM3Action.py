@@ -123,26 +123,33 @@ class DiscoverUM3Action(MachineAction):
     # stored into the metadata of the currently active machine.
     @pyqtSlot(QObject)
     def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
-        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "um_network_key" in meta_data:
-                previous_network_key= meta_data["um_network_key"]
-                global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-                # Delete old authentication data.
-                Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
-                global_container_stack.removeMetaDataEntry("network_authentication_id")
-                global_container_stack.removeMetaDataEntry("network_authentication_key")
-                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = printer_device.key)
+        if not printer_device:
+            return
 
-                if "connection_type" in meta_data:
-                    previous_connection_type = meta_data["connection_type"]
-                    global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
-                    CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connection_type", value = previous_connection_type, new_value = printer_device.getConnectionType().value)
-            else:
-                global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-                global_container_stack.setMetaDataEntry("connection_type", printer_device.getConnectionType().value)
+        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
+
+        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return
+
+        meta_data = global_container_stack.getMetaData()
+        if "um_network_key" in meta_data:
+            previous_network_key = meta_data["um_network_key"]
+            global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
+            # Delete old authentication data.
+            Logger.log("d", "Removing old authentication id %s for device %s",
+                       global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
+            global_container_stack.removeMetaDataEntry("network_authentication_id")
+            global_container_stack.removeMetaDataEntry("network_authentication_key")
+            CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = printer_device.key)
+
+            if "connection_type" in meta_data:
+                previous_connection_type = meta_data["connection_type"]
+                global_container_stack.setMetaDataEntry("connection_type", printer_device.connectionType.value)
+                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connection_type", value = previous_connection_type, new_value = printer_device.connectionType.value)
+        else:
+            global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
+            global_container_stack.setMetaDataEntry("connection_type", printer_device.connectionType.value)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
@@ -193,4 +200,3 @@ class DiscoverUM3Action(MachineAction):
 
         # Create extra components
         CuraApplication.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
-        CuraApplication.getInstance().addAdditionalComponent("machinesDetailPane", self.__additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))

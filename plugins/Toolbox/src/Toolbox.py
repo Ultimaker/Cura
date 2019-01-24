@@ -16,7 +16,8 @@ from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
 
-import cura
+from cura import ApplicationMetadata
+from cura import UltimakerCloudAuthentication
 from cura.CuraApplication import CuraApplication
 
 from .AuthorsModel import AuthorsModel
@@ -30,17 +31,14 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
-    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"  # type: str
-    DEFAULT_CLOUD_API_VERSION = 1  # type: int
-
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
 
         self._application = application  # type: CuraApplication
 
-        self._sdk_version = None  # type: Optional[Union[str, int]]
-        self._cloud_api_version = None  # type: Optional[int]
-        self._cloud_api_root = None  # type: Optional[str]
+        self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
+        self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: int
+        self._cloud_api_root = UltimakerCloudAuthentication.CuraCloudAPIRoot  # type: str
         self._api_url = None  # type: Optional[str]
 
         # Network:
@@ -182,9 +180,6 @@ class Toolbox(QObject, Extension):
     def _onAppInitialized(self) -> None:
         self._plugin_registry = self._application.getPluginRegistry()
         self._package_manager = self._application.getPackageManager()
-        self._sdk_version = self._getSDKVersion()
-        self._cloud_api_version = self._getCloudAPIVersion()
-        self._cloud_api_root = self._getCloudAPIRoot()
         self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
             cloud_api_root = self._cloud_api_root,
             cloud_api_version = self._cloud_api_version,
@@ -194,36 +189,6 @@ class Toolbox(QObject, Extension):
             "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
-
-    # Get the API root for the packages API depending on Cura version settings.
-    def _getCloudAPIRoot(self) -> str:
-        if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_CLOUD_API_ROOT
-        if not hasattr(cura.CuraVersion, "CuraCloudAPIRoot"): # type: ignore
-            return self.DEFAULT_CLOUD_API_ROOT
-        if not cura.CuraVersion.CuraCloudAPIRoot:  # type: ignore
-            return self.DEFAULT_CLOUD_API_ROOT
-        return cura.CuraVersion.CuraCloudAPIRoot  # type: ignore
-
-    # Get the cloud API version from CuraVersion
-    def _getCloudAPIVersion(self) -> int:
-        if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_CLOUD_API_VERSION
-        if not hasattr(cura.CuraVersion, "CuraCloudAPIVersion"): # type: ignore
-            return self.DEFAULT_CLOUD_API_VERSION
-        if not cura.CuraVersion.CuraCloudAPIVersion:  # type: ignore
-            return self.DEFAULT_CLOUD_API_VERSION
-        return cura.CuraVersion.CuraCloudAPIVersion  # type: ignore
-
-    # Get the packages version depending on Cura version settings.
-    def _getSDKVersion(self) -> Union[int, str]:
-        if not hasattr(cura, "CuraVersion"):
-            return self._application.getAPIVersion().getMajor()
-        if not hasattr(cura.CuraVersion, "CuraSDKVersion"):  # type: ignore
-            return self._application.getAPIVersion().getMajor()
-        if not cura.CuraVersion.CuraSDKVersion:  # type: ignore
-            return self._application.getAPIVersion().getMajor()
-        return cura.CuraVersion.CuraSDKVersion  # type: ignore
 
     @pyqtSlot()
     def browsePackages(self) -> None:
@@ -270,12 +235,17 @@ class Toolbox(QObject, Extension):
 
     def _convertPluginMetadata(self, plugin_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         try:
+            highest_sdk_version_supported = Version(0)
+            for supported_version in plugin_data["plugin"]["supported_sdk_versions"]:
+                if supported_version > highest_sdk_version_supported:
+                    highest_sdk_version_supported = supported_version
+
             formatted = {
                 "package_id": plugin_data["id"],
                 "package_type": "plugin",
                 "display_name": plugin_data["plugin"]["name"],
                 "package_version": plugin_data["plugin"]["version"],
-                "sdk_version": plugin_data["plugin"]["api"],
+                "sdk_version": highest_sdk_version_supported,
                 "author": {
                     "author_id": plugin_data["plugin"]["author"],
                     "display_name": plugin_data["plugin"]["author"]
@@ -679,6 +649,7 @@ class Toolbox(QObject, Extension):
                             Logger.log("w", "Received invalid JSON for %s.", response_type)
                             break
                     else:
+                        Logger.log("w", "Unable to connect with the server, we got a response code %s while trying to connect to %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
                         self.setViewPage("errored")
                         self.resetDownload()
         elif reply.operation() == QNetworkAccessManager.PutOperation:

@@ -943,7 +943,7 @@ This release adds support for printers with elliptic buildplates. This feature h
 *AppImage for Linux
 The Linux distribution is now in AppImage format, which makes Cura easier to install.
 
-*bugfixes
+*Bugfixes
 The user is now notified when a new version of Cura is available.
 When searching in the setting visibility preferences, the category for each setting is always displayed.
 3MF files are now saved and loaded correctly.

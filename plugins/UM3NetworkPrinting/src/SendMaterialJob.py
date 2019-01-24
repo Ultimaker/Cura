@@ -2,17 +2,14 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import os
-import urllib.parse
-from typing import Dict, TYPE_CHECKING, Set
+from typing import Dict, TYPE_CHECKING, Set, Optional
 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Application import Application
 from UM.Job import Job
 from UM.Logger import Logger
-from UM.MimeTypeDatabase import MimeTypeDatabase
-from UM.Resources import Resources
-from cura.CuraApplication import CuraApplication
+
 # Absolute imports don't work in plugins
 from .Models import ClusterMaterial, LocalMaterial
 
@@ -37,7 +34,6 @@ class SendMaterialJob(Job):
     #
     #   \param reply The reply from the printer, a json file.
     def _onGetRemoteMaterials(self, reply: QNetworkReply) -> None:
-
         # Got an error from the HTTP request. If we did not receive a 200 something happened.
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
             Logger.log("e", "Error fetching materials from printer: %s", reply.errorString())
@@ -52,7 +48,6 @@ class SendMaterialJob(Job):
     #
     #   \param remote_materials_by_guid The remote materials by GUID.
     def _sendMissingMaterials(self, remote_materials_by_guid: Dict[str, ClusterMaterial]) -> None:
-
         # Collect local materials
         local_materials_by_guid = self._getLocalMaterials()
         if len(local_materials_by_guid) == 0:
@@ -91,22 +86,22 @@ class SendMaterialJob(Job):
     #
     #   \param materials_to_send A set with id's of materials that must be sent.
     def _sendMaterials(self, materials_to_send: Set[str]) -> None:
-        file_paths = Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.MaterialInstanceContainer)
+        container_registry = Application.getInstance().getContainerRegistry()
+        material_manager = Application.getInstance().getMaterialManager()
+        material_group_dict = material_manager.getAllMaterialGroups()
 
-        # Find all local material files and send them if needed.
-        for file_path in file_paths:
-            try:
-                mime_type = MimeTypeDatabase.getMimeTypeForFile(file_path)
-            except MimeTypeDatabase.MimeTypeNotFoundError:
-                continue
-
-            file_name = os.path.basename(file_path)
-            material_id = urllib.parse.unquote_plus(mime_type.stripExtension(file_name))
-            if material_id not in materials_to_send:
+        for root_material_id in material_group_dict:
+            if root_material_id not in materials_to_send:
                 # If the material does not have to be sent we skip it.
                 continue
 
-            self._sendMaterialFile(file_path, file_name, material_id)
+            file_path = container_registry.getContainerFilePathById(root_material_id)
+            if not file_path:
+                Logger.log("w", "Cannot get file path for material container [%s]", root_material_id)
+                continue
+
+            file_name = os.path.basename(file_path)
+            self._sendMaterialFile(file_path, file_name, root_material_id)
 
     ##  Send a single material file to the printer.
     #
@@ -116,7 +111,6 @@ class SendMaterialJob(Job):
     #   \param file_name The name of the material file.
     #   \param material_id The ID of the material in the file.
     def _sendMaterialFile(self, file_path: str, file_name: str, material_id: str) -> None:
-
         parts = []
 
         # Add the material file.
@@ -151,7 +145,7 @@ class SendMaterialJob(Job):
     #   \return a dictionary of ClusterMaterial objects by GUID
     #   \throw KeyError Raised when on of the materials does not include a valid guid
     @classmethod
-    def _parseReply(cls, reply: QNetworkReply) -> Dict[str, ClusterMaterial]:
+    def _parseReply(cls, reply: QNetworkReply) -> Optional[Dict[str, ClusterMaterial]]:
         try:
             remote_materials = json.loads(reply.readAll().data().decode("utf-8"))
             return {material["guid"]: ClusterMaterial(**material) for material in remote_materials}
@@ -163,6 +157,7 @@ class SendMaterialJob(Job):
             Logger.log("e", "Request material storage on printer: Printer's answer had an incorrect value.")
         except TypeError:
             Logger.log("e", "Request material storage on printer: Printer's answer was missing a required value.")
+        return None
 
     ##  Retrieves a list of local materials
     #
@@ -171,27 +166,32 @@ class SendMaterialJob(Job):
     #   \return a dictionary of LocalMaterial objects by GUID
     def _getLocalMaterials(self) -> Dict[str, LocalMaterial]:
         result = {}  # type: Dict[str, LocalMaterial]
-        container_registry = Application.getInstance().getContainerRegistry()
-        material_containers = container_registry.findContainersMetadata(type = "material")
+        material_manager = Application.getInstance().getMaterialManager()
+
+        material_group_dict = material_manager.getAllMaterialGroups()
 
         # Find the latest version of all material containers in the registry.
-        for material in material_containers:
+        for root_material_id, material_group in material_group_dict.items():
+            material_metadata = material_group.root_material_node.getMetadata()
+
             try:
                 # material version must be an int
-                material["version"] = int(material["version"])
+                material_metadata["version"] = int(material_metadata["version"])
 
                 # Create a new local material
-                local_material = LocalMaterial(**material)
+                local_material = LocalMaterial(**material_metadata)
+                local_material.id = root_material_id
 
                 if local_material.GUID not in result or \
-                        local_material.version > result.get(local_material.GUID).version:
+                        local_material.GUID not in result or \
+                        local_material.version > result[local_material.GUID].version:
                     result[local_material.GUID] = local_material
 
             except KeyError:
-                Logger.logException("w", "Local material {} has missing values.".format(material["id"]))
+                Logger.logException("w", "Local material {} has missing values.".format(material_metadata["id"]))
             except ValueError:
-                Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
+                Logger.logException("w", "Local material {} has invalid values.".format(material_metadata["id"]))
             except TypeError:
-                Logger.logException("w", "Local material {} has invalid values.".format(material["id"]))
+                Logger.logException("w", "Local material {} has invalid values.".format(material_metadata["id"]))
 
         return result

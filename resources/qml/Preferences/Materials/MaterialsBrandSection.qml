@@ -10,7 +10,7 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: brand_section
     
@@ -139,6 +139,11 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "cura/expanded_types" && preference !== "cura/expanded_brands")
+            {
+                return;
+            }
+
             expanded = materialList.expandedBrands.indexOf(sectionName) > -1
         }
     }

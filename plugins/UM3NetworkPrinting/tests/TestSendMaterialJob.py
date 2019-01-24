@@ -4,23 +4,25 @@
 import io
 import json
 from unittest import TestCase, mock
-from unittest.mock import patch, call
+from unittest.mock import patch, call, MagicMock
 
 from PyQt5.QtCore import QByteArray
 
-from UM.MimeTypeDatabase import MimeType
 from UM.Application import Application
-from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
+
+from cura.Machines.MaterialGroup import MaterialGroup
+from cura.Machines.MaterialNode import MaterialNode
+
+from ..src.SendMaterialJob import SendMaterialJob
+
+_FILES_MAP = {"generic_pla_white": "/materials/generic_pla_white.xml.fdm_material",
+              "generic_pla_black": "/materials/generic_pla_black.xml.fdm_material",
+              }
 
 
 @patch("builtins.open", lambda _, __: io.StringIO("<xml></xml>"))
-@patch("UM.MimeTypeDatabase.MimeTypeDatabase.getMimeTypeForFile",
-       lambda _: MimeType(name = "application/x-ultimaker-material-profile", comment = "Ultimaker Material Profile",
-                          suffixes = ["xml.fdm_material"]))
-@patch("UM.Resources.Resources.getAllResourcesOfType", lambda _: ["/materials/generic_pla_white.xml.fdm_material"])
-@patch("plugins.UM3NetworkPrinting.src.ClusterUM3OutputDevice")
-@patch("PyQt5.QtNetwork.QNetworkReply")
 class TestSendMaterialJob(TestCase):
+    # version 1
     _LOCAL_MATERIAL_WHITE = {"type": "material", "status": "unknown", "id": "generic_pla_white",
                              "base_file": "generic_pla_white", "setting_version": "5", "name": "White PLA",
                              "brand": "Generic", "material": "PLA", "color_name": "White",
@@ -29,6 +31,37 @@ class TestSendMaterialJob(TestCase):
                              "properties": {"density": "1.00", "diameter": "2.85", "weight": "750"},
                              "definition": "fdmprinter", "compatible": True}
 
+    # version 2
+    _LOCAL_MATERIAL_WHITE_NEWER = {"type": "material", "status": "unknown", "id": "generic_pla_white",
+                                   "base_file": "generic_pla_white", "setting_version": "5", "name": "White PLA",
+                                   "brand": "Generic", "material": "PLA", "color_name": "White",
+                                   "GUID": "badb0ee7-87c8-4f3f-9398-938587b67dce", "version": "2",
+                                   "color_code": "#ffffff",
+                                   "description": "Test PLA White", "adhesion_info": "Use glue.",
+                                   "approximate_diameter": "3",
+                                   "properties": {"density": "1.00", "diameter": "2.85", "weight": "750"},
+                                   "definition": "fdmprinter", "compatible": True}
+
+    # invalid version: "one"
+    _LOCAL_MATERIAL_WHITE_INVALID_VERSION = {"type": "material", "status": "unknown", "id": "generic_pla_white",
+                                             "base_file": "generic_pla_white", "setting_version": "5", "name": "White PLA",
+                                             "brand": "Generic", "material": "PLA", "color_name": "White",
+                                             "GUID": "badb0ee7-87c8-4f3f-9398-938587b67dce", "version": "one",
+                                             "color_code": "#ffffff",
+                                             "description": "Test PLA White", "adhesion_info": "Use glue.",
+                                             "approximate_diameter": "3",
+                                             "properties": {"density": "1.00", "diameter": "2.85", "weight": "750"},
+                                             "definition": "fdmprinter", "compatible": True}
+
+    _LOCAL_MATERIAL_WHITE_ALL_RESULT = {"generic_pla_white": MaterialGroup("generic_pla_white",
+                                                                           MaterialNode(_LOCAL_MATERIAL_WHITE))}
+
+    _LOCAL_MATERIAL_WHITE_NEWER_ALL_RESULT = {"generic_pla_white": MaterialGroup("generic_pla_white",
+                                                                                 MaterialNode(_LOCAL_MATERIAL_WHITE_NEWER))}
+
+    _LOCAL_MATERIAL_WHITE_INVALID_VERSION_ALL_RESULT = {"generic_pla_white": MaterialGroup("generic_pla_white",
+                                                                                           MaterialNode(_LOCAL_MATERIAL_WHITE_INVALID_VERSION))}
+
     _LOCAL_MATERIAL_BLACK = {"type": "material", "status": "unknown", "id": "generic_pla_black",
                              "base_file": "generic_pla_black", "setting_version": "5", "name": "Yellow CPE",
                              "brand": "Ultimaker", "material": "CPE", "color_name": "Black",
@@ -36,6 +69,9 @@ class TestSendMaterialJob(TestCase):
                              "description": "Test PLA Black", "adhesion_info": "Use glue.", "approximate_diameter": "3",
                              "properties": {"density": "1.01", "diameter": "2.85", "weight": "750"},
                              "definition": "fdmprinter", "compatible": True}
+
+    _LOCAL_MATERIAL_BLACK_ALL_RESULT = {"generic_pla_black": MaterialGroup("generic_pla_black",
+                                                                           MaterialNode(_LOCAL_MATERIAL_BLACK))}
 
     _REMOTE_MATERIAL_WHITE = {
         "guid": "badb0ee7-87c8-4f3f-9398-938587b67dce",
@@ -55,14 +91,17 @@ class TestSendMaterialJob(TestCase):
         "density": 1.00
     }
 
-    def test_run(self, device_mock, reply_mock):
+    def test_run(self):
+        device_mock = MagicMock()
         job = SendMaterialJob(device_mock)
         job.run()
 
         # We expect the materials endpoint to be called when the job runs.
         device_mock.get.assert_called_with("materials/", on_finished = job._onGetRemoteMaterials)
 
-    def test__onGetRemoteMaterials_withFailedRequest(self, reply_mock, device_mock):
+    def test__onGetRemoteMaterials_withFailedRequest(self):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
         reply_mock.attribute.return_value = 404
         job = SendMaterialJob(device_mock)
         job._onGetRemoteMaterials(reply_mock)
@@ -70,7 +109,9 @@ class TestSendMaterialJob(TestCase):
         # We expect the device not to be called for any follow up.
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    def test__onGetRemoteMaterials_withWrongEncoding(self, reply_mock, device_mock):
+    def test__onGetRemoteMaterials_withWrongEncoding(self):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("cp500"))
         job = SendMaterialJob(device_mock)
@@ -79,7 +120,9 @@ class TestSendMaterialJob(TestCase):
         # Given that the parsing fails we do no expect the device to be called for any follow up.
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    def test__onGetRemoteMaterials_withBadJsonAnswer(self, reply_mock, device_mock):
+    def test__onGetRemoteMaterials_withBadJsonAnswer(self):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(b"Six sick hicks nick six slick bricks with picks and sticks.")
         job = SendMaterialJob(device_mock)
@@ -88,7 +131,9 @@ class TestSendMaterialJob(TestCase):
         # Given that the parsing fails we do no expect the device to be called for any follow up.
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    def test__onGetRemoteMaterials_withMissingGuidInRemoteMaterial(self, reply_mock, device_mock):
+    def test__onGetRemoteMaterials_withMissingGuidInRemoteMaterial(self):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
         reply_mock.attribute.return_value = 200
         remote_material_without_guid = self._REMOTE_MATERIAL_WHITE.copy()
         del remote_material_without_guid["guid"]
@@ -99,18 +144,20 @@ class TestSendMaterialJob(TestCase):
         # Given that parsing fails we do not expect the device to be called for any follow up.
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
+    @patch("cura.Machines.MaterialManager.MaterialManager")
     @patch("cura.Settings.CuraContainerRegistry")
     @patch("UM.Application")
     def test__onGetRemoteMaterials_withInvalidVersionInLocalMaterial(self, application_mock, container_registry_mock,
-                                                                     reply_mock, device_mock):
+                                                                     material_manager_mock):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
+        application_mock.getContainerRegistry.return_value = container_registry_mock
+        application_mock.getMaterialManager.return_value = material_manager_mock
+
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("ascii"))
 
-        localMaterialWhiteWithInvalidVersion = self._LOCAL_MATERIAL_WHITE.copy()
-        localMaterialWhiteWithInvalidVersion["version"] = "one"
-        container_registry_mock.findContainersMetadata.return_value = [localMaterialWhiteWithInvalidVersion]
-
-        application_mock.getContainerRegistry.return_value = container_registry_mock
+        material_manager_mock.getAllMaterialGroups.return_value = self._LOCAL_MATERIAL_WHITE_INVALID_VERSION_ALL_RESULT.copy()
 
         with mock.patch.object(Application, "getInstance", new = lambda: application_mock):
             job = SendMaterialJob(device_mock)
@@ -118,15 +165,16 @@ class TestSendMaterialJob(TestCase):
 
         self.assertEqual(0, device_mock.createFormPart.call_count)
 
-    @patch("cura.Settings.CuraContainerRegistry")
-    @patch("UM.Application")
-    def test__onGetRemoteMaterials_withNoUpdate(self, application_mock, container_registry_mock, reply_mock,
-                                                device_mock):
-        application_mock.getContainerRegistry.return_value = container_registry_mock
+    @patch("UM.Application.Application.getInstance")
+    def test__onGetRemoteMaterials_withNoUpdate(self, application_mock):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
+        container_registry_mock = application_mock.getContainerRegistry.return_value
+        material_manager_mock = application_mock.getMaterialManager.return_value
 
         device_mock.createFormPart.return_value = "_xXx_"
 
-        container_registry_mock.findContainersMetadata.return_value = [self._LOCAL_MATERIAL_WHITE]
+        material_manager_mock.getAllMaterialGroups.return_value = self._LOCAL_MATERIAL_WHITE_ALL_RESULT.copy()
 
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("ascii"))
@@ -138,24 +186,25 @@ class TestSendMaterialJob(TestCase):
         self.assertEqual(0, device_mock.createFormPart.call_count)
         self.assertEqual(0, device_mock.postFormWithParts.call_count)
 
-    @patch("cura.Settings.CuraContainerRegistry")
-    @patch("UM.Application")
-    def test__onGetRemoteMaterials_withUpdatedMaterial(self, application_mock, container_registry_mock, reply_mock,
-                                                       device_mock):
-        application_mock.getContainerRegistry.return_value = container_registry_mock
+    @patch("UM.Application.Application.getInstance")
+    def test__onGetRemoteMaterials_withUpdatedMaterial(self, get_instance_mock):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
+        application_mock = get_instance_mock.return_value
+        container_registry_mock = application_mock.getContainerRegistry.return_value
+        material_manager_mock = application_mock.getMaterialManager.return_value
+
+        container_registry_mock.getContainerFilePathById = lambda x: _FILES_MAP.get(x)
 
         device_mock.createFormPart.return_value = "_xXx_"
 
-        localMaterialWhiteWithHigherVersion = self._LOCAL_MATERIAL_WHITE.copy()
-        localMaterialWhiteWithHigherVersion["version"] = "2"
-        container_registry_mock.findContainersMetadata.return_value = [localMaterialWhiteWithHigherVersion]
+        material_manager_mock.getAllMaterialGroups.return_value = self._LOCAL_MATERIAL_WHITE_NEWER_ALL_RESULT.copy()
 
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_WHITE]).encode("ascii"))
 
-        with mock.patch.object(Application, "getInstance", new = lambda: application_mock):
-            job = SendMaterialJob(device_mock)
-            job._onGetRemoteMaterials(reply_mock)
+        job = SendMaterialJob(device_mock)
+        job._onGetRemoteMaterials(reply_mock)
 
         self.assertEqual(1, device_mock.createFormPart.call_count)
         self.assertEqual(1, device_mock.postFormWithParts.call_count)
@@ -164,16 +213,21 @@ class TestSendMaterialJob(TestCase):
              call.postFormWithParts(target = "materials/", parts = ["_xXx_"], on_finished = job.sendingFinished)],
             device_mock.method_calls)
 
-    @patch("cura.Settings.CuraContainerRegistry")
-    @patch("UM.Application")
-    def test__onGetRemoteMaterials_withNewMaterial(self, application_mock, container_registry_mock, reply_mock,
-                                                   device_mock):
-        application_mock.getContainerRegistry.return_value = container_registry_mock
+    @patch("UM.Application.Application.getInstance")
+    def test__onGetRemoteMaterials_withNewMaterial(self, application_mock):
+        reply_mock = MagicMock()
+        device_mock = MagicMock()
+        container_registry_mock = application_mock.getContainerRegistry.return_value
+        material_manager_mock = application_mock.getMaterialManager.return_value
+
+        container_registry_mock.getContainerFilePathById = lambda x: _FILES_MAP.get(x)
 
         device_mock.createFormPart.return_value = "_xXx_"
 
-        container_registry_mock.findContainersMetadata.return_value = [self._LOCAL_MATERIAL_WHITE,
-                                                                       self._LOCAL_MATERIAL_BLACK]
+        all_results = self._LOCAL_MATERIAL_WHITE_ALL_RESULT.copy()
+        for key, value in self._LOCAL_MATERIAL_BLACK_ALL_RESULT.items():
+            all_results[key] = value
+        material_manager_mock.getAllMaterialGroups.return_value = all_results
 
         reply_mock.attribute.return_value = 200
         reply_mock.readAll.return_value = QByteArray(json.dumps([self._REMOTE_MATERIAL_BLACK]).encode("ascii"))

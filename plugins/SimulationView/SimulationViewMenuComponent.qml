@@ -22,6 +22,11 @@ Cura.ExpandableComponent
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "view/only_show_top_layers" && preference !== "view/top_layer_count" && ! preference.match("layerview/"))
+            {
+                return;
+            }
+
             layerTypeCombobox.currentIndex = UM.SimulationView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type")
             layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex)
             viewSettings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|")
@@ -43,7 +48,7 @@ Cura.ExpandableComponent
             verticalAlignment: Text.AlignVCenter
             height: parent.height
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text_medium")
             renderType: Text.NativeRendering
         }
@@ -60,7 +65,7 @@ Cura.ExpandableComponent
             }
             height: parent.height
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
         }

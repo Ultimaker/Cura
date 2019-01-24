@@ -10,15 +10,15 @@ import Cura 1.0 as Cura
 ListView
 {
     id: listView
-    height: childrenRect.height
-    model: Cura.PrintersModel {}
+    model: Cura.GlobalStacksModel {}
     section.property: "hasRemoteConnection"
+    property real contentHeight: childrenRect.height
 
     section.delegate: Label
     {
         text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Preset printers")
         width: parent.width
-        height: visible ? contentHeight + 2 * UM.Theme.getSize("default_margin").height : 0
+        height: UM.Theme.getSize("action_button").height
         leftPadding: UM.Theme.getSize("default_margin").width
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("medium")

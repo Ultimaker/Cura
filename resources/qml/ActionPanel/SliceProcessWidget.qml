@@ -44,9 +44,9 @@ Column
     {
         id: autoSlicingLabel
         width: parent.width
-        visible: prepareButtons.autoSlice && (widget.backendState == UM.Backend.Processing || widget.backendState == UM.Backend.NotStarted)
+        visible: progressBar.visible
 
-        text: catalog.i18nc("@label:PrintjobStatus", "Auto slicing...")
+        text: catalog.i18nc("@label:PrintjobStatus", "Slicing...")
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
@@ -107,8 +107,14 @@ Column
         {
             id: sliceButton
             fixedWidthMode: true
-            anchors.fill: parent
+
+            height: parent.height
+
+            anchors.right: parent.right
+            anchors.left: parent.left
+
             text: catalog.i18nc("@button", "Slice")
+            tooltip: catalog.i18nc("@label", "Start the slicing process")
             enabled: widget.backendState != UM.Backend.Error
             visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
             onClicked: sliceOrStopSlicing()
@@ -118,7 +124,10 @@ Column
         {
             id: cancelButton
             fixedWidthMode: true
-            anchors.fill: parent
+            height: parent.height
+            anchors.left: parent.left
+
+            anchors.right: parent.right
             text: catalog.i18nc("@button", "Cancel")
             enabled: sliceButton.enabled
             visible: !sliceButton.visible
@@ -133,8 +142,12 @@ Column
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "general/auto_slice")
+            {
+                return;
+            }
+
             var autoSlice = UM.Preferences.getValue("general/auto_slice")
-            print(prepareButtons.autoSlice, autoSlice)
             if(prepareButtons.autoSlice != autoSlice)
             {
                 prepareButtons.autoSlice = autoSlice
@@ -152,7 +165,7 @@ Column
         shortcut: "Ctrl+P"
         onTriggered:
         {
-            if (prepareButton.enabled)
+            if (sliceButton.enabled)
             {
                 sliceOrStopSlicing()
             }

@@ -67,7 +67,7 @@ Item
         {
             id: bedCurrentTemperature
             text: printerModel != null ? printerModel.bedTemperature + "°C" : ""
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             color: UM.Theme.getColor("text")
             anchors.right: bedTargetTemperature.left
             anchors.top: parent.top

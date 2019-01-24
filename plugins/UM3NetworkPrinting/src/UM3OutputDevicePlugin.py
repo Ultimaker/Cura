@@ -1,23 +1,22 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-from UM.Logger import Logger
-from UM.Application import Application
-from UM.Signal import Signal, signalemitter
-from UM.Version import Version
-
-from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
-
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import QUrl
-
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+import json
 from queue import Queue
 from threading import Event, Thread
 from time import time
 
-import json
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtCore import QUrl
+
+from UM.Application import Application
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.Logger import Logger
+from UM.Signal import Signal, signalemitter
+from UM.Version import Version
+
+from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
+from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
@@ -31,8 +30,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     def __init__(self):
         super().__init__()
+        
         self._zero_conf = None
         self._zero_conf_browser = None
+
+        # Create a cloud output device manager that abstracts all cloud connection logic away.
+        self._cloud_output_device_manager = CloudOutputDeviceManager()
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addDeviceSignal.connect(self._onAddDevice)
@@ -83,6 +86,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     ##  Start looking for devices on network.
     def start(self):
         self.startDiscovery()
+        self._cloud_output_device_manager.start()
 
     def startDiscovery(self):
         self.stop()
@@ -114,6 +118,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if key == um_network_key:
                 if not self._discovered_devices[key].isConnected():
                     Logger.log("d", "Attempting to connect with [%s]" % key)
+                    active_machine.setMetaDataEntry("connection_type", self._discovered_devices[key].connectionType.value)
                     self._discovered_devices[key].connect()
                     self._discovered_devices[key].connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
                 else:
@@ -139,6 +144,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if self._zero_conf is not None:
             Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
+        self._cloud_output_device_manager.stop()
 
     def removeManualDevice(self, key, address = None):
         if key in self._discovered_devices:
@@ -283,7 +289,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
-            global_container_stack.setMetaDataEntry("connection_type", device.getConnectionType().value)
+            global_container_stack.setMetaDataEntry("connection_type", device.connectionType.value)
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 

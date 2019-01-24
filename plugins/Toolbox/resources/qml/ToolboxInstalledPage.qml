@@ -37,7 +37,7 @@ ScrollView
             width: page.width
             text: catalog.i18nc("@title:tab", "Plugins")
             color: UM.Theme.getColor("text_medium")
-            font: UM.Theme.getFont("medium")
+            font: UM.Theme.getFont("large")
             renderType: Text.NativeRendering
         }
         Rectangle

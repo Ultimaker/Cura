@@ -23,7 +23,7 @@ Item
     {
         id: header
         text: catalog.i18nc("@header", "Custom")
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("small_button_text")
         height: contentHeight
         renderType: Text.NativeRendering
