@@ -140,16 +140,16 @@ Column
                 Repeater
                 {
                     model: byMaterialType.getMaterialTable()
-
                     Row
                     {
-                        //property var rowLength: modelData.length
                         Repeater
                         {
                             model: modelData
                             Text
                             {
                                 width: Math.round(byMaterialType.width * byMaterialType.columnWidthMultipliers[index])
+                                height: contentHeight
+                                font: UM.Theme.getFont("default")
                                 wrapMode: Text.WrapAnywhere
                                 text: modelData
                             }
@@ -159,6 +159,7 @@ Column
             }
 
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+            height: childrenRect.height
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
