@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -85,31 +85,18 @@ Column
         
         Label
         {
+            id: byMaterialType
+
             property var printMaterialLengths: PrintInformation.materialLengths
             property var printMaterialWeights: PrintInformation.materialWeights
             property var printMaterialCosts: PrintInformation.materialCosts
             property var printMaterialNames: PrintInformation.materialNames
+            property var columnWidthMultipliers: [ 0.4, 0.2, 0.2, 0.2 ]
 
-            function formatRow(items)
+            function getMaterialTable()
             {
-                var rowHTML = "<tr>"
-                for(var item = 0; item < items.length; item++)
-                {
-                    if (item == 0)
-                    {
-                        rowHTML += "<td valign=\"bottom\">%1</td>".arg(items[item])
-                    }
-                    else
-                    {
-                        rowHTML += "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(items[item])
-                    }
-                }
-                rowHTML += "</tr>"
-                return rowHTML
-            }
+                var result = []
 
-            text:
-            {
                 var lengths = []
                 var weights = []
                 var costs = []
@@ -135,20 +122,42 @@ Column
                     costs = ["0.00"]
                 }
 
-                var text = "<table width=\"100%\">"
                 for(var index = 0; index < lengths.length; index++)
                 {
-                    text += formatRow([
-                        "%1:".arg(names[index]),
-                        catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]),
-                        catalog.i18nc("@label g for grams", "%1g").arg(weights[index]),
-                        "%1&nbsp;%2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]),
-                    ])
+                    var row = []
+                    row.push("%1:".arg(names[index]))
+                    row.push(catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]))
+                    row.push(catalog.i18nc("@label g for grams", "%1g").arg(weights[index]))
+                    row.push("%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]))
+                    result.push(row)
                 }
-                text += "</table>"
 
-                return text
+                return result
             }
+
+            Column
+            {
+                Repeater
+                {
+                    model: byMaterialType.getMaterialTable()
+
+                    Row
+                    {
+                        //property var rowLength: modelData.length
+                        Repeater
+                        {
+                            model: modelData
+                            Text
+                            {
+                                width: Math.round(byMaterialType.width * byMaterialType.columnWidthMultipliers[index])
+                                wrapMode: Text.WrapAnywhere
+                                text: modelData
+                            }
+                        }
+                    }
+                }
+            }
+
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
