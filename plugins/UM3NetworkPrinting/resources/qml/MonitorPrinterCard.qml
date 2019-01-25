@@ -179,7 +179,7 @@ Item
                 if (!printer || !printer.activePrintJob) {
                     return false
                 }
-                var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+                var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
                 return states.indexOf(printer.activePrintJob.state) !== -1
             }
         }

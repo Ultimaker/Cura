@@ -53,7 +53,7 @@ Item
                     }
                     text: catalog.i18nc("@label", "Move to top");
                     visible: {
-                        if (printJob && printJob.state == "queued" && !isAssigned(printJob)) {
+                        if (printJob && (printJob.state == "queued" || printJob.state == "error") && !isAssigned(printJob)) {
                             if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
                                 return OutputDevice.queuedPrintJobs[0].key != printJob.key;
                             }
@@ -72,7 +72,7 @@ Item
                         if (!printJob) {
                             return false;
                         }
-                        var states = ["queued", "sent_to_printer"];
+                        var states = ["queued", "error", "sent_to_printer"];
                         return states.indexOf(printJob.state) !== -1;
                     }
                 }
