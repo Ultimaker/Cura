@@ -218,7 +218,8 @@ Button
     {
         if(isValidMaterial)
         {
-            Cura.MachineManager.applyRemoteConfiguration(configuration);
+            toggleContent()
+            Cura.MachineManager.applyRemoteConfiguration(configuration)
         }
     }
 }
