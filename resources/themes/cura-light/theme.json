@@ -560,7 +560,6 @@
 
         "message": [30.0, 5.0],
         "message_close": [1, 1],
-        "message_inner_margin": [1.5, 1.5],
         "message_radius": [0.25, 0.25],
 
         "infill_button_margin": [0.5, 0.5],
