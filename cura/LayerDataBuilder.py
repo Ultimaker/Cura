@@ -21,13 +21,6 @@ class LayerDataBuilder(MeshBuilder):
         if layer not in self._layers:
             self._layers[layer] = Layer(layer)
 
-    def addPolygon(self, layer: int, polygon_type, data, line_width, line_thickness, line_feedrate):
-        if layer not in self._layers:
-            self.addLayer(layer)
-
-        p = LayerPolygon(self, polygon_type, data, line_width, line_thickness, line_feedrate)
-        self._layers[layer].polygons.append(p)
-
     def getLayer(self, layer: int) -> Optional[Layer]:
         return self._layers.get(layer)
 
