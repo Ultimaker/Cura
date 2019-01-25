@@ -373,6 +373,22 @@ UM.MainWindow
                     bottom: parent.bottom
                     bottomMargin:  UM.Theme.getSize("default_margin").height
                 }
+
+                primaryButton: Component
+                {
+                    Cura.PrimaryButton
+                    {
+                        text: model.name
+                    }
+                }
+
+                secondaryButton: Component
+                {
+                    Cura.SecondaryButton
+                    {
+                        text: model.name
+                    }
+                }
             }
         }
 
