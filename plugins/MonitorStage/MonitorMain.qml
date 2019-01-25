@@ -94,7 +94,12 @@ Rectangle
             }
             visible: isNetworkEnabled && !isConnected
             text: catalog.i18nc("@action:button", "Reconnect")
-            onClicked: Cura.MachineManager.setActiveMachine(Cura.MachineManager.activeMachineId) // Try to refresh
+
+            /**
+             * This is essentially a "close doors" button on the elevator; it doesn't really force a
+             * connection but it does make people feel like Cura is workin' on it.
+             */
+            onClicked: Cura.MachineManager.setActiveMachine(Cura.MachineManager.activeMachineId)
         }
 
         Label
