@@ -36,30 +36,60 @@ Column
 
         Label
         {
-            property var printDuration: PrintInformation.currentPrintTime
+            id: byLineType
 
-            text:
+            property var printDuration: PrintInformation.currentPrintTime
+            property var columnWidthMultipliers: [ 0.4, 0.3, 0.3 ]
+
+            function getMaterialTable()
             {
+                var result = []
+
                 // All the time information for the different features is achieved
                 var printTime = PrintInformation.getFeaturePrintTimes()
                 var totalSeconds = parseInt(printDuration.getDisplayString(UM.DurationFormat.Seconds))
 
                 // A message is created and displayed when the user hover the time label
-                var text = "<table width=\"100%\">"
                 for(var feature in printTime)
                 {
                     if(!printTime[feature].isTotalDurationZero)
                     {
-                        text += "<tr><td>" + feature + ":</td>" +
-                            "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(printTime[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)) +
-                            "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1%</td>".arg(Math.round(100 * parseInt(printTime[feature].getDisplayString(UM.DurationFormat.Seconds)) / totalSeconds)) +
-                            "</tr>"
+                        var row = []
+                        row.push(feature + ":")
+                        row.push("%1".arg(printTime[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)))
+                        row.push("%1%".arg(Math.round(100 * parseInt(printTime[feature].getDisplayString(UM.DurationFormat.Seconds)) / totalSeconds)))
+                        result.push(row)
                     }
                 }
-                text += "</table>"
-                return text
+
+                return result
             }
+
+            Column
+            {
+                Repeater
+                {
+                    model: byLineType.getMaterialTable()
+                    Row
+                    {
+                        Repeater
+                        {
+                            model: modelData
+                            Text
+                            {
+                                width: Math.round(byLineType.width * byLineType.columnWidthMultipliers[index])
+                                height: contentHeight
+                                font: UM.Theme.getFont("default")
+                                wrapMode: Text.WrapAnywhere
+                                text: modelData
+                            }
+                        }
+                    }
+                }
+            }
+
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+            height: childrenRect.height
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
