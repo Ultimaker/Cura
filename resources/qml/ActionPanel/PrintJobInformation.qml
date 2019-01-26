@@ -40,6 +40,7 @@ Column
 
             property var printDuration: PrintInformation.currentPrintTime
             property var columnWidthMultipliers: [ 0.4, 0.3, 0.3 ]
+            property var columnHorizontalAligns: [ TextInput.AlignLeft, TextInput.AlignHCenter, TextInput.AlignHCenter ]
 
             function getMaterialTable()
             {
@@ -55,7 +56,7 @@ Column
                     if(!printTime[feature].isTotalDurationZero)
                     {
                         var row = []
-                        row.push(feature + ":")
+                        row.push(feature + ": ")
                         row.push("%1".arg(printTime[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)))
                         row.push("%1%".arg(Math.round(100 * parseInt(printTime[feature].getDisplayString(UM.DurationFormat.Seconds)) / totalSeconds)))
                         result.push(row)
@@ -79,6 +80,7 @@ Column
                             {
                                 width: Math.round(byLineType.width * byLineType.columnWidthMultipliers[index])
                                 height: contentHeight
+                                horizontalAlignment: byLineType.columnHorizontalAligns[index]
                                 font: UM.Theme.getFont("default")
                                 wrapMode: Text.WrapAnywhere
                                 text: modelData
@@ -122,6 +124,7 @@ Column
             property var printMaterialCosts: PrintInformation.materialCosts
             property var printMaterialNames: PrintInformation.materialNames
             property var columnWidthMultipliers: [ 0.4, 0.2, 0.2, 0.2 ]
+            property var columnHorizontalAligns: [ TextInput.AlignLeft, TextInput.AlignHCenter, TextInput.AlignHCenter, TextInput.AlignHCenter ]
 
             function getMaterialTable()
             {
@@ -155,7 +158,7 @@ Column
                 for(var index = 0; index < lengths.length; index++)
                 {
                     var row = []
-                    row.push("%1:".arg(names[index]))
+                    row.push("%1: ".arg(names[index]))
                     row.push(catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]))
                     row.push(catalog.i18nc("@label g for grams", "%1g").arg(weights[index]))
                     row.push("%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]))
@@ -179,6 +182,7 @@ Column
                             {
                                 width: Math.round(byMaterialType.width * byMaterialType.columnWidthMultipliers[index])
                                 height: contentHeight
+                                horizontalAlignment: byLineType.columnHorizontalAligns[index]
                                 font: UM.Theme.getFont("default")
                                 wrapMode: Text.WrapAnywhere
                                 text: modelData
