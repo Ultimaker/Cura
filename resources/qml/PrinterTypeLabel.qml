@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -12,7 +12,6 @@ Item
 {
     property alias text: printerTypeLabel.text
 
-    //width: UM.Theme.getSize("printer_type_label").width
     width: {
         var w = UM.Theme.getSize("printer_type_label").width
         if (w < printerTypeLabel.width)
