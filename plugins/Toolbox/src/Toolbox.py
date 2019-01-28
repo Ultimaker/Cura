@@ -37,7 +37,7 @@ class Toolbox(QObject, Extension):
         self._application = application  # type: CuraApplication
 
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
-        self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: int
+        self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: str
         self._cloud_api_root = UltimakerCloudAuthentication.CuraCloudAPIRoot  # type: str
         self._api_url = None  # type: Optional[str]
 
