@@ -68,6 +68,11 @@ class GlobalStack(CuraContainerStack):
     def getLoadingPriority(cls) -> int:
         return 2
 
+    # The configured connection types can be used to find out if the global stack is configured to be connected with
+    # a printer, without having to know all the details as to how this is exactly done (and without actually setting
+    # the stack to be active). This data can then in turn also be used when the global stack is active; If we can't
+    # get a network connection, but it is configured to have one, we can display a different icon to indicate the
+    # difference.
     @pyqtProperty("QVariantList", notify=configuredConnectionTypesChanged)
     def configuredConnectionTypes(self):
         # Requesting it from the metadata actually gets them as strings (as that's what you get from serializing).
@@ -75,6 +80,7 @@ class GlobalStack(CuraContainerStack):
         connection_types = self.getMetaDataEntry("connection_type", "").split(",")
         return [int(connection_type) for connection_type in connection_types if connection_type != ""]
 
+    #   \sa configuredConnectionTypes
     def addConfiguredConnectionType(self, connection_type):
         configured_connection_types  = self.configuredConnectionTypes
         if connection_type not in configured_connection_types:
@@ -82,6 +88,7 @@ class GlobalStack(CuraContainerStack):
             configured_connection_types.append(str(connection_type))
             self.setMetaDataEntry("connection_type", ",".join(configured_connection_types))
 
+    #   \sa configuredConnectionTypes
     def removeConfiguredConnectionType(self, connection_type):
         configured_connection_types = self.configuredConnectionTypes
         if connection_type in self.configured_connection_types:
