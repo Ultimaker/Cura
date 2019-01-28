@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, Tuple, Union, Optional, Dict, List
@@ -195,7 +195,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0,
                                          dismissable = False, progress = -1,
                                          title = i18n_catalog.i18nc("@info:title", "Sending Data"))
-        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = None,
+        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = "",
                                          description = "")
         self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
         self._progress_message.show()
@@ -256,7 +256,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
             # timeout responses if this happens.
             self._last_response_time = time()
-            if self._progress_message is not None and new_progress > self._progress_message.getProgress():
+            if self._progress_message is not None and new_progress != self._progress_message.getProgress():
                 self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
 
@@ -268,7 +268,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     i18n_catalog.i18nc("@info:status", "Print job was successfully sent to the printer."),
                     lifetime=5, dismissable=True,
                     title=i18n_catalog.i18nc("@info:title", "Data Sent"))
-                self._success_message.addAction("View", i18n_catalog.i18nc("@action:button", "View in Monitor"), icon=None,
+                self._success_message.addAction("View", i18n_catalog.i18nc("@action:button", "View in Monitor"), icon = "",
                                                 description="")
                 self._success_message.actionTriggered.connect(self._successMessageActionTriggered)
                 self._success_message.show()
