@@ -158,7 +158,7 @@ Column
                 for(var index = 0; index < lengths.length; index++)
                 {
                     var row = []
-                    row.push("%1: ".arg(names[index]))
+                    row.push("%1".arg(names[index]))
                     row.push(catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]))
                     row.push(catalog.i18nc("@label g for grams", "%1g").arg(weights[index]))
                     row.push("%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]))
