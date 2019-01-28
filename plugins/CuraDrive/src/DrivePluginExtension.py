@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import cast, Optional, List, Dict, Any
+from typing import Any, cast, Dict, List, Optional
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 

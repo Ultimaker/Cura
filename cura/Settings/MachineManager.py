@@ -521,8 +521,12 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasRemoteConnection(self) -> bool:
         if self._global_container_stack:
-            connection_type = int(self._global_container_stack.getMetaDataEntry("connection_type", ConnectionType.NotConnected.value))
-            return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
+            has_remote_connection = False
+
+            for connection_type in self._global_container_stack.configuredConnectionTypes:
+                has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
+                                                             ConnectionType.CloudConnection.value]
+            return has_remote_connection
         return False
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
