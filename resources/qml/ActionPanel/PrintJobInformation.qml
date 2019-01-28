@@ -76,7 +76,7 @@ Column
                         Repeater
                         {
                             model: modelData
-                            Text
+                            Label
                             {
                                 width: Math.round(byLineType.width * byLineType.columnWidthMultipliers[index])
                                 height: contentHeight
@@ -178,7 +178,7 @@ Column
                         Repeater
                         {
                             model: modelData
-                            Text
+                            Label
                             {
                                 width: Math.round(byMaterialType.width * byMaterialType.columnWidthMultipliers[index])
                                 height: contentHeight
