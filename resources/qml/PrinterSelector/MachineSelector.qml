@@ -11,8 +11,8 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasActiveNetworkConnection
-    property bool isCloudPrinter: Cura.MachineManager.activeMachineHasActiveCloudConnection
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineCanBeNetworkConnected
+    property bool isCloudPrinter: Cura.MachineManager.activeMachineCanBeCloudConnected
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
 
     contentPadding: UM.Theme.getSize("default_lining").width
