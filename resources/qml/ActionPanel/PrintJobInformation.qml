@@ -84,6 +84,7 @@ Column
                                 font: UM.Theme.getFont("default")
                                 wrapMode: Text.WrapAnywhere
                                 text: modelData
+                                renderType: Text.NativeRendering
                             }
                         }
                     }
@@ -186,6 +187,7 @@ Column
                                 font: UM.Theme.getFont("default")
                                 wrapMode: Text.WrapAnywhere
                                 text: modelData
+                                renderType: Text.NativeRendering
                             }
                         }
                     }
