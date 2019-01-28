@@ -225,7 +225,7 @@ Item
             if (!printJob) {
                 return false
             }
-            var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+            var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
             return states.indexOf(printJob.state) !== -1
         }
     }

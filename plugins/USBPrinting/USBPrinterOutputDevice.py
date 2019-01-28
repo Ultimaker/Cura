@@ -55,6 +55,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_thread = Thread(target = self._update, daemon = True)
 
         self._last_temperature_request = None  # type: Optional[int]
+        self._firmware_idle_count = 0
 
         self._is_printing = False  # A print is being sent.
 

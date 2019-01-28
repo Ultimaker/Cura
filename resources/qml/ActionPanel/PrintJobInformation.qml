@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -36,30 +36,63 @@ Column
 
         Label
         {
-            property var printDuration: PrintInformation.currentPrintTime
+            id: byLineType
 
-            text:
+            property var printDuration: PrintInformation.currentPrintTime
+            property var columnWidthMultipliers: [ 0.4, 0.3, 0.3 ]
+            property var columnHorizontalAligns: [ TextInput.AlignLeft, TextInput.AlignHCenter, TextInput.AlignHCenter ]
+
+            function getMaterialTable()
             {
+                var result = []
+
                 // All the time information for the different features is achieved
                 var printTime = PrintInformation.getFeaturePrintTimes()
                 var totalSeconds = parseInt(printDuration.getDisplayString(UM.DurationFormat.Seconds))
 
                 // A message is created and displayed when the user hover the time label
-                var text = "<table width=\"100%\">"
                 for(var feature in printTime)
                 {
                     if(!printTime[feature].isTotalDurationZero)
                     {
-                        text += "<tr><td>" + feature + ":</td>" +
-                            "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(printTime[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)) +
-                            "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1%</td>".arg(Math.round(100 * parseInt(printTime[feature].getDisplayString(UM.DurationFormat.Seconds)) / totalSeconds)) +
-                            "</tr>"
+                        var row = []
+                        row.push(feature + ": ")
+                        row.push("%1".arg(printTime[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)))
+                        row.push("%1%".arg(Math.round(100 * parseInt(printTime[feature].getDisplayString(UM.DurationFormat.Seconds)) / totalSeconds)))
+                        result.push(row)
                     }
                 }
-                text += "</table>"
-                return text
+
+                return result
             }
+
+            Column
+            {
+                Repeater
+                {
+                    model: byLineType.getMaterialTable()
+                    Row
+                    {
+                        Repeater
+                        {
+                            model: modelData
+                            Label
+                            {
+                                width: Math.round(byLineType.width * byLineType.columnWidthMultipliers[index])
+                                height: contentHeight
+                                horizontalAlignment: byLineType.columnHorizontalAligns[index]
+                                font: UM.Theme.getFont("default")
+                                wrapMode: Text.WrapAnywhere
+                                text: modelData
+                                renderType: Text.NativeRendering
+                            }
+                        }
+                    }
+                }
+            }
+
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+            height: childrenRect.height
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
@@ -85,31 +118,19 @@ Column
         
         Label
         {
+            id: byMaterialType
+
             property var printMaterialLengths: PrintInformation.materialLengths
             property var printMaterialWeights: PrintInformation.materialWeights
             property var printMaterialCosts: PrintInformation.materialCosts
             property var printMaterialNames: PrintInformation.materialNames
+            property var columnWidthMultipliers: [ 0.4, 0.2, 0.2, 0.2 ]
+            property var columnHorizontalAligns: [ TextInput.AlignLeft, TextInput.AlignHCenter, TextInput.AlignHCenter, TextInput.AlignHCenter ]
 
-            function formatRow(items)
+            function getMaterialTable()
             {
-                var rowHTML = "<tr>"
-                for(var item = 0; item < items.length; item++)
-                {
-                    if (item == 0)
-                    {
-                        rowHTML += "<td valign=\"bottom\">%1</td>".arg(items[item])
-                    }
-                    else
-                    {
-                        rowHTML += "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(items[item])
-                    }
-                }
-                rowHTML += "</tr>"
-                return rowHTML
-            }
+                var result = []
 
-            text:
-            {
                 var lengths = []
                 var weights = []
                 var costs = []
@@ -135,21 +156,46 @@ Column
                     costs = ["0.00"]
                 }
 
-                var text = "<table width=\"100%\">"
                 for(var index = 0; index < lengths.length; index++)
                 {
-                    text += formatRow([
-                        "%1:".arg(names[index]),
-                        catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]),
-                        catalog.i18nc("@label g for grams", "%1g").arg(weights[index]),
-                        "%1&nbsp;%2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]),
-                    ])
+                    var row = []
+                    row.push("%1".arg(names[index]))
+                    row.push(catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]))
+                    row.push(catalog.i18nc("@label g for grams", "%1g").arg(weights[index]))
+                    row.push("%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]))
+                    result.push(row)
                 }
-                text += "</table>"
 
-                return text
+                return result
             }
+
+            Column
+            {
+                Repeater
+                {
+                    model: byMaterialType.getMaterialTable()
+                    Row
+                    {
+                        Repeater
+                        {
+                            model: modelData
+                            Label
+                            {
+                                width: Math.round(byMaterialType.width * byMaterialType.columnWidthMultipliers[index])
+                                height: contentHeight
+                                horizontalAlignment: byLineType.columnHorizontalAligns[index]
+                                font: UM.Theme.getFont("default")
+                                wrapMode: Text.WrapAnywhere
+                                text: modelData
+                                renderType: Text.NativeRendering
+                            }
+                        }
+                    }
+                }
+            }
+
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+            height: childrenRect.height
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering

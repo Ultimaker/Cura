@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, cast
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -68,7 +68,7 @@ class DrivePluginExtension(QObject, Extension):
 
     def showDriveWindow(self) -> None:
         if not self._drive_window:
-            plugin_dir_path = CuraApplication.getInstance().getPluginRegistry().getPluginPath("CuraDrive")
+            plugin_dir_path = cast(str, CuraApplication.getInstance().getPluginRegistry().getPluginPath("CuraDrive"))
             path = os.path.join(plugin_dir_path, "src", "qml", "main.qml")
             self._drive_window = CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
         self.refreshBackups()

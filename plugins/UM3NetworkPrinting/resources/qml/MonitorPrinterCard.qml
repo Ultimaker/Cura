@@ -179,7 +179,7 @@ Item
                 if (!printer || !printer.activePrintJob) {
                     return false
                 }
-                var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+                var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
                 return states.indexOf(printer.activePrintJob.state) !== -1
             }
         }
@@ -306,7 +306,7 @@ Item
                     }
                     if (printer && printer.state == "unreachable")
                     {
-                        return catalog.i18nc("@label:status", "Unavailable")
+                        return catalog.i18nc("@label:status", "Unreachable")
                     }
                     if (printer && !printer.activePrintJob && printer.state == "idle")
                     {
@@ -398,6 +398,7 @@ Item
                 font: UM.Theme.getFont("default")
                 text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
+                color: UM.Theme.getColor("monitor_text_primary")
 
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
