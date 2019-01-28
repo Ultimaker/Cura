@@ -12,7 +12,15 @@ Item
 {
     property alias text: printerTypeLabel.text
 
-    width: UM.Theme.getSize("printer_type_label").width
+    //width: UM.Theme.getSize("printer_type_label").width
+    width: {
+        var w = UM.Theme.getSize("printer_type_label").width
+        if (w < printerTypeLabel.width)
+        {
+            w = printerTypeLabel.width + UM.Theme.getSize("default_margin").width
+        }
+        return w
+    }
     height: UM.Theme.getSize("printer_type_label").height
 
     Rectangle

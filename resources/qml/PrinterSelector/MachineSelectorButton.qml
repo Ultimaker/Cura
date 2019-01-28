@@ -66,7 +66,8 @@ Button
                 model: printerTypesList
                 delegate: Cura.PrinterTypeLabel
                 {
-                    text: Cura.MachineManager.getAbbreviatedMachineName(modelData)
+                    //text: Cura.MachineManager.getAbbreviatedMachineName(modelData)
+                    text: modelData
                 }
             }
         }

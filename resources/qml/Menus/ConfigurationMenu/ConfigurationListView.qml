@@ -107,7 +107,8 @@ Item
                 Cura.PrinterTypeLabel
                 {
                     id: printerTypeLabel
-                    text: Cura.MachineManager.getAbbreviatedMachineName(section)
+                    //text: Cura.MachineManager.getAbbreviatedMachineName(section)
+                    text: section
                     anchors.verticalCenter: parent.verticalCenter //One default margin above and one below.
                 }
             }
