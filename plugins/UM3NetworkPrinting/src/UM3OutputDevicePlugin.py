@@ -9,7 +9,7 @@ from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
 from PyQt5.QtCore import QUrl
 
-from UM.Application import Application
+from cura.CuraApplication import CuraApplication
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
@@ -41,7 +41,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
-        Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
         self._discovered_devices = {}
         
@@ -56,7 +56,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
 
         # Get list of manual instances from preferences
-        self._preferences = Application.getInstance().getPreferences()
+        self._preferences = CuraApplication.getInstance().getPreferences()
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 
@@ -108,7 +108,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.resetLastManualDevice()
 
     def reCheckConnections(self):
-        active_machine = Application.getInstance().getGlobalContainerStack()
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
 
@@ -118,7 +118,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if key == um_network_key:
                 if not self._discovered_devices[key].isConnected():
                     Logger.log("d", "Attempting to connect with [%s]" % key)
-                    active_machine.setMetaDataEntry("connection_type", self._discovered_devices[key].connectionType.value)
+                    # It should already be set, but if it actually connects we know for sure it's supported!
+                    active_machine.addConfiguredConnectionType(self._discovered_devices[key].connectionType.value)
                     self._discovered_devices[key].connect()
                     self._discovered_devices[key].connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
                 else:
@@ -134,7 +135,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             return
         if self._discovered_devices[key].isConnected():
             # Sometimes the status changes after changing the global container and maybe the device doesn't belong to this machine
-            um_network_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
+            um_network_key = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
             if key == um_network_key:
                 self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
         else:
@@ -287,9 +288,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
-            global_container_stack.setMetaDataEntry("connection_type", device.connectionType.value)
+            # Ensure that the configured connection type is set.
+            global_container_stack.addConfiguredConnectionType(device.connectionType.value)
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 
@@ -306,7 +308,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._service_changed_request_event.wait(timeout = 5.0)
 
             # Stop if the application is shutting down
-            if Application.getInstance().isShuttingDown():
+            if CuraApplication.getInstance().isShuttingDown():
                 return
 
             self._service_changed_request_event.clear()

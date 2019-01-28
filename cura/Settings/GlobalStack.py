@@ -42,7 +42,12 @@ class GlobalStack(CuraContainerStack):
         # Per thread we have our own resolving_settings, or strange things sometimes occur.
         self._resolving_settings = defaultdict(set) #type: Dict[str, Set[str]] # keys are thread names
 
+        # Since the metadatachanged is defined in container stack, we can't use it here as a notifier for pyqt
+        # properties. So we need to tie them together like this.
+        self.metaDataChanged.connect(self.configuredConnectionTypesChanged)
+
     extrudersChanged = pyqtSignal()
+    configuredConnectionTypesChanged = pyqtSignal()
 
     ##  Get the list of extruders of this stack.
     #
@@ -62,6 +67,27 @@ class GlobalStack(CuraContainerStack):
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
+
+    @pyqtProperty("QVariantList", notify=configuredConnectionTypesChanged)
+    def configuredConnectionTypes(self):
+        # Requesting it from the metadata actually gets them as strings (as that's what you get from serializing).
+        # But we do want them returned as a list of ints (so the rest of the code can directly compare)
+        connection_types = self.getMetaDataEntry("connection_type", "").split(",")
+        return [int(connection_type) for connection_type in connection_types if connection_type != ""]
+
+    def addConfiguredConnectionType(self, connection_type):
+        configured_connection_types  = self.configuredConnectionTypes
+        if connection_type not in configured_connection_types:
+            # Store the values as a string.
+            configured_connection_types.append(str(connection_type))
+            self.setMetaDataEntry("connection_type", ",".join(configured_connection_types))
+
+    def removeConfiguredConnectionType(self, connection_type):
+        configured_connection_types = self.configuredConnectionTypes
+        if connection_type in self.configured_connection_types:
+            # Store the values as a string.
+            configured_connection_types.remove(str(connection_type))
+            self.setMetaDataEntry("connection_type", ",".join(configured_connection_types))
 
     @classmethod
     def getConfigurationTypeFromSerialized(cls, serialized: str) -> Optional[str]:
