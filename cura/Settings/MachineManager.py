@@ -23,6 +23,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.Machines.VariantType import VariantType
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
@@ -1371,12 +1372,31 @@ class MachineManager(QObject):
             self.switchPrinterType(configuration.printerType)
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
-                variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
-                material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack,
-                                                                                       position,
-                                                                                       extruder_configuration.hotendID,
-                                                                                       configuration.buildplateConfiguration,
-                                                                                       extruder_configuration.material.guid)
+
+                extruder_has_hotend = extruder_configuration.hotendID != ""
+                extruder_has_material = extruder_configuration.material.guid != ""
+
+                # If the machine doesn't have a hotend for this extruder, use the default hotend
+                if extruder_has_hotend:
+                    variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
+                                                                                  extruder_configuration.hotendID)
+                else:
+                    variant_container_node = self._variant_manager.getDefaultVariantNode(self._global_container_stack.definition,
+                                                                                         VariantType.NOZZLE,
+                                                                                         self._global_container_stack)
+
+                # If the machine doesn't have a hotend or a material for this extruder, use the default material
+                if extruder_has_hotend and extruder_has_material:
+                    material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack,
+                                                                                           position,
+                                                                                           extruder_configuration.hotendID,
+                                                                                           configuration.buildplateConfiguration,
+                                                                                           extruder_configuration.material.guid)
+                else:
+                    material_container_node = self._material_manager.getDefaultMaterial(self._global_container_stack,
+                                                                                        position,
+                                                                                        variant_container_node.getContainer().getName(),
+                                                                                        self._global_container_stack.extruders[position].definition)
 
                 if variant_container_node:
                     self._setVariantNode(position, variant_container_node)
