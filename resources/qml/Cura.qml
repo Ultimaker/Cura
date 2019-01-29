@@ -379,6 +379,7 @@ UM.MainWindow
                     Cura.PrimaryButton
                     {
                         text: model.name
+                        height: UM.Theme.getSize("message_action_button").height
                     }
                 }
 
@@ -387,6 +388,7 @@ UM.MainWindow
                     Cura.SecondaryButton
                     {
                         text: model.name
+                        height: UM.Theme.getSize("message_action_button").height
                     }
                 }
             }
