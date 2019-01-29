@@ -288,6 +288,57 @@ Item
                     menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
                 }
             }
+
+            Row
+            {
+                height: UM.Theme.getSize("print_setup_big_item").height
+                visible: buildplateCompatibilityError || buildplateCompatibilityWarning
+
+                property bool buildplateCompatibilityError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
+                property bool buildplateCompatibilityWarning: Cura.MachineManager.variantBuildplateUsable
+
+                // This is a space holder aligning the warning messages.
+                Label
+                {
+                    text: ""
+                    width: selectors.textWidth
+                    renderType: Text.NativeRendering
+                }
+
+                Item
+                {
+                    width: selectors.controlWidth
+                    height: parent.height
+
+                    UM.RecolorImage
+                    {
+                        id: warningImage
+                        anchors.left: parent.left
+                        source: UM.Theme.getIcon("warning")
+                        width: UM.Theme.getSize("section_icon").width
+                        height: UM.Theme.getSize("section_icon").height
+                        sourceSize.width: width
+                        sourceSize.height: height
+                        color: UM.Theme.getColor("material_compatibility_warning")
+                        visible: !Cura.MachineManager.isCurrentSetupSupported || buildplateCompatibilityError || buildplateCompatibilityWarning
+                    }
+
+                    Label
+                    {
+                        id: materialCompatibilityLabel
+                        anchors.left: warningImage.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        verticalAlignment: Text.AlignVCenter
+                        width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
+                        text: catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
+                        font: UM.Theme.getFont("very_small")
+                        color: UM.Theme.getColor("text")
+                        visible: CuraSDKVersion == "dev" ? false : buildplateCompatibilityError || buildplateCompatibilityWarning
+                        wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
+                    }
+                }
+            }
         }
     }
 }
