@@ -373,6 +373,24 @@ UM.MainWindow
                     bottom: parent.bottom
                     bottomMargin:  UM.Theme.getSize("default_margin").height
                 }
+
+                primaryButton: Component
+                {
+                    Cura.PrimaryButton
+                    {
+                        text: model.name
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+                }
+
+                secondaryButton: Component
+                {
+                    Cura.SecondaryButton
+                    {
+                        text: model.name
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+                }
             }
         }
 
