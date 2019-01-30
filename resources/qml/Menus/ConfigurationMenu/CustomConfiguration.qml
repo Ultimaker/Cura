@@ -291,6 +291,7 @@ Item
 
             Row
             {
+                id: warnings
                 height: UM.Theme.getSize("print_setup_big_item").height
                 visible: buildplateCompatibilityError || buildplateCompatibilityWarning
 
@@ -320,7 +321,7 @@ Item
                         sourceSize.width: width
                         sourceSize.height: height
                         color: UM.Theme.getColor("material_compatibility_warning")
-                        visible: !Cura.MachineManager.isCurrentSetupSupported || buildplateCompatibilityError || buildplateCompatibilityWarning
+                        visible: !Cura.MachineManager.isCurrentSetupSupported || warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
                     }
 
                     Label
@@ -333,7 +334,7 @@ Item
                         text: catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
                         font: UM.Theme.getFont("very_small")
                         color: UM.Theme.getColor("text")
-                        visible: CuraSDKVersion == "dev" ? false : buildplateCompatibilityError || buildplateCompatibilityWarning
+                        visible: CuraSDKVersion == "dev" ? false : warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
                         wrapMode: Text.WordWrap
                         renderType: Text.NativeRendering
                     }
