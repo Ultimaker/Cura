@@ -122,6 +122,7 @@ Item
         id: accountWidget
         anchors
         {
+            verticalCenter: parent.verticalCenter
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }
