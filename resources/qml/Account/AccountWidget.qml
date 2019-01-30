@@ -1,46 +1,115 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 
 import UM 1.4 as UM
 import Cura 1.1 as Cura
 
-Button
+Item
 {
-    id: accountWidget
     property var profile: Cura.API.account.userProfile
     property var loggedIn: Cura.API.account.isLoggedIn
 
-    implicitHeight: UM.Theme.getSize("main_window_header").height
-    implicitWidth: UM.Theme.getSize("main_window_header").height
+    height: signInButton.height > accountWidget.height ? signInButton.height : accountWidget.height
+    width: signInButton.width > accountWidget.width ? signInButton.width : accountWidget.width
 
-    background: AvatarImage
+    Button
     {
-        id: avatar
+        id: signInButton
 
-        width: Math.round(0.8 * accountWidget.width)
-        height: Math.round(0.8 * accountWidget.height)
-        anchors.verticalCenter: accountWidget.verticalCenter
-        anchors.horizontalCenter: accountWidget.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
 
-        source:
+        text: catalog.i18nc("@action:button", "Sign in")
+
+        height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
+        onClicked: popup.opened ? popup.close() : popup.open()
+        visible: !loggedIn
+
+        hoverEnabled: true
+
+        background: Rectangle
         {
-            if(loggedIn)
-            {
-                if(profile["profile_image_url"])
-                {
-                    return profile["profile_image_url"]
-                }
-                return UM.Theme.getImage("avatar_no_user")
-            }
-            return UM.Theme.getImage("avatar_no_user")
+            radius: UM.Theme.getSize("action_button_radius").width
+            color: signInButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("primary_text")
         }
-        outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
+
+        contentItem: Label
+        {
+            id: label
+            text: signInButton.text
+            font: UM.Theme.getFont("default")
+            color: signInButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+            width: contentWidth
+            verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
+        }
     }
 
-    onClicked: popup.opened ? popup.close() : popup.open()
+    Button
+    {
+        id: accountWidget
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        implicitHeight: UM.Theme.getSize("main_window_header").height
+        implicitWidth: UM.Theme.getSize("main_window_header").height
+
+        hoverEnabled: true
+
+        visible: loggedIn
+
+        text: (loggedIn && profile["profile_image_url"] == "") ? profile["username"].charAt(0).toUpperCase() : ""
+
+        background: AvatarImage
+        {
+            id: avatar
+
+            width: Math.round(0.8 * accountWidget.width)
+            height: Math.round(0.8 * accountWidget.height)
+            anchors.verticalCenter: accountWidget.verticalCenter
+            anchors.horizontalCenter: accountWidget.horizontalCenter
+
+            source: (loggedIn && profile["profile_image_url"]) ? profile["profile_image_url"] : ""
+            outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
+        }
+
+        contentItem: Item
+        {
+            anchors.verticalCenter: accountWidget.verticalCenter
+            anchors.horizontalCenter: accountWidget.horizontalCenter
+            visible: avatar.source == ""
+            Rectangle
+            {
+                id: initialCircle
+                anchors.centerIn: parent
+                width: Math.min(parent.width, parent.height)
+                height: width
+                radius: width
+                color: accountWidget.hovered ? UM.Theme.getColor("primary_text") : "transparent"
+                border.width: 1
+                border.color: UM.Theme.getColor("primary_text")
+            }
+
+            Label
+            {
+                id: initialLabel
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: accountWidget.text
+                font: UM.Theme.getFont("large_bold")
+                color: accountWidget.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                renderType: Text.NativeRendering
+            }
+        }
+
+        onClicked: popup.opened ? popup.close() : popup.open()
+    }
 
     Popup
     {
