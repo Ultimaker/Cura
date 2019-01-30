@@ -58,7 +58,11 @@ Item
         implicitHeight: UM.Theme.getSize("main_window_header").height
         implicitWidth: UM.Theme.getSize("main_window_header").height
 
+        hoverEnabled: true
+
         visible: loggedIn
+
+        text: (loggedIn && profile["profile_image_url"] == "") ? profile["username"].charAt(0).toUpperCase() : ""
 
         background: AvatarImage
         {
@@ -69,19 +73,39 @@ Item
             anchors.verticalCenter: accountWidget.verticalCenter
             anchors.horizontalCenter: accountWidget.horizontalCenter
 
-            source:
-            {
-                if(loggedIn)
-                {
-                    if(profile["profile_image_url"])
-                    {
-                        return profile["profile_image_url"]
-                    }
-                    return UM.Theme.getImage("avatar_no_user")
-                }
-                return UM.Theme.getImage("avatar_no_user")
-            }
+            source: (loggedIn && profile["profile_image_url"]) ? profile["profile_image_url"] : ""
             outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
+        }
+
+        contentItem: Item
+        {
+            anchors.verticalCenter: accountWidget.verticalCenter
+            anchors.horizontalCenter: accountWidget.horizontalCenter
+            visible: avatar.source == ""
+            Rectangle
+            {
+                id: initialCircle
+                anchors.centerIn: parent
+                width: Math.min(parent.width, parent.height)
+                height: width
+                radius: width
+                color: accountWidget.hovered ? UM.Theme.getColor("primary_text") : "transparent"
+                border.width: 1
+                border.color: UM.Theme.getColor("primary_text")
+            }
+
+            Label
+            {
+                id: initialLabel
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: accountWidget.text
+                font: UM.Theme.getFont("large_bold")
+                color: accountWidget.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                renderType: Text.NativeRendering
+            }
         }
 
         onClicked: popup.opened ? popup.close() : popup.open()
