@@ -48,12 +48,13 @@ Button
     contentItem: Row
     {
         spacing: UM.Theme.getSize("narrow_margin").width
+        height: button.height
         //Left side icon. Only displayed if !isIconOnRightSide.
         UM.RecolorImage
         {
             id: buttonIconLeft
             source: ""
-            height: UM.Theme.getSize("action_button_icon").height
+            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
@@ -70,9 +71,11 @@ Button
             font: UM.Theme.getFont("medium")
             visible: text != ""
             renderType: Text.NativeRendering
+            height: parent.height
             anchors.verticalCenter: parent.verticalCenter
             width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : undefined
             horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
         }
 
@@ -81,7 +84,7 @@ Button
         {
             id: buttonIconRight
             source: buttonIconLeft.source
-            height: UM.Theme.getSize("action_button_icon").height
+            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height

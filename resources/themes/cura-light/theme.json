@@ -320,17 +320,9 @@
         "tooltip_text": [255, 255, 255, 255],
 
         "message_background": [255, 255, 255, 255],
-        "message_shadow": [0, 0, 0, 120],
         "message_border": [192, 193, 194, 255],
-        "message_text": [0, 0, 0, 255],
         "message_close": [102, 102, 102, 255],
         "message_close_hover": [8, 7, 63, 255],
-        "message_button": [38, 113, 231, 255],
-        "message_button_hover": [81, 145, 247, 255],
-        "message_button_active": [38, 113, 231, 255],
-        "message_button_text": [255, 255, 255, 255],
-        "message_button_text_hover": [255, 255, 255, 255],
-        "message_button_text_active": [255, 255, 255, 255],
         "message_progressbar_background": [245, 245, 245, 255],
         "message_progressbar_control": [50, 130, 255, 255],
 
@@ -446,7 +438,7 @@
 
         "stage_menu": [0.0, 4.0],
 
-        "account_button": [12, 3],
+        "account_button": [12, 2.5],
 
         "print_setup_widget": [38.0, 30.0],
         "print_setup_mode_toggle": [0.0, 2.0],
@@ -513,7 +505,7 @@
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
-        "action_button": [15.0, 3.0],
+        "action_button": [15.0, 2.5],
         "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
 
@@ -569,12 +561,8 @@
 
         "message": [30.0, 5.0],
         "message_close": [1, 1],
-        "message_button": [6.0, 1.8],
-        "message_shadow": [0, 0],
-        "message_margin": [0, 1.0],
-        "message_inner_margin": [1.5, 1.5],
         "message_radius": [0.25, 0.25],
-        "message_button_radius": [0.15, 0.15],
+        "message_action_button": [0, 2.0],
 
         "infill_button_margin": [0.5, 0.5],
 
