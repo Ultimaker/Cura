@@ -111,7 +111,7 @@ class CloudOutputDeviceManager:
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         if stored_cluster_id in self._remote_clusters:
             device = self._remote_clusters[stored_cluster_id]
-            self._connectToOutputDevice(device)
+            self._connectToOutputDevice(device, active_machine)
             Logger.log("d", "Device connected by metadata cluster ID %s", stored_cluster_id)
         else:
             self._connectByNetworkKey(active_machine)
@@ -129,12 +129,13 @@ class CloudOutputDeviceManager:
 
         Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
         active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        self._connectToOutputDevice(device)
+        self._connectToOutputDevice(device, active_machine)
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
-    def _connectToOutputDevice(self, device: CloudOutputDevice) -> None:
+    def _connectToOutputDevice(self, device: CloudOutputDevice, active_machine: GlobalStack) -> None:
         device.connect()
         self._output_device_manager.addOutputDevice(device)
+        active_machine.addConfiguredConnectionType(device.connectionType.value)
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
