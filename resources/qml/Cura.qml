@@ -270,39 +270,6 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity && (main.item == null || !qmlTypeOf(main.item, "QQuickRectangle"))
             }
 
-            Item
-            {
-                id: additionalComponents
-                width: childrenRect.width
-                anchors.right: actionPanelWidget.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                anchors.bottom: actionPanelWidget.bottom
-                anchors.bottomMargin: UM.Theme.getSize("thick_margin").height * 2
-                visible: actionPanelWidget.visible
-                Row
-                {
-                    id: additionalComponentsRow
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: UM.Theme.getSize("default_margin").width
-                }
-            }
-
-            Component.onCompleted: contentItem.addAdditionalComponents()
-
-            Connections
-            {
-                target: CuraApplication
-                onAdditionalComponentsChanged: contentItem.addAdditionalComponents("saveButton")
-            }
-
-            function addAdditionalComponents()
-            {
-                for (var component in CuraApplication.additionalComponents["saveButton"])
-                {
-                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
-                }
-            }
-
             Loader
             {
                 // A stage can control this area. If nothing is set, it will therefore show the 3D view.
