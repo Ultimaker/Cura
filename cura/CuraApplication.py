@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional, Callable
+from typing import cast, TYPE_CHECKING, Optional, Callable, List
 
 import numpy
 
@@ -244,6 +244,9 @@ class CuraApplication(QtApplication):
         self._sidebar_custom_menu_items = []  # type: list # Keeps list of custom menu items for the side bar
 
         self._plugins_loaded = False
+
+        # A list of stage IDs which don't need to show the preview button
+        self._no_preview_button_stages = ["PreviewStage"]  # type: List[str]
 
         # Backups
         self._auto_save = None
@@ -1787,3 +1790,13 @@ class CuraApplication(QtApplication):
     def getSidebarCustomMenuItems(self) -> list:
         return self._sidebar_custom_menu_items
 
+    noPreviewButtonStageIDsChanged = pyqtSignal()
+
+    def addNoPreviewButtonStage(self, stage_id: str) -> None:
+        if stage_id not in self._no_preview_button_stages:
+            self._no_preview_button_stages.append(stage_id)
+            self.noPreviewButtonStageIDsChanged.emit()
+
+    @pyqtProperty("QStringList", notify = noPreviewButtonStageIDsChanged)
+    def noPreviewButtonStageIds(self) -> List[str]:
+        return self._no_preview_button_stages

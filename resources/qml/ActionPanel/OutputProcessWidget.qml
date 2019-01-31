@@ -120,7 +120,7 @@ Column
             toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
-            visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
+            visible: UM.Controller.activeStage != null && CuraApplication.noPreviewButtonStageIds.indexOf(UM.Controller.activeStage.stageId) == -1
         }
 
         Cura.OutputDevicesActionButton
