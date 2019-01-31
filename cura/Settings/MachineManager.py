@@ -1367,7 +1367,6 @@ class MachineManager(QObject):
             self.switchPrinterType(configuration.printerType)
 
             used_extruder_stack_list = ExtruderManager.getInstance().getUsedExtruderStacks()
-            used_extruder_position_set = {es.getMetaDataEntry("position") for es in used_extruder_stack_list}
             disabled_used_extruder_position_set = set()
             extruders_to_disable = set()
 
@@ -1393,9 +1392,9 @@ class MachineManager(QObject):
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if int(position) in extruders_to_disable:
                     self._global_container_stack.extruders[position].setEnabled(False)
-                    if position in used_extruder_position_set:
-                        need_to_show_message = True
-                        disabled_used_extruder_position_set.add(int(position))
+
+                    need_to_show_message = True
+                    disabled_used_extruder_position_set.add(int(position))
 
                 else:
                     variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
@@ -1432,7 +1431,7 @@ class MachineManager(QObject):
                 extruders_str = ", ".join(str(x) for x in sorted(disabled_used_extruder_position_set))
                 msg_str = msg_str.format(extruders = extruders_str)
                 message = Message(catalog.i18nc("@info:status", msg_str),
-                                  title = catalog.i18nc("@info:title", "Extruders Disabled"))
+                                  title = catalog.i18nc("@info:title", "Extruder(s) Disabled"))
                 message.show()
 
         # See if we need to show the Discard or Keep changes screen
