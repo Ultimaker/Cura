@@ -3,10 +3,8 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.0
-
 import UM 1.3 as UM
 import Cura 1.0 as Cura
-
 
 // We show a nice overlay on the 3D viewer when the current output device has no monitor view
 Rectangle
@@ -14,8 +12,23 @@ Rectangle
     id: viewportOverlay
 
     property bool isConnected: Cura.MachineManager.activeMachineHasActiveNetworkConnection || Cura.MachineManager.activeMachineHasActiveCloudConnection
-    property string printerName: Cura.MachineManager.activeMachineDefinitionName
-    property bool isNetworkEnabled: ["Ultimaker 3", "Ultimaker 3 Extended", "Ultimaker S5"].indexOf(printerName) > -1
+    property bool isNetworkConfigurable: ["Ultimaker 3", "Ultimaker 3 Extended", "Ultimaker S5"].indexOf(Cura.MachineManager.activeMachineDefinitionName) > -1
+    property bool isNetworkConfigured:
+    {
+        // Readability:
+        var connectedTypes = [2, 3];
+        var types = Cura.MachineManager.activeMachineConfiguredConnectionTypes
+
+        // Check if configured connection types includes either 2 or 3 (LAN or cloud)
+        for (var i = 0; i < types.length; i++)
+        {
+            if (connectedTypes.indexOf(types[i]) >= 0)
+            {
+                return true
+            }
+        }
+        return false
+    }
 
     color: UM.Theme.getColor("viewport_overlay")
     anchors.fill: parent
@@ -39,6 +52,8 @@ Rectangle
     {
         anchors.fill: parent
     }
+
+    // CASE 1: CAN MONITOR & CONNECTED
     Loader
     {
         id: monitorViewComponent
@@ -53,78 +68,61 @@ Rectangle
         sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem : null
     }
 
-    /**
-     * In an ideal world, this code would go in the UM3NetworkingPlugin but that plugin is never even loaded unless we
-     * manage to connect to them. Moving the conditional in monitorViewComponent.sourceComponent would allow us to
-     * always load the UM3NetworkingPlugin and then evaluate what UI to show, but it would break any other plugins which
-     * use this plugin. So putting some code here felt like the lesser evil.
-     */
+    // CASE 2 & 3: Empty states
     Column
     {
         anchors
         {
             top: parent.top
-            topMargin: 67 * screenScaleFactor // TODO: Theme!
+            topMargin: UM.Theme.getSize("monitor_empty_state_offset").height
             horizontalCenter: parent.horizontalCenter
         }
-        width: 480 * screenScaleFactor // TODO: Theme!
+        width: UM.Theme.getSize("monitor_empty_state_size").width
         spacing: UM.Theme.getSize("default_margin").height
+        visible: monitorViewComponent.sourceComponent == null
 
+        // CASE 2: CAN MONITOR & NOT CONNECTED
         Label
         {
             anchors
             {
                 horizontalCenter: parent.horizontalCenter
             }
-            visible: isNetworkEnabled && !isConnected
-            text: catalog.i18nc("@info", "Please smake sure your printer has connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.")
+            visible: isNetworkConfigured && !isConnected
+            text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.")
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("monitor_text_primary")
             wrapMode: Text.WordWrap
-            lineHeight: 28 * screenScaleFactor // TODO: Theme!
+            lineHeight: UM.Theme.getSize("monitor_text_line_large").height
             lineHeightMode: Text.FixedHeight
             width: contentWidth
         }
 
-        Cura.PrimaryButton
-        {
-            anchors
-            {
-                horizontalCenter: parent.horizontalCenter
-            }
-            visible: isNetworkEnabled && !isConnected
-            text: catalog.i18nc("@action:button", "Reconnect")
-
-            /**
-             * This is essentially a "close doors" button on the elevator; it doesn't really force a
-             * connection but it does make people feel like Cura is workin' on it.
-             */
-            onClicked: Cura.MachineManager.setActiveMachine(Cura.MachineManager.activeMachineId)
-        }
-
+        // CASE 3: CAN NOT MONITOR
         Label
         {
+            id: noNetworkLabel
             anchors
             {
                 horizontalCenter: parent.horizontalCenter
             }
-            visible: !isNetworkEnabled
-            text: catalog.i18nc("@info", "Please select a network connected printer to monitor the status and queue or connect your Ultimaker printer to your local network.")
+            visible: !isNetworkConfigured
+            text: catalog.i18nc("@info", "Please select a network connected printer to monitor.")
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("monitor_text_primary")
             wrapMode: Text.WordWrap
-            width: parent.width
-            lineHeight: 28 * screenScaleFactor // TODO: Theme!
+            width: contentWidth
+            lineHeight: UM.Theme.getSize("monitor_text_line_large").height
             lineHeightMode: Text.FixedHeight
         }
         Item
         {
             anchors
             {
-                left: parent.left
+                left: noNetworkLabel.left
             }
-            visible: !isNetworkEnabled
-            height: 18 * screenScaleFactor // TODO: Theme!
+            visible: !isNetworkConfigured && isNetworkConfigurable
+            height: UM.Theme.getSize("monitor_text_line").height
             width: childrenRect.width
 
             UM.RecolorImage
@@ -133,8 +131,8 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 color: UM.Theme.getColor("monitor_text_link")
                 source: UM.Theme.getIcon("external_link")
-                width: 16 * screenScaleFactor // TODO: Theme!
-                height: 16 * screenScaleFactor // TODO: Theme!
+                width: UM.Theme.getSize("monitor_external_link_icon").width
+                height: UM.Theme.getSize("monitor_external_link_icon").height
             }
             Label
             {
@@ -142,14 +140,28 @@ Rectangle
                 anchors
                 {
                     left: externalLinkIcon.right
-                    leftMargin: 6 * screenScaleFactor // TODO: Theme!
+                    leftMargin: UM.Theme.getSize("narrow_margin").width
                     verticalCenter: externalLinkIcon.verticalCenter
                 }
                 color: UM.Theme.getColor("monitor_text_link")
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 linkColor: UM.Theme.getColor("monitor_text_link")
-                text: catalog.i18nc("@label link to technical assistance", "More information on connecting the printer")
+                text: catalog.i18nc("@label link to technical assistance", "View user manuals online")
                 renderType: Text.NativeRendering
+            }
+            MouseArea
+            {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: Qt.openUrlExternally("https://ultimaker.com/en/resources/manuals/ultimaker-3d-printers")
+                onEntered:
+                {
+                    manageQueueText.font.underline = true
+                }
+                onExited:
+                {
+                    manageQueueText.font.underline = false
+                }
             }
         }
     }
