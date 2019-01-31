@@ -4,6 +4,7 @@ import io
 from UM.VersionUpgrade import VersionUpgrade
 from cura.PrinterOutputDevice import ConnectionType
 deleted_settings = {"bridge_wall_max_overhang"}  # type: Set[str]
+renamed_configurations = {"connect_group_name": "group_name"}  # type: Dict[str, str]
 
 
 class VersionUpgrade35to40(VersionUpgrade):
@@ -19,6 +20,13 @@ class VersionUpgrade35to40(VersionUpgrade):
         if parser["metadata"].get("um_network_key") is not None or parser["metadata"].get("octoprint_api_key") is not None:
             # Set the connection type if um_network_key or the octoprint key is set.
             parser["metadata"]["connection_type"] = str(ConnectionType.NetworkConnection.value)
+
+        if "metadata" in parser:
+            for old_name, new_name in renamed_configurations.items():
+                if old_name not in parser["metadata"]:
+                    continue
+                parser["metadata"][new_name] = parser["metadata"][old_name]
+                del parser["metadata"][old_name]
 
         result = io.StringIO()
         parser.write(result)
