@@ -53,7 +53,6 @@ class GlobalStacksModel(ListModel):
             if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
                 continue
 
-            # TODO: Remove reference to connect group name.
             items.append({"name": container_stack.getMetaDataEntry("group_name", container_stack.getName()),
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
