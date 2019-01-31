@@ -1369,19 +1369,29 @@ class MachineManager(QObject):
             used_extruder_stack_list = ExtruderManager.getInstance().getUsedExtruderStacks()
             used_extruder_position_set = {es.getMetaDataEntry("position") for es in used_extruder_stack_list}
             disabled_used_extruder_position_set = set()
+            extruders_to_disable = set()
 
             # If an extruder that's currently used to print a model gets disabled due to the syncing, we need to show
             # a message explaining why.
             need_to_show_message = False
 
             for extruder_configuration in configuration.extruderConfigurations:
-                position = str(extruder_configuration.position)
-
                 extruder_has_hotend = extruder_configuration.hotendID != ""
                 extruder_has_material = extruder_configuration.material.guid != ""
 
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if not extruder_has_hotend or not extruder_has_material:
+                    extruders_to_disable.add(extruder_configuration.position)
+
+            # If there's no material and/or nozzle on the printer, enable the first extruder and disable the rest.
+            if len(extruders_to_disable) == len(self._global_container_stack.extruders):
+                extruders_to_disable.remove(min(extruders_to_disable))
+
+            for extruder_configuration in configuration.extruderConfigurations:
+                position = str(extruder_configuration.position)
+
+                # If the machine doesn't have a hotend or material, disable this extruder
+                if int(position) in extruders_to_disable:
                     self._global_container_stack.extruders[position].setEnabled(False)
                     if position in used_extruder_position_set:
                         need_to_show_message = True
