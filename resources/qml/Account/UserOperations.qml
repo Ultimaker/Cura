@@ -39,7 +39,7 @@ Column
         height: UM.Theme.getSize("account_button").height
         text: catalog.i18nc("@button", "Ultimaker account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl)
-        fixedWidthMode: true
+        fixedWidthMode: false
     }
 
     Label

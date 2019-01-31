@@ -115,10 +115,6 @@ class MachineManager(QObject):
 
         self._application.callLater(self.setInitialActiveMachine)
 
-        self._material_incompatible_message = Message(catalog.i18nc("@info:status",
-                                                "The selected material is incompatible with the selected machine or configuration."),
-                                                title = catalog.i18nc("@info:title", "Incompatible Material"))  # type: Message
-
         containers = CuraContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId)  # type: List[InstanceContainer]
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
@@ -1362,25 +1358,56 @@ class MachineManager(QObject):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
+
+            used_extruder_stack_list = ExtruderManager.getInstance().getUsedExtruderStacks()
+            disabled_used_extruder_position_set = set()
+            extruders_to_disable = set()
+
+            # If an extruder that's currently used to print a model gets disabled due to the syncing, we need to show
+            # a message explaining why.
+            need_to_show_message = False
+
+            for extruder_configuration in configuration.extruderConfigurations:
+                extruder_has_hotend = extruder_configuration.hotendID != ""
+                extruder_has_material = extruder_configuration.material.guid != ""
+
+                # If the machine doesn't have a hotend or material, disable this extruder
+                if not extruder_has_hotend or not extruder_has_material:
+                    extruders_to_disable.add(extruder_configuration.position)
+
+            # If there's no material and/or nozzle on the printer, enable the first extruder and disable the rest.
+            if len(extruders_to_disable) == len(self._global_container_stack.extruders):
+                extruders_to_disable.remove(min(extruders_to_disable))
+
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
-                variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
-                material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack,
-                                                                                       position,
-                                                                                       extruder_configuration.hotendID,
-                                                                                       configuration.buildplateConfiguration,
-                                                                                       extruder_configuration.material.guid)
 
-                if variant_container_node:
-                    self._setVariantNode(position, variant_container_node)
-                else:
-                    self._global_container_stack.extruders[position].variant = empty_variant_container
+                # If the machine doesn't have a hotend or material, disable this extruder
+                if int(position) in extruders_to_disable:
+                    self._global_container_stack.extruders[position].setEnabled(False)
 
-                if material_container_node:
-                    self._setMaterial(position, material_container_node)
+                    need_to_show_message = True
+                    disabled_used_extruder_position_set.add(int(position))
+
                 else:
-                    self._global_container_stack.extruders[position].material = empty_material_container
-                self.updateMaterialWithVariant(position)
+                    variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
+                                                                                  extruder_configuration.hotendID)
+                    material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack,
+                                                                                           position,
+                                                                                           extruder_configuration.hotendID,
+                                                                                           configuration.buildplateConfiguration,
+                                                                                           extruder_configuration.material.guid)
+                    if variant_container_node:
+                        self._setVariantNode(position, variant_container_node)
+                    else:
+                        self._global_container_stack.extruders[position].variant = empty_variant_container
+
+                    if material_container_node:
+                        self._setMaterial(position, material_container_node)
+                    else:
+                        self._global_container_stack.extruders[position].material = empty_material_container
+                    self._global_container_stack.extruders[position].setEnabled(True)
+                    self.updateMaterialWithVariant(position)
 
             if configuration.buildplateConfiguration is not None:
                 global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
@@ -1391,6 +1418,14 @@ class MachineManager(QObject):
             else:
                 self._global_container_stack.variant = empty_variant_container
             self._updateQualityWithMaterial()
+
+            if need_to_show_message:
+                msg_str = "Extruder {extruders} is disabled because there is no material loaded. Please load a material or use custom configurations."
+                extruders_str = ", ".join(str(x) for x in sorted(disabled_used_extruder_position_set))
+                msg_str = msg_str.format(extruders = extruders_str)
+                message = Message(catalog.i18nc("@info:status", msg_str),
+                                  title = catalog.i18nc("@info:title", "Extruder(s) Disabled"))
+                message.show()
 
         # See if we need to show the Discard or Keep changes screen
         if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
