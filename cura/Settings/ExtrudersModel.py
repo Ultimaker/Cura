@@ -107,17 +107,19 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   that signal. Application.globalContainerStackChanged doesn't fill this
     #   signal; it's assumed to be the current printer in that case.
     def _extrudersChanged(self, machine_id = None):
+        machine_manager = Application.getInstance().getMachineManager()
         if machine_id is not None:
-            if Application.getInstance().getGlobalContainerStack() is None:
+            if machine_manager.activeMachine is None:
                 # No machine, don't need to update the current machine's extruders
                 return
-            if machine_id != Application.getInstance().getGlobalContainerStack().getId():
+            if machine_id != machine_manager.activeMachine.getId():
                 # Not the current machine
                 return
 
         # Unlink from old extruders
         for extruder in self._active_machine_extruders:
             extruder.containersChanged.disconnect(self._onExtruderStackContainersChanged)
+            extruder.enabledChanged.disconnect(self._updateExtruders)
 
         # Link to new extruders
         self._active_machine_extruders = []
@@ -126,6 +128,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             if extruder is None: #This extruder wasn't loaded yet. This happens asynchronously while this model is constructed from QML.
                 continue
             extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
+            extruder.enabledChanged.connect(self._updateExtruders)
             self._active_machine_extruders.append(extruder)
 
         self._updateExtruders()  # Since the new extruders may have different properties, update our own model.
