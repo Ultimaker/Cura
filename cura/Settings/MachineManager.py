@@ -512,7 +512,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self) -> str:
         if self._global_container_stack:
-            return self._global_container_stack.getName()
+            return self._global_container_stack.getMetaDataEntry("connect_group_name", self._global_container_stack.getName())
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
