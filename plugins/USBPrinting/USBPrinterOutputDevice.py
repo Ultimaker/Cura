@@ -115,7 +115,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         if self._is_printing:
             return  # Aleady printing
-
+        self.writeStarted.emit(self)
         # cancel any ongoing preheat timer before starting a print
         self._printers[0].getController().stopPreheatTimers()
 
