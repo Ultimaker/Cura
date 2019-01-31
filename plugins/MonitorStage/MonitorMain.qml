@@ -115,11 +115,27 @@ Rectangle
             lineHeight: UM.Theme.getSize("monitor_text_line_large").height
             lineHeightMode: Text.FixedHeight
         }
+        Label
+        {
+            id: noNetworkUltimakerLabel
+            anchors
+            {
+                horizontalCenter: parent.horizontalCenter
+            }
+            visible: !isNetworkConfigured && isNetworkConfigurable
+            text: catalog.i18nc("@info", "Please connect your Ultimaker printer to your local network.")
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("monitor_text_primary")
+            wrapMode: Text.WordWrap
+            width: contentWidth
+            lineHeight: UM.Theme.getSize("monitor_text_line_large").height
+            lineHeightMode: Text.FixedHeight
+        }
         Item
         {
             anchors
             {
-                left: noNetworkLabel.left
+                left: noNetworkUltimakerLabel.left
             }
             visible: !isNetworkConfigured && isNetworkConfigurable
             height: UM.Theme.getSize("monitor_text_line").height
