@@ -7,6 +7,7 @@ from PyQt5.QtCore import QTimer
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Signal import Signal, signalemitter
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
@@ -31,15 +32,20 @@ class CloudOutputDeviceManager:
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
+    cloudFlowIsPossible = Signal()
+
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
 
-        application = CuraApplication.getInstance()
-        self._output_device_manager = application.getOutputDeviceManager()
+        self._application = CuraApplication.getInstance()
+        self._output_device_manager = self._application.getOutputDeviceManager()
 
-        self._account = application.getCuraAPI().account  # type: Account
+        self._account = self._application.getCuraAPI().account  # type: Account
         self._api = CloudApiClient(self._account, self._onApiError)
+
+        self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
+        self.cloudFlowIsPossible.connect(self._onCloudFlowPossible)
 
         # Create a timer to update the remote cluster list
         self._update_timer = QTimer()
@@ -152,10 +158,9 @@ class CloudOutputDeviceManager:
     def start(self):
         if self._running:
             return
-        application = CuraApplication.getInstance()
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
         # When switching machines we check if we have to activate a remote cluster.
-        application.globalContainerStackChanged.connect(self._connectToActiveMachine)
+        self._application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         self._update_timer.timeout.connect(self._getRemoteClusters)
         self._onLoginStateChanged(is_logged_in = self._account.isLoggedIn)
 
@@ -163,9 +168,39 @@ class CloudOutputDeviceManager:
     def stop(self):
         if not self._running:
             return
-        application = CuraApplication.getInstance()
         self._account.loginStateChanged.disconnect(self._onLoginStateChanged)
         # When switching machines we check if we have to activate a remote cluster.
-        application.globalContainerStackChanged.disconnect(self._connectToActiveMachine)
+        self._application.globalContainerStackChanged.disconnect(self._connectToActiveMachine)
         self._update_timer.timeout.disconnect(self._getRemoteClusters)
         self._onLoginStateChanged(is_logged_in = False)
+
+    ## Check if the prerequsites are in place to start the cloud flow
+    def checkCloudFlowIsPossible(self):
+        Logger.log("d", "Checking if cloud connection is possible...")
+
+        # Check #1: User is logged in with an Ultimaker account
+        if not self._account.isLoggedIn:
+            Logger.log("d", "Cloud Flow not possible: User not logged in!")
+            return
+
+        # Check #2: Machine has a network connection
+        if not self._application.getMachineManager().activeMachineHasActiveNetworkConnection:
+            Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
+            # TODO: This should only be network connections, not cloud connections
+            return
+        
+        # Check #3: Machine has correct firmware version
+
+        # Logger.log("d", "Cloud Flow not possible: Machine does not have necessary firmware!")
+        # return
+
+        # TODO: Check if machine is already set up to be cloud
+        
+        self.cloudFlowIsPossible.emit()
+        Logger.log("d", "Cloud flow is ready to go!")
+
+    def _onCloudFlowPossible(self):
+        # Cloud flow is possible, so show the message
+        self._start_cloud_flow_message = Message(self.I18N_CATALOG.i18nc("@info:status", "Chain so thin when a breeze roll by, man it flow... man it flow..."))
+        self._start_cloud_flow_message.show()
+        return
