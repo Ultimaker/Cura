@@ -1456,7 +1456,7 @@ class MachineManager(QObject):
     #   then all the container stacks are updated, both the current and the hidden ones.
     def checkCorrectGroupName(self, device_id: str, group_name: str) -> None:
         if self._global_container_stack and device_id == self.activeMachineNetworkKey():
-            # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
+            # Check if the group_name is correct. If not, update all the containers connected to the same printer
             if self.activeMachineNetworkGroupName != group_name:
                 metadata_filter = {"um_network_key": self.activeMachineNetworkKey()}
                 containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
