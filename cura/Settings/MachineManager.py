@@ -1400,7 +1400,8 @@ class MachineManager(QObject):
                     self._global_container_stack.extruders[position].setEnabled(False)
 
                     need_to_show_message = True
-                    disabled_used_extruder_position_set.add(int(position))
+                    # In message, we need to show Extruder 1, 2, 3 instead of 0, 1, 2
+                    disabled_used_extruder_position_set.add(int(position) + 1)
 
                 else:
                     variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
