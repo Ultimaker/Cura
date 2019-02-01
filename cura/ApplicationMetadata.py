@@ -4,11 +4,19 @@
 # ---------
 # Genearl constants used in Cura
 # ---------
+DEFAULT_CURA_APP_NAME = "cura"
 DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
 DEFAULT_CURA_VERSION = "master"
 DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
 DEFAULT_CURA_SDK_VERSION = "6.0.0"
+
+try:
+    from cura.CuraVersion import CuraAppName  # type: ignore
+    if CuraAppName == "":
+        CuraAppName = DEFAULT_CURA_APP_NAME
+except ImportError:
+    CuraAppName = DEFAULT_CURA_APP_NAME
 
 try:
     from cura.CuraVersion import CuraAppDisplayName  # type: ignore
