@@ -58,6 +58,7 @@ Item
                     width: Math.round(parent.width / 2)
                     height: parent.height
                     visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
                 }
                 Label
                 {
@@ -84,6 +85,7 @@ Item
                     width: Math.round(parent.width / 3)
                     height: parent.height
                     visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
                 }
                 Label
                 {
@@ -111,6 +113,7 @@ Item
                     width: 72 * screenScaleFactor // TODO: Theme!
                     height: parent.height
                     visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
                 }
 
                 Label

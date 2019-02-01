@@ -525,6 +525,12 @@ class MachineManager(QObject):
             return has_remote_connection
         return False
 
+    @pyqtProperty("QVariantList", notify=globalContainerChanged)
+    def activeMachineConfiguredConnectionTypes(self):
+        if self._global_container_stack:
+            return self._global_container_stack.configuredConnectionTypes
+        return []
+
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
         return bool(self._printer_output_devices) and len(self._printer_output_devices[0].printers) > 1

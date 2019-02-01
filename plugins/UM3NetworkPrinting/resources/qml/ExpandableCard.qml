@@ -39,6 +39,7 @@ Item
         color: base.enabled && headerMouseArea.containsMouse ? headerHoverColor : headerBackgroundColor
         height: childrenRect.height
         width: parent.width
+        radius: 2 * screenScaleFactor // TODO: Theme!
         Behavior on color
         {
             ColorAnimation
@@ -77,6 +78,7 @@ Item
         color: headerBackgroundColor
         height: base.expanded ? childrenRect.height : 0
         width: parent.width
+        radius: 2 * screenScaleFactor // TODO: Theme!
         Behavior on height
         {
             NumberAnimation
