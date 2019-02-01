@@ -1,8 +1,10 @@
 import configparser
-from typing import Tuple, List, Set
+from typing import Tuple, List, Set, Dict
 import io
+
 from UM.VersionUpgrade import VersionUpgrade
 from cura.PrinterOutputDevice import ConnectionType
+
 deleted_settings = {"bridge_wall_max_overhang"}  # type: Set[str]
 renamed_configurations = {"connect_group_name": "group_name"}  # type: Dict[str, str]
 
@@ -31,7 +33,6 @@ class VersionUpgrade35to40(VersionUpgrade):
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
-        pass
 
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
