@@ -19,6 +19,8 @@ Item
     height: childrenRect.height
     visible: CuraApplication.platformActivity
 
+    property bool hasPreviewButton: true
+
     Rectangle
     {
         id: actionPanelWidget
@@ -47,6 +49,13 @@ Item
                 rightMargin: UM.Theme.getSize("thick_margin").width
             }
             sourceComponent: actionPanelWidget.outputAvailable ? outputProcessWidget : sliceProcessWidget
+            onLoaded:
+            {
+                if(actionPanelWidget.outputAvailable)
+                {
+                    loader.item.hasPreviewButton = base.hasPreviewButton;
+                }
+            }
         }
 
         Component
