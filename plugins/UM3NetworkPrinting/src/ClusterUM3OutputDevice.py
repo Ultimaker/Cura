@@ -127,7 +127,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
             path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/PrintWindow.qml")
-            self._printer_selection_dialog = CuraApplication.getInstance().createQmlComponent(path, {"OutputDevice": self})
+            self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})
         if self._printer_selection_dialog is not None:
             self._printer_selection_dialog.show()
 
@@ -213,7 +213,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # Add user name to the print_job
         parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
 
-        file_name = CuraApplication.getInstance().getPrintInformation().jobName + "." + preferred_format["extension"]
+        file_name = self._application.getPrintInformation().jobName + "." + preferred_format["extension"]
 
         output = stream.getvalue()  # Either str or bytes depending on the output mode.
         if isinstance(stream, io.StringIO):
@@ -286,7 +286,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 self._progress_message.hide()
             self._compressing_gcode = False
             self._sending_gcode = False
-            CuraApplication.getInstance().getController().setActiveStage("PrepareStage")
+            self._application.getController().setActiveStage("PrepareStage")
 
             # After compressing the sliced model Cura sends data to printer, to stop receiving updates from the request
             # the "reply" should be disconnected
@@ -296,7 +296,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _successMessageActionTriggered(self, message_id: Optional[str] = None, action_id: Optional[str] = None) -> None:
         if action_id == "View":
-            CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
+            self._application.getController().setActiveStage("MonitorStage")
 
     @pyqtSlot()
     def openPrintJobControlPanel(self) -> None:
@@ -554,7 +554,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         return result
 
     def _createMaterialOutputModel(self, material_data: Dict[str, Any]) -> "MaterialOutputModel":
-        material_manager = CuraApplication.getInstance().getMaterialManager()
+        material_manager = self._application.getMaterialManager()
         material_group_list = None
 
         # Avoid crashing if there is no "guid" field in the metadata
