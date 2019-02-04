@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -37,8 +37,8 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@label", "Enjoy a more powerful 3D printing experience.")
-        font: UM.Theme.getFont("default")
+        text: catalog.i18nc("@label", "The next generation 3D printing workflow")
+        font: UM.Theme.getFont("default_bold")
         color: UM.Theme.getColor("text")
     }
 
@@ -48,12 +48,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignLeft
         renderType: Text.NativeRendering
-        text: {
-            var t = " - Send prints to your Ultimaker printer from anywhere\n"
-                  + " - Access your Ultimaker Cura Settings worldwide\n"
-                  + " - Enhance your workflow with advanced material profiles"
-            return catalog.i18nc("@label", t)
-        }
+        text: catalog.i18nc("@text", "- Send print jobs to your Ultimaker printers outside your local network\n- Store your Ultimaker Cura settings in the cloud for use anywhere\n- Get exclusive access to material profiles from leading brands")
         lineHeight: 1.4
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
