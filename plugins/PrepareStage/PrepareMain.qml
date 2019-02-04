@@ -1,5 +1,5 @@
-// Copyright (c) 2019 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2019 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.4
 import QtQuick.Controls 1.2
@@ -11,12 +11,7 @@ import Cura 1.0 as Cura
 
 Item
 {
-    Loader
-    {
-        id: previewMain
-
-        source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
-    }
+    id: prepareMain
 
     Cura.ActionPanelWidget
     {
