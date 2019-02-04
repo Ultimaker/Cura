@@ -7,17 +7,20 @@ from time import time
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
 from cura.CuraApplication import CuraApplication
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Version import Version
+from UM.Message import Message
+from UM.i18n import i18nCatalog
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
+i18n_catalog = i18nCatalog("cura")
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -27,12 +30,15 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     addDeviceSignal = Signal()
     removeDeviceSignal = Signal()
     discoveredDevicesChanged = Signal()
+    cloudFlowIsPossible = Signal()
 
     def __init__(self):
         super().__init__()
         
         self._zero_conf = None
         self._zero_conf_browser = None
+
+        self._application = CuraApplication.getInstance()
 
         # Create a cloud output device manager that abstracts all cloud connection logic away.
         self._cloud_output_device_manager = CloudOutputDeviceManager()
@@ -41,7 +47,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
-        CuraApplication.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
+        self._application.globalContainerStackChanged.connect(self.reCheckConnections)
 
         self._discovered_devices = {}
         
@@ -49,6 +55,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._network_manager.finished.connect(self._onNetworkRequestFinished)
 
         self._min_cluster_version = Version("4.0.0")
+        self._min_cloud_version = Version("5.1.5")
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
@@ -73,6 +80,14 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._service_changed_request_event = Event()
         self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
         self._service_changed_request_thread.start()
+
+        self._account = self._application.getCuraAPI().account
+
+        # Check if cloud flow is possible when user logs in
+        self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
+
+        # Listen for when Cloud Flow is possible 
+        self.cloudFlowIsPossible.connect(self._onCloudFlowPossible)
 
     def getDiscoveredDevices(self):
         return self._discovered_devices
@@ -292,6 +307,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
             # Ensure that the configured connection type is set.
             global_container_stack.addConfiguredConnectionType(device.connectionType.value)
+            # global_container_stack.setFirmwareVersion(device.firmwareVersion)
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 
@@ -370,3 +386,38 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self.removeDeviceSignal.emit(str(name))
 
         return True
+
+    ## Check if the prerequsites are in place to start the cloud flow
+    def checkCloudFlowIsPossible(self):
+        Logger.log("d", "Checking if cloud connection is possible...")
+
+        # TODO: Skip if already using cloud connection
+
+        # Check #1: User is logged in with an Ultimaker account
+        if not self._account.isLoggedIn:
+            Logger.log("d", "Cloud Flow not possible: User not logged in!")
+            return
+
+        # Check #2: Machine has a network connection
+        if not self._application.getMachineManager().activeMachineHasActiveNetworkConnection:
+            Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
+            # TODO: This should only be network connections, not cloud connections
+            return
+        
+        # Check #3: Machine has correct firmware version
+        firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
+        if not Version(firmware_version) > self._min_cloud_version:
+            Logger.log("d",
+                            "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
+                            firmware_version,
+                            self._min_cloud_version)
+            return
+        
+        self.cloudFlowIsPossible.emit()
+        Logger.log("d", "Cloud flow is ready to go!")
+
+    def _onCloudFlowPossible(self):
+        # Cloud flow is possible, so show the message
+        self._start_cloud_flow_message = Message(i18n_catalog.i18nc("@info:status", "Chain so thin when a breeze roll by, man it flow... man it flow..."))
+        self._start_cloud_flow_message.show()
+        return
