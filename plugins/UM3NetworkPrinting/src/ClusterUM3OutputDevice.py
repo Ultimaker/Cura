@@ -45,6 +45,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     activePrinterChanged = pyqtSignal()
     activeCameraUrlChanged = pyqtSignal()
     receivedPrintJobsChanged = pyqtSignal()
+    cloudFlowIsPossible = pyqtSignal()
 
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
     # Therefore we create a private signal used to trigger the printersChanged signal.
@@ -53,6 +54,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def __init__(self, device_id, address, properties, parent = None) -> None:
         super().__init__(device_id = device_id, address = address, properties=properties, connection_type = ConnectionType.NetworkConnection, parent = parent)
         self._api_prefix = "/cluster-api/v1/"
+
+        self._application = CuraApplication.getInstance()
 
         self._number_of_extruders = 2
 
@@ -65,8 +68,17 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/MonitorStage.qml")
 
+        self._account = self._application.getCuraAPI().account
+
         # Trigger the printersChanged signal when the private signal is triggered
         self.printersChanged.connect(self._clusterPrintersChanged)
+
+        # Check if cloud flow is possible when user logs in
+        self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
+
+        # Listen for when Cloud Flow is possible 
+        self.cloudFlowIsPossible.connect(self._onCloudFlowPossible)
+        
 
         self._accepts_commands = True  # type: bool
 
@@ -664,6 +676,39 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def sendMaterialProfiles(self) -> None:
         job = SendMaterialJob(device = self)
         job.run()
+
+    ## Check if the prerequsites are in place to start the cloud flow
+    def checkCloudFlowIsPossible(self):
+        Logger.log("d", "Checking if cloud connection is possible...")
+
+        # Check #1: User is logged in with an Ultimaker account
+        if not self._account.isLoggedIn:
+            Logger.log("d", "Cloud Flow not possible: User not logged in!")
+            return
+
+        # Check #2: Machine has a network connection
+        if not self._application.getMachineManager().activeMachineHasActiveNetworkConnection:
+            Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
+            # TODO: This should only be network connections, not cloud connections
+            return
+        
+        # Check #3: Machine has correct firmware version
+
+
+
+        # Logger.log("d", "Cloud Flow not possible: Machine does not have necessary firmware!")
+        # return
+
+        # TODO: Check if machine is already set up to be cloud
+        
+        self.cloudFlowIsPossible.emit()
+        Logger.log("d", "Cloud flow is ready to go!")
+
+    def _onCloudFlowPossible(self):
+        # Cloud flow is possible, so show the message
+        self._start_cloud_flow_message = Message(i18n_catalog.i18nc("@info:status", "Chain so thin when a breeze roll by, man it flow... man it flow..."))
+        self._start_cloud_flow_message.show()
+        return
 
 
 def loadJsonFromReply(reply: QNetworkReply) -> Optional[List[Dict[str, Any]]]:
