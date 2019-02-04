@@ -332,7 +332,7 @@ Item
                         verticalAlignment: Text.AlignVCenter
                         width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
                         text: catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
-                        font: UM.Theme.getFont("very_small")
+                        font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         visible: CuraSDKVersion == "dev" ? false : warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
                         wrapMode: Text.WordWrap
