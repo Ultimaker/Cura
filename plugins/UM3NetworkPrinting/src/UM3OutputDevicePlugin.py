@@ -401,20 +401,19 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Check #2: Machine has a network connection
         if not self._application.getMachineManager().activeMachineHasActiveNetworkConnection:
             Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
-            # TODO: This should only be network connections, not cloud connections
             return
         
         # Check #3: Machine has correct firmware version
-        firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
-        if not Version(firmware_version) > self._min_cloud_version:
-            Logger.log("d",
-                            "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
-                            firmware_version,
-                            self._min_cloud_version)
-            return
+        # firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
+        # if not Version(firmware_version) > self._min_cloud_version:
+        #     Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
+        #                     firmware_version,
+        #                     self._min_cloud_version)
+        #     return
+        # TODO: Un-comment out, only by-passed for development purposes
         
-        self.cloudFlowIsPossible.emit()
         Logger.log("d", "Cloud flow is ready to go!")
+        self.cloudFlowIsPossible.emit()
 
     def _onCloudFlowPossible(self):
         # Cloud flow is possible, so show the message
