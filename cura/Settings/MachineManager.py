@@ -501,7 +501,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self) -> str:
         if self._global_container_stack:
-            return self._global_container_stack.getName()
+            return self._global_container_stack.getMetaDataEntry("group_name", self._global_container_stack.getName())
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
@@ -553,7 +553,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkGroupName(self) -> str:
         if self._global_container_stack:
-            return self._global_container_stack.getMetaDataEntry("connect_group_name", "")
+            return self._global_container_stack.getMetaDataEntry("group_name", "")
         return ""
 
     @pyqtProperty(QObject, notify = globalContainerChanged)
@@ -1345,7 +1345,7 @@ class MachineManager(QObject):
             if not new_machine:
                 return
             new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
-            new_machine.setMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
+            new_machine.setMetaDataEntry("group_name", self.activeMachineNetworkGroupName)
             new_machine.setMetaDataEntry("hidden", False)
             new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
         else:
@@ -1393,7 +1393,8 @@ class MachineManager(QObject):
                     self._global_container_stack.extruders[position].setEnabled(False)
 
                     need_to_show_message = True
-                    disabled_used_extruder_position_set.add(int(position))
+                    # In message, we need to show Extruder 1, 2, 3 instead of 0, 1, 2
+                    disabled_used_extruder_position_set.add(int(position) + 1)
 
                 else:
                     variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
@@ -1449,12 +1450,12 @@ class MachineManager(QObject):
     #   then all the container stacks are updated, both the current and the hidden ones.
     def checkCorrectGroupName(self, device_id: str, group_name: str) -> None:
         if self._global_container_stack and device_id == self.activeMachineNetworkKey():
-            # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
+            # Check if the group_name is correct. If not, update all the containers connected to the same printer
             if self.activeMachineNetworkGroupName != group_name:
                 metadata_filter = {"um_network_key": self.activeMachineNetworkKey()}
                 containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
                 for container in containers:
-                    container.setMetaDataEntry("connect_group_name", group_name)
+                    container.setMetaDataEntry("group_name", group_name)
 
     ##  This method checks if there is an instance connected to the given network_key
     def existNetworkInstances(self, network_key: str) -> bool:

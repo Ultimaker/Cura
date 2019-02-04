@@ -500,7 +500,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         is_printer_group = False
         if machine_conflict:
-            group_name = existing_global_stack.getMetaDataEntry("connect_group_name")
+            group_name = existing_global_stack.getMetaDataEntry("group_name")
             if group_name is not None:
                 is_printer_group = True
                 machine_name = group_name

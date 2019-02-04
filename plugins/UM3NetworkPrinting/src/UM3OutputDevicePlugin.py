@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from queue import Queue
@@ -245,7 +245,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 properties = device.getProperties().copy()
                 if b"incomplete" in properties:
                     del properties[b"incomplete"]
-                properties[b'cluster_size'] = len(cluster_printers_list)
+                properties[b"cluster_size"] = len(cluster_printers_list)
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
 

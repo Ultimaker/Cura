@@ -52,14 +52,14 @@ class MachineManagementModel(ListModel):
                                    "um_network_key": "*",
                                    "hidden": "False"}
         self._network_container_stacks = ContainerRegistry.getInstance().findContainerStacks(**network_filter_printers)
-        self._network_container_stacks.sort(key = lambda i: i.getMetaDataEntry("connect_group_name"))
+        self._network_container_stacks.sort(key = lambda i: i.getMetaDataEntry("group_name", ""))
 
         for container in self._network_container_stacks:
             metadata = container.getMetaData().copy()
             if container.getBottom():
                 metadata["definition_name"] = container.getBottom().getName()
 
-            items.append({"name": metadata["connect_group_name"],
+            items.append({"name": metadata.get("group_name", ""),
                           "id": container.getId(),
                           "metadata": metadata,
                           "group": catalog.i18nc("@info:title", "Network enabled printers")})
