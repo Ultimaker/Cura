@@ -1393,8 +1393,7 @@ class MachineManager(QObject):
                     self._global_container_stack.extruders[position].setEnabled(False)
 
                     need_to_show_message = True
-                    # In message, we need to show Extruder 1, 2, 3 instead of 0, 1, 2
-                    disabled_used_extruder_position_set.add(int(position) + 1)
+                    disabled_used_extruder_position_set.add(int(position))
 
                 else:
                     variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
@@ -1427,8 +1426,15 @@ class MachineManager(QObject):
             self._updateQualityWithMaterial()
 
             if need_to_show_message:
-                msg_str = "Extruder {extruders} is disabled because there is no material loaded. Please load a material or use custom configurations."
-                extruders_str = ", ".join(str(x) for x in sorted(disabled_used_extruder_position_set))
+                msg_str = "{extruders} is disabled because there is no material loaded. Please load a material or use custom configurations."
+
+                # Show human-readable extruder names such as "Extruder Left", "Extruder Front" instead of "Extruder 1, 2, 3".
+                extruder_names = []
+                for position in sorted(disabled_used_extruder_position_set):
+                    extruder_stack = self._global_container_stack.extruders[str(position)]
+                    extruder_name = extruder_stack.definition.getName()
+                    extruder_names.append(extruder_name)
+                extruders_str = ", ".join(extruder_names)
                 msg_str = msg_str.format(extruders = extruders_str)
                 message = Message(catalog.i18nc("@info:status", msg_str),
                                   title = catalog.i18nc("@info:title", "Extruder(s) Disabled"))
