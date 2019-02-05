@@ -389,31 +389,40 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     ## Check if the prerequsites are in place to start the cloud flow
     def checkCloudFlowIsPossible(self):
-        Logger.log("d", "Checking if cloud connection is possible...")
+        active_machine = self._application.getMachineManager().activeMachine
 
-        # TODO: Skip if already using cloud connection
+        if active_machine:
+            # Skip if already complete
+            # if active_machine.getMetaDataEntry("cloud_flow_complete", "value") is not None:
+            #     return
 
-        # Check #1: User is logged in with an Ultimaker account
-        if not self._account.isLoggedIn:
-            Logger.log("d", "Cloud Flow not possible: User not logged in!")
-            return
+            # # Skip if user said don't remind me
+            # if active_machine.getMetaDataEntry("show_cloud_message", "value") is False:
+            #     return
 
-        # Check #2: Machine has a network connection
-        if not self._application.getMachineManager().activeMachineHasActiveNetworkConnection:
-            Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
-            return
-        
-        # Check #3: Machine has correct firmware version
-        # firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
-        # if not Version(firmware_version) > self._min_cloud_version:
-        #     Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
-        #                     firmware_version,
-        #                     self._min_cloud_version)
-        #     return
-        # TODO: Un-comment out, only by-passed for development purposes
-        
-        Logger.log("d", "Cloud flow is ready to go!")
-        self.cloudFlowIsPossible.emit()
+            Logger.log("d", "Checking if cloud connection is possible...")
+
+            # Check #1: User is logged in with an Ultimaker account
+            if not self._account.isLoggedIn:
+                Logger.log("d", "Cloud Flow not possible: User not logged in!")
+                return
+
+            # Check #2: Machine has a network connection
+            if not self._application.getMachineManager().activeMachineHasActiveNetworkConnection:
+                Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
+                return
+            
+            # Check #3: Machine has correct firmware version
+            # firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
+            # if not Version(firmware_version) > self._min_cloud_version:
+            #     Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
+            #                     firmware_version,
+            #                     self._min_cloud_version)
+            #     return
+            # TODO: Un-comment out, only by-passed for development purposes
+            
+            Logger.log("d", "Cloud flow is possible!")
+            self.cloudFlowIsPossible.emit()
 
     def _onCloudFlowPossible(self):
         # Cloud flow is possible, so show the message
