@@ -32,6 +32,8 @@ class CloudOutputDeviceManager:
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
+    addedCloudCluster = Signal()
+
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
@@ -90,6 +92,7 @@ class CloudOutputDeviceManager:
         for added_cluster in added_clusters:
             device = CloudOutputDevice(self._api, added_cluster)
             self._remote_clusters[added_cluster.cluster_id] = device
+            self.addedCloudCluster.emit()
 
         for device, cluster in updates:
             device.clusterData = cluster
