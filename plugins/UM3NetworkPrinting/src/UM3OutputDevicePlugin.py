@@ -86,7 +86,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Check if cloud flow is possible when user logs in
         self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
 
-        # Listen for when Cloud Flow is possible 
+        # Listen for when cloud flow is possible 
         self.cloudFlowIsPossible.connect(self._onCloudFlowPossible)
 
     def getDiscoveredDevices(self):
