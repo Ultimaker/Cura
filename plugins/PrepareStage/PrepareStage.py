@@ -1,12 +1,10 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os.path
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
-from UM.Resources import Resources
 from cura.Stages.CuraStage import CuraStage
-
-
 
 ##  Stage for preparing model (slicing).
 class PrepareStage(CuraStage):
@@ -16,4 +14,6 @@ class PrepareStage(CuraStage):
 
     def _engineCreated(self):
         menu_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("PrepareStage"), "PrepareMenu.qml")
+        main_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("PrepareStage"), "PrepareMain.qml")
         self.addDisplayComponent("menu", menu_component_path)
+        self.addDisplayComponent("main", main_component_path)
