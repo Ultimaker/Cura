@@ -43,6 +43,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Create a cloud output device manager that abstracts all cloud connection logic away.
         self._cloud_output_device_manager = CloudOutputDeviceManager()
 
+        self._cloud_output_device_manager.addedCloudCluster.connect(self._onCloudPrintingConfigured)
+
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
@@ -428,4 +430,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Cloud flow is possible, so show the message
         self._start_cloud_flow_message = Message(i18n_catalog.i18nc("@info:status", "Chain so thin when a breeze roll by, man it flow... man it flow..."))
         self._start_cloud_flow_message.show()
+        return
+
+    def _onCloudPrintingConfigured(self):
+        # Show the successful pop-up
+        self._cloud_flow_complete_message = Message(i18n_catalog.i18nc("@info:status", "A winner is me!"))
+        self._cloud_flow_complete_message.show()
+        active_machine = self._application.getMachineManager().activeMachine
+        if active_machine:
+            active_machine.setMetaDataEntry("cloud_flow_complete", True)
         return
