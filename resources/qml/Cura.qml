@@ -246,30 +246,6 @@ UM.MainWindow
                 }
             }
 
-            Cura.ActionPanelWidget
-            {
-                id: actionPanelWidget
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.rightMargin: UM.Theme.getSize("thick_margin").width
-                anchors.bottomMargin: UM.Theme.getSize("thick_margin").height
-
-                /*
-                Show this panel only if there is something on the build plate, and there is NOT an opaque item in front of the build plate.
-                This cannot be solved by Z indexing! If you want to try solving this, please increase this counter when you're done:
-                Number of people having tried to fix this by z-indexing: 2
-                The problem arises from the following render order requirements:
-                - The stage menu must be rendered above the stage main.
-                - The stage main must be rendered above the action panel (because the monitor page must be rendered above the action panel).
-                - The action panel must be rendered above the expandable components drop-down.
-                However since the expandable components drop-downs are child elements of the stage menu,
-                they can't be rendered lower than elements that are lower than the stage menu.
-                Therefore we opted to forego the second requirement and hide the action panel instead when something obscures it (except the expandable components).
-                We assume that QQuickRectangles are always opaque and any other item is not.
-                */
-                visible: CuraApplication.platformActivity && (main.item == null || !qmlTypeOf(main.item, "QQuickRectangle"))
-            }
-
             Loader
             {
                 // A stage can control this area. If nothing is set, it will therefore show the 3D view.

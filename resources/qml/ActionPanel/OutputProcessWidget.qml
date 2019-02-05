@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -19,6 +19,7 @@ Column
 
     spacing: UM.Theme.getSize("thin_margin").height
     property bool preSlicedData: PrintInformation.preSliced
+    property alias hasPreviewButton: previewStageShortcut.visible
 
     UM.I18nCatalog
     {
@@ -120,7 +121,6 @@ Column
             toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
-            visible: UM.Controller.activeStage != null && UM.Controller.activeStage.stageId != "PreviewStage"
         }
 
         Cura.OutputDevicesActionButton
