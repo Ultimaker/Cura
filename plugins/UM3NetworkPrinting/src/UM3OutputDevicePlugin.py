@@ -55,7 +55,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._network_manager.finished.connect(self._onNetworkRequestFinished)
 
         self._min_cluster_version = Version("4.0.0")
-        self._min_cloud_version = Version("5.1.5")
+        self._min_cloud_version = Version("5.2.0")
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
