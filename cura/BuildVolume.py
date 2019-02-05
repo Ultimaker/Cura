@@ -739,13 +739,16 @@ class BuildVolume(SceneNode):
                 prime_tower_collision = False
                 prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
                 for extruder_id in prime_tower_areas:
-                    for prime_tower_area in prime_tower_areas[extruder_id]:
+                    for i_area, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
                         for area in result_areas[extruder_id]:
                             if prime_tower_area.intersectsPolygon(area) is not None:
                                 prime_tower_collision = True
                                 break
                         if prime_tower_collision: #Already found a collision.
                             break
+                        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable"):
+                            prime_tower_areas[extruder_id][i_area] = prime_tower_area.getMinkowskiHull(
+                                Polygon.approximatedCircle(disallowed_border_size))
                     if not prime_tower_collision:
                         result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
                         result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
