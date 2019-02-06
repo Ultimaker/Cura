@@ -8,6 +8,7 @@ from time import time
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
+from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
@@ -309,7 +310,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
             # Ensure that the configured connection type is set.
             global_container_stack.addConfiguredConnectionType(device.connectionType.value)
-            # global_container_stack.setFirmwareVersion(device.firmwareVersion)
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 
@@ -395,12 +395,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         if active_machine:
             # Skip if already complete
-            # if active_machine.getMetaDataEntry("cloud_flow_complete", "value") is not None:
-            #     return
+            if active_machine.getMetaDataEntry("cloud_flow_complete", "value") is not None:
+                return
 
-            # # Skip if user said don't remind me
-            # if active_machine.getMetaDataEntry("show_cloud_message", "value") is False:
-            #     return
+            # Skip if user said don't remind me
+            if active_machine.getMetaDataEntry("show_cloud_message", "value") is False:
+                return
 
             Logger.log("d", "Checking if cloud connection is possible...")
 
@@ -415,28 +415,79 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 return
             
             # Check #3: Machine has correct firmware version
-            # firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
-            # if not Version(firmware_version) > self._min_cloud_version:
-            #     Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
-            #                     firmware_version,
-            #                     self._min_cloud_version)
-            #     return
-            # TODO: Un-comment out, only by-passed for development purposes
+            firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
+            if not Version(firmware_version) > self._min_cloud_version:
+                Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
+                                firmware_version,
+                                self._min_cloud_version)
+                return
             
             Logger.log("d", "Cloud flow is possible!")
             self.cloudFlowIsPossible.emit()
 
     def _onCloudFlowPossible(self):
         # Cloud flow is possible, so show the message
-        self._start_cloud_flow_message = Message(i18n_catalog.i18nc("@info:status", "Chain so thin when a breeze roll by, man it flow... man it flow..."))
+        self._start_cloud_flow_message = Message(
+            i18n_catalog.i18nc("@info:status", "Pair your printer to your Ultimaker account and start print jobs from anywhere."),
+            0, # Lifetime
+            True, # Dismissable?
+            None, # Progress
+            "", # Title
+            None, # Parent
+            True, # Use inactivity timer
+            "../../../../../Cura/plugins/UM3NetworkPrinting/resources/svg/cloud-flow-start.svg", # Image souce
+            i18n_catalog.i18nc("@info:status", "Connect to cloud"), # image caption
+            i18n_catalog.i18nc("@action", "Don't ask me again for this printer."), # Toggle text
+            False # Toggle default state
+        )
+        self._start_cloud_flow_message.addAction("", i18n_catalog.i18nc("@action", "Get started"), "", "")
+        self._start_cloud_flow_message.optionToggled.connect(self._onDontAskMeAgain)
+        self._start_cloud_flow_message.actionTriggered.connect(self._onCloudFlowStarted)
         self._start_cloud_flow_message.show()
         return
 
     def _onCloudPrintingConfigured(self):
+        if self._start_cloud_flow_message:
+                self._start_cloud_flow_message.hide()
         # Show the successful pop-up
-        self._cloud_flow_complete_message = Message(i18n_catalog.i18nc("@info:status", "A winner is me!"))
+        self._cloud_flow_complete_message = Message(
+            i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
+            30, # Lifetime
+            True, # Dismissable?
+            None, # Progress
+            "", # Title
+            None, # Parent
+            True, # Use inactivity timer
+            "../../../../../Cura/plugins/UM3NetworkPrinting/resources/svg/cloud-flow-completed.svg", # Image souce
+            i18n_catalog.i18nc("@info:status", "Connected!") # image caption
+        )
+        self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
+        self._start_cloud_flow_message.actionTriggered.connect(self._onReviewCloudConnection)
         self._cloud_flow_complete_message.show()
+
+        # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
         active_machine = self._application.getMachineManager().activeMachine
         if active_machine:
             active_machine.setMetaDataEntry("cloud_flow_complete", True)
+        return
+
+    def _onDontAskMeAgain(self, message):
+        active_machine = self._application.getMachineManager().activeMachine
+        if active_machine:
+            active_machine.setMetaDataEntry("show_cloud_message", False)
+            Logger.log("d", "Will not ask the user again to cloud connect for current printer.")
+        return
+
+    def _onCloudFlowStarted(self, message, action):
+        address = self._application.getMachineManager().activeMachineAddress
+        if address:
+            QDesktopServices.openUrl(QUrl("http://" + address + "/cloud_connect"))
+            if self._start_cloud_flow_message:
+                self._start_cloud_flow_message.hide()
+        return
+    
+    def _onReviewCloudConnection(self, message, action):
+        address = self._application.getMachineManager().activeMachineAddress
+        if address:
+            QDesktopServices.openUrl(QUrl("http://" + address + "/settings"))
         return
