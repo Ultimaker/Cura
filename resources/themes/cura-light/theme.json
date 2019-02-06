@@ -146,7 +146,7 @@
         "wide_lining": [245, 245, 245, 255],
         "thick_lining": [127, 127, 127, 255],
         "lining": [192, 193, 194, 255],
-        "viewport_overlay": [0, 0, 0, 192],
+        "viewport_overlay": [246, 246, 246, 255],
 
         "primary": [50, 130, 255, 255],
         "primary_shadow": [64, 47, 205, 255],
@@ -294,7 +294,7 @@
         "setting_validation_ok": [255, 255, 255, 255],
         "setting_filter_field" : [153, 153, 153, 255],
 
-        "material_compatibility_warning": [0, 0, 0, 255],
+        "material_compatibility_warning": [243, 166, 59, 255],
 
         "progressbar_background": [245, 245, 245, 255],
         "progressbar_control": [50, 130, 255, 255],
@@ -320,17 +320,9 @@
         "tooltip_text": [255, 255, 255, 255],
 
         "message_background": [255, 255, 255, 255],
-        "message_shadow": [0, 0, 0, 120],
         "message_border": [192, 193, 194, 255],
-        "message_text": [0, 0, 0, 255],
         "message_close": [102, 102, 102, 255],
         "message_close_hover": [8, 7, 63, 255],
-        "message_button": [38, 113, 231, 255],
-        "message_button_hover": [81, 145, 247, 255],
-        "message_button_active": [38, 113, 231, 255],
-        "message_button_text": [255, 255, 255, 255],
-        "message_button_text_hover": [255, 255, 255, 255],
-        "message_button_text_active": [255, 255, 255, 255],
         "message_progressbar_background": [245, 245, 245, 255],
         "message_progressbar_control": [50, 130, 255, 255],
 
@@ -400,27 +392,41 @@
         "favorites_header_text_hover": [31, 36, 39, 255],
         "favorites_row_selected": [196, 239, 255, 255],
 
-        "monitor_card_background_inactive": [240, 240, 240, 255],
+        "monitor_printer_family_tag": [228, 228, 242, 255],
+        "monitor_text_primary": [65, 64, 84, 255],
+        "monitor_text_disabled": [238, 238, 238, 255],
+        "monitor_text_link": [50, 130, 255, 255],
+        "monitor_icon_primary": [10, 8, 80, 255],
+        "monitor_icon_accent": [255, 255, 255, 255],
+
+        "monitor_secondary_button_hover": [228, 228, 228, 255],
+        "monitor_secondary_button": [240, 240, 240, 255],
+        "monitor_secondary_button_text": [30, 102, 215, 255],
+        "monitor_secondary_button_shadow": [216, 216, 216, 255],
+
+        "monitor_card_border": [192, 193, 194, 255],
         "monitor_card_background": [255, 255, 255, 255],
-        "monitor_context_menu_background": [255, 255, 255, 255],
-        "monitor_context_menu_dots": [154, 154, 154, 255],
-        "monitor_context_menu_highlight": [245, 245, 245, 255],
-        "monitor_image_overlay": [0, 0, 0, 255],
-        "monitor_lining_heavy": [0, 0, 0, 255],
-        "monitor_lining_light": [230, 230, 230, 255],
-        "monitor_pill_background": [245, 245, 245, 255],
+        "monitor_card_hover": [232, 242, 252, 255],
+
+        "monitor_stage_background": [246, 246, 246, 255],
+        "monitor_stage_background_fade": [246, 246, 246, 102],
+
+        "monitor_progress_bar_fill": [50, 130, 255, 255],
+        "monitor_progress_bar_deactive": [192, 193, 194, 255],
+        "monitor_progress_bar_empty": [245, 245, 245, 255],
+
+        "monitor_tooltip": [25, 25, 25, 255],
+        "monitor_tooltip_text": [255, 255, 255, 255],
+        "monitor_context_menu": [255, 255, 255, 255],
+        "monitor_context_menu_hover": [245, 245, 245, 255],
+
+        "monitor_skeleton_loading": [238, 238, 238, 255],
         "monitor_placeholder_image": [230, 230, 230, 255],
-        "monitor_printer_icon_inactive": [154, 154, 154, 255],
-        "monitor_printer_icon": [50, 130, 255, 255],
-        "monitor_progress_background_text": [0,0,0,255],
-        "monitor_progress_background": [245, 245, 245, 255],
-        "monitor_progress_fill_inactive": [154, 154, 154, 255],
-        "monitor_progress_fill_text": [255,255,255,255],
-        "monitor_progress_fill": [50, 130, 255, 255],
-        "monitor_shadow": [0, 0, 0, 63],
-        "monitor_skeleton_fill": [245, 245, 245, 255],
-        "monitor_skeleton_fill_dark": [216, 216, 216, 255],
-        "monitor_text_inactive": [154, 154, 154, 255]
+        "monitor_image_overlay": [0, 0, 0, 255],
+        "monitor_shadow": [220, 220, 220, 255],
+
+        "monitor_carousel_dot": [216, 216, 216, 255],
+        "monitor_carousel_dot_current": [119, 119, 119, 255]
     },
 
     "sizes": {
@@ -432,7 +438,7 @@
 
         "stage_menu": [0.0, 4.0],
 
-        "account_button": [12, 3],
+        "account_button": [12, 2.5],
 
         "print_setup_widget": [38.0, 30.0],
         "print_setup_mode_toggle": [0.0, 2.0],
@@ -499,7 +505,7 @@
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
-        "action_button": [15.0, 3.0],
+        "action_button": [15.0, 2.5],
         "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
 
@@ -555,12 +561,8 @@
 
         "message": [30.0, 5.0],
         "message_close": [1, 1],
-        "message_button": [6.0, 1.8],
-        "message_shadow": [0, 0],
-        "message_margin": [0, 1.0],
-        "message_inner_margin": [1.5, 1.5],
         "message_radius": [0.25, 0.25],
-        "message_button_radius": [0.15, 0.15],
+        "message_action_button": [0, 2.0],
 
         "infill_button_margin": [0.5, 0.5],
 
@@ -596,10 +598,14 @@
 
         "monitor_config_override_box": [1.0, 14.0],
         "monitor_extruder_circle": [2.75, 2.75],
-        "monitor_text_line": [1.16, 1.16],
+        "monitor_text_line": [1.5, 1.5],
+        "monitor_text_line_large": [2.33, 2.33],
         "monitor_thick_lining": [0.16, 0.16],
         "monitor_corner_radius": [0.3, 0.3],
         "monitor_shadow_radius": [0.4, 0.4],
-        "monitor_shadow_offset": [0.15, 0.15]
+        "monitor_shadow_offset": [0.15, 0.15],
+        "monitor_empty_state_offset": [5.6, 5.6],
+        "monitor_empty_state_size": [35.0, 25.0],
+        "monitor_external_link_icon": [1.16, 1.16]
     }
 }

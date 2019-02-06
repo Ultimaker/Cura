@@ -28,7 +28,7 @@ class FirmwareUpdateCheckerMessage(Message):
                           "[no_icon]",
                           "[no_description]",
                           button_style = Message.ActionButtonStyle.LINK,
-                          button_align = Message.ActionButtonStyle.BUTTON_ALIGN_LEFT)
+                          button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
 
     def getMachineId(self) -> int:
         return self._machine_id

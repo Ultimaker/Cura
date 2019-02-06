@@ -5,15 +5,14 @@ import QtQuick 2.3
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.1
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 /**
- * A Printer Card is has two main components: the printer portion and the print
- * job portion, the latter being paired in the UI when a print job is paired
- * a printer in-cluster.
+ * A Printer Card is has two main components: the printer portion and the print job portion, the latter being paired in
+ * the UI when a print job is paired a printer in-cluster.
  *
- * NOTE: For most labels, a fixed height with vertical alignment is used to make
- * layouts more deterministic (like the fixed-size textboxes used in original
- * mock-ups). This is also a stand-in for CSS's 'line-height' property. Denoted
+ * NOTE: For most labels, a fixed height with vertical alignment is used to make layouts more deterministic (like the
+ * fixed-size textboxes used in original mock-ups). This is also a stand-in for CSS's 'line-height' property. Denoted
  * with '// FIXED-LINE-HEIGHT:'.
  */
 Item
@@ -25,10 +24,13 @@ Item
 
     property var borderSize: 1 * screenScaleFactor // TODO: Theme, and remove from here
 
-    // If the printer card's controls are enabled. This is used by the carousel
-    // to prevent opening the context menu or camera while the printer card is not
-    // "in focus"
+    // If the printer card's controls are enabled. This is used by the carousel to prevent opening the context menu or
+    // camera while the printer card is not "in focus"
     property var enabled: true
+
+    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
+    // they might not need to though.
+    property bool cloudConnection: Cura.MachineManager.activeMachineHasActiveCloudConnection
 
     width: 834 * screenScaleFactor // TODO: Theme!
     height: childrenRect.height
@@ -37,10 +39,10 @@ Item
     {
         id: background
         anchors.fill: parent
-        color: "#FFFFFF" // TODO: Theme!
+        color: UM.Theme.getColor("monitor_card_background")
         border
         {
-            color: "#CCCCCC" // TODO: Theme!
+            color: UM.Theme.getColor("monitor_card_border")
             width: borderSize // TODO: Remove once themed
         }
         radius: 2 * screenScaleFactor // TODO: Theme!
@@ -69,7 +71,7 @@ Item
                 id: printerImage
                 width: 108 * screenScaleFactor // TODO: Theme!
                 height: 108 * screenScaleFactor // TODO: Theme!
-                color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
+                color: printer ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
                 radius: 8 // TODO: Theme!
                 Image
                 {
@@ -93,8 +95,7 @@ Item
                 Rectangle
                 {
                     id: printerNameLabel
-                    // color: "#414054" // TODO: Theme!
-                    color: printer ? "transparent" : "#eeeeee" // TODO: Theme!
+                    color: printer ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
                     height: 18 * screenScaleFactor // TODO: Theme!
                     width: parent.width
                     radius: 2 * screenScaleFactor // TODO: Theme!
@@ -102,7 +103,7 @@ Item
                     Label
                     {
                         text: printer && printer.name ? printer.name : ""
-                        color: "#414054" // TODO: Theme!
+                        color: UM.Theme.getColor("monitor_text_primary")
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("large") // 16pt, bold
                         width: parent.width
@@ -116,7 +117,7 @@ Item
 
                 Rectangle
                 {
-                    color: "#eeeeee" // TODO: Theme!
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     height: 18 * screenScaleFactor // TODO: Theme!
                     radius: 2 * screenScaleFactor // TODO: Theme!
                     visible: !printer
@@ -156,16 +157,11 @@ Item
                 }
                 height: 72 * screenScaleFactor // TODO: Theme!te theRect's x property
             }
-
-            // TODO: Make this work.
-            PropertyAnimation { target: printerConfiguration; property: "visible"; to: 0; loops: Animation.Infinite; duration: 500 }
         }
 
-        
-
-        PrintJobContextMenu
+        MonitorContextMenuButton
         {
-            id: contextButton
+            id: contextMenuButton
             anchors
             {
                 right: parent.right
@@ -173,15 +169,49 @@ Item
                 top: parent.top
                 topMargin: 12 * screenScaleFactor // TODO: Theme!
             }
-            printJob: printer ? printer.activePrintJob : null
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
-            enabled: base.enabled
-            visible: printer
+            enabled: !cloudConnection
+            
+            onClicked: enabled ? contextMenu.switchPopupState() : {}
+            visible:
+            {
+                if (!printer || !printer.activePrintJob) {
+                    return false
+                }
+                var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+                return states.indexOf(printer.activePrintJob.state) !== -1
+            }
         }
+
+        MonitorContextMenu
+        {
+            id: contextMenu
+            printJob: printer ? printer.activePrintJob : null
+            target: contextMenuButton
+        }
+
+        // For cloud printing, add this mouse area over the disabled contextButton to indicate that it's not available
+        MouseArea
+        {
+            id: contextMenuDisabledButtonArea
+            anchors.fill: contextMenuButton
+            hoverEnabled: contextMenuButton.visible && !contextMenuButton.enabled
+            onEntered: contextMenuDisabledInfo.open()
+            onExited: contextMenuDisabledInfo.close()
+            enabled: !contextMenuButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: contextMenuDisabledInfo
+            text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
+            target: contextMenuButton
+        }
+
         CameraButton
         {
-            id: cameraButton;
+            id: cameraButton
             anchors
             {
                 right: parent.right
@@ -190,8 +220,26 @@ Item
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
             iconSource: "../svg/icons/camera.svg"
-            enabled: base.enabled
+            enabled: !cloudConnection
             visible: printer
+        }
+
+        // For cloud printing, add this mouse area over the disabled cameraButton to indicate that it's not available
+        MouseArea
+        {
+            id: cameraDisabledButtonArea
+            anchors.fill: cameraButton
+            hoverEnabled: cameraButton.visible && !cameraButton.enabled
+            onEntered: cameraDisabledInfo.open()
+            onExited: cameraDisabledInfo.close()
+            enabled: !cameraButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: cameraDisabledInfo
+            text: catalog.i18nc("@info", "The webcam is not available because you are monitoring a cloud printer.")
+            target: cameraButton
         }
     }
 
@@ -220,7 +268,7 @@ Item
         }
         border
         {
-            color: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? "#f5a623" : "transparent" // TODO: Theme!
+            color: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 ? UM.Theme.getColor("warning") : "transparent" // TODO: Theme!
             width: borderSize // TODO: Remove once themed
         }
         color: "transparent" // TODO: Theme!
@@ -246,7 +294,7 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                color: printer ? "#414054" : "#aaaaaa" // TODO: Theme!
+                color: printer ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                 font: UM.Theme.getFont("large_bold") // 16pt, bold
                 text: {
                     if (!printer) {
@@ -258,7 +306,7 @@ Item
                     }
                     if (printer && printer.state == "unreachable")
                     {
-                        return catalog.i18nc("@label:status", "Unavailable")
+                        return catalog.i18nc("@label:status", "Unreachable")
                     }
                     if (printer && !printer.activePrintJob && printer.state == "idle")
                     {
@@ -299,10 +347,10 @@ Item
                 Label
                 {
                     id: printerJobNameLabel
-                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? "#414054" : "#babac1" // TODO: Theme!
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("large") // 16pt, bold
-                    text: printer && printer.activePrintJob ? printer.activePrintJob.name : "Untitled" // TODO: I18N
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.name : catalog.i18nc("@label", "Untitled")
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -319,10 +367,10 @@ Item
                         topMargin: 6 * screenScaleFactor // TODO: Theme!
                         left: printerJobNameLabel.left
                     }
-                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? "#53657d" : "#babac1" // TODO: Theme!
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default") // 12pt, regular
-                    text: printer && printer.activePrintJob ? printer.activePrintJob.owner : "Anonymous" // TODO: I18N
+                    text: printer && printer.activePrintJob ? printer.activePrintJob.owner : catalog.i18nc("@label", "Anonymous")
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
@@ -348,8 +396,9 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 font: UM.Theme.getFont("default")
-                text: "Requires configuration changes"
+                text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
+                color: UM.Theme.getColor("monitor_text_primary")
 
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
@@ -368,13 +417,13 @@ Item
             }
             background: Rectangle
             {
-                color: "#d8d8d8" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_secondary_button_shadow")
                 radius: 2 * screenScaleFactor // Todo: Theme!
                 Rectangle
                 {
                     anchors.fill: parent
                     anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                    color: detailsButton.hovered ? "#e4e4e4" : "#f0f0f0" // TODO: Theme!
+                    color: detailsButton.hovered ? UM.Theme.getColor("monitor_secondary_button_hover") : UM.Theme.getColor("monitor_secondary_button")
                     radius: 2 * screenScaleFactor // Todo: Theme!
                 }
             }
@@ -382,9 +431,9 @@ Item
             {
                 anchors.fill: parent
                 anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                color: "#1e66d7" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_secondary_button_text")
                 font: UM.Theme.getFont("medium") // 14pt, regular
-                text: "Details" // TODO: I18NC!
+                text: catalog.i18nc("@action:button","Details");
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 height: 18 * screenScaleFactor // TODO: Theme!

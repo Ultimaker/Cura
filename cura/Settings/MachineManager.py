@@ -115,10 +115,6 @@ class MachineManager(QObject):
 
         self._application.callLater(self.setInitialActiveMachine)
 
-        self._material_incompatible_message = Message(catalog.i18nc("@info:status",
-                                                "The selected material is incompatible with the selected machine or configuration."),
-                                                title = catalog.i18nc("@info:title", "Incompatible Material"))  # type: Message
-
         containers = CuraContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId)  # type: List[InstanceContainer]
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
@@ -505,7 +501,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self) -> str:
         if self._global_container_stack:
-            return self._global_container_stack.getName()
+            return self._global_container_stack.getMetaDataEntry("group_name", self._global_container_stack.getName())
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
@@ -521,9 +517,19 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasRemoteConnection(self) -> bool:
         if self._global_container_stack:
-            connection_type = int(self._global_container_stack.getMetaDataEntry("connection_type", ConnectionType.NotConnected.value))
-            return connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
+            has_remote_connection = False
+
+            for connection_type in self._global_container_stack.configuredConnectionTypes:
+                has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
+                                                             ConnectionType.CloudConnection.value]
+            return has_remote_connection
         return False
+
+    @pyqtProperty("QVariantList", notify=globalContainerChanged)
+    def activeMachineConfiguredConnectionTypes(self):
+        if self._global_container_stack:
+            return self._global_container_stack.configuredConnectionTypes
+        return []
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
@@ -547,7 +553,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkGroupName(self) -> str:
         if self._global_container_stack:
-            return self._global_container_stack.getMetaDataEntry("connect_group_name", "")
+            return self._global_container_stack.getMetaDataEntry("group_name", "")
         return ""
 
     @pyqtProperty(QObject, notify = globalContainerChanged)
@@ -1339,7 +1345,7 @@ class MachineManager(QObject):
             if not new_machine:
                 return
             new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
-            new_machine.setMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
+            new_machine.setMetaDataEntry("group_name", self.activeMachineNetworkGroupName)
             new_machine.setMetaDataEntry("hidden", False)
             new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
         else:
@@ -1358,25 +1364,56 @@ class MachineManager(QObject):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
+
+            used_extruder_stack_list = ExtruderManager.getInstance().getUsedExtruderStacks()
+            disabled_used_extruder_position_set = set()
+            extruders_to_disable = set()
+
+            # If an extruder that's currently used to print a model gets disabled due to the syncing, we need to show
+            # a message explaining why.
+            need_to_show_message = False
+
+            for extruder_configuration in configuration.extruderConfigurations:
+                extruder_has_hotend = extruder_configuration.hotendID != ""
+                extruder_has_material = extruder_configuration.material.guid != ""
+
+                # If the machine doesn't have a hotend or material, disable this extruder
+                if not extruder_has_hotend or not extruder_has_material:
+                    extruders_to_disable.add(extruder_configuration.position)
+
+            # If there's no material and/or nozzle on the printer, enable the first extruder and disable the rest.
+            if len(extruders_to_disable) == len(self._global_container_stack.extruders):
+                extruders_to_disable.remove(min(extruders_to_disable))
+
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
-                variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
-                material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack,
-                                                                                       position,
-                                                                                       extruder_configuration.hotendID,
-                                                                                       configuration.buildplateConfiguration,
-                                                                                       extruder_configuration.material.guid)
 
-                if variant_container_node:
-                    self._setVariantNode(position, variant_container_node)
-                else:
-                    self._global_container_stack.extruders[position].variant = empty_variant_container
+                # If the machine doesn't have a hotend or material, disable this extruder
+                if int(position) in extruders_to_disable:
+                    self._global_container_stack.extruders[position].setEnabled(False)
 
-                if material_container_node:
-                    self._setMaterial(position, material_container_node)
+                    need_to_show_message = True
+                    disabled_used_extruder_position_set.add(int(position))
+
                 else:
-                    self._global_container_stack.extruders[position].material = empty_material_container
-                self.updateMaterialWithVariant(position)
+                    variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
+                                                                                  extruder_configuration.hotendID)
+                    material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack,
+                                                                                           position,
+                                                                                           extruder_configuration.hotendID,
+                                                                                           configuration.buildplateConfiguration,
+                                                                                           extruder_configuration.material.guid)
+                    if variant_container_node:
+                        self._setVariantNode(position, variant_container_node)
+                    else:
+                        self._global_container_stack.extruders[position].variant = empty_variant_container
+
+                    if material_container_node:
+                        self._setMaterial(position, material_container_node)
+                    else:
+                        self._global_container_stack.extruders[position].material = empty_material_container
+                    self._global_container_stack.extruders[position].setEnabled(True)
+                    self.updateMaterialWithVariant(position)
 
             if configuration.buildplateConfiguration is not None:
                 global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
@@ -1387,6 +1424,21 @@ class MachineManager(QObject):
             else:
                 self._global_container_stack.variant = empty_variant_container
             self._updateQualityWithMaterial()
+
+            if need_to_show_message:
+                msg_str = "{extruders} is disabled because there is no material loaded. Please load a material or use custom configurations."
+
+                # Show human-readable extruder names such as "Extruder Left", "Extruder Front" instead of "Extruder 1, 2, 3".
+                extruder_names = []
+                for position in sorted(disabled_used_extruder_position_set):
+                    extruder_stack = self._global_container_stack.extruders[str(position)]
+                    extruder_name = extruder_stack.definition.getName()
+                    extruder_names.append(extruder_name)
+                extruders_str = ", ".join(extruder_names)
+                msg_str = msg_str.format(extruders = extruders_str)
+                message = Message(catalog.i18nc("@info:status", msg_str),
+                                  title = catalog.i18nc("@info:title", "Extruder(s) Disabled"))
+                message.show()
 
         # See if we need to show the Discard or Keep changes screen
         if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
@@ -1404,12 +1456,12 @@ class MachineManager(QObject):
     #   then all the container stacks are updated, both the current and the hidden ones.
     def checkCorrectGroupName(self, device_id: str, group_name: str) -> None:
         if self._global_container_stack and device_id == self.activeMachineNetworkKey():
-            # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
+            # Check if the group_name is correct. If not, update all the containers connected to the same printer
             if self.activeMachineNetworkGroupName != group_name:
                 metadata_filter = {"um_network_key": self.activeMachineNetworkKey()}
                 containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
                 for container in containers:
-                    container.setMetaDataEntry("connect_group_name", group_name)
+                    container.setMetaDataEntry("group_name", group_name)
 
     ##  This method checks if there is an instance connected to the given network_key
     def existNetworkInstances(self, network_key: str) -> bool:

@@ -38,7 +38,7 @@ ListView
             var result = Cura.MachineManager.activeMachineId == model.id
             if (Cura.MachineManager.activeMachineHasRemoteConnection)
             {
-                result |= Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
+                result |= Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["group_name"]
             }
             return result
         }

@@ -22,7 +22,7 @@ Item
             left: queuedPrintJobs.left
             top: parent.top
         }
-        color: UM.Theme.getColor("text")
+        color: UM.Theme.getColor("monitor_text_primary")
         font: UM.Theme.getFont("large")
         text: catalog.i18nc("@label", "Queued")
     }
@@ -42,7 +42,7 @@ Item
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
-            color: UM.Theme.getColor("text_link")
+            color: UM.Theme.getColor("monitor_text_link")
             source: UM.Theme.getIcon("external_link")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
@@ -56,10 +56,10 @@ Item
                 leftMargin: 6 * screenScaleFactor // TODO: Theme!
                 verticalCenter: externalLinkIcon.verticalCenter
             }
-            color: UM.Theme.getColor("text_link")
-            font: UM.Theme.getFont("default") // 12pt, regular
-            linkColor: UM.Theme.getColor("text_link")
-            text: catalog.i18nc("@label link to connect manager", "Manage queue in Cura Connect")
+            color: UM.Theme.getColor("monitor_text_link")
+            font: UM.Theme.getFont("medium") // 14pt, regular
+            linkColor: UM.Theme.getColor("monitor_text_link")
+            text: catalog.i18nc("@label link to connect manager", "Go to Cura Connect")
             renderType: Text.NativeRendering
         }
     }
@@ -94,7 +94,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Print jobs")
-            color: "#666666"
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -108,7 +108,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Total print time")
-            color: "#666666"
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -122,7 +122,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Waiting for")
-            color: "#666666"
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -160,8 +160,101 @@ Item
                 }
                 printJob: modelData
             }
-            model: OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs : [null,null]
+            model:
+            {
+                // When printing over the cloud we don't recieve print jobs until there is one, so
+                // unless there's at least one print job we'll be stuck with skeleton loading
+                // indefinitely.
+                if (Cura.MachineManager.activeMachineHasActiveCloudConnection)
+                {
+                    return OutputDevice.queuedPrintJobs
+                }
+                return OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs : [null,null]
+            }
             spacing: 6  // TODO: Theme!
+        }
+    }
+
+    Rectangle
+    {
+        anchors
+        {
+            horizontalCenter: parent.horizontalCenter
+            top: printJobQueueHeadings.bottom
+            topMargin: 12 * screenScaleFactor // TODO: Theme!
+        }
+        height: 48 * screenScaleFactor // TODO: Theme!
+        width: parent.width
+        color: UM.Theme.getColor("monitor_card_background")
+        border.color: UM.Theme.getColor("monitor_card_border")
+        radius: 2 * screenScaleFactor // TODO: Theme!
+
+        visible: printJobList.model.length == 0
+
+        Row
+        {
+            anchors
+            {
+                left: parent.left
+                leftMargin: 18 * screenScaleFactor // TODO: Theme!
+                verticalCenter: parent.verticalCenter
+            }
+            spacing: 18 * screenScaleFactor // TODO: Theme!
+            height: 18 * screenScaleFactor // TODO: Theme!
+
+            Label
+            {
+                text: "All jobs are printed."
+                color: UM.Theme.getColor("monitor_text_primary")
+                font: UM.Theme.getFont("medium") // 14pt, regular
+            }
+
+            Item
+            {
+                id: viewPrintHistoryLabel
+                
+                height: 18 * screenScaleFactor // TODO: Theme!
+                width: childrenRect.width
+
+                UM.RecolorImage
+                {
+                    id: printHistoryIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: UM.Theme.getColor("monitor_text_link")
+                    source: UM.Theme.getIcon("external_link")
+                    width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
+                    height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
+                }
+                Label
+                {
+                    id: viewPrintHistoryText
+                    anchors
+                    {
+                        left: printHistoryIcon.right
+                        leftMargin: 6 * screenScaleFactor // TODO: Theme!
+                        verticalCenter: printHistoryIcon.verticalCenter
+                    }
+                    color: UM.Theme.getColor("monitor_text_link")
+                    font: UM.Theme.getFont("medium") // 14pt, regular
+                    linkColor: UM.Theme.getColor("monitor_text_link")
+                    text: catalog.i18nc("@label link to connect manager", "View print history")
+                    renderType: Text.NativeRendering
+                }
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
+                    onEntered:
+                    {
+                        viewPrintHistoryText.font.underline = true
+                    }
+                    onExited:
+                    {
+                        viewPrintHistoryText.font.underline = false
+                    }
+                }
+            }
         }
     }
 }

@@ -41,7 +41,7 @@ Item
                 anchors.centerIn: parent
                 height: parent.height
                 width: height
-                color: buildplateIcon.visible > 0 ? "transparent" : "#eeeeee" // TODO: Theme!
+                color: buildplateIcon.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
                 radius: Math.floor(height / 2)
             }
 
@@ -49,7 +49,7 @@ Item
             {
                 id: buildplateIcon
                 anchors.centerIn: parent
-                color: "#0a0850" // TODO: Theme! (Standard purple)
+                color: UM.Theme.getColor("monitor_icon_primary")
                 height: parent.height
                 source: "../svg/icons/buildplate.svg"
                 width: height
@@ -60,7 +60,7 @@ Item
         Label
         {
             id: buildplateLabel
-            color: "#191919" // TODO: Theme!
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("default") // 12pt, regular
             text: buildplate ? buildplate : ""

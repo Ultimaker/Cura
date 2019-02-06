@@ -132,8 +132,7 @@ class PrintJobOutputModel(QObject):
 
     @pyqtProperty(float, notify = timeElapsedChanged)
     def progress(self) -> float:
-        time_elapsed = max(float(self.timeElapsed), 1.0)  # Prevent a division by zero exception
-        result = time_elapsed / self.timeTotal
+        result = float(self.timeElapsed) / max(self.timeTotal, 1.0) # Prevent a division by zero exception.
         return min(result, 1.0)  # Never get a progress past 1.0
 
     @pyqtProperty(str, notify=stateChanged)

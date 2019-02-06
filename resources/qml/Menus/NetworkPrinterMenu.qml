@@ -14,9 +14,9 @@ Instantiator
     {
         property string connectGroupName:
         {
-            if("connect_group_name" in model.metadata)
+            if("group_name" in model.metadata)
             {
-                return model.metadata["connect_group_name"]
+                return model.metadata["group_name"]
             }
             return ""
         }

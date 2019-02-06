@@ -9,6 +9,7 @@ import os
 import sys
 
 from UM.Platform import Platform
+from cura.ApplicationMetadata import CuraAppName
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
@@ -22,11 +23,11 @@ known_args = vars(parser.parse_known_args()[0])
 if not known_args["debug"]:
     def get_cura_dir_path():
         if Platform.isWindows():
-            return os.path.expanduser("~/AppData/Roaming/cura")
+            return os.path.expanduser("~/AppData/Roaming/" + CuraAppName)
         elif Platform.isLinux():
-            return os.path.expanduser("~/.local/share/cura")
+            return os.path.expanduser("~/.local/share/" + CuraAppName)
         elif Platform.isOSX():
-            return os.path.expanduser("~/Library/Logs/cura")
+            return os.path.expanduser("~/Library/Logs/" + CuraAppName)
 
     if hasattr(sys, "frozen"):
         dirpath = get_cura_dir_path()

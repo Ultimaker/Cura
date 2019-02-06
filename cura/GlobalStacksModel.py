@@ -1,12 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, Qt
+from PyQt5.QtCore import Qt
 
 from UM.Qt.ListModel import ListModel
-from UM.Settings.ContainerRegistry import ContainerRegistry
-
 from cura.PrinterOutputDevice import ConnectionType
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 
 class GlobalStacksModel(ListModel):
@@ -21,14 +20,13 @@ class GlobalStacksModel(ListModel):
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.HasRemoteConnectionRole, "hasRemoteConnection")
-        self.addRoleName(self.ConnectionTypeRole, "connectionType")
         self.addRoleName(self.MetaDataRole, "metadata")
         self._container_stacks = []
 
         # Listen to changes
-        ContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
-        ContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
-        ContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
+        CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
+        CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
+        CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
         self._filter_dict = {}
         self._update()
 
@@ -43,19 +41,20 @@ class GlobalStacksModel(ListModel):
     def _update(self) -> None:
         items = []
 
-        container_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
 
         for container_stack in container_stacks:
-            connection_type = int(container_stack.getMetaDataEntry("connection_type", ConnectionType.NotConnected.value))
-            has_remote_connection = connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
+            has_remote_connection = False
+
+            for connection_type in container_stack.configuredConnectionTypes:
+                has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
+
             if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
                 continue
 
-            # TODO: Remove reference to connect group name.
-            items.append({"name": container_stack.getMetaDataEntry("connect_group_name", container_stack.getName()),
+            items.append({"name": container_stack.getMetaDataEntry("group_name", container_stack.getName()),
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
-                          "connectionType": connection_type,
                           "metadata": container_stack.getMetaData().copy()})
         items.sort(key=lambda i: not i["hasRemoteConnection"])
         self.setItems(items)

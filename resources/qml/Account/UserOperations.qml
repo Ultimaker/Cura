@@ -1,31 +1,63 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 
 import UM 1.4 as UM
 import Cura 1.1 as Cura
 
-Row
+Column
 {
+    width: Math.max(title.width,
+                    accountButton.width) * 1.5
+
     spacing: UM.Theme.getSize("default_margin").width
+
+    Label
+    {
+        id: title
+        anchors.horizontalCenter: parent.horizontalCenter
+        horizontalAlignment: Text.AlignHCenter
+        renderType: Text.NativeRendering
+        text: catalog.i18nc("@label", "Hi " + profile.username)
+        font: UM.Theme.getFont("large_bold")
+        color: UM.Theme.getColor("text")
+    }
+
+    // placeholder
+    Label
+    {
+        text: " "
+    }
 
     Cura.SecondaryButton
     {
+        id: accountButton
+        anchors.horizontalCenter: parent.horizontalCenter
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
-        text: catalog.i18nc("@button", "Manage account")
+        text: catalog.i18nc("@button", "Ultimaker account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl)
-        fixedWidthMode: true
+        fixedWidthMode: false
     }
 
-    Cura.PrimaryButton
+    Label
     {
-        width: UM.Theme.getSize("account_button").width
-        height: UM.Theme.getSize("account_button").height
-        text: catalog.i18nc("@button", "Logout")
-        onClicked: Cura.API.account.logout()
-        fixedWidthMode: true
+        id: signOutButton
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: catalog.i18nc("@button", "Sign out")
+        color: UM.Theme.getColor("secondary_button_text")
+        font: UM.Theme.getFont("medium")
+        renderType: Text.NativeRendering
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: Cura.API.account.logout()
+            hoverEnabled: true
+            onEntered: signOutButton.font.underline = true
+            onExited: signOutButton.font.underline = false
+        }
     }
 }

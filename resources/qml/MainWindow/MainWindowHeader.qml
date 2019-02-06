@@ -29,7 +29,7 @@ Item
         source: UM.Theme.getImage("logo")
         width: UM.Theme.getSize("logo").width
         height: UM.Theme.getSize("logo").height
-
+        fillMode: Image.PreserveAspectFit
         sourceSize.width: width
         sourceSize.height: height
     }
@@ -122,6 +122,7 @@ Item
         id: accountWidget
         anchors
         {
+            verticalCenter: parent.verticalCenter
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }

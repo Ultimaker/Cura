@@ -4,6 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 /**
  * A Print Job Card is essentially just a filled-in Expandable Card item. All
@@ -21,13 +22,17 @@ Item
     // The print job which all other data is derived from
     property var printJob: null
 
+    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
+    // they might not need to though.
+    property bool cloudConnection: Cura.MachineManager.activeMachineHasActiveCloudConnection
+
     width: parent.width
     height: childrenRect.height
 
     ExpandableCard
     {
         enabled: printJob != null
-        borderColor: printJob.configurationChanges.length !== 0 ? "#f5a623" : "#CCCCCC" // TODO: Theme!
+        borderColor: printJob && printJob.configurationChanges.length !== 0 ? UM.Theme.getColor("warning") : UM.Theme.getColor("monitor_card_border")
         headerItem: Row
         {
             height: 48 * screenScaleFactor // TODO: Theme!
@@ -49,15 +54,16 @@ Item
                 width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
                 Rectangle
                 {
-                    color: "#eeeeee"
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     width: Math.round(parent.width / 2)
                     height: parent.height
                     visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
                 }
                 Label
                 {
                     text: printJob && printJob.name ? printJob.name : ""
-                    color: "#374355"
+                    color: UM.Theme.getColor("monitor_text_primary")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -75,15 +81,16 @@ Item
                 width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
                 Rectangle
                 {
-                    color: "#eeeeee"
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     width: Math.round(parent.width / 3)
                     height: parent.height
                     visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
                 }
                 Label
                 {
                     text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
-                    color: "#374355"
+                    color: UM.Theme.getColor("monitor_text_primary")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -102,17 +109,18 @@ Item
 
                 Rectangle
                 {
-                    color: "#eeeeee"
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
                     width: 72 * screenScaleFactor // TODO: Theme!
                     height: parent.height
                     visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
                 }
 
                 Label
                 {
                     id: printerAssignmentLabel
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "#374355"
+                    color: UM.Theme.getColor("monitor_text_primary")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     text: {
@@ -176,7 +184,7 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: "Glass"
+                buildplate: catalog.i18nc("@label", "Glass")
                 configurations:
                 [
                     base.printJob.configuration.extruderConfigurations[0],
@@ -186,7 +194,7 @@ Item
             }
             Label {
                 text: printJob && printJob.owner ? printJob.owner : ""
-                color: "#374355" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_text_primary")
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.top: printerConfiguration.top
@@ -198,18 +206,52 @@ Item
         }
     }
 
-    PrintJobContextMenu
+    MonitorContextMenuButton
     {
-        id: contextButton
+        id: contextMenuButton
         anchors
         {
-            right: parent.right;
+            right: parent.right
             rightMargin: 8 * screenScaleFactor // TODO: Theme!
             top: parent.top
             topMargin: 8 * screenScaleFactor // TODO: Theme!
         }
-        printJob: base.printJob
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
+        enabled: !cloudConnection
+        onClicked: enabled ? contextMenu.switchPopupState() : {}
+        visible:
+        {
+            if (!printJob) {
+                return false
+            }
+            var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+            return states.indexOf(printJob.state) !== -1
+        }
+    }
+
+    MonitorContextMenu
+    {
+        id: contextMenu
+        printJob: base.printJob ? base.printJob : null
+        target: contextMenuButton
+    }
+
+    // For cloud printing, add this mouse area over the disabled contextButton to indicate that it's not available
+    MouseArea
+    {
+        id: contextMenuDisabledButtonArea
+        anchors.fill: contextMenuButton
+        hoverEnabled: contextMenuButton.visible && !contextMenuButton.enabled
+        onEntered: contextMenuDisabledInfo.open()
+        onExited: contextMenuDisabledInfo.close()
+        enabled: !contextMenuButton.enabled
+    }
+
+    MonitorInfoBlurb
+    {
+        id: contextMenuDisabledInfo
+        text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
+        target: contextMenuButton
     }
 }

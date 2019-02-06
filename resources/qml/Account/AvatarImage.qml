@@ -1,8 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 import QtGraphicalEffects 1.0
 
 import UM 1.4 as UM
@@ -16,6 +16,7 @@ Item
 
     property alias source: profileImage.source
     property alias outlineColor: profileImageOutline.color
+    property bool hasAvatar: source != ""
 
     Image
     {
@@ -32,6 +33,7 @@ Item
         id: profileImageMask
         anchors.fill: parent
         radius: width
+        color: hasAvatar ? "white" : "transparent"
     }
 
     OpacityMask
@@ -39,6 +41,7 @@ Item
         anchors.fill: parent
         source: profileImage
         maskSource: profileImageMask
+        visible: hasAvatar
         cached: true
     }
 
@@ -49,6 +52,7 @@ Item
         // Make it a bit bigger than it has to, otherwise it sometimes shows a white border.
         width: parent.width + 2
         height: parent.height + 2
+        visible: hasAvatar
         source: UM.Theme.getIcon("circle_outline")
         sourceSize: Qt.size(parent.width, parent.height)
         color: UM.Theme.getColor("account_widget_ouline_active")

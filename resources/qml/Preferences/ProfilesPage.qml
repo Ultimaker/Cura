@@ -173,6 +173,7 @@ Item
         id: createQualityDialog
         title: catalog.i18nc("@title:window", "Create Profile")
         object: "<new name>"
+        explanation: catalog.i18nc("@info", "Please provide a name for this profile.")
         onAccepted:
         {
             base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created

@@ -1,9 +1,9 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 from datetime import datetime
-from typing import Optional, List, Dict, Any
+from typing import Any, cast, Dict, List, Optional
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -68,7 +68,7 @@ class DrivePluginExtension(QObject, Extension):
 
     def showDriveWindow(self) -> None:
         if not self._drive_window:
-            plugin_dir_path = CuraApplication.getInstance().getPluginRegistry().getPluginPath("CuraDrive")
+            plugin_dir_path = cast(str, CuraApplication.getInstance().getPluginRegistry().getPluginPath(self.getPluginId())) # We know this plug-in exists because that's us, so this always returns str.
             path = os.path.join(plugin_dir_path, "src", "qml", "main.qml")
             self._drive_window = CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
         self.refreshBackups()

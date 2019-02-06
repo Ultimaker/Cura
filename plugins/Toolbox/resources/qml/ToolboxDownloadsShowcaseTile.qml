@@ -49,6 +49,7 @@ Rectangle
         wrapMode: Text.WordWrap
         elide: Text.ElideRight
         font: UM.Theme.getFont("medium_bold")
+        color: UM.Theme.getColor("text")
     }
     UM.RecolorImage
     {
