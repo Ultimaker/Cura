@@ -33,6 +33,7 @@ class CloudOutputDeviceManager:
     I18N_CATALOG = i18nCatalog("cura")
 
     addedCloudCluster = Signal()
+    removedCloudCluster = Signal()
 
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
@@ -85,6 +86,7 @@ class CloudOutputDeviceManager:
                 removed_cluster.disconnect()
             removed_cluster.close()
             self._output_device_manager.removeOutputDevice(removed_cluster.key)
+            self.removedCloudCluster.emit()
             del self._remote_clusters[removed_cluster.key]
 
         # Add an output device for each new remote cluster.
