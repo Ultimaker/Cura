@@ -430,12 +430,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 return
             
             # Check 5: Machine has correct firmware version
-            # firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
-            # if not Version(firmware_version) > self._min_cloud_version:
-            #     Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
-            #                     firmware_version,
-            #                     self._min_cloud_version)
-            #     return
+            firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion
+            if not Version(firmware_version) > self._min_cloud_version:
+                Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
+                                firmware_version,
+                                self._min_cloud_version)
+                return
             
             Logger.log("d", "Cloud flow is possible!")
             self.cloudFlowIsPossible.emit()
