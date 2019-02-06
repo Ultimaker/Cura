@@ -5,7 +5,7 @@
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "z-bolt_plus",
-        "position": "0"
+        "position": 0
     },
 
     "overrides": {
