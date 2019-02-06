@@ -33,7 +33,7 @@ Menu
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
-                onTriggered: Cura.MachineManager.setExtruderIndex(model.index)
+                onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index)
             }
 
             MenuItem
