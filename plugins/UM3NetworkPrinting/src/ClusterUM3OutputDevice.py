@@ -252,6 +252,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._compressing_gcode = False
         self._sending_gcode = False
 
+    ##  The IP address of the printer.
+    @pyqtProperty(str, constant = True)
+    def address(self) -> str:
+        return self._address
+
     def _onUploadPrintJobProgress(self, bytes_sent: int, bytes_total: int) -> None:
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
