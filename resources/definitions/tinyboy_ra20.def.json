@@ -1,5 +1,5 @@
 {
-    "name": "TinyBoy E10",
+    "name": "TinyBoy RA20",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -15,13 +15,13 @@
     },
     "overrides": {
         "machine_width": {
-            "default_value": 100
+            "default_value": 120
         },
         "machine_height": {
-            "default_value": 105
+            "default_value": 205
         },
         "machine_depth": {
-            "default_value": 100
+            "default_value": 120
         },
         "machine_head_polygon": {
             "default_value": [
