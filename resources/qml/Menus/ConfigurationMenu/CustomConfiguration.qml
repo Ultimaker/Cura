@@ -185,7 +185,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_item").height
+                height: visible ? childrenRect.height : 0
                 visible: extrudersModel.count > 1  // If there is only one extruder, there is no point to enable/disable that.
 
                 Label
@@ -222,7 +222,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_big_item").height
+                height: visible ? childrenRect.height: 0
                 visible: Cura.MachineManager.hasMaterials
 
                 Label
@@ -246,8 +246,8 @@ Item
                     text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
 
-                    height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
+                    height: UM.Theme.getSize("print_setup_big_item").height
 
                     style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true
@@ -260,7 +260,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_big_item").height
+                height: visible ? childrenRect.height: 0
                 visible: Cura.MachineManager.hasVariants
 
                 Label
@@ -279,7 +279,6 @@ Item
                     id: variantSelection
                     text: Cura.MachineManager.activeVariantName
                     tooltip: Cura.MachineManager.activeVariantName
-
                     height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
                     style: UM.Theme.styles.print_setup_header_button
@@ -292,7 +291,7 @@ Item
             Row
             {
                 id: warnings
-                height: UM.Theme.getSize("print_setup_big_item").height
+                height: visible ? childrenRect.height : 0
                 visible: buildplateCompatibilityError || buildplateCompatibilityWarning
 
                 property bool buildplateCompatibilityError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
