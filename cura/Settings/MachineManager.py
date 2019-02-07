@@ -1437,8 +1437,8 @@ class MachineManager(QObject):
 
                 # Show human-readable extruder names such as "Extruder Left", "Extruder Front" instead of "Extruder 1, 2, 3".
                 extruder_names = []
-                for position in sorted(disabled_used_extruder_position_set):
-                    extruder_stack = self._global_container_stack.extruders[str(position)]
+                for extruder_position in sorted(disabled_used_extruder_position_set):
+                    extruder_stack = self._global_container_stack.extruders[str(extruder_position)]
                     extruder_name = extruder_stack.definition.getName()
                     extruder_names.append(extruder_name)
                 extruders_str = ", ".join(extruder_names)
