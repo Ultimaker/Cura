@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import collections
 import time
 import re
 import unicodedata
-from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
+from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -1365,7 +1364,6 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
 
-            used_extruder_stack_list = ExtruderManager.getInstance().getUsedExtruderStacks()
             disabled_used_extruder_position_set = set()
             extruders_to_disable = set()
 
