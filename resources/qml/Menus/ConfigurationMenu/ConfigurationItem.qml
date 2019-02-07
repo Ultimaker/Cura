@@ -52,7 +52,7 @@ Button
             anchors
             {
                 left: parent.left
-                leftMargin: UM.Theme.getSize("wide_margin").width
+                leftMargin: UM.Theme.getSize("default_margin").width
                 right: parent.right
                 rightMargin: UM.Theme.getSize("wide_margin").width
             }
@@ -63,10 +63,10 @@ Button
             {
                 id: repeater
                 model: configuration.extruderConfigurations
-
+                width: parent.width
                 delegate: PrintCoreConfiguration
                 {
-                    width: Math.round(parent.width / 2)
+                    width: Math.round(parent.width / configuration.extruderConfigurations.length)
                     printCoreConfiguration: modelData
                     visible: configurationItem.isValidMaterial
                 }

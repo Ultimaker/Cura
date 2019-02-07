@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import collections
 import time
 import re
 import unicodedata
-from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
+from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -1365,7 +1364,6 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
 
-            used_extruder_stack_list = ExtruderManager.getInstance().getUsedExtruderStacks()
             disabled_used_extruder_position_set = set()
             extruders_to_disable = set()
 
@@ -1430,8 +1428,8 @@ class MachineManager(QObject):
 
                 # Show human-readable extruder names such as "Extruder Left", "Extruder Front" instead of "Extruder 1, 2, 3".
                 extruder_names = []
-                for position in sorted(disabled_used_extruder_position_set):
-                    extruder_stack = self._global_container_stack.extruders[str(position)]
+                for extruder_position in sorted(disabled_used_extruder_position_set):
+                    extruder_stack = self._global_container_stack.extruders[str(extruder_position)]
                     extruder_name = extruder_stack.definition.getName()
                     extruder_names.append(extruder_name)
                 extruders_str = ", ".join(extruder_names)
