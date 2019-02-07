@@ -739,13 +739,16 @@ class BuildVolume(SceneNode):
                 prime_tower_collision = False
                 prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
                 for extruder_id in prime_tower_areas:
-                    for prime_tower_area in prime_tower_areas[extruder_id]:
+                    for i_area, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
                         for area in result_areas[extruder_id]:
                             if prime_tower_area.intersectsPolygon(area) is not None:
                                 prime_tower_collision = True
                                 break
                         if prime_tower_collision: #Already found a collision.
                             break
+                        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable"):
+                            prime_tower_areas[extruder_id][i_area] = prime_tower_area.getMinkowskiHull(
+                                Polygon.approximatedCircle(disallowed_border_size))
                     if not prime_tower_collision:
                         result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
                         result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
@@ -784,6 +787,15 @@ class BuildVolume(SceneNode):
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
+
+            if ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable"):
+                brim_size = (
+                    extruder.getProperty("brim_line_count", "value") *
+                    extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
+                    extruder.getProperty("initial_layer_line_width_factor", "value")
+                )
+                prime_tower_x -= brim_size
+                prime_tower_y += brim_size
 
             if self._global_container_stack.getProperty("prime_tower_circular", "value"):
                 radius = prime_tower_size / 2
@@ -1024,7 +1036,7 @@ class BuildVolume(SceneNode):
             # We don't create an additional line for the extruder we're printing the skirt with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
 
-        elif adhesion_type == "brim":
+        elif adhesion_type == "brim" or self._global_container_stack.getProperty("prime_tower_brim_enable", "value"):
             brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
             bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
@@ -1083,7 +1095,7 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
