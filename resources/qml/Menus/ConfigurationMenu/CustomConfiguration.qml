@@ -181,7 +181,18 @@ Item
 
             readonly property real paddedWidth: parent.width - padding * 2
             property real textWidth: Math.round(paddedWidth * 0.3)
-            property real controlWidth: paddedWidth - textWidth
+            property real controlWidth:
+            {
+                if(instructionLink == "")
+                {
+                    return paddedWidth - textWidth
+                }
+                else
+                {
+                    return paddedWidth - textWidth - UM.Theme.getSize("print_setup_big_item").height * 0.5 - UM.Theme.getSize("default_margin").width
+                }
+            }
+            property string instructionLink:Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", "")
 
             Row
             {
@@ -254,6 +265,27 @@ Item
                     menu: Cura.MaterialMenu
                     {
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
+                    }
+                }
+                Item
+                {
+                    width: instructionButton.width + 2 * UM.Theme.getSize("default_margin").width
+                    height: instructionButton.visible ? materialSelection.height: 0
+                    Button
+                    {
+                        id: instructionButton
+                        hoverEnabled: true
+                        contentItem: Item {}
+                        height: 0.5 * materialSelection.height
+                        width: height
+                        anchors.centerIn: parent
+                        background: UM.RecolorImage
+                        {
+                            source: UM.Theme.getIcon("printing_guideline")
+                            color: instructionButton.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("icon")
+                        }
+                        visible: selectors.instructionLink != ""
+                        onClicked:Qt.openUrlExternally(selectors.instructionLink)
                     }
                 }
             }
