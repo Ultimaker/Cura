@@ -517,6 +517,18 @@ class MachineManager(QObject):
             return self._global_container_stack.getId()
         return ""
 
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeMachineFirmwareVersion(self) -> str:
+        if not self._printer_output_devices[0]:
+            return ""
+        return self._printer_output_devices[0].firmwareVersion
+
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeMachineAddress(self) -> str:
+        if not self._printer_output_devices[0]:
+            return ""
+        return self._printer_output_devices[0].address
+
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def printerConnected(self) -> bool:
         return bool(self._printer_output_devices)
