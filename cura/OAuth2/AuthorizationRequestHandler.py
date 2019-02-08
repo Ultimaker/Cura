@@ -1,17 +1,18 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
-
 from http.server import BaseHTTPRequestHandler
+from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 from urllib.parse import parse_qs, urlparse
 
 from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS
+from UM.i18n import i18nCatalog
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import ResponseStatus
     from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
+catalog = i18nCatalog("cura")
 
 ##  This handler handles all HTTP requests on the local web server.
 #   It also requests the access token for the 2nd stage of the OAuth flow.
@@ -62,14 +63,14 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # Otherwise we show an error message (probably the user clicked "Deny" in the auth dialog).
             token_response = AuthenticationResponse(
                 success = False,
-                err_message = "Please give the required permissions when authorizing this application."
+                err_message = catalog.i18nc("@message", "Please give the required permissions when authorizing this application.")
             )
 
         else:
             # We don't know what went wrong here, so instruct the user to check the logs.
             token_response = AuthenticationResponse(
                 success = False,
-                error_message = "Something unexpected happened when trying to log in, please try again."
+                error_message = catalog.i18nc("@message", "Something unexpected happened when trying to log in, please try again.")
             )
         if self.authorization_helpers is None:
             return ResponseData(), token_response

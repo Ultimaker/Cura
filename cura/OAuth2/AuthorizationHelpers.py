@@ -1,17 +1,18 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from base64 import b64encode
+from hashlib import sha512
 import json
 import random
-from hashlib import sha512
-from base64 import b64encode
-from typing import Dict, Optional
-
 import requests
+from typing import Optional
 
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-
 from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
+
+catalog = i18nCatalog("cura")
 
 ##  Class containing several helpers to deal with the authorization flow.
 class AuthorizationHelpers:
@@ -66,7 +67,7 @@ class AuthorizationHelpers:
             Logger.log("w", "Could not parse token response data: %s", token_response.text)
 
         if not token_data:
-            return AuthenticationResponse(success = False, err_message = "Could not read response.")
+            return AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response."))
 
         if token_response.status_code not in (200, 201):
             return AuthenticationResponse(success = False, err_message = token_data["error_description"])
