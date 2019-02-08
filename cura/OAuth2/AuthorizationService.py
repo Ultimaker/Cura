@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import webbrowser
 from typing import Optional, TYPE_CHECKING
@@ -17,12 +18,9 @@ if TYPE_CHECKING:
     from UM.Preferences import Preferences
 
 
+##  The authorization service is responsible for handling the login flow,
+#   storing user credentials and providing account information.
 class AuthorizationService:
-    """
-    The authorization service is responsible for handling the login flow,
-    storing user credentials and providing account information.
-    """
-
     # Emit signal when authentication is completed.
     onAuthStateChanged = Signal()
 
@@ -44,7 +42,7 @@ class AuthorizationService:
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
-    #   Get the user profile as obtained from the JWT (JSON Web Token).
+    ##  Get the user profile as obtained from the JWT (JSON Web Token).
     #   If the JWT is not yet parsed, calling this will take care of that.
     #   \return UserProfile if a user is logged in, None otherwise.
     #   \sa _parseJWT
@@ -61,7 +59,7 @@ class AuthorizationService:
 
         return self._user_profile
 
-    #   Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
+    ##  Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
     #   \return UserProfile if it was able to parse, None otherwise.
     def _parseJWT(self) -> Optional["UserProfile"]:
         if not self._auth_data or self._auth_data.access_token is None:
@@ -81,7 +79,7 @@ class AuthorizationService:
 
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
-    #   Get the access token as provided by the repsonse data.
+    ##  Get the access token as provided by the repsonse data.
     def getAccessToken(self) -> Optional[str]:
         if not self.getUserProfile():
             # We check if we can get the user profile.
@@ -95,21 +93,21 @@ class AuthorizationService:
 
         return self._auth_data.access_token
 
-    #   Try to refresh the access token. This should be used when it has expired.
+    ##  Try to refresh the access token. This should be used when it has expired.
     def refreshAccessToken(self) -> None:
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
         self._storeAuthData(self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token))
-        self.onAuthStateChanged.emit(logged_in=True)
+        self.onAuthStateChanged.emit(logged_in = True)
 
-    #   Delete the authentication data that we have stored locally (eg; logout)
+    ##  Delete the authentication data that we have stored locally (eg; logout)
     def deleteAuthData(self) -> None:
         if self._auth_data is not None:
             self._storeAuthData()
-            self.onAuthStateChanged.emit(logged_in=False)
+            self.onAuthStateChanged.emit(logged_in = False)
 
-    #   Start the flow to become authenticated. This will start a new webbrowser tap, prompting the user to login.
+    ##  Start the flow to become authenticated. This will start a new webbrowser tap, prompting the user to login.
     def startAuthorizationFlow(self) -> None:
         Logger.log("d", "Starting new OAuth2 flow...")
 
@@ -136,16 +134,16 @@ class AuthorizationService:
         # Start a local web server to receive the callback URL on.
         self._server.start(verification_code)
 
-    #   Callback method for the authentication flow.
+    ##  Callback method for the authentication flow.
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:
         if auth_response.success:
             self._storeAuthData(auth_response)
-            self.onAuthStateChanged.emit(logged_in=True)
+            self.onAuthStateChanged.emit(logged_in = True)
         else:
-            self.onAuthenticationError.emit(logged_in=False, error_message=auth_response.err_message)
+            self.onAuthenticationError.emit(logged_in = False, error_message = auth_response.err_message)
         self._server.stop()  # Stop the web server at all times.
 
-    #   Load authentication data from preferences.
+    ##  Load authentication data from preferences.
     def loadAuthDataFromPreferences(self) -> None:
         if self._preferences is None:
             Logger.log("e", "Unable to load authentication data, since no preference has been set!")
@@ -154,11 +152,11 @@ class AuthorizationService:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
-                self.onAuthStateChanged.emit(logged_in=True)
+                self.onAuthStateChanged.emit(logged_in = True)
         except ValueError:
             Logger.logException("w", "Could not load auth data from preferences")
 
-    #   Store authentication data in preferences.
+    ##  Store authentication data in preferences.
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
