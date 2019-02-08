@@ -85,7 +85,7 @@ class AuthorizationHelpers:
             token_request = requests.get("{}/check-token".format(self._settings.OAUTH_SERVER_URL), headers = {
                 "Authorization": "Bearer {}".format(access_token)
             })
-        except ConnectionError:
+        except requests.exceptions.ConnectionError:
             # Connection was suddenly dropped. Nothing we can do about that.
             Logger.logException("e", "Something failed while attempting to parse the JWT token")
             return None
