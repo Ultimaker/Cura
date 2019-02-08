@@ -14,6 +14,7 @@ Item
     Loader
     {
         id: previewMain
+        anchors.fill: parent
 
         source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
     }
