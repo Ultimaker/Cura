@@ -447,9 +447,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Cloud flow is possible, so show the message
         if not self._start_cloud_flow_message:
             self._start_cloud_flow_message = Message(
-                text = i18n_catalog.i18nc("@info:status", "Pair your printer to your Ultimaker account and start print jobs from anywhere."),
+                text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
                 image_source = "../../../../../Cura/plugins/UM3NetworkPrinting/resources/svg/cloud-flow-start.svg",
-                image_caption = i18n_catalog.i18nc("@info:status", "Connect to cloud"),
+                image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
                 option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
                 option_state = False
             )
