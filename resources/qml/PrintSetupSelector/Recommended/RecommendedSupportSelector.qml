@@ -123,15 +123,15 @@ Item
             currentIndex: supportExtruderNr.properties.value
 
             property string color: "#fff"
-
-            Binding
+            Connections
             {
-                // We override the color property's value when the ExtruderModel changes. So we need to use an
-                // explicit binding here otherwise we do not handle value changes after the model changes.
-                target: supportExtruderCombobox
-                property: "color"
-                value: supportExtruderCombobox.currentText != "" ? supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color : ""
+                target: extruderModel
+                onModelChanged:
+                {
+                    supportExtruderCombobox.color = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
+                }
             }
+            onCurrentIndexChanged: supportExtruderCombobox.color = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
 
             Binding
             {
@@ -301,6 +301,7 @@ Item
     }
 
     property var extruderModel: CuraApplication.getExtrudersModel()
+
 
     UM.SettingPropertyProvider
     {
