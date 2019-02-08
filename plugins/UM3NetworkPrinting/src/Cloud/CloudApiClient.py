@@ -103,8 +103,9 @@ class CloudApiClient:
         request = QNetworkRequest(QUrl(path))
         if content_type:
             request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
-        if self._account.isLoggedIn:
-            request.setRawHeader(b"Authorization", "Bearer {}".format(self._account.accessToken).encode())
+        access_token = self._account.accessToken
+        if access_token:
+            request.setRawHeader(b"Authorization", "Bearer {}".format(access_token).encode())
         return request
 
     ## Parses the given JSON network reply into a status code and a dictionary, handling unexpected errors as well.

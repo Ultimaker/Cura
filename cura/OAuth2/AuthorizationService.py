@@ -51,13 +51,11 @@ class AuthorizationService:
     #   \return UserProfile if a user is logged in, None otherwise.
     #   \sa _parseJWT
     def getUserProfile(self) -> Optional["UserProfile"]:
-        if not self._user_profile:
-            # If no user profile was stored locally, we try to get it from JWT.
-            try:
-                self._user_profile = self._parseJWT()
-            except requests.exceptions.ConnectionError:
-                # Unable to get connection, can't login.
-                return None
+        try:
+            self._user_profile = self._parseJWT()
+        except requests.exceptions.ConnectionError:
+            # Unable to get connection, can't login.
+            return None
 
         if not self._user_profile and self._auth_data:
             # If there is still no user profile from the JWT, we have to log in again.
@@ -87,13 +85,13 @@ class AuthorizationService:
 
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
-    #   Get the access token as provided by the repsonse data.
+    #   Get the access token as provided by the response data.
     def getAccessToken(self) -> Optional[str]:
         if not self.getUserProfile():
             # We check if we can get the user profile.
             # If we can't get it, that means the access token (JWT) was invalid or expired.
-            Logger.log("w", "Unable to get the user profile.")
-            return None
+            # In that case we try to refresh the access token.
+            self.refreshAccessToken()
 
         if self._auth_data is None:
             Logger.log("d", "No auth data to retrieve the access_token from")
