@@ -7,6 +7,7 @@ from PyQt5.QtCore import QTimer
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Signal import Signal, signalemitter
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
@@ -31,14 +32,17 @@ class CloudOutputDeviceManager:
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
+    addedCloudCluster = Signal()
+    removedCloudCluster = Signal()
+
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
 
-        application = CuraApplication.getInstance()
-        self._output_device_manager = application.getOutputDeviceManager()
+        self._application = CuraApplication.getInstance()
+        self._output_device_manager = self._application.getOutputDeviceManager()
 
-        self._account = application.getCuraAPI().account  # type: Account
+        self._account = self._application.getCuraAPI().account  # type: Account
         self._api = CloudApiClient(self._account, self._onApiError)
 
         # Create a timer to update the remote cluster list
@@ -82,6 +86,7 @@ class CloudOutputDeviceManager:
                 removed_cluster.disconnect()
             removed_cluster.close()
             self._output_device_manager.removeOutputDevice(removed_cluster.key)
+            self.removedCloudCluster.emit()
             del self._remote_clusters[removed_cluster.key]
 
         # Add an output device for each new remote cluster.
@@ -89,6 +94,7 @@ class CloudOutputDeviceManager:
         for added_cluster in added_clusters:
             device = CloudOutputDevice(self._api, added_cluster)
             self._remote_clusters[added_cluster.cluster_id] = device
+            self.addedCloudCluster.emit()
 
         for device, cluster in updates:
             device.clusterData = cluster
@@ -152,10 +158,9 @@ class CloudOutputDeviceManager:
     def start(self):
         if self._running:
             return
-        application = CuraApplication.getInstance()
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
         # When switching machines we check if we have to activate a remote cluster.
-        application.globalContainerStackChanged.connect(self._connectToActiveMachine)
+        self._application.globalContainerStackChanged.connect(self._connectToActiveMachine)
         self._update_timer.timeout.connect(self._getRemoteClusters)
         self._onLoginStateChanged(is_logged_in = self._account.isLoggedIn)
 
@@ -163,9 +168,8 @@ class CloudOutputDeviceManager:
     def stop(self):
         if not self._running:
             return
-        application = CuraApplication.getInstance()
         self._account.loginStateChanged.disconnect(self._onLoginStateChanged)
         # When switching machines we check if we have to activate a remote cluster.
-        application.globalContainerStackChanged.disconnect(self._connectToActiveMachine)
+        self._application.globalContainerStackChanged.disconnect(self._connectToActiveMachine)
         self._update_timer.timeout.disconnect(self._getRemoteClusters)
         self._onLoginStateChanged(is_logged_in = False)

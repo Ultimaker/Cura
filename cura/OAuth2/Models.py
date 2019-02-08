@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional
@@ -9,7 +9,7 @@ class BaseModel:
         self.__dict__.update(kwargs)
 
 
-# OAuth OAuth2Settings data template.
+##  OAuth OAuth2Settings data template.
 class OAuth2Settings(BaseModel):
     CALLBACK_PORT = None  # type: Optional[int]
     OAUTH_SERVER_URL = None  # type: Optional[str]
@@ -21,14 +21,14 @@ class OAuth2Settings(BaseModel):
     AUTH_FAILED_REDIRECT = "https://ultimaker.com"  # type: str
 
 
-# User profile data template.
+##  User profile data template.
 class UserProfile(BaseModel):
     user_id = None  # type: Optional[str]
     username = None  # type: Optional[str]
     profile_image_url = None  # type: Optional[str]
 
 
-# Authentication data template.
+##  Authentication data template.
 class AuthenticationResponse(BaseModel):
     """Data comes from the token response with success flag and error message added."""
     success = True  # type: bool
@@ -40,23 +40,22 @@ class AuthenticationResponse(BaseModel):
     err_message = None  # type: Optional[str]
 
 
-# Response status template.
+##  Response status template.
 class ResponseStatus(BaseModel):
     code = 200  # type: int
     message = ""  # type str
 
 
-# Response data template.
+##  Response data template.
 class ResponseData(BaseModel):
     status = None  # type: ResponseStatus
     data_stream = None  # type: Optional[bytes]
     redirect_uri = None  # type: Optional[str]
     content_type = "text/html"  # type: str
 
-
-# Possible HTTP responses.
+##  Possible HTTP responses.
 HTTP_STATUS = {
-    "OK": ResponseStatus(code=200, message="OK"),
-    "NOT_FOUND": ResponseStatus(code=404, message="NOT FOUND"),
-    "REDIRECT": ResponseStatus(code=302, message="REDIRECT")
+    "OK": ResponseStatus(code = 200, message = "OK"),
+    "NOT_FOUND": ResponseStatus(code = 404, message = "NOT FOUND"),
+    "REDIRECT": ResponseStatus(code = 302, message = "REDIRECT")
 }
