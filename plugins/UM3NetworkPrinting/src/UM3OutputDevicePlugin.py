@@ -12,6 +12,7 @@ from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import ConnectionType
+from cura.Settings.GlobalStack import GlobalStack # typing
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
