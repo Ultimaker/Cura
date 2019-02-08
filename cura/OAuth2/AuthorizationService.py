@@ -5,6 +5,8 @@ import json
 import webbrowser
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
+import requests.exceptions
+
 
 from UM.Logger import Logger
 from UM.Signal import Signal
@@ -49,7 +51,11 @@ class AuthorizationService:
     def getUserProfile(self) -> Optional["UserProfile"]:
         if not self._user_profile:
             # If no user profile was stored locally, we try to get it from JWT.
-            self._user_profile = self._parseJWT()
+            try:
+                self._user_profile = self._parseJWT()
+            except requests.exceptions.ConnectionError:
+                # Unable to get connection, can't login.
+                return None
 
         if not self._user_profile and self._auth_data:
             # If there is still no user profile from the JWT, we have to log in again.

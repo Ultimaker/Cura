@@ -199,7 +199,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     #  \param content_type: The content type of the body data.
     #  \param on_finished: The function to call when the response is received.
     #  \param on_progress: The function to call when the progress changes. Parameters are bytes_sent / bytes_total.
-    def put(self, url: str, data: Union[str, bytes], content_type: Optional[str] = None,
+    def put(self, url: str, data: Union[str, bytes], content_type: Optional[str] = "application/json",
             on_finished: Optional[Callable[[QNetworkReply], None]] = None,
             on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         self._validateManager()
