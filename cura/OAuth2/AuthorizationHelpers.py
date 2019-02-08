@@ -14,6 +14,9 @@ from UM.Logger import Logger
 from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 
 
+TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+
 #   Class containing several helpers to deal with the authorization flow.
 class AuthorizationHelpers:
     def __init__(self, settings: "OAuth2Settings") -> None:
@@ -77,7 +80,7 @@ class AuthorizationHelpers:
                                       refresh_token=token_data["refresh_token"],
                                       expires_in=token_data["expires_in"],
                                       scope=token_data["scope"],
-                                      received_at=datetime.now())
+                                      received_at=datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT))
 
     #   Calls the authentication API endpoint to get the token data.
     #   \param access_token: The encoded JWT token.
