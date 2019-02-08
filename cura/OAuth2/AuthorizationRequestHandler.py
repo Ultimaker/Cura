@@ -9,6 +9,7 @@ from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import ResponseStatus
+    from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
 
 #   This handler handles all HTTP requests on the local web server.
@@ -18,7 +19,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         super().__init__(request, client_address, server)
 
         # These values will be injected by the HTTPServer that this handler belongs to.
-        self.authorization_helpers = None  # type: Optional["AuthorizationHelpers"]
+        self.authorization_helpers = None  # type: Optional[AuthorizationHelpers]
         self.authorization_callback = None  # type: Optional[Callable[[AuthenticationResponse], None]]
         self.verification_code = None  # type: Optional[str]
 
