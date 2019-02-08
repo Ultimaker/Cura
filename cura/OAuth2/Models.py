@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional
@@ -56,7 +56,7 @@ class ResponseData(BaseModel):
 
 # Possible HTTP responses.
 HTTP_STATUS = {
-    "OK": ResponseStatus(code=200, message="OK"),
-    "NOT_FOUND": ResponseStatus(code=404, message="NOT FOUND"),
-    "REDIRECT": ResponseStatus(code=302, message="REDIRECT")
+    "OK": ResponseStatus(code = 200, message = "OK"),
+    "NOT_FOUND": ResponseStatus(code = 404, message = "NOT FOUND"),
+    "REDIRECT": ResponseStatus(code = 302, message = "REDIRECT")
 }

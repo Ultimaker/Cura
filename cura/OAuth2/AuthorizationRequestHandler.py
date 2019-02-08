@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 
 from http.server import BaseHTTPRequestHandler
@@ -60,30 +61,30 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         elif self._queryGet(query, "error_code") == "user_denied":
             # Otherwise we show an error message (probably the user clicked "Deny" in the auth dialog).
             token_response = AuthenticationResponse(
-                success=False,
-                err_message="Please give the required permissions when authorizing this application."
+                success = False,
+                err_message = "Please give the required permissions when authorizing this application."
             )
 
         else:
             # We don't know what went wrong here, so instruct the user to check the logs.
             token_response = AuthenticationResponse(
-                success=False,
-                error_message="Something unexpected happened when trying to log in, please try again."
+                success = False,
+                error_message = "Something unexpected happened when trying to log in, please try again."
             )
         if self.authorization_helpers is None:
             return ResponseData(), token_response
 
         return ResponseData(
-            status=HTTP_STATUS["REDIRECT"],
-            data_stream=b"Redirecting...",
-            redirect_uri=self.authorization_helpers.settings.AUTH_SUCCESS_REDIRECT if token_response.success else
+            status = HTTP_STATUS["REDIRECT"],
+            data_stream = b"Redirecting...",
+            redirect_uri = self.authorization_helpers.settings.AUTH_SUCCESS_REDIRECT if token_response.success else
             self.authorization_helpers.settings.AUTH_FAILED_REDIRECT
         ), token_response
 
     @staticmethod
     #   Handle all other non-existing server calls.
     def _handleNotFound() -> ResponseData:
-        return ResponseData(status=HTTP_STATUS["NOT_FOUND"], content_type="text/html", data_stream=b"Not found.")
+        return ResponseData(status = HTTP_STATUS["NOT_FOUND"], content_type = "text/html", data_stream = b"Not found.")
 
     def _sendHeaders(self, status: "ResponseStatus", content_type: str, redirect_uri: str = None) -> None:
         self.send_response(status.code, status.message)
@@ -97,5 +98,5 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
 
     @staticmethod
     #   Convenience Helper for getting values from a pre-parsed query string
-    def _queryGet(query_data: Dict[Any, List], key: str, default: Optional[str]=None) -> Optional[str]:
+    def _queryGet(query_data: Dict[Any, List], key: str, default: Optional[str] = None) -> Optional[str]:
         return query_data.get(key, [default])[0]
