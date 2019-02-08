@@ -22,6 +22,8 @@ from UM.i18n import i18nCatalog
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
+from typing import Optional
+
 i18n_catalog = i18nCatalog("cura")
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
