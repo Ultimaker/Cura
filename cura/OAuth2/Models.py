@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+from datetime import datetime
 from typing import Optional
 
 
@@ -38,6 +38,7 @@ class AuthenticationResponse(BaseModel):
     expires_in = None  # type: Optional[str]
     scope = None  # type: Optional[str]
     err_message = None  # type: Optional[str]
+    received_at = None  # type: Optional[datetime]
 
 
 # Response status template.

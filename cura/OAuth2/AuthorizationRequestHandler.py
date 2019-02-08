@@ -9,7 +9,6 @@ from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import ResponseStatus
-    from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
 
 #   This handler handles all HTTP requests on the local web server.

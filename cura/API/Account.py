@@ -57,7 +57,6 @@ class Account(QObject):
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
-
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.loadAuthDataFromPreferences()

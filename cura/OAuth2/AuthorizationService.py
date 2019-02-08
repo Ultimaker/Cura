@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import webbrowser
+from datetime import timedelta, datetime
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
 import requests.exceptions
@@ -51,11 +52,12 @@ class AuthorizationService:
     #   \return UserProfile if a user is logged in, None otherwise.
     #   \sa _parseJWT
     def getUserProfile(self) -> Optional["UserProfile"]:
-        try:
-            self._user_profile = self._parseJWT()
-        except requests.exceptions.ConnectionError:
-            # Unable to get connection, can't login.
-            return None
+        if not self._user_profile:
+            try:
+                self._user_profile = self._parseJWT()
+            except requests.exceptions.ConnectionError:
+                # Unable to get connection, can't login.
+                return None
 
         if not self._user_profile and self._auth_data:
             # If there is still no user profile from the JWT, we have to log in again.
@@ -87,10 +89,10 @@ class AuthorizationService:
 
     #   Get the access token as provided by the response data.
     def getAccessToken(self) -> Optional[str]:
-        if not self.getUserProfile():
-            # We check if we can get the user profile.
-            # If we can't get it, that means the access token (JWT) was invalid or expired.
-            # In that case we try to refresh the access token.
+        # Check if the current access token is expired and refresh it if that is the case.
+        creation_date = self._auth_data.received_at or datetime(2000, 1, 1)
+        expiry_date = creation_date + timedelta(seconds = float(self._auth_data.expires_in))
+        if datetime.now() > expiry_date:
             self.refreshAccessToken()
 
         if self._auth_data is None:

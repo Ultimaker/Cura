@@ -1,10 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from datetime import datetime
 import json
 import random
 from hashlib import sha512
 from base64 import b64encode
-from typing import Dict, Optional
+from typing import Optional
 
 import requests
 
@@ -75,7 +76,8 @@ class AuthorizationHelpers:
                                       access_token=token_data["access_token"],
                                       refresh_token=token_data["refresh_token"],
                                       expires_in=token_data["expires_in"],
-                                      scope=token_data["scope"])
+                                      scope=token_data["scope"],
+                                      received_at=datetime.now())
 
     #   Calls the authentication API endpoint to get the token data.
     #   \param access_token: The encoded JWT token.
@@ -99,7 +101,8 @@ class AuthorizationHelpers:
         return UserProfile(
             user_id = user_data["user_id"],
             username = user_data["username"],
-            profile_image_url = user_data.get("profile_image_url", "")
+            profile_image_url = user_data.get("profile_image_url", ""),
+            generated_at = datetime.now()
         )
 
     @staticmethod
