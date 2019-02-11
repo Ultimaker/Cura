@@ -412,8 +412,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
         if active_machine:
             
-            # Check 1: Printer isn't already configured for cloud
+            # Check 1A: Printer isn't already configured for cloud
             if ConnectionType.CloudConnection.value in active_machine.configuredConnectionTypes:
+                Logger.log("d", "Active machine was already configured for cloud.")
+                return
+            
+            # Check 1B: Printer isn't already configured for cloud
+            if active_machine.getMetaDataEntry("cloud_flow_complete", "value") is True:
                 Logger.log("d", "Active machine was already configured for cloud.")
                 return
 
