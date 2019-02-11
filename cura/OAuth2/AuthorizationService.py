@@ -94,6 +94,7 @@ class AuthorizationService:
             return None
 
         # Check if the current access token is expired and refresh it if that is the case.
+        # We have a fallback on a date far in the past for currently stored auth data in cura.cfg.
         received_at = datetime.strptime(self._auth_data.received_at, TOKEN_TIMESTAMP_FORMAT) \
             if self._auth_data.received_at else datetime(2000, 1, 1)
         expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0))
