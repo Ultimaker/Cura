@@ -19,6 +19,7 @@ from UM.Signal import Signal, signalemitter
 from UM.Version import Version
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Util import parseBool
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
@@ -418,12 +419,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 return
             
             # Check 1B: Printer isn't already configured for cloud
-            if active_machine.getMetaDataEntry("cloud_flow_complete", "value") is True:
+            if parseBool(active_machine.getMetaDataEntry("cloud_flow_complete", "value")):
                 Logger.log("d", "Active machine was already configured for cloud.")
                 return
 
             # Check 2: User did not already say "Don't ask me again"
-            if active_machine.getMetaDataEntry("show_cloud_message", "value") is False:
+            if not parseBool(active_machine.getMetaDataEntry("show_cloud_message", "value")):
                 Logger.log("d", "Active machine shouldn't ask about cloud anymore.")
                 return
         
