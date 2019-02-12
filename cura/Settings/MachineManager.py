@@ -519,13 +519,13 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineFirmwareVersion(self) -> str:
-        if not self._printer_output_devices[0]:
+        if not self._printer_output_devices:
             return ""
         return self._printer_output_devices[0].firmwareVersion
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineAddress(self) -> str:
-        if not self._printer_output_devices[0]:
+        if not self._printer_output_devices:
             return ""
         return self._printer_output_devices[0].address
 
