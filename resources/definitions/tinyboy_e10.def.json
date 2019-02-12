@@ -1,5 +1,5 @@
 {
-    "name": "TinyBoy E10/J10/L10/M10",
+    "name": "TinyBoy E10_J10_L10_M10",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -7,8 +7,13 @@
         "author": "Fred Chan",
         "manufacturer": "HKMakers.hk",
         "file_formats": "text/x-gcode",
-        "preferred_quality_type": "draft",
-        "machine_extruder_trains":
+	"platform": "ultimaker2go_platform.obj",
+	"has_materials": false,
+        "has_machine_quality": true,
+        "preferred_quality_type": "normal",		
+	"platform_texture": "tinyboy2.png",		
+	"platform_offset": [ 0, 0, 0 ],
+	"machine_extruder_trains":
         {
             "0": "tinyboy_e10_extruder_0"
         }
@@ -67,6 +72,9 @@
         "machine_end_gcode": {
             "default_value": "G91\nG1 F1800 E-3\nG1 F3000 Z10\nG90\nG28 X0 Y0 ; home x and y axis\nM106 S0 ; turn off cooling fan\nM104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM84 ; disable motors"
         },
+		"machine_center_is_zero": {
+			"default_value": false
+		},
         "machine_heated_bed": {
             "default_value": false
         },
