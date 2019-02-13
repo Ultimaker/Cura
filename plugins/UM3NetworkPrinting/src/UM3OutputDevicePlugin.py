@@ -455,7 +455,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if not self._start_cloud_flow_message:
             self._start_cloud_flow_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
-                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/svg/cloud-flow-start.svg",
+                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/svg/cloud-flow-start.svg"),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
                 option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
                 option_state = False
