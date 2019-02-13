@@ -24,7 +24,7 @@ Item
 
     // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
     // they might not need to though.
-    property bool cloudConnection: Cura.MachineManager.activeMachineHasActiveCloudConnection
+    property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
 
     width: parent.width
     height: childrenRect.height
