@@ -45,6 +45,23 @@
             ]
         },
 
+        "adhesion_type": { "default_value": "skirt" },
+        "skirt_line_count": {"default_value": 2},
+        "skirt_gap": { "default_value": 2},
+        "fill_outline_gaps": { "default_value": true},
+        "infill_sparse_density": { "default_value": 15},
+        "retraction_amount": { "default_value": 2.5},
+        "retraction_min_travel": { "default_value": 2},
+        "retraction_speed": { "default_value": 30},
+        "speed_print": { "default_value": 60},
+        "speed_topbottom": { "default_value": 50},
+        "speed_wall_0": { "default_value": 40},
+        "top_layers": { "default_value": 4},
+        "wall_line_count": { "default_value": 2},
+        "cool_min_layer_time": { "default_value": 11},
+        "layer_height": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
+        "layer_height_0": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
+
         "machine_start_gcode":
         {
             "default_value": "M82\nG90\nG28 X\nG28 Y\nG28 Z\nG29\nG91\nG1 Z0\nG90\nM82\nG92 E0\nG1 X125 Y245 F3000\nG1 Z0"
@@ -52,8 +69,6 @@
         "machine_end_gcode":
         {
             "default_value": "M104 S0\nM140 S0\nG91\nG1 E-5 F300\nG1 Z+3 F3000\nG1 Y245 F3000\nM84"
-        },
-        "layer_height": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
-        "layer_height_0": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" }
+        }
     }
 }
