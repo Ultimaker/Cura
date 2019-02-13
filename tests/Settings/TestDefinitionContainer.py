@@ -17,6 +17,8 @@ from UM.Resources import Resources
 Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources")))
 
 
+filepaths = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions"))
+
 #############################START OF TEST CASES################################
 
 @pytest.fixture
@@ -27,21 +29,20 @@ def definition_container():
     return result
 
 ##  Tests all definition containers
-def test_validateDefintionContainer(definition_container):
+
+@pytest.mark.parametrize("file_name", filepaths)
+def test_validateDefintionContainer(file_name, definition_container):
 
     definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions")
-    all_definition_files = os.listdir(definition_path)
 
-    for file_name in all_definition_files:
+    if file_name == "fdmprinter.def.json" or file_name == "fdmextruder.def.json":
+        return  # Stop checking, these are root files.
 
-        if file_name == "fdmprinter.def.json" or file_name == "fdmextruder.def.json":
-            continue
+    with open(os.path.join(definition_path, file_name), encoding = "utf-8") as data:
 
-        with open(os.path.join(definition_path, file_name), encoding = "utf-8") as data:
+        json = data.read()
+        parser, is_valid = definition_container.readAndValidateSerialized(json)
+        if not is_valid:
+            print("The definition '{0}', has invalid data.".format(file_name))
 
-            json = data.read()
-            parser, is_valid = definition_container.readAndValidateSerialized(json)
-            if(not is_valid):
-                print("The File Name: '{0}', has invalid data ".format(file_name))
-            # To see the detailed data from log, comment the assert check and execute the test again. It will print invalid data
-            assert is_valid == True
+        assert is_valid
