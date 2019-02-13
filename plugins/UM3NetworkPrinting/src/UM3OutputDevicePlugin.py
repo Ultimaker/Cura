@@ -419,12 +419,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 return
             
             # Check 1B: Printer isn't already configured for cloud
-            if active_machine.getMetaDataEntry("cloud_flow_complete", "value") is True:
+            if active_machine.getMetaDataEntry("cloud_flow_complete", False):
                 Logger.log("d", "Active machine was already configured for cloud.")
                 return
 
             # Check 2: User did not already say "Don't ask me again"
-            if active_machine.getMetaDataEntry("show_cloud_message", "value") is False:
+            if not active_machine.getMetaDataEntry("show_cloud_message", True):
                 Logger.log("d", "Active machine shouldn't ask about cloud anymore.")
                 return
         
