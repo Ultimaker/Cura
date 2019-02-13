@@ -4,6 +4,7 @@ import json
 from queue import Queue
 from threading import Event, Thread
 from time import time
+import os
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
@@ -454,7 +455,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if not self._start_cloud_flow_message:
             self._start_cloud_flow_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
-                image_source = "../../../../../Cura/plugins/UM3NetworkPrinting/resources/svg/cloud-flow-start.svg",
+                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/svg/cloud-flow-start.svg",
                 image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
                 option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
                 option_state = False
@@ -475,7 +476,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._cloud_flow_complete_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 30,
-                image_source = "../../../../../Cura/plugins/UM3NetworkPrinting/resources/svg/cloud-flow-completed.svg",
+                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/svg/cloud-flow-completed.svg"),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
             )
             self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
