@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest #This module contains automated tests.
@@ -17,9 +17,8 @@ from UM.Resources import Resources
 Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources")))
 
 
-filepaths = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions"))
+machine_filepaths = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions"))
 
-#############################START OF TEST CASES################################
 
 @pytest.fixture
 def definition_container():
@@ -28,21 +27,22 @@ def definition_container():
     assert result.getId() == uid
     return result
 
+
 ##  Tests all definition containers
-
-@pytest.mark.parametrize("file_name", filepaths)
-def test_validateDefintionContainer(file_name, definition_container):
-
-    definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions")
-
+@pytest.mark.parametrize("file_name", machine_filepaths)
+def test_validateMachineDefinitionContainer(file_name, definition_container):
     if file_name == "fdmprinter.def.json" or file_name == "fdmextruder.def.json":
         return  # Stop checking, these are root files.
 
-    with open(os.path.join(definition_path, file_name), encoding = "utf-8") as data:
+    definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions")
+    assert isDefinitionValid(definition_container, definition_path, file_name)
 
+
+def isDefinitionValid(definition_container, path, file_name):
+    with open(os.path.join(path, file_name), encoding = "utf-8") as data:
         json = data.read()
         parser, is_valid = definition_container.readAndValidateSerialized(json)
         if not is_valid:
             print("The definition '{0}', has invalid data.".format(file_name))
 
-        assert is_valid
+        return is_valid
