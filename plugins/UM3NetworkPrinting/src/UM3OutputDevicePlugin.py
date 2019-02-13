@@ -488,7 +488,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 active_machine.setMetaDataEntry("cloud_flow_complete", True)
             return
 
-    def _onDontAskMeAgain(self, messageId: str, checked: bool) -> None:
+    def _onDontAskMeAgain(self, messageId: str) -> None:
         active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
         if active_machine:
             active_machine.setMetaDataEntry("show_cloud_message", False)
