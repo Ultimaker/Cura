@@ -424,7 +424,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 return
 
             # Check 2: User did not already say "Don't ask me again"
-            if not active_machine.getMetaDataEntry("show_cloud_message", True):
+            if active_machine.getMetaDataEntry("do_not_show_cloud_message", False):
                 Logger.log("d", "Active machine shouldn't ask about cloud anymore.")
                 return
         
@@ -488,13 +488,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
             active_machine = self._application.getMachineManager().activeMachine
             if active_machine:
-                active_machine.setMetaDataEntry("cloud_flow_complete", True)
+                active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
             return
 
     def _onDontAskMeAgain(self, messageId: str) -> None:
         active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
         if active_machine:
-            active_machine.setMetaDataEntry("show_cloud_message", False)
+            active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
             Logger.log("d", "Will not ask the user again to cloud connect for current printer.")
         return
 
