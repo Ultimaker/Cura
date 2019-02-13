@@ -265,7 +265,8 @@ class ExtruderManager(QObject):
 
         # The platform adhesion extruder. Not used if using none.
         if (global_stack.getProperty("adhesion_type", "value") != "none" or
-            global_stack.getProperty("prime_tower_brim_enable", "value")):
+            global_stack.getProperty("prime_tower_brim_enable", "value") and
+            global_stack.getProperty("adhesion_type", "value") != 'raft'):
             extruder_str_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
             if extruder_str_nr == "-1":
                 extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
