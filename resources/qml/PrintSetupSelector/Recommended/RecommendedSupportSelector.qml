@@ -97,15 +97,17 @@ Item
             // knowing the extruder position, try to find the item index in the model
             function getIndexByPosition(position)
             {
+                var itemIndex = -1  // if position is not found, return -1
                 for (var item_index in model.items)
                 {
                     var item = model.getItem(item_index)
                     if (item.index == position)
                     {
-                        return item_index
+                        itemIndex = item_index
+                        break
                     }
                 }
-                return -1
+                return itemIndex
             }
 
             onActivated:
