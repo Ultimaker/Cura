@@ -434,7 +434,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 return
 
             # Check 4: Machine is configured for network connectivity
-            if not self._application.getMachineManager().activeMachineHasActiveNetworkConnection:
+            if not self._application.getMachineManager().activeMachineHasNetworkConnection:
                 Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
                 return
             
