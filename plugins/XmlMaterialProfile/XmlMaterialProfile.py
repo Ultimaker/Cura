@@ -1167,6 +1167,8 @@ class XmlMaterialProfile(InstanceContainer):
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.
