@@ -71,7 +71,9 @@ class XmlMaterialProfile(InstanceContainer):
         material_manager = CuraApplication.getInstance().getMaterialManager()
         root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
         material_group = material_manager.getMaterialGroup(root_material_id)
-
+        if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
+            super().setMetaDataEntry(key, value)
+            return
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
