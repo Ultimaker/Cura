@@ -340,7 +340,7 @@ Item
                 Item
                 {
                     width: selectors.controlWidth
-                    height: parent.height
+                    height: childrenRect.height
 
                     UM.RecolorImage
                     {
