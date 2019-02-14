@@ -88,9 +88,9 @@ class PrinterOutputModel(QObject):
     def buildplate(self) -> str:
         return self._buildplate
 
-    def updateBuildplate(self, buildplate_name: str) -> None:
-        if self._buildplate != buildplate_name:
-            self._buildplate = buildplate_name
+    def updateBuildplate(self, buildplate: str) -> None:
+        if self._buildplate != buildplate:
+            self._buildplate = buildplate
             self._printer_configuration.buildplateConfiguration = self._buildplate
             self.buildplateChanged.emit()
             self.configurationChanged.emit()
