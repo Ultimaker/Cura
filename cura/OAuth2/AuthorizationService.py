@@ -3,6 +3,7 @@
 
 import json
 import webbrowser
+from datetime import datetime, timedelta
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
 import requests.exceptions
@@ -12,7 +13,7 @@ from UM.Logger import Logger
 from UM.Signal import Signal
 
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
-from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
+from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.Models import AuthenticationResponse
 
 if TYPE_CHECKING:
@@ -87,17 +88,19 @@ class AuthorizationService:
 
     ##  Get the access token as provided by the repsonse data.
     def getAccessToken(self) -> Optional[str]:
-        if not self.getUserProfile():
-            # We check if we can get the user profile.
-            # If we can't get it, that means the access token (JWT) was invalid or expired.
-            Logger.log("w", "Unable to get the user profile.")
-            return None
-
         if self._auth_data is None:
             Logger.log("d", "No auth data to retrieve the access_token from")
             return None
 
-        return self._auth_data.access_token
+        # Check if the current access token is expired and refresh it if that is the case.
+        # We have a fallback on a date far in the past for currently stored auth data in cura.cfg.
+        received_at = datetime.strptime(self._auth_data.received_at, TOKEN_TIMESTAMP_FORMAT) \
+            if self._auth_data.received_at else datetime(2000, 1, 1)
+        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0))
+        if datetime.now() > expiry_date:
+            self.refreshAccessToken()
+
+        return self._auth_data.access_token if self._auth_data else None
 
     ##  Try to refresh the access token. This should be used when it has expired.
     def refreshAccessToken(self) -> None:

@@ -1,18 +1,20 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from base64 import b64encode
-from hashlib import sha512
+from datetime import datetime
 import json
 import random
-import requests
+from hashlib import sha512
+from base64 import b64encode
 from typing import Optional
+
+import requests
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 
+from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 catalog = i18nCatalog("cura")
+TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 ##  Class containing several helpers to deal with the authorization flow.
 class AuthorizationHelpers:
@@ -72,12 +74,13 @@ class AuthorizationHelpers:
         if token_response.status_code not in (200, 201):
             return AuthenticationResponse(success = False, err_message = token_data["error_description"])
 
-        return AuthenticationResponse(success = True,
-                                      token_type = token_data["token_type"],
-                                      access_token = token_data["access_token"],
-                                      refresh_token = token_data["refresh_token"],
-                                      expires_in = token_data["expires_in"],
-                                      scope = token_data["scope"])
+        return AuthenticationResponse(success=True,
+                                      token_type=token_data["token_type"],
+                                      access_token=token_data["access_token"],
+                                      refresh_token=token_data["refresh_token"],
+                                      expires_in=token_data["expires_in"],
+                                      scope=token_data["scope"],
+                                      received_at=datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT))
 
     ##  Calls the authentication API endpoint to get the token data.
     #   \param access_token: The encoded JWT token.

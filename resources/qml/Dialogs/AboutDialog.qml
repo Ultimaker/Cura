@@ -28,7 +28,7 @@ UM.Dialog
         anchors.topMargin: - margin
         anchors.horizontalCenter: parent.horizontalCenter
 
-        color: UM.Theme.getColor("viewport_background")
+        color: UM.Theme.getColor("main_window_header_background")
     }
 
     Image
@@ -52,7 +52,7 @@ UM.Dialog
 
         text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
         font: UM.Theme.getFont("large_bold")
-        color: UM.Theme.getColor("text")
+        color: UM.Theme.getColor("button_text")
         anchors.right : logo.right
         anchors.top: logo.bottom
         anchors.topMargin: (UM.Theme.getSize("default_margin").height / 2) | 0
