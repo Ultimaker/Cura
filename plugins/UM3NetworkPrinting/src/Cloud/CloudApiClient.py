@@ -159,6 +159,9 @@ class CloudApiClient:
                      model: Type[CloudApiClientModel],
                      ) -> None:
         def parse() -> None:
+            # Don't try to parse the reply if we didn't get one
+            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+                return
             status_code, response = self._parseReply(reply)
             self._anti_gc_callbacks.remove(parse)
             return self._parseModels(response, on_finished, model)
