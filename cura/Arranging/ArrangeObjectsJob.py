@@ -40,7 +40,7 @@ class ArrangeObjectsJob(Job):
         arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = self._fixed_nodes, min_offset = self._min_offset)
 
         # Build set to exclude children (those get arranged together with the parents).
-        included_as_child = set([])
+        included_as_child = set()
         for node in self._nodes:
             included_as_child.update(node.getAllChildren())
 
