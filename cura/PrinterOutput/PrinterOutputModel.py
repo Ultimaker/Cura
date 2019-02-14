@@ -44,7 +44,7 @@ class PrinterOutputModel(QObject):
         self._printer_state = "unknown"
         self._is_preheating = False
         self._printer_type = ""
-        self._buildplate_name = ""
+        self._buildplate = ""
 
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
@@ -86,12 +86,12 @@ class PrinterOutputModel(QObject):
 
     @pyqtProperty(str, notify = buildplateChanged)
     def buildplate(self) -> str:
-        return self._buildplate_name
+        return self._buildplate
 
-    def updateBuildplateName(self, buildplate_name: str) -> None:
-        if self._buildplate_name != buildplate_name:
-            self._buildplate_name = buildplate_name
-            self._printer_configuration.buildplateConfiguration = self._buildplate_name
+    def updateBuildplate(self, buildplate_name: str) -> None:
+        if self._buildplate != buildplate_name:
+            self._buildplate = buildplate_name
+            self._printer_configuration.buildplateConfiguration = self._buildplate
             self.buildplateChanged.emit()
             self.configurationChanged.emit()
 
