@@ -55,6 +55,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
     #  \param controller - The controller of the model.
     def createOutputModel(self, controller: PrinterOutputController) -> PrinterOutputModel:
         model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version)
+        model.updateBuildplateName(self.build_plate.type)
         self.updateOutputModel(model)
         return model
 
