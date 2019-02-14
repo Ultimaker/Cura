@@ -1438,6 +1438,8 @@ class MachineManager(QObject):
                     self._global_container_stack.extruders[position].setEnabled(True)
                     self.updateMaterialWithVariant(position)
 
+            self.updateNumberExtrudersEnabled()
+
             if configuration.buildplateConfiguration is not None:
                 global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
                 if global_variant_container_node:
