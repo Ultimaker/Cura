@@ -746,8 +746,8 @@ class BuildVolume(SceneNode):
                                 break
                         if prime_tower_collision: #Already found a collision.
                             break
-                        if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
-                            ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != 'raft'):
+                        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
+                            ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft":
                             prime_tower_areas[extruder_id][i_area] = prime_tower_area.getMinkowskiHull(
                                 Polygon.approximatedCircle(disallowed_border_size))
                     if not prime_tower_collision:
@@ -789,8 +789,8 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
-                ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != 'raft'):
+            if ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
+                ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft":
                 brim_size = (
                     extruder.getProperty("brim_line_count", "value") *
                     extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
@@ -1040,7 +1040,7 @@ class BuildVolume(SceneNode):
 
         elif (adhesion_type == "brim" or
                 (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
-                    self._global_container_stack.getProperty("adhesion_type", "value") != 'raft')):
+                    self._global_container_stack.getProperty("adhesion_type", "value") != "raft")):
             brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
             bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
