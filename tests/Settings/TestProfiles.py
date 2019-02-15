@@ -41,6 +41,7 @@ def collectAllSettingIds():
         definition_container.deserialize(data.read())
     return definition_container.getAllKeys()
 
+
 def collectAllVariants():
     result = []
     for root, directories, filenames in os.walk(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "variants"))):

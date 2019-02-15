@@ -18,7 +18,8 @@ Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), 
 
 
 machine_filepaths = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions"))
-
+all_meshes = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "meshes"))
+all_images = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "images"))
 
 @pytest.fixture
 def definition_container():
@@ -44,5 +45,13 @@ def isDefinitionValid(definition_container, path, file_name):
         parser, is_valid = definition_container.readAndValidateSerialized(json)
         if not is_valid:
             print("The definition '{0}', has invalid data.".format(file_name))
+        metadata = DefinitionContainer.deserializeMetadata(json, "whatever")
+
+        # If the definition defines a platform file, it should be in /resources/meshes/
+        if "platform" in metadata[0]:
+            assert metadata[0]["platform"] in all_meshes
+
+        if "platform_texture" in metadata[0]:
+            assert metadata[0]["platform_texture"] in all_images
 
         return is_valid
