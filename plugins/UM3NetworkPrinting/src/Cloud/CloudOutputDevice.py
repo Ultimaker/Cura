@@ -67,8 +67,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # An example of why this is needed is the selection of the compatible file type when exporting the tool path.
         properties = {
             b"address": b"",
-            b"name": cluster.host_name.encode(),
-            b"firmware_version": cluster.host_version.encode(),
+            b"name": cluster.host_name.encode() if cluster.host_name else b"",
+            b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
             b"printer_type": b""
         }
 
