@@ -55,7 +55,6 @@ class CloudClusterPrinterStatus(BaseCloudModel):
     #  \param controller - The controller of the model.
     def createOutputModel(self, controller: PrinterOutputController) -> PrinterOutputModel:
         model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version)
-        model.updateBuildplate(self.build_plate.type)
         self.updateOutputModel(model)
         return model
 
@@ -66,6 +65,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
         model.updateName(self.friendly_name)
         model.updateType(self.machine_variant)
         model.updateState(self.status if self.enabled else "disabled")
+        model.updateBuildplate(self.build_plate.type)
 
         for configuration, extruder_output, extruder_config in \
                 zip(self.configuration, model.extruders, model.printerConfiguration.extruderConfigurations):
