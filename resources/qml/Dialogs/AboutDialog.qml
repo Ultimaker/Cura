@@ -21,41 +21,45 @@ UM.Dialog
 
     Rectangle
     {
+        id: header
         width: parent.width + 2 * margin // margin from Dialog.qml
-        height: version.y + version.height + margin
+        height: childrenRect.height + topPadding
 
         anchors.top: parent.top
-        anchors.topMargin: - margin
+        anchors.topMargin: -margin
         anchors.horizontalCenter: parent.horizontalCenter
+
+        property real topPadding: UM.Theme.getSize("wide_margin").height
 
         color: UM.Theme.getColor("main_window_header_background")
-    }
 
-    Image
-    {
-        id: logo
-        width: (base.minimumWidth * 0.85) | 0
-        source: UM.Theme.getImage("logo")
-        sourceSize.width: width
-        sourceSize.height: height
+        Image
+        {
+            id: logo
+            width: (base.minimumWidth * 0.85) | 0
+            height: (width * (UM.Theme.getSize("logo").height / UM.Theme.getSize("logo").width)) | 0
+            source: UM.Theme.getImage("logo")
+            sourceSize.width: width
+            sourceSize.height: height
 
-        anchors.top: parent.top
-        anchors.topMargin: ((base.minimumWidth - width) / 2) | 0
-        anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: parent.topPadding
+            anchors.horizontalCenter: parent.horizontalCenter
 
-        UM.I18nCatalog{id: catalog; name: "cura"}
-    }
+            UM.I18nCatalog{id: catalog; name: "cura"}
+        }
 
-    Label
-    {
-        id: version
+        Label
+        {
+            id: version
 
-        text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
-        font: UM.Theme.getFont("large_bold")
-        color: UM.Theme.getColor("button_text")
-        anchors.right : logo.right
-        anchors.top: logo.bottom
-        anchors.topMargin: (UM.Theme.getSize("default_margin").height / 2) | 0
+            text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
+            font: UM.Theme.getFont("large_bold")
+            color: UM.Theme.getColor("button_text")
+            anchors.right : logo.right
+            anchors.top: logo.bottom
+            anchors.topMargin: (UM.Theme.getSize("default_margin").height / 2) | 0
+        }
     }
 
     Label
@@ -67,7 +71,7 @@ UM.Dialog
         text: catalog.i18nc("@label","End-to-end solution for fused filament 3D printing.")
         font: UM.Theme.getFont("system")
         wrapMode: Text.WordWrap
-        anchors.top: version.bottom
+        anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
     }
 
