@@ -48,7 +48,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
         self.maintenance_required = maintenance_required
         self.firmware_update_status = firmware_update_status
         self.latest_available_firmware = latest_available_firmware
-        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate) if build_plate else None
+        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate)
         super().__init__(**kwargs)
 
     ## Creates a new output model.
@@ -65,13 +65,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
         model.updateName(self.friendly_name)
         model.updateType(self.machine_variant)
         model.updateState(self.status if self.enabled else "disabled")
-
-        # Make sure to set the build plate even though we don't use it. Since it's optional, use
-        # glass as a default
-        if self.build_plate:
-            model.updateBuildplate(self.build_plate.type)
-        else:
-            model.updateBuildplate("glass")
+        model.updateBuildplate(self.build_plate.type)
 
         for configuration, extruder_output, extruder_config in \
                 zip(self.configuration, model.extruders, model.printerConfiguration.extruderConfigurations):
