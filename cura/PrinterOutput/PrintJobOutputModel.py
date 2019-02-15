@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 
+
 class PrintJobOutputModel(QObject):
     stateChanged = pyqtSignal()
     timeTotalChanged = pyqtSignal()
@@ -44,7 +45,7 @@ class PrintJobOutputModel(QObject):
     @pyqtProperty("QStringList", notify=compatibleMachineFamiliesChanged)
     def compatibleMachineFamilies(self):
         # Hack; Some versions of cluster will return a family more than once...
-        return set(self._compatible_machine_families)
+        return list(set(self._compatible_machine_families))
 
     def setCompatibleMachineFamilies(self, compatible_machine_families: List[str]) -> None:
         if self._compatible_machine_families != compatible_machine_families:

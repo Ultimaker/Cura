@@ -22,7 +22,7 @@ class PrinterOutputModel(QObject):
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
     keyChanged = pyqtSignal()
-    printerTypeChanged = pyqtSignal()
+    typeChanged = pyqtSignal()
     buildplateChanged = pyqtSignal()
     cameraUrlChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
@@ -73,7 +73,7 @@ class PrinterOutputModel(QObject):
     def isPreheating(self) -> bool:
         return self._is_preheating
 
-    @pyqtProperty(str, notify = printerTypeChanged)
+    @pyqtProperty(str, notify = typeChanged)
     def type(self) -> str:
         return self._printer_type
 
@@ -81,7 +81,7 @@ class PrinterOutputModel(QObject):
         if self._printer_type != printer_type:
             self._printer_type = printer_type
             self._printer_configuration.printerType = self._printer_type
-            self.printerTypeChanged.emit()
+            self.typeChanged.emit()
             self.configurationChanged.emit()
 
     @pyqtProperty(str, notify = buildplateChanged)
@@ -179,7 +179,6 @@ class PrinterOutputModel(QObject):
         return self._name
 
     def setName(self, name: str) -> None:
-        self._setName(name)
         self.updateName(name)
 
     def updateName(self, name: str) -> None:
