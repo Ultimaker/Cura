@@ -4,7 +4,6 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
