@@ -44,12 +44,8 @@ class UFPWriter(MeshWriter):
     # trigger loading other containers. Because those loaded containers are QtObjects, they must be created on the
     # Qt thread. The File read/write operations right now are executed on separated threads because they are scheduled
     # by the Job class.
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
-        print("------------>   self _write = ", self._write)
-        return self._write(stream, nodes, mode = mode)
-
     @call_on_qt_thread
-    def _write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
         archive = VirtualFile()
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
 
