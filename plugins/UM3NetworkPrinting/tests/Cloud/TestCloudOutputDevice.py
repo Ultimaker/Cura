@@ -120,7 +120,7 @@ class TestCloudOutputDevice(TestCase):
 
     def test_print_to_cloud(self):
         active_machine_mock = self.app.getGlobalContainerStack.return_value
-        active_machine_mock.getMetaDataEntry.side_effect = {"file_formats": "application/gzip"}.get
+        active_machine_mock.getMetaDataEntry.side_effect = {"file_formats": "application/x-ufp"}.get
 
         request_upload_response = parseFixture("putJobUploadResponse")
         request_print_response = parseFixture("postJobPrintResponse")
@@ -130,6 +130,10 @@ class TestCloudOutputDevice(TestCase):
 
         file_handler = MagicMock()
         file_handler.getSupportedFileTypesWrite.return_value = [{
+            "extension": "ufp",
+            "mime_type": "application/x-ufp",
+            "mode": 2
+        }, {
             "extension": "gcode.gz",
             "mime_type": "application/gzip",
             "mode": 2, 
@@ -138,15 +142,11 @@ class TestCloudOutputDevice(TestCase):
             lambda stream, nodes: stream.write(str(nodes).encode())
 
         scene_nodes = [SceneNode()]
-        expected_mesh = str(scene_nodes).encode()
         self.device.requestWrite(scene_nodes, file_handler=file_handler, file_name="FileName")
 
         self.network.flushReplies()
         self.assertEqual(
-            {"data": {"content_type": "application/gzip", "file_size": len(expected_mesh), "job_name": "FileName"}},
+            {"data": {"content_type": "application/x-ufp", "job_name": "FileName"}},
             json.loads(self.network.getRequestBody("PUT", self.REQUEST_UPLOAD_URL).decode())
         )
-        self.assertEqual(expected_mesh,
-                         self.network.getRequestBody("PUT", request_upload_response["data"]["upload_url"]))
-
         self.assertIsNone(self.network.getRequestBody("POST", self.PRINT_URL))
