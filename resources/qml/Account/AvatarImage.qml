@@ -22,7 +22,6 @@ Item
     {
         id: profileImage
         anchors.fill: parent
-        source: UM.Theme.getImage("avatar_default")
         fillMode: Image.PreserveAspectCrop
         visible: false
         mipmap: true
