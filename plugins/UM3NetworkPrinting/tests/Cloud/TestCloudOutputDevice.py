@@ -146,7 +146,7 @@ class TestCloudOutputDevice(TestCase):
 
         self.network.flushReplies()
         self.assertEqual(
-            {"data": {"content_type": "application/x-ufp", "job_name": "FileName"}},
+            {"data": {"content_type": "application/x-ufp", "file_size": 52, "job_name": "FileName"}},
             json.loads(self.network.getRequestBody("PUT", self.REQUEST_UPLOAD_URL).decode())
         )
         self.assertIsNone(self.network.getRequestBody("POST", self.PRINT_URL))
