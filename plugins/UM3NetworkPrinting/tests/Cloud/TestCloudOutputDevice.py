@@ -21,6 +21,7 @@ class TestCloudOutputDevice(TestCase):
     JOB_ID = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
     HOST_GUID = "e90ae0ac-1257-4403-91ee-a44c9b7e8050"
+    HOST_VERSION = "5.2.0"
 
     STATUS_URL = "{}/connect/v1/clusters/{}/status".format(CuraCloudAPIRoot, CLUSTER_ID)
     PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(CuraCloudAPIRoot, CLUSTER_ID, JOB_ID)
@@ -36,7 +37,7 @@ class TestCloudOutputDevice(TestCase):
             patched_method.start()
 
         self.cluster = CloudClusterResponse(self.CLUSTER_ID, self.HOST_GUID, self.HOST_NAME, is_online=True,
-                                            status="active")
+                                            status="active", host_version=self.HOST_VERSION)
 
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
@@ -55,6 +56,11 @@ class TestCloudOutputDevice(TestCase):
         finally:
             for patched_method in self.patches:
                 patched_method.stop()
+
+    # We test for these in order to make sure the correct file type is selected depending on the firmware version.
+    def test_properties(self):
+        self.assertEqual(self.device.firmwareVersion, self.HOST_VERSION)
+        self.assertEqual(self.device.name, self.HOST_NAME)
 
     def test_status(self):
         self.device._update()
