@@ -1,12 +1,17 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from unittest.mock import MagicMock
 
 import pytest
 
+from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 
 import os
 import os.path
+
+from UM.VersionUpgradeManager import VersionUpgradeManager
+from cura.CuraApplication import CuraApplication
 
 
 def collectAllQualities():
@@ -25,8 +30,21 @@ def collecAllDefinitionIds():
     return result
 
 
+def collectAllSettingIds():
+    VersionUpgradeManager._VersionUpgradeManager__instance = VersionUpgradeManager(MagicMock())
+
+    application = CuraApplication()
+    application._initializeSettingDefinitionsAndFunctions()
+
+    definition_container = DefinitionContainer("whatever")
+    with open(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", "fdmprinter.def.json"), encoding="utf-8") as data:
+        definition_container.deserialize(data.read())
+    return definition_container.getAllKeys()
+
+
 all_definition_ids = collecAllDefinitionIds()
 quality_filepaths = collectAllQualities()
+all_setting_ids = collectAllSettingIds()
 
 
 ##  Atempt to load all the quality types
@@ -34,12 +52,26 @@ quality_filepaths = collectAllQualities()
 def test_validateQualityProfiles(file_name):
     try:
         with open(file_name, encoding="utf-8") as data:
-            json = data.read()
-            result = InstanceContainer._readAndValidateSerialized(json)
+            serialized = data.read()
+            result = InstanceContainer._readAndValidateSerialized(serialized)
             # Fairly obvious, but all the types here should be of the type quality
-            assert InstanceContainer.getConfigurationTypeFromSerialized(json) == "quality"
+            assert InstanceContainer.getConfigurationTypeFromSerialized(serialized) == "quality"
             # All quality profiles must be linked to an existing definition.
             assert result["general"]["definition"] in all_definition_ids
+
+            # We don't care what the value is, as long as it's there.
+            assert result["metadata"].get("quality_type", None) is not None
+
+            # Check that all the values that we say something about are known.
+            if "values" in result:
+                quality_setting_keys = set(result["values"])
+                # Prune all the comments from the values
+                quality_setting_keys = {key for key in quality_setting_keys if not key.startswith("#")}
+
+                has_unknown_settings = not quality_setting_keys.issubset(all_setting_ids)
+                if has_unknown_settings:
+                    print("The following setting(s) %s are defined in the quality %s, but not in fdmprinter.def.json" % ([key for key in quality_setting_keys if key not in all_setting_ids], file_name))
+                    assert False
 
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!

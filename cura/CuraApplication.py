@@ -307,7 +307,7 @@ class CuraApplication(QtApplication):
         super().initialize()
 
         self.__sendCommandToSingleInstance()
-        self.__initializeSettingDefinitionsAndFunctions()
+        self._initializeSettingDefinitionsAndFunctions()
         self.__addAllResourcesAndContainerResources()
         self.__addAllEmptyContainers()
         self.__setLatestResouceVersionsForVersionUpgrade()
@@ -338,7 +338,7 @@ class CuraApplication(QtApplication):
 
     # Adds custom property types, settings types, and extra operators (functions) that need to be registered in
     # SettingDefinition and SettingFunction.
-    def __initializeSettingDefinitionsAndFunctions(self):
+    def _initializeSettingDefinitionsAndFunctions(self):
         self._cura_formula_functions = CuraFormulaFunctions(self)
 
         # Need to do this before ContainerRegistry tries to load the machines
