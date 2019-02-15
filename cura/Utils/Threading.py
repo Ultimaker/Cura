@@ -31,10 +31,4 @@ def call_on_qt_thread(func):
         CuraApplication.getInstance().callLater(_handle_call, *new_args, **kwargs)
         inter_call_object.finish_event.wait()
         return inter_call_object.result
-
-    # If the current thread is the main thread, which is the Qt thread, directly return the function.
-    current_thread = threading.current_thread()
-    if isinstance(current_thread, threading._MainThread):
-        return func
-
     return _call_on_qt_thread_wrapper
