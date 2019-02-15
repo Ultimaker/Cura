@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -6,6 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Window 2.1
 
 import UM 1.1 as UM
+import Cura 1.1 as Cura
 
 UM.Dialog
 {
@@ -56,6 +57,7 @@ UM.Dialog
         anchors.right : logo.right
         anchors.top: logo.bottom
         anchors.topMargin: (UM.Theme.getSize("default_margin").height / 2) | 0
+        renderType: Text.NativeRendering
     }
 
     Label
@@ -69,6 +71,7 @@ UM.Dialog
         wrapMode: Text.WordWrap
         anchors.top: version.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
+        renderType: Text.NativeRendering
     }
 
     Label
@@ -82,6 +85,7 @@ UM.Dialog
         wrapMode: Text.WordWrap
         anchors.top: description.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
+        renderType: Text.NativeRendering
     }
 
     ScrollView
@@ -89,6 +93,7 @@ UM.Dialog
         id: credits
         anchors.top: creditsNotes.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
+        style: UM.Theme.styles.scrollview
 
         width: parent.width
         height: base.height - y - (2 * UM.Theme.getSize("default_margin").height + closeButton.height)
@@ -107,18 +112,21 @@ UM.Dialog
                     width: (projectsList.width * 0.25) | 0
                     elide: Text.ElideRight
                     onLinkActivated: Qt.openUrlExternally(link)
+                    renderType: Text.NativeRendering
                 }
                 Label
                 {
                     text: model.description
                     elide: Text.ElideRight
                     width: (projectsList.width * 0.6) | 0
+                    renderType: Text.NativeRendering
                 }
                 Label
                 {
                     text: model.license
                     elide: Text.ElideRight
                     width: (projectsList.width * 0.15) | 0
+                    renderType: Text.NativeRendering
                 }
             }
             model: ListModel
@@ -157,12 +165,12 @@ UM.Dialog
         }
     }
 
-    rightButtons: Button
+    rightButtons: Cura.SecondaryButton
     {
         //: Close about dialog button
         id: closeButton
-        text: catalog.i18nc("@action:button","Close");
+        text: catalog.i18nc("@action:button","Close")
 
-        onClicked: base.visible = false;
+        onClicked: base.visible = false
     }
 }
