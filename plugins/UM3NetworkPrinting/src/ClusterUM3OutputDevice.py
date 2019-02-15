@@ -627,7 +627,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         # Do not store the build plate information that comes from connect if the current printer has not build plate information
         if "build_plate" in data and machine_definition.getMetaDataEntry("has_variant_buildplates", False):
-            printer.updateBuildplateName(data["build_plate"]["type"])
+            printer.updateBuildplate(data["build_plate"]["type"])
         if not data["enabled"]:
             printer.updateState("disabled")
         else:
