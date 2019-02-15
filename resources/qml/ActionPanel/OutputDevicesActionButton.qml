@@ -90,6 +90,10 @@ Item
                         cornerRadius: 0
                         hoverColor: UM.Theme.getColor("primary")
                         Layout.fillWidth: true
+                        // The total width of the popup should be defined by the largest button. By stating that each
+                        // button should be minimally the size of it's content (aka; implicitWidth) we can ensure that.
+                        Layout.minimumWidth: implicitWidth
+                        Layout.preferredHeight: widget.height
                         onClicked:
                         {
                             UM.OutputDeviceManager.setActiveDevice(model.id)
