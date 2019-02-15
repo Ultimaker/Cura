@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
@@ -16,8 +16,20 @@ catalog = i18nCatalog("cura")
 
 ##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
-    def __init__(self):
-        super().__init__()
+    NameRole = Qt.UserRole + 1
+    SelectedRole = Qt.UserRole + 2
+    OutsideAreaRole = Qt.UserRole + 3
+    BuilplateNumberRole = Qt.UserRole + 4
+    NodeRole = Qt.UserRole + 5
+
+    def __init__(self, parent = None):
+        super().__init__(parent)
+
+        self.addRoleName(self.NameRole, "name")
+        self.addRoleName(self.SelectedRole, "selected")
+        self.addRoleName(self.OutsideAreaRole, "outside_build_area")
+        self.addRoleName(self.BuilplateNumberRole, "buildplate_number")
+        self.addRoleName(self.SelectedRole, "node")
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateDelayed)
         Application.getInstance().getPreferences().preferenceChanged.connect(self._updateDelayed)
@@ -78,9 +90,9 @@ class ObjectsModel(ListModel):
 
             nodes.append({
                 "name": name,
-                "isSelected": Selection.isSelected(node),
-                "isOutsideBuildArea": is_outside_build_area,
-                "buildPlateNumber": node_build_plate_number,
+                "selected": Selection.isSelected(node),
+                "outside_build_area": is_outside_build_area,
+                "buildplate_number": node_build_plate_number,
                 "node": node
             })
        
@@ -88,7 +100,3 @@ class ObjectsModel(ListModel):
         self.setItems(nodes)
 
         self.itemsChanged.emit()
-
-    @staticmethod
-    def createObjectsModel():
-        return ObjectsModel()

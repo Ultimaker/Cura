@@ -130,7 +130,6 @@ Cura.ExpandablePopup
                     scroll.height = Math.min(contentHeight, maximumHeight)
                     popup.height = scroll.height + buttonRow.height
                 }
-
             }
         }
 
