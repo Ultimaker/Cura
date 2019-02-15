@@ -142,11 +142,14 @@ class TestCloudOutputDevice(TestCase):
             lambda stream, nodes: stream.write(str(nodes).encode())
 
         scene_nodes = [SceneNode()]
+        expected_mesh = str(scene_nodes).encode()
         self.device.requestWrite(scene_nodes, file_handler=file_handler, file_name="FileName")
 
         self.network.flushReplies()
         self.assertEqual(
-            {"data": {"content_type": "application/x-ufp", "file_size": 52, "job_name": "FileName"}},
+            {"data": {"content_type": "application/x-ufp", "file_size": len(expected_mesh), "job_name": "FileName"}},
             json.loads(self.network.getRequestBody("PUT", self.REQUEST_UPLOAD_URL).decode())
         )
+        self.assertEqual(expected_mesh,
+                         self.network.getRequestBody("PUT", request_upload_response["data"]["upload_url"]))
         self.assertIsNone(self.network.getRequestBody("POST", self.PRINT_URL))
