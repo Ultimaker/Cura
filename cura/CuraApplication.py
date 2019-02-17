@@ -499,6 +499,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
+        preferences.addPreference("cura/show_list_of_files", False)
         preferences.addPreference("view/settings_list_height", 400)
         preferences.addPreference("view/settings_visible", False)
         preferences.addPreference("cura/currency", "€")

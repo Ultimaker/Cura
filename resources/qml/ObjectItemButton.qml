@@ -32,10 +32,7 @@ Button
                 right: printerTypes.left
                 verticalCenter: parent.verticalCenter
             }
-            text: {
-                print("HOLAAAAAAAA", objectItemButton.text)
-                return objectItemButton.text
-            }
+            text: objectItemButton.text
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             visible: text != ""

@@ -24,14 +24,14 @@ Item
     Item
     {
         anchors.horizontalCenter: parent.horizontalCenter
-        width: objectSelector.width + itemRow.width + UM.Theme.getSize("default_margin").width
+        width: loader.width + itemRow.width + UM.Theme.getSize("default_margin").width
         height: parent.height
 
         RowLayout
         {
             id: itemRow
 
-            anchors.left: objectSelector.right
+            anchors.left: loader.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             width: Math.round(0.9 * prepareMenu.width)
@@ -82,60 +82,73 @@ Item
             }
         }
 
-        Cura.ObjectSelector
+        Loader
         {
-            id: objectSelector
-            height: UM.Theme.getSize("stage_menu").height
-            width: UM.Theme.getSize("stage_menu").height
+            id: loader
+            sourceComponent: UM.Preferences.getValue("cura/show_list_of_files") ? objectSelector : openFileButton
         }
 
-//        Button
-//        {
-//            id: openFileButton
-//            height: UM.Theme.getSize("stage_menu").height
-//            width: UM.Theme.getSize("stage_menu").height
-//            onClicked: Cura.Actions.open.trigger()
-//            hoverEnabled: true
-//
-//            contentItem: Item
-//            {
-//                anchors.fill: parent
-//                UM.RecolorImage
-//                {
-//                    id: buttonIcon
-//                    anchors.centerIn: parent
-//                    source: UM.Theme.getIcon("load")
-//                    width: UM.Theme.getSize("button_icon").width
-//                    height: UM.Theme.getSize("button_icon").height
-//                    color: UM.Theme.getColor("icon")
-//
-//                    sourceSize.height: height
-//                }
-//            }
-//
-//            background: Rectangle
-//            {
-//                id: background
-//                height: UM.Theme.getSize("stage_menu").height
-//                width: UM.Theme.getSize("stage_menu").height
-//
-//                radius: UM.Theme.getSize("default_radius").width
-//                color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-//            }
-//
-//            DropShadow
-//            {
-//                id: shadow
-//                // Don't blur the shadow
-//                radius: 0
-//                anchors.fill: background
-//                source: background
-//                verticalOffset: 2
-//                visible: true
-//                color: UM.Theme.getColor("action_button_shadow")
-//                // Should always be drawn behind the background.
-//                z: background.z - 1
-//            }
-//        }
+        Component
+        {
+            id: objectSelector
+
+            Cura.ObjectSelector
+            {
+                height: UM.Theme.getSize("stage_menu").height
+                width: 1.5 * UM.Theme.getSize("stage_menu").height | 0
+            }
+        }
+
+        Component
+        {
+            id: openFileButton
+            Button
+            {
+                height: UM.Theme.getSize("stage_menu").height
+                width: UM.Theme.getSize("stage_menu").height
+                onClicked: Cura.Actions.open.trigger()
+                hoverEnabled: true
+
+                contentItem: Item
+                {
+                    anchors.fill: parent
+                    UM.RecolorImage
+                    {
+                        id: buttonIcon
+                        anchors.centerIn: parent
+                        source: UM.Theme.getIcon("load")
+                        width: UM.Theme.getSize("button_icon").width
+                        height: UM.Theme.getSize("button_icon").height
+                        color: UM.Theme.getColor("icon")
+
+                        sourceSize.height: height
+                    }
+                }
+
+                background: Rectangle
+                {
+                    id: background
+                    height: UM.Theme.getSize("stage_menu").height
+                    width: UM.Theme.getSize("stage_menu").height
+
+                    radius: UM.Theme.getSize("default_radius").width
+                    color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+                }
+
+                DropShadow
+                {
+                    id: shadow
+                    // Don't blur the shadow
+                    radius: 0
+                    anchors.fill: background
+                    source: background
+                    verticalOffset: 2
+                    visible: true
+                    color: UM.Theme.getColor("action_button_shadow")
+                    // Should always be drawn behind the background.
+                    z: background.z - 1
+                }
+            }
+        }
     }
 }

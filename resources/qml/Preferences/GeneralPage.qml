@@ -741,6 +741,21 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "This option enables a panel showing the list of loaded models")
+
+                CheckBox
+                {
+                    id: showListOfFilesCheckbox
+                    text: catalog.i18nc("@option:check", "Show list of loaded models")
+                    checked: boolCheck(UM.Preferences.getValue("cura/show_list_of_files"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/show_list_of_files", checked)
+                }
+            }
+
             Connections
             {
                 target: UM.Preferences
