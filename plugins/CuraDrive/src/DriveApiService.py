@@ -40,10 +40,13 @@ class DriveApiService:
         if not access_token:
             Logger.log("w", "Could not get access token.")
             return []
-
-        backup_list_request = requests.get(self.BACKUP_URL, headers = {
-            "Authorization": "Bearer {}".format(access_token)
-        })
+        try:
+            backup_list_request = requests.get(self.BACKUP_URL, headers = {
+                "Authorization": "Bearer {}".format(access_token)
+            })
+        except requests.exceptions.ConnectionError:
+            Logger.log("w", "Unable to connect with the server.")
+            return []
 
         # HTTP status 300s mean redirection. 400s and 500s are errors.
         # Technically 300s are not errors, but the use case here relies on "requests" to handle redirects automatically.
