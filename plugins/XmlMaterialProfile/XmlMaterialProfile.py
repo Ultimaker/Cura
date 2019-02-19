@@ -122,8 +122,6 @@ class XmlMaterialProfile(InstanceContainer):
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
-        print("--------base_file:", base_file)
-        print("--------metadata:", self._metadata)
         if base_file and self.getId() != base_file:
             # Since we create an instance of XmlMaterialProfile for each machine and nozzle in the profile,
             # we should only serialize the "base" material definition, since that can then take care of
