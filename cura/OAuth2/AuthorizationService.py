@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import webbrowser
 from datetime import datetime, timedelta
@@ -45,7 +46,7 @@ class AuthorizationService:
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
 
-        self._unable_to_get_data_message = None
+        self._unable_to_get_data_message = None  # type: Optional[Message]
 
         self.onAuthStateChanged.connect(self._authChanged)
 
