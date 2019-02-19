@@ -41,12 +41,13 @@ Item
         }
         height: 18 * screenScaleFactor // TODO: Theme!
         width: childrenRect.width
+        visible: !cloudConnection
 
         UM.RecolorImage
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
-            color: !cloudConnection ? UM.Theme.getColor("monitor_text_link") : UM.Theme.getColor("monitor_text_disabled")
+            color: UM.Theme.getColor("monitor_text_link")
             source: UM.Theme.getIcon("external_link")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
@@ -72,7 +73,7 @@ Item
     {
         anchors.fill: manageQueueLabel
         enabled: !cloudConnection
-        hoverEnabled: enabled
+        hoverEnabled: !cloudConnection
         onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
         onEntered:
         {
