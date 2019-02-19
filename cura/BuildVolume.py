@@ -129,8 +129,8 @@ class BuildVolume(SceneNode):
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
-            # Just ignore the camera scene updates. The build volume won't change because of it!
-            if not isinstance(source, Camera):
+            # Ignore anything that is not something we can slice in the first place!
+            if source.callDecoration("isSliceable"):
                 self._scene_change_timer.start()
 
     def _onSceneChangeTimerFinished(self):
