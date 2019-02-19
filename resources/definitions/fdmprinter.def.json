@@ -1792,7 +1792,7 @@
                 "skin_overlap":
                 {
                     "label": "Skin Overlap Percentage",
-                    "description": "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall.",
+                    "description": "Adjust the position where skin is extruded relative to the walls, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
                     "unit": "%",
                     "type": "float",
                     "default_value": 5,
@@ -1807,7 +1807,7 @@
                         "skin_overlap_mm":
                         {
                             "label": "Skin Overlap",
-                            "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
+                            "description": "Adjust the position where skin is extruded relative to the walls. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0.02,
