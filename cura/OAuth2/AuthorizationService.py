@@ -53,11 +53,7 @@ class AuthorizationService:
     #   \sa _parseJWT
     def getUserProfile(self) -> Optional["UserProfile"]:
         if not self._user_profile:
-            try:
-                self._user_profile = self._parseJWT()
-            except requests.exceptions.ConnectionError:
-                # Unable to get connection, can't login.
-                return None
+            self._user_profile = self._parseJWT()
 
         if not self._user_profile and self._auth_data:
             # If there is still no user profile from the JWT, we have to log in again.
