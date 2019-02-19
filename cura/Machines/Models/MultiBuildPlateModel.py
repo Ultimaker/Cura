@@ -35,8 +35,9 @@ class MultiBuildPlateModel(ListModel):
         self._active_build_plate = -1
 
     def setMaxBuildPlate(self, max_build_plate):
-        self._max_build_plate = max_build_plate
-        self.maxBuildPlateChanged.emit()
+        if self._max_build_plate != max_build_plate:
+            self._max_build_plate = max_build_plate
+            self.maxBuildPlateChanged.emit()
 
     ##  Return the highest build plate number
     @pyqtProperty(int, notify = maxBuildPlateChanged)
@@ -44,8 +45,9 @@ class MultiBuildPlateModel(ListModel):
         return self._max_build_plate
 
     def setActiveBuildPlate(self, nr):
-        self._active_build_plate = nr
-        self.activeBuildPlateChanged.emit()
+        if self._active_build_plate != nr:
+            self._active_build_plate = nr
+            self.activeBuildPlateChanged.emit()
 
     @pyqtProperty(int, notify = activeBuildPlateChanged)
     def activeBuildPlate(self):
