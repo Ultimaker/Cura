@@ -14,6 +14,10 @@ import Cura 1.0 as Cura
  */
 Item
 {
+    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
+    // they might not need to though.
+    property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
+
     Label
     {
         id: queuedLabel
@@ -42,7 +46,7 @@ Item
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
-            color: UM.Theme.getColor("monitor_text_link")
+            color: !cloudConnection ? UM.Theme.getColor("monitor_text_link") : UM.Theme.getColor("monitor_text_disabled")
             source: UM.Theme.getIcon("external_link")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
@@ -67,7 +71,8 @@ Item
     MouseArea
     {
         anchors.fill: manageQueueLabel
-        hoverEnabled: true
+        enabled: !cloudConnection
+        hoverEnabled: enabled
         onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
         onEntered:
         {
