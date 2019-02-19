@@ -164,7 +164,8 @@ class CloudApiClient:
                 return
             status_code, response = self._parseReply(reply)
             self._anti_gc_callbacks.remove(parse)
-            return self._parseModels(response, on_finished, model)
+            self._parseModels(response, on_finished, model)
+            return
 
         self._anti_gc_callbacks.append(parse)
         reply.finished.connect(parse)
