@@ -4,6 +4,7 @@
 from PyQt5.QtCore import QTimer, pyqtSignal, pyqtProperty
 
 from UM.Application import Application
+from UM.Scene.Camera import Camera
 from UM.Scene.Selection import Selection
 from UM.Qt.ListModel import ListModel
 
@@ -51,7 +52,8 @@ class MultiBuildPlateModel(ListModel):
         return self._active_build_plate
 
     def _updateSelectedObjectBuildPlateNumbersDelayed(self, *args):
-        self._update_timer.start()
+        if not isinstance(args[0], Camera):
+            self._update_timer.start()
 
     def _updateSelectedObjectBuildPlateNumbers(self, *args):
         result = set()
