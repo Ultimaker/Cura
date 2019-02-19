@@ -61,8 +61,19 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     #  \param cluster: The device response received from the cloud API.
     #  \param parent: The optional parent of this output device.
     def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
+
+        # The following properties are expected on each networked output device.
+        # Because the cloud connection does not off all of these, we manually construct this version here.
+        # An example of why this is needed is the selection of the compatible file type when exporting the tool path.
+        properties = {
+            b"address": b"",
+            b"name": cluster.host_name.encode() if cluster.host_name else b"",
+            b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
+            b"printer_type": b""
+        }
+
         super().__init__(device_id = cluster.cluster_id, address = "",
-                         connection_type = ConnectionType.CloudConnection, properties = {}, parent = parent)
+                         connection_type = ConnectionType.CloudConnection, properties = properties, parent = parent)
         self._api = api_client
         self._cluster = cluster
 

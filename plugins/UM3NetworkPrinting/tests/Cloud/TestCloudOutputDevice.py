@@ -21,6 +21,7 @@ class TestCloudOutputDevice(TestCase):
     JOB_ID = "ABCDefGHIjKlMNOpQrSTUvYxWZ0-1234567890abcDE="
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
     HOST_GUID = "e90ae0ac-1257-4403-91ee-a44c9b7e8050"
+    HOST_VERSION = "5.2.0"
 
     STATUS_URL = "{}/connect/v1/clusters/{}/status".format(CuraCloudAPIRoot, CLUSTER_ID)
     PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(CuraCloudAPIRoot, CLUSTER_ID, JOB_ID)
@@ -36,7 +37,7 @@ class TestCloudOutputDevice(TestCase):
             patched_method.start()
 
         self.cluster = CloudClusterResponse(self.CLUSTER_ID, self.HOST_GUID, self.HOST_NAME, is_online=True,
-                                            status="active")
+                                            status="active", host_version=self.HOST_VERSION)
 
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
@@ -55,6 +56,11 @@ class TestCloudOutputDevice(TestCase):
         finally:
             for patched_method in self.patches:
                 patched_method.stop()
+
+    # We test for these in order to make sure the correct file type is selected depending on the firmware version.
+    def test_properties(self):
+        self.assertEqual(self.device.firmwareVersion, self.HOST_VERSION)
+        self.assertEqual(self.device.name, self.HOST_NAME)
 
     def test_status(self):
         self.device._update()
@@ -114,7 +120,7 @@ class TestCloudOutputDevice(TestCase):
 
     def test_print_to_cloud(self):
         active_machine_mock = self.app.getGlobalContainerStack.return_value
-        active_machine_mock.getMetaDataEntry.side_effect = {"file_formats": "application/gzip"}.get
+        active_machine_mock.getMetaDataEntry.side_effect = {"file_formats": "application/x-ufp"}.get
 
         request_upload_response = parseFixture("putJobUploadResponse")
         request_print_response = parseFixture("postJobPrintResponse")
@@ -124,6 +130,10 @@ class TestCloudOutputDevice(TestCase):
 
         file_handler = MagicMock()
         file_handler.getSupportedFileTypesWrite.return_value = [{
+            "extension": "ufp",
+            "mime_type": "application/x-ufp",
+            "mode": 2
+        }, {
             "extension": "gcode.gz",
             "mime_type": "application/gzip",
             "mode": 2, 
@@ -137,10 +147,9 @@ class TestCloudOutputDevice(TestCase):
 
         self.network.flushReplies()
         self.assertEqual(
-            {"data": {"content_type": "application/gzip", "file_size": len(expected_mesh), "job_name": "FileName"}},
+            {"data": {"content_type": "application/x-ufp", "file_size": len(expected_mesh), "job_name": "FileName"}},
             json.loads(self.network.getRequestBody("PUT", self.REQUEST_UPLOAD_URL).decode())
         )
         self.assertEqual(expected_mesh,
                          self.network.getRequestBody("PUT", request_upload_response["data"]["upload_url"]))
-
         self.assertIsNone(self.network.getRequestBody("POST", self.PRINT_URL))
