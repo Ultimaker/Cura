@@ -6954,6 +6954,203 @@
                     "type": "float",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
+                },
+                "clean_between_layers": 
+                {
+                    "label": "Wipe Nozzle Between Layers",
+                    "description": "Whether to include nozzle wipe G-Code between layers.",
+                    "default_value": false,
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "max_extrusion_before_wipe": 
+                {
+                    "label": "Material Volume Between Wipes",
+                    "description": "Maximum material, that can be extruded before another nozzle wipe is initiated.",
+                    "default_value": 10,
+                    "type": "float",
+                    "unit": "mm³",
+                    "enabled": "clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_retraction_enable": 
+                {
+                    "label": "Wipe Retraction Enable",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_retraction_amount": 
+                {
+                    "label": "Wipe Retraction Distance",
+                    "description": "Amount to retract the filament so it does not ooze during the wipe sequence.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value_warning": "-0.0001",
+                    "maximum_value_warning": "10.0",
+                    "enabled": "wipe_retraction_enable and clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_retraction_extra_prime_amount": 
+                {
+                    "label": "Wipe Retraction Extra Prime Amount",
+                    "description": "Some material can ooze away during a wipe travel moves, which can be compensated for here.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "-0.0001",
+                    "maximum_value_warning": "10.0",
+                    "enabled": "wipe_retraction_enable and clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "wipe_retraction_speed": 
+                {
+                    "label": "Wipe Retraction Speed",
+                    "description": "The speed at which the filament is retracted and primed during a wipe retraction move.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1",
+                    "maximum_value": "machine_max_feedrate_e",
+                    "maximum_value_warning": "70",
+                    "enabled": "wipe_retraction_enable and clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children": 
+                    {
+                        "wipe_retraction_retract_speed": 
+                        {
+                            "label": "Wipe Retraction Retract Speed",
+                            "description": "The speed at which the filament is retracted during a wipe retraction move.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 3,
+                            "minimum_value": "0",
+                            "maximum_value": "machine_max_feedrate_e",
+                            "minimum_value_warning": "1",
+                            "maximum_value_warning": "70",
+                            "enabled": "wipe_retraction_enable and clean_between_layers",
+                            "value": "retraction_speed",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "wipe_retraction_prime_speed": 
+                        {
+                            "label": "Retraction Prime Speed",
+                            "description": "The speed at which the filament is primed during a wipe retraction move.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 2,
+                            "minimum_value": "0",
+                            "maximum_value": "machine_max_feedrate_e",
+                            "minimum_value_warning": "1",
+                            "maximum_value_warning": "70",
+                            "enabled": "wipe_retraction_enable and clean_between_layers",
+                            "value": "retraction_speed",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "wipe_pause": 
+                {
+                    "label": "Wipe Pause",
+                    "description": "Pause after the unretract.",
+                    "unit": "s",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_hop_enable": 
+                {
+                    "label": "Wipe Z Hop When Retracted",
+                    "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_hop_amount": 
+                {
+                    "label": "Wipe Z Hop Height",
+                    "description": "The height difference when performing a Z Hop.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "enabled": "wipe_hop_enable and clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_hop_speed": 
+                {
+                    "label": "Wipe Hop Speed",
+                    "description": "Speed to move the z-axis during the hop.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1",
+                    "enabled": "wipe_hop_enable and clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_brush_pos_x": 
+                {
+                    "label": "Wipe Brush X Position",
+                    "description": "X location where wipe script will start.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 100,
+                    "minimum_value_warning": "0",
+                    "enabled": "clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_repeat_count": 
+                {
+                    "label": "Wipe Repeat Count",
+                    "description": "Number of times to move the nozzle across the brush.",
+                    "type": "int",
+                    "minimum_value": "0",
+                    "default_value": 5,
+                    "enabled": "clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "wipe_move_distance": 
+                {
+                    "label": "Wipe Move Distance",
+                    "description": "The distance to move the head back and forth across the brush.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 20,
+                    "enabled": "clean_between_layers",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
                 }
             }
         },
