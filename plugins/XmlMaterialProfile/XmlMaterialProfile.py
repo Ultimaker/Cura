@@ -141,22 +141,12 @@ class XmlMaterialProfile(InstanceContainer):
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
         if ignored_metadata_keys is None:
             ignored_metadata_keys = set()
-        ignored_metadata_keys |= {"setting_version"}
+        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name"}
         # remove the keys that we want to ignore in the metadata
         for key in ignored_metadata_keys:
             if key in metadata:
                 del metadata[key]
         properties = metadata.pop("properties", {})
-
-        # Metadata properties that should not be serialized.
-        metadata.pop("status", "")
-        metadata.pop("variant", "")
-        metadata.pop("type", "")
-        metadata.pop("base_file", "")
-        metadata.pop("approximate_diameter", "")
-        metadata.pop("id", "")
-        metadata.pop("container_type", "")
-        metadata.pop("name", "")
 
         ## Begin Name Block
         builder.start("name") # type: ignore
