@@ -124,6 +124,15 @@ Item
             }
         }
 
+        // Can't use 'item: ...activeExtruderIndex' directly apparently, see also the comment on the previous block.
+        onVisibleChanged:
+        {
+            if (tabBar.visible)
+            {
+                tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex);
+            }
+        }
+
         //When the model of the extruders is rebuilt, the list of extruders is briefly emptied and rebuilt.
         //This causes the currentIndex of the tab to be in an invalid position which resets it to 0.
         //Therefore we need to change it back to what it was: The active extruder index.
