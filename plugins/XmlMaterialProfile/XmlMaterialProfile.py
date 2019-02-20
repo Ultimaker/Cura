@@ -71,7 +71,9 @@ class XmlMaterialProfile(InstanceContainer):
         material_manager = CuraApplication.getInstance().getMaterialManager()
         root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
         material_group = material_manager.getMaterialGroup(root_material_id)
-
+        if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
+            super().setMetaDataEntry(key, value)
+            return
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
@@ -1155,6 +1157,8 @@ class XmlMaterialProfile(InstanceContainer):
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.
