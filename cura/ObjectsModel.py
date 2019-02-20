@@ -5,6 +5,7 @@ from PyQt5.QtCore import QTimer
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
+from UM.Scene.Camera import Camera
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
@@ -19,19 +20,24 @@ class ObjectsModel(ListModel):
     def __init__(self):
         super().__init__()
 
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._updateDelayed)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSceneDelayed)
         Application.getInstance().getPreferences().preferenceChanged.connect(self._updateDelayed)
 
         self._update_timer = QTimer()
-        self._update_timer.setInterval(100)
+        self._update_timer.setInterval(200)
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._update)
 
         self._build_plate_number = -1
 
     def setActiveBuildPlate(self, nr):
-        self._build_plate_number = nr
-        self._update()
+        if self._build_plate_number != nr:
+            self._build_plate_number = nr
+            self._update()
+
+    def _updateSceneDelayed(self, source):
+        if not isinstance(source, Camera):
+            self._update_timer.start()
 
     def _updateDelayed(self, *args):
         self._update_timer.start()

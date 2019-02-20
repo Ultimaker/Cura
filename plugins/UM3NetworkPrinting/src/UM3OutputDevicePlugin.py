@@ -491,11 +491,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
             return
 
-    def _onDontAskMeAgain(self, messageId: str) -> None:
+    def _onDontAskMeAgain(self, checked: bool) -> None:
         active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
         if active_machine:
-            active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
-            Logger.log("d", "Will not ask the user again to cloud connect for current printer.")
+            active_machine.setMetaDataEntry("do_not_show_cloud_message", checked)
+            if checked:
+                Logger.log("d", "Will not ask the user again to cloud connect for current printer.")
         return
 
     def _onCloudFlowStarted(self, messageId: str, actionId: str) -> None:

@@ -17,7 +17,6 @@ from cura.Scene import ZOffsetDecorator
 
 import random  # used for list shuffling
 
-
 class PlatformPhysics:
     def __init__(self, controller, volume):
         super().__init__()
@@ -40,8 +39,9 @@ class PlatformPhysics:
         Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
 
     def _onSceneChanged(self, source):
-        if not source.getMeshData():
+        if not source.callDecoration("isSliceable"):
             return
+
         self._change_timer.start()
 
     def _onChangeTimerFinished(self):
