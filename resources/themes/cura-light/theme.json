@@ -473,7 +473,7 @@
         "default_lining": [0.08, 0.08],
 
         "default_arrow": [0.8, 0.8],
-        "logo": [8, 2.4],
+        "logo": [8, 1.75],
 
         "wide_margin": [2.0, 2.0],
         "thick_margin": [1.71, 1.43],

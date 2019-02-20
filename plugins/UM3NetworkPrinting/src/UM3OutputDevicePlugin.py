@@ -455,8 +455,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._start_cloud_flow_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 0,
-                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "svg",
-                                            "cloud-flow-start.svg"),
+                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
+                                                               "resources", "svg", "cloud-flow-start.svg")),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
                 option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
                 option_state = False
@@ -477,8 +477,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._cloud_flow_complete_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 30,
-                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "svg",
-                                            "cloud-flow-completed.svg"),
+                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
+                                                               "resources", "svg", "cloud-flow-completed.svg")),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
             )
             self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
@@ -491,11 +491,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
             return
 
-    def _onDontAskMeAgain(self, messageId: str) -> None:
+    def _onDontAskMeAgain(self, checked: bool) -> None:
         active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
         if active_machine:
-            active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
-            Logger.log("d", "Will not ask the user again to cloud connect for current printer.")
+            active_machine.setMetaDataEntry("do_not_show_cloud_message", checked)
+            if checked:
+                Logger.log("d", "Will not ask the user again to cloud connect for current printer.")
         return
 
     def _onCloudFlowStarted(self, messageId: str, actionId: str) -> None:

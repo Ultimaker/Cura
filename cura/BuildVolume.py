@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+from UM.Scene.Camera import Camera
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Application import Application #To modify the maximum zoom level.
@@ -112,8 +112,6 @@ class BuildVolume(SceneNode):
         self._setting_change_timer.setSingleShot(True)
         self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
 
-
-
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
@@ -131,7 +129,9 @@ class BuildVolume(SceneNode):
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
-            self._scene_change_timer.start()
+            # Ignore anything that is not something we can slice in the first place!
+            if source.callDecoration("isSliceable"):
+                self._scene_change_timer.start()
 
     def _onSceneChangeTimerFinished(self):
         root = self._application.getController().getScene().getRoot()
@@ -148,7 +148,7 @@ class BuildVolume(SceneNode):
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
                 node.decoratorsChanged.disconnect(self._updateNodeListeners)
-            self._updateDisallowedAreasAndRebuild()  # make sure we didn't miss anything before we updated the node listeners
+            self.rebuild()
 
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
@@ -667,6 +667,7 @@ class BuildVolume(SceneNode):
     #   ``_updateDisallowedAreas`` method itself shouldn't call ``rebuild``,
     #   since there may be other changes before it needs to be rebuilt, which
     #   would hit performance.
+
     def _updateDisallowedAreasAndRebuild(self):
         self._updateDisallowedAreas()
         self._updateRaftThickness()
