@@ -481,8 +481,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                                                                "resources", "svg", "cloud-flow-completed.svg")),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
             )
-            self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
-            self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)
+            # Don't show the review connection link if we're not on the local network
+            if self._application.getMachineManager().activeMachineHasNetworkConnection:
+                self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
+                self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)
             self._cloud_flow_complete_message.show()
 
             # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
