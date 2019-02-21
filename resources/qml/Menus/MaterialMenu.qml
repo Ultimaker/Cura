@@ -97,7 +97,7 @@ Menu
                     id: brandMaterialsMenu
                     title: materialName
                     property string materialName: model.name
-                    property var brandMaterialColors: model.colors
+                    property ListModel brandMaterialColors: model.colors
 
                     Instantiator
                     {
