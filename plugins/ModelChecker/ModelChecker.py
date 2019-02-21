@@ -3,7 +3,7 @@
 
 import os
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty, QTimer
 
 from UM.Application import Application
 from UM.Extension import Extension
@@ -30,18 +30,22 @@ class ModelChecker(QObject, Extension):
             lifetime = 0,
             title = catalog.i18nc("@info:title", "3D Model Assistant"))
 
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(200)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self.onChanged)
+
         Application.getInstance().initializationFinished.connect(self._pluginsInitialized)
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onChanged)
         Application.getInstance().globalContainerStackChanged.connect(self._onChanged)
 
-    ##  Pass-through to allow UM.Signal to connect with a pyqtSignal.
     def _onChanged(self, *args, **kwargs):
         # Ignore camera updates.
         if len(args) == 0:
-            self.onChanged.emit()
+            self._change_timer.start()
             return
         if not isinstance(args[0], Camera):
-            self.onChanged.emit()
+            self._change_timer.start()
 
     ##  Called when plug-ins are initialized.
     #
