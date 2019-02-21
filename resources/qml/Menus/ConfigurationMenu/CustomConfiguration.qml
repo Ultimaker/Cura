@@ -251,10 +251,10 @@ Item
                 {
                     id: materialSelection
 
-                    property bool valueError: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") != "True" : true
+                    property bool valueError: Cura.MachineManager.activeStack !== null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") !== "True" : true
                     property bool valueWarning: !Cura.MachineManager.isActiveQualitySupported
 
-                    text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
+                    text: Cura.MachineManager.activeStack !== null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
 
                     width: selectors.controlWidth
