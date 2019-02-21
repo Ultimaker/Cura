@@ -398,6 +398,7 @@
         "monitor_text_link": [50, 130, 255, 255],
         "monitor_icon_primary": [10, 8, 80, 255],
         "monitor_icon_accent": [255, 255, 255, 255],
+        "monitor_icon_disabled": [238, 238, 238, 255],
 
         "monitor_secondary_button_hover": [228, 228, 228, 255],
         "monitor_secondary_button": [240, 240, 240, 255],

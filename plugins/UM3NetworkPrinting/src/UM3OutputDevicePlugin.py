@@ -455,8 +455,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._start_cloud_flow_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 0,
-                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "svg",
-                                            "cloud-flow-start.svg"),
+                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
+                                                               "resources", "svg", "cloud-flow-start.svg")),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
                 option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
                 option_state = False
@@ -477,12 +477,14 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._cloud_flow_complete_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 30,
-                image_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "resources", "svg",
-                                            "cloud-flow-completed.svg"),
+                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
+                                                               "resources", "svg", "cloud-flow-completed.svg")),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
             )
-            self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
-            self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)
+            # Don't show the review connection link if we're not on the local network
+            if self._application.getMachineManager().activeMachineHasNetworkConnection:
+                self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
+                self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)
             self._cloud_flow_complete_message.show()
 
             # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers

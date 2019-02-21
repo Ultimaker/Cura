@@ -10,6 +10,7 @@ from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
 
 from UM.Backend.Backend import Backend, BackendState
+from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Signal import Signal
 from UM.Logger import Logger
@@ -476,7 +477,7 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source: SceneNode) -> None:
-        if not isinstance(source, SceneNode):
+        if not source.callDecoration("isSliceable"):
             return
 
         # This case checks if the source node is a node that contains GCode. In this case the

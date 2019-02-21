@@ -9,6 +9,7 @@ from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Scene.Camera import Camera
 from UM.i18n import i18nCatalog
 from UM.PluginRegistry import PluginRegistry
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -35,7 +36,12 @@ class ModelChecker(QObject, Extension):
 
     ##  Pass-through to allow UM.Signal to connect with a pyqtSignal.
     def _onChanged(self, *args, **kwargs):
-        self.onChanged.emit()
+        # Ignore camera updates.
+        if len(args) == 0:
+            self.onChanged.emit()
+            return
+        if not isinstance(args[0], Camera):
+            self.onChanged.emit()
 
     ##  Called when plug-ins are initialized.
     #

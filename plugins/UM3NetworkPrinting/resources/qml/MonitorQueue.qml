@@ -14,6 +14,10 @@ import Cura 1.0 as Cura
  */
 Item
 {
+    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
+    // they might not need to though.
+    property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
+
     Label
     {
         id: queuedLabel
@@ -37,6 +41,7 @@ Item
         }
         height: 18 * screenScaleFactor // TODO: Theme!
         width: childrenRect.width
+        visible: !cloudConnection
 
         UM.RecolorImage
         {
@@ -67,7 +72,8 @@ Item
     MouseArea
     {
         anchors.fill: manageQueueLabel
-        hoverEnabled: true
+        enabled: !cloudConnection
+        hoverEnabled: !cloudConnection
         onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
         onEntered:
         {
@@ -165,11 +171,11 @@ Item
                 // When printing over the cloud we don't recieve print jobs until there is one, so
                 // unless there's at least one print job we'll be stuck with skeleton loading
                 // indefinitely.
-                if (Cura.MachineManager.activeMachineHasActiveCloudConnection)
+                if (Cura.MachineManager.activeMachineIsUsingCloudConnection || OutputDevice.receivedPrintJobs)
                 {
                     return OutputDevice.queuedPrintJobs
                 }
-                return OutputDevice.receivedPrintJobs ? OutputDevice.queuedPrintJobs : [null,null]
+                return [null, null]
             }
             spacing: 6  // TODO: Theme!
         }
