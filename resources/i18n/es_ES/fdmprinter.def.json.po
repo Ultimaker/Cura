@@ -1604,7 +1604,7 @@ msgstr "El patrón de relleno se mueve esta distancia a lo largo del eje X."
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
-msgstr "Desplazamiento del relleno sobre el eje X"
+msgstr "Desplazamiento del relleno sobre el eje Y"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
