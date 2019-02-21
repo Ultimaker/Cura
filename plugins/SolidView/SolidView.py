@@ -69,8 +69,7 @@ class SolidView(View):
             if support_angle_stack is not None and Application.getInstance().getPreferences().getValue("view/show_overhang"):
                 angle = support_angle_stack.getProperty("support_angle", "value")
                 # Make sure the overhang angle is valid before passing it to the shader
-                # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)
-                if angle is not None and global_container_stack.getProperty("support_angle", "validationState") in [None, ValidatorState.Valid]:
+                if angle is not None and angle >= 0 and angle <= 90:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
