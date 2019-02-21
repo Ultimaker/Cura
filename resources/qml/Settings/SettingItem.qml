@@ -315,7 +315,5 @@ Item
             width: UM.Theme.getSize("setting_control").width
             height: UM.Theme.getSize("setting_control").height
         }
-    }
-
-    UM.I18nCatalog { id: catalog; name: "cura" }
+    }   
 }
