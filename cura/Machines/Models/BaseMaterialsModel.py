@@ -19,7 +19,6 @@ class BaseMaterialsModel(ListModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
-
         from cura.CuraApplication import CuraApplication
 
         self._application = CuraApplication.getInstance()

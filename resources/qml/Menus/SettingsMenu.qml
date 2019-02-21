@@ -14,10 +14,14 @@ Menu
 
     PrinterMenu { title: catalog.i18nc("@title:menu menubar:settings", "&Printer") }
 
+    onAboutToShow: extruderInstantiator.active = true
+    onAboutToHide: extruderInstantiator.active = false
     Instantiator
     {
+        id: extruderInstantiator
         model: Cura.MachineManager.activeMachine.extruderList
-
+        active: false
+        asynchronous: true
         Menu
         {
             title: modelData.name
