@@ -15,22 +15,26 @@ Menu
     property int extruderIndex: 0
     property string currentRootMaterialId: Cura.MachineManager.currentRootMaterialId[extruderIndex]
     property string activeMaterialId: Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
+    property bool updateModels: true
     Cura.FavoriteMaterialsModel
     {
         id: favoriteMaterialsModel
         extruderPosition: menu.extruderIndex
+        enabled: updateModels
     }
 
     Cura.GenericMaterialsModel
     {
         id: genericMaterialsModel
         extruderPosition: menu.extruderIndex
+        enabled: updateModels
     }
 
     Cura.MaterialBrandsModel
     {
         id: brandModel
         extruderPosition: menu.extruderIndex
+        enabled: updateModels
     }
 
     MenuItem

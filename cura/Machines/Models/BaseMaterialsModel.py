@@ -16,6 +16,7 @@ from cura.Machines.MaterialNode import MaterialNode
 class BaseMaterialsModel(ListModel):
 
     extruderPositionChanged = pyqtSignal()
+    enabledChanged = pyqtSignal()
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -59,6 +60,7 @@ class BaseMaterialsModel(ListModel):
 
         self._available_materials = None  # type: Optional[Dict[str, MaterialNode]]
         self._favorite_ids = set()  # type: Set[str]
+        self._enabled = True
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
@@ -85,6 +87,18 @@ class BaseMaterialsModel(ListModel):
     def extruderPosition(self) -> int:
         return self._extruder_position
 
+    def setEnabled(self, enabled):
+        if self._enabled != enabled:
+            self._enabled = enabled
+            if self._enabled:
+                # ensure the data is there again.
+                self._update()
+            self.enabledChanged.emit()
+
+    @pyqtProperty(bool, fset=setEnabled, notify=enabledChanged)
+    def enabled(self):
+        return self._enabled
+
     ## This is an abstract method that needs to be implemented by the specific
     #  models themselves.
     def _update(self):
@@ -96,7 +110,7 @@ class BaseMaterialsModel(ListModel):
     def _canUpdate(self):
         global_stack = self._machine_manager.activeMachine
 
-        if global_stack is None:
+        if global_stack is None or not self._enabled:
             return False
 
         extruder_position = str(self._extruder_position)
