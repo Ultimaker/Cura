@@ -130,8 +130,6 @@ UM.PreferencesPage
 
         Column
         {
-            //: Model used to check if a plugin exists
-            UM.PluginsModel { id: plugins }
 
             //: Language selection label
             UM.I18nCatalog{id: catalog; name: "cura"}
