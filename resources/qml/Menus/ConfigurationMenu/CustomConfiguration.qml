@@ -254,6 +254,7 @@ Item
                     menu: Cura.MaterialMenu
                     {
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
+                        updateModels: materialSelection.visible
                     }
                 }
             }

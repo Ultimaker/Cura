@@ -3,7 +3,7 @@
 
 from UM.Qt.ListModel import ListModel
 
-from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, QTimer
 
 from cura.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
@@ -26,18 +26,26 @@ class GlobalStacksModel(ListModel):
         self.addRoleName(self.MetaDataRole, "metadata")
         self._container_stacks = []
 
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(200)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self._update)
+
         # Listen to changes
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
         CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
         CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
         self._filter_dict = {}
-        self._update()
+        self._updateDelayed()
 
     ##  Handler for container added/removed events from registry
     def _onContainerChanged(self, container):
         # We only need to update when the added / removed container GlobalStack
         if isinstance(container, GlobalStack):
-            self._update()
+            self._updateDelayed()
+
+    def _updateDelayed(self):
+        self._change_timer.start()
 
     def _update(self) -> None:
         items = []
