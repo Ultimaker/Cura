@@ -1,10 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import random
 from typing import Optional, TYPE_CHECKING
 
 from UM.Qt.QtApplication import QtApplication
 from UM.Math.Vector import Vector
+from UM.Math.Color import Color
 from UM.Resources import Resources
 
 from UM.View.RenderPass import RenderPass
@@ -24,6 +26,7 @@ class PickingPass(RenderPass):
     def __init__(self, width: int, height: int) -> None:
         super().__init__("picking", width, height)
 
+        self._selection_map = {}
         self._renderer = QtApplication.getInstance().getRenderer()
 
         self._shader = None #type: Optional[ShaderProgram]
@@ -44,11 +47,47 @@ class PickingPass(RenderPass):
         # Fill up the batch with objects that can be sliced. `
         for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
-                batch.addItem(node.getWorldTransformation(), node.getMeshData())
+                tri_node = node.getMeshData().toTrimesh()
+                for index, face in enumerate(tri_node.faces):
+                    normal_vertex = tri_node.face_normals[index]
+                    batch.addItem(transformation = node.getWorldTransformation(), mesh = node.getMeshData(), uniforms = { "selection_color": self._getFaceColor(face, normal_vertex)})
 
         self.bind()
         batch.render(self._scene.getActiveCamera())
         self.release()
+
+    def _getFaceColor(self, face, normal_vertex):
+        while True:
+            r = random.randint(0, 255)
+            g = random.randint(0, 255)
+            b = random.randint(0, 255)
+            a = 0
+            color = Color(r, g, b, a)
+
+            if color not in self._selection_map:
+                break
+
+        self._selection_map[color] = normal_vertex
+
+        return color
+
+    ##  Get the normal vector at a certain pixel coordinate.
+    def getPickedNormalVertex(self, x: int, y: int) -> float:
+
+        print(self._selection_map)
+        output = self.getOutput()
+
+        window_size = self._renderer.getWindowSize()
+
+        px = (0.5 + x / 2.0) * window_size[0]
+        py = (0.5 + y / 2.0) * window_size[1]
+
+        if px < 0 or px > (output.width() - 1) or py < 0 or py > (output.height() - 1):
+            return None
+
+        pixel = output.pixel(px, py)
+        print("######### ", x, y, pixel, Color.fromARGB(pixel))
+        return self._selection_map.get(Color.fromARGB(pixel), None)
 
     ##  Get the distance in mm from the camera to at a certain pixel coordinate.
     def getPickedDepth(self, x: int, y: int) -> float:
