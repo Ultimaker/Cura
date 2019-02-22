@@ -98,7 +98,7 @@ UM.Dialog
         RadioButton
         {
             id: dontSendButton
-            text: catalog.i18nc("@text:window", "I don't want to send these data")
+            text: catalog.i18nc("@text:window", "I don't want to send this data")
             exclusiveGroup: group
             onClicked:
             {
