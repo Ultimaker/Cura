@@ -267,7 +267,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         profile.setMetaDataEntry("position", "0")
                         profile.setDirty(True)
                         if idx == 0:
-                            # move all per-extruder settings to the first extruder's quality_changes
+                            # Move all per-extruder settings to the first extruder's quality_changes
                             for qc_setting_key in global_profile.getAllKeys():
                                 settable_per_extruder = global_stack.getProperty(qc_setting_key, "settable_per_extruder")
                                 if settable_per_extruder:
@@ -303,8 +303,8 @@ class CuraContainerRegistry(ContainerRegistry):
                             profile.setMetaDataEntry("position", extruder_position)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
 
-                    else: #More extruders in the imported file than in the machine.
-                        continue #Delete the additional profiles.
+                    else:  # More extruders in the imported file than in the machine.
+                        continue  # Delete the additional profiles.
 
                     result = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
                     if result is not None:
@@ -385,30 +385,6 @@ class CuraContainerRegistry(ContainerRegistry):
             if io_type in meta_data:
                 result.append( (plugin_id, meta_data) )
         return result
-
-    ##  Returns true if the current machine requires its own materials
-    #   \return True if the current machine requires its own materials
-    def _machineHasOwnMaterials(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            return global_container_stack.getMetaDataEntry("has_materials", False)
-        return False
-
-    ##  Gets the ID of the active material
-    #   \return the ID of the active material or the empty string
-    def _activeMaterialId(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and global_container_stack.material:
-            return global_container_stack.material.getId()
-        return ""
-
-    ##  Returns true if the current machine requires its own quality profiles
-    #   \return true if the current machine requires its own quality profiles
-    def _machineHasOwnQualities(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            return parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", False))
-        return False
 
     ##  Convert an "old-style" pure ContainerStack to either an Extruder or Global stack.
     def _convertContainerStack(self, container):
@@ -521,7 +497,7 @@ class CuraContainerRegistry(ContainerRegistry):
         user_container.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
 
         if machine.userChanges:
-            # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
+            # For the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
             # container to the extruder stack.
             for user_setting_key in machine.userChanges.getAllKeys():
                 settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
@@ -583,7 +559,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_quality_changes_container.setMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
                     extruder_stack.qualityChanges = self.findInstanceContainers(id = quality_changes_id)[0]
                 else:
-                    # if we still cannot find a quality changes container for the extruder, create a new one
+                    # If we still cannot find a quality changes container for the extruder, create a new one
                     container_name = machine_quality_changes.getName()
                     container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
                     extruder_quality_changes_container = InstanceContainer(container_id, parent = application)
@@ -601,7 +577,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
                            machine_quality_changes.getName(), extruder_stack.getId())
             else:
-                # move all per-extruder settings to the extruder's quality changes
+                # Move all per-extruder settings to the extruder's quality changes
                 for qc_setting_key in machine_quality_changes.getAllKeys():
                     settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
                     if settable_per_extruder:
@@ -642,7 +618,7 @@ class CuraContainerRegistry(ContainerRegistry):
             if qc_name not in qc_groups:
                 qc_groups[qc_name] = []
             qc_groups[qc_name].append(qc)
-            # try to find from the quality changes cura directory too
+            # Try to find from the quality changes cura directory too
             quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine_quality_changes.getName())
             if quality_changes_container:
                 qc_groups[qc_name].append(quality_changes_container)
@@ -656,7 +632,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 else:
                     qc_dict["global"] = qc
             if qc_dict["global"] is not None and len(qc_dict["extruders"]) == 1:
-                # move per-extruder settings
+                # Move per-extruder settings
                 for qc_setting_key in qc_dict["global"].getAllKeys():
                     settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
                     if settable_per_extruder:
@@ -690,17 +666,17 @@ class CuraContainerRegistry(ContainerRegistry):
             try:
                 parser.read([file_path])
             except:
-                # skip, it is not a valid stack file
+                # Skip, it is not a valid stack file
                 continue
 
             if not parser.has_option("general", "name"):
                 continue
 
             if parser["general"]["name"] == name:
-                # load the container
+                # Load the container
                 container_id = os.path.basename(file_path).replace(".inst.cfg", "")
                 if self.findInstanceContainers(id = container_id):
-                    # this container is already in the registry, skip it
+                    # This container is already in the registry, skip it
                     continue
 
                 instance_container = InstanceContainer(container_id)
@@ -734,7 +710,7 @@ class CuraContainerRegistry(ContainerRegistry):
             else:
                 Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
 
-    #Override just for the type.
+    # Override just for the type.
     @classmethod
     @override(ContainerRegistry)
     def getInstance(cls, *args, **kwargs) -> "CuraContainerRegistry":
