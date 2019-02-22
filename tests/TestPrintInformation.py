@@ -77,6 +77,9 @@ def test_duration():
     # Fake a print duration message
     print_information._onPrintDurationMessage(0, {"Travel": 20}, [10])
 
+    # We only set a single time, so the total time must be of the same value.
+    assert int(print_information.currentPrintTime) == 20
+
     feature_print_times = print_information.getFeaturePrintTimes()
     assert int(feature_print_times["Travel"]) == 20
 
