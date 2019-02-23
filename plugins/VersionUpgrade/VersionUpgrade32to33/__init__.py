@@ -1,14 +1,21 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Any, Dict, TYPE_CHECKING
+
 from . import VersionUpgrade32to33
+
+if TYPE_CHECKING:
+    from UM.Application import Application
 
 upgrade = VersionUpgrade32to33.VersionUpgrade32to33()
 
-def getMetaData():
+def getMetaData() -> Dict[str, Any]:
     return {
         "version_upgrade": {
             # From                           To                              Upgrade function
+            ("preferences", 5000004):        ("preferences", 6000004,        upgrade.upgradePreferences),
+
             ("machine_stack", 3000004):      ("machine_stack", 4000004,      upgrade.upgradeStack),
             ("extruder_train", 3000004):     ("extruder_train", 4000004,     upgrade.upgradeStack),
 
@@ -18,6 +25,10 @@ def getMetaData():
             ("variant", 2000004):            ("variant", 3000004,            upgrade.upgradeVariants)
         },
         "sources": {
+            "preferences": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"."}
+            },
             "machine_stack": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./machine_instances"}
@@ -36,7 +47,7 @@ def getMetaData():
             },
             "user": {
                 "get_version": upgrade.getCfgVersion,
-                "location": {"./user"}
+                "location": {"./user", "./materials/*"}
             },
             "variant": {
                 "get_version": upgrade.getCfgVersion,
@@ -45,5 +56,5 @@ def getMetaData():
         }
     }
 
-def register(app):
+def register(app: "Application") -> Dict[str, Any]:
     return { "version_upgrade": upgrade }

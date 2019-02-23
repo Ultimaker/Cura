@@ -65,14 +65,10 @@ class MonitorStage(CuraStage):
         # We can only connect now, as we need to be sure that everything is loaded (plugins get created quite early)
         Application.getInstance().getMachineManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
         self._onOutputDevicesChanged()
-        self._updateMainOverlay()
-        self._updateSidebar()
 
-    def _updateMainOverlay(self):
-        main_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("MonitorStage"), "MonitorMainView.qml")
-        self.addDisplayComponent("main", main_component_path)
-
-    def _updateSidebar(self):
-        # TODO: currently the sidebar component for prepare and monitor stages is the same, this will change with the printer output device refactor!
-        sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles), "Sidebar.qml")
-        self.addDisplayComponent("sidebar", sidebar_component_path)
+        plugin_path = Application.getInstance().getPluginRegistry().getPluginPath(self.getPluginId())
+        if plugin_path is not None:
+            menu_component_path = os.path.join(plugin_path, "MonitorMenu.qml")
+            main_component_path = os.path.join(plugin_path, "MonitorMain.qml")
+            self.addDisplayComponent("menu", menu_component_path)
+            self.addDisplayComponent("main", main_component_path)

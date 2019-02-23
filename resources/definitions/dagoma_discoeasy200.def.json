@@ -8,7 +8,13 @@
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
         "platform": "discoeasy200.stl",
-        "platform_offset": [ 105, -59, 280]
+        "platform_offset": [ 105, -59, 280],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "dagoma_discoeasy200_extruder_0"
+        }
     },
     "overrides": {
         "machine_width": {
@@ -23,40 +29,46 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "machine_head_with_fans_polygon": {
             "default_value": [
-                [17, 70],
-                [17, -40],
-                [-17, -40],
-                [17, 70]
+                [-17, -70],
+                [-17, 40],
+                [17, 40],
+                [17, -70]
             ]
         },
         "gantry_height": {
             "default_value": 10
         },
         "machine_start_gcode": {
-            "default_value": ";Gcode by Cura\nG90\nM106 S250\nG28 X Y\nG1 X50\nM109 S180\nG28\nM104 S{material_print_temperature_layer_0}\nG29\nM107\nG1 X100 Y20 F3000\nG1 Z0.5\nM109 S{material_print_temperature_layer_0}\nM82\nG92 E0\nG1 F200 E10\nG92 E0\nG1 Z3\nG1 F6000\n"
+            "default_value": ";Gcode by Cura\nG90\nM106 S255\nG28 X Y\nG1 X50\nM109 R90\nG28\nM104 S{material_print_temperature_layer_0}\nG29\nM107\nG1 X100 Y20 F3000\nG1 Z0.5\nM109 S{material_print_temperature_layer_0}\nM82\nG92 E0\nG1 F200 E10\nG92 E0\nG1 Z3\nG1 F6000\n"
         },
         "machine_end_gcode": {
             "default_value": "\nM104 S0\nM106 S255\nM140 S0\nG91\nG1 E-1 F300\nG1 Z+3 F3000\nG90\nG28 X Y\nM107\nM84\n"
         },
-        "material_diameter": {
-            "default_value": 1.75
+        "default_material_print_temperature": {
+            "default_value": 205
         },
         "speed_print": {
             "default_value": 60
         },
         "speed_travel": {
-            "value": "100"
+            "default_value": 100
         },
         "retraction_amount": {
             "default_value": 3.5
         },
         "retraction_speed": {
             "default_value": 50
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "skirt_line_count": {
+            "default_value": 2
+        },
+        "layer_height_0": {
+            "default_value": 0.26
         }
     }
 }

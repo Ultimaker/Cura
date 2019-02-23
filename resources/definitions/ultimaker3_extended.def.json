@@ -13,7 +13,6 @@
         "platform_offset": [0, 0, 0],
         "has_machine_quality": true,
         "has_machine_materials": true,
-        "has_variant_materials": true,
         "has_materials": true,
         "has_variants": true,
         "preferred_variant_name": "AA 0.4",
@@ -24,7 +23,16 @@
             "1": "ultimaker3_extended_extruder_right"
         },
         "first_start_actions": [ "DiscoverUM3Action" ],
-        "supported_actions": [ "DiscoverUM3Action" ]
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "firmware_update_info": {
+            "id": 9511,
+            "check_urls":
+            [
+                "http://software.ultimaker.com/jedi/releases/latest.version?utm_source=cura&utm_medium=software&utm_campaign=resources",
+                "http://software.ultimaker.com/releases/firmware/9511/stable/version.txt"
+            ],
+            "update_url": "https://ultimaker.com/firmware"
+        }
     },
 
     "overrides": {

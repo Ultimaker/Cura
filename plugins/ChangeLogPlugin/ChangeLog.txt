@@ -1,94 +1,426 @@
+[3.6.0]
+*Gyroid infill
+New infill pattern with enhanced strength properties. Gyroid infill is one of the strongest infill types for a given weight, has isotropic properties, and prints relatively fast with reduced material use and a fully connected part interior. Note: Slicing time can increase up to 40 seconds or more, depending on the model. Contributed by smartavionics.
+
+*Support brim
+New setting that integrates the first layer of support material with the brim’s geometry. This significantly improves adhesion when printing with support material. Contributed by BagelOrb.
+
+*Cooling fan number
+It is now possible to specify the cooling fan to use if your printer has multiple fans. This is implemented under Machine settings in the Extruder tab. Contributed by smartavionics.
+
+*Settings refactor
+The CuraEngine has been refactored to create a more testable, future-proof way of storing and representing settings. This makes slicing faster, and future development easier.
+
+*Print core CC 0.6
+The new print core CC 0.6 is selectable when the Ultimaker S5 profile is active. This print core is optimized for use with abrasive materials and composites.
+
+*File name and layer display
+Added M117 commands to GCODE to give real-time information about the print job file name and layer number shown on the printer’s display when printing via USB. Contributed by adecastilho.
+
+*Firmware checker/Ultimaker S5
+The update checker code has been improved and tested for more reliable firmware update notifications in Ultimaker Cura. The Ultimaker S5 is now included.
+
+*Fullscreen mode shortcuts
+Fullscreen mode can be toggled using the View menu or with the keyboard shortcuts: Command + Control + F (macOS), or F11 (Windows and Linux). Contributed by KangDroid.
+
+*Configuration error message
+In previous versions, Ultimaker Cura would display an error dialog explaining when something happened to user configuration files, including the option to reset to factory defaults. This would not warn about losing the current printer and print profile settings, so this information has been added.
+
+*Rename Toolbox to Marketplace
+The entry points to the Toolbox are now renamed to Marketplace.
+
+*Materials in the Marketplace
+A new tab has been added to the Marketplace that includes downloadable material profiles, to quickly and easily prepare models for a range of third-party materials.
+
+*New third-party definitions
+New profiles added for Anycube 4MAx and Tizyx K25. Contributed by jscurtu and ValentinPitre respectively.
+
+*Improved definitions for Ender-3
+The Ender-3 build plate size has been adjusted to the correct size of 235 x 235 mm, corrected the start-up sequence, and the printhead position has been adjusted when prints are purged or completed. Contributed by stelgenhof.
+
+*Add mesh names to slicing message
+Added comment generation to indicate which mesh the GCODE after this comment is constructing. Contributed by paukstelis.
+
+*Bug fixes
+- The active material is highlighted in Ultimaker Cura’s material manager list. This behavior is now consistent with the profile and machine manager.
+- The option to use 1.75 mm diameter filament with third-party 3D printers is now fixed and does not revert back to 2.85 mm. This fix also applies the appropriate a Z-axis speed change for 1.75 mm filament printers. Contributed by kaleidoscopeit.
+- A fix was created to handle OSX version 10.10, but due to the QT upgrade, users with older versions won’t be able to run Ultimaker Cura on their system without a system update. This applies to OSX version 10.09 and 10.08.
+- Fixed a memory leak when leaving the “Monitor” page open.
+- Added performance improvements to the PolygonConnector to efficiently connect polygons that are close to each other. This also reduces the chances of the print head collide with previously printed things. Contributed by BagelOrb.
+- Fixed a bug where the GCODE reader didn’t show retractions.
+- Changes the USBPrinting update thread to prevent flooding the printer with M105 temperature update requests. Contributed by fieldOfView.
+- Fix the behavior of the "manage visible settings" button, when pressing the "cog" icon of a particular category. Contributed by fieldOfView.
+- Add a new post processing script that pauses the print at a certain height that works with RepRap printers. Contributed by Kriechi.
+- Fix updates to the print monitor temperatures while preheating. Contributed by fieldOfView.
+- Fixed a bug where material cost is not shown unless weight is changed.
+- Fixed bugs crashing the CuraEngine when TreeSupport is enabled.
+- Fixed a bug where Ultimaker Cura would upload the wrong firmware after switching printers in the UI.
+- Fixed a bug where the layer view was missing if the first layer was empty.
+- Fixed a bug where erroneous combing movements were taking place.
+- Fixed a bug where the initial layer temperature is set correctly for the first object but then never again.
+- Fixed a bug where clicking the fx icon didn’t respond.
+
+[3.5.1]
+*Bug fixes
+- Fixed M104 temperature commands giving inaccurate results.
+- Fixed crashes caused by loading files from USB stick on Windows platforms.
+- Fixed several issues with configuration files that missed the type in the metadata.
+- Fixed issues caused by skin/infill optimization.
+- Fixed several issues related to missing definition files for third-party printers.
+- Fixed an issue where combing path generation cuts corners.
+- Fixed a range of crashes caused by lock files.
+- Fixed issues with remembering save directories on MacOS.
+- Fixed an issue where CuraEngine uses incorrect material settings.
+- Fixed an issue where some support layers don't have support infill.
+
+[3.5.0]
+*Monitor page
+The monitor page of Ultimaker Cura has been remodeled for better consistency with the Cura Connect ‘Print jobs’ interface. This means less switching between interfaces, and more control from within Ultimaker Cura.
+
+*Open recent projects
+Project files can now be found in the ‘Open Recent’ menu.
+
+*New tool hotkeys
+New hotkeys have been assigned for quick toggling between the translate (T), scale (S), rotate (R) and mirror (M) tools.
+
+*Project files use 3MF only
+A 3MF extension is now used for project files. The ‘.curaproject’ extension is no longer used.
+
+*Camera maximum zoom
+The maximum zoom has been adjusted to scale with the size of the selected printer. This fixes third-party printers with huge build volumes to be correctly visible.
+
+*Corrected width of layer number box
+The layer number indicator in the layer view now displays numbers above 999 correctly.
+
+*Materials preferences
+This screen has been redesigned to improve user experience. Materials can now be set as a favorites, so they can be easily accessed in the material selection panel at the top-right of the screen.
+
+*Installed packages checkmark
+Packages that are already installed in the Toolbox are now have a checkmark for easy reference.
+
+*Mac OSX save dialog
+The save dialog has been restored to its native behavior and bugs have been fixed.
+
+*Removed .gz extension
+Saving compressed g-code files from the save dialog has been removed because of incompatibility with MacOS. If sending jobs over Wi-Fi, g-code is still compressed.
+
+*Updates to Chinese translations
+Improved and updated Chinese translations. Contributed by MarmaladeForMeat.
+
+*Save project
+Saving the project no longer triggers the project to reslice.
+
+*File menu
+The Save option in the file menu now saves project files. The export option now saves other types of files, such as STL.
+
+*Improved processing of overhang walls
+Overhang walls are detected and printed with different speeds. It will not start a perimeter on an overhanging wall. The quality of overhanging walls may be improved by printing those at a different speed. Contributed by smartavionics.
+
+*Prime tower reliability
+The prime tower has been improved for better reliability. This is especially useful when printing with two materials that do not adhere well.
+
+*Support infill line direction
+The support infill lines can now be rotated to increase the supporting capabilities and reduce artifacts on the model. This setting rotates existing patterns, like triangle support infill. Contributed by fieldOfView.
+
+*Minimum polygon circumference
+Polygons in sliced layers that have a circumference smaller than the setting value will be filtered out. Lower values lead to higher resolution meshes at the cost of increased slicing time. This setting is ideal for very tiny prints with a lot of detail, or for SLA printers. Contributed by cubiq.
+
+*Initial layer support line distance
+This setting enables the user to reduce or increase the density of the support initial layer in order to increase or reduce adhesion to the build plate and the overall strength.
+
+*Extra infill wall line count
+Adds extra walls around infill. Contributed by BagelOrb.
+
+*Multiply infill
+Creates multiple infill lines on the same pattern for sturdier infill. Contributed by BagelOrb.
+
+*Connected infill polygons
+Connecting infill lines now also works with concentric and cross infill patterns. The benefit would be stronger infill and more consistent material flow/saving retractions. Contributed by BagelOrb.
+
+*Fan speed override
+New setting to modify the fan speed of supported areas. This setting can be found in Support settings > Fan Speed Override when support is enabled. Contributed by smartavionics.
+
+*Minimum wall flow
+New setting to define a minimum flow for thin printed walls. Contributed by smartavionics.
+
+*Custom support plugin
+A tool downloadable from the toolbox, similar to the support blocker, that adds cubes of support to the model manually by clicking parts of it. Contributed by Lokster.
+
+*Quickly toggle autoslicing
+Adds a pause/play button to the progress bar to quickly toggle autoslicing. Contributed by fieldOfview.
+
+*Cura-DuetRRFPlugin
+Adds output devices for a Duet RepRapFirmware printer: "Print", "Simulate", and "Upload". Contributed by Kriechi.
+
+*Dremel 3D20
+This plugin adds the Dremel printer to Ultimaker Cura. Contributed by Kriechi.
+
+*Bug fixes
+- Removed extra M109 commands. Older versions would generate superfluous M109 commands. This has been fixed for better temperature stability when printing.
+- Fixed minor mesh handling bugs. A few combinations of modifier meshes now lead to expected behavior.
+- Removed unnecessary travels. Connected infill lines are now always printed completely connected, without unnecessary travel moves.
+- Removed concentric 3D infill. This infill type has been removed due to lack of reliability.
+- Extra skin wall count. Fixed an issue that caused extra print moves with this setting enabled.
+- Concentric skin. Small gaps in concentric skin are now filled correctly.
+- Order of printed models. The order of a large batch of printed models is now more consistent, instead of random.
+
+*Third party printers
+- TiZYX
+- Winbo
+- Tevo Tornado
+- Creality CR-10S
+- Wanhao Duplicator
+- Deltacomb (update)
+- Dacoma (update)
+
+[3.4.1]
+*Bug fixes
+- Fixed an issue that would occasionally cause an unnecessary extra skin wall to be printed, which increased print time.
+- Fixed an issue in which supports were not generated on the initial layer, because the engine expected a brim to be in place.
+- Conical and tree supports are now limited within the build plate volume.
+- Fixed various startup crashes, including: copying of the version folder, errors while deleting packages, storing the old files, and losing data on install.
+
+[3.4.0]
+
+*Toolbox
+The plugin browser has been remodeled into the Toolbox. Navigation now involves graphical elements such as tiles, which can be clicked for further details.
+
+*Upgradable bundled resources
+It is now possible to have multiple versions of bundled resources installed: the bundled version and the downloaded upgrade. If an upgrade in the form of a package is present, the bundled version will not be loaded. If it's not present, Ultimaker Cura will revert to the bundled version.
+
+*Package manager recognizes bundled resources
+Bundled packages are now made visible to the CuraPackageMangager. This means the resources are included by default, as well as the "wrapping" of a package, (e.g. package.json) so that the CuraPackageManger and Toolbox recognize them as being installed.
+
+*Retraction combing max distance
+New setting for maximum combing travel distance. Combing travel moves longer than this value will use retraction. Contributed by smartavionics.
+
+*Infill support
+When enabled, infill will be generated only where it is needed using a specialized support generation algorithm for the internal support structures of a part. Contributed by BagelOrb.
+
+*Print outside perimeter before holes
+This prioritizes outside perimeters before printing holes. By printing holes as late as possible, there is a reduced risk of travel moves dislodging them from the build plate. This setting should only have an effect if printing outer before inner walls. Contributed by smartavionics.
+
+*Disable omitting retractions in support
+Previous versions had no option to disable omitting retraction moves when printing supports, which could cause issues with third-party machines or materials. An option has been added to disable this. Contributed by BagelOrb.
+
+*Support wall line count
+Added setting to configure how many walls to print around supports. Contributed by BagelOrb.
+
+*Maximum combing resolution
+Combing travel moves are kept at least 1.5 mm long to prevent buffer underruns.
+
+*Avoid supports when traveling
+Added setting to avoid supports when performing travel moves. This minimizes the risk of the print head hitting support material.
+
+*Rewrite cross infill
+Experimental setting that allows you to input a path to an image to manipulate the cross infill density. This will overlay that image on your model. Contributed by BagelOrb.
+
+*Backup and restore
+Added functionality to backup and restore settings and profiles to cloud using the Cura Backups plugin.
+
+*Auto-select model after import
+User can now set preferences for the behavior of selecting a newly imported model or not.
+
+*Settings filter timeout
+The settings filter is triggered on enter or after a 500ms timeout when typing a setting to filter.
+
+*Event measurements
+Added time measurement to logs for occurrences, including startup time, file load time, number of items on the build plate when slicing, slicing time, and time and performance when moving items on the build plate, for benchmarking purposes.
+
+*Send anonymous data
+Disable button on the ‘Send anonymous data’ popup has changed to a ‘more info’ button, with further options to enable/disable anonymous data messages.
+
+*Configuration error assistant
+Detect and show potential configuration file errors to users, e.g. incorrect files and duplicate files in material or quality profiles, there are several places to check. Information is stored and communicated to the user to prevent crashing in future.
+
+*Disable ensure models are kept apart
+Disable "Ensure models are kept apart" by default due to to a change in preference files.
+
+*Prepare and monitor QML files
+Created two separate QML files for the Prepare and Monitor stages.
+
+*Hide bed temperature
+Option to hide bed temperature when no heated bed is present. Contributed by ngraziano.
+
+*Reprap/Marlin GCODE flavor
+RepRap firmware now lists values for all extruders in the "Filament used" GCODE comment. Contributed by smartavionics.
+
+*AutoDesk Inventor integration
+Open AutoDesk inventor files (parts, assemblies, drawings) directly into Ultimaker Cura. Contributed by thopiekar.
+
+*Blender integration
+Open Blender files directly into Ultimaker Cura. Contributed by thopiekar.
+
+*OpenSCAD integration
+Open OpenSCAD files directly into Ultimaker Cura. Contributed by thopiekar.
+
+*FreeCAD integration
+Open FreeCAD files directly into Ultimaker Cura. Contributed by thopiekar.
+
+*OctoPrint plugin
+New version of the OctoPrint plugin for Ultimaker Cura. Contributed by fieldOfView.
+
+*Cura Backups
+Backup and restore your configuration, including settings, materials and plugins, for use across different systems.
+
+*MakePrintable
+New version of the MakePrintable plugin.
+
+*Compact Prepare sidebar
+Plugin that replaces the sidebar with a more compact variation of the original sidebar. Nozzle and material dropdowns are combined into a single line, the “Check compatibility” link is removed, extruder selection buttons are downsized, recommended and custom mode selection buttons are moved to a combobox at the top, and margins are tweaked. Contributed by fieldOfView.
+
+*PauseAtHeight plugin
+Bug fixes and improvements for PauseAtHeight plugin. Plugin now accounts for raft layers when choosing “Pause of layer no.” Now positions the nozzle at x and y values of the next layer when resuming. Contributed by JPFrancoia.
+
+*Bug fixes
+- Prime tower purge fix. Prime tower purge now starts away from the center, minimizing the chance of overextrusion and nozzle obstructions. Contributed by BagelOrb.
+- Extruder 2 temp via USB. Fixed a bug where temperatures can’t be read for a second extruder via USB. Contributed by kirilledelman.
+- Move to next object position before bed heat. Print one at a time mode caused waiting for the bed temperature to reach the first layer temperature while the nozzle was still positioned on the top of the last part. This has been fixed so that the nozzle moves to the location of the next part before waiting for heat up. Contributed by smartavionics.
+- Non-GCODE USB. Fixed a bug where the USB port doesn’t open if printer doesn't support GCODE. Contributed by ohrn.
+- Improved wall overlap compensation. Minimizes unexpected behavior on overlap lines, providing smoother results. Contributed by BagelOrb.
+- Configuration/sync. Fixes minor issues with the configuration/sync menu, such as text rendering on some OSX systems and untranslatable text. Contributed by fieldOfView.
+- Print job name reslice. Fixed behavior where print job name changes back to origin when reslicing.
+- Discard/keep. Customized settings don't give an 'discard or keep' dialog when changing material.
+- Message box styling. Fixed bugs related to message box styling, such as the progress bar overlapping the button in the ‘Sending Data’ popup.
+- Curaproject naming. Fixed bug related to two "curaprojects" in the file name when saving a project.
+- No support on first layers. Fixed a bug related to no support generated causing failed prints when model is floating above build plate.
+- False incompatible configuration. Fixed a bug where PrintCore and materials were flagged even though the configurations are compatible.
+- Spiralize contour overlaps. Fixed a bug related to spiralize contour overlaps.
+- Model saved outside build volume. Fixed a bug that would saved a model to file (GCODE) outside the build volume.
+- Filament diameter line width. Adjust filament diameter to calculate line width in the GCODE parser.
+- Holes in model surfaces. Fixed a bug where illogical travel moves leave holes in the model surface.
+- Nozzle legacy file variant. Fixed crashes caused by loading legacy nozzle variant files.
+- Brim wall order. Fixed a bug related to brim wall order. Contributed by smartavionics.
+- GCODE reader gaps. Fixed a GCODE reader bug that can create a gap at the start of a spiralized layer.
+- Korean translation. Fixed some typos in Korean translation.
+- ARM/Mali systems. Graphics pipeline for ARM/Mali fixed. Contributed by jwalt.
+- NGC Writer. Fixed missing author for NGC Writer plugin.
+- Support blocker legacy GPU. Fixes depth picking on older GPUs that do not support the 4.1 shading model which caused the support blocker to put cubes in unexpected locations. Contributed by fieldOfView.
+
+*Third-party printers
+- Felix Tec4 printer. Updated definitions for Felix Tec4. Contributed by kerog777.
+- Deltacomb. Updated definitions for Deltacomb. Contributed by kaleidoscopeit.
+- Rigid3D Mucit. Added definitions for Rigid3D Mucit. Contributed by Rigid3D.
+
 [3.3.0]
+
+*Profile for the Ultimaker S5
+New printer profile for the Ultimaker S5, our latest 3D printer.
+
+*Profile for Tough PLA
+New material profile for Tough PLA, a material that prints with the convenience of PLA but with toughness and impact strength similar to ABS.
+
 *Configuration/sync button
-This new feature for network connected printers allows you to easily synchronize with all available configurations in your Cura Connect group. The name of the Host of the group is automatically pulled from the API, and network printers and local printers are now separated in the list for clarity.
+Configuration and synchronization button now available for Ultimaker network-connected printers to easily synchronize all possible available configurations in your Cura Connect group. The name of the group host is automatically pulled from the API, and network printers and local printers are separated in the list for clarity.
 
-*Single extrusion mode Ultimaker 3
-Single extrusion mode allows to disable the unused extruder. This has the following positive effects:
-- Printing profiles are optimized to print with a single extruder, increasing print quality.
-- Global settings, like build plate temperature, are set for the active extruder.
-- The ‘print one at a time’ feature is now available.
+*Setting visibility preset
+Presets guide you to find the most important settings incrementally. A small menu is located next to the search bar to easily access these new setting visibility presets. Contributed by fieldOfView.
 
-*Plugin browser updates
-The plugin browser has been updated to look and feel similar to the other UI elements. The author name is clickable, which opens email for support. The plugins can now be uninstalled with an uninstall button.
+*Print/save hotkey
+Send a print to the queue using Ctrl + P (Windows/Linux) or Cmd + P (Mac). If no printer is present on the network, it will save to file instead.
 
-*Block support - fieldOfView
-This new feature allows you to easily add small cubic areas which prevent support material from being generated. Select the ‘block support’ tool and click the model to place a cube. This cube can be scaled, rotated and moved with the adjustment tools to modify it.
+*3D model assistant
+Models sliced to print with ABS, PC, PP or CPE+ that have a larger footprint than 150 x 150 x 150 mm will notify the user with an icon and popup of how they can achieve the best possible print quality and reliability.
 
-*Setting visibility preset - fieldOfView
-A convenient way to select a preset of settings to be visible. These presets guide you to find the most important Cura settings in an incremental way. A small menu is located next to the ‘search bar’ to easily access these new setting visibility presets.
+*Refactored machine manager
+Refactored machine manager resulted in less manager classes. Changing settings, materials, variants and machines is now clearer. This results in an overall speed up when making changes.
 
-*Model assistant
-This feature provides useful information to the user based on their model. For now, it informs the user when printing models with a footprint larger than 15x15x10cm, printed with ABS, PC, PP or CPE+, that they may want to make changes to the model such as filleting sharp edges.
+*Multiply models faster
+Significant speed increase when multiplying models.
+
+*Auto slicing disabled by default
+The auto slice tool is now disabled by default. Users can still enable the feature in the user preferences dialog.
+
+*Updated fonts
+Default font changed to NotoSans to increase readability and consistency with Cura Connect.
+
+*Plugin browser look and feel
+The plugin browser has been updated with a better look and feel to bring it in line with other UI elements. The author name is clickable, which opens email for support. Plugins can now be uninstalled with an uninstall button.
+
+*Show tooltip for unavailable profile
+Tooltips have been added to incompatible settings, to give explanations why they are incompatible.
+
+*Empty material slots Ultimaker 3
+When a material is not loaded in the Ultimaker 3, it is now displayed as ‘Empty’ rather than ‘Unknown’.
+
+*Send over network confirmation
+When a print job is sent to a networked printer, a popup will confirm the job was sent, with a button to redirect the user to the monitor in Cura Connect.
+
+*Post processing scripts
+Fixed an issue where post processing scripts could be lost between sessions. Post processing scripts are now persistent between sessions.
+
+*Single extrusion mode
+Disable an extruder on a dual extrusion printer, so you are not limited by the other extruder’s parameters. To disable an extruder, right click it in the right panel, and select ‘Disable extruder’ to disable it. Re-enable by right clicking and selecting ‘enable extruder’. Printing profiles are optimized for the active extruder, as well as global settings, such as build plate temperature, to achieve better print quality. Using single extrusion mode also makes the ‘print one at a time’ feature available for the Ultimaker 3 and Ultimaker S5.
+
+*New UFP extension
+UFP (Ultimaker format package) is a new file extension that contains compressed gcode and a preview thumbnail. Using this extension enables a model preview (similar to the solid view) on the Ultimaker S5 touchscreen and in Cura Connect.
+
+*Compressed Gcode
+Gcode saved from Ultimaker Cura using the Ultimaker 3 profile is compressed (using gzip) to save space on printers.
 
 *Circular prime tower
-The prime tower shape has changed from rectangular to circular. This shape should increase the adhesion to the build plate, overall strength, and prevent delamination of the layers.
+Prime towers are now circular, resulting in a less jerky print head action, a more robust structure, better layer adhesion, and better build plate adhesion compared to square prime towers, reducing the chance of prime tower failure mid-print.
 
 *Connected infill lines
-Grid and triangular infill lines are now connected. This strengthens the internal structure of the infill and results in a more constant flow of filament while printing.
+Grid and triangular infill patterns now have connected lines for a more constant flow, better model rigidity, and reduced impact on the quality of the outer wall.
+
+*Support blocker - fieldOfView
+Generate a cube mesh to prevent support material generation in specific areas of a model. Each cube can be scaled, rotated, and moved with the standard adjustment tools to fit your requirements. When the support blocker tool is selected, single click in the area you want to block support to generate a mesh. If it is positioned by accident, click it again to remove it.
 
 *Real bridging - smartavionics
-This new experimental feature adds bridge detection which adjusts the print speed, flow and fan speed to enhance print quality on bridging parts.
+New experimental feature that detects bridges, adjusting the print speed, slow and fan speed to enhance print quality on bridging parts.
+
+*Updated CuraEngine executable - thopiekar & Ultimaker B.V.
+The CuraEngine executable contains a dedicated icon, author and license info on Windows now. The icon has been designed by Ultimaker B.V.
+
+*Use RapidJSON and ClipperLib from system libraries
+Application updated to use verified copies of libraries, reducing maintenance time keeping them up to date (the operating system is now responsible), as well as reducing the amount of code shipped (as necessary code is already on the user’s system).
 
 *Initial layer flow
-The flow of the initial layer can now be adjusted separately. The new setting is found in the ‘material’ category.
+New setting in the ‘material’ category where the initial layer flow can be adjusted.
 
 *Initial travel move retraction - smartavionics
-The initial travel move–before printing the brim/skirt–is now retracted. This reduces the chance of the prime blob dragging into the printed part.
+Retraction has been added to the initial travel move, reducing the chance of prime blobs getting dragged into parts before brim/skirts are printed.
 
-*Updated CuraEngine executable - thopiekar
-The CuraEngine executable now contains a dedicated icon, author information and a license.
+*Unnecessary retractions in spiralize - smartavionics
+Removes retractions on layer change in spiralize mode, improving model quality.
 
-*Removed unnecessary retractions in spiralize - smartavionics
-This feature removes retractions on layer change in spiralize mode, improving model quality.
+*Faster travel paths - smartavionics
+Until now, the path order optimizer worked on the basis that the shortest possible route could be taken from any one point to another. When combing is used, any route may longer, due to the need to route around obstacles. Now, it can use the combed distances to give more consistent results.
 
-*Improve travel paths - smartavionics
-This feature optimizes the travel paths in a print, reducing print times and oozing of the material.
-
-*Refactor machine manager
-The refactor of the machine manager resulted in fewer manager classes and made changing settings, materials, variants and machines more streamlined. This results in a significant overall improvement in speed when changing any of the aforementioned properties.
-
-*Speed up ‘multiply model’
-The viewport frame rate is significantly increased when working with multiple models.
-
-*New font: Noto Sans
-The font of Ultimaker Cura has been changed to Noto Sans. This improves readability and consistency with Cura Connect. The font update also fixes some rendering issues on macOS.
-
-*Plugin updates - Pheneeny
-Three new plugins were added to Ultimaker Cura; Scalable extra prime, Print temperature offset and Enclosure fan.
-Also Alexander Roessler made a new NGC writer plugin so you can export files in NGC format.
+*New plugins - Pheneeny
+Three new plugins have been added to Ultimaker Cura: Scalable extra prime, Print temperature offset, and Enclosure fan.
 
 *Pre-heat extruders - fieldOfView
 This new feature allows to preheat the extruders in the printer monitor.
 
-*Persistent post-processing scripts
-Scripts are no longer erased after restarting Ultimaker Cura.
+*Renamed TweakAtZ to ‘ChangeAtZ’
+This script has been renamed to be more consistent with other scripts.
 
-*GZ Reader
-By default, G-code for Ultimaker 3 machines is now saved as gzipped G-Code.
+*Import XML material profile checks
+XML material profile files are now checked before import in Ultimaker Cura to avoid potential issues. Contributed by fieldOfView.
 
-*Print preview image
-Adds a preview image of the gcode to the slice information. This can be shown in Cura Connect.
+*Bug fixes
+- Slice engine crash default temperature 0. Fixed an issue where the slicing engine could crash when slicing with a material at 0°C.
+- Network printer reconnect. Fixed an issue where the user could not connect to the printer after losing connection.
+- Pause at height ‘redo layers’ broken. Fixed an issue where setting ‘pause at height redo layers’ to 1 or more would cause failed prints.
+- Reset icon fix. Fixed an issue where manually reverting a default print profile value instead of using the reset button would cause the reset icon to remain.
+- Infill density for all extruders. The infill density in the recommended mode now applies to all extruders instead of extruder 1.
+- Polypropylene 0.25mm print profile. Fixed the maximum number of allowed extrusions for all 0.25mm Polypropylene profile prints.
+- SolidWorks plugin. Replaced comtypes module with win32com to fix issues.
+- Font rendering issues. Fixed font rendering issues on Max OSX.
+- Slice engine avoids broken wall segments. Fixed an issue where narrow walls created broken line segments by testing for such situations and using slightly narrow lines in those cases.
 
-*Use RapidJSON and ClipperLib from system libraries
-This reduces both the amount of trouble required to keep these libraries up to date (the operating system is now responsible) as well as reducing the amount of code we’re shipping.
+*Third party printers
 
-*TweakAtZ renamed to ChangeAtZ
-The TweakAtZ script has been renamed to ChangeAtZ to be more consistent with the rest of the scripts.
-
-*XML material profile improvements
-XML material profiles are now checked before importing into Ultimaker Cura. ALso, XML material profiles can now contain Ultimaker Cura-specific properties (by fieldOfView).
-
-*Ultimaker 3 network status improvements
-- When a material is not loaded in the Ultimaker 3, Cura now displays it as ‘Empty’ rather than ‘Unknown’.
-- When an Ultimaker 3 is in maintenance mode, Cura now displays it as ‘Unavailable’ rather than ‘Unknown’.
-
-*Bug Fixes
-- Cura Engine no longer crashes when slicing with a material at 0°C.
-- Cura reconnects to networked printers after connectivity loss.
-- Pause at height ‘redo layers’ broken no longer results in failed prints.
-- Setting reset icon no longer remains visible after resetting.
-- The infill density in the recommended mode now applies to all extruders instead of extruder 1.
-- The maximum number of allowed extrusions for all 0.25mm Polypropylene profile prints has been fixed.
+- FABtotum TPU profiles. Added third-party material profiles for TPU. Contributed by krios-fabteam.
+- Dagoma profiles. Updated printer profiles contributed by dagoma3d.
+- uBuild profile. Updated printer profiles contributed by uBuild-3D.
+- Cartesio printer updates. Updated profiles contributed by maukcc.
+- Printrbot Simple Maker's Kit 1405. Profiles contributed by timur-tabi.
+- Added SeeMeCNC. Profiles contributed by pouncingiguana.
+- Velleman Vertex. Updated printer and quality profiles contributed by velbn.
+- gMax 1.5. Profiles contributed by gordo3di.
 
 [3.2.1]
 *Bug fixes
@@ -611,7 +943,7 @@ This release adds support for printers with elliptic buildplates. This feature h
 *AppImage for Linux
 The Linux distribution is now in AppImage format, which makes Cura easier to install.
 
-*bugfixes
+*Bugfixes
 The user is now notified when a new version of Cura is available.
 When searching in the setting visibility preferences, the category for each setting is always displayed.
 3MF files are now saved and loaded correctly.

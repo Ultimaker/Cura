@@ -12,8 +12,10 @@ Item
     property alias color: background.color
     property var extruderModel
     property var position: index
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
     implicitWidth: parent.width
-    implicitHeight: UM.Theme.getSize("sidebar_extruder_box").height
+    implicitHeight: UM.Theme.getSize("print_setup_extruder_box").height
 
     UM.SettingPropertyProvider
     {
@@ -23,7 +25,7 @@ Item
         watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
         storeIndex: 0
 
-        property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? properties.resolve : "None"
+        property var resolve: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine ? properties.resolve : "None"
     }
 
     Rectangle
@@ -45,7 +47,7 @@ Item
         {
             id: extruderTargetTemperature
             text: Math.round(extruderModel.targetHotendTemperature) + "°C"
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("default_bold")
             color: UM.Theme.getColor("text_inactive")
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -78,7 +80,7 @@ Item
             id: extruderCurrentTemperature
             text: Math.round(extruderModel.hotendTemperature) + "°C"
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             anchors.right: extruderTargetTemperature.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
@@ -324,7 +326,7 @@ Item
                                 return UM.Theme.getColor("action_button_text");
                             }
                         }
-                        font: UM.Theme.getFont("action_button")
+                        font: UM.Theme.getFont("medium")
                         text:
                         {
                             if(extruderModel == null)

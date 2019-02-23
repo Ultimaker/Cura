@@ -17,7 +17,6 @@ Item {
 
     width: childrenRect.width;
     height: childrenRect.height;
-
     property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
                                     "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
 
@@ -45,7 +44,7 @@ Item {
             UM.SettingPropertyProvider
             {
                 id: meshTypePropertyProvider
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStack: Cura.MachineManager.activeMachine
                 watchedProperties: [ "enabled" ]
             }
 
@@ -186,6 +185,12 @@ Item {
                         {
                             selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
                         }
+
+                        // For some reason the model object is updated after removing him from the memory and
+                        // it happens only on Windows. For this reason, set the destroyed value manually.
+                        Component.onDestruction: {
+                            setDestroyed(true);
+                        }
                     }
 
                     delegate: Row
@@ -260,7 +265,6 @@ Item {
                                         anchors.verticalCenter: parent.verticalCenter
                                         width: parent.width
                                         height: width
-                                        sourceSize.width: width
                                         sourceSize.height: width
                                         color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
                                         source: UM.Theme.getIcon("minus")
@@ -402,14 +406,9 @@ Item {
         function updateFilter()
         {
             var new_filter = {};
-            if (printSequencePropertyProvider.properties.value == "one_at_a_time")
-            {
-                new_filter["settable_per_meshgroup"] = true;
-            }
-            else
-            {
-                new_filter["settable_per_mesh"] = true;
-            }
+            new_filter["settable_per_mesh"] = true;
+            // Don't filter on "settable_per_meshgroup" any more when `printSequencePropertyProvider.properties.value`
+            //   is set to "one_at_a_time", because the current backend architecture isn't ready for that.
 
             if(filterInput.text != "")
             {
@@ -518,7 +517,7 @@ Item {
     {
         id: machineExtruderCount
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
         watchedProperties: [ "value" ]
         storeIndex: 0
@@ -528,7 +527,7 @@ Item {
     {
         id: printSequencePropertyProvider
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "print_sequence"
         watchedProperties: [ "value" ]
         storeIndex: 0

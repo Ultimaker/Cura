@@ -18,18 +18,17 @@ Menu
 
     Instantiator
     {
-        model: settingVisibilityPresetsModel
+        model: settingVisibilityPresetsModel.items
 
         MenuItem
         {
-            text: model.name
+            text: modelData.name
             checkable: true
-            checked: model.id == settingVisibilityPresetsModel.activePreset
+            checked: modelData.presetId == settingVisibilityPresetsModel.activePreset
             exclusiveGroup: group
             onTriggered:
             {
-                settingVisibilityPresetsModel.setActivePreset(model.id);
-                showSettingVisibilityProfile();
+                settingVisibilityPresetsModel.setActivePreset(modelData.presetId);
             }
         }
 

@@ -1,0 +1,5 @@
+{
+    "name": "Creality CR-10S",
+    "version": 2,
+    "inherits": "creality_cr10"
+}

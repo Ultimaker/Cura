@@ -1,5 +1,5 @@
-// Copyright (c) 2017 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.1
@@ -13,155 +13,28 @@ import "../Menus"
 
 Item
 {
-    id: base;
+    id: settingsView
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
     property Action configureSettings
     property bool findingSettings
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
-
-    Item
-    {
-        id: globalProfileRow
-        height: UM.Theme.getSize("sidebar_setup").height
-        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
-
-        anchors
-        {
-            top: parent.top
-            left: parent.left
-            leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
-            right: parent.right
-            rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
-        }
-
-        Label
-        {
-            id: globalProfileLabel
-            text: catalog.i18nc("@label","Profile:");
-            width: Math.round(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-            verticalAlignment: Text.AlignVCenter
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-        }
-
-        ToolButton
-        {
-            id: globalProfileSelection
-
-            text: generateActiveQualityText()
-            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
-            width: Math.round(parent.width * 0.55)
-            height: UM.Theme.getSize("setting_control").height
-            anchors.left: globalProfileLabel.right
-            anchors.right: parent.right
-            tooltip: Cura.MachineManager.activeQualityOrQualityChangesName
-            style: UM.Theme.styles.sidebar_header_button
-            activeFocusOnPress: true
-            menu: ProfileMenu { }
-
-            function generateActiveQualityText () {
-                var result = Cura.MachineManager.activeQualityOrQualityChangesName;
-
-                if (Cura.MachineManager.isActiveQualitySupported) {
-                    if (Cura.MachineManager.activeQualityLayerHeight > 0) {
-                        result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
-                        result += " - "
-                        result += Cura.MachineManager.activeQualityLayerHeight + "mm"
-                        result += "</font>"
-                    }
-                }
-
-                return result
-            }
-
-            UM.SimpleButton
-            {
-                id: customisedSettings
-
-                visible: Cura.MachineManager.hasUserSettings
-                height: Math.round(parent.height * 0.6)
-                width: Math.round(parent.height * 0.6)
-
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: Math.round(UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width)
-
-                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
-                iconSource: UM.Theme.getIcon("star");
-
-                onClicked:
-                {
-                    forceActiveFocus();
-                    Cura.Actions.manageProfiles.trigger()
-                }
-                onEntered:
-                {
-                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
-                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
-                }
-                onExited: base.hideTooltip()
-            }
-        }
-    }
-
-    ToolButton
-    {
-        id: settingVisibilityMenu
-
-        width: height
-        height: UM.Theme.getSize("setting_control").height
-        anchors
-        {
-            top: globalProfileRow.bottom
-            topMargin: UM.Theme.getSize("sidebar_margin").height
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
-        }
-        style: ButtonStyle
-        {
-            background: Item {
-                UM.RecolorImage {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    color: control.enabled ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_category_disabled_text")
-                    source: UM.Theme.getIcon("menu")
-                }
-            }
-            label: Label{}
-        }
-        menu: SettingVisibilityPresetsMenu
-        {
-            onShowAllSettings:
-            {
-                definitionsModel.setAllVisible(true);
-                filter.updateDefinitionModel();
-            }
-        }
-    }
 
     Rectangle
     {
         id: filterContainer
         visible: true
 
+        radius: UM.Theme.getSize("setting_control_radius").width
         border.width: Math.round(UM.Theme.getSize("default_lining").width)
         border.color:
         {
-            if(hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
+            if (hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
             {
-                return UM.Theme.getColor("setting_control_border_highlight");
+                return UM.Theme.getColor("setting_control_border_highlight")
             }
             else
             {
-                return UM.Theme.getColor("setting_control_border");
+                return UM.Theme.getColor("setting_control_border")
             }
         }
 
@@ -169,31 +42,36 @@ Item
 
         anchors
         {
-            top: globalProfileRow.bottom
-            topMargin: UM.Theme.getSize("sidebar_margin").height
+            top: parent.top
             left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: settingVisibilityMenu.left
-            rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
-        height: visible ? UM.Theme.getSize("setting_control").height : 0
-        Behavior on height { NumberAnimation { duration: 100 } }
+        height: UM.Theme.getSize("print_setup_big_item").height
+        Timer
+        {
+            id: settingsSearchTimer
+            onTriggered: filter.editingFinished()
+            interval: 500
+            running: false
+            repeat: false
+        }
 
         TextField
         {
-            id: filter;
+            id: filter
             height: parent.height
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
+            anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
-            placeholderText: catalog.i18nc("@label:textbox", "Search...")
+            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("search") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "search settings")
 
             style: TextFieldStyle
             {
-                textColor: UM.Theme.getColor("setting_control_text");
-                placeholderTextColor: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default");
+                textColor: UM.Theme.getColor("setting_control_text")
+                placeholderTextColor: UM.Theme.getColor("setting_filter_field")
+                font: UM.Theme.getFont("default_italic")
                 background: Item {}
             }
 
@@ -202,38 +80,43 @@ Item
 
             onTextChanged:
             {
-                definitionsModel.filter = {"i18n_label": "*" + text};
-                findingSettings = (text.length > 0);
-                if(findingSettings != lastFindingSettings)
+                settingsSearchTimer.restart()
+            }
+
+            onEditingFinished:
+            {
+                definitionsModel.filter = {"i18n_label": "*" + text}
+                findingSettings = (text.length > 0)
+                if (findingSettings != lastFindingSettings)
                 {
-                    updateDefinitionModel();
-                    lastFindingSettings = findingSettings;
+                    updateDefinitionModel()
+                    lastFindingSettings = findingSettings
                 }
             }
 
             Keys.onEscapePressed:
             {
-                filter.text = "";
+                filter.text = ""
             }
 
             function updateDefinitionModel()
             {
-                if(findingSettings)
+                if (findingSettings)
                 {
-                    expandedCategories = definitionsModel.expanded.slice();
-                    definitionsModel.expanded = [""]; // keep categories closed while to prevent render while making settings visible one by one
-                    definitionsModel.showAncestors = true;
-                    definitionsModel.showAll = true;
-                    definitionsModel.expanded = ["*"];
+                    expandedCategories = definitionsModel.expanded.slice()
+                    definitionsModel.expanded = [""]  // keep categories closed while to prevent render while making settings visible one by one
+                    definitionsModel.showAncestors = true
+                    definitionsModel.showAll = true
+                    definitionsModel.expanded = ["*"]
                 }
                 else
                 {
-                    if(expandedCategories)
+                    if (expandedCategories)
                     {
-                        definitionsModel.expanded = expandedCategories;
+                        definitionsModel.expanded = expandedCategories
                     }
-                    definitionsModel.showAncestors = false;
-                    definitionsModel.showAll = false;
+                    definitionsModel.showAncestors = false
+                    definitionsModel.showAll = false
                 }
             }
         }
@@ -265,41 +148,93 @@ Item
 
             onClicked:
             {
-                filter.text = "";
-                filter.forceActiveFocus();
+                filter.text = ""
+                filter.forceActiveFocus()
             }
         }
     }
 
+    ToolButton
+    {
+        id: settingVisibilityMenu
+
+        anchors
+        {
+            top: filterContainer.top
+            bottom: filterContainer.bottom
+            right: parent.right
+            rightMargin: UM.Theme.getSize("wide_margin").width
+        }
+
+        style: ButtonStyle
+        {
+            background: Item
+            {
+                UM.RecolorImage
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: UM.Theme.getSize("standard_arrow").width
+                    height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
+                    source: UM.Theme.getIcon("menu")
+                }
+            }
+            label: Label {}
+        }
+
+        menu: SettingVisibilityPresetsMenu
+        {
+            onShowAllSettings:
+            {
+                definitionsModel.setAllVisible(true)
+                filter.updateDefinitionModel()
+            }
+        }
+    }
+
+    // Mouse area that gathers the scroll events to not propagate it to the main view.
+    MouseArea
+    {
+        anchors.fill: scrollView
+        acceptedButtons: Qt.AllButtons
+        onWheel: wheel.accepted = true
+    }
+
     ScrollView
     {
-        anchors.top: filterContainer.bottom;
-        anchors.bottom: parent.bottom;
-        anchors.right: parent.right;
-        anchors.left: parent.left;
-        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("sidebar_margin").height : 0
-        Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
+        id: scrollView
+        anchors
+        {
+            top: filterContainer.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
+            bottom: parent.bottom
+            right: parent.right
+            left: parent.left
+        }
 
-        style: UM.Theme.styles.scrollview;
-        flickableItem.flickableDirection: Flickable.VerticalFlick;
-        __wheelAreaScrollSpeed: 75; // Scroll three lines in one scroll event
+        style: UM.Theme.styles.scrollview
+        flickableItem.flickableDirection: Flickable.VerticalFlick
+        __wheelAreaScrollSpeed: 75  // Scroll three lines in one scroll event
 
         ListView
         {
             id: contents
-            spacing: Math.round(UM.Theme.getSize("default_lining").height);
-            cacheBuffer: 1000000;   // Set a large cache to effectively just cache every list item.
+            spacing: UM.Theme.getSize("default_lining").height
+            cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
             model: UM.SettingDefinitionsModel
             {
-                id: definitionsModel;
+                id: definitionsModel
                 containerId: Cura.MachineManager.activeDefinitionId
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
                 exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
-                    if(!findingSettings)
+                    if (!findingSettings)
                     {
                         // Do not change expandedCategories preference while filtering settings
                         // because all categories are expanded while filtering
@@ -315,7 +250,7 @@ Item
             {
                 id: delegate
 
-                width: Math.round(UM.Theme.getSize("sidebar").width);
+                width: scrollView.width
                 height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled == "True" ? 1 : 0
@@ -385,17 +320,17 @@ Item
                         // machine gets changed.
                         var activeMachineId = Cura.MachineManager.activeMachineId;
 
-                        if(!model.settable_per_extruder)
+                        if (!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
                             return activeMachineId;
                         }
-                        if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                        if (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
                             return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                         }
-                        if(Cura.ExtruderManager.activeExtruderStackId)
+                        if (Cura.ExtruderManager.activeExtruderStackId)
                         {
                             //We're on an extruder tab. Pick the current extruder.
                             return Cura.ExtruderManager.activeExtruderStackId;
@@ -436,7 +371,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: Math.round(delegate.height / 2) }, text)
+                    onShowTooltip: base.showTooltip(delegate, Qt.point(- settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {
@@ -457,14 +392,14 @@ Item
                     }
                     onSetActiveFocusToNextSetting:
                     {
-                        if(forward == undefined || forward)
+                        if (forward == undefined || forward)
                         {
                             contents.currentIndex = contents.indexWithFocus + 1;
                             while(contents.currentItem && contents.currentItem.height <= 0)
                             {
                                 contents.currentIndex++;
                             }
-                            if(contents.currentItem)
+                            if (contents.currentItem)
                             {
                                 contents.currentItem.item.focusItem.forceActiveFocus();
                             }
@@ -476,7 +411,7 @@ Item
                             {
                                 contents.currentIndex--;
                             }
-                            if(contents.currentItem)
+                            if (contents.currentItem)
                             {
                                 contents.currentItem.item.focusItem.forceActiveFocus();
                             }
@@ -547,6 +482,28 @@ Item
                     visible: machineExtruderCount.properties.value > 1
                 }
 
+                Instantiator
+                {
+                    id: customMenuItems
+                    model: Cura.SidebarCustomMenuItemsModel { }
+                    MenuItem
+                    {
+                        text: model.name
+                        iconName: model.icon_name
+                        onTriggered:
+                        {
+                            customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
+                        }
+                    }
+                   onObjectAdded: contextMenu.insertItem(index, object)
+                   onObjectRemoved: contextMenu.removeItem(object)
+                }
+
+                MenuSeparator
+                {
+                    visible: customMenuItems.count > 0
+                }
+
                 MenuItem
                 {
                     //: Settings context menu action
@@ -600,17 +557,6 @@ Item
                     text: catalog.i18nc("@action:menu", "Configure setting visibility...");
 
                     onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
-                }
-                MenuSeparator {}
-                MenuItem
-                {
-                    text: catalog.i18nc("@action:inmenu", "Collapse All")
-                    onTriggered: definitionsModel.collapseAll()
-                }
-                MenuItem
-                {
-                    text: catalog.i18nc("@action:inmenu", "Expand All")
-                    onTriggered: definitionsModel.expandRecursive()
                 }
             }
 

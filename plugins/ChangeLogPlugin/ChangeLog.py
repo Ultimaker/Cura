@@ -1,9 +1,8 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
 from UM.Extension import Extension
-from UM.Preferences import Preferences
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Version import Version
@@ -29,7 +28,8 @@ class ChangeLog(Extension, QObject,):
 
         self._change_logs = None
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
-        Preferences.getInstance().addPreference("general/latest_version_changelog_shown", "2.0.0") #First version of CURA with uranium
+        Application.getInstance().getPreferences().addPreference("general/latest_version_changelog_shown", "2.0.0") #First version of CURA with uranium
+        self.setMenuName(catalog.i18nc("@item:inmenu", "Changelog"))
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Show Changelog"), self.showChangelog)
 
     def getChangeLogs(self):
@@ -56,7 +56,7 @@ class ChangeLog(Extension, QObject,):
 
     def loadChangeLogs(self):
         self._change_logs = collections.OrderedDict()
-        with open(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.txt"), "r",-1, "utf-8") as f:
+        with open(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.txt"), "r", encoding = "utf-8") as f:
             open_version = None
             open_header = "" # Initialise to an empty header in case there is no "*" in the first line of the changelog
             for line in f:
@@ -79,12 +79,12 @@ class ChangeLog(Extension, QObject,):
         if not self._current_app_version:
             return #We're on dev branch.
 
-        if Preferences.getInstance().getValue("general/latest_version_changelog_shown") == "master":
+        if Application.getInstance().getPreferences().getValue("general/latest_version_changelog_shown") == "master":
             latest_version_shown = Version("0.0.0")
         else:
-            latest_version_shown = Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown"))
+            latest_version_shown = Version(Application.getInstance().getPreferences().getValue("general/latest_version_changelog_shown"))
 
-        Preferences.getInstance().setValue("general/latest_version_changelog_shown", Application.getInstance().getVersion())
+        Application.getInstance().getPreferences().setValue("general/latest_version_changelog_shown", Application.getInstance().getVersion())
 
         # Do not show the changelog when there is no global container stack
         # This implies we are running Cura for the first time.

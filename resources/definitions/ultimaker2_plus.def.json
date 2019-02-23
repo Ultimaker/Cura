@@ -15,7 +15,12 @@
         "has_machine_materials": true,
         "has_machine_quality": true,
         "first_start_actions": [],
-        "supported_actions":["UpgradeFirmware"]
+        "supported_actions": [],
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker2_plus_extruder_0"
+        },
+        "firmware_file": "MarlinUltimaker2plus.hex"
     },
 
     "overrides": {

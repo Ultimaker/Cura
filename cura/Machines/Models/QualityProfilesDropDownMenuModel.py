@@ -1,11 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+from UM.Settings.SettingFunction import SettingFunction
 
 from cura.Machines.QualityManager import QualityGroup
 
@@ -21,6 +22,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
     AvailableRole = Qt.UserRole + 5
     QualityGroupRole = Qt.UserRole + 6
     QualityChangesGroupRole = Qt.UserRole + 7
+    IsExperimentalRole = Qt.UserRole + 8
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -32,19 +34,28 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.AvailableRole, "available") #Whether the quality profile is available in our current nozzle + material.
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
+        self.addRoleName(self.IsExperimentalRole, "is_experimental")
 
         self._application = Application.getInstance()
         self._machine_manager = self._application.getMachineManager()
         self._quality_manager = Application.getInstance().getQualityManager()
 
-        self._application.globalContainerStackChanged.connect(self._update)
-        self._machine_manager.activeQualityGroupChanged.connect(self._update)
-        self._machine_manager.extruderChanged.connect(self._update)
-        self._quality_manager.qualitiesUpdated.connect(self._update)
+        self._application.globalContainerStackChanged.connect(self._onChange)
+        self._machine_manager.activeQualityGroupChanged.connect(self._onChange)
+        self._machine_manager.extruderChanged.connect(self._onChange)
+        self._quality_manager.qualitiesUpdated.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
 
-        self._update()
+        self._update_timer = QTimer()  # type: QTimer
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
+
+        self._onChange()
+
+    def _onChange(self) -> None:
+        self._update_timer.start()
 
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
@@ -74,7 +85,8 @@ class QualityProfilesDropDownMenuModel(ListModel):
                     "layer_height": layer_height,
                     "layer_height_unit": self._layer_height_unit,
                     "available": quality_group.is_available,
-                    "quality_group": quality_group}
+                    "quality_group": quality_group,
+                    "is_experimental": quality_group.is_experimental}
 
             item_list.append(item)
 
@@ -83,7 +95,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         self.setItems(item_list)
 
-    def _fetchLayerHeight(self, quality_group: "QualityGroup"):
+    def _fetchLayerHeight(self, quality_group: "QualityGroup") -> float:
         global_stack = self._machine_manager.activeMachine
         if not self._layer_height_unit:
             unit = global_stack.definition.getProperty("layer_height", "unit")
@@ -94,14 +106,20 @@ class QualityProfilesDropDownMenuModel(ListModel):
         default_layer_height = global_stack.definition.getProperty("layer_height", "value")
 
         # Get layer_height from the quality profile for the GlobalStack
+        if quality_group.node_for_global is None:
+            return float(default_layer_height)
         container = quality_group.node_for_global.getContainer()
 
         layer_height = default_layer_height
-        if container.hasProperty("layer_height", "value"):
+        if container and container.hasProperty("layer_height", "value"):
             layer_height = container.getProperty("layer_height", "value")
         else:
             # Look for layer_height in the GlobalStack from material -> definition
             container = global_stack.definition
-            if container.hasProperty("layer_height", "value"):
+            if container and container.hasProperty("layer_height", "value"):
                 layer_height = container.getProperty("layer_height", "value")
+
+        if isinstance(layer_height, SettingFunction):
+            layer_height = layer_height(global_stack)
+
         return float(layer_height)

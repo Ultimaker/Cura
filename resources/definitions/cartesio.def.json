@@ -11,11 +11,10 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_machine_materials": true,
-        "has_variant_materials": true,
         "has_variants": true,
 
         "variants_name": "Tool",
-        "preferred_variant_name": "0.8 mm",
+        "preferred_variant_name": "0.8mm thermoplastic extruder",
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
 
@@ -34,7 +33,6 @@
 
     "overrides": {
         "machine_extruder_count": { "default_value": 2 },
-        "material_diameter": { "default_value": 1.75 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "gantry_height": { "default_value": 35 },
@@ -45,7 +43,7 @@
         "material_print_temp_wait": { "default_value": false },
         "material_bed_temp_wait": { "default_value": false },
         "prime_tower_enable": { "default_value": false },
-        "prime_tower_wall_thickness": { "resolve": 0.7 },
+        "prime_tower_min_volume": { "value": "0.7" },
         "prime_tower_size": { "value": 24.0 },
         "prime_tower_position_x": { "value": 125 },
         "prime_tower_position_y": { "value": 70 },

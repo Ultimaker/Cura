@@ -12,14 +12,10 @@ from . import ThreeMFWorkspaceWriter
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
 
-i18n_catalog = i18nCatalog("uranium")
+i18n_catalog = i18nCatalog("cura")
 
 def getMetaData():
-    # Workarround for osx not supporting double file extensions correctly.
-    if Platform.isOSX():
-        workspace_extension = "3mf"
-    else:
-        workspace_extension = "curaproject.3mf"
+    workspace_extension = "3mf"
 
     metaData = {}
 
@@ -36,7 +32,7 @@ def getMetaData():
             "output": [{
                 "extension": workspace_extension,
                 "description": i18n_catalog.i18nc("@item:inlistbox", "Cura Project 3MF file"),
-                "mime_type": "application/x-curaproject+xml",
+                "mime_type": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                 "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
             }]
         }

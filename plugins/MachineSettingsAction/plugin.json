@@ -1,8 +1,8 @@
 {
     "name": "Machine Settings action",
     "author": "fieldOfView",
-    "version": "1.0.0",
-    "description": "Provides a way to change machine settings (such as build volume, nozzle size, etc)",
-    "api": 4,
+    "version": "1.0.1",
+    "description": "Provides a way to change machine settings (such as build volume, nozzle size, etc.).",
+    "api": "6.0",
     "i18n-catalog": "cura"
 }

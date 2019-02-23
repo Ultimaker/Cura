@@ -1,0 +1,95 @@
+{
+  "data": {
+    "generated_time": "2018-12-10T08:23:55.110Z",
+    "printers": [
+      {
+        "configuration": [
+          {
+            "extruder_index": 0,
+            "material": {
+              "material": "empty"
+            },
+            "print_core_id": "AA 0.4"
+          },
+          {
+            "extruder_index": 1,
+            "material": {
+              "material": "empty"
+            },
+            "print_core_id": "AA 0.4"
+          }
+        ],
+        "enabled": true,
+        "firmware_version": "5.1.2.20180807",
+        "friendly_name": "Master-Luke",
+        "ip_address": "10.183.1.140",
+        "machine_variant": "Ultimaker 3",
+        "status": "maintenance",
+        "unique_name": "ultimakersystem-ccbdd30044ec",
+        "uuid": "b3a47ea3-1eeb-4323-9626-6f9c3c888f9e"
+      },
+      {
+        "configuration": [
+          {
+            "extruder_index": 0,
+            "material": {
+              "brand": "Generic",
+              "color": "Generic",
+              "guid": "506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9",
+              "material": "PLA"
+            },
+            "print_core_id": "AA 0.4"
+          },
+          {
+            "extruder_index": 1,
+            "material": {
+              "brand": "Ultimaker",
+              "color": "Red",
+              "guid": "9cfe5bf1-bdc5-4beb-871a-52c70777842d",
+              "material": "PLA"
+            },
+            "print_core_id": "AA 0.4"
+          }
+        ],
+        "enabled": true,
+        "firmware_version": "4.3.3.20180529",
+        "friendly_name": "UM-Marijn",
+        "ip_address": "10.183.1.166",
+        "machine_variant": "Ultimaker 3",
+        "status": "idle",
+        "unique_name": "ultimakersystem-ccbdd30058ab",
+        "uuid": "6e62c40a-4601-4b0e-9fec-c7c02c59c30a"
+      }
+    ],
+    "print_jobs": [
+      {
+        "assigned_to": "6e62c40a-4601-4b0e-9fec-c7c02c59c30a",
+        "configuration": [
+          {
+            "extruder_index": 0,
+            "material": {
+              "brand": "Ultimaker",
+              "color": "Black",
+              "guid": "3ee70a86-77d8-4b87-8005-e4a1bc57d2ce",
+              "material": "PLA"
+            },
+            "print_core_id": "AA 0.4"
+          }
+        ],
+        "constraints": {},
+        "created_at": "2018-12-10T08:28:04.108Z",
+        "force": false,
+        "last_seen": 500165.109491861,
+        "machine_variant": "Ultimaker 3",
+        "name": "UM3_dragon",
+        "network_error_count": 0,
+        "owner": "Daniel Testing",
+        "started": false,
+        "status": "queued",
+        "time_elapsed": 0,
+        "time_total": 14145,
+        "uuid": "d1c8bd52-5e9f-486a-8c25-a123cc8c7702"
+      }
+    ]
+  }
+}

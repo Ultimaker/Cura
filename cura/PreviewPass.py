@@ -1,7 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import Optional, TYPE_CHECKING
+
 from UM.Application import Application
-from UM.Math.Color import Color
 from UM.Resources import Resources
 
 from UM.View.RenderPass import RenderPass
@@ -11,7 +13,8 @@ from UM.View.RenderBatch import RenderBatch
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
-from typing import Optional
+if TYPE_CHECKING:
+    from UM.View.GL.ShaderProgram import ShaderProgram
 
 MYPY = False
 if MYPY:
@@ -34,16 +37,16 @@ def prettier_color(color_list):
 #
 #   This is useful to get a preview image of a scene taken from a different location as the active camera.
 class PreviewPass(RenderPass):
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int) -> None:
         super().__init__("preview", width, height, 0)
 
         self._camera = None  # type: Optional[Camera]
 
         self._renderer = Application.getInstance().getRenderer()
 
-        self._shader = None
-        self._non_printing_shader = None
-        self._support_mesh_shader = None
+        self._shader = None #type: Optional[ShaderProgram]
+        self._non_printing_shader = None #type: Optional[ShaderProgram]
+        self._support_mesh_shader = None #type: Optional[ShaderProgram]
         self._scene = Application.getInstance().getController().getScene()
 
     #   Set the camera to be used by this render pass
@@ -54,37 +57,39 @@ class PreviewPass(RenderPass):
     def render(self) -> None:
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
-            self._shader.setUniformValue("u_overhangAngle", 1.0)
-            self._shader.setUniformValue("u_ambientColor", [0.1, 0.1, 0.1, 1.0])
-            self._shader.setUniformValue("u_specularColor", [0.6, 0.6, 0.6, 1.0])
-            self._shader.setUniformValue("u_shininess", 20.0)
+            if self._shader:
+                self._shader.setUniformValue("u_overhangAngle", 1.0)
+                self._shader.setUniformValue("u_ambientColor", [0.1, 0.1, 0.1, 1.0])
+                self._shader.setUniformValue("u_specularColor", [0.6, 0.6, 0.6, 1.0])
+                self._shader.setUniformValue("u_shininess", 20.0)
 
         if not self._non_printing_shader:
-            self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
-            self._non_printing_shader.setUniformValue("u_diffuseColor", [0.5, 0.5, 0.5, 0.5])
-            self._non_printing_shader.setUniformValue("u_opacity", 0.6)
+            if self._non_printing_shader:
+                self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
+                self._non_printing_shader.setUniformValue("u_diffuseColor", [0.5, 0.5, 0.5, 0.5])
+                self._non_printing_shader.setUniformValue("u_opacity", 0.6)
 
         if not self._support_mesh_shader:
             self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
-            self._support_mesh_shader.setUniformValue("u_width", 5.0)
+            if self._support_mesh_shader:
+                self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
+                self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
         self._gl.glClearColor(0.0, 0.0, 0.0, 0.0)
         self._gl.glClear(self._gl.GL_COLOR_BUFFER_BIT | self._gl.GL_DEPTH_BUFFER_BIT)
 
         # Create batches to be rendered
         batch = RenderBatch(self._shader)
-        batch_non_printing = RenderBatch(self._non_printing_shader, type = RenderBatch.RenderType.Transparent)
         batch_support_mesh = RenderBatch(self._support_mesh_shader)
 
-        # Fill up the batch with objects that can be sliced. `
-        for node in DepthFirstIterator(self._scene.getRoot()):
+        # Fill up the batch with objects that can be sliced.
+        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                 per_mesh_stack = node.callDecoration("getStack")
-                if node.callDecoration("isNonPrintingMesh"):
+                if node.callDecoration("isNonThumbnailVisibleMesh"):
                     # Non printing mesh
-                    batch_non_printing.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = {})
-                elif per_mesh_stack is not None and per_mesh_stack.getProperty("support_mesh", "value") == True:
+                    continue
+                elif per_mesh_stack is not None and per_mesh_stack.getProperty("support_mesh", "value"):
                     # Support mesh
                     uniforms = {}
                     shade_factor = 0.6
@@ -112,7 +117,5 @@ class PreviewPass(RenderPass):
 
         batch.render(render_camera)
         batch_support_mesh.render(render_camera)
-        batch_non_printing.render(render_camera)
 
         self.release()
-

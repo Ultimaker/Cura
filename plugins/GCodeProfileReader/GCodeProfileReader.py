@@ -10,7 +10,7 @@ from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-from cura.ProfileReader import ProfileReader, NoProfileException
+from cura.ReaderWriters.ProfileReader import ProfileReader, NoProfileException
 
 ##  A class that reads profile data from g-code files.
 #
@@ -57,7 +57,7 @@ class GCodeProfileReader(ProfileReader):
         # TODO: Consider moving settings to the start?
         serialized = ""  # Will be filled with the serialized profile.
         try:
-            with open(file_name, "r") as f:
+            with open(file_name, "r", encoding = "utf-8") as f:
                 for line in f:
                     if line.startswith(prefix):
                         # Remove the prefix and the newline from the line and add it to the rest.

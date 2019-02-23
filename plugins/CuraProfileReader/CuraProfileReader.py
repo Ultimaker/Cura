@@ -6,7 +6,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
-from cura.ProfileReader import ProfileReader
+from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
 
@@ -50,7 +50,7 @@ class CuraProfileReader(ProfileReader):
     #   \param profile_id \type{str} The name of the profile.
     #   \return \type{List[Tuple[str,str]]} List of serialized profile strings and matching profile names.
     def _upgradeProfile(self, serialized, profile_id):
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
         if "general" not in parser:
@@ -75,7 +75,7 @@ class CuraProfileReader(ProfileReader):
     def _loadProfile(self, serialized, profile_id):
         # Create an empty profile.
         profile = InstanceContainer(profile_id)
-        profile.addMetaDataEntry("type", "quality_changes")
+        profile.setMetaDataEntry("type", "quality_changes")
         try:
             profile.deserialize(serialized)
         except ContainerFormatError as e:

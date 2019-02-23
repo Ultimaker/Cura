@@ -7,9 +7,12 @@
         "author": "Apsu, Nounours2099",
         "manufacturer": "Prusa Research",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "prusai3_platform.stl",
-        "has_materials": true
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "prusa_i3_mk2_extruder_0"
+        }
     },
 
     "overrides": {
@@ -19,9 +22,7 @@
         "machine_height": { "default_value": 200 },
         "machine_depth": { "default_value": 210 },
         "machine_center_is_zero": { "default_value": false },
-        "material_diameter": { "default_value": 1.75 },
         "material_bed_temperature": { "default_value": 55 },
-        "machine_nozzle_size": { "default_value": 0.4 },
         "layer_height": { "default_value": 0.1 },
         "layer_height_0": { "default_value": 0.15 },
         "retraction_amount": { "default_value": 0.8 },

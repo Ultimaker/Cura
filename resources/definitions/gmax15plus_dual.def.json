@@ -10,19 +10,19 @@
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "gmax_1-5_xt-plus_s3d_full model_150707.stl",
-		"has_variants": true,
-        "has_machine_quality": true,
-		"variants_name": "Hotend",
-		"preferred_variant_name": "0.5mm E3D (Default)",
-		"machine_extruder_trains": {
-			"0": "gmax15plus_dual_extruder_0",
-			"1": "gmax15plus_dual_extruder_1"
-        }
+        "has_variants": true,
+        "variants_name": "Hotend",
+        "preferred_variant_name": "0.5mm E3D (Default)",
+        "preferred_quality_type": "gmax15plus_global_dual_normal",
+        "machine_extruder_trains": {
+            "0": "gmax15plus_dual_extruder_0",
+            "1": "gmax15plus_dual_extruder_1"
+            }
     },
 
     "overrides": {
         "machine_name": { "default_value": "gMax 1.5 Plus Dual Extruder" },
-		"machine_extruder_count": { "default_value": 2 },
+        "machine_extruder_count": { "default_value": 2 },
         "machine_heated_bed": { "default_value": false },
         "machine_width": { "default_value": 406 },
         "machine_depth": { "default_value": 406 },
@@ -46,10 +46,10 @@
         "machine_max_jerk_z": { "default_value": 0.4 },
         "machine_max_jerk_e": { "default_value": 5.0 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 ;Home X/Y/Z\nG29 ; Bed level\nM104 S{material_print_temperature} T0 ; Preheat Left Extruder\nM104 S{material_print_temperature} T1 ; Preheat Right Extruder\nM109 S{material_print_temperature} T0 ; Preheat Left Extruder\nM109 S{material_print_temperature} T1 ; Preheat Right Extruder\nG91 ;relative positioning\nG90 ;absolute positioning\nM218 T1 X34.3 Y0; Set 2nd extruder offset. This can be changed later if needed\nG1 Z25.0 F9000 ;raise nozzle 25mm\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..." },
+        "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 ;Home X/Y/Z\nM104 S{material_print_temperature} T0 ; Preheat Left Extruder\nM104 S{material_print_temperature} T1 ; Preheat Right Extruder\nM109 S{material_print_temperature} T0 ; Preheat Left Extruder\nM109 S{material_print_temperature} T1 ; Preheat Right Extruder\nG91 ;relative positioning\nG90 ;absolute positioning\nM218 T1 X34.3 Y0; Set 2nd extruder offset. This can be changed later if needed\nG1 Z25.0 F9000 ;raise nozzle 25mm\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..." },
         "machine_end_gcode": { "default_value": "M104 S0 T0;Left extruder off\nM104 S0 T1; Right extruder off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning" },
-		"material_print_temperature": { "default_value": 202 },
-		"wall_thickness": { "default_value": 1 },
+        "material_print_temperature": { "default_value": 202 },
+        "wall_thickness": { "default_value": 1 },
         "top_bottom_thickness": { "default_value": 1 },
         "bottom_thickness": { "default_value": 1 }
     }

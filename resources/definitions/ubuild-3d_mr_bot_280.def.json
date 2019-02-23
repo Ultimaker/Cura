@@ -9,10 +9,12 @@
         "manufacturer": "uBuild-3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
-        "icon": "icon_uBuild-3D",
-        "platform": "mr_bot_280_platform.stl",
         "has_materials": true,
-        "preferred_quality_type": "draft"
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "ubuild-3d_mr_bot_280_extruder_0"
+        }
     },
 
     "overrides": {
@@ -22,9 +24,7 @@
         "machine_height": { "default_value": 275 },
         "machine_depth": { "default_value": 275 },
         "machine_center_is_zero": { "default_value": false },
-        "material_diameter": { "default_value": 1.75 },
         "material_bed_temperature": { "default_value": 70 },
-        "machine_nozzle_size": { "default_value": 0.4 },
         "layer_height_0": { "default_value": 0.1 },
         "retraction_amount": { "default_value": 2 },
         "retraction_speed": { "default_value": 50 },
