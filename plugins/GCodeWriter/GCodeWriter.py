@@ -47,7 +47,7 @@ class GCodeWriter(MeshWriter):
     _setting_keyword = ";SETTING_"
 
     def __init__(self):
-        super().__init__()
+        super().__init__(add_to_recent_files = False)
 
         self._application = Application.getInstance()
 
@@ -70,7 +70,7 @@ class GCodeWriter(MeshWriter):
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
         if not hasattr(scene, "gcode_dict"):
-            self.setInformation(catalog.i18nc("@warning:status", "Please generate G-code before saving."))
+            self.setInformation(catalog.i18nc("@warning:status", "Please prepare G-code before exporting."))
             return False
         gcode_dict = getattr(scene, "gcode_dict")
         gcode_list = gcode_dict.get(active_build_plate, None)
@@ -86,7 +86,7 @@ class GCodeWriter(MeshWriter):
                 stream.write(settings)
             return True
 
-        self.setInformation(catalog.i18nc("@warning:status", "Please generate G-code before saving."))
+        self.setInformation(catalog.i18nc("@warning:status", "Please prepare G-code before exporting."))
         return False
 
     ##  Create a new container with container 2 as base and container 1 written over it.

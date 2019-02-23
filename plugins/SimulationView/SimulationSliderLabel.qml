@@ -44,12 +44,11 @@ UM.PointingRectangle {
         id: valueLabel
 
         anchors {
-            left: parent.left
-            leftMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
             verticalCenter: parent.verticalCenter
+            horizontalCenter: parent.horizontalCenter
         }
 
-        width: maximumValue.toString().length * 12 * screenScaleFactor
+        width: ((maximumValue + 1).toString().length + 1) * 10 * screenScaleFactor
         text: sliderLabelRoot.value + startFrom // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignRight
 

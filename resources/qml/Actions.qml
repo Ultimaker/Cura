@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -22,8 +22,6 @@ Item
     property alias viewTopCamera: viewTopCameraAction;
     property alias viewLeftSideCamera: viewLeftSideCameraAction;
     property alias viewRightSideCamera: viewRightSideCameraAction;
-
-    property alias expandSidebar: expandSidebarAction;
 
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
@@ -58,9 +56,9 @@ Item
 
     property alias preferences: preferencesAction;
 
-    property alias showEngineLog: showEngineLogAction;
     property alias showProfileFolder: showProfileFolderAction;
     property alias documentation: documentationAction;
+    property alias showTroubleshooting: showTroubleShootingAction
     property alias reportBug: reportBugAction;
     property alias about: aboutAction;
 
@@ -70,19 +68,28 @@ Item
 
     property alias browsePackages: browsePackagesAction
 
-    UM.I18nCatalog{id: catalog; name:"cura"}
+    UM.I18nCatalog{id: catalog; name: "cura"}
+
+
+    Action
+    {
+        id: showTroubleShootingAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting")
+        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting Guide");
+    }
 
     Action
     {
         id:toggleFullScreenAction
-        text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
+        shortcut: StandardKey.FullScreen;
+        text: catalog.i18nc("@action:inmenu", "Toggle Full Screen");
         iconName: "view-fullscreen";
     }
 
     Action
     {
         id: undoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Undo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
         onTriggered: UM.OperationStack.undo();
@@ -110,35 +117,35 @@ Item
     Action
     {
         id: view3DCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&3D View");
+        text: catalog.i18nc("@action:inmenu menubar:view","3D View");
         onTriggered: UM.Controller.rotateView("3d", 0);
     }
 
     Action
     {
         id: viewFrontCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Front View");
+        text: catalog.i18nc("@action:inmenu menubar:view","Front View");
         onTriggered: UM.Controller.rotateView("home", 0);
     }
 
     Action
     {
         id: viewTopCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Top View");
+        text: catalog.i18nc("@action:inmenu menubar:view","Top View");
         onTriggered: UM.Controller.rotateView("y", 90);
     }
 
     Action
     {
         id: viewLeftSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Left Side View");
+        text: catalog.i18nc("@action:inmenu menubar:view","Left Side View");
         onTriggered: UM.Controller.rotateView("x", 90);
     }
 
     Action
     {
         id: viewRightSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Right Side View");
+        text: catalog.i18nc("@action:inmenu menubar:view","Right Side View");
         onTriggered: UM.Controller.rotateView("x", -90);
     }
 
@@ -167,6 +174,7 @@ Item
         id: manageMaterialsAction
         text: catalog.i18nc("@action:inmenu", "Manage Materials...")
         iconName: "configure"
+        shortcut: "Ctrl+K"
     }
 
     Action
@@ -181,7 +189,7 @@ Item
     {
         id: resetProfileAction;
         enabled: Cura.MachineManager.hasUserSettings
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Discard current changes");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Discard current changes");
         onTriggered:
         {
             forceActiveFocus();
@@ -193,20 +201,21 @@ Item
     {
         id: addProfileAction;
         enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings/overrides...");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Create profile from current settings/overrides...");
     }
 
     Action
     {
-        id: manageProfilesAction;
-        text: catalog.i18nc("@action:inmenu menubar:profile","Manage Profiles...");
-        iconName: "configure";
+        id: manageProfilesAction
+        text: catalog.i18nc("@action:inmenu menubar:profile", "Manage Profiles...")
+        iconName: "configure"
+        shortcut: "Ctrl+J"
     }
 
     Action
     {
         id: documentationAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Online &Documentation");
+        text: catalog.i18nc("@action:inmenu menubar:help", "Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
         onTriggered: CuraActions.openDocumentation();
@@ -214,7 +223,7 @@ Item
 
     Action {
         id: reportBugAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Report a &Bug");
+        text: catalog.i18nc("@action:inmenu menubar:help", "Report a &Bug");
         iconName: "tools-report-bug";
         onTriggered: CuraActions.openBugReportPage();
     }
@@ -222,28 +231,18 @@ Item
     Action
     {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","&About...");
+        text: catalog.i18nc("@action:inmenu menubar:help", "About...");
         iconName: "help-about";
     }
 
     Action
     {
         id: deleteSelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete &Selected Model", "Delete &Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete Selected Model", "Delete Selected Models", UM.Selection.selectionCount);
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
         onTriggered: CuraActions.deleteSelection();
-    }
-
-    Action //Also add backspace as the same function as delete because on Macintosh keyboards the button called "delete" is actually a backspace, and the user expects it to function as a delete.
-    {
-        id: backspaceSelectionAction
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete &Selected Model", "Delete &Selected Models", UM.Selection.selectionCount)
-        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
-        iconName: "edit-delete"
-        shortcut: StandardKey.Backspace
-        onTriggered: CuraActions.deleteSelection()
     }
 
     Action
@@ -328,7 +327,7 @@ Item
     Action
     {
         id: selectAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Select All Models");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Select All Models");
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-select-all";
         shortcut: "Ctrl+A";
@@ -338,7 +337,7 @@ Item
     Action
     {
         id: deleteAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Clear Build Plate");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Clear Build Plate");
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
@@ -348,7 +347,7 @@ Item
     Action
     {
         id: reloadAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
+        text: catalog.i18nc("@action:inmenu menubar:file","Reload All Models");
         iconName: "document-revert";
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll();
@@ -386,7 +385,7 @@ Item
     Action
     {
         id: resetAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model &Transformations");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Transformations");
         onTriggered: CuraApplication.resetAll();
     }
 
@@ -407,14 +406,6 @@ Item
 
     Action
     {
-        id: showEngineLogAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
-        iconName: "view-list-text";
-        shortcut: StandardKey.WhatsThis;
-    }
-
-    Action
-    {
         id: showProfileFolderAction;
         text: catalog.i18nc("@action:inmenu menubar:help","Show Configuration Folder");
     }
@@ -430,14 +421,7 @@ Item
     Action
     {
         id: browsePackagesAction
-        text: catalog.i18nc("@action:menu", "Browse packages...")
+        text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
-    }
-
-    Action
-    {
-        id: expandSidebarAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
-        shortcut: "Ctrl+E";
     }
 }

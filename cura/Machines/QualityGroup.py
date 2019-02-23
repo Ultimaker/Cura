@@ -4,7 +4,11 @@
 from typing import Dict, Optional, List, Set
 
 from PyQt5.QtCore import QObject, pyqtSlot
+
+from UM.Util import parseBool
+
 from cura.Machines.ContainerNode import ContainerNode
+
 
 #
 # A QualityGroup represents a group of containers that must be applied to each ContainerStack when it's used.
@@ -28,13 +32,14 @@ class QualityGroup(QObject):
         self.nodes_for_extruders = {}  # type: Dict[int, ContainerNode]
         self.quality_type = quality_type
         self.is_available = False
+        self.is_experimental = False
 
     @pyqtSlot(result = str)
     def getName(self) -> str:
         return self.name
 
     def getAllKeys(self) -> Set[str]:
-        result = set() #type: Set[str]
+        result = set()  # type: Set[str]
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
             if node is None:
                 continue
@@ -50,3 +55,17 @@ class QualityGroup(QObject):
         for extruder_node in self.nodes_for_extruders.values():
             result.append(extruder_node)
         return result
+
+    def setGlobalNode(self, node: "ContainerNode") -> None:
+        self.node_for_global = node
+
+        # Update is_experimental flag
+        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
+        self.is_experimental |= is_experimental
+
+    def setExtruderNode(self, position: int, node: "ContainerNode") -> None:
+        self.nodes_for_extruders[position] = node
+
+        # Update is_experimental flag
+        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
+        self.is_experimental |= is_experimental

@@ -1,8 +1,10 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
+
+from typing import Set
 
 from UM.Extension import Extension
 from UM.Application import Application
@@ -10,9 +12,8 @@ from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-from cura.Settings.GlobalStack import GlobalStack
-
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
+from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -21,35 +22,35 @@ i18n_catalog = i18nCatalog("cura")
 #  The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
 #  to change it to work for other applications.
 class FirmwareUpdateChecker(Extension):
-    JEDI_VERSION_URL = "http://software.ultimaker.com/jedi/releases/latest.version?utm_source=cura&utm_medium=software&utm_campaign=resources"
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
-        # Initialize the Preference called `latest_checked_firmware` that stores the last version
-        # checked for the UM3. In the future if we need to check other printers' firmware
-        Application.getInstance().getPreferences().addPreference("info/latest_checked_firmware", "")
-
         # Listen to a Signal that indicates a change in the list of printers, just if the user has enabled the
-        # 'check for updates' option
+        # "check for updates" option
         Application.getInstance().getPreferences().addPreference("info/automatic_update_check", True)
         if Application.getInstance().getPreferences().getValue("info/automatic_update_check"):
             ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
-        self._download_url = None
         self._check_job = None
+        self._checked_printer_names = set()  # type: Set[str]
 
     ##  Callback for the message that is spawned when there is a new version.
     def _onActionTriggered(self, message, action):
-        if action == "download":
-            if self._download_url is not None:
-                QDesktopServices.openUrl(QUrl(self._download_url))
-
-    def _onSetDownloadUrl(self, download_url):
-        self._download_url = download_url
+        if action == FirmwareUpdateCheckerMessage.STR_ACTION_DOWNLOAD:
+            machine_id = message.getMachineId()
+            download_url = message.getDownloadUrl()
+            if download_url is not None:
+                if QDesktopServices.openUrl(QUrl(download_url)):
+                    Logger.log("i", "Redirected browser to {0} to show newly available firmware.".format(download_url))
+                else:
+                    Logger.log("e", "Can't reach URL: {0}".format(download_url))
+            else:
+                Logger.log("e", "Can't find URL for {0}".format(machine_id))
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
+        from cura.Settings.GlobalStack import GlobalStack  # otherwise circular imports
         if isinstance(container, GlobalStack):
             self.checkFirmwareVersion(container, True)
 
@@ -63,13 +64,18 @@ class FirmwareUpdateChecker(Extension):
     #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
     #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
-        # Do not run multiple check jobs in parallel
-        if self._check_job is not None:
-            Logger.log("i", "A firmware update check is already running, do nothing.")
+        container_name = container.definition.getName()
+        if container_name in self._checked_printer_names:
+            return
+        self._checked_printer_names.add(container_name)
+
+        metadata = container.definition.getMetaData().get("firmware_update_info")
+        if metadata is None:
+            Logger.log("i", "No machine with name {0} in list of firmware to check.".format(container_name))
             return
 
-        self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent, url = self.JEDI_VERSION_URL,
-                                                   callback = self._onActionTriggered,
-                                                   set_download_url_callback = self._onSetDownloadUrl)
+        self._check_job = FirmwareUpdateCheckerJob(silent = silent,
+                                                   machine_name = container_name, metadata = metadata,
+                                                   callback = self._onActionTriggered)
         self._check_job.start()
         self._check_job.finished.connect(self._onJobFinished)

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
@@ -6,7 +6,7 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Any, Dict, List, Optional, Tuple, cast
+from typing import Any, Dict, List, Optional, Tuple, cast, Set
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -60,6 +60,7 @@ class XmlMaterialProfile(InstanceContainer):
     def setMetaDataEntry(self, key, value, apply_to_all = True):
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
+            Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
 
         # Prevent recursion
@@ -71,7 +72,9 @@ class XmlMaterialProfile(InstanceContainer):
         material_manager = CuraApplication.getInstance().getMaterialManager()
         root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
         material_group = material_manager.getMaterialGroup(root_material_id)
-
+        if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
+            super().setMetaDataEntry(key, value)
+            return
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
@@ -117,7 +120,7 @@ class XmlMaterialProfile(InstanceContainer):
     ##  Overridden from InstanceContainer
     # base file: common settings + supported machines
     # machine / variant combination: only changes for itself.
-    def serialize(self, ignored_metadata_keys: Optional[set] = None):
+    def serialize(self, ignored_metadata_keys: Optional[Set[str]] = None):
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
@@ -141,22 +144,12 @@ class XmlMaterialProfile(InstanceContainer):
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
         if ignored_metadata_keys is None:
             ignored_metadata_keys = set()
-        ignored_metadata_keys |= {"setting_version"}
+        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name"}
         # remove the keys that we want to ignore in the metadata
         for key in ignored_metadata_keys:
             if key in metadata:
                 del metadata[key]
         properties = metadata.pop("properties", {})
-
-        # Metadata properties that should not be serialized.
-        metadata.pop("status", "")
-        metadata.pop("variant", "")
-        metadata.pop("type", "")
-        metadata.pop("base_file", "")
-        metadata.pop("approximate_diameter", "")
-        metadata.pop("id", "")
-        metadata.pop("container_type", "")
-        metadata.pop("name", "")
 
         ## Begin Name Block
         builder.start("name") # type: ignore
@@ -269,7 +262,7 @@ class XmlMaterialProfile(InstanceContainer):
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
             buildplate_dict = {} # type: Dict[str, Any]
             for variant_name, variant_dict in machine_variant_map[definition_id].items():
-                variant_type = variant_dict["variant_node"].metadata["hardware_type"]
+                variant_type = variant_dict["variant_node"].getMetaDataEntry("hardware_type", str(VariantType.NOZZLE))
                 variant_type = VariantType(variant_type)
                 if variant_type == VariantType.NOZZLE:
                     # The hotend identifier is not the containers name, but its "name".
@@ -1165,6 +1158,8 @@ class XmlMaterialProfile(InstanceContainer):
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.

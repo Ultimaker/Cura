@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+from UM.Scene.Camera import Camera
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Application import Application #To modify the maximum zoom level.
@@ -28,7 +28,7 @@ import copy
 
 from typing import List, Optional
 
-# Setting for clearance around the prime
+# Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
 
 
@@ -83,7 +83,14 @@ class BuildVolume(SceneNode):
             " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
 
         self._global_container_stack = None
+
+        self._stack_change_timer = QTimer()
+        self._stack_change_timer.setInterval(100)
+        self._stack_change_timer.setSingleShot(True)
+        self._stack_change_timer.timeout.connect(self._onStackChangeTimerFinished)
+
         self._application.globalContainerStackChanged.connect(self._onStackChanged)
+
         self._onStackChanged()
 
         self._engine_ready = False
@@ -122,7 +129,9 @@ class BuildVolume(SceneNode):
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
-            self._scene_change_timer.start()
+            # Ignore anything that is not something we can slice in the first place!
+            if source.callDecoration("isSliceable"):
+                self._scene_change_timer.start()
 
     def _onSceneChangeTimerFinished(self):
         root = self._application.getController().getScene().getRoot()
@@ -139,7 +148,7 @@ class BuildVolume(SceneNode):
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
                 node.decoratorsChanged.disconnect(self._updateNodeListeners)
-            self._updateDisallowedAreasAndRebuild()  # make sure we didn't miss anything before we updated the node listeners
+            self.rebuild()
 
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
@@ -491,7 +500,9 @@ class BuildVolume(SceneNode):
 
     def _updateRaftThickness(self):
         old_raft_thickness = self._raft_thickness
-        self._adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
+        if self._global_container_stack.extruders:
+            # This might be called before the extruder stacks have initialised, in which case getting the adhesion_type fails
+            self._adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
         self._raft_thickness = 0.0
         if self._adhesion_type == "raft":
             self._raft_thickness = (
@@ -524,11 +535,14 @@ class BuildVolume(SceneNode):
         if extra_z != self._extra_z_clearance:
             self._extra_z_clearance = extra_z
 
-    ##  Update the build volume visualization
     def _onStackChanged(self):
+        self._stack_change_timer.start()
+
+    ##  Update the build volume visualization
+    def _onStackChangeTimerFinished(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingPropertyChanged)
 
@@ -536,7 +550,7 @@ class BuildVolume(SceneNode):
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
-            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingPropertyChanged)
 
@@ -653,6 +667,7 @@ class BuildVolume(SceneNode):
     #   ``_updateDisallowedAreas`` method itself shouldn't call ``rebuild``,
     #   since there may be other changes before it needs to be rebuilt, which
     #   would hit performance.
+
     def _updateDisallowedAreasAndRebuild(self):
         self._updateDisallowedAreas()
         self._updateRaftThickness()
@@ -720,21 +735,27 @@ class BuildVolume(SceneNode):
 
         # Add prime tower location as disallowed area.
         if len(used_extruders) > 1: #No prime tower in single-extrusion.
-            prime_tower_collision = False
-            prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
-            for extruder_id in prime_tower_areas:
-                for prime_tower_area in prime_tower_areas[extruder_id]:
-                    for area in result_areas[extruder_id]:
-                        if prime_tower_area.intersectsPolygon(area) is not None:
-                            prime_tower_collision = True
+
+            if len([x for x in used_extruders if x.isEnabled == True]) > 1: #No prime tower if only one extruder is enabled
+                prime_tower_collision = False
+                prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
+                for extruder_id in prime_tower_areas:
+                    for i_area, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
+                        for area in result_areas[extruder_id]:
+                            if prime_tower_area.intersectsPolygon(area) is not None:
+                                prime_tower_collision = True
+                                break
+                        if prime_tower_collision: #Already found a collision.
                             break
-                    if prime_tower_collision: #Already found a collision.
-                        break
-                if not prime_tower_collision:
-                    result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
-                    result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
-                else:
-                    self._error_areas.extend(prime_tower_areas[extruder_id])
+                        if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
+                            ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft"):
+                            prime_tower_areas[extruder_id][i_area] = prime_tower_area.getMinkowskiHull(
+                                Polygon.approximatedCircle(disallowed_border_size))
+                    if not prime_tower_collision:
+                        result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
+                        result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
+                    else:
+                        self._error_areas.extend(prime_tower_areas[extruder_id])
 
         self._has_errors = len(self._error_areas) > 0
 
@@ -768,6 +789,16 @@ class BuildVolume(SceneNode):
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
+
+            if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
+                ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft"):
+                brim_size = (
+                    extruder.getProperty("brim_line_count", "value") *
+                    extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
+                    extruder.getProperty("initial_layer_line_width_factor", "value")
+                )
+                prime_tower_x -= brim_size
+                prime_tower_y += brim_size
 
             if self._global_container_stack.getProperty("prime_tower_circular", "value"):
                 radius = prime_tower_size / 2
@@ -1008,7 +1039,9 @@ class BuildVolume(SceneNode):
             # We don't create an additional line for the extruder we're printing the skirt with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
 
-        elif adhesion_type == "brim":
+        elif (adhesion_type == "brim" or
+                (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
+                    self._global_container_stack.getProperty("adhesion_type", "value") != "raft")):
             brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
             bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
@@ -1026,6 +1059,12 @@ class BuildVolume(SceneNode):
 
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
+
+        max_length_available = 0.5 * min(
+            self._global_container_stack.getProperty("machine_width", "value"),
+            self._global_container_stack.getProperty("machine_depth", "value")
+        )
+        bed_adhesion_size = min(bed_adhesion_size, max_length_available)
 
         support_expansion = 0
         support_enabled = self._global_container_stack.getProperty("support_enable", "value")
@@ -1061,7 +1100,7 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.

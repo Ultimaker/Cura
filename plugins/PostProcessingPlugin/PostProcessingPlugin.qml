@@ -25,13 +25,13 @@ UM.Dialog
     {
         if(!visible) //Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
         {
-            manager.writeScriptsToStack();
+            manager.writeScriptsToStack()
         }
     }
 
     Item
     {
-        UM.I18nCatalog{id: catalog; name:"cura"}
+        UM.I18nCatalog{id: catalog; name: "cura"}
         id: base
         property int columnWidth: Math.round((base.width / 2) - UM.Theme.getSize("default_margin").width)
         property int textMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
@@ -61,17 +61,23 @@ UM.Dialog
                 anchors.leftMargin: base.textMargin
                 anchors.right: parent.right
                 anchors.rightMargin: base.textMargin
-                font: UM.Theme.getFont("large")
+                font: UM.Theme.getFont("large_bold")
+                elide: Text.ElideRight
             }
             ListView
             {
                 id: activeScriptsList
-                anchors.top: activeScriptsHeader.bottom
-                anchors.topMargin: base.textMargin
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                anchors.right: parent.right
-                anchors.rightMargin: base.textMargin
+
+                anchors
+                {
+                    top: activeScriptsHeader.bottom
+                    left: parent.left
+                    right: parent.right
+                    rightMargin: base.textMargin
+                    topMargin: base.textMargin
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+
                 height: childrenRect.height
                 model: manager.scriptList
                 delegate: Item
@@ -83,8 +89,12 @@ UM.Dialog
                         id: activeScriptButton
                         text: manager.getScriptLabelByKey(modelData.toString())
                         exclusiveGroup: selectedScriptGroup
+                        width: parent.width
+                        height: UM.Theme.getSize("setting").height
                         checkable: true
-                        checked: {
+
+                        checked:
+                        {
                             if (manager.selectedScriptIndex == index)
                             {
                                 base.activeScriptName = manager.getScriptLabelByKey(modelData.toString())
@@ -101,8 +111,7 @@ UM.Dialog
                             manager.setSelectedScriptIndex(index)
                             base.activeScriptName = manager.getScriptLabelByKey(modelData.toString())
                         }
-                        width: parent.width
-                        height: UM.Theme.getSize("setting").height
+
                         style: ButtonStyle
                         {
                             background: Rectangle
@@ -115,10 +124,12 @@ UM.Dialog
                             {
                                 wrapMode: Text.Wrap
                                 text: control.text
+                                elide: Text.ElideRight
                                 color: activeScriptButton.checked ? palette.highlightedText : palette.text
                             }
                         }
                     }
+
                     Button
                     {
                         id: removeButton
@@ -139,7 +150,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.7)
                                     height: Math.round(control.height / 2.7)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: palette.text
                                     source: UM.Theme.getIcon("cross1")
@@ -174,7 +184,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.5)
                                     height: Math.round(control.height / 2.5)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
                                     source: UM.Theme.getIcon("arrow_bottom")
@@ -209,7 +218,6 @@ UM.Dialog
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     width: Math.round(control.width / 2.5)
                                     height: Math.round(control.height / 2.5)
-                                    sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
                                     source: UM.Theme.getIcon("arrow_top")
@@ -250,15 +258,15 @@ UM.Dialog
                         onTriggered: manager.addScriptToList(modelData.toString())
                     }
 
-                    onObjectAdded: scriptsMenu.insertItem(index, object);
-                    onObjectRemoved: scriptsMenu.removeItem(object);
+                    onObjectAdded: scriptsMenu.insertItem(index, object)
+                    onObjectRemoved: scriptsMenu.removeItem(object)
                 }
             }
         }
 
         Rectangle
         {
-            color: UM.Theme.getColor("sidebar")
+            color: UM.Theme.getColor("main_background")
             anchors.left: activeScripts.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
@@ -269,25 +277,35 @@ UM.Dialog
             {
                 id: scriptSpecsHeader
                 text: manager.selectedScriptIndex == -1 ? catalog.i18nc("@label", "Settings") : base.activeScriptName
-                anchors.top: parent.top
-                anchors.topMargin: base.textMargin
-                anchors.left: parent.left
-                anchors.leftMargin: base.textMargin
-                anchors.right: parent.right
-                anchors.rightMargin: base.textMargin
+                anchors
+                {
+                    top: parent.top
+                    topMargin: base.textMargin
+                    left: parent.left
+                    leftMargin: base.textMargin
+                    right: parent.right
+                    rightMargin: base.textMargin
+                }
+
+                elide: Text.ElideRight
                 height: 20 * screenScaleFactor
-                font: UM.Theme.getFont("large")
+                font: UM.Theme.getFont("large_bold")
                 color: UM.Theme.getColor("text")
             }
 
             ScrollView
             {
                 id: scrollView
-                anchors.top: scriptSpecsHeader.bottom
-                anchors.topMargin: settingsPanel.textMargin
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                anchors
+                {
+                    top: scriptSpecsHeader.bottom
+                    topMargin: settingsPanel.textMargin
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+
                 visible: manager.selectedScriptDefinitionId != ""
                 style: UM.Theme.styles.scrollview;
 
@@ -297,11 +315,12 @@ UM.Dialog
                     spacing: UM.Theme.getSize("default_lining").height
                     model: UM.SettingDefinitionsModel
                     {
-                        id: definitionsModel;
+                        id: definitionsModel
                         containerId: manager.selectedScriptDefinitionId
                         showAll: true
                     }
-                    delegate:Loader
+
+                    delegate: Loader
                     {
                         id: settingLoader
 
@@ -312,23 +331,24 @@ UM.Dialog
                             {
                                 if(model.type != undefined)
                                 {
-                                    return UM.Theme.getSize("section").height;
+                                    return UM.Theme.getSize("section").height
                                 }
                                 else
                                 {
-                                    return 0;
+                                    return 0
                                 }
                             }
                             else
                             {
-                                return 0;
+                                return 0
                             }
-
                         }
                         Behavior on height { NumberAnimation { duration: 100 } }
                         opacity: provider.properties.enabled == "True" ? 1 : 0
+
                         Behavior on opacity { NumberAnimation { duration: 100 } }
                         enabled: opacity > 0
+
                         property var definition: model
                         property var settingDefinitionsModel: definitionsModel
                         property var propertyProvider: provider
@@ -339,11 +359,12 @@ UM.Dialog
                         //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
                         asynchronous: model.type != "enum" && model.type != "extruder"
 
-                        onLoaded: {
+                        onLoaded:
+                        {
                             settingLoader.item.showRevertButton = false
                             settingLoader.item.showInheritButton = false
                             settingLoader.item.showLinkedSettingIcon = false
-                            settingLoader.item.doDepthIndentation = true
+                            settingLoader.item.doDepthIndentation = false
                             settingLoader.item.doQualityUserSettingEmphasis = false
                         }
 
@@ -384,7 +405,7 @@ UM.Dialog
                         UM.SettingPropertyProvider
                         {
                             id: inheritStackProvider
-                            containerStackId: Cura.MachineManager.activeMachineId
+                            containerStack: Cura.MachineManager.activeMachine
                             key: model.key ? model.key : "None"
                             watchedProperties: [ "limit_to_extruder" ]
                         }
@@ -395,24 +416,20 @@ UM.Dialog
 
                             onShowTooltip:
                             {
-                                tooltip.text = text;
-                                var position = settingLoader.mapToItem(settingsPanel, settingsPanel.x, 0);
-                                tooltip.show(position);
+                                tooltip.text = text
+                                var position = settingLoader.mapToItem(settingsPanel, settingsPanel.x, 0)
+                                tooltip.show(position)
                                 tooltip.target.x = position.x + 1
                             }
 
-                            onHideTooltip:
-                            {
-                                tooltip.hide();
-                            }
+                            onHideTooltip: tooltip.hide()
                         }
-
                     }
                 }
             }
         }
 
-        Cura.SidebarTooltip
+        Cura.PrintSetupTooltip
         {
             id: tooltip
         }
@@ -459,6 +476,7 @@ UM.Dialog
             Cura.SettingUnknown { }
         }
     }
+
     rightButtons: Button
     {
         text: catalog.i18nc("@action:button", "Close")
@@ -466,44 +484,15 @@ UM.Dialog
         onClicked: dialog.accept()
     }
 
-    Button {
+    Cura.SecondaryButton
+    {
         objectName: "postProcessingSaveAreaButton"
         visible: activeScriptsList.count > 0
-        height: UM.Theme.getSize("save_button_save_to_button").height
+        height: UM.Theme.getSize("action_button").height
         width: height
         tooltip: catalog.i18nc("@info:tooltip", "Change active post-processing scripts")
         onClicked: dialog.show()
-
-        style: ButtonStyle {
-            background: Rectangle {
-                id: deviceSelectionIcon
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: !control.enabled ? UM.Theme.getColor("action_button_disabled_border") :
-                                  control.pressed ? UM.Theme.getColor("action_button_active_border") :
-                                  control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-                color: !control.enabled ? UM.Theme.getColor("action_button_disabled") :
-                           control.pressed ? UM.Theme.getColor("action_button_active") :
-                           control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-                Behavior on color { ColorAnimation { duration: 50; } }
-                anchors.left: parent.left
-                anchors.leftMargin: Math.round(UM.Theme.getSize("save_button_text_margin").width / 2);
-                width: parent.height
-                height: parent.height
-
-                UM.RecolorImage {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: Math.round(parent.width / 2)
-                    height: Math.round(parent.height / 2)
-                    sourceSize.width: width
-                    sourceSize.height: height
-                    color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :
-                               control.pressed ? UM.Theme.getColor("action_button_active_text") :
-                               control.hovered ? UM.Theme.getColor("action_button_hovered_text") : UM.Theme.getColor("action_button_text");
-                    source: "postprocessing.svg"
-                }
-            }
-            label: Label{ }
-        }
+        iconSource: "postprocessing.svg"
+        fixedWidthMode: true
     }
 }

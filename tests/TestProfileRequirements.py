@@ -26,4 +26,5 @@ def test_ultimaker3extended_variants(um3_file, um3e_file):
     um3.read_file(open(os.path.join(directory, um3_file), encoding = "utf-8"))
     um3e = configparser.ConfigParser()
     um3e.read_file(open(os.path.join(directory, um3e_file), encoding = "utf-8"))
-    assert um3["values"] == um3e["values"]
+
+    assert [value for value in um3["values"]] == [value for value in um3e["values"]]

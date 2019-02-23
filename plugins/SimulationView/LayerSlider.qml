@@ -9,26 +9,24 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.0 as UM
 import Cura 1.0 as Cura
 
-Item {
+Item
+{
     id: sliderRoot
 
-    // handle properties
-    property real handleSize: 10
+    // Handle properties
+    property real handleSize: UM.Theme.getSize("slider_handle").width
     property real handleRadius: handleSize / 2
     property real minimumRangeHandleSize: handleSize / 2
-    property color upperHandleColor: "black"
-    property color lowerHandleColor: "black"
-    property color rangeHandleColor: "black"
-    property color handleActiveColor: "white"
-    property real handleLabelWidth: width
+    property color upperHandleColor: UM.Theme.getColor("slider_handle")
+    property color lowerHandleColor: UM.Theme.getColor("slider_handle")
+    property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+    property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
     property var activeHandle: upperHandle
 
-    // track properties
-    property real trackThickness: 4 // width of the slider track
-    property real trackRadius: trackThickness / 2
-    property color trackColor: "white"
-    property real trackBorderWidth: 1 // width of the slider track border
-    property color trackBorderColor: "black"
+    // Track properties
+    property real trackThickness: UM.Theme.getSize("slider_groove").width // width of the slider track
+    property real trackRadius: UM.Theme.getSize("slider_groove_radius").width
+    property color trackColor: UM.Theme.getColor("slider_groove")
 
     // value properties
     property real maximumValue: 100
@@ -39,40 +37,49 @@ Item {
     property real lowerValue: minimumValue
 
     property bool layersVisible: true
+    property bool manuallyChanged: true     // Indicates whether the value was changed manually or during simulation
 
-    function getUpperValueFromSliderHandle() {
+    function getUpperValueFromSliderHandle()
+    {
         return upperHandle.getValue()
     }
 
-    function setUpperValue(value) {
+    function setUpperValue(value)
+    {
         upperHandle.setValue(value)
         updateRangeHandle()
     }
 
-    function getLowerValueFromSliderHandle() {
+    function getLowerValueFromSliderHandle()
+    {
         return lowerHandle.getValue()
     }
 
-    function setLowerValue(value) {
+    function setLowerValue(value)
+    {
         lowerHandle.setValue(value)
         updateRangeHandle()
     }
 
-    function updateRangeHandle() {
+    function updateRangeHandle()
+    {
         rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height)
     }
 
     // set the active handle to show only one label at a time
-    function setActiveHandle(handle) {
+    function setActiveHandle(handle)
+    {
         activeHandle = handle
     }
 
-    function normalizeValue(value) {
+    function normalizeValue(value)
+    {
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
-    // slider track
-    Rectangle {
+    // Slider track
+    Rectangle
+    {
         id: track
 
         width: sliderRoot.trackThickness
@@ -80,13 +87,12 @@ Item {
         radius: sliderRoot.trackRadius
         anchors.centerIn: sliderRoot
         color: sliderRoot.trackColor
-        border.width: sliderRoot.trackBorderWidth
-        border.color: sliderRoot.trackBorderColor
         visible: sliderRoot.layersVisible
     }
 
     // Range handle
-    Item {
+    Item
+    {
         id: rangeHandle
 
         y: upperHandle.y + upperHandle.height
@@ -95,8 +101,10 @@ Item {
         anchors.horizontalCenter: sliderRoot.horizontalCenter
         visible: sliderRoot.layersVisible
 
-        // set the new value when dragging
-        function onHandleDragged () {
+        // Set the new value when dragging
+        function onHandleDragged()
+        {
+            sliderRoot.manuallyChanged = true
 
             upperHandle.y = y - upperHandle.height
             lowerHandle.y = y + height
@@ -109,7 +117,14 @@ Item {
             UM.SimulationView.setMinimumLayer(lowerValue)
         }
 
-        function setValue (value) {
+        function setValueManually(value)
+        {
+            sliderRoot.manuallyChanged = true
+            upperHandle.setValue(value)
+        }
+
+        function setValue(value)
+        {
             var range = sliderRoot.upperValue - sliderRoot.lowerValue
             value = Math.min(value, sliderRoot.maximumValue)
             value = Math.max(value, sliderRoot.minimumValue + range)
@@ -118,17 +133,21 @@ Item {
             UM.SimulationView.setMinimumLayer(value - range)
         }
 
-        Rectangle {
-            width: sliderRoot.trackThickness - 2 * sliderRoot.trackBorderWidth
+        Rectangle
+        {
+            width: sliderRoot.trackThickness
             height: parent.height + sliderRoot.handleSize
             anchors.centerIn: parent
+            radius: sliderRoot.trackRadius
             color: sliderRoot.rangeHandleColor
         }
 
-        MouseArea {
+        MouseArea
+        {
             anchors.fill: parent
 
-            drag {
+            drag
+            {
                 target: parent
                 axis: Drag.YAxis
                 minimumY: upperHandle.height
@@ -139,7 +158,8 @@ Item {
             onPressed: sliderRoot.setActiveHandle(rangeHandle)
         }
 
-        SimulationSliderLabel {
+        SimulationSliderLabel
+        {
             id: rangleHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
@@ -152,12 +172,13 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.upperValue
             busy: UM.SimulationView.busy
-            setValue: rangeHandle.setValue // connect callback functions
+            setValue: rangeHandle.setValueManually // connect callback functions
         }
     }
 
     // Upper handle
-    Rectangle {
+    Rectangle
+    {
         id: upperHandle
 
         y: sliderRoot.height - (sliderRoot.minimumRangeHandleSize + 2 * sliderRoot.handleSize)
@@ -168,10 +189,13 @@ Item {
         color: upperHandleLabel.activeFocus ? sliderRoot.handleActiveColor : sliderRoot.upperHandleColor
         visible: sliderRoot.layersVisible
 
-        function onHandleDragged () {
+        function onHandleDragged()
+        {
+            sliderRoot.manuallyChanged = true
 
             // don't allow the lower handle to be heigher than the upper handle
-            if (lowerHandle.y - (y + height) < sliderRoot.minimumRangeHandleSize) {
+            if (lowerHandle.y - (y + height) < sliderRoot.minimumRangeHandleSize)
+            {
                 lowerHandle.y = y + height + sliderRoot.minimumRangeHandleSize
             }
 
@@ -183,21 +207,34 @@ Item {
         }
 
         // get the upper value based on the slider position
-        function getValue () {
+        function getValue()
+        {
             var result = y / (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize))
             result = sliderRoot.maximumValue + result * (sliderRoot.minimumValue - (sliderRoot.maximumValue - sliderRoot.minimumValue))
             result = sliderRoot.roundValues ? Math.round(result) : result
             return result
         }
 
+        function setValueManually(value)
+        {
+            sliderRoot.manuallyChanged = true
+            upperHandle.setValue(value)
+        }
+
         // set the slider position based on the upper value
-        function setValue (value) {
+        function setValue(value)
+        {
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
             UM.SimulationView.setCurrentLayer(value)
 
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
+            // In case there is only one layer, the diff value results in a NaN, so this is for catching this specific case
+            if (isNaN(diff))
+            {
+                diff = 0
+            }
             var newUpperYPosition = Math.round(diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newUpperYPosition
 
@@ -209,10 +246,12 @@ Item {
         Keys.onDownPressed: upperHandleLabel.setValue(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         // dragging
-        MouseArea {
+        MouseArea
+        {
             anchors.fill: parent
 
-            drag {
+            drag
+            {
                 target: parent
                 axis: Drag.YAxis
                 minimumY: 0
@@ -220,17 +259,19 @@ Item {
             }
 
             onPositionChanged: parent.onHandleDragged()
-            onPressed: {
+            onPressed:
+            {
                 sliderRoot.setActiveHandle(upperHandle)
                 upperHandleLabel.forceActiveFocus()
             }
         }
 
-        SimulationSliderLabel {
+        SimulationSliderLabel
+        {
             id: upperHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            x: parent.x - parent.width - width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
@@ -239,12 +280,13 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.upperValue
             busy: UM.SimulationView.busy
-            setValue: upperHandle.setValue // connect callback functions
+            setValue: upperHandle.setValueManually // connect callback functions
         }
     }
 
     // Lower handle
-    Rectangle {
+    Rectangle
+    {
         id: lowerHandle
 
         y: sliderRoot.height - sliderRoot.handleSize
@@ -256,10 +298,13 @@ Item {
 
         visible: sliderRoot.layersVisible
 
-        function onHandleDragged () {
+        function onHandleDragged()
+        {
+            sliderRoot.manuallyChanged = true
 
             // don't allow the upper handle to be lower than the lower handle
-            if (y - (upperHandle.y + upperHandle.height) < sliderRoot.minimumRangeHandleSize) {
+            if (y - (upperHandle.y + upperHandle.height) < sliderRoot.minimumRangeHandleSize)
+            {
                 upperHandle.y = y - (upperHandle.heigth + sliderRoot.minimumRangeHandleSize)
             }
 
@@ -271,21 +316,35 @@ Item {
         }
 
         // get the lower value from the current slider position
-        function getValue () {
+        function getValue()
+        {
             var result = (y - (sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)) / (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize));
             result = sliderRoot.maximumValue - sliderRoot.minimumRange + result * (sliderRoot.minimumValue - (sliderRoot.maximumValue - sliderRoot.minimumRange))
             result = sliderRoot.roundValues ? Math.round(result) : result
             return result
         }
 
+        function setValueManually(value)
+        {
+            sliderRoot.manuallyChanged = true
+            lowerHandle.setValue(value)
+        }
+
         // set the slider position based on the lower value
-        function setValue (value) {
+        function setValue(value)
+        {
+
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
             UM.SimulationView.setMinimumLayer(value)
 
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
+            // In case there is only one layer, the diff value results in a NaN, so this is for catching this specific case
+            if (isNaN(diff))
+            {
+                diff = 0
+            }
             var newLowerYPosition = Math.round((sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize) + diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newLowerYPosition
 
@@ -297,10 +356,12 @@ Item {
         Keys.onDownPressed: lowerHandleLabel.setValue(lowerHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         // dragging
-        MouseArea {
+        MouseArea
+        {
             anchors.fill: parent
 
-            drag {
+            drag
+            {
                 target: parent
                 axis: Drag.YAxis
                 minimumY: upperHandle.height + sliderRoot.minimumRangeHandleSize
@@ -308,26 +369,28 @@ Item {
             }
 
             onPositionChanged: parent.onHandleDragged()
-            onPressed: {
+            onPressed:
+            {
                 sliderRoot.setActiveHandle(lowerHandle)
                 lowerHandleLabel.forceActiveFocus()
             }
         }
 
-        SimulationSliderLabel {
+        SimulationSliderLabel
+        {
             id: lowerHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            x: parent.x - parent.width - width
             anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
+            target: Qt.point(sliderRoot.width + width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.lowerValue
             busy: UM.SimulationView.busy
-            setValue: lowerHandle.setValue // connect callback functions
+            setValue: lowerHandle.setValueManually // connect callback functions
         }
     }
 }

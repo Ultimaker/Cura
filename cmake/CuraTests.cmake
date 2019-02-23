@@ -6,6 +6,8 @@ include(CMakeParseArguments)
 
 find_package(PythonInterp 3.5.0 REQUIRED)
 
+add_custom_target(test-verbose COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
+
 function(cura_add_test)
     set(_single_args NAME DIRECTORY PYTHONPATH)
     cmake_parse_arguments("" "" "${_single_args}" "" ${ARGN})
@@ -34,7 +36,7 @@ function(cura_add_test)
     if (NOT ${test_exists})
         add_test(
             NAME ${_NAME}
-            COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
+            COMMAND ${PYTHON_EXECUTABLE} -m pytest --verbose --full-trace --capture=no --no-print-log --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
         )
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
@@ -57,5 +59,13 @@ endforeach()
 #Add code style test.
 add_test(
     NAME "code-style"
-    COMMAND ${PYTHON_EXECUTABLE} run_mypy.py WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMAND ${PYTHON_EXECUTABLE} run_mypy.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+#Add test for whether the shortcut alt-keys are unique in every translation.
+add_test(
+    NAME "shortcut-keys"
+    COMMAND ${PYTHON_EXECUTABLE} scripts/check_shortcut_keys.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )

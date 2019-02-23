@@ -20,7 +20,7 @@ UM.Dialog
 
     GridLayout
     {
-        UM.I18nCatalog{id: catalog; name:"cura"}
+        UM.I18nCatalog{id: catalog; name: "cura"}
         anchors.fill: parent;
         Layout.fillWidth: true
         columnSpacing: 16 * screenScaleFactor
@@ -35,7 +35,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Height (mm)")
+                    text: catalog.i18nc("@action:label", "Height (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -58,7 +58,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Base (mm)")
+                    text: catalog.i18nc("@action:label", "Base (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -81,7 +81,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Width (mm)")
+                    text: catalog.i18nc("@action:label", "Width (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -105,7 +105,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Depth (mm)")
+                    text: catalog.i18nc("@action:label", "Depth (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -151,7 +151,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Smoothing")
+                    text: catalog.i18nc("@action:label", "Smoothing")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }

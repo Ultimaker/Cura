@@ -16,7 +16,7 @@ Item
 
     property QtObject qualityManager: CuraApplication.getQualityManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
-    property var extrudersModel: Cura.ExtrudersModel {}
+    property var extrudersModel: CuraApplication.getExtrudersModel()
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
@@ -173,6 +173,7 @@ Item
         id: createQualityDialog
         title: catalog.i18nc("@title:window", "Create Profile")
         object: "<new name>"
+        explanation: catalog.i18nc("@info", "Please provide a name for this profile.")
         onAccepted:
         {
             base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
@@ -188,21 +189,27 @@ Item
     Connections
     {
         target: qualitiesModel
-        onItemsChanged: {
+        onItemsChanged:
+        {
             var toSelectItemName = base.currentItem == null ? "" : base.currentItem.name;
-            if (newQualityNameToSelect != "") {
+            if (newQualityNameToSelect != "")
+            {
                 toSelectItemName = newQualityNameToSelect;
             }
 
             var newIdx = -1;  // Default to nothing if nothing can be found
-            if (toSelectItemName != "") {
+            if (toSelectItemName != "")
+            {
                 // Select the required quality name if given
-                for (var idx = 0; idx < qualitiesModel.rowCount(); ++idx) {
+                for (var idx = 0; idx < qualitiesModel.count; ++idx)
+                {
                     var item = qualitiesModel.getItem(idx);
-                    if (item.name == toSelectItemName) {
+                    if (item.name == toSelectItemName)
+                    {
                         // Switch to the newly created profile if needed
                         newIdx = idx;
-                        if (base.toActivateNewQuality) {
+                        if (base.toActivateNewQuality)
+                        {
                             // Activate this custom quality if required
                             Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
                         }
@@ -370,6 +377,7 @@ Item
 
             width: true ? (parent.width * 0.4) | 0 : parent.width
             frameVisible: true
+            clip: true
 
             ListView
             {
@@ -382,9 +390,11 @@ Item
                     var selectedItemName = Cura.MachineManager.activeQualityOrQualityChangesName;
 
                     // Select the required quality name if given
-                    for (var idx = 0; idx < qualitiesModel.rowCount(); idx++) {
+                    for (var idx = 0; idx < qualitiesModel.count; idx++)
+                    {
                         var item = qualitiesModel.getItem(idx);
-                        if (item.name == selectedItemName) {
+                        if (item.name == selectedItemName)
+                        {
                             currentIndex = idx;
                             break;
                         }
@@ -400,7 +410,7 @@ Item
                     {
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                        text: section == "true" ? catalog.i18nc("@label", "Protected profiles") : catalog.i18nc("@label", "Custom profiles")
+                        text: section == "true" ? catalog.i18nc("@label", "Default profiles") : catalog.i18nc("@label", "Custom profiles")
                         font.bold: true
                     }
                 }
@@ -463,7 +473,7 @@ Item
 
                     Label {
                         text: base.currentItemName
-                        font: UM.Theme.getFont("large")
+                        font: UM.Theme.getFont("large_bold")
                     }
                 }
 

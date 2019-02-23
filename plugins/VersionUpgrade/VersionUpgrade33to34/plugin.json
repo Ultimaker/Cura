@@ -1,8 +1,8 @@
  {
     "name": "Version Upgrade 3.3 to 3.4",
     "author": "Ultimaker B.V.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Upgrades configurations from Cura 3.3 to Cura 3.4.",
-    "api": 4,
+    "api": "6.0",
     "i18n-catalog": "cura"
 }

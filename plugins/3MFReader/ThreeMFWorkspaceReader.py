@@ -85,14 +85,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self) -> None:
         super().__init__()
 
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name="application/x-curaproject+xml",
-                comment="Cura Project File",
-                suffixes=["curaproject.3mf"]
-            )
-        )
-
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
@@ -306,7 +298,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 values = parser["values"] if parser.has_section("values") else dict()
                 num_settings_overriden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
-                quality_changes = self._container_registry.findInstanceContainers(id = container_id)
+                quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
+                                                                                  type = "quality_changes")
                 if quality_changes:
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
@@ -507,7 +500,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         is_printer_group = False
         if machine_conflict:
-            group_name = existing_global_stack.getMetaDataEntry("connect_group_name")
+            group_name = existing_global_stack.getMetaDataEntry("group_name")
             if group_name is not None:
                 is_printer_group = True
                 machine_name = group_name
@@ -726,8 +719,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             nodes = []
 
         base_file_name = os.path.basename(file_name)
-        if base_file_name.endswith(".curaproject.3mf"):
-            base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
 
@@ -803,7 +794,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Clear all existing containers
             quality_changes_info.global_info.container.clear()
             for container_info in quality_changes_info.extruder_info_dict.values():
-                container_info.container.clear()
+                if container_info.container:
+                    container_info.container.clear()
 
             # Loop over everything and override the existing containers
             global_info = quality_changes_info.global_info
@@ -936,7 +928,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             build_plate_id = global_stack.variant.getId()
 
             # get material diameter of this extruder
-            machine_material_diameter = extruder_stack.materialDiameter
+            machine_material_diameter = extruder_stack.getCompatibleMaterialDiameter()
             material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
                                                              extruder_stack.variant.getName(),
                                                              build_plate_id,
@@ -944,7 +936,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                              root_material_id)
 
             if material_node is not None and material_node.getContainer() is not None:
-                extruder_stack.material = material_node.getContainer()
+                extruder_stack.material = material_node.getContainer()  # type: InstanceContainer
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first
@@ -1022,7 +1014,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     ##  Get the list of ID's of all containers in a container stack by partially parsing it's serialized data.
     def _getContainerIdListFromSerialized(self, serialized):
-        parser = ConfigParser(interpolation=None, empty_lines_in_values=False)
+        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
 
         container_ids = []
@@ -1043,7 +1035,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return container_ids
 
     def _getMachineNameFromSerializedStack(self, serialized):
-        parser = ConfigParser(interpolation=None, empty_lines_in_values=False)
+        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
 

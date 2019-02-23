@@ -41,11 +41,15 @@ class StartJobResult(IntEnum):
 
 ##  Formatter class that handles token expansion in start/end gcode
 class GcodeStartEndFormatter(Formatter):
-    def get_value(self, key: str, args: str, kwargs: dict, default_extruder_nr: str = "-1") -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
+    def __init__(self, default_extruder_nr: int = -1) -> None:
+        super().__init__()
+        self._default_extruder_nr = default_extruder_nr
+
+    def get_value(self, key: str, args: str, kwargs: dict) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
         # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
         # and a default_extruder_nr to use when no extruder_nr is specified
 
-        extruder_nr = int(default_extruder_nr)
+        extruder_nr = self._default_extruder_nr
 
         key_fragments = [fragment.strip() for fragment in key.split(",")]
         if len(key_fragments) == 2:
@@ -62,11 +66,19 @@ class GcodeStartEndFormatter(Formatter):
             return "{" + key + "}"
 
         key = key_fragments[0]
-        try:
-            return kwargs[str(extruder_nr)][key]
-        except KeyError:
+
+        default_value_str = "{" + key + "}"
+        value = default_value_str
+        # "-1" is global stack, and if the setting value exists in the global stack, use it as the fallback value.
+        if key in kwargs["-1"]:
+            value = kwargs["-1"]
+        if str(extruder_nr) in kwargs and key in kwargs[str(extruder_nr)]:
+            value = kwargs[str(extruder_nr)][key]
+
+        if value == default_value_str:
             Logger.log("w", "Unable to replace '%s' placeholder in start/end g-code", key)
-            return "{" + key + "}"
+
+        return value
 
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
@@ -220,8 +232,10 @@ class StartSliceJob(Job):
                 stack = global_stack
                 skip_group = False
                 for node in group:
+                    # Only check if the printing extruder is enabled for printing meshes
+                    is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
-                    if not extruders_enabled[extruder_position]:
+                    if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
                         skip_group = True
                         has_model_with_disabled_extruders = True
                         associated_disabled_extruders.add(extruder_position)
@@ -245,7 +259,10 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            # Send the extruder settings in the order of extruder positions. Somehow, if you send e.g. extruder 3 first,
+            # then CuraEngine can slice with the wrong settings. This I think should be fixed in CuraEngine as well.
+            extruder_stack_list = sorted(list(global_stack.extruders.items()), key = lambda item: int(item[0]))
+            for _, extruder_stack in extruder_stack_list:
                 self._buildExtruderMessage(extruder_stack)
 
             for group in filtered_object_groups:
@@ -268,7 +285,7 @@ class StartSliceJob(Job):
 
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
-
+                    obj.name = object.getName()
                     indices = mesh_data.getIndices()
                     if indices is not None:
                         flat_verts = numpy.take(verts, indices.flatten(), axis=0)
@@ -306,7 +323,7 @@ class StartSliceJob(Job):
             value = stack.getProperty(key, "value")
             result[key] = value
             Job.yieldThread()
-
+        
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
         result["print_temperature"] = result["material_print_temperature"]
         result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
@@ -331,13 +348,13 @@ class StartSliceJob(Job):
                 "-1": self._buildReplacementTokens(global_stack)
             }
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
                 self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
 
         try:
             # any setting can be used as a token
-            fmt = GcodeStartEndFormatter()
+            fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
             settings = self._all_extruders_settings.copy()
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
@@ -438,8 +455,7 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         # Ensure that the engine is aware what the build extruder is.
-        if stack.getProperty("machine_extruder_count", "value") > 1:
-            changed_setting_keys.add("extruder_nr")
+        changed_setting_keys.add("extruder_nr")
 
         # Get values for all changed settings
         for key in changed_setting_keys:

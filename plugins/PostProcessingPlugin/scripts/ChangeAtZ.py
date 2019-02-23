@@ -112,7 +112,7 @@ class ChangeAtZ(Script):
                 "e1_Change_speed":
                 {
                     "label": "Change Speed",
-                    "description": "Select if total speed (print and travel) has to be cahnged",
+                    "description": "Select if total speed (print and travel) has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -407,13 +407,13 @@ class ChangeAtZ(Script):
                 if "M106" in line and state < 3: #looking for fan speed
                     old["fanSpeed"] = self.getValue(line, "S", old["fanSpeed"])
                 if "M221" in line and state < 3: #looking for flow rate
-                    tmp_extruder = self.getValue(line,"T",None)
+                    tmp_extruder = self.getValue(line, "T", None)
                     if tmp_extruder == None: #check if extruder is specified
                         old["flowrate"] = self.getValue(line, "S", old["flowrate"])
                     elif tmp_extruder == 0: #first extruder
                         old["flowrateOne"] = self.getValue(line, "S", old["flowrateOne"])
                     elif tmp_extruder == 1: #second extruder
-                        old["flowrateOne"] = self.getValue(line, "S", old["flowrateOne"])
+                        old["flowrateTwo"] = self.getValue(line, "S", old["flowrateTwo"])
                 if ("M84" in line or "M25" in line):
                     if state>0 and ChangeProp["speed"]: #"finish" commands for UM Original and UM2
                         modified_gcode += "M220 S100 ; speed reset to 100% at the end of print\n"

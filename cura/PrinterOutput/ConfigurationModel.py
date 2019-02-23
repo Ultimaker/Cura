@@ -13,42 +13,50 @@ class ConfigurationModel(QObject):
 
     configurationChanged = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self._printer_type = None
+        self._printer_type = ""
         self._extruder_configurations = []     # type: List[ExtruderConfigurationModel]
-        self._buildplate_configuration = None
+        self._buildplate_configuration = ""
 
     def setPrinterType(self, printer_type):
         self._printer_type = printer_type
 
     @pyqtProperty(str, fset = setPrinterType, notify = configurationChanged)
-    def printerType(self):
+    def printerType(self) -> str:
         return self._printer_type
 
-    def setExtruderConfigurations(self, extruder_configurations):
-        self._extruder_configurations = extruder_configurations
+    def setExtruderConfigurations(self, extruder_configurations: List["ExtruderConfigurationModel"]):
+        if self._extruder_configurations != extruder_configurations:
+            self._extruder_configurations = extruder_configurations
+
+            for extruder_configuration in self._extruder_configurations:
+                extruder_configuration.extruderConfigurationChanged.connect(self.configurationChanged)
+
+            self.configurationChanged.emit()
 
     @pyqtProperty("QVariantList", fset = setExtruderConfigurations, notify = configurationChanged)
     def extruderConfigurations(self):
         return self._extruder_configurations
 
-    def setBuildplateConfiguration(self, buildplate_configuration):
-        self._buildplate_configuration = buildplate_configuration
+    def setBuildplateConfiguration(self, buildplate_configuration: str) -> None:
+        if self._buildplate_configuration !=  buildplate_configuration:
+            self._buildplate_configuration = buildplate_configuration
+            self.configurationChanged.emit()
 
     @pyqtProperty(str, fset = setBuildplateConfiguration, notify = configurationChanged)
-    def buildplateConfiguration(self):
+    def buildplateConfiguration(self) -> str:
         return self._buildplate_configuration
 
     ##  This method is intended to indicate whether the configuration is valid or not.
     #   The method checks if the mandatory fields are or not set
-    def isValid(self):
+    def isValid(self) -> bool:
         if not self._extruder_configurations:
             return False
         for configuration in self._extruder_configurations:
             if configuration is None:
                 return False
-        return self._printer_type is not None
+        return self._printer_type != ""
 
     def __str__(self):
         message_chunks = []

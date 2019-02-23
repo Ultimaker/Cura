@@ -7,7 +7,6 @@
         "author": "Simon Cor",
         "manufacturer": "German RepRap",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker.png",
         "platform": "grr_neo_platform.stl",
         "machine_extruder_trains":
         {
