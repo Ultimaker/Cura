@@ -1,6 +1,6 @@
 {
     "id": "flsun_qq_extruder",
-    "version": 1,
+    "version": 2,
     "name": "Extruder",
     "inherits": "fdmextruder",
     "metadata": {
