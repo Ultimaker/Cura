@@ -54,7 +54,13 @@ class DriveApiService:
             Logger.log("w", "Could not get backups list from remote: %s", backup_list_request.text)
             Message(catalog.i18nc("@info:backup_status", "There was an error listing your backups."), title = catalog.i18nc("@info:title", "Backup")).show()
             return []
-        return backup_list_request.json()["data"]
+
+        backup_list_response = backup_list_request.json()
+        if "data" not in backup_list_response:
+            Logger.log("w", "Could not get backups from remote, actual response body was: %s", str(backup_list_response))
+            return []
+
+        return backup_list_response["data"]
 
     def createBackup(self) -> None:
         self.creatingStateChanged.emit(is_creating = True)
