@@ -386,8 +386,14 @@ class MachineManager(QObject):
                 return machine
         return None
 
+    @pyqtSlot(str)
     @pyqtSlot(str, str)
-    def addMachine(self, name: str, definition_id: str) -> None:
+    def addMachine(self, definition_id: str, name: Optional[str] = None) -> None:
+        if name is None:
+            definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
+            if definitions:
+                name = definitions[0].getName()
+
         new_stack = CuraStackBuilder.createMachine(name, definition_id)
         if new_stack:
             # Instead of setting the global container stack here, we set the active machine and so the signals are emitted
