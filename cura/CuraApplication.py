@@ -59,6 +59,8 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from cura.Scene.CuraSceneController import CuraSceneController
 
+from cura.UI.WelcomePagesModel import WelcomePagesModel
+
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
@@ -207,6 +209,8 @@ class CuraApplication(QtApplication):
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
+
+        self._welcome_pages_model = WelcomePagesModel(self)
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
@@ -745,6 +749,8 @@ class CuraApplication(QtApplication):
         # Initialize Cura API
         self._cura_API.initialize()
 
+        self._welcome_pages_model.initialize()
+
         # Detect in which mode to run and execute that mode
         if self._is_headless:
             self.runWithoutGUI()
@@ -842,6 +848,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
+
+    @pyqtSlot(result = QObject)
+    def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
+        return self._welcome_pages_model
 
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
@@ -974,6 +984,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
+        qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePageModel")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 

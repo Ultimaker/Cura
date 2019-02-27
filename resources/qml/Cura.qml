@@ -14,6 +14,7 @@ import Cura 1.1 as Cura
 import "Dialogs"
 import "Menus"
 import "MainWindow"
+import "WelcomePages"
 
 UM.MainWindow
 {
@@ -41,6 +42,30 @@ UM.MainWindow
         tooltip.hide();
     }
 
+    WelcomeDialog
+    {
+        id: welcomeDialog
+        visible: false
+    }
+
+    Rectangle
+    {
+        id: greyOutBackground
+        anchors.fill: parent
+        visible: welcomeDialog.visible
+        color: "black"
+        opacity: 0.7
+        z: stageMenu.z + 1
+    }
+
+    Connections
+    {
+        target: Cura.Actions.showOnBoarding
+        onTriggered:
+        {
+            welcomeDialog.show()
+        }
+    }
 
     Component.onCompleted:
     {
