@@ -68,7 +68,7 @@ Item
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.margins: 40
-        text: catalog.i18nc("@button", "Decline")
+        text: catalog.i18nc("@button", "Decline and close")
         width: 140
         fixedWidthMode: true
         onClicked: base.showNextPage()

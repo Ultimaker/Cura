@@ -32,12 +32,18 @@ class WelcomePagesModel(ListModel):
         # Add default welcome pages
         self._pages.append({"id": "welcome",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages", "WelcomeContent.qml"))),
+                                                                             os.path.join("WelcomePages",
+                                                                                          "WelcomeContent.qml"))),
                             })
         self._pages.append({"id": "user_agreement",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages",
                                                                                           "UserAgreementContent.qml"))),
+                            })
+        self._pages.append({"id": "whats_new",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "WhatsNewContent.qml"))),
                             })
 
         self.setItems(self._pages)
