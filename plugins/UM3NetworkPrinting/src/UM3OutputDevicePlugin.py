@@ -213,6 +213,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         self._checkManualDevice(address)
 
+    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
+        # TODO: This needs to be implemented. It's supposed to create a machine given a unique key as already discovered
+        # by this plugin.
+        pass
+
     def _checkManualDevice(self, address):
         # Check if a UM3 family device exists at this address.
         # If a printer responds, it will replace the preliminary printer created above
@@ -293,7 +298,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 except TypeError:
                     # Disconnect already happened.
                     pass
-
+            self._application.getMachineManager().removeDiscoveredPrinter(device.getId())
             self.discoveredDevicesChanged.emit()
 
     def _onAddDevice(self, name, address, properties):
@@ -318,7 +323,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-
+        self._application.getMachineManager().addDiscoveredPrinter(device.getId(), name, self._createMachineFromDiscoveredPrinter, properties[b"printer_type"].decode("utf-8"))
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 

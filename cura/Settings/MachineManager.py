@@ -4,7 +4,7 @@
 import time
 import re
 import unicodedata
-from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
+from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast, NamedTuple, Callable
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -48,6 +48,8 @@ if TYPE_CHECKING:
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Machines.QualityGroup import QualityGroup
+
+DiscoveredPrinter = NamedTuple("DiscoveredPrinter", [("key", str), ("name", str), ("create_callback", Callable[[str], None]), ("machine_type", "str")])
 
 
 class MachineManager(QObject):
@@ -134,6 +136,9 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
         self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
 
+        # This will contain all discovered network printers
+        self._discovered_printers = {}  # type: Dict[str, DiscoveredPrinter]
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -171,7 +176,24 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
-        self.printerConnectedStatusChanged.emit()
+
+    #   Discovered printers are all the printers that were found on the network, which provide a more convenient way
+    #   to add networked printers (Plugin finds a bunch of printers, user can select one from the list, plugin can then
+    #   add that printer to Cura as the active one).
+    def addDiscoveredPrinter(self, key: str, name: str, create_callback: Callable[[str], None], machine_type: str) -> None:
+        if key not in self._discovered_printers:
+            self._discovered_printers[key] = DiscoveredPrinter(key, name, create_callback, machine_type)
+        else:
+            Logger.log("e", "Printer with the key %s was already in the discovered printer list", key)
+
+    def removeDiscoveredPrinter(self, key: str) -> None:
+        if key in self._discovered_printers:
+            del self._discovered_printers[key]
+
+    @pyqtSlot(str)
+    def addMachineFromDiscoveredPrinter(self, key: str) -> None:
+        if key in self._discovered_printers:
+            self._discovered_printers[key].create_callback(key)
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
     def currentConfiguration(self) -> ConfigurationModel:
