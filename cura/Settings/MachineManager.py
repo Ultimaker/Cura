@@ -415,8 +415,10 @@ class MachineManager(QObject):
             definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
             if definitions:
                 name = definitions[0].getName()
+            else:
+                name = definition_id
 
-        new_stack = CuraStackBuilder.createMachine(name, definition_id)
+        new_stack = CuraStackBuilder.createMachine(cast(str, name), definition_id)
         if new_stack:
             # Instead of setting the global container stack here, we set the active machine and so the signals are emitted
             self.setActiveMachine(new_stack.getId())
