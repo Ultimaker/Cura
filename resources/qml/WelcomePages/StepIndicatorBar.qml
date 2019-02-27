@@ -27,7 +27,7 @@ Item
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        width: (currentStep * 1.0 / totalSteps) * background.width
+        width: (currentStep + 1) * 1.0 / totalSteps * background.width
         color: "#3282ff"
         radius: base.radius
     }

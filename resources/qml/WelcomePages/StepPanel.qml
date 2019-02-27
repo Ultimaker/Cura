@@ -14,15 +14,38 @@ Item
     clip: true
 
     property int roundCornerRadius: 4
-    property int shadowOffset: 2
+    property int shadowOffset: 1
     property int stepBarHeight: 12
-    property int contentMargins: 4
+    property int contentMargins: 1
 
     property int totalSteps: 0
     property int currentStep: -1
 
     property var currentItem: null
     property var model: null
+
+    signal showNextPage()
+    signal showPreviousPage()
+    signal passLastPage()  // Emitted when there is no more page to show
+
+    onShowNextPage:
+    {
+        if (currentStep < totalSteps - 1)
+        {
+            currentStep++
+        }
+        else {
+            passLastPage()
+        }
+    }
+
+    onShowPreviousPage:
+    {
+        if (currentStep > 0)
+        {
+            currentStep--
+        }
+    }
 
     onVisibleChanged:
     {
@@ -50,7 +73,7 @@ Item
     {
         id: panelBackground
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: 2
         color: "white"  // TODO
         radius: base.roundCornerRadius  // TODO
     }
@@ -59,14 +82,14 @@ Item
     DropShadow
     {
         id: shadow
-        // Don't blur the shadow
-        radius: base.roundCornerRadius + 2
+        radius: UM.Theme.getSize("monitor_shadow_radius").width
         anchors.fill: parent
         source: parent
         horizontalOffset: base.shadowOffset
         verticalOffset: base.shadowOffset
         visible: true
-        color: UM.Theme.getColor("action_button_shadow")
+        color: UM.Theme.getColor("monitor_shadow")
+        transparentBorder: true
         // Should always be drawn behind the background.
         z: panelBackground.z - 1
     }
@@ -74,7 +97,6 @@ Item
     StepIndicatorBar
     {
         id: stepIndicatorBar
-        //anchors.margins: 10
 
         totalSteps: base.totalSteps
         currentStep: base.currentStep

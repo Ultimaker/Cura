@@ -33,8 +33,12 @@ class WelcomePagesModel(ListModel):
         self._pages.append({"id": "welcome",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages", "WelcomeContent.qml"))),
-                            }
-                           )
+                            })
+        self._pages.append({"id": "user_agreement",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "UserAgreementContent.qml"))),
+                            })
 
         self.setItems(self._pages)
 

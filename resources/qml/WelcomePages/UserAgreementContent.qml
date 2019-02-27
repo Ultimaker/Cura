@@ -4,38 +4,73 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
+import UM 1.3 as UM
+import Cura 1.1 as Cura
 
-Component
+Item
 {
     Column
     {
-        spacing: 20
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 20
+
+        UM.I18nCatalog { id: catalog; name: "cura" }
+
+        spacing: 40
+
+        // Placeholder
+        Label { text: " " }
 
         Label
         {
             id: titleLabel
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
-            text: "User Agreement" // TODO
-            color: "blue"  // TODO
-            //font:
+            text: catalog.i18nc("@label", "User Agreement")
+            color: UM.Theme.getColor("primary_button")
+            font: UM.Theme.getFont("large_bold")
             renderType: NativeRendering
-        }
-
-        Image {
-            id: curaImage
-            anchors.horizontalCenter: parent.horizontalCenter
-            source: "TODO"
         }
 
         Label
         {
-            id: textLabel
+            width: parent.width * 2 / 3
+            id: disclaimerLineLabel
             anchors.horizontalCenter: parent.horizontalCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: "Please fllow these steps to set up\nUltimaker Cura. This will only take a few moments."
-            //font:
+            text: "<p><b>Disclaimer by Ultimaker</b></p>"
+                + "<p>Please read this disclaimer carefully.</p>"
+                + "<p>Except when otherwise stated in writing, Ultimaker provides any Ultimaker software or third party software \"As is\" without warranty of any kind. The entire risk as to the quality and perfoemance of Ultimaker software is with you.</p>"
+                + "<p>Unless required by applicable law or agreed to in writing, in no event will Ultimaker be liable to you for damages, including any general, special, incidental, or consequential damages arising out of the use or inability to use any Ultimaker software or third party software.</p>"
+            textFormat: Text.RichText
+            wrapMode: Text.WordWrap
+            font: UM.Theme.getFont("default")
             renderType: NativeRendering
         }
+    }
+
+    Cura.PrimaryButton
+    {
+        id: agreeButton
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 40
+        text: catalog.i18nc("@button", "Agree")
+        width: 140
+        fixedWidthMode: true
+        onClicked: base.showNextPage()
+    }
+
+    Cura.SecondaryButton
+    {
+        id: declineButton
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 40
+        text: catalog.i18nc("@button", "Decline")
+        width: 140
+        fixedWidthMode: true
+        onClicked: base.showNextPage()
     }
 }

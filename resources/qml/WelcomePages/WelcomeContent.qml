@@ -61,5 +61,6 @@ Column
         text: catalog.i18nc("@button", "Get started")
         width: 140
         fixedWidthMode: true
+        onClicked: base.showNextPage()
     }
 }

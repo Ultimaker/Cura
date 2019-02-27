@@ -63,6 +63,7 @@ UM.MainWindow
         target: Cura.Actions.showOnBoarding
         onTriggered:
         {
+            welcomeDialog.currentStep = 0
             welcomeDialog.show()
         }
     }

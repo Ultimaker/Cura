@@ -21,10 +21,19 @@ Window
     height: 600  // TODO
     color: "transparent"
 
+    property alias currentStep: stepPanel.currentStep
+
     StepPanel
     {
         id: stepPanel
         currentStep: 0
         model: CuraApplication.getWelcomePagesModel()
+    }
+
+    // Close this dialog when there's no more page to show
+    Connections
+    {
+        target: stepPanel
+        onPassLastPage: close()
     }
 }
