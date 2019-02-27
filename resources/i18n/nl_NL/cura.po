@@ -1,12 +1,12 @@
 # Cura
-# Copyright (C) 2018 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.6\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Cura 4.0\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-02-26 16:36+0100\n"
 "PO-Revision-Date: 2018-11-06 15:03+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
@@ -1600,26 +1600,6 @@ msgstr "Nozzle-offset Y"
 msgctxt "@label"
 msgid "Cooling Fan Number"
 msgstr "Nummer van koelventilator"
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:453
-msgctxt "@label"
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-13 17:41+0200\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:473
 msgctxt "@label"

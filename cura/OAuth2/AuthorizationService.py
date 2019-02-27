@@ -108,7 +108,7 @@ class AuthorizationService:
         # We have a fallback on a date far in the past for currently stored auth data in cura.cfg.
         received_at = datetime.strptime(self._auth_data.received_at, TOKEN_TIMESTAMP_FORMAT) \
             if self._auth_data.received_at else datetime(2000, 1, 1)
-        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0))
+        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0) - 60)
         if datetime.now() > expiry_date:
             self.refreshAccessToken()
 
