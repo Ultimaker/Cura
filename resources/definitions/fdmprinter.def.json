@@ -2901,7 +2901,6 @@
                             "default_value": 3000,
                             "value": "acceleration_topbottom",
                             "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
-                            "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
                         },
