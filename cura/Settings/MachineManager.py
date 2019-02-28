@@ -162,6 +162,7 @@ class MachineManager(QObject):
     printerConnectedStatusChanged = pyqtSignal() # Emitted every time the active machine change or the outputdevices change
 
     rootMaterialChanged = pyqtSignal()
+    discoveredPrintersChanged = pyqtSignal()
 
     def setInitialActiveMachine(self) -> None:
         active_machine_id = self._application.getPreferences().getValue("cura/active_machine")
@@ -183,12 +184,18 @@ class MachineManager(QObject):
     def addDiscoveredPrinter(self, key: str, name: str, create_callback: Callable[[str], None], machine_type: str) -> None:
         if key not in self._discovered_printers:
             self._discovered_printers[key] = DiscoveredPrinter(key, name, create_callback, machine_type)
+            self.discoveredPrintersChanged.emit()
         else:
             Logger.log("e", "Printer with the key %s was already in the discovered printer list", key)
 
     def removeDiscoveredPrinter(self, key: str) -> None:
         if key in self._discovered_printers:
             del self._discovered_printers[key]
+            self.discoveredPrintersChanged.emit()
+
+    @pyqtProperty("QVariantList", notify = discoveredPrintersChanged)
+    def discoveredPrinters(self):
+        return list(self._discovered_printers.values())
 
     @pyqtSlot(str)
     def addMachineFromDiscoveredPrinter(self, key: str) -> None:
