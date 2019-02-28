@@ -119,8 +119,12 @@ class AuthorizationService:
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
-        self._storeAuthData(self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token))
-        self.onAuthStateChanged.emit(logged_in = True)
+        response = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
+        if response.success:
+            self._storeAuthData(response)
+            self.onAuthStateChanged.emit(logged_in = True)
+        else:
+            self.onAuthStateChanged(logged_in = False)
 
     ##  Delete the authentication data that we have stored locally (eg; logout)
     def deleteAuthData(self) -> None:
