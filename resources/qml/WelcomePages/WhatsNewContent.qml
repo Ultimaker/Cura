@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 
 //
-// This component contains the content for the page "What's new in Ultimaker Cura" of the welcome on-boarding process.
+// This component contains the content for the "What's new in Ultimaker Cura" page of the welcome on-boarding process.
 //
 Item
 {
@@ -40,7 +40,6 @@ Item
         border.color: "#dfdfdf"
         border.width: 1
 
-
         ScrollView
         {
             anchors.fill: parent
@@ -51,7 +50,6 @@ Item
             TextArea
             {
                 id: whatsNewTextArea
-                width: parent.width
                 text: catalog.i18nc("@text", "<p><b>Ultimaker Cura 4.0</b></p>
 
     <p>New features</p>

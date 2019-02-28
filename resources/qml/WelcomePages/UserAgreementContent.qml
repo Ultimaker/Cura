@@ -7,6 +7,9 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
+//
+// This component contains the content for the "User Agreement" page of the welcome on-boarding process.
+//
 Item
 {
     Column
@@ -31,7 +34,7 @@ Item
             text: catalog.i18nc("@label", "User Agreement")
             color: UM.Theme.getColor("primary_button")
             font: UM.Theme.getFont("large_bold")
-            renderType: NativeRendering
+            renderType: Text.NativeRendering
         }
 
         Label
@@ -46,7 +49,7 @@ Item
             textFormat: Text.RichText
             wrapMode: Text.WordWrap
             font: UM.Theme.getFont("default")
-            renderType: NativeRendering
+            renderType: Text.NativeRendering
         }
     }
 
@@ -71,6 +74,6 @@ Item
         text: catalog.i18nc("@button", "Decline and close")
         width: 140
         fixedWidthMode: true
-        onClicked: base.showNextPage()
+        onClicked: base.showNextPage() // TODO: quit
     }
 }

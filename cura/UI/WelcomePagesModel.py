@@ -50,6 +50,11 @@ class WelcomePagesModel(ListModel):
                                                                              os.path.join("WelcomePages",
                                                                                           "DataCollectionsContent.qml"))),
                             })
+        self._pages.append({"id": "cloud",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "CloudContent.qml"))),
+                            })
 
         self.setItems(self._pages)
 

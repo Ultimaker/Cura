@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 
 //
-// This component contains the content for the page "What's new in Ultimaker Cura" of the welcome on-boarding process.
+// This component contains the content for the "Help us to improve Ultimaker Cura" page of the welcome on-boarding process.
 //
 Item
 {

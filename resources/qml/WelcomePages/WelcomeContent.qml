@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 
 //
-// This component contains the content for the first page of the welcome on-boarding process.
+// This component contains the content for the "Welcome" page of the welcome on-boarding process.
 //
 Column
 {
