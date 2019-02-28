@@ -6,6 +6,10 @@ import QtQuick.Controls 2.3
 import QtGraphicalEffects 1.0 // For the dropshadow
 
 import Cura 1.1 as Cura
+
+import "../Widgets"
+
+
 Item
 {
     id: base
@@ -18,10 +22,11 @@ Item
     property int stepBarHeight: 12
     property int contentMargins: 1
 
-    property int totalSteps: 0
-    property int currentStep: -1
+    property int currentStep: 0
+    property int totalStepCount: (model == null) ? 0 : model.count
+    property real progressValue: (totalStepCount == 0) ? 0 : (currentStep / totalStepCount)
 
-    property var currentItem: null
+    property var currentItem: (model == null) ? null : model.getItem(currentStep)
     property var model: null
 
     signal showNextPage()
@@ -30,7 +35,7 @@ Item
 
     onShowNextPage:
     {
-        if (currentStep < totalSteps - 1)
+        if (currentStep < totalStepCount - 1)
         {
             currentStep++
         }
@@ -56,16 +61,9 @@ Item
         }
     }
 
-    onCurrentStepChanged:
-    {
-        base.currentItem = base.model.getItem(base.currentStep)
-    }
-
     onModelChanged:
     {
-        base.totalSteps = base.model.count
         base.currentStep = 0
-        base.currentItem = base.model.getItem(base.currentStep)
     }
 
     // Panel background
@@ -94,13 +92,11 @@ Item
         z: panelBackground.z - 1
     }
 
-    StepIndicatorBar
+    CuraProgressBar
     {
-        id: stepIndicatorBar
+        id: progressBar
 
-        totalSteps: base.totalSteps
-        currentStep: base.currentStep
-        radius: base.roundCornerRadius
+        value: base.progressValue
 
         anchors
         {
@@ -117,7 +113,7 @@ Item
         anchors
         {
             margins: base.contentMargins
-            top: stepIndicatorBar.bottom
+            top: progressBar.bottom
             bottom: parent.bottom
             left: parent.left
             right: parent.right
