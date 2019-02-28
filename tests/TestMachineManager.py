@@ -15,7 +15,10 @@ def container_registry() -> ContainerRegistry:
 def extruder_manager(application, container_registry) -> ExtruderManager:
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+            manager = ExtruderManager.getInstance()
+            if manager is None:
                 manager = ExtruderManager()
+
     return manager
 
 @pytest.fixture()
@@ -41,3 +44,9 @@ def test_setActiveMachine(machine_manager):
             # Although we mocked the application away, we still want to know if it was notified about the attempted change.
             machine_manager._application.setGlobalContainerStack.assert_called_with(mocked_global_stack)
 
+
+def test_discoveredMachine(machine_manager):
+    mocked_callback = MagicMock()
+    machine_manager.addDiscoveredPrinter("test", "zomg", mocked_callback, "derp")
+    machine_manager.addMachineFromDiscoveredPrinter("test")
+    mocked_callback.assert_called_with("test")
