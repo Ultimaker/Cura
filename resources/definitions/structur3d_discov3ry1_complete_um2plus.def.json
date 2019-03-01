@@ -1,55 +1,32 @@
 {
     "version": 2,
-	
     "name": "Discov3ry Complete (Ultimaker 2+)",
-    
-	"inherits": "fdmprinter",
-	
+    "inherits": "fdmprinter",
     "metadata": {
         "author": "Andrew Finkle, CTO",
-        
-		"manufacturer": "Structur3d.io",
-		
-		"visible": true,
-        
-		"weight": 1,
-		
+        "manufacturer": "Structur3d.io",
+        "visible": true,
+        "weight": 1,
         "file_formats": "text/x-gcode",
-		
         "platform": "ultimaker2_platform.obj",
-		
         "platform_texture": "Ultimaker2Plusbackplate.png",
-		
         "platform_offset": [0, 0, 0],
-		
         "has_materials": true,
-		
-		"has_variants": true,
-		
+        "has_variants": true,
         "variants_name": "Print core",
-		
         "preferred_variant_name": "0.84mm (Green)",
-		
         "has_machine_materials": true,
-		
-		"preferred_material": "structur3d_dap100silicone",
-		
+        "preferred_material": "structur3d_dap100silicone",
         "has_variant_materials": false,
-		
         "has_machine_quality": false,
-		
-		"preferred_quality_type": "extra_fast",
-        
-		"first_start_actions": [],
-        
-		"supported_actions": [],
-        
-		"machine_extruder_trains":
+        "preferred_quality_type": "extra_fast",
+        "first_start_actions": [],
+        "supported_actions": [],
+        "machine_extruder_trains":
         {
             "0": "structur3d_discov3ry1_complete_um2plus_extruder_0"
         },
-		"firmware_file": "MarlinUltimaker2plus.hex"
-
+        "firmware_file": "MarlinUltimaker2plus.hex"
     },
 
     "overrides": {
@@ -57,7 +34,7 @@
         "speed_infill": {
             "value": "speed_print"
         },
-		"infill_sparse_density": {
+        "infill_sparse_density": {
             "value": 100
         },
         "retraction_hop_enabled": {
@@ -90,7 +67,7 @@
         "machine_height": {
             "default_value": 205
         },
-		"machine_width": {
+        "machine_width": {
             "default_value": 205
         },
         "machine_depth": {
@@ -128,7 +105,7 @@
                 [[ 115, -112.5], [ 108, -112.5], [ 110, -104.5], [ 115, -104.5]]
             ]
         },
-		"machine_gcode_flavor": {
+        "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_start_gcode": {
