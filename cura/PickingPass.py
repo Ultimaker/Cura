@@ -4,6 +4,9 @@
 import random
 from typing import Optional, TYPE_CHECKING
 
+from PyQt5.QtCore import QBuffer
+
+from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Qt.QtApplication import QtApplication
 from UM.Math.Vector import Vector
 from UM.Math.Color import Color
@@ -47,35 +50,44 @@ class PickingPass(RenderPass):
         # Fill up the batch with objects that can be sliced. `
         for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
-                tri_node = node.getMeshData().toTrimesh()
-                for index, face in enumerate(tri_node.faces):
-                    normal_vertex = tri_node.face_normals[index]
+                faces = node.getMeshData().getIndices()
+                vertices = node.getMeshData().getVertices()
+                normals = node.getMeshData().getNormals()
+                print("Faces:", faces)
+                print("Vertices", vertices)
+
+                for index, face in enumerate(faces):
+                    normal_vertex = normals[index]
+                    triangle_mesh = vertices[face]
+                    print(face, normal_vertex, triangle_mesh)
+
                     batch.addItem(transformation = node.getWorldTransformation(), mesh = node.getMeshData(), uniforms = { "selection_color": self._getFaceColor(face, normal_vertex)})
 
         self.bind()
         batch.render(self._scene.getActiveCamera())
         self.release()
 
-    def _getFaceColor(self, face, normal_vertex):
+    def _getFaceColor(self, face: Vector, normal_vertex: Vector) -> Color:
         while True:
             r = random.randint(0, 255)
             g = random.randint(0, 255)
             b = random.randint(0, 255)
-            a = 0
+            a = 255
             color = Color(r, g, b, a)
 
             if color not in self._selection_map:
                 break
 
-        self._selection_map[color] = normal_vertex
-
+        print("Adding color: {color} - {normal}".format(color = color, normal = normal_vertex))
+        self._selection_map[color] = {"face": id(face), "normal_vertex": normal_vertex}
         return color
 
     ##  Get the normal vector at a certain pixel coordinate.
-    def getPickedNormalVertex(self, x: int, y: int) -> float:
-
-        print(self._selection_map)
+    def getPickedNormalVertex(self, x: int, y: int) -> Optional[Vector]:
         output = self.getOutput()
+
+        print("Creating image")
+        output.save("thumbnail.png")
 
         window_size = self._renderer.getWindowSize()
 
@@ -87,7 +99,10 @@ class PickingPass(RenderPass):
 
         pixel = output.pixel(px, py)
         print("######### ", x, y, pixel, Color.fromARGB(pixel))
-        return self._selection_map.get(Color.fromARGB(pixel), None)
+        face = self._selection_map.get(Color.fromARGB(pixel), None)
+        if not face:
+            return None
+        return face.get("normal_vertex", None)
 
     ##  Get the distance in mm from the camera to at a certain pixel coordinate.
     def getPickedDepth(self, x: int, y: int) -> float:

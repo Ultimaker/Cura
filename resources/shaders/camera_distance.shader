@@ -17,6 +17,7 @@ vertex =
 
 fragment =
     uniform highp vec3 u_viewPosition;
+    uniform lowp vec4 u_color;
 
     varying highp vec3 v_vertex;
 
@@ -29,8 +30,9 @@ fragment =
         encoded.g = floor((distance_to_camera - encoded.r * 65536.0) / 256.0);
         encoded.b = floor(distance_to_camera - encoded.r * 65536.0 - encoded.g * 256.0);
 
-        gl_FragColor.rgb = encoded / 255.;
-        gl_FragColor.a = 1.0;
+        //gl_FragColor.rgb = encoded / 255.;
+        //gl_FragColor.a = 1.0;
+        gl_FragColor = u_color;
     }
 
 vertex41core =
@@ -53,6 +55,7 @@ vertex41core =
 fragment41core =
     #version 410
     uniform highp vec3 u_viewPosition;
+    uniform lowp vec4 u_color;
 
     in highp vec3 v_vertex;
 
@@ -67,8 +70,9 @@ fragment41core =
         encoded.g = floor((distance_to_camera - encoded.r * 65536.0) / 256.0);
         encoded.b = floor(distance_to_camera - encoded.r * 65536.0 - encoded.g * 256.0);
 
-        frag_color.rgb = encoded / 255.;
-        frag_color.a = 1.0;
+        //frag_color.rgb = encoded / 255.;
+        //frag_color.a = 1.0;
+        frag_color = u_color;
     }
 
 [defaults]
@@ -78,6 +82,7 @@ u_modelMatrix = model_matrix
 u_viewProjectionMatrix = view_projection_matrix
 u_normalMatrix = normal_matrix
 u_viewPosition = view_position
+u_color = selection_color
 
 [attributes]
 a_vertex = vertex
