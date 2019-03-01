@@ -14,12 +14,14 @@ from PyQt5.QtGui import QDesktopServices
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import ConnectionType
 from cura.Settings.GlobalStack import GlobalStack # typing
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Message import Message
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.PluginRegistry import PluginRegistry
 from UM.Signal import Signal, signalemitter
 from UM.Version import Version
-from UM.Message import Message
-from UM.i18n import i18nCatalog
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager

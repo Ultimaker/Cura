@@ -1,7 +1,5 @@
 from typing import List, Optional
 
-from UM.FileHandler.FileHandler import FileHandler
-from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -12,10 +10,13 @@ from cura.PrinterOutputDevice import ConnectionType
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager
 
-from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.FileHandler.FileHandler import FileHandler
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
+from UM.Scene.SceneNode import SceneNode
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from PyQt5.QtNetwork import QNetworkRequest
 from PyQt5.QtCore import QTimer, QUrl

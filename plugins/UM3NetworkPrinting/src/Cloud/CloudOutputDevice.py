@@ -12,8 +12,10 @@ from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
+
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel

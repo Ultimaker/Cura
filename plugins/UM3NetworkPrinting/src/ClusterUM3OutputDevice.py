@@ -10,13 +10,13 @@ import os
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.WriteFileJob import WriteFileJob  # To call the file writer asynchronously.
-from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
-from UM.Qt.Duration import Duration, DurationFormat
-
+from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
+from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode  # For typing.
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
