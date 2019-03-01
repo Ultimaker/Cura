@@ -58,6 +58,7 @@ Item
 
             Cura.ConfigurationMenu
             {
+                id: printerSetup
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
