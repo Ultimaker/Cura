@@ -537,17 +537,9 @@ class MaterialManager(QObject):
             return
 
         nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        # FIXME: CURA-6237
         # Sort all nodes with respect to the container ID lengths in the ascending order so the base material container
-        # will be the last one to remove. Adding this is because in ContainerRegistry.removeContainer(), the container
-        # will be loaded if it has not been loaded before. If the base material has been removed before this happens,
-        # it will not be able to find and load the material container, resulting in a crash.
-        # We may need to consider changing how the signal ContainerRegistry.containerRemoved works: Now it requires
-        # the container that's being removed, meaning that in order to remove a container, it must be loaded first.
-        # But it can also be that for ContainerRegistry.containerRemoved, we just need to notify the id, name, and/or
-        # type of the container that's being removed, thus removing removeContainer()'s dependency on a container being
-        # loaded first.
-        nodes_to_remove = sorted(nodes_to_remove, key = lambda x: len(x.getMetaDataEntry("id", "")), reverse = True)
+        # will be the first one to be removed. We need to do this to ensure that all containers get loaded & deleted.
+        nodes_to_remove = sorted(nodes_to_remove, key = lambda x: len(x.getMetaDataEntry("id", "")))
         # Try to load all containers first. If there is any faulty ones, they will be put into the faulty container
         # list, so removeContainer() can ignore those ones.
         for node in nodes_to_remove:
