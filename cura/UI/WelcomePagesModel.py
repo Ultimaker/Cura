@@ -11,7 +11,6 @@ from UM.Resources import Resources
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
 
-
 class WelcomePagesModel(ListModel):
 
     IdRole = Qt.UserRole + 1  # Page ID
@@ -50,16 +49,19 @@ class WelcomePagesModel(ListModel):
                                                                              os.path.join("WelcomePages",
                                                                                           "DataCollectionsContent.qml"))),
                             })
+        self._pages.append({"id": "add_printer_by_ip",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "AddPrinterByIpContent.qml"))),
+                            })
         self._pages.append({"id": "cloud",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages",
                                                                                           "CloudContent.qml"))),
                             })
 
-        self.setItems(self._pages)
 
     def addPage(self):
         pass
-
 
 __all__ = ["WelcomePagesModel"]
