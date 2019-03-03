@@ -13,8 +13,8 @@ Button
 
     width: parent.width
     height: UM.Theme.getSize("action_button").height
-    leftPadding: UM.Theme.getSize("thick_margin").width
-    rightPadding: UM.Theme.getSize("thick_margin").width
+    leftPadding: UM.Theme.getSize("thin_margin").width
+    rightPadding: UM.Theme.getSize("thin_margin").width
     checkable: true
     hoverEnabled: true
 
@@ -29,12 +29,12 @@ Button
             anchors
             {
                 left: parent.left
-                right: printerTypes.left
+                right: parent.right
                 verticalCenter: parent.verticalCenter
             }
             text: objectItemButton.text
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("medium")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_scene")
             visible: text != ""
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter

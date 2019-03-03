@@ -7,34 +7,51 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Cura.ExpandableComponent
+Item
 {
-    id: base
+    id: objectSelector
+    width: UM.Theme.getSize("objects_menu_size").width
+//    height: childrenRect.height
+    property bool opened: UM.Preferences.getValue("cura/show_list_of_files")
 
-    headerCornerSide: Cura.RoundedRectangle.Direction.All
-    contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
-    contentHeaderTitle: catalog.i18nc("@label", "Object list")
-
-    headerItem: Item
+    Button
     {
-        anchors.fill: parent
-        UM.RecolorImage
-        {
-            id: buttonIcon
-            anchors.centerIn: parent
-            source: UM.Theme.getIcon("load")
-            width: UM.Theme.getSize("button_icon").width
-            height: UM.Theme.getSize("button_icon").height
-            color: UM.Theme.getColor("icon")
+        id: openCloseButton
+        width: UM.Theme.getSize("standard_arrow").width
+        height: UM.Theme.getSize("standard_arrow").height
+        hoverEnabled: true
 
-            sourceSize.height: height
+        anchors
+        {
+            bottom: contents.top
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        contentItem: UM.RecolorImage
+        {
+            anchors.fill: parent
+            sourceSize.width: width
+            color: openCloseButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
+            source: objectSelector.opened ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_top")
+        }
+
+        background: Item {}
+
+        onClicked:
+        {
+            UM.Preferences.setValue("cura/show_list_of_files", !objectSelector.opened)
+            objectSelector.opened = UM.Preferences.getValue("cura/show_list_of_files")
         }
     }
 
-    contentItem: Item
+    Item
     {
-        id: popup
-        width: UM.Theme.getSize("machine_selector_widget_content").width
+        id: contents
+        width: parent.width
+        visible: objectSelector.opened
+        height: visible ? scroll.height : 0
+
+        anchors.bottom: parent.bottom
 
         ScrollView
         {
@@ -44,25 +61,23 @@ Cura.ExpandableComponent
             leftPadding: UM.Theme.getSize("default_lining").width
             rightPadding: UM.Theme.getSize("default_lining").width
 
-            ListView
+            contentItem: ListView
             {
                 id: listView
 
                 // Can't use parent.width since the parent is the flickable component and not the ScrollView
                 width: scroll.width - scroll.leftPadding - scroll.rightPadding
-                property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
+                property real maximumHeight: UM.Theme.getSize("objects_menu_size").height
 
                 // We use an extra property here, since we only want to to be informed about the content size changes.
                 onContentHeightChanged:
                 {
                     scroll.height = Math.min(contentHeight, maximumHeight)
-                    popup.height = scroll.height + buttonRow.height
                 }
 
                 Component.onCompleted:
                 {
                     scroll.height = Math.min(contentHeight, maximumHeight)
-                    popup.height = scroll.height + buttonRow.height
                 }
                 model: Cura.ObjectsModel {}
 
@@ -73,35 +88,6 @@ Cura.ExpandableComponent
 
                     checked: model.selected
                 }
-            }
-        }
-
-        Rectangle
-        {
-            id: separator
-
-            anchors.top: scroll.bottom
-            width: parent.width
-            height: UM.Theme.getSize("default_lining").height
-            color: UM.Theme.getColor("lining")
-        }
-
-        Row
-        {
-            id: buttonRow
-
-            // The separator is inside the buttonRow. This is to avoid some weird behaviours with the scroll bar.
-            anchors.top: separator.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            padding: UM.Theme.getSize("default_margin").width
-            spacing: UM.Theme.getSize("default_margin").width
-
-            Cura.SecondaryButton
-            {
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
-                text: catalog.i18nc("@button", "Add file")
-                onClicked: Cura.Actions.open.trigger()
             }
         }
     }

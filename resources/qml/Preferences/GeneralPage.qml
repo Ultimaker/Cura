@@ -101,24 +101,10 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("cura/choice_on_open_project")
         setDefaultOpenProjectOption(UM.Preferences.getValue("cura/choice_on_open_project"))
 
-        if (pluginExistsAndEnabled("SliceInfoPlugin")) {
-            UM.Preferences.resetPreference("info/send_slice_info")
-            sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
-        }
-        if (pluginExistsAndEnabled("UpdateChecker")) {
-            UM.Preferences.resetPreference("info/automatic_update_check")
-            checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
-        }
-    }
-
-    function pluginExistsAndEnabled(pluginName)
-    {
-        var pluginItem = plugins.find("id", pluginName)
-        if (pluginItem > -1)
-        {
-            return plugins.getItem(pluginItem).enabled
-        }
-        return false
+        UM.Preferences.resetPreference("info/send_slice_info")
+        sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+        UM.Preferences.resetPreference("info/automatic_update_check")
+        checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
     }
 
     ScrollView
@@ -130,8 +116,6 @@ UM.PreferencesPage
 
         Column
         {
-            //: Model used to check if a plugin exists
-            UM.PluginsModel { id: plugins }
 
             //: Language selection label
             UM.I18nCatalog{id: catalog; name: "cura"}
@@ -672,7 +656,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("UpdateChecker")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -688,7 +671,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("SliceInfoPlugin")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
@@ -738,21 +720,6 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Use multi build plate functionality (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("cura/use_multi_build_plate"))
                     onCheckedChanged: UM.Preferences.setValue("cura/use_multi_build_plate", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "This option enables a panel showing the list of loaded models")
-
-                CheckBox
-                {
-                    id: showListOfFilesCheckbox
-                    text: catalog.i18nc("@option:check", "Show list of loaded models")
-                    checked: boolCheck(UM.Preferences.getValue("cura/show_list_of_files"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/show_list_of_files", checked)
                 }
             }
 

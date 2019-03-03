@@ -29,7 +29,7 @@ class ObjectsModel(ListModel):
         self.addRoleName(self.SelectedRole, "selected")
         self.addRoleName(self.OutsideAreaRole, "outside_build_area")
         self.addRoleName(self.BuilplateNumberRole, "buildplate_number")
-        self.addRoleName(self.SelectedRole, "node")
+        self.addRoleName(self.NodeRole, "node")
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateDelayed)
         Application.getInstance().getPreferences().preferenceChanged.connect(self._updateDelayed)
