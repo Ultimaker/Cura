@@ -226,32 +226,6 @@ UM.Dialog
                             text: Cura.MachineManager.activeQualityOrQualityChangesName
                             width: Math.floor(scroll.width / 3) | 0
                         }
-
-                    }
-                }
-                Column
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "Setting visibility")
-                        font.bold: true
-                    }
-                    Row
-                    {
-                        width: parent.width
-                        height: childrenRect.height
-                        Label
-                        {
-                            text: catalog.i18nc("@action:label", "Visible settings:")
-                            width: Math.floor(scroll.width / 3) | 0
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(definitionsModel.visibleCount).arg(Cura.MachineManager.totalNumberOfSettings)
-                            width: Math.floor(scroll.width / 3) | 0
-                        }
                     }
                 }
             }

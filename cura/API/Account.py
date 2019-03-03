@@ -76,6 +76,9 @@ class Account(QObject):
                 self._error_message.hide()
             self._error_message = Message(error_message, title = i18n_catalog.i18nc("@info:title", "Login failed"))
             self._error_message.show()
+            self._logged_in = False
+            self.loginStateChanged.emit(False)
+            return
 
         if self._logged_in != logged_in:
             self._logged_in = logged_in

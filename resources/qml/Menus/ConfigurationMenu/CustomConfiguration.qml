@@ -124,6 +124,15 @@ Item
             }
         }
 
+        // Can't use 'item: ...activeExtruderIndex' directly apparently, see also the comment on the previous block.
+        onVisibleChanged:
+        {
+            if (tabBar.visible)
+            {
+                tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex);
+            }
+        }
+
         //When the model of the extruders is rebuilt, the list of extruders is briefly emptied and rebuilt.
         //This causes the currentIndex of the tab to be in an invalid position which resets it to 0.
         //Therefore we need to change it back to what it was: The active extruder index.
@@ -192,7 +201,7 @@ Item
                     return paddedWidth - textWidth - UM.Theme.getSize("print_setup_big_item").height * 0.5 - UM.Theme.getSize("default_margin").width
                 }
             }
-            property string instructionLink:Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", "")
+            property string instructionLink: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", "")
 
             Row
             {
@@ -251,10 +260,10 @@ Item
                 {
                     id: materialSelection
 
-                    property bool valueError: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") != "True" : true
+                    property bool valueError: Cura.MachineManager.activeStack !== null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") !== "True" : true
                     property bool valueWarning: !Cura.MachineManager.isActiveQualitySupported
 
-                    text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.material.name : ""
+                    text: Cura.MachineManager.activeStack !== null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
 
                     width: selectors.controlWidth
@@ -265,6 +274,7 @@ Item
                     menu: Cura.MaterialMenu
                     {
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
+                        updateModels: materialSelection.visible
                     }
                 }
                 Item

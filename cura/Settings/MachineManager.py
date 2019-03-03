@@ -273,14 +273,7 @@ class MachineManager(QObject):
 
     def _onActiveExtruderStackChanged(self) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
-        old_active_container_stack = self._active_container_stack
-
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-
-        if old_active_container_stack != self._active_container_stack:
-            # Many methods and properties related to the active quality actually depend
-            # on _active_container_stack. If it changes, then the properties change.
-            self.activeQualityChanged.emit()
 
     def __emitChangedSignals(self) -> None:
         self.activeQualityChanged.emit()
@@ -370,6 +363,7 @@ class MachineManager(QObject):
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
             return  # We're done here
         ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
+
         self._global_container_stack = global_stack
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance()._globalContainerStackChanged()

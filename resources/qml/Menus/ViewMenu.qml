@@ -11,7 +11,6 @@ Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View")
     id: base
-    enabled: !PrintInformation.preSliced
 
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 

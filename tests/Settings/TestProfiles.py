@@ -33,8 +33,7 @@ def collecAllDefinitionIds():
 def collectAllSettingIds():
     VersionUpgradeManager._VersionUpgradeManager__instance = VersionUpgradeManager(MagicMock())
 
-    application = CuraApplication()
-    application._initializeSettingDefinitionsAndFunctions()
+    CuraApplication._initializeSettingDefinitions()
 
     definition_container = DefinitionContainer("whatever")
     with open(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", "fdmprinter.def.json"), encoding="utf-8") as data:

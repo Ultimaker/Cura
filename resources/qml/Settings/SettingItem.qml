@@ -33,7 +33,7 @@ Item
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
     // There is no resolve property if there is only one stack.
-    property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
+    property var resolve: Cura.MachineManager.activeStackId !== Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -234,19 +234,19 @@ Item
                     }
 
                     // There are no settings with any warning.
-                    if (Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length == 0)
+                    if (Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length === 0)
                     {
                         return false
                     }
 
                     // This setting has a resolve value, so an inheritance warning doesn't do anything.
-                    if (resolve != "None")
+                    if (resolve !== "None")
                     {
                         return false
                     }
 
                     // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
-                    if (globalPropertyProvider.properties.limit_to_extruder == null || String(globalPropertyProvider.properties.limit_to_extruder) == "-1")
+                    if (globalPropertyProvider.properties.limit_to_extruder === null || String(globalPropertyProvider.properties.limit_to_extruder) === "-1")
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0
                     }
@@ -317,6 +317,4 @@ Item
             height: UM.Theme.getSize("setting_control").height
         }
     }
-
-    UM.I18nCatalog { id: catalog; name: "cura" }
 }

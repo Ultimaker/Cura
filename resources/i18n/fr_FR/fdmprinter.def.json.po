@@ -1,13 +1,13 @@
 # Cura
-# Copyright (C) 2018 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.6\n"
+"Project-Id-Version: Cura 4.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2018-10-29 15:01+0000\n"
+"POT-Creation-Date: 2019-02-26 16:36+0000\n"
 "PO-Revision-Date: 2018-09-28 15:00+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: French\n"
@@ -57,7 +57,9 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "Commandes G-Code à exécuter au tout début, séparées par \n."
+msgstr ""
+"Commandes G-Code à exécuter au tout début, séparées par \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -69,7 +71,9 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "Commandes G-Code à exécuter tout à la fin, séparées par \n."
+msgstr ""
+"Commandes G-Code à exécuter tout à la fin, séparées par \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1631,7 +1635,9 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Ajoutez des parois supplémentaires autour de la zone de remplissage. De telles parois peuvent réduire l'affaissement des lignes de couche extérieure supérieure / inférieure, réduisant le nombre de couches extérieures supérieures / inférieures nécessaires pour obtenir la même qualité, au prix d'un peu de matériau supplémentaire.\nConfigurée correctement, cette fonctionnalité peut être combinée avec « Relier les polygones de remplissage » pour relier tous les remplissages en un seul mouvement d'extrusion sans avoir besoin de déplacements ou de rétractions."
+msgstr ""
+"Ajoutez des parois supplémentaires autour de la zone de remplissage. De telles parois peuvent réduire l'affaissement des lignes de couche extérieure supérieure / inférieure, réduisant le nombre de couches extérieures supérieures / inférieures nécessaires pour obtenir la même qualité, au prix d'un peu de matériau supplémentaire.\n"
+"Configurée correctement, cette fonctionnalité peut être combinée avec « Relier les polygones de remplissage » pour relier tous les remplissages en un seul mouvement d'extrusion sans avoir besoin de déplacements ou de rétractions."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1670,8 +1676,8 @@ msgstr "Pourcentage de chevauchement de la couche extérieure"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
-msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr "Le montant de chevauchement entre la couche extérieure et les parois en pourcentage de la largeur de ligne de couche extérieure. Un chevauchement faible permet aux parois de se connecter fermement à la couche extérieure. Ce montant est un pourcentage des largeurs moyennes des lignes de la couche extérieure et de la paroi la plus intérieure."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1680,8 +1686,8 @@ msgstr "Chevauchement de la couche extérieure"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
-msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "Le degré de chevauchement entre la couche extérieure et les parois. Un léger chevauchement permet de lier fermement les parois à la couche externe."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -2120,8 +2126,8 @@ msgstr "Distance de rétraction de changement de buse"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "La quantité de rétraction : définir à 0 pour aucune rétraction. Cette valeur doit généralement être égale à la longueur de la zone chauffée."
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2780,8 +2786,8 @@ msgstr "Mode de détours"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
-msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
-msgstr "Les détours maintiennent la buse dans les zones déjà imprimées lors des déplacements. Cela résulte en des déplacements légèrement plus longs mais réduit le recours aux rétractions. Si les détours sont désactivés, le matériau se rétractera et la buse se déplacera en ligne droite jusqu'au point suivant. Il est également possible d'éviter les détours sur les zones de la couche extérieure supérieure / inférieure et aussi de n'effectuer les détours que dans le remplissage. Notez que l'option « À l'intérieur du remplissage » se comporte exactement comme l'option « Pas dans la couche extérieure » dans les versions précédentes de Cura."
+msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -3434,6 +3440,16 @@ msgid "The height of support infill of a given density before switching to half 
 msgstr "La hauteur de remplissage de support d'une densité donnée avant de passer à la moitié de la densité."
 
 #: fdmprinter.def.json
+msgctxt "minimum_support_area label"
+msgid "Minimum Support Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area description"
+msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_enable label"
 msgid "Enable Support Interface"
 msgstr "Activer l'interface de support"
@@ -3659,6 +3675,66 @@ msgid "Zig Zag"
 msgstr "Zig Zag"
 
 #: fdmprinter.def.json
+msgctxt "minimum_interface_area label"
+msgid "Minimum Support Interface Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_interface_area description"
+msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area label"
+msgid "Minimum Support Roof Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area description"
+msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area label"
+msgid "Minimum Support Floor Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area description"
+msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset label"
+msgid "Support Interface Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset description"
+msgid "Amount of offset applied to the support interface polygons."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset label"
+msgid "Support Roof Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset description"
+msgid "Amount of offset applied to the roofs of the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset label"
+msgid "Support Floor Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset description"
+msgid "Amount of offset applied to the floors of the support."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
 msgstr "Annulation de la vitesse du ventilateur"
@@ -3828,7 +3904,9 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "La distance horizontale entre la jupe et la première couche de l’impression.\nIl s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
+msgstr ""
+"La distance horizontale entre la jupe et la première couche de l’impression.\n"
+"Il s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -5275,7 +5353,9 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\nCela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
+msgstr ""
+"Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\n"
+"Cela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5691,6 +5771,22 @@ msgstr "Matrice de rotation de la maille"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matrice de transformation à appliquer au modèle lors de son chargement depuis le fichier."
+
+#~ msgctxt "skin_overlap description"
+#~ msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
+#~ msgstr "Le montant de chevauchement entre la couche extérieure et les parois en pourcentage de la largeur de ligne de couche extérieure. Un chevauchement faible permet aux parois de se connecter fermement à la couche extérieure. Ce montant est un pourcentage des largeurs moyennes des lignes de la couche extérieure et de la paroi la plus intérieure."
+
+#~ msgctxt "skin_overlap_mm description"
+#~ msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
+#~ msgstr "Le degré de chevauchement entre la couche extérieure et les parois. Un léger chevauchement permet de lier fermement les parois à la couche externe."
+
+#~ msgctxt "switch_extruder_retraction_amount description"
+#~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+#~ msgstr "La quantité de rétraction : définir à 0 pour aucune rétraction. Cette valeur doit généralement être égale à la longueur de la zone chauffée."
+
+#~ msgctxt "retraction_combing description"
+#~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
+#~ msgstr "Les détours maintiennent la buse dans les zones déjà imprimées lors des déplacements. Cela résulte en des déplacements légèrement plus longs mais réduit le recours aux rétractions. Si les détours sont désactivés, le matériau se rétractera et la buse se déplacera en ligne droite jusqu'au point suivant. Il est également possible d'éviter les détours sur les zones de la couche extérieure supérieure / inférieure et aussi de n'effectuer les détours que dans le remplissage. Notez que l'option « À l'intérieur du remplissage » se comporte exactement comme l'option « Pas dans la couche extérieure » dans les versions précédentes de Cura."
 
 #~ msgctxt "connect_skin_polygons description"
 #~ msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."

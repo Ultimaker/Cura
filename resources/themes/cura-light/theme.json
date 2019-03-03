@@ -398,6 +398,7 @@
         "monitor_text_link": [50, 130, 255, 255],
         "monitor_icon_primary": [10, 8, 80, 255],
         "monitor_icon_accent": [255, 255, 255, 255],
+        "monitor_icon_disabled": [238, 238, 238, 255],
 
         "monitor_secondary_button_hover": [228, 228, 228, 255],
         "monitor_secondary_button": [240, 240, 240, 255],
@@ -430,7 +431,7 @@
     },
 
     "sizes": {
-        "window_minimum_size": [100, 60],
+        "window_minimum_size": [80, 48],
 
         "main_window_header": [0.0, 4.0],
         "main_window_header_button": [8, 2.35],
@@ -473,7 +474,7 @@
         "default_lining": [0.08, 0.08],
 
         "default_arrow": [0.8, 0.8],
-        "logo": [8, 2.4],
+        "logo": [8, 1.75],
 
         "wide_margin": [2.0, 2.0],
         "thick_margin": [1.71, 1.43],

@@ -11,7 +11,7 @@ Rectangle
 {
     id: viewportOverlay
 
-    property bool isConnected: Cura.MachineManager.activeMachineHasActiveNetworkConnection || Cura.MachineManager.activeMachineHasActiveCloudConnection
+    property bool isConnected: Cura.MachineManager.activeMachineHasNetworkConnection || Cura.MachineManager.activeMachineHasCloudConnection
     property bool isNetworkConfigurable: ["Ultimaker 3", "Ultimaker 3 Extended", "Ultimaker S5"].indexOf(Cura.MachineManager.activeMachineDefinitionName) > -1
     property bool isNetworkConfigured:
     {

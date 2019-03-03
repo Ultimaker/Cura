@@ -40,10 +40,13 @@ class DriveApiService:
         if not access_token:
             Logger.log("w", "Could not get access token.")
             return []
-
-        backup_list_request = requests.get(self.BACKUP_URL, headers = {
-            "Authorization": "Bearer {}".format(access_token)
-        })
+        try:
+            backup_list_request = requests.get(self.BACKUP_URL, headers = {
+                "Authorization": "Bearer {}".format(access_token)
+            })
+        except requests.exceptions.ConnectionError:
+            Logger.log("w", "Unable to connect with the server.")
+            return []
 
         # HTTP status 300s mean redirection. 400s and 500s are errors.
         # Technically 300s are not errors, but the use case here relies on "requests" to handle redirects automatically.
@@ -51,7 +54,13 @@ class DriveApiService:
             Logger.log("w", "Could not get backups list from remote: %s", backup_list_request.text)
             Message(catalog.i18nc("@info:backup_status", "There was an error listing your backups."), title = catalog.i18nc("@info:title", "Backup")).show()
             return []
-        return backup_list_request.json()["data"]
+
+        backup_list_response = backup_list_request.json()
+        if "data" not in backup_list_response:
+            Logger.log("w", "Could not get backups from remote, actual response body was: %s", str(backup_list_response))
+            return []
+
+        return backup_list_response["data"]
 
     def createBackup(self) -> None:
         self.creatingStateChanged.emit(is_creating = True)
