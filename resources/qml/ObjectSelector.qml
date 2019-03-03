@@ -11,7 +11,6 @@ Item
 {
     id: objectSelector
     width: UM.Theme.getSize("objects_menu_size").width
-//    height: childrenRect.height
     property bool opened: UM.Preferences.getValue("cura/show_list_of_files")
 
     Button
@@ -50,6 +49,8 @@ Item
         width: parent.width
         visible: objectSelector.opened
         height: visible ? scroll.height : 0
+
+        Behavior on height { NumberAnimation { duration: 100 } }
 
         anchors.bottom: parent.bottom
 
