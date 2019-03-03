@@ -54,10 +54,11 @@ class PickingPass(RenderPass):
                 vertices = node.getMeshData().getVertices()
                 normals = node.getMeshData().getNormals()
                 print("Faces:", faces)
-                print("Vertices", vertices)
+                print("Vertices:", vertices)
+                print("Normals:", normals)
 
                 for index, face in enumerate(faces):
-                    normal_vertex = normals[index]
+                    normal_vertex = normals[face][0]
                     triangle_mesh = vertices[face]
                     print(face, normal_vertex, triangle_mesh)
 
