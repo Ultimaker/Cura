@@ -77,10 +77,11 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self.setIconName("print")
 
-        self._monitor_view_qml_path = os.path.join(
-            PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
-            "resources", "qml", "MonitorStage.qml"
-        )
+        if PluginRegistry.getInstance() is not None:
+            self._monitor_view_qml_path = os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "qml", "MonitorStage.qml"
+            )
 
         self._output_controller = LegacyUM3PrinterOutputController(self)
 
