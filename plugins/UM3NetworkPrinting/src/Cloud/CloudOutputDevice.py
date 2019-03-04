@@ -147,7 +147,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         
         # However, for manually added printers, the local IP address is used in lieu of a proper
         # network key, so check for that as well
-        if network_key == self.clusterData.host_internal_ip:
+        if network_key.find(self.clusterData.host_internal_ip):
             return True
 
         return False
