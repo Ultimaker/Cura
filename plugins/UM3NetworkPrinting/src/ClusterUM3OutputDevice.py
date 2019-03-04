@@ -10,13 +10,13 @@ import os
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.WriteFileJob import WriteFileJob  # To call the file writer asynchronously.
-from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
-from UM.Qt.Duration import Duration, DurationFormat
-
+from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
+from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode  # For typing.
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
@@ -65,7 +65,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._print_jobs = [] # type: List[UM3PrintJobOutputModel]
         self._received_print_jobs = False # type: bool
 
-        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/MonitorStage.qml")
+        if PluginRegistry.getInstance() is not None:
+            self._monitor_view_qml_path = os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "qml", "MonitorStage.qml"
+            )
 
         # Trigger the printersChanged signal when the private signal is triggered
         self.printersChanged.connect(self._clusterPrintersChanged)
@@ -126,8 +130,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
-            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/PrintWindow.qml")
-            self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})
+            if PluginRegistry.getInstance() is not None:
+                path = os.path.join(
+                    PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                    "resources", "qml", "PrintWindow.qml"
+                )
+                self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})
         if self._printer_selection_dialog is not None:
             self._printer_selection_dialog.show()
 
