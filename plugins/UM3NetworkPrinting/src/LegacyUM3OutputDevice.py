@@ -23,7 +23,6 @@ from PyQt5.QtCore import QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
-from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
 
 from time import time
 
@@ -79,7 +78,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.setIconName("print")
 
         self._monitor_view_qml_path = os.path.join(
-            PluginRegistry.getInstance().getPluginPath(UM3OutputDevicePlugin().getPluginId()),
+            PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
             "resources", "qml", "MonitorStage.qml"
         )
 

@@ -23,7 +23,6 @@ from cura.PrinterOutputDevice import ConnectionType
 
 from .CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
-from ..UM3OutputDevicePlugin import UM3OutputDevicePlugin
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudProgressMessage import CloudProgressMessage
 from .CloudApiClient import CloudApiClient
@@ -86,7 +85,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         self._monitor_view_qml_path = os.path.join(
-            PluginRegistry.getInstance().getPluginPath(UM3OutputDevicePlugin().getPluginId()),
+            PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
             "resources", "qml", "MonitorStage.qml"
         )
 
