@@ -32,6 +32,7 @@ from .ConfigurationChangeModel import ConfigurationChangeModel
 from .MeshFormatHandler import MeshFormatHandler
 from .SendMaterialJob import SendMaterialJob
 from .UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices, QImage
@@ -66,8 +67,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._received_print_jobs = False # type: bool
 
         self._monitor_view_qml_path = os.path.join(
-            PluginRegistry.getPluginDirectory(),
-            "UM3NetworkPrinting", "resources", "qml", "MonitorStage.qml"
+            PluginRegistry.getInstance().getPluginPath(UM3OutputDevicePlugin().getPluginId()),
+            "resources", "qml", "MonitorStage.qml"
         )
 
         # Trigger the printersChanged signal when the private signal is triggered
