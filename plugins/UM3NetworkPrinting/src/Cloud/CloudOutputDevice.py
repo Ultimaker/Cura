@@ -85,8 +85,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         self._monitor_view_qml_path = os.path.join(
-            PluginRegistry.getPluginDirectory(),
-            "UM3NetworkPrinting", "resources", "qml", "MonitorStage.qml"
+            PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+            "resources", "qml", "MonitorStage.qml"
         )
 
         # Trigger the printersChanged signal when the private signal is triggered.
