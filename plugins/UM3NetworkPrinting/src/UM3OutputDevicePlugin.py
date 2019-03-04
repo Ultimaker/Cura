@@ -458,8 +458,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 0,
                 image_source = QUrl.fromLocalFile(os.path.join(
-                    PluginRegistry.getInstance().getPluginPath(self.getPluginId()),
-                    "resources", "svg", "cloud-flow-start.svg"
+                    PluginRegistry.getPluginDirectory(),
+                    "UM3NetworkPrinting", "resources", "svg", "cloud-flow-start.svg"
                 )),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
                 option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
@@ -482,8 +482,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 30,
                 image_source = QUrl.fromLocalFile(os.path.join(
-                    PluginRegistry.getInstance().getPluginPath(self.getPluginId()),
-                    "resources", "svg", "cloud-flow-completed.svg"
+                    PluginRegistry.getPluginDirectory(),
+                    "UM3NetworkPrinting", "resources", "svg", "cloud-flow-completed.svg"
                 )),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
             )

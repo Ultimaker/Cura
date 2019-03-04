@@ -66,8 +66,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._received_print_jobs = False # type: bool
 
         self._monitor_view_qml_path = os.path.join(
-            PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
-            "resources", "qml", "MonitorStage.qml"
+            PluginRegistry.getPluginDirectory(),
+            "UM3NetworkPrinting", "resources", "qml", "MonitorStage.qml"
         )
 
         # Trigger the printersChanged signal when the private signal is triggered
