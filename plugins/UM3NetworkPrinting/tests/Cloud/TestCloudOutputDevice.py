@@ -22,6 +22,7 @@ class TestCloudOutputDevice(TestCase):
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
     HOST_GUID = "e90ae0ac-1257-4403-91ee-a44c9b7e8050"
     HOST_VERSION = "5.2.0"
+    HOST_INTERNAL_IP = "10.183.0.139"
 
     STATUS_URL = "{}/connect/v1/clusters/{}/status".format(CuraCloudAPIRoot, CLUSTER_ID)
     PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(CuraCloudAPIRoot, CLUSTER_ID, JOB_ID)
@@ -36,8 +37,15 @@ class TestCloudOutputDevice(TestCase):
         for patched_method in self.patches:
             patched_method.start()
 
-        self.cluster = CloudClusterResponse(self.CLUSTER_ID, self.HOST_GUID, self.HOST_NAME, is_online=True,
-                                            status="active", host_version=self.HOST_VERSION)
+        self.cluster = CloudClusterResponse(
+            self.CLUSTER_ID,
+            self.HOST_GUID,
+            self.HOST_NAME,
+            is_online=True,
+            status="active",
+            host_internal_ip=self.HOST_INTERNAL_IP,
+            host_version=self.HOST_VERSION
+        )
 
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
