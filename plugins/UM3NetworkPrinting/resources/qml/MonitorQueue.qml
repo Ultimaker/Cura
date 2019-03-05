@@ -221,6 +221,7 @@ Item
                 
                 height: 18 * screenScaleFactor // TODO: Theme!
                 width: childrenRect.width
+                visible: !cloudConnection
 
                 UM.RecolorImage
                 {
