@@ -16,9 +16,10 @@ Item
     Button
     {
         id: openCloseButton
-        width: UM.Theme.getSize("standard_arrow").width
-        height: UM.Theme.getSize("standard_arrow").height
+        width: parent.width
+        height: contentItem.height
         hoverEnabled: true
+        padding: 0
 
         anchors
         {
@@ -26,12 +27,33 @@ Item
             horizontalCenter: parent.horizontalCenter
         }
 
-        contentItem: UM.RecolorImage
+        contentItem: Item
         {
-            anchors.fill: parent
-            sourceSize.width: width
-            color: openCloseButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-            source: objectSelector.opened ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_top")
+            width: parent.width
+            height: label.height
+
+            UM.RecolorImage
+            {
+                id: openCloseIcon
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                sourceSize.width: width
+                anchors.left: parent.left
+                color: openCloseButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
+                source: objectSelector.opened ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_top")
+            }
+
+            Label
+            {
+                id: label
+                anchors.left: openCloseIcon.right
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@label", "Object list")
+                font: UM.Theme.getFont("default")
+                color: openCloseButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
+                renderType: Text.NativeRendering
+                elide: Text.ElideRight
+            }
         }
 
         background: Item {}
@@ -43,12 +65,15 @@ Item
         }
     }
 
-    Item
+    Rectangle
     {
         id: contents
         width: parent.width
         visible: objectSelector.opened
         height: visible ? scroll.height : 0
+        color: UM.Theme.getColor("main_background")
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
 
         Behavior on height { NumberAnimation { duration: 100 } }
 
@@ -59,8 +84,7 @@ Item
             id: scroll
             width: parent.width
             clip: true
-            leftPadding: UM.Theme.getSize("default_lining").width
-            rightPadding: UM.Theme.getSize("default_lining").width
+            padding: UM.Theme.getSize("default_lining").width
 
             contentItem: ListView
             {
@@ -73,12 +97,12 @@ Item
                 // We use an extra property here, since we only want to to be informed about the content size changes.
                 onContentHeightChanged:
                 {
-                    scroll.height = Math.min(contentHeight, maximumHeight)
+                    scroll.height = Math.min(contentHeight, maximumHeight) + scroll.topPadding + scroll.bottomPadding
                 }
 
                 Component.onCompleted:
                 {
-                    scroll.height = Math.min(contentHeight, maximumHeight)
+                    scroll.height = Math.min(contentHeight, maximumHeight) + scroll.topPadding + scroll.bottomPadding
                 }
                 model: Cura.ObjectsModel {}
 
