@@ -108,7 +108,7 @@ class AuthorizationService:
         # We have a fallback on a date far in the past for currently stored auth data in cura.cfg.
         received_at = datetime.strptime(self._auth_data.received_at, TOKEN_TIMESTAMP_FORMAT) \
             if self._auth_data.received_at else datetime(2000, 1, 1)
-        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0))
+        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0) - 60)
         if datetime.now() > expiry_date:
             self.refreshAccessToken()
 
@@ -119,8 +119,12 @@ class AuthorizationService:
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
-        self._storeAuthData(self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token))
-        self.onAuthStateChanged.emit(logged_in = True)
+        response = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
+        if response.success:
+            self._storeAuthData(response)
+            self.onAuthStateChanged.emit(logged_in = True)
+        else:
+            self.onAuthStateChanged(logged_in = False)
 
     ##  Delete the authentication data that we have stored locally (eg; logout)
     def deleteAuthData(self) -> None:

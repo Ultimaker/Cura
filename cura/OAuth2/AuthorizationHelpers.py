@@ -41,7 +41,10 @@ class AuthorizationHelpers:
             "code_verifier": verification_code,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
             }
-        return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
+        try:
+            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
+        except requests.exceptions.ConnectionError:
+            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
 
     ##  Request the access token from the authorization server using a refresh token.
     #   \param refresh_token:
@@ -54,7 +57,10 @@ class AuthorizationHelpers:
             "refresh_token": refresh_token,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
-        return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
+        try:
+            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
+        except requests.exceptions.ConnectionError:
+            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
 
     @staticmethod
     ##  Parse the token response from the authorization server into an AuthenticationResponse object.

@@ -61,7 +61,7 @@ Rectangle
             right: parent.right
         }
         visible: installedPackages != 0
-        color: (installedPackages == packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
+        color: (installedPackages >= packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
         source: "../images/installed_check.svg"
     }
 

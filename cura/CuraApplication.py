@@ -749,6 +749,7 @@ class CuraApplication(QtApplication):
         # Initialize Cura API
         self._cura_API.initialize()
 
+        self._output_device_manager.start()
         self._welcome_pages_model.initialize()
 
         # Detect in which mode to run and execute that mode
