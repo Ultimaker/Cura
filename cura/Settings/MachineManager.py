@@ -357,7 +357,7 @@ class MachineManager(QObject):
         # Make sure that the default machine actions for this machine have been added
         self._application.getMachineActionManager().addDefaultMachineActions(global_stack)
 
-        ExtruderManager.getInstance()._fixSingleExtrusionMachineExtruderDefinition(global_stack)
+        ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
