@@ -219,7 +219,7 @@ UM.MainWindow
                     left: toolbar.right
                     leftMargin: UM.Theme.getSize("default_margin").width
                     rightMargin: UM.Theme.getSize("default_margin").width
-                    bottomMargin: UM.Theme.getSize("thin_margin").width
+                    bottomMargin: UM.Theme.getSize("narrow_margin").height
                 }
             }
 

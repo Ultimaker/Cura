@@ -17,9 +17,10 @@ Item
     {
         id: openCloseButton
         width: parent.width
-        height: contentItem.height
+        height: contentItem.height + bottomPadding
         hoverEnabled: true
         padding: 0
+        bottomPadding: UM.Theme.getSize("narrow_margin").height / 2 | 0
 
         anchors
         {
