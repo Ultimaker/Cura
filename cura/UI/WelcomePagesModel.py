@@ -1,5 +1,5 @@
-
-
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 import os
 from typing import TYPE_CHECKING, Optional
 
@@ -10,7 +10,6 @@ from UM.Resources import Resources
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
-
 
 class WelcomePagesModel(ListModel):
 
@@ -50,6 +49,11 @@ class WelcomePagesModel(ListModel):
                                                                              os.path.join("WelcomePages",
                                                                                           "DataCollectionsContent.qml"))),
                             })
+        self._pages.append({"id": "add_printer_by_ip",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "AddPrinterByIpContent.qml"))),
+                            })
         self._pages.append({"id": "cloud",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages",
@@ -58,8 +62,8 @@ class WelcomePagesModel(ListModel):
 
         self.setItems(self._pages)
 
+
     def addPage(self):
         pass
-
 
 __all__ = ["WelcomePagesModel"]
