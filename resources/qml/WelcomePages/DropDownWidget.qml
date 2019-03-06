@@ -22,6 +22,14 @@ Item
     property alias title: header.title
     property alias contentShown: header.contentShown
 
+    signal clicked()
+
+    Connections
+    {
+        target: header
+        onClicked: base.clicked()
+    }
+
     DropDownHeader
     {
         id: header
@@ -30,14 +38,15 @@ Item
         anchors.right: parent.right
         height: UM.Theme.getSize("expandable_component_content_header").height
         rightIconSource: contentShown ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
+
     }
 
     Cura.RoundedRectangle
     {
         id: contentRectangle
         anchors.top: header.bottom
-        anchors.horizontalCenter: header.horizontalCenter
-        width: header.width
+        anchors.left: header.left
+        anchors.right: header.right
         height: childrenRect.height
 
         border.width: UM.Theme.getSize("default_lining").width
@@ -53,7 +62,7 @@ Item
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            height: childrenRect.height
+            height: childrenRect.height + 2
             anchors.margins: 1
             sourceComponent: base.contentComponent != null ? base.contentComponent : emptyComponent
         }

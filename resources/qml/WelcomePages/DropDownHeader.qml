@@ -34,6 +34,8 @@ Cura.RoundedRectangle
     // If the content is shown
     property bool contentShown: false
 
+    signal clicked()
+
     MouseArea
     {
         anchors.fill: parent
@@ -41,7 +43,10 @@ Cura.RoundedRectangle
         onEntered: base.hovered = true
         onExited: base.hovered = false
 
-        onClicked: base.contentShown = !base.contentShown
+        onClicked: {
+            base.contentShown = !base.contentShown
+            base.clicked()
+        }
     }
 
     Label

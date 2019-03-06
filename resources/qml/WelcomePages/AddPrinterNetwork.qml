@@ -9,6 +9,7 @@ import Cura 1.1 as Cura
 
 import "../PrinterSelector"
 
+
 //
 // This component contains the content for the "Add a printer" (network) page of the welcome on-boarding process.
 //
@@ -40,6 +41,14 @@ Item
 
         title: catalog.i18nc("@label", "Add a network printer")
 
+        onClicked:
+        {
+            if (contentShown)
+            {
+                addLocalPrinterDropDown.contentShown = false
+            }
+        }
+
         contentComponent: networkPrinterListComponent
 
         Component
@@ -51,21 +60,23 @@ Item
                 ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-                property int maxItemCountAtOnce: 5  // show at max 10 items at once, otherwise you need to scroll.
+                property int maxItemCountAtOnce: 5  // show at max 5 items at once, otherwise you need to scroll.
                 height: maxItemCountAtOnce * (UM.Theme.getSize("action_button").height)
 
                 clip: true
 
                 ListView
                 {
-                    id: listView
+                    id: networkPrinterListView
                     anchors.fill: parent
                     model: Cura.GlobalStacksModel {} // TODO: change this to the network printers
 
                     delegate: MachineSelectorButton
                     {
                         text: model.name
-                        width: listView.width - UM.Theme.getSize("default_margin").width
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.rightMargin: 10
                         outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
                         checked: ListView.view.currentIndex == index
@@ -89,6 +100,34 @@ Item
         anchors.margins: 20
 
         title: catalog.i18nc("@label", "Add a non-network printer")
+
+        onClicked:
+        {
+            if (contentShown)
+            {
+                addNetworkPrinterDropDown.contentShown = false
+            }
+        }
+
+        contentComponent: localPrinterListComponent
+
+        Component
+        {
+            id: localPrinterListComponent
+
+            AddPrinterScrollView
+            {
+                id: localPrinterView
+
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+
+                property int maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
+                height: maxItemCountAtOnce * (UM.Theme.getSize("action_button").height)
+
+                clip: true
+            }
+        }
     }
 
     Cura.PrimaryButton
