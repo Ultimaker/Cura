@@ -33,7 +33,7 @@ class UsePreviousProbeMeasurements(Script):
     
     def execute(self, data):
         text = "M501 ;load bed level data\nM420 S1 ;enable bed leveling"
-        if self.getSettingValueByKey("usePrevMeas"):
+        if self.getSettingValueByKey("use_previous_measurements"):
             for layer in data:
                 layer_index = data.index(layer)
                 lines = layer.split("\n")
