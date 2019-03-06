@@ -113,20 +113,6 @@ class TestCloudOutputDeviceManager(TestCase):
 
         active_machine_mock.setMetaDataEntry.assert_called_with("um_cloud_cluster_id", cluster2["cluster_id"])
 
-    def test_device_connects_by_local_ip_address(self):
-        active_machine_mock = self.app.getGlobalContainerStack.return_value
-
-        cluster1, cluster2 = self.clusters_response["data"]
-        network_key = cluster2["host_internal_ip"]
-        active_machine_mock.getMetaDataEntry.side_effect = {"um_network_key": network_key}.get
-
-        self._loadData()
-
-        self.assertIsNone(self.device_manager.getOutputDevice(cluster1["cluster_id"]))
-        self.assertTrue(self.device_manager.getOutputDevice(cluster2["cluster_id"]).isConnected())
-
-        active_machine_mock.setMetaDataEntry.assert_called_with("um_cloud_cluster_id", cluster2["cluster_id"])
-
     @patch.object(CloudOutputDeviceManager, "Message")
     def test_api_error(self, message_mock):
         self.clusters_response = {
