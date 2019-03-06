@@ -90,7 +90,7 @@ TabView
                 y: UM.Theme.getSize("default_lining").height
 
                 width: base.width
-                property real rowHeight: textField.height + UM.Theme.getSize("default_lining").height
+                property real rowHeight: brandTextField.height + UM.Theme.getSize("default_lining").height
 
                 MessageDialog
                 {
@@ -143,7 +143,7 @@ TabView
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
                 ReadOnlyTextField
                 {
-                    id: textField;
+                    id: brandTextField;
                     width: scrollView.columnWidth;
                     text: properties.brand;
                     readOnly: !base.editingEnabled;
@@ -153,6 +153,7 @@ TabView
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
                 ReadOnlyTextField
                 {
+                    id: materialTypeField;
                     width: scrollView.columnWidth;
                     text: properties.material;
                     readOnly: !base.editingEnabled;

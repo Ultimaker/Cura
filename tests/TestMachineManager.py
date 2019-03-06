@@ -11,12 +11,17 @@ from cura.Settings.MachineManager import MachineManager
 def container_registry() -> ContainerRegistry:
     return MagicMock()
 
+
 @pytest.fixture()
 def extruder_manager(application, container_registry) -> ExtruderManager:
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+            manager = ExtruderManager.getInstance()
+            if manager is None:
                 manager = ExtruderManager()
+
     return manager
+
 
 @pytest.fixture()
 def machine_manager(application, extruder_manager, container_registry) -> MachineManager:
@@ -41,3 +46,19 @@ def test_setActiveMachine(machine_manager):
             # Although we mocked the application away, we still want to know if it was notified about the attempted change.
             machine_manager._application.setGlobalContainerStack.assert_called_with(mocked_global_stack)
 
+
+def test_discoveredMachine(machine_manager):
+    mocked_callback = MagicMock()
+    machine_manager.addDiscoveredPrinter("test", "zomg", mocked_callback, "derp")
+    machine_manager.addMachineFromDiscoveredPrinter("test")
+    mocked_callback.assert_called_with("test")
+
+    assert len(machine_manager.discoveredPrinters) == 1
+
+    # Test if removing it works
+    machine_manager.removeDiscoveredPrinter("test")
+    assert len(machine_manager.discoveredPrinters) == 0
+
+    # Just in case, nothing should happen.
+    machine_manager.addMachineFromDiscoveredPrinter("test")
+    assert mocked_callback.call_count == 1

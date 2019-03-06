@@ -4,7 +4,7 @@
 import time
 import re
 import unicodedata
-from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
+from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast, NamedTuple, Callable
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -48,6 +48,8 @@ if TYPE_CHECKING:
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Machines.QualityGroup import QualityGroup
+
+DiscoveredPrinter = NamedTuple("DiscoveredPrinter", [("key", str), ("name", str), ("create_callback", Callable[[str], None]), ("machine_type", "str")])
 
 
 class MachineManager(QObject):
@@ -134,6 +136,9 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
         self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
 
+        # This will contain all discovered network printers
+        self._discovered_printers = {}  # type: Dict[str, DiscoveredPrinter]
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -157,6 +162,7 @@ class MachineManager(QObject):
     printerConnectedStatusChanged = pyqtSignal() # Emitted every time the active machine change or the outputdevices change
 
     rootMaterialChanged = pyqtSignal()
+    discoveredPrintersChanged = pyqtSignal()
 
     def setInitialActiveMachine(self) -> None:
         active_machine_id = self._application.getPreferences().getValue("cura/active_machine")
@@ -171,7 +177,30 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
-        self.printerConnectedStatusChanged.emit()
+
+    #   Discovered printers are all the printers that were found on the network, which provide a more convenient way
+    #   to add networked printers (Plugin finds a bunch of printers, user can select one from the list, plugin can then
+    #   add that printer to Cura as the active one).
+    def addDiscoveredPrinter(self, key: str, name: str, create_callback: Callable[[str], None], machine_type: str) -> None:
+        if key not in self._discovered_printers:
+            self._discovered_printers[key] = DiscoveredPrinter(key, name, create_callback, machine_type)
+            self.discoveredPrintersChanged.emit()
+        else:
+            Logger.log("e", "Printer with the key %s was already in the discovered printer list", key)
+
+    def removeDiscoveredPrinter(self, key: str) -> None:
+        if key in self._discovered_printers:
+            del self._discovered_printers[key]
+            self.discoveredPrintersChanged.emit()
+
+    @pyqtProperty("QVariantList", notify = discoveredPrintersChanged)
+    def discoveredPrinters(self):
+        return list(self._discovered_printers.values())
+
+    @pyqtSlot(str)
+    def addMachineFromDiscoveredPrinter(self, key: str) -> None:
+        if key in self._discovered_printers:
+            self._discovered_printers[key].create_callback(key)
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
     def currentConfiguration(self) -> ConfigurationModel:
@@ -386,9 +415,17 @@ class MachineManager(QObject):
                 return machine
         return None
 
+    @pyqtSlot(str)
     @pyqtSlot(str, str)
-    def addMachine(self, name: str, definition_id: str) -> None:
-        new_stack = CuraStackBuilder.createMachine(name, definition_id)
+    def addMachine(self, definition_id: str, name: Optional[str] = None) -> None:
+        if name is None:
+            definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
+            if definitions:
+                name = definitions[0].getName()
+            else:
+                name = definition_id
+
+        new_stack = CuraStackBuilder.createMachine(cast(str, name), definition_id)
         if new_stack:
             # Instead of setting the global container stack here, we set the active machine and so the signals are emitted
             self.setActiveMachine(new_stack.getId())

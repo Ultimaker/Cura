@@ -945,11 +945,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
-            for entry in machine.iterfind("./um:setting", cls.__namespaces):
-                key = entry.get("key")
-                if key == "hardware compatible":
-                    if entry.text is not None:
-                        machine_compatibility = cls._parseCompatibleValue(entry.text)
+            for entry in machine.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                if entry.text is not None:
+                    machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
@@ -1020,11 +1018,9 @@ class XmlMaterialProfile(InstanceContainer):
                             continue
 
                         hotend_compatibility = machine_compatibility
-                        for entry in hotend.iterfind("./um:setting", cls.__namespaces):
-                            key = entry.get("key")
-                            if key == "hardware compatible":
-                                if entry.text is not None:
-                                    hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                        for entry in hotend.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                            if entry.text is not None:
+                                hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
                         new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 

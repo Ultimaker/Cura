@@ -134,8 +134,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._updateExtruders()  # Since the new extruders may have different properties, update our own model.
 
     def _onExtruderStackContainersChanged(self, container):
-        # Update when there is an empty container or material change
-        if container.getMetaDataEntry("type") == "material" or container.getMetaDataEntry("type") is None:
+        # Update when there is an empty container or material or variant change
+        if container.getMetaDataEntry("type") in ["material", "variant", None]:
             # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
             self._updateExtruders()
 

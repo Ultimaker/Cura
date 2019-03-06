@@ -2750,7 +2750,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "value": "speed_layer_0",
-                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2901,7 +2901,6 @@
                             "default_value": 3000,
                             "value": "acceleration_topbottom",
                             "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
-                            "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3093,7 +3092,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "enabled": "resolveOrValue('acceleration_enabled')",
+                    "enabled": "resolveOrValue('acceleration_enabled') and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled'))",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
@@ -3368,7 +3367,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "50",
                     "value": "jerk_layer_0",
-                    "enabled": "resolveOrValue('jerk_enabled')",
+                    "enabled": "resolveOrValue('jerk_enabled') and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled'))",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 }

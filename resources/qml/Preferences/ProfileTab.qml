@@ -27,6 +27,7 @@ Tab
     {
         anchors.fill: parent
         anchors.margins: UM.Theme.getSize("default_margin").width
+        id: profileSettingsView
 
         Component
         {
