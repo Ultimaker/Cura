@@ -49,6 +49,11 @@ class WelcomePagesModel(ListModel):
                                                                              os.path.join("WelcomePages",
                                                                                           "DataCollectionsContent.qml"))),
                             })
+        self._pages.append({"id": "add_printer_by_selection",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "AddPrinterBySelectionContent.qml"))),
+                            })
         self._pages.append({"id": "add_printer_by_ip",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages",
