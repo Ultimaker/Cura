@@ -1365,7 +1365,7 @@
             "package_type": "material",
             "display_name": "Ultimaker ABS",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1403,7 +1403,7 @@
             "package_type": "material",
             "display_name": "Ultimaker CPE",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1422,7 +1422,7 @@
             "package_type": "material",
             "display_name": "Ultimaker CPE+",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/cpe",
             "author": {
@@ -1441,7 +1441,7 @@
             "package_type": "material",
             "display_name": "Ultimaker Nylon",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1479,7 +1479,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PLA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1498,7 +1498,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PP",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/pp",
             "author": {
@@ -1536,7 +1536,7 @@
             "package_type": "material",
             "display_name": "Ultimaker TPU 95A",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.2.2",
             "sdk_version": "6.0",
             "website": "https://ultimaker.com/products/materials/tpu-95a",
             "author": {
