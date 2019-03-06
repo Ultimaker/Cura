@@ -148,6 +148,8 @@ Item
                         {
                             addPrinterByIpScreen.hasPushedAdd = true
                             tempTimerRequest.running = true
+
+                            UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text)
                         }
                     }
 

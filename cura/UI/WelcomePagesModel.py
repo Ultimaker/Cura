@@ -7,6 +7,7 @@ from PyQt5.QtCore import QUrl, Qt
 
 from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
+from logging import Logger
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -16,6 +17,7 @@ class WelcomePagesModel(ListModel):
     IdRole = Qt.UserRole + 1  # Page ID
     PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
     NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
+
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -28,6 +30,7 @@ class WelcomePagesModel(ListModel):
 
     def initialize(self) -> None:
         from cura.CuraApplication import CuraApplication
+
         # Add default welcome pages
         self._pages.append({"id": "welcome",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
@@ -51,9 +54,7 @@ class WelcomePagesModel(ListModel):
                             })
         self._pages.append({"id": "add_printer_by_ip",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "AddPrinterByIpContent.qml"))),
-                            })
+                                             os.path.join("WelcomePages", "AddPrinterByIpContent.qml")))})
         self._pages.append({"id": "cloud",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages",

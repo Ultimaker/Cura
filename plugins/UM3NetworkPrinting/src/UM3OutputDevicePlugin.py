@@ -15,6 +15,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutputDevice import ConnectionType
 from cura.Settings.GlobalStack import GlobalStack # typing
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Version import Version
@@ -180,6 +181,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
         self._cloud_output_device_manager.stop()
+
+    def canAddManualDevice(self, address: str) -> ManualDeviceAdditionAttempt:
+        return ManualDeviceAdditionAttempt.POSSIBLE
+        # TODO?: Check if address is a valid IP (by regexp?).
 
     def removeManualDevice(self, key, address = None):
         if key in self._discovered_devices:
