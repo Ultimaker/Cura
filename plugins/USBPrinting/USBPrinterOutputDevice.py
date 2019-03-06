@@ -265,7 +265,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     if match[2]:
                         extruder.updateTargetHotendTemperature(float(match[2]))
 
-                bed_temperature_matches = re.findall(b"B: ?(\d+\.?\d*)  ?\/?(\d+\.?\d*) ?", line)
+                bed_temperature_matches = re.findall(b"B: ?(\d+\.?\d*) ?\/?(\d+\.?\d*)?", line)
                 if bed_temperature_matches:
                     match = bed_temperature_matches[0]
                     if match[0]:
