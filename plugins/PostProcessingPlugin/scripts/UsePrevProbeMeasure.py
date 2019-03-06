@@ -9,7 +9,7 @@
 
 from ..Script import Script
 
-class UsePrevProbeMeasure(Script):
+class UsePreviousProbeMeasurements(Script):
     def __init__(self):
         super().__init__()
 
