@@ -16,14 +16,14 @@ class UsePreviousProbeMeasurements(Script):
     def getSettingDataString(self):
         return """{
             "name": "Use Previous Probe Measurements",
-            "key": "UsePrevProbeMeasure",
+            "key": "UsePreviousProbeMeasurements",
             "metadata": {},
             "version": 2,
             "settings":
             {
                 "use_previous_measurements":
                 {
-                    "label": "Use last measurement",
+                    "label": "Use last measurement?",
                     "description": "Selecting this will remove the G29 probing command and instead ensure previous measurements are loaded and enabled",
                     "type": "bool",
                     "default_value": false
