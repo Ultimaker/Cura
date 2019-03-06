@@ -26,6 +26,7 @@ from UM.Preferences import Preferences
 
 from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
+from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
@@ -781,6 +782,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not quality_changes_info.extruder_info_dict:
                 container_info = ContainerInfo(None, None, None)
                 quality_changes_info.extruder_info_dict["0"] = container_info
+                # If the global stack we're "targeting" has never been active, but was updated from Cura 3.4,
+                # it might not have it's extruders set properly. 
+                if not global_stack.extruders:
+                    ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
 
                 container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
