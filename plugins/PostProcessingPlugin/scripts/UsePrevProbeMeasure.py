@@ -21,7 +21,7 @@ class UsePreviousProbeMeasurements(Script):
             "version": 2,
             "settings":
             {
-                "usePrevMeas":
+                "use_previous_measurements":
                 {
                     "label": "Use last measurement?",
                     "description": "Selecting this will remove the G29 probing command and instead ensure previous measurements are loaded and enabled",
