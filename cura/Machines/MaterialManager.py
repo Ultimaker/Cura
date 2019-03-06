@@ -537,6 +537,16 @@ class MaterialManager(QObject):
             return
 
         nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
+        # Sort all nodes with respect to the container ID lengths in the ascending order so the base material container
+        # will be the first one to be removed. We need to do this to ensure that all containers get loaded & deleted.
+        nodes_to_remove = sorted(nodes_to_remove, key = lambda x: len(x.getMetaDataEntry("id", "")))
+        # Try to load all containers first. If there is any faulty ones, they will be put into the faulty container
+        # list, so removeContainer() can ignore those ones.
+        for node in nodes_to_remove:
+            container_id = node.getMetaDataEntry("id", "")
+            results = self._container_registry.findContainers(id = container_id)
+            if not results:
+                self._container_registry.addWrongContainerId(container_id)
         for node in nodes_to_remove:
             self._container_registry.removeContainer(node.getMetaDataEntry("id", ""))
 
