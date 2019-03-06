@@ -455,7 +455,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Cloud flow is possible, so show the message
         if not self._start_cloud_flow_message:
             self._createCloudFlowStartMessage()
-        if not self._start_cloud_flow_message.visible:
+        if self._start_cloud_flow_message and not self._start_cloud_flow_message.visible:
             self._start_cloud_flow_message.show()        
 
     def _onCloudPrintingConfigured(self) -> None:
@@ -467,7 +467,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Cloud flow is complete, so show the message
         if not self._cloud_flow_complete_message:
             self._createCloudFlowCompleteMessage()
-        if not self._cloud_flow_complete_message.visible:
+        if self._cloud_flow_complete_message and not self._cloud_flow_complete_message.visible:
             self._cloud_flow_complete_message.show()
         
         # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
