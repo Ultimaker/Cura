@@ -1,11 +1,11 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 import re
 import configparser
 
-from typing import cast, Dict, Optional
+from typing import Any, cast, Dict, Optional
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
@@ -326,6 +326,23 @@ class CuraContainerRegistry(ContainerRegistry):
         super().load()
         self._registerSingleExtrusionMachinesExtruderStacks()
         self._connectUpgradedExtruderStacksToMachines()
+
+    ##  Check if the metadata for a container is okay before adding it.
+    #
+    #   This overrides the one from UM.Settings.ContainerRegistry because we
+    #   also require that the setting_version is correct.
+    @override(ContainerRegistry)
+    def _isMetadataValid(self, metadata: Optional[Dict[str, Any]]) -> bool:
+        if metadata is None:
+            return False
+        if "setting_version" not in metadata:
+            return False
+        try:
+            if int(metadata["setting_version"]) != cura.CuraApplication.CuraApplication.SettingVersion:
+                return False
+        except ValueError: #Not parsable as int.
+            return False
+        return True
 
     ##  Update an imported profile to match the current machine configuration.
     #
