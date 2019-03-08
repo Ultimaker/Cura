@@ -34,8 +34,6 @@ i18n_catalog = i18nCatalog("cura")
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
 @signalemitter
 class UM3OutputDevicePlugin(OutputDevicePlugin):
-    addDeviceSignal = Signal()
-    removeDeviceSignal = Signal()
     discoveredDevicesChanged = Signal()
     cloudFlowIsPossible = Signal()
 
