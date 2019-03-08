@@ -23,7 +23,7 @@ catalog = i18nCatalog("cura")
 
 class UFPWriter(MeshWriter):
     def __init__(self):
-        super().__init__(add_to_recent_files = False)
+        super().__init__()
 
         MimeTypeDatabase.addMimeType(
             MimeType(
