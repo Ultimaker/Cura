@@ -57,10 +57,11 @@ Item
 
             ScrollView
             {
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                id: networkPrinterScrollView
+                ScrollBar.horizontal.policy: ScrollBar.AsNeeded
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-                property int maxItemCountAtOnce: 5  // show at max 5 items at once, otherwise you need to scroll.
+                property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
                 height: maxItemCountAtOnce * (UM.Theme.getSize("action_button").height)
 
                 clip: true
@@ -69,15 +70,17 @@ Item
                 {
                     id: networkPrinterListView
                     anchors.fill: parent
-                    model: Cura.GlobalStacksModel {} // TODO: change this to the network printers
+                    model: CuraApplication.getDiscoveredPrinterModel().discovered_printers
+                    visible: len(model) > 0
 
                     delegate: MachineSelectorButton
                     {
-                        text: model.name
+                        text: modelData.device.name
+
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.rightMargin: 10
-                        outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+                        outputDevice: modelData.device
 
                         checked: ListView.view.currentIndex == index
                         onClicked:
@@ -85,6 +88,14 @@ Item
                             ListView.view.currentIndex = index
                         }
                     }
+                }
+
+                Label
+                {
+                    id: noNetworkPrinterLabel
+                    text: catalog.i18nc("@label", "There is no printer found over your network.")
+                    renderType: Text.NativeRendering
+                    visible: !networkPrinterListView.visible
                 }
             }
         }
@@ -109,7 +120,7 @@ Item
             }
         }
 
-        contentComponent: localPrinterListComponent
+        //contentComponent: localPrinterListComponent
 
         Component
         {

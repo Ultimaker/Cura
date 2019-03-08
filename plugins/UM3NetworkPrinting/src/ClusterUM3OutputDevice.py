@@ -624,6 +624,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         printer.updateName(data["friendly_name"])
         printer.updateKey(data["uuid"])
         printer.updateType(data["machine_variant"])
+        self._application.getDiscoveredPrinterModel().updateDiscoveredPrinter(data["ip_address"],
+                                                                              name = data["friendly_name"],
+                                                                              machine_type = data["machine_variant"])
 
         # Do not store the build plate information that comes from connect if the current printer has not build plate information
         if "build_plate" in data and machine_definition.getMetaDataEntry("has_variant_buildplates", False):

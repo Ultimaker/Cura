@@ -24,7 +24,7 @@ Button
 
     function updatePrinterTypesList()
     {
-        printerTypesList = (checked && (outputDevice != null)) ? outputDevice.uniquePrinterTypes : []
+        printerTypesList = (outputDevice != null) ? outputDevice.uniquePrinterTypes : []
     }
 
     contentItem: Item
@@ -80,12 +80,6 @@ Button
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
         border.color: machineSelectorButton.checked ? UM.Theme.getColor("primary") : "transparent"
-    }
-
-    onClicked:
-    {
-        toggleContent()
-        Cura.MachineManager.setActiveMachine(model.id)
     }
 
     Connections

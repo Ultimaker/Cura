@@ -298,7 +298,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 except TypeError:
                     # Disconnect already happened.
                     pass
-            self._application.getMachineManager().removeDiscoveredPrinter(device.getId())
+            self._application.getDiscoveredPrinterModel().removeDiscoveredPrinter(device.getId())
             self.discoveredDevicesChanged.emit()
 
     def _onAddDevice(self, name, address, properties):
@@ -323,7 +323,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-        self._application.getMachineManager().addDiscoveredPrinter(device.getId(), name, self._createMachineFromDiscoveredPrinter, properties[b"printer_type"].decode("utf-8"))
+        self._application.getDiscoveredPrinterModel().addDiscoveredPrinter(address, device.getId(), name, self._createMachineFromDiscoveredPrinter, properties[b"printer_type"].decode("utf-8"), device)
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
