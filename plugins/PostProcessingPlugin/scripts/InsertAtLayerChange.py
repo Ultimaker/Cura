@@ -14,7 +14,7 @@ class InsertAtLayerChange(Script):
             "version": 2,
             "settings":
             {
-                "insert_loc":
+                "insert_location":
                 {
                     "label": "When to insert",
                     "description": "Whether to insert code before or after layer change.",
@@ -33,19 +33,13 @@ class InsertAtLayerChange(Script):
         }"""
 
     def execute(self, data):
-        in_layer = False
         gcode_to_add = self.getSettingValueByKey("gcode_to_add") + "\n"
         for layer in data:
             # Check that a layer is being printed
             lines = layer.split("\n")
             if ";LAYER:" in lines[0]:
-                in_layer = True
-            else:
-                in_layer = False
-
-            if in_layer:
                 index = data.index(layer)
-                if self.getSettingValueByKey("insert_loc") == "before":
+                if self.getSettingValueByKey("insert_location") == "before":
                     layer = gcode_to_add + layer
                 else:
                     layer = layer + gcode_to_add
