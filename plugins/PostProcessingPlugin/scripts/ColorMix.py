@@ -36,7 +36,7 @@ class ColorMix(Script):
                     "options": {"mm":"mm","layer":"Layer"},
                     "default_value": "layer"
                 },
-                "b_start_height":
+                "start_height":
                 {
                     "label": "Start Height",
                     "description": "Value to start at (mm or layer)",
