@@ -120,7 +120,7 @@ class ColorMix(Script):
 
         firstHeight = self.getSettingValueByKey("start_height")
         secondHeight = self.getSettingValueByKey("finish_height")
-        firstMix = self.getSettingValueByKey("e_mix_start")
+        firstMix = self.getSettingValueByKey("mix_start_ratio")
         SecondMix = self.getSettingValueByKey("f_mix_finish")
 
         #locals
