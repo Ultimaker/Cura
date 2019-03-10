@@ -119,7 +119,7 @@ class ColorMix(Script):
         SecondMix = 0.0
 
         firstHeight = self.getSettingValueByKey("start_height")
-        secondHeight = self.getSettingValueByKey("d_finish_height")
+        secondHeight = self.getSettingValueByKey("finish_height")
         firstMix = self.getSettingValueByKey("e_mix_start")
         SecondMix = self.getSettingValueByKey("f_mix_finish")
 
