@@ -72,7 +72,7 @@ class ColorMix(Script):
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "100"
                 },
-                "f_mix_finish":
+                "mix_finish_ratio":
                 {
                     "label": "End mix ratio",
                     "description": "First extruder percentage 0-100 to finish blend",
