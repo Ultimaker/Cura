@@ -28,7 +28,7 @@ class ColorMix(Script):
             "version": 2,
             "settings":
             {
-                "a_unitsOfMeasurement":
+                "measurement_units":
                 {
                     "label": "Units of measurement",
                     "description": "Input value as mm or layer number.",
