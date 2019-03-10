@@ -52,7 +52,7 @@ class ColorMix(Script):
                     "options": {"fixed_value":"Fixed","blend_value":"Blend"},
                     "default_value": "fixed_value"
                 },
-                "d_finish_height":
+                "finish_height":
                 {
                     "label": "Finish Height",
                     "description": "Value to stop at (mm or layer)",
