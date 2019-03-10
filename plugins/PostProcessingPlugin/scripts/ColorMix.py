@@ -83,7 +83,7 @@ class ColorMix(Script):
                     "maximum_value_warning": "100",
                     "enabled": "c_behavior == 'blend_value'"
                 },
-                "g_notes":
+                "notes":
                 {
                     "label": "Notes",
                     "description": "A spot to put a note",
