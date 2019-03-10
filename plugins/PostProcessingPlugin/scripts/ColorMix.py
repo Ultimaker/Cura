@@ -62,7 +62,7 @@ class ColorMix(Script):
                     "minimum_value_warning": "0.1",
                     "enabled": "c_behavior == 'blend_value'" 
                 },
-                "e_mix_start":
+                "mix_start_ratio":
                 {
                     "label": "Start mix ratio",
                     "description": "First extruder percentage 0-100",
