@@ -137,7 +137,7 @@ class ColorMix(Script):
         #get layers to use
         startLayer = 0
         endLayer = 0
-        if self.getSettingValueByKey("a_unitsOfMeasurement") == "mm":
+        if self.getSettingValueByKey("measurement_units") == "mm":
             if firstHeight == 0:
                 startLayer = 0
             else:
