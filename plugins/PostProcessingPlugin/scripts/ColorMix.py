@@ -44,7 +44,7 @@ class ColorMix(Script):
                     "default_value": 0,
                     "minimum_value": "0"
                 },
-                "c_behavior":
+                "behavior":
                 {
                     "label": "Fixed or blend",
                     "description": "Select Fixed (set new mixture) or Blend mode (dynamic mix)",
