@@ -150,7 +150,7 @@ class ColorMix(Script):
             startLayer = firstHeight
             endLayer = secondHeight
         #see if one-shot
-        if self.getSettingValueByKey("c_behavior") == "fixed_value":
+        if self.getSettingValueByKey("behavior") == "fixed_value":
             endLayer = startLayer
             firstExtruderIncrements = 0
         else:  #blend
