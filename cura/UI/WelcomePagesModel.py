@@ -3,13 +3,14 @@
 import os
 from typing import TYPE_CHECKING, Optional
 
-from PyQt5.QtCore import QUrl, Qt
+from PyQt5.QtCore import QUrl, Qt, pyqtSlot
 
 from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+
 
 class WelcomePagesModel(ListModel):
 

@@ -23,6 +23,9 @@ Item
     property alias maxItemCountAtOnce: networkPrinterScrollView.maxItemCountAtOnce
     property var selectedItem: networkPrinterListView.model[networkPrinterListView.currentIndex]
 
+    signal refreshButtonClicked()
+    signal addByIpButtonClicked()
+
     ScrollView
     {
         id: networkPrinterScrollView
@@ -87,6 +90,7 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             text: catalog.i18nc("@label", "Refresh")
             height: UM.Theme.getSize("message_action_button").height
+            onClicked: base.refreshButtonClicked()
         }
 
         Cura.SecondaryButton
@@ -97,6 +101,7 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             text: catalog.i18nc("@label", "Add printer by IP")
             height: UM.Theme.getSize("message_action_button").height
+            onClicked: base.addByIpButtonClicked()
         }
 
         Item

@@ -58,6 +58,16 @@ Item
                 id: networkPrinterScrollView
 
                 maxItemCountAtOnce: 6  // show at max 6 items at once, otherwise you need to scroll.
+
+                onRefreshButtonClicked:
+                {
+                    // TODO: implement refresh
+                }
+
+                onAddByIpButtonClicked:
+                {
+                    base.gotoPage("add_printer_by_ip")
+                }
             }
         }
     }
