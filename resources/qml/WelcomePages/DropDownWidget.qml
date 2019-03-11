@@ -15,7 +15,7 @@ Item
     id: base
 
     implicitWidth: 200
-    height: header.contentShown ? childrenRect.height : header.height
+    height: header.contentShown ? (header.height + contentRectangle.height) : header.height
 
     property var contentComponent: null
 
@@ -47,7 +47,7 @@ Item
         anchors.top: header.bottom
         anchors.left: header.left
         anchors.right: header.right
-        height: childrenRect.height
+        height: contentLoader.height + 2
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
@@ -62,7 +62,6 @@ Item
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            height: childrenRect.height + 2
             anchors.margins: 1
             sourceComponent: base.contentComponent != null ? base.contentComponent : emptyComponent
         }
