@@ -16,6 +16,34 @@ ScrollView
     property string currentSection: preferredCategory
     property string preferredCategory: "Ultimaker"
 
+    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+
+    property int maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
+    height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
+
+    clip: true
+
+    function updateCurrentItemUponSectionChange()
+    {
+        // Find the first machine from this section
+        for (var i = 0; i < machineList.count; i++)
+        {
+            var item = machineList.model.getItem(i)
+            if (item.section == base.currentSection)
+            {
+                base.currentItem = item
+                machineList.currentIndex = i
+                break
+            }
+        }
+    }
+
+    Component.onCompleted:
+    {
+        updateCurrentItemUponSectionChange()
+    }
+
     background: Rectangle
     {
         anchors.fill: parent
@@ -90,21 +118,8 @@ ScrollView
 
             onClicked:
             {
-                if (base.currentSection != section)
-                {
-                    // Find the first machine from this section
-                    for (var i = 0; i < ListView.view.count; i++)
-                    {
-                        var item = ListView.view.model.getItem(i)
-                        if (item.section == section)
-                        {
-                            base.currentItem = item
-                            base.currentSection = item.section
-                            ListView.view.currentIndex = i
-                            break
-                        }
-                    }
-                }
+                base.currentSection = section
+                base.updateCurrentItemUponSectionChange()
             }
         }
     }

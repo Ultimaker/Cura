@@ -1,4 +1,4 @@
-from typing import Callable, Optional, TYPE_CHECKING
+from typing import Callable, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject
 
@@ -62,7 +62,7 @@ class DiscoveredPrinterModel(QObject):
     discoveredPrintersChanged = pyqtSignal()
 
     @pyqtProperty(list, notify = discoveredPrintersChanged)
-    def discovered_printers(self) -> "list":
+    def discovered_printers(self) -> "List[DiscoveredPrinter]":
         item_list = list(x for x in self._discovered_printer_dict.values())
         item_list.sort(key = lambda x: x.name)
         return item_list
@@ -70,7 +70,7 @@ class DiscoveredPrinterModel(QObject):
     def addDiscoveredPrinter(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None],
                              machine_type: str, device) -> None:
         if ip_address in self._discovered_printer_dict:
-            Logger.log("e", "+++++++++++++ printer with ip [%s] has already been added", ip_address)
+            Logger.log("e", "Printer with ip [%s] has already been added", ip_address)
             return
 
         discovered_printer = DiscoveredPrinter(ip_address, key, name, create_callback, machine_type, device, parent = self)
@@ -81,7 +81,7 @@ class DiscoveredPrinterModel(QObject):
                                 name: Optional[str] = None,
                                 machine_type: Optional[str] = None) -> None:
         if ip_address not in self._discovered_printer_dict:
-            Logger.log("e", "+++++++++++++ printer with ip [%s] is not known", ip_address)
+            Logger.log("e", "Printer with ip [%s] is not known", ip_address)
             return
 
         item = self._discovered_printer_dict[ip_address]

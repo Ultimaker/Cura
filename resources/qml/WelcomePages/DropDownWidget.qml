@@ -15,7 +15,7 @@ Item
     id: base
 
     implicitWidth: 200
-    height: header.contentShown ? (header.height + contentRectangle.height) : header.height
+    height: header.contentShown ? (header.height + contentRectangle.height + 30) : header.height
 
     property var contentComponent: null
 
