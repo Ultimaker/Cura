@@ -454,50 +454,27 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def _onCloudFlowPossible(self) -> None:
         # Cloud flow is possible, so show the message
         if not self._start_cloud_flow_message:
-            self._start_cloud_flow_message = Message(
-                text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
-                lifetime = 0,
-                image_source = QUrl.fromLocalFile(os.path.join(
-                    PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
-                    "resources", "svg", "cloud-flow-start.svg"
-                )),
-                image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
-                option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
-                option_state = False
-            )
-            self._start_cloud_flow_message.addAction("", i18n_catalog.i18nc("@action", "Get started"), "", "")
-            self._start_cloud_flow_message.optionToggled.connect(self._onDontAskMeAgain)
-            self._start_cloud_flow_message.actionTriggered.connect(self._onCloudFlowStarted)
-            self._start_cloud_flow_message.show()
-            return
+            self._createCloudFlowStartMessage()
+        if self._start_cloud_flow_message and not self._start_cloud_flow_message.visible:
+            self._start_cloud_flow_message.show()        
 
     def _onCloudPrintingConfigured(self) -> None:
-        if self._start_cloud_flow_message:
+        # Hide the cloud flow start message if it was hanging around already
+        # For example: if the user already had the browser openen and made the association themselves
+        if self._start_cloud_flow_message and self._start_cloud_flow_message.visible:
             self._start_cloud_flow_message.hide()
-            self._start_cloud_flow_message = None
         
-        # Show the successful pop-up
-        if not self._start_cloud_flow_message:
-            self._cloud_flow_complete_message = Message(
-                text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
-                lifetime = 30,
-                image_source = QUrl.fromLocalFile(os.path.join(
-                    PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
-                    "resources", "svg", "cloud-flow-completed.svg"
-                )),
-                image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
-            )
-            # Don't show the review connection link if we're not on the local network
-            if self._application.getMachineManager().activeMachineHasNetworkConnection:
-                self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
-                self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)
+        # Cloud flow is complete, so show the message
+        if not self._cloud_flow_complete_message:
+            self._createCloudFlowCompleteMessage()
+        if self._cloud_flow_complete_message and not self._cloud_flow_complete_message.visible:
             self._cloud_flow_complete_message.show()
-
-            # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
-            active_machine = self._application.getMachineManager().activeMachine
-            if active_machine:
-                active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
-            return
+        
+        # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
+        active_machine = self._application.getMachineManager().activeMachine
+        if active_machine:
+            active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
+        return
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
         active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
@@ -523,11 +500,40 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return
 
     def _onMachineSwitched(self) -> None:
-        if self._start_cloud_flow_message is not None:
+        # Hide any left over messages
+        if self._start_cloud_flow_message is not None and self._start_cloud_flow_message.visible:
             self._start_cloud_flow_message.hide()
-            self._start_cloud_flow_message = None
-        if self._cloud_flow_complete_message is not None:
+        if self._cloud_flow_complete_message is not None and self._cloud_flow_complete_message.visible:
             self._cloud_flow_complete_message.hide()
-            self._cloud_flow_complete_message = None
 
+        # Check for cloud flow again with newly selected machine
         self.checkCloudFlowIsPossible()
+
+    def _createCloudFlowStartMessage(self):
+        self._start_cloud_flow_message = Message(
+            text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
+            lifetime = 0,
+            image_source = QUrl.fromLocalFile(os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "svg", "cloud-flow-start.svg"
+            )),
+            image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
+            option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
+            option_state = False
+        )
+        self._start_cloud_flow_message.addAction("", i18n_catalog.i18nc("@action", "Get started"), "", "")
+        self._start_cloud_flow_message.optionToggled.connect(self._onDontAskMeAgain)
+        self._start_cloud_flow_message.actionTriggered.connect(self._onCloudFlowStarted)
+
+    def _createCloudFlowCompleteMessage(self):
+        self._cloud_flow_complete_message = Message(
+            text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
+            lifetime = 30,
+            image_source = QUrl.fromLocalFile(os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "svg", "cloud-flow-completed.svg"
+            )),
+            image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
+        )
+        self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
+        self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)
