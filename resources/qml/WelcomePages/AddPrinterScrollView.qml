@@ -8,6 +8,10 @@ import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 
+//
+// This is the scroll view widget for adding a (local) printer. This scroll view shows a list view with printers
+// categorized into 3 categories: "Ultimaker", "Custom", and "Other".
+//
 ScrollView
 {
     id: base

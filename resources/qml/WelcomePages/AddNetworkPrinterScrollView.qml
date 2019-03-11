@@ -10,6 +10,11 @@ import Cura 1.1 as Cura
 import "../PrinterSelector"
 
 
+//
+// This is the widget for adding a network printer. There are 2 parts in this widget. One is a scroll view of a list
+// of discovered network printers. Beneath the scroll view is a container with 3 buttons: "Refresh", "Add by IP", and
+// "Troubleshooting".
+//
 Item
 {
     id: base

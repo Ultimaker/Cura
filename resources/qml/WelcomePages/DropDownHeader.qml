@@ -11,7 +11,7 @@ import ".."
 
 
 //
-// This is DropDown Header bar of the expandable drop down list.
+// This is DropDown Header bar of the expandable drop down list. See comments in DropDownWidget for details.
 //
 Cura.RoundedRectangle
 {

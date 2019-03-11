@@ -8,6 +8,13 @@ import UM 1.3 as UM
 import Cura 1.1 as Cura
 
 
+//
+// This is the dropdown list widget in the welcome wizard. The dropdown list has a header bar which is always present,
+// and its content whose visibility can be toggled by clicking on the header bar. The content is displayed as an
+// expandable dropdown box that will appear below the header bar.
+//
+// The content is configurable via the property "contentComponent", which will be loaded by a Loader when set.
+//
 Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
