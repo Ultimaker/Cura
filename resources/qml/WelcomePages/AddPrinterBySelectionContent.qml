@@ -55,47 +55,145 @@ Item
         {
             id: networkPrinterListComponent
 
-            ScrollView
+            Item
             {
-                id: networkPrinterScrollView
-                ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                height: networkPrinterScrollView.height + controlsRectangle.height
 
-                property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
-                height: maxItemCountAtOnce * (UM.Theme.getSize("action_button").height)
-
-                clip: true
-
-                ListView
+                ScrollView
                 {
-                    id: networkPrinterListView
-                    anchors.fill: parent
-                    model: CuraApplication.getDiscoveredPrinterModel().discovered_printers
-                    visible: len(model) > 0
+                    id: networkPrinterScrollView
+                    ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+                    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-                    delegate: MachineSelectorButton
+                    property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
+                    height: maxItemCountAtOnce * (UM.Theme.getSize("action_button").height)
+
+                    clip: true
+
+                    ListView
                     {
-                        text: modelData.device.name
+                        id: networkPrinterListView
+                        anchors.fill: parent
+                        model: CuraApplication.getDiscoveredPrinterModel().discovered_printers
+                        visible: model.count > 0
 
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        outputDevice: modelData.device
-
-                        checked: ListView.view.currentIndex == index
-                        onClicked:
+                        delegate: MachineSelectorButton
                         {
-                            ListView.view.currentIndex = index
+                            text: modelData.device.name
+
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.rightMargin: 10
+                            outputDevice: modelData.device
+
+                            checked: ListView.view.currentIndex == index
+                            onClicked:
+                            {
+                                ListView.view.currentIndex = index
+                            }
                         }
+                    }
+
+                    Label
+                    {
+                        id: noNetworkPrinterLabel
+                        text: catalog.i18nc("@label", "There is no printer found over your network.")
+                        renderType: Text.NativeRendering
+                        visible: !networkPrinterListView.visible
                     }
                 }
 
-                Label
+                Cura.RoundedRectangle
                 {
-                    id: noNetworkPrinterLabel
-                    text: catalog.i18nc("@label", "There is no printer found over your network.")
-                    renderType: Text.NativeRendering
-                    visible: !networkPrinterListView.visible
+                    id: controlsRectangle
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: networkPrinterScrollView.bottom
+                    anchors.bottomMargin: -border.width
+                    anchors.leftMargin: -border.width
+                    anchors.rightMargin: -border.width
+
+                    height: UM.Theme.getSize("message_action_button").height + UM.Theme.getSize("default_margin").height
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: UM.Theme.getColor("lining")
+                    color: "white"
+                    cornerSide: Cura.RoundedRectangle.Direction.Down
+
+                    Cura.SecondaryButton
+                    {
+                        id: refreshButton
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: catalog.i18nc("@label", "Refresh")
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+
+                    Cura.SecondaryButton
+                    {
+                        id: addPrinterByIpButton
+                        anchors.left: refreshButton.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: catalog.i18nc("@label", "Add printer by IP")
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+
+                    Item
+                    {
+                        id: troubleshootingButton
+
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter
+                        height: troubleshoortingLinkIcon.height
+                        width: troubleshoortingLinkIcon.width + troubleshoortingLabel.width + UM.Theme.getSize("default_margin").width
+
+                        UM.RecolorImage
+                        {
+                            id: troubleshoortingLinkIcon
+                            anchors.right: troubleshoortingLabel.left
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: troubleshoortingLabel.height
+                            width: height
+                            sourceSize.height: width
+                            color: UM.Theme.getColor("text_link")
+                            source: UM.Theme.getIcon("external_link")
+                        }
+
+                        Label
+                        {
+                            id: troubleshoortingLabel
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: catalog.i18nc("@label", "Troubleshooting")
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text_link")
+                            linkColor: UM.Theme.getColor("text_link")
+                            renderType: Text.NativeRendering
+                        }
+
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked:
+                            {
+                                // open the material URL with web browser
+                                var url = "https://ultimaker.com/incoming-links/cura/material-compatibilty" // TODO
+                                Qt.openUrlExternally(url)
+                            }
+                            onEntered:
+                            {
+                                troubleshoortingLabel.font.underline = true
+                            }
+                            onExited:
+                            {
+                                troubleshoortingLabel.font.underline = false
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -120,7 +218,7 @@ Item
             }
         }
 
-        //contentComponent: localPrinterListComponent
+        contentComponent: localPrinterListComponent
 
         Component
         {
