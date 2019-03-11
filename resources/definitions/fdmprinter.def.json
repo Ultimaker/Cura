@@ -2041,7 +2041,7 @@
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
                     "type": "float",
-                    "value": "resolveOrValue('infill_sparse_thickness') * 4",
+                    "value": "resolveOrValue('infill_sparse_thickness') * 4 if infill_sparse_density < 50 else 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -2054,7 +2054,7 @@
                               "default_value": 4,
                               "minimum_value": "0",
                               "type": "int",
-                              "value": "0 if infill_sparse_density == 100 else math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
+                              "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
                               "limit_to_extruder": "infill_extruder_nr",
                               "enabled": "infill_sparse_density > 0",
                               "settable_per_mesh": true
