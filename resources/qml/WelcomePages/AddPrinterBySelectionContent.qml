@@ -109,6 +109,8 @@ Item
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: networkPrinterScrollView.bottom
+                    // Make sure that the left, right, and bottom borders do not show up, otherwise you see double
+                    // borders.
                     anchors.bottomMargin: -border.width
                     anchors.leftMargin: -border.width
                     anchors.rightMargin: -border.width
