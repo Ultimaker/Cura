@@ -86,7 +86,7 @@ msgstr "익스트루더 스타트 G 코드"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
-msgstr ""
+msgstr "이 익스트루더로 전환 시 실행할 G 코드를 시작하십시오."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs label"
@@ -126,7 +126,7 @@ msgstr "익스트루더 엔드 G 코드"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
 msgid "End g-code to execute when switching away from this extruder."
-msgstr ""
+msgstr "이 익스트루더에서 전환 시 실행할 G 코드를 종료하십시오."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs label"

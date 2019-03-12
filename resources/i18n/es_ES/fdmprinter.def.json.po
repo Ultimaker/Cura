@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Los comandos de GCode que se ejecutarán justo al inicio separados por - \n"
-"."
+msgstr "Los comandos de GCode que se ejecutarán justo al inicio separados por - \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Los comandos de GCode que se ejecutarán justo al final separados por -\n"
-"."
+msgstr "Los comandos de GCode que se ejecutarán justo al final separados por -\n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1635,9 +1631,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"Agregar paredes adicionales alrededor del área de relleno. Estas paredes pueden hacer que las líneas del forro superior/inferior se aflojen menos, lo que significa que necesitaría menos capas de forro superior/inferior para obtener la misma calidad utilizando algo más de material.\n"
-"Puede utilizar esta función junto a la de Conectar polígonos de relleno para conectar todo el relleno en una única trayectoria de extrusión sin necesidad de desplazamientos ni retracciones si se configura correctamente."
+msgstr "Agregar paredes adicionales alrededor del área de relleno. Estas paredes pueden hacer que las líneas del forro superior/inferior se aflojen menos, lo que significa que necesitaría menos capas de forro superior/inferior para obtener la misma calidad utilizando algo más de material.\nPuede utilizar esta función junto a la de Conectar polígonos de relleno para conectar todo el relleno en una única trayectoria de extrusión sin necesidad de desplazamientos ni retracciones si se configura correctamente."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1677,7 +1671,7 @@ msgstr "Porcentaje de superposición del forro"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr ""
+msgstr "Ajuste la cantidad de superposición entre las paredes y (los extremos de) las líneas centrales del forro, como un porcentaje de los anchos de las líneas del forro y la pared más profunda. Una ligera superposición permite que las paredes estén firmemente unidas al forro. Tenga en cuenta que, con un mismo ancho de la línea del forro y la pared, cualquier porcentaje superior al 50 % ya puede provocar que cualquier forro sobrepase la pared, debido a que en ese punto la posición de la tobera del extrusor del forro ya puede sobrepasar la mitad de la pared."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1687,7 +1681,7 @@ msgstr "Superposición del forro"
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr ""
+msgstr "Ajuste la cantidad de superposición entre las paredes y (los extremos de) las líneas centrales del forro. Una ligera superposición permite que las paredes estén firmemente unidas al forro. Tenga en cuenta que, con un mismo ancho de la línea del forro y la pared, cualquier valor superior a la mitad del ancho de la pared ya puede provocar que cualquier forro sobrepase la pared, debido a que en ese punto la posición de la tobera del extrusor del forro ya puede sobrepasar la mitad de la pared."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -2127,7 +2121,7 @@ msgstr "Distancia de retracción del cambio de tobera"
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
 msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr ""
+msgstr "Distancia de la retracción al cambiar los extrusores. Utilice el valor 0 para que no haya retracción. Por norma general, este valor debe ser igual a la longitud de la zona de calentamiento."
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2787,7 +2781,7 @@ msgstr "Modo Peinada"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
-msgstr ""
+msgstr "La opción de peinada mantiene la tobera dentro de las áreas ya impresas al desplazarse. Esto ocasiona movimientos de desplazamiento ligeramente más largos, pero reduce la necesidad de realizar retracciones. Si se desactiva la opción de peinada, el material se retraerá y la tobera se moverá en línea recta hasta el siguiente punto. Otra posibilidad es evitar la peinada en áreas de forro superiores/inferiores o peinar solo en el relleno."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -3442,12 +3436,12 @@ msgstr "Altura del relleno de soporte de una determinada densidad antes de cambi
 #: fdmprinter.def.json
 msgctxt "minimum_support_area label"
 msgid "Minimum Support Area"
-msgstr ""
+msgstr "Área del soporte mínima"
 
 #: fdmprinter.def.json
 msgctxt "minimum_support_area description"
 msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "Tamaño del área mínima para los polígonos del soporte. No se generarán polígonos que posean un área de menor tamaño que este valor."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3677,62 +3671,62 @@ msgstr "Zigzag"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area label"
 msgid "Minimum Support Interface Area"
-msgstr ""
+msgstr "Área de la interfaz de soporte mínima"
 
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "Tamaño del área mínima para los polígonos de la interfaz de soporte. No se generarán polígonos que posean un área de menor tamaño que este valor."
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
 msgid "Minimum Support Roof Area"
-msgstr ""
+msgstr "Área de los techos del soporte mínima"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "Tamaño del área mínima para los techos del soporte. No se generarán polígonos que posean un área de menor tamaño que este valor."
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
 msgid "Minimum Support Floor Area"
-msgstr ""
+msgstr "Área de los suelos del soporte mínima"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "Tamaño del área mínima para los suelos del soporte. No se generarán polígonos que posean un área de menor tamaño que este valor."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
 msgid "Support Interface Horizontal Expansion"
-msgstr ""
+msgstr "Expansión horizontal de la interfaz de soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset description"
 msgid "Amount of offset applied to the support interface polygons."
-msgstr ""
+msgstr "Cantidad de desplazamiento aplicado a los polígonos de la interfaz de soporte."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_offset label"
 msgid "Support Roof Horizontal Expansion"
-msgstr ""
+msgstr "Expansión horizontal de los techos del soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_offset description"
 msgid "Amount of offset applied to the roofs of the support."
-msgstr ""
+msgstr "Cantidad de desplazamiento aplicado a los techos del soporte."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_offset label"
 msgid "Support Floor Horizontal Expansion"
-msgstr ""
+msgstr "Expansión horizontal de los suelos de soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_offset description"
 msgid "Amount of offset applied to the floors of the support."
-msgstr ""
+msgstr "Cantidad de desplazamiento aplicado a los suelos del soporte."
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
@@ -3904,9 +3898,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"La distancia horizontal entre la falda y la primera capa de la impresión.\n"
-"Se trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
+msgstr "La distancia horizontal entre la falda y la primera capa de la impresión.\nSe trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -5353,9 +5345,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Distancia de un movimiento ascendente que se extrude a media velocidad.\n"
-"Esto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
+msgstr "Distancia de un movimiento ascendente que se extrude a media velocidad.\nEsto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5909,6 +5899,7 @@ msgstr "Matriz de transformación que se aplicará al modelo cuando se cargue de
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "Los comandos de Gcode que se ejecutarán justo al inicio - separados por \n"
 #~ "."
 
@@ -5921,6 +5912,7 @@ msgstr "Matriz de transformación que se aplicará al modelo cuando se cargue de
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "Los comandos de Gcode que se ejecutarán justo al final - separados por \n"
 #~ "."
 
@@ -5977,6 +5969,7 @@ msgstr "Matriz de transformación que se aplicará al modelo cuando se cargue de
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
+
 #~ "La distancia horizontal entre la falda y la primera capa de la impresión.\n"
 #~ "Esta es la distancia mínima; múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
 
