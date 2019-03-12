@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Cura 4.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-02-26 16:36+0000\n"
-"PO-Revision-Date: 2018-11-06 16:00+0100\n"
+"PO-Revision-Date: 2019-03-09 20:53+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.2\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -408,7 +408,7 @@ msgstr "不允許區域"
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
-msgstr "不允許列印頭進入區域的多邊形列表。"
+msgstr "不允許列印頭進入區域的多邊形清單。"
 
 #: fdmprinter.def.json
 msgctxt "nozzle_disallowed_areas label"
@@ -418,7 +418,7 @@ msgstr "噴頭不允許區域"
 #: fdmprinter.def.json
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
-msgstr "不允許噴頭進入區域的多邊形列表。"
+msgstr "不允許噴頭進入區域的多邊形清單。"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
@@ -1088,7 +1088,7 @@ msgstr "頂部/底部線條方向"
 #: fdmprinter.def.json
 msgctxt "skin_angles description"
 msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "當頂部/底部採用線條或鋸齒狀的列印樣式時使用的整數線條方向的列表。列表中的元素隨層的進度依次使用，當達到列表末尾時，它將從頭開始。列表元素以逗號分隔，整個列表包含在方括號中。空的列表代表使用傳統的預設角度（45 和 135 度）。"
+msgstr "當頂部/底部採用線條或鋸齒狀的列印樣式時使用的整數線條方向的清單。清單中的元素隨層的進度依次使用，當達到清單末尾時，它將從頭開始。清單元素以逗號分隔，整個清單包含在方括號中。空的清單代表使用傳統的預設角度（45 和 135 度）。"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1593,7 +1593,7 @@ msgstr "填充線條方向"
 #: fdmprinter.def.json
 msgctxt "infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns)."
-msgstr "要使用的整數線條方向列表。列表中的元素隨層的進度依次使用，當達到列表末尾時，它將從頭開始。列表元素以逗號分隔，整個列表包含在方括號中。空的列表代表使用傳統的預設角度（線條和鋸齒狀的列印樣式為 45 和 135 度，其他所有的列印樣式為 45 度）。"
+msgstr "要使用的整數線條方向清單。清單中的元素隨層的進度依次使用，當達到清單末尾時，它將從頭開始。清單元素以逗號分隔，整個清單包含在方括號中。空的清單代表使用傳統的預設角度（線條和鋸齒狀的列印樣式為 45 和 135 度，其他所有的列印樣式為 45 度）。"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x label"
@@ -1677,7 +1677,7 @@ msgstr "表層重疊百分比"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr ""
+msgstr "以表層線寬和最內壁線寬的百分比，調整內壁和表層中心線（的端點）之間的重疊量。輕微的重疊可以讓牆壁牢固地連接到表層。但要注意在表層和內壁線寬度相等的情形下, 超過 50% 的百分比可能導致表層越過內壁, 因為此時擠出機噴嘴的位置可能已經超過了內壁線條的中間。"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1687,7 +1687,7 @@ msgstr "表層重疊"
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr ""
+msgstr "調整內壁和表層中心線（的端點）之間的重疊量。輕微的重疊可以讓牆壁牢固地連接到表層。但要注意在表層和內壁線寬度相等的情形下, 超過線寬一半的值可能導致表層越過內壁, 因為此時擠出機噴嘴的位置可能已經超過了內壁線條的中間。"
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -1742,7 +1742,7 @@ msgstr "列印牆壁前先列印填充。先列印牆壁可以產生更精確的
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
-msgstr "最小填充區域"
+msgstr "最小填充面積"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -2127,7 +2127,7 @@ msgstr "噴頭切換回抽距離"
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
 msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr ""
+msgstr "切換擠出機時的回抽量。設定為 0 表示沒有回抽。這值通常和加熱區的長度相同。"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2787,7 +2787,7 @@ msgstr "梳理模式"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
-msgstr ""
+msgstr "梳理模式讓噴頭空跑時保持在已列印的區域內。這將導致稍長的空跑移動但減少了回抽的需求。如果關閉梳理模式，噴頭將會回抽耗材，直線移動到下一點。可以設定在頂部/底部表層不使用梳理模式，或只使用在內部填充。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -3442,12 +3442,12 @@ msgstr "支撐層密度減半的厚度。"
 #: fdmprinter.def.json
 msgctxt "minimum_support_area label"
 msgid "Minimum Support Area"
-msgstr ""
+msgstr "最小支撐面積"
 
 #: fdmprinter.def.json
 msgctxt "minimum_support_area description"
 msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "支撐區域的最小面積大小。面積小於此值的區域將不會產生支撐。"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3677,62 +3677,62 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area label"
 msgid "Minimum Support Interface Area"
-msgstr ""
+msgstr "最小支撐介面面積"
 
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "支撐介面區域的最小面積大小。面積小於此值的區域將不會產生支撐介面。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
 msgid "Minimum Support Roof Area"
-msgstr ""
+msgstr "最小支撐頂板面積"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "支撐頂板區域的最小面積大小。面積小於此值的區域將不會產生支撐頂板。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
 msgid "Minimum Support Floor Area"
-msgstr ""
+msgstr "最小支撐底板面積"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "支撐底板區域的最小面積大小。面積小於此值的區域將不會產生支撐底板。"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
 msgid "Support Interface Horizontal Expansion"
-msgstr ""
+msgstr "支撐介面水平擴展"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset description"
 msgid "Amount of offset applied to the support interface polygons."
-msgstr ""
+msgstr "套用到支撐介面多邊形的偏移量。"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_offset label"
 msgid "Support Roof Horizontal Expansion"
-msgstr ""
+msgstr "支撐頂板水平擴展"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_offset description"
 msgid "Amount of offset applied to the roofs of the support."
-msgstr ""
+msgstr "套用到支撐頂板多邊形的偏移量。"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_offset label"
 msgid "Support Floor Horizontal Expansion"
-msgstr ""
+msgstr "支撐底板水平擴展"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_offset description"
 msgid "Amount of offset applied to the floors of the support."
-msgstr ""
+msgstr "套用到支撐底板多邊形的偏移量。"
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
@@ -4801,7 +4801,7 @@ msgstr "頂部表層線條方向"
 #: fdmprinter.def.json
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "當頂部表層採用線條或鋸齒狀的列印樣式時使用的整數線條方向的列表。列表中的元素隨層的進度依次使用，當達到列表末尾時，它將從頭開始。列表項以逗號分隔，整個列表包含在方括號中。預設使用傳統的預設角度（45 和 135 度）。"
+msgstr "當頂部表層採用線條或鋸齒狀的列印樣式時使用的整數線條方向的清單。清單中的元素隨層的進度依次使用，當達到清單末尾時，它將從頭開始。清單項以逗號分隔，整個清單包含在方括號中。預設使用傳統的預設角度（45 和 135 度）。"
 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization label"
