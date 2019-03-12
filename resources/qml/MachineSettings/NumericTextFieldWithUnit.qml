@@ -20,7 +20,8 @@ UM.TooltipArea
 
     height: childrenRect.height
     width: childrenRect.width
-    text: tooltip
+
+    text: tooltipText
 
     property alias containerStackId: propertyProvider.containerStackId
     property alias settingKey: propertyProvider.key
@@ -30,7 +31,7 @@ UM.TooltipArea
     property alias labelWidth: fieldLabel.width
     property alias unitText: unitLabel.text
 
-    property string tooltip: propertyProvider.properties.description
+    property string tooltipText: propertyProvider.properties.description
 
     // whether negative value is allowed. This affects the validation of the input field.
     property bool allowNegativeValue: false
@@ -42,6 +43,7 @@ UM.TooltipArea
 
     // a dummy function for default property values
     function dummy_func() {}
+
 
     UM.SettingPropertyProvider
     {

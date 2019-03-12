@@ -20,7 +20,7 @@ UM.TooltipArea
 
     height: childrenRect.height
     width: childrenRect.width
-    text: tooltip
+    text: tooltipText
 
     property alias containerStackId: propertyProvider.containerStackId
     property alias settingKey: propertyProvider.key
@@ -29,7 +29,7 @@ UM.TooltipArea
     property alias labelText: fieldLabel.text
     property alias labelWidth: fieldLabel.width
 
-    property string tooltip: propertyProvider.properties.description
+    property string tooltipText: propertyProvider.properties.description
 
     // callback functions
     property var afterOnActivateFunction: dummy_func
@@ -56,34 +56,40 @@ UM.TooltipArea
             elide: Text.ElideRight
             //width: Math.max(0, settingsTabs.labelColumnWidth)
         }
-        ComboBox
+
+        ListModel
         {
-            id: comboBox
-            model: ListModel
+            id: optionsModel
+            Component.onCompleted:
             {
-                id: optionsModel
-                Component.onCompleted:
+                // Options come in as a string-representation of an OrderedDict
+                var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/)
+                if (options)
                 {
-                    // Options come in as a string-representation of an OrderedDict
-                    var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/)
-                    if (options)
+                    options = options[1].split("), (")
+                    for (var i = 0; i < options.length; i++)
                     {
-                        options = options[1].split("), (")
-                        for (var i = 0; i < options.length; i++)
-                        {
-                            var option = options[i].substring(1, options[i].length - 1).split("', '")
-                            optionsModel.append({text: option[1], value: option[0]});
-                        }
+                        var option = options[i].substring(1, options[i].length - 1).split("', '")
+                        optionsModel.append({text: option[1], value: option[0]})
                     }
                 }
             }
+        }
+
+        ComboBox
+        {
+            id: comboBox
+            model: optionsModel
+
+            textRole: "text"
+
             currentIndex:
             {
                 var currentValue = propertyProvider.properties.value
                 var index = 0
-                for (var i = 0; i < optionsModel.count; i++)
+                for (var i = 0; i < model.count; i++)
                 {
-                    if (optionsModel.get(i).value == currentValue)
+                    if (model.get(i).value == currentValue)
                     {
                         index = i
                         break
@@ -93,9 +99,9 @@ UM.TooltipArea
             }
             onActivated:
             {
-                if(propertyProvider.properties.value != optionsModel.get(index).value)
+                if(propertyProvider.properties.value != model.get(index).value)
                 {
-                    propertyProvider.setPropertyValue("value", optionsModel.get(index).value);
+                    propertyProvider.setPropertyValue("value", model.get(index).value)
                     forceUpdateOnChangeFunction()
                     afterOnActivateFunction()
                 }

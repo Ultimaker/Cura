@@ -3,7 +3,7 @@
 import os
 from typing import TYPE_CHECKING, Optional
 
-from PyQt5.QtCore import QUrl, Qt, pyqtSlot
+from PyQt5.QtCore import QUrl, Qt
 
 from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
@@ -29,6 +29,14 @@ class WelcomePagesModel(ListModel):
 
     def initialize(self) -> None:
         from cura.CuraApplication import CuraApplication
+
+        self._pages.append({"id": "test",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "TestContent.qml"))),
+                            })
+
+
         # Add default welcome pages
         self._pages.append({"id": "welcome",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
@@ -68,8 +76,8 @@ class WelcomePagesModel(ListModel):
 
         self.setItems(self._pages)
 
-
     def addPage(self):
         pass
+
 
 __all__ = ["WelcomePagesModel"]
