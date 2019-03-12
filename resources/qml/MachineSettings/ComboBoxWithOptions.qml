@@ -8,6 +8,8 @@ import QtQuick.Layouts 1.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
+import "../Widgets"
+
 
 //
 // ComboBox with dropdown options in the Machine Settings dialog.
@@ -54,7 +56,6 @@ UM.TooltipArea
             anchors.verticalCenter: comboBox.verticalCenter
             visible: text != ""
             elide: Text.ElideRight
-            //width: Math.max(0, settingsTabs.labelColumnWidth)
         }
 
         ListModel
@@ -76,11 +77,12 @@ UM.TooltipArea
             }
         }
 
-        ComboBox
+        CuraComboBox
         {
             id: comboBox
+            width: 100
+            height: UM.Theme.getSize("action_button").height
             model: optionsModel
-
             textRole: "text"
 
             currentIndex:
@@ -97,6 +99,7 @@ UM.TooltipArea
                 }
                 return index
             }
+
             onActivated:
             {
                 if(propertyProvider.properties.value != model.get(index).value)
