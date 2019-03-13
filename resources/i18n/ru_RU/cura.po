@@ -2182,12 +2182,12 @@ msgstr "Подготовка..."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
 msgctxt "@label:status"
 msgid "Aborting..."
-msgstr "Прерывается…"
+msgstr "Прерывается..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:102
 msgctxt "@label:status"
 msgid "Pausing..."
-msgstr "Приостановка…"
+msgstr "Приостановка..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:104
 msgctxt "@label:status"
@@ -2197,7 +2197,7 @@ msgstr "Приостановлено"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:106
 msgctxt "@label:status"
 msgid "Resuming..."
-msgstr "Возобновляется…"
+msgstr "Возобновляется..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:108
 msgctxt "@label:status"
@@ -2243,12 +2243,12 @@ msgstr "Продолжить"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:102
 msgctxt "@label"
 msgid "Pausing..."
-msgstr "Приостановка…"
+msgstr "Приостановка..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:104
 msgctxt "@label"
 msgid "Resuming..."
-msgstr "Возобновляется…"
+msgstr "Возобновляется..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:284
@@ -2260,7 +2260,7 @@ msgstr "Пауза"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:124
 msgctxt "@label"
 msgid "Aborting..."
-msgstr "Прерывается…"
+msgstr "Прерывается..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:124
 msgctxt "@label"
@@ -3777,7 +3777,7 @@ msgstr "Оставить этот параметр видимым"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:417
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
-msgstr "Видимость параметров…"
+msgstr "Видимость параметров..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:237
 msgctxt "@label"
@@ -4116,22 +4116,22 @@ msgstr "Показывать все настройки"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:53
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
-msgstr "Управление видимостью настроек…"
+msgstr "Управление видимостью настроек..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:32
 msgctxt "@title:menu menubar:file"
 msgid "&Save..."
-msgstr "&Сохранить…"
+msgstr "&Сохранить..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:53
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
-msgstr "&Экспорт…"
+msgstr "&Экспорт..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:64
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
-msgstr "Экспорт выбранного…"
+msgstr "Экспорт выбранного..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -4425,7 +4425,7 @@ msgstr "Вид справа"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:155
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
-msgstr "Настроить Cura…"
+msgstr "Настроить Cura..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:printer"
@@ -4440,7 +4440,7 @@ msgstr "Управление принтерами..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:175
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
-msgstr "Управление материалами…"
+msgstr "Управление материалами..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:184
 msgctxt "@action:inmenu menubar:profile"
@@ -4455,7 +4455,7 @@ msgstr "Сбросить текущие параметры"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:204
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "Создать профиль из текущих параметров…"
+msgstr "Создать профиль из текущих параметров..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:210
 msgctxt "@action:inmenu menubar:profile"
@@ -5109,7 +5109,7 @@ msgstr "X3GWriter"
 
 #~ msgctxt "@label:MonitorStatus"
 #~ msgid "Aborting print..."
-#~ msgstr "Прерывание печати…"
+#~ msgstr "Прерывание печати..."
 
 #~ msgctxt "@label"
 #~ msgid "Protected profiles"
@@ -7595,7 +7595,7 @@ msgstr "X3GWriter"
 
 #~ msgctxt "@action:inmenu menubar:profile"
 #~ msgid "&Create profile from current settings..."
-#~ msgstr "Создать профиль из текущих параметров…"
+#~ msgstr "Создать профиль из текущих параметров..."
 
 #~ msgctxt "@action:inmenu"
 #~ msgid "&Duplicate Model"

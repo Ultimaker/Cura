@@ -2172,7 +2172,7 @@ msgstr "Gereed"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96
 msgctxt "@label:status"
 msgid "Preparing..."
-msgstr "Voorbereiden…"
+msgstr "Voorbereiden..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
 msgctxt "@label:status"

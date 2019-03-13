@@ -874,7 +874,7 @@ msgstr "Kopie zapasowe"
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/UploadBackupJob.py:27
 msgctxt "@info:backup_status"
 msgid "Uploading your backup..."
-msgstr "Wgrywanie kopii zapasowej…"
+msgstr "Wgrywanie kopii zapasowej..."
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/UploadBackupJob.py:36
 msgctxt "@info:backup_status"
@@ -1989,7 +1989,7 @@ msgstr "Kamera nie jest dostępna, ponieważ nadzorujesz drukarkę w chmurze."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:301
 msgctxt "@label:status"
 msgid "Loading..."
-msgstr "Wczytywanie…"
+msgstr "Wczytywanie..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:305
 msgctxt "@label:status"
@@ -2196,17 +2196,17 @@ msgstr "Zakończono"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96
 msgctxt "@label:status"
 msgid "Preparing..."
-msgstr "Przygotowyję…"
+msgstr "Przygotowyję..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
 msgctxt "@label:status"
 msgid "Aborting..."
-msgstr "Przerywanie…"
+msgstr "Przerywanie..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:102
 msgctxt "@label:status"
 msgid "Pausing..."
-msgstr "Zatrzymywanie…"
+msgstr "Zatrzymywanie..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:104
 msgctxt "@label:status"
@@ -2216,7 +2216,7 @@ msgstr "Wstrzymana"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:106
 msgctxt "@label:status"
 msgid "Resuming..."
-msgstr "Przywracanie…"
+msgstr "Przywracanie..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:108
 msgctxt "@label:status"
@@ -2262,12 +2262,12 @@ msgstr "Ponów"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:102
 msgctxt "@label"
 msgid "Pausing..."
-msgstr "Zatrzymywanie…"
+msgstr "Zatrzymywanie..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:104
 msgctxt "@label"
 msgid "Resuming..."
-msgstr "Przywracanie…"
+msgstr "Przywracanie..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:284
@@ -2279,7 +2279,7 @@ msgstr "Wstrzymaj"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:124
 msgctxt "@label"
 msgid "Aborting..."
-msgstr "Przerywanie…"
+msgstr "Przerywanie..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:124
 msgctxt "@label"
@@ -4206,7 +4206,7 @@ msgstr "Konfiguracje"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:57
 msgctxt "@label"
 msgid "Loading available configurations from the printer..."
-msgstr "Ładowanie dostępnych konfiguracji z drukarki…"
+msgstr "Ładowanie dostępnych konfiguracji z drukarki..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:58
 msgctxt "@label"
