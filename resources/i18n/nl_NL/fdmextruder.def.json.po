@@ -84,7 +84,7 @@ msgstr "Start-G-code van Extruder"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
-msgstr "Start G-code zodat deze wordt uitgevoerd als naar deze extruder wordt gewisseld."
+msgstr "Start-g-code die wordt uitgevoerd wanneer naar deze extruder wordt gewisseld."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs label"
