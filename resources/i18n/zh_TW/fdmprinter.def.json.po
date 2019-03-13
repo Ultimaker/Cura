@@ -20,22 +20,22 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
 msgid "Machine"
-msgstr "﻿機器"
+msgstr "機器"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr "﻿機器詳細設定"
+msgstr "機器詳細設定"
 
 #: fdmprinter.def.json
 msgctxt "machine_name label"
 msgid "Machine Type"
-msgstr "﻿機器類型"
+msgstr "機器類型"
 
 #: fdmprinter.def.json
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
-msgstr "﻿你的 3D 印表機型號的名稱。"
+msgstr "你的 3D 印表機型號的名稱。"
 
 #: fdmprinter.def.json
 msgctxt "machine_show_variants label"
