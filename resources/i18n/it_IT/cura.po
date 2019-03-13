@@ -4247,7 +4247,7 @@ msgstr "Visualizza tipi"
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:23
 msgctxt "@label"
 msgid "Hi "
-msgstr "Alto "
+msgstr "Ciao "
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:40
 msgctxt "@button"
