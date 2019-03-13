@@ -55,7 +55,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
-        self._application.globalContainerStackChanged.connect(self.reCheckConnections)
+        self._application.globalContainerStackChanged.connect(self.refreshConnections)
 
         self._discovered_devices = {}
         
@@ -142,7 +142,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self.addManualDevice(address)
         self.resetLastManualDevice()
 
-    def reCheckConnections(self):
+    def refreshConnections(self):
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
@@ -233,7 +233,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # connect the new machine to that network printer
         self._application.getMachineManager().associateActiveMachineWithPrinterDevice(discovered_device)
         # ensure that the connection states are refreshed.
-        self.reCheckConnections()
+        self.refreshConnections()
 
     def _checkManualDevice(self, address):
         # Check if a UM3 family device exists at this address.

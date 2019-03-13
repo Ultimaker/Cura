@@ -62,7 +62,7 @@ Item
 
                 onRefreshButtonClicked:
                 {
-                    // TODO: implement refresh
+                    UM.OutputDeviceManager.refreshConnections()
                 }
 
                 onAddByIpButtonClicked:
