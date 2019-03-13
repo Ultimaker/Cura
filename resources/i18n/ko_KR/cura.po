@@ -3885,12 +3885,12 @@ msgstr "사용자 지정 프로파일이 현재 활성 상태입니다. 품질 �
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:13
 msgctxt "@label:Should be short"
 msgid "On"
-msgstr "On"
+msgstr "유효한"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:14
 msgctxt "@label:Should be short"
 msgid "Off"
-msgstr "Off"
+msgstr "비활성"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/GlobalProfileSelector.qml:27
 msgctxt "@label"
