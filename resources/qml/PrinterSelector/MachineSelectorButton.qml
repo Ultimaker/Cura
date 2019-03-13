@@ -20,11 +20,14 @@ Button
     hoverEnabled: true
 
     property bool selected: checked
+    property bool printerTypeLabelAutoFit: false
 
     property var outputDevice: null
     property var printerTypesList: []
 
     property var updatePrinterTypesFunction: updatePrinterTypesList
+    // This function converts the printer type string to another string.
+    property var printerTypeLabelConversionFunction: Cura.MachineManager.getAbbreviatedMachineName
 
     function updatePrinterTypesList()
     {
@@ -71,7 +74,8 @@ Button
                 model: printerTypesList
                 delegate: Cura.PrinterTypeLabel
                 {
-                    text: Cura.MachineManager.getAbbreviatedMachineName(modelData)
+                    autoFit: printerTypeLabelAutoFit
+                    text: printerTypeLabelConversionFunction(modelData)
                 }
             }
         }

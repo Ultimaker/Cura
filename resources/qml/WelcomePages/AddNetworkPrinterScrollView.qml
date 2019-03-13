@@ -57,11 +57,15 @@ Item
                 anchors.rightMargin: 10
                 outputDevice: modelData.device
 
+                printerTypeLabelAutoFit: true
+
                 updatePrinterTypesFunction: updateMachineTypes
+                // show printer type as it is
+                printerTypeLabelConversionFunction: function(value) { return value }
 
                 function updateMachineTypes()
                 {
-                    printerTypesList = [ modelData.machine_type_with_spaces ]
+                    printerTypesList = [ modelData.readable_machine_type ]
                 }
 
                 checkable: false

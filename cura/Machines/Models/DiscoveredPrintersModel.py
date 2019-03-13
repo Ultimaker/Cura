@@ -1,13 +1,18 @@
-
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Callable, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject
 
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+
+
+catalog = i18nCatalog("cura")
 
 
 class DiscoveredPrinter(QObject):
@@ -43,11 +48,19 @@ class DiscoveredPrinter(QObject):
     def machine_type(self) -> str:
         return self._machine_type
 
-    # Machine type string with underscores "_" replaced with spaces " "
+    def setMachineType(self, machine_type: str) -> None:
+        if self._machine_type != machine_type:
+            self._machine_type = machine_type
+            self.machineTypeChanged.emit()
+
+    # Human readable machine type string
     @pyqtProperty(str, notify = machineTypeChanged)
-    def machine_type_with_spaces(self) -> str:
+    def readable_machine_type(self) -> str:
         from cura.CuraApplication import CuraApplication
-        return CuraApplication.getInstance().getMachineManager().getMachineTypeNameFromId(self._machine_type)
+        readable_type = CuraApplication.getInstance().getMachineManager().getMachineTypeNameFromId(self._machine_type)
+        if not readable_type:
+            readable_type = catalog.i18nc("@label", "Unknown")
+        return readable_type
 
     @pyqtProperty(QObject, constant = True)
     def device(self):
