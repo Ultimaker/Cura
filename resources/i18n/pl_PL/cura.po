@@ -4241,7 +4241,7 @@ msgstr "Użyj kleju dla lepszej przyczepności dla tej kombinacji materiałów."
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:128
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
-msgstr "Ta konfiguracja jest niedostępna, ponieważ % 1 jest nierozpoznany. Przejdź do % 2, aby pobrać prawidłowy profil materiału."
+msgstr "Ta konfiguracja jest niedostępna, ponieważ %1 jest nierozpoznany. Przejdź do %2, aby pobrać prawidłowy profil materiału."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:129
 msgctxt "@label"
