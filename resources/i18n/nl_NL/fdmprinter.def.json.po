@@ -1671,7 +1671,7 @@ msgstr "Overlappercentage Skin"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Pas de mate van overlap tussen de wanden en (de eindpunten van) de skin-centreerlijnen aan, als percentage van de lijnbreedtes van de skin-lijnen en de binnenste wand. Met een lichte overlap kunnen de wanden goed hechten aan de skin. Houd er rekening mee dat met een gelijke lijnbreedte voor skin en wand, skin buiten de wand kan treden bij een percentage hoger dan 50%, omdat de nozzle van de skin-extruder op deze positie al voorbij het midden van de wand kan zijn."
+msgstr "Pas de mate van overlap tussen de wanden en (de eindpunten van) de skin-middellijnen aan, als percentage van de lijnbreedtes van de skin-lijnen en de binnenste wand. Met een lichte overlap kunnen de wanden goed hechten aan de skin. Houd er rekening mee dat met een gelijke lijnbreedte voor skin en wand, skin buiten de wand kan treden bij een percentage hoger dan 50%, omdat de nozzle van de skin-extruder op deze positie al voorbij het midden van de wand kan zijn."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
