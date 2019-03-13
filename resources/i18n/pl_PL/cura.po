@@ -1791,7 +1791,7 @@ msgstr "Zostanie zainstalowane po ponownym uruchomieniu"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:53
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Log in</a> is required to update"
-msgstr "<a href=‚%1’>Zaloguj</a> aby aktualizować"
+msgstr "<a href='%1'>Zaloguj</a> aby aktualizować"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:71
 msgctxt "@action:button"
