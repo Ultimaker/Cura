@@ -556,7 +556,7 @@ msgstr "Отправляйте и отслеживайте задания печ
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:460
 msgctxt "@info:status"
 msgid "Connect to Ultimaker Cloud"
-msgstr "Подключиться к Ultimaker Cloud"
+msgstr "Подключиться к Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:461
 msgctxt "@action"
@@ -4272,7 +4272,7 @@ msgstr "Войти"
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:29
 msgctxt "@label"
 msgid "Ultimaker Cloud"
-msgstr "Облако Ultimaker"
+msgstr "Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:40
 msgctxt "@label"

@@ -560,7 +560,7 @@ msgstr "利用你的 Ultimaker 帳號在任何地方傳送和監控列印作業�
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:460
 msgctxt "@info:status"
 msgid "Connect to Ultimaker Cloud"
-msgstr "連接到 Ultimaker 雲端服務"
+msgstr "連接到 Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:461
 msgctxt "@action"
@@ -2050,7 +2050,7 @@ msgstr "已排入隊列"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
 msgctxt "@label link to connect manager"
 msgid "Go to Cura Connect"
-msgstr "前往 Cura 連線"
+msgstr "前往 Cura Connect"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:102
 msgctxt "@label"
@@ -4296,7 +4296,7 @@ msgstr "登入"
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:29
 msgctxt "@label"
 msgid "Ultimaker Cloud"
-msgstr "Ultimaker 雲端服務"
+msgstr "Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:40
 msgctxt "@label"

@@ -561,7 +561,7 @@ msgstr "Wyślij i nadzoruj zadania druku z każdego miejsca, używając konta Ul
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:460
 msgctxt "@info:status"
 msgid "Connect to Ultimaker Cloud"
-msgstr "Połącz z Chmurą Ultimaker"
+msgstr "Połącz z Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:461
 msgctxt "@action"

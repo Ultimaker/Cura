@@ -556,7 +556,7 @@ msgstr "使用您的 Ultimaker account 帐户从任何地方发送和监控打�
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:460
 msgctxt "@info:status"
 msgid "Connect to Ultimaker Cloud"
-msgstr "连接到 Ultimaker 云"
+msgstr "连接到 Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:461
 msgctxt "@action"
@@ -4262,7 +4262,7 @@ msgstr "登录"
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:29
 msgctxt "@label"
 msgid "Ultimaker Cloud"
-msgstr "Ultimaker 云"
+msgstr "Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:40
 msgctxt "@label"
