@@ -859,7 +859,7 @@ msgstr "Kopia zapasowa"
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/DriveApiService.py:55
 msgctxt "@info:backup_status"
 msgid "There was an error listing your backups."
-msgstr "Wystąpił błąd z listą kopii zapasowych. "
+msgstr "Wystąpił błąd z listą kopii zapasowych."
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/DriveApiService.py:121
 msgctxt "@info:backup_status"
