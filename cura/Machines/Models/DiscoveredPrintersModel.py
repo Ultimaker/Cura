@@ -16,7 +16,7 @@ class DiscoveredPrinter(QObject):
         self._ip_address = ip_address
         self._key = key
         self._name = name
-        self._create_callback = create_callback
+        self.create_callback = create_callback
         self._machine_type = machine_type
         self._device = device
 

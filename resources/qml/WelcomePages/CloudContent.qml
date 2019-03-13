@@ -99,14 +99,13 @@ Item
         text: catalog.i18nc("@button", "Create an account")
         width: 140
         fixedWidthMode: true
-        onClicked: base.showNextPage() // TODO: create account
+        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
     }
 
     Cura.SecondaryButton
     {
         id: signInButton
         anchors.left: createAccountButton.right
-        //anchors.leftMargin: 10
         anchors.verticalCenter: finishButton.verticalCenter
         text: catalog.i18nc("@button", "Sign in")
         width: 80
@@ -115,6 +114,6 @@ Item
         hoverColor: "transparent"
         textHoverColor: UM.Theme.getColor("text_light_blue")
         fixedWidthMode: true
-        onClicked: base.showNextPage() // TODO: sign in
+        onClicked: Cura.API.account.login()
     }
 }
