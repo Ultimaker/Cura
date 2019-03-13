@@ -218,7 +218,22 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
         # TODO: This needs to be implemented. It's supposed to create a machine given a unique key as already discovered
         # by this plugin.
-        pass
+        discovered_device = self._discovered_devices.get(key)
+        if discovered_device is None:
+            Logger.log("e", "Could not find discovered device with key [%s]", key)
+            return
+
+        group_name = discovered_device.getProperty("name")
+        machine_type_id = discovered_device.getProperty("printer_type")
+
+        Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
+                   key, group_name, machine_type_id)
+
+        self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        # connect the new machine to that network printer
+        self._application.getMachineManager().associateActiveMachineWithPrinterDevice(discovered_device)
+        # ensure that the connection states are refreshed.
+        self.reCheckConnections()
 
     def _checkManualDevice(self, address):
         # Check if a UM3 family device exists at this address.

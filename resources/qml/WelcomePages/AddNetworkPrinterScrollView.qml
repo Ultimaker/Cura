@@ -57,6 +57,13 @@ Item
                 anchors.rightMargin: 10
                 outputDevice: modelData.device
 
+                updatePrinterTypesFunction: updateMachineTypes
+
+                function updateMachineTypes()
+                {
+                    printerTypesList = [ modelData.machine_type_with_spaces ]
+                }
+
                 checkable: false
                 selected: ListView.view.currentIndex == model.index
                 onClicked:

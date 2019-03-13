@@ -1,3 +1,5 @@
+
+
 from typing import Callable, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject
@@ -13,6 +15,7 @@ class DiscoveredPrinter(QObject):
     def __init__(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None], machine_type: str,
                  device, parent = None) -> None:
         super().__init__(parent)
+
         self._ip_address = ip_address
         self._key = key
         self._name = name
@@ -40,10 +43,11 @@ class DiscoveredPrinter(QObject):
     def machine_type(self) -> str:
         return self._machine_type
 
-    def setMachineType(self, machine_type: str) -> None:
-        if self._machine_type != machine_type:
-            self._machine_type = machine_type
-            self.machineTypeChanged.emit()
+    # Machine type string with underscores "_" replaced with spaces " "
+    @pyqtProperty(str, notify = machineTypeChanged)
+    def machine_type_with_spaces(self) -> str:
+        from cura.CuraApplication import CuraApplication
+        return CuraApplication.getInstance().getMachineManager().getMachineTypeNameFromId(self._machine_type)
 
     @pyqtProperty(QObject, constant = True)
     def device(self):
