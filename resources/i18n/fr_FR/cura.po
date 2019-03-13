@@ -64,7 +64,7 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle :</p>\n<p>{model_names}</p>\n<p>Découvrez comment optimiser la qualité et la fiabilité de l'impression.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant »>Consultez le guide de qualité d'impression</a></p>"
+msgstr "<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle :</p>\n<p>{model_names}</p>\n<p>Découvrez comment optimiser la qualité et la fiabilité de l'impression.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">Consultez le guide de qualité d'impression</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.py:32
 msgctxt "@item:inmenu"
