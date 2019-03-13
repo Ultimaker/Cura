@@ -18,7 +18,7 @@ import "../PrinterSelector"
 Item
 {
     id: base
-    height: networkPrinterScrollView.height + controlsRectangle.height
+    height: networkPrinterInfo.height + controlsRectangle.height
 
     property alias maxItemCountAtOnce: networkPrinterScrollView.maxItemCountAtOnce
     property var currentItem: (networkPrinterListView.currentIndex >= 0)
@@ -28,51 +28,76 @@ Item
     signal refreshButtonClicked()
     signal addByIpButtonClicked()
 
-    ScrollView
+    Item
     {
-        id: networkPrinterScrollView
-        anchors.fill: parent
+        id: networkPrinterInfo
+        height: networkPrinterScrollView.visible ? networkPrinterScrollView.height : noPrinterLabel.height
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
 
-        ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-
-        property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
-        height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
-
-        clip: true
-
-        ListView
+        Label
         {
-            id: networkPrinterListView
-            anchors.fill: parent
-            model: CuraApplication.getDiscoveredPrinterModel().discovered_printers
-            visible: model.length > 0
+            id: noPrinterLabel
+            height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "There is no printer found over your network.")
+            renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            visible: !networkPrinterScrollView.visible
+        }
 
-            delegate: MachineSelectorButton
+        ScrollView
+        {
+            id: networkPrinterScrollView
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+
+            property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
+            height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
+
+            visible: networkPrinterListView.model.length > 0
+
+            clip: true
+
+            ListView
             {
-                text: modelData.device.name
+                id: networkPrinterListView
+                anchors.fill: parent
+                model: CuraApplication.getDiscoveredPrinterModel().discovered_printers
+                //visible: base.visible && model.length > 0
 
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.rightMargin: 10
-                outputDevice: modelData.device
-
-                printerTypeLabelAutoFit: true
-
-                updatePrinterTypesFunction: updateMachineTypes
-                // show printer type as it is
-                printerTypeLabelConversionFunction: function(value) { return value }
-
-                function updateMachineTypes()
+                delegate: MachineSelectorButton
                 {
-                    printerTypesList = [ modelData.readable_machine_type ]
-                }
+                    text: modelData.device.name
 
-                checkable: false
-                selected: ListView.view.currentIndex == model.index
-                onClicked:
-                {
-                    ListView.view.currentIndex = index
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    outputDevice: modelData.device
+
+                    printerTypeLabelAutoFit: true
+
+                    updatePrinterTypesFunction: updateMachineTypes
+                    // show printer type as it is
+                    printerTypeLabelConversionFunction: function(value) { return value }
+
+                    function updateMachineTypes()
+                    {
+                        printerTypesList = [ modelData.readable_machine_type ]
+                    }
+
+                    checkable: false
+                    selected: ListView.view.currentIndex == model.index
+                    onClicked:
+                    {
+                        ListView.view.currentIndex = index
+                    }
                 }
             }
         }
@@ -83,7 +108,7 @@ Item
         id: controlsRectangle
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: networkPrinterScrollView.bottom
+        anchors.top: networkPrinterInfo.bottom
         // Make sure that the left, right, and bottom borders do not show up, otherwise you see double
         // borders.
         anchors.bottomMargin: -border.width
@@ -159,7 +184,7 @@ Item
                 hoverEnabled: true
                 onClicked:
                 {
-                    // open the material URL with web browser
+                    // open the throubleshooting URL with web browser
                     var url = "https://ultimaker.com/incoming-links/cura/material-compatibilty" // TODO
                     Qt.openUrlExternally(url)
                 }

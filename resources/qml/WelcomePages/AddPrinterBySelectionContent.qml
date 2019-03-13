@@ -37,7 +37,7 @@ Item
         anchors.right: parent.right
         anchors.margins: 20
 
-        title: catalog.i18nc("@label", "Add a network printer")
+        title: catalog.i18nc("@label", "Add a networked printer")
         contentShown: true  // by default expand the network printer list
 
         onClicked:
@@ -82,7 +82,7 @@ Item
         anchors.right: parent.right
         anchors.margins: 20
 
-        title: catalog.i18nc("@label", "Add a non-network printer")
+        title: catalog.i18nc("@label", "Add a non-networked printer")
 
         onClicked:
         {
