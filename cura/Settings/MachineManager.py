@@ -1382,8 +1382,9 @@ class MachineManager(QObject):
             need_to_show_message = False
 
             for extruder_configuration in configuration.extruderConfigurations:
-                extruder_has_hotend = extruder_configuration.hotendID != ""
-                extruder_has_material = extruder_configuration.material.guid != ""
+                # We support "" or None, since the cloud uses None instead of empty strings
+                extruder_has_hotend = extruder_configuration.hotendID and extruder_configuration.hotendID != ""
+                extruder_has_material = extruder_configuration.material.guid and extruder_configuration.material.guid != ""
 
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if not extruder_has_hotend or not extruder_has_material:
