@@ -34,6 +34,8 @@ i18n_catalog = i18nCatalog("cura")
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
 @signalemitter
 class UM3OutputDevicePlugin(OutputDevicePlugin):
+    addDeviceSignal = Signal()
+    removeDeviceSignal = Signal()
     discoveredDevicesChanged = Signal()
     cloudFlowIsPossible = Signal()
 
@@ -173,6 +175,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self.checkCloudFlowIsPossible()
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
+            if key.startswith("manual:"):
+                self.removeManualDeviceSignal.emit(self.getPluginId(), key, self._discovered_devices[key].address())  # TODO?
 
     def stop(self):
         if self._zero_conf is not None:
@@ -194,6 +198,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if address in self._manual_instances:
             self._manual_instances.remove(address)
             self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+
+        self.removeManualDeviceSignal.emit(self.getPluginId(), key, address)  # TODO?
 
     def addManualDevice(self, address):
         if address not in self._manual_instances:
@@ -231,6 +237,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     def _onNetworkRequestFinished(self, reply):
         reply_url = reply.url().toString()
+
+        address = ""
+        device = None
+        properties = {}  # type: Dict[bytes, bytes]
 
         if "system" in reply_url:
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
@@ -290,6 +300,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 properties[b"cluster_size"] = len(cluster_printers_list)
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
+
+        if device:
+            self.addManualDeviceSignal.emit(self.getPluginId(), device.getId(), address, properties)
 
     def _onRemoveDevice(self, device_id):
         device = self._discovered_devices.pop(device_id, None)

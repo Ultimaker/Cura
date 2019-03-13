@@ -70,7 +70,7 @@ Item
         anchors.topMargin: 40
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Add printer by IP adress")
+        text: catalog.i18nc("@label", "Add printer by IP address")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("large_bold")
         renderType: Text.NativeRendering
@@ -193,23 +193,44 @@ Item
                         anchors.top: parent.top
                         font: UM.Theme.getFont("large")
 
-                        text: "Davids-desktop"  // TODO: placeholder, alter after interface review.
+                        text: "???"
                     }
 
                     GridLayout
                     {
+                        id: printerInfoGrid
                         anchors.top: printerNameLabel.bottom
                         columns: 2
                         columnSpacing: 20
 
-                        Text { font: UM.Theme.getFont("default"); text: "Type" }
-                        Text { font: UM.Theme.getFont("default"); text: "Ultimaker S5" }  // TODO: placeholder, alter after interface review.
+                        Text { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Type") }
+                        Label { id: typeText; font: UM.Theme.getFont("default"); text: "?" }
 
-                        Text { font: UM.Theme.getFont("default"); text: "Firmware version" }
-                        Text { font: UM.Theme.getFont("default"); text: "4.3.3.20180529" }  // TODO: placeholder, alter after interface review.
+                        Text { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Firmware version") }
+                        Label { id: firmwareText; font: UM.Theme.getFont("default"); text: "0.0.0.0" }
 
-                        Text { font: UM.Theme.getFont("default"); text: "Address" }
-                        Text { font: UM.Theme.getFont("default"); text: "10.183.1.115" }  // TODO: placeholder, alter after interface review.
+                        Text { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Address") }
+                        Label { id: addressText; font: UM.Theme.getFont("default"); text: "0.0.0.0" }
+
+                        Connections
+                        {
+                            target: UM.OutputDeviceManager
+                            onManualDeviceChanged:
+                            {
+                                typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
+                                addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
+                            }
+                        }
+                    }
+
+                    Connections
+                    {
+                        target: UM.OutputDeviceManager
+                        onManualDeviceChanged:
+                        {
+                            printerNameLabel.text = UM.OutputDeviceManager.manualDeviceProperty("name")
+                        }
                     }
                 }
             }
@@ -222,7 +243,7 @@ Item
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.margins: 40
-        text: catalog.i18nc("@button", "Back")
+        text: catalog.i18nc("@button", "Cancel")
         width: 140
         fixedWidthMode: true
         onClicked: base.showPreviousPage()
