@@ -43,10 +43,7 @@ Cura.RoundedRectangle
         onEntered: base.hovered = true
         onExited: base.hovered = false
 
-        onClicked: {
-            base.contentShown = !base.contentShown
-            base.clicked()
-        }
+        onClicked: base.clicked()
     }
 
     Label

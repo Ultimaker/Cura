@@ -38,6 +38,7 @@ Item
         anchors.margins: 20
 
         title: catalog.i18nc("@label", "Add a network printer")
+        contentShown: true  // by default expand the network printer list
 
         onClicked:
         {
@@ -97,7 +98,7 @@ Item
         {
             id: localPrinterListComponent
 
-            AddPrinterScrollView
+            AddLocalPrinterScrollView
             {
                 id: localPrinterView
 
@@ -112,10 +113,42 @@ Item
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 40
-        enabled: true  // TODO
+        enabled:
+        {
+            // If the network printer dropdown is expanded, make sure that there is a selected item
+            if (addNetworkPrinterDropDown.contentShown)
+            {
+                return addNetworkPrinterDropDown.contentItem.currentItem != null
+            }
+            else
+            {
+                return addLocalPrinterDropDown.contentItem.currentItem != null
+            }
+        }
+
         text: catalog.i18nc("@button", "Next")
         width: 140
         fixedWidthMode: true
-        onClicked: base.showNextPage()
+        onClicked:
+        {
+            // Create a network printer or a local printer according to the selection
+            if (addNetworkPrinterDropDown.contentShown)
+            {
+                // Create a network printer
+                const networkPrinterItem = addNetworkPrinterDropDown.contentItem.currentItem
+                CuraApplication.getDiscoveredPrinterModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
+            }
+            else
+            {
+                // Create a local printer
+                const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
+                Cura.MachineManager.addMachine(localPrinterItem.id)
+            }
+
+            // TODO: implement machine actions
+
+            // If we have created a machine, go to the last page, which is the "cloud" page.
+            base.gotoPage("cloud")
+        }
     }
 }

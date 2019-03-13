@@ -16,7 +16,9 @@ ScrollView
 {
     id: base
 
-    property var currentItem: null
+    property var currentItem: (machineList.currentIndex >= 0)
+                              ? machineList.model.getItem(machineList.currentIndex)
+                              : null
     property string currentSection: preferredCategory
     property string preferredCategory: "Ultimaker"
 
@@ -36,7 +38,6 @@ ScrollView
             var item = machineList.model.getItem(i)
             if (item.section == base.currentSection)
             {
-                base.currentItem = item
                 machineList.currentIndex = i
                 break
             }

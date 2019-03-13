@@ -21,7 +21,9 @@ Item
     height: networkPrinterScrollView.height + controlsRectangle.height
 
     property alias maxItemCountAtOnce: networkPrinterScrollView.maxItemCountAtOnce
-    property var selectedItem: networkPrinterListView.model[networkPrinterListView.currentIndex]
+    property var currentItem: (networkPrinterListView.currentIndex >= 0)
+                              ? networkPrinterListView.model[networkPrinterListView.currentIndex]
+                              : null
 
     signal refreshButtonClicked()
     signal addByIpButtonClicked()

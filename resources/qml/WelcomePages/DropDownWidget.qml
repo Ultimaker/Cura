@@ -25,16 +25,21 @@ Item
     height: header.contentShown ? (header.height + contentRectangle.height + 30) : header.height
 
     property var contentComponent: null
+    property alias contentItem: contentLoader.item
 
     property alias title: header.title
-    property alias contentShown: header.contentShown
+    property bool contentShown: false
 
     signal clicked()
 
     Connections
     {
         target: header
-        onClicked: base.clicked()
+        onClicked:
+        {
+            base.contentShown = !base.contentShown
+            clicked()
+        }
     }
 
     DropDownHeader
@@ -45,7 +50,7 @@ Item
         anchors.right: parent.right
         height: UM.Theme.getSize("expandable_component_content_header").height
         rightIconSource: contentShown ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
-
+        contentShown: base.contentShown
     }
 
     Cura.RoundedRectangle
