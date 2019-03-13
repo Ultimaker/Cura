@@ -1681,7 +1681,7 @@ msgstr "Overlap Skin"
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Pas de mate van overlap tussen de wanden en (de eindpunten van) de skin-centreerlijnen aan. Met een lichte overlap kunnen de wanden goed hechten aan de skin. Houd er rekening mee dat met een gelijke lijnbreedte voor skin en wand, skin buiten de wand kan treden bij een waarde groter dan de halve wandbreedte, omdat de nozzle van de skin-extruder op deze positie het midden van de wand al kan hebben bereikt."
+msgstr "Pas de mate van overlap tussen de wanden en (de eindpunten van) de skin-middellijnen aan. Met een lichte overlap kunnen de wanden goed hechten aan de skin. Houd er rekening mee dat met een gelijke lijnbreedte voor skin en wand, skin buiten de wand kan treden bij een waarde groter dan de halve wandbreedte, omdat de nozzle van de skin-extruder op deze positie het midden van de wand al kan hebben bereikt."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
