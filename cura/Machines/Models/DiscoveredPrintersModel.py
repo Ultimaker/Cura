@@ -22,6 +22,9 @@ class DiscoveredPrinter(QObject):
 
     nameChanged = pyqtSignal()
 
+    def getKey(self) -> str:
+        return self._key
+
     @pyqtProperty(str, notify = nameChanged)
     def name(self) -> str:
         return self._name
@@ -101,4 +104,4 @@ class DiscoveredPrinterModel(QObject):
 
     @pyqtSlot("QVariant")
     def createMachineFromDiscoveredPrinter(self, discovered_printer: "DiscoveredPrinter") -> None:
-        discovered_printer.create_callback()
+        discovered_printer.create_callback(discovered_printer.getKey())

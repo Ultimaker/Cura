@@ -19,6 +19,8 @@ Button
     checkable: true
     hoverEnabled: true
 
+    property bool selected: checked
+
     property var outputDevice: null
     property var printerTypesList: []
 
@@ -79,7 +81,7 @@ Button
         color: machineSelectorButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: machineSelectorButton.checked ? UM.Theme.getColor("primary") : "transparent"
+        border.color: machineSelectorButton.selected ? UM.Theme.getColor("primary") : "transparent"
     }
 
     Connections

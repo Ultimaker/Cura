@@ -57,7 +57,8 @@ Item
                 anchors.rightMargin: 10
                 outputDevice: modelData.device
 
-                checked: ListView.view.currentIndex == index
+                checkable: false
+                selected: ListView.view.currentIndex == model.index
                 onClicked:
                 {
                     ListView.view.currentIndex = index
