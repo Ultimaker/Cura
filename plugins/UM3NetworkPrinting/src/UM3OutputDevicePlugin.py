@@ -301,7 +301,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
 
-        if device:
+        if device and address in self._manual_instances:
+            self.getOutputDeviceManager().addOutputDevice(device)
             self.addManualDeviceSignal.emit(self.getPluginId(), device.getId(), address, properties)
 
     def _onRemoveDevice(self, device_id):
