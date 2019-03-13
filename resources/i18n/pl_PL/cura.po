@@ -2331,7 +2331,7 @@ msgstr "Nadpisz"
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
-msgstr[0] "Przypisana drukarka, % 1, wymaga następującej zmiany konfiguracji:"
+msgstr[0] "Przypisana drukarka, %1, wymaga następującej zmiany konfiguracji:"
 msgstr[1] "Przypisana drukarka, % 1, wymaga następujących zmian konfiguracji:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:68
