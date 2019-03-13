@@ -2337,7 +2337,7 @@ msgstr[1] "Przypisana drukarka, %1, wymaga następujących zmian konfiguracji:"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:68
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr "Drukarka % 1 jest przypisana, ale zadanie zawiera nieznaną konfigurację materiału."
+msgstr "Drukarka %1 jest przypisana, ale zadanie zawiera nieznaną konfigurację materiału."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:78
 msgctxt "@label"
