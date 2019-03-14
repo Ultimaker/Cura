@@ -24,10 +24,11 @@ class UserAgreement(QObject, Extension):
             self.showUserAgreement()
 
     def showUserAgreement(self):
-        if not self._user_agreement_window:
-            self.createUserAgreementWindow()
-
-        self._user_agreement_window.show()
+        # if not self._user_agreement_window:
+        #     self.createUserAgreementWindow()
+        #
+        # self._user_agreement_window.show()
+        pass
 
     @pyqtSlot(bool)
     def didAgree(self, user_choice):

@@ -45,7 +45,7 @@ UM.MainWindow
     WelcomeDialog
     {
         id: welcomeDialog
-        visible: false
+        visible: CuraApplication.needToShowUserAgreement
     }
 
     Rectangle

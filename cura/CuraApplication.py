@@ -555,11 +555,18 @@ class CuraApplication(QtApplication):
     def needToShowUserAgreement(self) -> bool:
         return self._need_to_show_user_agreement
 
+    @pyqtSlot(bool)
     def setNeedToShowUserAgreement(self, set_value = True) -> None:
         self._need_to_show_user_agreement = set_value
 
+    @pyqtSlot(str, str)
+    def writeToLog(self, severity: str, message: str) -> None:
+        Logger.log(severity, message)
+
     # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
     # pre-exit checks such as checking for in-progress USB printing, etc.
+    # Except for the 'Decline and close' in the 'User Agreement'-step in the Welcome-pages, that should be a hard exit.
+    @pyqtSlot()
     def closeApplication(self) -> None:
         Logger.log("i", "Close application")
         main_window = self.getMainWindow()
