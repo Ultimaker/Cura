@@ -84,7 +84,14 @@ Button
     background: Rectangle
     {
         id: backgroundRect
-        color: machineSelectorButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+        color:
+        {
+            if (!machineSelectorButton.enabled)
+            {
+                return UM.Theme.getColor("action_button_disabled")
+            }
+            return machineSelectorButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+        }
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
         border.color: machineSelectorButton.selected ? UM.Theme.getColor("primary") : "transparent"

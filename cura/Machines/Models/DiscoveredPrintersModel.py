@@ -62,6 +62,10 @@ class DiscoveredPrinter(QObject):
             readable_type = catalog.i18nc("@label", "Unknown")
         return readable_type
 
+    @pyqtProperty(bool, notify = machineTypeChanged)
+    def is_unknown_machine_type(self) -> bool:
+        return self.readable_machine_type.lower() == "unknown"
+
     @pyqtProperty(QObject, constant = True)
     def device(self):
         return self._device

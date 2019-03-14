@@ -118,7 +118,7 @@ class DiscoverUM3Action(MachineAction):
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
-            self._network_plugin.reCheckConnections()
+            self._network_plugin.refreshConnections()
 
     # Associates the currently active machine with the given printer device. The network connection information will be
     # stored into the metadata of the currently active machine.
@@ -160,7 +160,7 @@ class DiscoverUM3Action(MachineAction):
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
-            self._network_plugin.reCheckConnections()
+            self._network_plugin.refreshConnections()
 
     @pyqtSlot(result = str)
     def getStoredKey(self) -> str:
