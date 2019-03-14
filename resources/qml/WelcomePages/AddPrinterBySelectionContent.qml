@@ -62,7 +62,7 @@ Item
 
                 onRefreshButtonClicked:
                 {
-                    UM.OutputDeviceManager.refreshConnections()
+                    UM.OutputDeviceManager.startDiscovery()
                 }
 
                 onAddByIpButtonClicked:
@@ -136,7 +136,7 @@ Item
             {
                 // Create a network printer
                 const networkPrinterItem = addNetworkPrinterDropDown.contentItem.currentItem
-                CuraApplication.getDiscoveredPrinterModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
+                CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
             }
             else
             {

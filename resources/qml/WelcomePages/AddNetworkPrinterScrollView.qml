@@ -69,7 +69,7 @@ Item
             {
                 id: networkPrinterListView
                 anchors.fill: parent
-                model: CuraApplication.getDiscoveredPrinterModel().discovered_printers
+                model: CuraApplication.getDiscoveredPrintersModel().discovered_printers
                 //visible: base.visible && model.length > 0
 
                 delegate: MachineSelectorButton

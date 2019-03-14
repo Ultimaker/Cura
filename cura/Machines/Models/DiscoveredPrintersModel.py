@@ -72,7 +72,7 @@ class DiscoveredPrinter(QObject):
 # to add networked printers (Plugin finds a bunch of printers, user can select one from the list, plugin can then
 # add that printer to Cura as the active one).
 #
-class DiscoveredPrinterModel(QObject):
+class DiscoveredPrintersModel(QObject):
 
     def __init__(self, parent: Optional["QObject"]) -> None:
         super().__init__(parent)

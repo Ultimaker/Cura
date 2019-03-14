@@ -114,7 +114,7 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.ObjectsModel import ObjectsModel
 
-from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrinterModel
+from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
 
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
@@ -212,7 +212,7 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
-        self._discovered_printer_model = DiscoveredPrinterModel(self)
+        self._discovered_printer_model = DiscoveredPrintersModel(self)
 
         self._welcome_pages_model = WelcomePagesModel(self)
 
@@ -851,7 +851,7 @@ class CuraApplication(QtApplication):
         self.closeSplash()
 
     @pyqtSlot(result = QObject)
-    def getDiscoveredPrinterModel(self, *args) -> "DiscoveredPrinterModel":
+    def getDiscoveredPrintersModel(self, *args) -> "DiscoveredPrintersModel":
         return self._discovered_printer_model
 
     @pyqtSlot(result = QObject)
@@ -1011,7 +1011,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
         qmlRegisterType(MachineManagementModel, "Cura", 1, 0, "MachineManagementModel")
 
-        qmlRegisterType(DiscoveredPrinterModel, "Cura", 1, 0, "DiscoveredPrinterModel")
+        qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
 
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
