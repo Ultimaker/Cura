@@ -11,7 +11,7 @@ import ".."
 
 
 //
-// This is DropDown Header bar of the expandable drop down list.
+// This is DropDown Header bar of the expandable drop down list. See comments in DropDownWidget for details.
 //
 Cura.RoundedRectangle
 {
@@ -34,6 +34,8 @@ Cura.RoundedRectangle
     // If the content is shown
     property bool contentShown: false
 
+    signal clicked()
+
     MouseArea
     {
         anchors.fill: parent
@@ -41,7 +43,7 @@ Cura.RoundedRectangle
         onEntered: base.hovered = true
         onExited: base.hovered = false
 
-        onClicked: base.contentShown = !base.contentShown
+        onClicked: base.clicked()
     }
 
     Label

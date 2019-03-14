@@ -33,6 +33,7 @@ Item
     signal showNextPage()
     signal showPreviousPage()
     signal passLastPage()  // Emitted when there is no more page to show
+    signal gotoPage(string page_id)  // Go to a specific page by the given page_id.
 
     onShowNextPage:
     {
@@ -50,6 +51,29 @@ Item
         if (currentStep > 0)
         {
             currentStep--
+        }
+    }
+
+    onGotoPage:
+    {
+        // find the page index
+        var page_index = -1
+        for (var i = 0; i < base.model.count; i++)
+        {
+            const item = base.model.getItem(i)
+            if (item.id == page_id)
+            {
+                page_index = i
+                break
+            }
+        }
+        if (page_index > 0)
+        {
+            currentStep = page_index
+        }
+        else
+        {
+            console.log("Error: cannot find page with page_id = [", page_id, "]")
         }
     }
 

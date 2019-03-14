@@ -8,6 +8,13 @@ import UM 1.3 as UM
 import Cura 1.1 as Cura
 
 
+//
+// This is the dropdown list widget in the welcome wizard. The dropdown list has a header bar which is always present,
+// and its content whose visibility can be toggled by clicking on the header bar. The content is displayed as an
+// expandable dropdown box that will appear below the header bar.
+//
+// The content is configurable via the property "contentComponent", which will be loaded by a Loader when set.
+//
 Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
@@ -15,12 +22,25 @@ Item
     id: base
 
     implicitWidth: 200
-    height: header.contentShown ? childrenRect.height : header.height
+    height: header.contentShown ? (header.height + contentRectangle.height + 30) : header.height
 
     property var contentComponent: null
+    property alias contentItem: contentLoader.item
 
     property alias title: header.title
-    property alias contentShown: header.contentShown
+    property bool contentShown: false
+
+    signal clicked()
+
+    Connections
+    {
+        target: header
+        onClicked:
+        {
+            base.contentShown = !base.contentShown
+            clicked()
+        }
+    }
 
     DropDownHeader
     {
@@ -30,15 +50,16 @@ Item
         anchors.right: parent.right
         height: UM.Theme.getSize("expandable_component_content_header").height
         rightIconSource: contentShown ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
+        contentShown: base.contentShown
     }
 
     Cura.RoundedRectangle
     {
         id: contentRectangle
         anchors.top: header.bottom
-        anchors.horizontalCenter: header.horizontalCenter
-        width: header.width
-        height: childrenRect.height
+        anchors.left: header.left
+        anchors.right: header.right
+        height: contentLoader.height + 2
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
@@ -53,7 +74,6 @@ Item
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            height: childrenRect.height
             anchors.margins: 1
             sourceComponent: base.contentComponent != null ? base.contentComponent : emptyComponent
         }

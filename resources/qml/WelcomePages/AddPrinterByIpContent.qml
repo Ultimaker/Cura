@@ -201,7 +201,7 @@ Item
         text: catalog.i18nc("@button", "Cancel")
         width: 140
         fixedWidthMode: true
-        onClicked: base.showPreviousPage()
+        onClicked: base.gotoPage("add_printer_by_selection")
 
         enabled: true
     }

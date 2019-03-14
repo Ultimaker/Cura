@@ -4,7 +4,7 @@
 import time
 import re
 import unicodedata
-from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast, NamedTuple, Callable
+from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -48,8 +48,6 @@ if TYPE_CHECKING:
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Machines.QualityGroup import QualityGroup
-
-DiscoveredPrinter = NamedTuple("DiscoveredPrinter", [("key", str), ("name", str), ("create_callback", Callable[[str], None]), ("machine_type", "str")])
 
 
 class MachineManager(QObject):
@@ -136,9 +134,6 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
         self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
 
-        # This will contain all discovered network printers
-        self._discovered_printers = {}  # type: Dict[str, DiscoveredPrinter]
-
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -177,30 +172,6 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
-
-    #   Discovered printers are all the printers that were found on the network, which provide a more convenient way
-    #   to add networked printers (Plugin finds a bunch of printers, user can select one from the list, plugin can then
-    #   add that printer to Cura as the active one).
-    def addDiscoveredPrinter(self, key: str, name: str, create_callback: Callable[[str], None], machine_type: str) -> None:
-        if key not in self._discovered_printers:
-            self._discovered_printers[key] = DiscoveredPrinter(key, name, create_callback, machine_type)
-            self.discoveredPrintersChanged.emit()
-        else:
-            Logger.log("e", "Printer with the key %s was already in the discovered printer list", key)
-
-    def removeDiscoveredPrinter(self, key: str) -> None:
-        if key in self._discovered_printers:
-            del self._discovered_printers[key]
-            self.discoveredPrintersChanged.emit()
-
-    @pyqtProperty("QVariantList", notify = discoveredPrintersChanged)
-    def discoveredPrinters(self):
-        return list(self._discovered_printers.values())
-
-    @pyqtSlot(str)
-    def addMachineFromDiscoveredPrinter(self, key: str) -> None:
-        if key in self._discovered_printers:
-            self._discovered_printers[key].create_callback(key)
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
     def currentConfiguration(self) -> ConfigurationModel:
@@ -386,7 +357,7 @@ class MachineManager(QObject):
         # Make sure that the default machine actions for this machine have been added
         self._application.getMachineActionManager().addDefaultMachineActions(global_stack)
 
-        ExtruderManager.getInstance()._fixSingleExtrusionMachineExtruderDefinition(global_stack)
+        ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
@@ -1686,3 +1657,47 @@ class MachineManager(QObject):
                 abbr_machine += stripped_word
 
         return abbr_machine
+
+    def getMachineTypeNameFromId(self, machine_type_id: str) -> str:
+        machine_type_name = ""
+        results = self._container_registry.findDefinitionContainersMetadata(id = machine_type_id)
+        if results:
+            machine_type_name = results[0]["name"]
+        return machine_type_name
+
+    @pyqtSlot(QObject)
+    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
+        if not printer_device:
+            return
+
+        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
+
+        global_stack = self._global_container_stack
+        if not global_stack:
+            return
+
+        meta_data = global_stack.getMetaData()
+
+        if "um_network_key" in meta_data:  # Global stack already had a connection, but it's changed.
+            old_network_key = meta_data["um_network_key"]
+            # Since we might have a bunch of hidden stacks, we also need to change it there.
+            metadata_filter = {"um_network_key": old_network_key}
+            containers = self._container_registry.findContainerStacks(type = "machine", **metadata_filter)
+
+            for container in containers:
+                container.setMetaDataEntry("um_network_key", printer_device.key)
+
+                # Delete old authentication data.
+                Logger.log("d", "Removing old authentication id %s for device %s",
+                           global_stack.getMetaDataEntry("network_authentication_id", None),
+                           printer_device.key)
+
+                container.removeMetaDataEntry("network_authentication_id")
+                container.removeMetaDataEntry("network_authentication_key")
+
+                # Ensure that these containers do know that they are configured for network connection
+                container.addConfiguredConnectionType(printer_device.connectionType.value)
+
+        else:  # Global stack didn't have a connection yet, configure it.
+            global_stack.setMetaDataEntry("um_network_key", printer_device.key)
+            global_stack.addConfiguredConnectionType(printer_device.connectionType.value)

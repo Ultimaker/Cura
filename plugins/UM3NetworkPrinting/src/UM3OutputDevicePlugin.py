@@ -16,11 +16,14 @@ from cura.PrinterOutputDevice import ConnectionType
 from cura.Settings.GlobalStack import GlobalStack # typing
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
+
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Message import Message
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.PluginRegistry import PluginRegistry
 from UM.Signal import Signal, signalemitter
 from UM.Version import Version
-from UM.Message import Message
-from UM.i18n import i18nCatalog
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
@@ -54,7 +57,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
-        self._application.globalContainerStackChanged.connect(self.reCheckConnections)
+        self._application.globalContainerStackChanged.connect(self.refreshConnections)
 
         self._discovered_devices = {}
         
@@ -141,7 +144,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self.addManualDevice(address)
         self.resetLastManualDevice()
 
-    def reCheckConnections(self):
+    def refreshConnections(self):
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
@@ -225,7 +228,22 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
         # TODO: This needs to be implemented. It's supposed to create a machine given a unique key as already discovered
         # by this plugin.
-        pass
+        discovered_device = self._discovered_devices.get(key)
+        if discovered_device is None:
+            Logger.log("e", "Could not find discovered device with key [%s]", key)
+            return
+
+        group_name = discovered_device.getProperty("name")
+        machine_type_id = discovered_device.getProperty("printer_type")
+
+        Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
+                   key, group_name, machine_type_id)
+
+        self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        # connect the new machine to that network printer
+        self._application.getMachineManager().associateActiveMachineWithPrinterDevice(discovered_device)
+        # ensure that the connection states are refreshed.
+        self.refreshConnections()
 
     def _checkManualDevice(self, address):
         # Check if a UM3 family device exists at this address.
@@ -315,7 +333,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 except TypeError:
                     # Disconnect already happened.
                     pass
-            self._application.getMachineManager().removeDiscoveredPrinter(device.getId())
+            self._application.getDiscoveredPrintersModel().removeDiscoveredPrinter(device.address)
             self.discoveredDevicesChanged.emit()
 
     def _onAddDevice(self, name, address, properties):
@@ -340,7 +358,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-        self._application.getMachineManager().addDiscoveredPrinter(device.getId(), name, self._createMachineFromDiscoveredPrinter, properties[b"printer_type"].decode("utf-8"))
+        self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(address, device.getId(), name, self._createMachineFromDiscoveredPrinter, properties[b"printer_type"].decode("utf-8"), device)
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
@@ -477,8 +495,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._start_cloud_flow_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 0,
-                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
-                                                               "resources", "svg", "cloud-flow-start.svg")),
+                image_source = QUrl.fromLocalFile(os.path.join(
+                    PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                    "resources", "svg", "cloud-flow-start.svg"
+                )),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
                 option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
                 option_state = False
@@ -499,8 +519,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._cloud_flow_complete_message = Message(
                 text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
                 lifetime = 30,
-                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
-                                                               "resources", "svg", "cloud-flow-completed.svg")),
+                image_source = QUrl.fromLocalFile(os.path.join(
+                    PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                    "resources", "svg", "cloud-flow-completed.svg"
+                )),
                 image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
             )
             # Don't show the review connection link if we're not on the local network

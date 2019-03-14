@@ -3,7 +3,7 @@
 import os
 from typing import TYPE_CHECKING, Optional
 
-from PyQt5.QtCore import QUrl, Qt
+from PyQt5.QtCore import QUrl, Qt, pyqtSlot
 
 from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
@@ -11,6 +11,7 @@ from logging import Logger
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+
 
 class WelcomePagesModel(ListModel):
 
@@ -51,6 +52,11 @@ class WelcomePagesModel(ListModel):
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages",
                                                                                           "DataCollectionsContent.qml"))),
+                            })
+        self._pages.append({"id": "add_printer_by_selection",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "AddPrinterBySelectionContent.qml"))),
                             })
         self._pages.append({"id": "add_printer_by_ip",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
