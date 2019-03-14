@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-02-26 16:36+0000\n"
-"PO-Revision-Date: 2019-03-13 14:00+0200\n"
+"PO-Revision-Date: 2019-03-14 14:44+0100\n"
 "Last-Translator: Mariusz 'Virgin71' Matłosz <matliks@gmail.com>\n"
 "Language-Team: reprapy.pl\n"
 "Language: pl_PL\n"
@@ -1113,7 +1113,7 @@ msgstr "Optymalizuje kolejność, w jakiej będą drukowane ścianki w celu zred
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
 msgid "Outer Before Inner Walls"
-msgstr "Zew. Ściany Przed Wew."
+msgstr "Zew. Ściany Przed Wew"
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first description"
@@ -2432,7 +2432,7 @@ msgstr "Przyspieszenie, z jakim drukowane są ściany."
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_0 label"
 msgid "Outer Wall Acceleration"
-msgstr "Przyspieszenie Ściany Zew."
+msgstr "Przyspieszenie Ściany Zew"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_0 description"
@@ -2442,7 +2442,7 @@ msgstr "Przyspieszenia, z jakim drukowane są ściany zewn."
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_x label"
 msgid "Inner Wall Acceleration"
-msgstr "Przyspieszenie Ściany Wew."
+msgstr "Przyspieszenie Ściany Wew"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_x description"
@@ -3951,7 +3951,7 @@ msgstr "Wymuś drukowanie obrysu wokół modelu, nawet jeśli powierzchnia była
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
 msgid "Brim Only on Outside"
-msgstr "Obrys Tylko na Zew."
+msgstr "Obrys Tylko na Zew"
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only description"

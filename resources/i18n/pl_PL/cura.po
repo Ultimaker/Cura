@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-02-26 16:36+0100\n"
-"PO-Revision-Date: 2019-03-13 14:00+0200\n"
+"PO-Revision-Date: 2019-03-14 14:44+0100\n"
 "Last-Translator: Mariusz 'Virgin71' Matłosz <matliks@gmail.com>\n"
 "Language-Team: reprapy.pl\n"
 "Language: pl_PL\n"
@@ -525,7 +525,7 @@ msgstr "Błąd Chmury"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:180
 msgctxt "@info:status"
 msgid "Could not export print job."
-msgstr "Nie można eksportować zadania druku"
+msgstr "Nie można eksportować zadania druku."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:330
 msgctxt "@info:text"
@@ -576,7 +576,7 @@ msgstr "Rozpocznij"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:478
 msgctxt "@info:status"
 msgid "You can now send and monitor print jobs from anywhere using your Ultimaker account."
-msgstr "Możesz teraz wysłać i nadzorować zadania druku z każdego miejsca, używając konta Ultimaker. "
+msgstr "Możesz teraz wysłać i nadzorować zadania druku z każdego miejsca, używając konta Ultimaker."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:482
 msgctxt "@info:status"
@@ -3909,7 +3909,7 @@ msgstr "Zmodyfikowałeś ustawienia profilu. Jeżeli chcesz je zmienić, przejd�
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:355
 msgctxt "@tooltip"
 msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile"
-msgstr "Ten profil jakości nie jest dostępny dla bieżącej konfiguracji materiałów i dysz. Zmień je, aby włączyć ten profil jakości."
+msgstr "Ten profil jakości nie jest dostępny dla bieżącej konfiguracji materiałów i dysz. Zmień je, aby włączyć ten profil jakości"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:449
 msgctxt "@tooltip"
@@ -3919,12 +3919,12 @@ msgstr "Niestandardowy profil jest obecnie aktywny. Aby włączyć pasek jakośc
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:13
 msgctxt "@label:Should be short"
 msgid "On"
-msgstr "Wł."
+msgstr "Wł"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:14
 msgctxt "@label:Should be short"
 msgid "Off"
-msgstr "Wył."
+msgstr "Wył"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/GlobalProfileSelector.qml:27
 msgctxt "@label"
@@ -4407,7 +4407,7 @@ msgstr "Zarządzaj drukarkami"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:78
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting Guide"
-msgstr "Pokaż przewodnik rozwiązywania problemów online."
+msgstr "Pokaż przewodnik rozwiązywania problemów online"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:85
 msgctxt "@action:inmenu"
