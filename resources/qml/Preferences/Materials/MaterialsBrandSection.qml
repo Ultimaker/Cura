@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
@@ -10,7 +10,7 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: brand_section
     
@@ -55,7 +55,8 @@ Rectangle
             text: ""
             implicitWidth: UM.Theme.getSize("favorites_button").width
             implicitHeight: UM.Theme.getSize("favorites_button").height
-            UM.RecolorImage {
+            UM.RecolorImage
+            {
                 anchors
                 {
                     verticalCenter: parent.verticalCenter
@@ -63,18 +64,12 @@ Rectangle
                 }
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
-                sourceSize.width: width
-                sourceSize.height: height
                 color: "black"
                 source: brand_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             }
             style: ButtonStyle
             {
-                background: Rectangle
-                {
-                    anchors.fill: parent
-                    color: "transparent"
-                }
+                background: Item { }
             }
         }
     }
@@ -144,6 +139,11 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "cura/expanded_types" && preference !== "cura/expanded_brands")
+            {
+                return;
+            }
+
             expanded = materialList.expandedBrands.indexOf(sectionName) > -1
         }
     }

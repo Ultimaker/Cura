@@ -18,4 +18,3 @@ class ClusterUM3PrinterOutputController(PrinterOutputController):
     def setJobState(self, job: "PrintJobOutputModel", state: str):
         data = "{\"action\": \"%s\"}" % state
         self._output_device.put("print_jobs/%s/action" % job.key, data, on_finished=None)
-

@@ -13,23 +13,20 @@ Item
 {
     id: sliderRoot
 
-    // handle properties
-    property real handleSize: 10
+    // Handle properties
+    property real handleSize: UM.Theme.getSize("slider_handle").width
     property real handleRadius: handleSize / 2
     property real minimumRangeHandleSize: handleSize / 2
-    property color upperHandleColor: "black"
-    property color lowerHandleColor: "black"
-    property color rangeHandleColor: "black"
-    property color handleActiveColor: "white"
-    property real handleLabelWidth: width
+    property color upperHandleColor: UM.Theme.getColor("slider_handle")
+    property color lowerHandleColor: UM.Theme.getColor("slider_handle")
+    property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+    property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
     property var activeHandle: upperHandle
 
-    // track properties
-    property real trackThickness: 4 // width of the slider track
-    property real trackRadius: trackThickness / 2
-    property color trackColor: "white"
-    property real trackBorderWidth: 1 // width of the slider track border
-    property color trackBorderColor: "black"
+    // Track properties
+    property real trackThickness: UM.Theme.getSize("slider_groove").width // width of the slider track
+    property real trackRadius: UM.Theme.getSize("slider_groove_radius").width
+    property color trackColor: UM.Theme.getColor("slider_groove")
 
     // value properties
     property real maximumValue: 100
@@ -80,7 +77,7 @@ Item
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
-    // slider track
+    // Slider track
     Rectangle
     {
         id: track
@@ -90,8 +87,6 @@ Item
         radius: sliderRoot.trackRadius
         anchors.centerIn: sliderRoot
         color: sliderRoot.trackColor
-        border.width: sliderRoot.trackBorderWidth
-        border.color: sliderRoot.trackBorderColor
         visible: sliderRoot.layersVisible
     }
 
@@ -106,7 +101,7 @@ Item
         anchors.horizontalCenter: sliderRoot.horizontalCenter
         visible: sliderRoot.layersVisible
 
-        // set the new value when dragging
+        // Set the new value when dragging
         function onHandleDragged()
         {
             sliderRoot.manuallyChanged = true
@@ -140,9 +135,10 @@ Item
 
         Rectangle
         {
-            width: sliderRoot.trackThickness - 2 * sliderRoot.trackBorderWidth
+            width: sliderRoot.trackThickness
             height: parent.height + sliderRoot.handleSize
             anchors.centerIn: parent
+            radius: sliderRoot.trackRadius
             color: sliderRoot.rangeHandleColor
         }
 
@@ -275,7 +271,7 @@ Item
             id: upperHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            x: parent.x - parent.width - width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
@@ -385,9 +381,9 @@ Item
             id: lowerHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            x: parent.x - parent.width - width
             anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
+            target: Qt.point(sliderRoot.width + width, y + height / 2)
             visible: sliderRoot.activeHandle == parent
 
             // custom properties

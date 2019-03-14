@@ -1,5 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from enum import IntEnum
+from typing import Callable, List, Optional, Union
 
 from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
@@ -11,9 +13,6 @@ from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
 from UM.FlameProfiler import pyqtSlot
-
-from enum import IntEnum  # For the connection state tracking.
-from typing import Callable, List, Optional, Union
 
 MYPY = False
 if MYPY:
@@ -28,11 +27,18 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The current processing state of the backend.
 class ConnectionState(IntEnum):
-    closed = 0
-    connecting = 1
-    connected = 2
-    busy = 3
-    error = 4
+    Closed = 0
+    Connecting = 1
+    Connected = 2
+    Busy = 3
+    Error = 4
+
+
+class ConnectionType(IntEnum):
+    NotConnected = 0
+    UsbConnection = 1
+    NetworkConnection = 2
+    CloudConnection = 3
 
 
 ##  Printer output device adds extra interface options on top of output device.
@@ -46,6 +52,7 @@ class ConnectionState(IntEnum):
 #   For all other uses it should be used in the same way as a "regular" OutputDevice.
 @signalemitter
 class PrinterOutputDevice(QObject, OutputDevice):
+
     printersChanged = pyqtSignal()
     connectionStateChanged = pyqtSignal(str)
     acceptsCommandsChanged = pyqtSignal()
@@ -62,33 +69,34 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the configuration of one of the printers has changed.
     uniqueConfigurationsChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, parent: QObject = None) -> None:
+    def __init__(self, device_id: str, connection_type: "ConnectionType" = ConnectionType.NotConnected, parent: QObject = None) -> None:
         super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
         self._unique_configurations = []   # type: List[ConfigurationModel]
 
-        self._monitor_view_qml_path = "" #type: str
-        self._monitor_component = None #type: Optional[QObject]
-        self._monitor_item = None #type: Optional[QObject]
+        self._monitor_view_qml_path = ""  # type: str
+        self._monitor_component = None  # type: Optional[QObject]
+        self._monitor_item = None  # type: Optional[QObject]
 
-        self._control_view_qml_path = "" #type: str
-        self._control_component = None #type: Optional[QObject]
-        self._control_item = None #type: Optional[QObject]
+        self._control_view_qml_path = ""  # type: str
+        self._control_component = None  # type: Optional[QObject]
+        self._control_item = None  # type: Optional[QObject]
 
-        self._accepts_commands = False #type: bool
+        self._accepts_commands = False  # type: bool
 
-        self._update_timer = QTimer() #type: QTimer
+        self._update_timer = QTimer()  # type: QTimer
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
-        self._connection_state = ConnectionState.closed #type: ConnectionState
+        self._connection_state = ConnectionState.Closed  # type: ConnectionState
+        self._connection_type = connection_type  # type: ConnectionType
 
-        self._firmware_updater = None #type: Optional[FirmwareUpdater]
-        self._firmware_name = None #type: Optional[str]
-        self._address = "" #type: str
-        self._connection_text = "" #type: str
+        self._firmware_updater = None  # type: Optional[FirmwareUpdater]
+        self._firmware_name = None  # type: Optional[str]
+        self._address = ""  # type: str
+        self._connection_text = ""  # type: str
         self.printersChanged.connect(self._onPrintersChanged)
         QtApplication.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._updateUniqueConfigurations)
 
@@ -110,15 +118,19 @@ class PrinterOutputDevice(QObject, OutputDevice):
         callback(QMessageBox.Yes)
 
     def isConnected(self) -> bool:
-        return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
+        return self._connection_state != ConnectionState.Closed and self._connection_state != ConnectionState.Error
 
-    def setConnectionState(self, connection_state: ConnectionState) -> None:
+    def setConnectionState(self, connection_state: "ConnectionState") -> None:
         if self._connection_state != connection_state:
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
 
-    @pyqtProperty(str, notify = connectionStateChanged)
-    def connectionState(self) -> ConnectionState:
+    @pyqtProperty(int, constant = True)
+    def connectionType(self) -> "ConnectionType":
+        return self._connection_type
+
+    @pyqtProperty(int, notify = connectionStateChanged)
+    def connectionState(self) -> "ConnectionState":
         return self._connection_state
 
     def _update(self) -> None:
@@ -131,7 +143,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         return None
 
-    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional["FileHandler"] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, **kwargs: str) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     @pyqtProperty(QObject, notify = printersChanged)
@@ -174,13 +187,13 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     ##  Attempt to establish connection
     def connect(self) -> None:
-        self.setConnectionState(ConnectionState.connecting)
+        self.setConnectionState(ConnectionState.Connecting)
         self._update_timer.start()
 
     ##  Attempt to close the connection
     def close(self) -> None:
         self._update_timer.stop()
-        self.setConnectionState(ConnectionState.closed)
+        self.setConnectionState(ConnectionState.Closed)
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self) -> None:
@@ -207,9 +220,16 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:
-        self._unique_configurations = list(set([printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None]))
-        self._unique_configurations.sort(key = lambda k: k.printerType)
+        self._unique_configurations = sorted(
+            {printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None},
+            key=lambda config: config.printerType,
+        )
         self.uniqueConfigurationsChanged.emit()
+
+    # Returns the unique configurations of the printers within this output device
+    @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
+    def uniquePrinterTypes(self) -> List[str]:
+        return list(sorted(set([configuration.printerType for configuration in self._unique_configurations])))
 
     def _onPrintersChanged(self) -> None:
         for printer in self._printers:

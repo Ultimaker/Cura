@@ -9,16 +9,15 @@ import UM 1.3 as UM
 Button {
     background: Rectangle {
         opacity: parent.down || parent.hovered ? 1 : 0;
-        color: UM.Theme.getColor("monitor_context_menu_highlight");
+        color: UM.Theme.getColor("monitor_context_menu_hover")
     }
     contentItem: Label {
-        color: UM.Theme.getColor("text");
+        color: enabled ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled");
         text: parent.text
         horizontalAlignment: Text.AlignLeft;
         verticalAlignment: Text.AlignVCenter;
     }
-    height: 39 * screenScaleFactor; // TODO: Theme!
+    height: visible ? 39 * screenScaleFactor : 0; // TODO: Theme!
     hoverEnabled: true;
-    visible: enabled;
     width: parent.width;
 }

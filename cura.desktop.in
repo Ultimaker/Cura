@@ -13,6 +13,6 @@ TryExec=@CMAKE_INSTALL_FULL_BINDIR@/cura
 Icon=cura-icon
 Terminal=false
 Type=Application
-MimeType=model/stl;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;model/x3d+xml;
+MimeType=model/stl;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;model/x3d+xml;text/x-gcode;
 Categories=Graphics;
 Keywords=3D;Printing;Slicer;

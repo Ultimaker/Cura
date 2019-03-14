@@ -13,9 +13,9 @@ import Cura 1.0 as Cura
 Item
 {
     id: base;
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
-    height: childrenRect.height + UM.Theme.getSize("sidebar_margin").height
+    height: childrenRect.height + UM.Theme.getSize("thick_margin").height
 
     property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
@@ -162,13 +162,13 @@ Item
     Label
     {
         id: statusLabel
-        width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
+        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width
 
         color: base.statusColor
-        font: UM.Theme.getFont("large")
+        font: UM.Theme.getFont("large_bold")
         text: statusText
     }
 
@@ -179,7 +179,7 @@ Item
         anchors.right: progressBar.right
 
         color: base.statusColor
-        font: UM.Theme.getFont("large")
+        font: UM.Theme.getFont("large_bold")
         text: Math.round(progress) + "%"
         visible: showProgress
     }
@@ -224,12 +224,12 @@ Item
         property string backgroundColor: UM.Theme.getColor("progressbar_background");
         property string controlColor: base.statusColor;
 
-        width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width;
+        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width;
         height: UM.Theme.getSize("progressbar").height;
         anchors.top: statusLabel.bottom;
-        anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 4);
+        anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 4);
         anchors.left: parent.left;
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width;
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width;
     }
 
     Row
@@ -237,9 +237,9 @@ Item
         id: buttonsRow
         height: abortButton.height
         anchors.top: progressBar.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.topMargin: UM.Theme.getSize("thick_margin").height
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.rightMargin: UM.Theme.getSize("thick_margin").width
         spacing: UM.Theme.getSize("default_margin").width
 
         Row
@@ -309,7 +309,7 @@ Item
                 }
             }
 
-            style: UM.Theme.styles.sidebar_action_button
+            style: UM.Theme.styles.print_setup_action_button
         }
 
         Button
@@ -325,7 +325,7 @@ Item
             text: catalog.i18nc("@label", "Abort Print")
             onClicked: confirmationDialog.visible = true
 
-            style: UM.Theme.styles.sidebar_action_button
+            style: UM.Theme.styles.print_setup_action_button
         }
 
         MessageDialog

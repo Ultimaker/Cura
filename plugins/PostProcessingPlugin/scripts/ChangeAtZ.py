@@ -112,7 +112,7 @@ class ChangeAtZ(Script):
                 "e1_Change_speed":
                 {
                     "label": "Change Speed",
-                    "description": "Select if total speed (print and travel) has to be cahnged",
+                    "description": "Select if total speed (print and travel) has to be changed",
                     "type": "bool",
                     "default_value": false
                 },

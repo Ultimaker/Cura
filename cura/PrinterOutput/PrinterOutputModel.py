@@ -1,7 +1,7 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
 from typing import List, Dict, Optional
 from UM.Math.Vector import Vector
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
@@ -11,7 +11,6 @@ MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-    from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 
 class PrinterOutputModel(QObject):
@@ -23,16 +22,16 @@ class PrinterOutputModel(QObject):
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
     keyChanged = pyqtSignal()
-    printerTypeChanged = pyqtSignal()
+    typeChanged = pyqtSignal()
     buildplateChanged = pyqtSignal()
-    cameraChanged = pyqtSignal()
+    cameraUrlChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
     canUpdateFirmwareChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
         super().__init__(parent)
-        self._bed_temperature = -1  # Use -1 for no heated bed.
-        self._target_bed_temperature = 0
+        self._bed_temperature = -1  # type: float  # Use -1 for no heated bed.
+        self._target_bed_temperature = 0 # type: float
         self._name = ""
         self._key = ""  # Unique identifier
         self._controller = output_controller
@@ -45,21 +44,25 @@ class PrinterOutputModel(QObject):
         self._printer_state = "unknown"
         self._is_preheating = False
         self._printer_type = ""
-        self._buildplate_name = ""
+        self._buildplate = ""
 
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
 
-        self._camera = None  # type: Optional[NetworkCamera]
+        self._camera_url = QUrl()  # type: QUrl
 
     @pyqtProperty(str, constant = True)
     def firmwareVersion(self) -> str:
         return self._firmware_version
 
-    def setCamera(self, camera: Optional["NetworkCamera"]) -> None:
-        if self._camera is not camera:
-            self._camera = camera
-            self.cameraChanged.emit()
+    def setCameraUrl(self, camera_url: "QUrl") -> None:
+        if self._camera_url != camera_url:
+            self._camera_url = camera_url
+            self.cameraUrlChanged.emit()
+
+    @pyqtProperty(QUrl, fset = setCameraUrl, notify = cameraUrlChanged)
+    def cameraUrl(self) -> "QUrl":
+        return self._camera_url
 
     def updateIsPreheating(self, pre_heating: bool) -> None:
         if self._is_preheating != pre_heating:
@@ -70,11 +73,7 @@ class PrinterOutputModel(QObject):
     def isPreheating(self) -> bool:
         return self._is_preheating
 
-    @pyqtProperty(QObject, notify=cameraChanged)
-    def camera(self) -> Optional["NetworkCamera"]:
-        return self._camera
-
-    @pyqtProperty(str, notify = printerTypeChanged)
+    @pyqtProperty(str, notify = typeChanged)
     def type(self) -> str:
         return self._printer_type
 
@@ -82,17 +81,17 @@ class PrinterOutputModel(QObject):
         if self._printer_type != printer_type:
             self._printer_type = printer_type
             self._printer_configuration.printerType = self._printer_type
-            self.printerTypeChanged.emit()
+            self.typeChanged.emit()
             self.configurationChanged.emit()
 
     @pyqtProperty(str, notify = buildplateChanged)
     def buildplate(self) -> str:
-        return self._buildplate_name
+        return self._buildplate
 
-    def updateBuildplateName(self, buildplate_name: str) -> None:
-        if self._buildplate_name != buildplate_name:
-            self._buildplate_name = buildplate_name
-            self._printer_configuration.buildplateConfiguration = self._buildplate_name
+    def updateBuildplate(self, buildplate: str) -> None:
+        if self._buildplate != buildplate:
+            self._buildplate = buildplate
+            self._printer_configuration.buildplateConfiguration = self._buildplate
             self.buildplateChanged.emit()
             self.configurationChanged.emit()
 
@@ -180,7 +179,6 @@ class PrinterOutputModel(QObject):
         return self._name
 
     def setName(self, name: str) -> None:
-        self._setName(name)
         self.updateName(name)
 
     def updateName(self, name: str) -> None:
@@ -189,19 +187,19 @@ class PrinterOutputModel(QObject):
             self.nameChanged.emit()
 
     ##  Update the bed temperature. This only changes it locally.
-    def updateBedTemperature(self, temperature: int) -> None:
+    def updateBedTemperature(self, temperature: float) -> None:
         if self._bed_temperature != temperature:
             self._bed_temperature = temperature
             self.bedTemperatureChanged.emit()
 
-    def updateTargetBedTemperature(self, temperature: int) -> None:
+    def updateTargetBedTemperature(self, temperature: float) -> None:
         if self._target_bed_temperature != temperature:
             self._target_bed_temperature = temperature
             self.targetBedTemperatureChanged.emit()
 
     ##  Set the target bed temperature. This ensures that it's actually sent to the remote.
-    @pyqtSlot(int)
-    def setTargetBedTemperature(self, temperature: int) -> None:
+    @pyqtSlot(float)
+    def setTargetBedTemperature(self, temperature: float) -> None:
         self._controller.setTargetBedTemperature(self, temperature)
         self.updateTargetBedTemperature(temperature)
 
@@ -226,55 +224,55 @@ class PrinterOutputModel(QObject):
     def activePrintJob(self) -> Optional["PrintJobOutputModel"]:
         return self._active_print_job
 
-    @pyqtProperty(str, notify=stateChanged)
+    @pyqtProperty(str, notify = stateChanged)
     def state(self) -> str:
         return self._printer_state
 
-    @pyqtProperty(int, notify=bedTemperatureChanged)
-    def bedTemperature(self) -> int:
+    @pyqtProperty(float, notify = bedTemperatureChanged)
+    def bedTemperature(self) -> float:
         return self._bed_temperature
 
-    @pyqtProperty(int, notify=targetBedTemperatureChanged)
-    def targetBedTemperature(self) -> int:
+    @pyqtProperty(float, notify = targetBedTemperatureChanged)
+    def targetBedTemperature(self) -> float:
         return self._target_bed_temperature
 
     # Does the printer support pre-heating the bed at all
-    @pyqtProperty(bool, constant=True)
+    @pyqtProperty(bool, constant = True)
     def canPreHeatBed(self) -> bool:
         if self._controller:
             return self._controller.can_pre_heat_bed
         return False
 
     # Does the printer support pre-heating the bed at all
-    @pyqtProperty(bool, constant=True)
+    @pyqtProperty(bool, constant = True)
     def canPreHeatHotends(self) -> bool:
         if self._controller:
             return self._controller.can_pre_heat_hotends
         return False
 
     # Does the printer support sending raw G-code at all
-    @pyqtProperty(bool, constant=True)
+    @pyqtProperty(bool, constant = True)
     def canSendRawGcode(self) -> bool:
         if self._controller:
             return self._controller.can_send_raw_gcode
         return False
 
     # Does the printer support pause at all
-    @pyqtProperty(bool, constant=True)
+    @pyqtProperty(bool, constant = True)
     def canPause(self) -> bool:
         if self._controller:
             return self._controller.can_pause
         return False
 
     # Does the printer support abort at all
-    @pyqtProperty(bool, constant=True)
+    @pyqtProperty(bool, constant = True)
     def canAbort(self) -> bool:
         if self._controller:
             return self._controller.can_abort
         return False
 
     # Does the printer support manual control at all
-    @pyqtProperty(bool, constant=True)
+    @pyqtProperty(bool, constant = True)
     def canControlManually(self) -> bool:
         if self._controller:
             return self._controller.can_control_manually

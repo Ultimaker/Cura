@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 
+
 class PrintJobOutputModel(QObject):
     stateChanged = pyqtSignal()
     timeTotalChanged = pyqtSignal()
@@ -44,7 +45,7 @@ class PrintJobOutputModel(QObject):
     @pyqtProperty("QStringList", notify=compatibleMachineFamiliesChanged)
     def compatibleMachineFamilies(self):
         # Hack; Some versions of cluster will return a family more than once...
-        return set(self._compatible_machine_families)
+        return list(set(self._compatible_machine_families))
 
     def setCompatibleMachineFamilies(self, compatible_machine_families: List[str]) -> None:
         if self._compatible_machine_families != compatible_machine_families:
@@ -54,7 +55,7 @@ class PrintJobOutputModel(QObject):
     @pyqtProperty(QUrl, notify=previewImageChanged)
     def previewImageUrl(self):
         self._preview_image_id += 1
-        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
+        # There is an image provider that is called "print_job_preview". In order to ensure that the image qml object, that
         # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
         # as new (instead of relying on cached version and thus forces an update.
         temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key
@@ -118,16 +119,38 @@ class PrintJobOutputModel(QObject):
             self.nameChanged.emit()
 
     @pyqtProperty(int, notify = timeTotalChanged)
-    def timeTotal(self):
+    def timeTotal(self) -> int:
         return self._time_total
 
     @pyqtProperty(int, notify = timeElapsedChanged)
-    def timeElapsed(self):
+    def timeElapsed(self) -> int:
         return self._time_elapsed
 
+    @pyqtProperty(int, notify = timeElapsedChanged)
+    def timeRemaining(self) -> int:
+        # Never get a negative time remaining
+        return max(self.timeTotal - self.timeElapsed, 0)
+
+    @pyqtProperty(float, notify = timeElapsedChanged)
+    def progress(self) -> float:
+        result = float(self.timeElapsed) / max(self.timeTotal, 1.0) # Prevent a division by zero exception.
+        return min(result, 1.0)  # Never get a progress past 1.0
+
     @pyqtProperty(str, notify=stateChanged)
-    def state(self):
+    def state(self) -> str:
         return self._state
+
+    @pyqtProperty(bool, notify=stateChanged)
+    def isActive(self) -> bool:
+        inactiveStates = [
+            "pausing",
+            "paused",
+            "resuming",
+            "wait_cleanup"
+        ]
+        if self.state in inactiveStates and self.timeRemaining > 0:
+            return False
+        return True
 
     def updateTimeTotal(self, new_time_total):
         if self._time_total != new_time_total:

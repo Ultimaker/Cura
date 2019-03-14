@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
@@ -12,8 +11,6 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from cura.Settings.GlobalStack import GlobalStack
 
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
 from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
@@ -53,6 +50,7 @@ class FirmwareUpdateChecker(Extension):
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
+        from cura.Settings.GlobalStack import GlobalStack  # otherwise circular imports
         if isinstance(container, GlobalStack):
             self.checkFirmwareVersion(container, True)
 
@@ -76,7 +74,7 @@ class FirmwareUpdateChecker(Extension):
             Logger.log("i", "No machine with name {0} in list of firmware to check.".format(container_name))
             return
 
-        self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
+        self._check_job = FirmwareUpdateCheckerJob(silent = silent,
                                                    machine_name = container_name, metadata = metadata,
                                                    callback = self._onActionTriggered)
         self._check_job.start()

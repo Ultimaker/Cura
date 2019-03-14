@@ -142,6 +142,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         controller = Application.getInstance().getController()
         root = controller.getScene().getRoot()
         if self._node is None or controller.isToolOperationActive() or not self.__isDescendant(root, self._node):
+            # If the tool operation is still active, we need to compute the convex hull later after the controller is
+            # no longer active.
+            if controller.isToolOperationActive():
+                self.recomputeConvexHullDelayed()
+                return
+
             if self._convex_hull_node:
                 self._convex_hull_node.setParent(None)
                 self._convex_hull_node = None
@@ -181,7 +187,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
             for child in self._node.getChildren():
                 child_hull = child.callDecoration("_compute2DConvexHull")
                 if child_hull:
-                    points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    try:
+                        points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    except ValueError:
+                        pass
 
                 if points.size < 3:
                     return None
@@ -233,7 +242,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
                 vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
                     numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-                _, idx = numpy.unique(vertex_byte_view, return_index=True)
+                _, idx = numpy.unique(vertex_byte_view, return_index = True)
                 vertex_data = vertex_data[idx]  # Select the unique rows by index.
 
                 hull = Polygon(vertex_data)
@@ -266,7 +275,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         head_and_fans = self._getHeadAndFans().intersectionConvexHulls(mirrored)
 
         # Min head hull is used for the push free
-        convex_hull = self._compute2DConvexHeadFull()
+        convex_hull = self._compute2DConvexHull()
         if convex_hull:
             return convex_hull.getMinkowskiHull(head_and_fans)
         return None
@@ -280,16 +289,21 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Add extra margin depending on adhesion type
         adhesion_type = self._global_stack.getProperty("adhesion_type", "value")
 
+        max_length_available = 0.5 * min(
+            self._getSettingProperty("machine_width", "value"),
+            self._getSettingProperty("machine_depth", "value")
+        )
+
         if adhesion_type == "raft":
-            extra_margin = max(0, self._getSettingProperty("raft_margin", "value"))
+            extra_margin = min(max_length_available, max(0, self._getSettingProperty("raft_margin", "value")))
         elif adhesion_type == "brim":
-            extra_margin = max(0, self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+            extra_margin = min(max_length_available, max(0, self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")))
         elif adhesion_type == "none":
             extra_margin = 0
         elif adhesion_type == "skirt":
-            extra_margin = max(
+            extra_margin = min(max_length_available, max(
                 0, self._getSettingProperty("skirt_gap", "value") +
-                   self._getSettingProperty("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+                   self._getSettingProperty("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")))
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the convex hull calculations for your new bed adhesion type?")
 

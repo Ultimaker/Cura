@@ -1,7 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
 from typing import Iterable
 
 from UM.i18n import i18nCatalog
@@ -24,8 +24,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     ##  Human-readable name of the extruder.
     NameRole = Qt.UserRole + 2
-    ##  Is the extruder enabled?
-    EnabledRole = Qt.UserRole + 9
 
     ##  Colour of the material loaded in the extruder.
     ColorRole = Qt.UserRole + 3
@@ -47,6 +45,12 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     VariantRole = Qt.UserRole + 7
     StackRole = Qt.UserRole + 8
 
+    MaterialBrandRole = Qt.UserRole + 9
+    ColorNameRole = Qt.UserRole + 10
+
+    ##  Is the extruder enabled?
+    EnabledRole = Qt.UserRole + 11
+
     ##  List of colours to display if there is no material or the material has no known
     #   colour.
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
@@ -67,13 +71,12 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.MaterialRole, "material")
         self.addRoleName(self.VariantRole, "variant")
         self.addRoleName(self.StackRole, "stack")
-
+        self.addRoleName(self.MaterialBrandRole, "material_brand")
+        self.addRoleName(self.ColorNameRole, "color_name")
         self._update_extruder_timer = QTimer()
         self._update_extruder_timer.setInterval(100)
         self._update_extruder_timer.setSingleShot(True)
         self._update_extruder_timer.timeout.connect(self.__updateExtruders)
-
-        self._simple_names = False
 
         self._active_machine_extruders = []  # type: Iterable[ExtruderStack]
         self._add_optional_extruder = False
@@ -96,21 +99,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     def addOptionalExtruder(self):
         return self._add_optional_extruder
 
-    ##  Set the simpleNames property.
-    def setSimpleNames(self, simple_names):
-        if simple_names != self._simple_names:
-            self._simple_names = simple_names
-            self.simpleNamesChanged.emit()
-            self._updateExtruders()
-
-    ##  Emitted when the simpleNames property changes.
-    simpleNamesChanged = pyqtSignal()
-
-    ##  Whether or not the model should show all definitions regardless of visibility.
-    @pyqtProperty(bool, fset = setSimpleNames, notify = simpleNamesChanged)
-    def simpleNames(self):
-        return self._simple_names
-
     ##  Links to the stack-changed signal of the new extruders when an extruder
     #   is swapped out or added in the current machine.
     #
@@ -119,17 +107,19 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   that signal. Application.globalContainerStackChanged doesn't fill this
     #   signal; it's assumed to be the current printer in that case.
     def _extrudersChanged(self, machine_id = None):
+        machine_manager = Application.getInstance().getMachineManager()
         if machine_id is not None:
-            if Application.getInstance().getGlobalContainerStack() is None:
+            if machine_manager.activeMachine is None:
                 # No machine, don't need to update the current machine's extruders
                 return
-            if machine_id != Application.getInstance().getGlobalContainerStack().getId():
+            if machine_id != machine_manager.activeMachine.getId():
                 # Not the current machine
                 return
 
         # Unlink from old extruders
         for extruder in self._active_machine_extruders:
             extruder.containersChanged.disconnect(self._onExtruderStackContainersChanged)
+            extruder.enabledChanged.disconnect(self._updateExtruders)
 
         # Link to new extruders
         self._active_machine_extruders = []
@@ -138,13 +128,14 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             if extruder is None: #This extruder wasn't loaded yet. This happens asynchronously while this model is constructed from QML.
                 continue
             extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
+            extruder.enabledChanged.connect(self._updateExtruders)
             self._active_machine_extruders.append(extruder)
 
         self._updateExtruders()  # Since the new extruders may have different properties, update our own model.
 
     def _onExtruderStackContainersChanged(self, container):
-        # Update when there is an empty container or material change
-        if container.getMetaDataEntry("type") == "material" or container.getMetaDataEntry("type") is None:
+        # Update when there is an empty container or material or variant change
+        if container.getMetaDataEntry("type") in ["material", "variant", None]:
             # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
             self._updateExtruders()
 
@@ -160,7 +151,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     def __updateExtruders(self):
         extruders_changed = False
 
-        if self.rowCount() != 0:
+        if self.count != 0:
             extruders_changed = True
 
         items = []
@@ -172,7 +163,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
 
             for extruder in Application.getInstance().getExtruderManager().getActiveExtruderStacks():
-                position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
+                position = extruder.getMetaDataEntry("position", default = "0")
                 try:
                     position = int(position)
                 except ValueError:
@@ -183,7 +174,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
                 default_color = self.defaultColors[position] if 0 <= position < len(self.defaultColors) else self.defaultColors[0]
                 color = extruder.material.getMetaDataEntry("color_code", default = default_color) if extruder.material else default_color
-
+                material_brand = extruder.material.getMetaDataEntry("brand", default = "generic")
+                color_name = extruder.material.getMetaDataEntry("color_name")
                 # construct an item with only the relevant information
                 item = {
                     "id": extruder.getId(),
@@ -195,6 +187,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "material": extruder.material.getName() if extruder.material else "",
                     "variant": extruder.variant.getName() if extruder.variant else "",  # e.g. print core
                     "stack": extruder,
+                    "material_brand": material_brand,
+                    "color_name": color_name
                 }
 
                 items.append(item)
@@ -213,9 +207,14 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "enabled": True,
                     "color": "#ffffff",
                     "index": -1,
-                    "definition": ""
+                    "definition": "",
+                    "material": "",
+                    "variant": "",
+                    "stack": None,
+                    "material_brand": "",
+                    "color_name": "",
                 }
                 items.append(item)
-
-            self.setItems(items)
-            self.modelChanged.emit()
+            if self._items != items:
+                self.setItems(items)
+                self.modelChanged.emit()

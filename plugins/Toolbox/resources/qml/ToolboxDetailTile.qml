@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -31,17 +31,19 @@ Item
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium_bold")
+            renderType: Text.NativeRendering
         }
         Label
         {
             anchors.top: packageName.bottom
             width: parent.width
             text: model.description
-            maximumLineCount: 3
+            maximumLineCount: 25
             elide: Text.ElideRight
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
         }
     }
 
@@ -52,7 +54,7 @@ Item
         anchors.top: tile.top
         width: childrenRect.width
         height: childrenRect.height
-
+        packageData: model
     }
 
     ToolboxCompatibilityChart

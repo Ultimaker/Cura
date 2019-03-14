@@ -7,7 +7,6 @@
         "author": "3Dator GmbH",
         "manufacturer": "3Dator GmbH",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "supports_usb_connection": true,
         "platform": "3dator_platform.stl",
         "machine_extruder_trains":

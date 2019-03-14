@@ -66,7 +66,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
             return
 
         changed_device = self._usb_output_devices[serial_port]
-        if changed_device.connectionState == ConnectionState.connected:
+        if changed_device.connectionState == ConnectionState.Connected:
             self.getOutputDeviceManager().addOutputDevice(changed_device)
         else:
             self.getOutputDeviceManager().removeOutputDevice(serial_port)

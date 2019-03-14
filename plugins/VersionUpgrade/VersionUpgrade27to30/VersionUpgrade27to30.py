@@ -1,9 +1,10 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To parse preference files.
 import io #To serialise the preference files afterwards.
 import os
+from typing import Dict, List, Tuple
 import urllib.parse
 import re
 
@@ -11,7 +12,7 @@ from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
 
 _renamed_themes = {
     "cura": "cura-light"
-}
+} # type: Dict[str, str]
 _renamed_i18n = {
     "7s": "en_7S",
     "de": "de_DE",
@@ -28,7 +29,7 @@ _renamed_i18n = {
     "ptbr": "pt_BR",
     "ru": "ru_RU",
     "tr": "tr_TR"
-}
+} # type: Dict[str, str]
 
 
 class VersionUpgrade27to30(VersionUpgrade):
@@ -43,19 +44,19 @@ class VersionUpgrade27to30(VersionUpgrade):
     #   \raises ValueError The format of the version number in the file is
     #   incorrect.
     #   \raises KeyError The format of the file is incorrect.
-    def getCfgVersion(self, serialised):
+    def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
+        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
     ##  Upgrades a preferences file from version 2.7 to 3.0.
     #
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
-    def upgradePreferences(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+    def upgradePreferences(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         # Update version numbers
@@ -100,8 +101,8 @@ class VersionUpgrade27to30(VersionUpgrade):
     #
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
-    def upgradeQualityChangesContainer(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+    def upgradeQualityChangesContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         # Update the skin pre-shrink settings:
@@ -156,8 +157,8 @@ class VersionUpgrade27to30(VersionUpgrade):
     #
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
-    def upgradeOtherContainer(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+    def upgradeOtherContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         # Update the skin pre-shrink settings:
@@ -185,7 +186,7 @@ class VersionUpgrade27to30(VersionUpgrade):
     #
     #   \param serialised The serialised form of a container stack.
     #   \param filename The name of the file to upgrade.
-    def upgradeStack(self, serialised, filename):
+    def upgradeStack(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 

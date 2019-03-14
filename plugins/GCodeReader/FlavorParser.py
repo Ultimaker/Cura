@@ -107,6 +107,8 @@ class FlavorParser:
             self._layer_data_builder.setLayerHeight(self._layer_number, path[0][2])
             self._layer_data_builder.setLayerThickness(self._layer_number, layer_thickness)
             this_layer = self._layer_data_builder.getLayer(self._layer_number)
+            if not this_layer:
+                return False
         except ValueError:
             return False
         count = len(path)
@@ -364,6 +366,8 @@ class FlavorParser:
                     self._layer_type = LayerPolygon.SupportType
                 elif type == "FILL":
                     self._layer_type = LayerPolygon.InfillType
+                elif type == "SUPPORT-INTERFACE":
+                    self._layer_type = LayerPolygon.SupportInterfaceType
                 else:
                     Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 

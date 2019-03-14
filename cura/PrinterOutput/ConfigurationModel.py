@@ -40,7 +40,9 @@ class ConfigurationModel(QObject):
         return self._extruder_configurations
 
     def setBuildplateConfiguration(self, buildplate_configuration: str) -> None:
-        self._buildplate_configuration = buildplate_configuration
+        if self._buildplate_configuration !=  buildplate_configuration:
+            self._buildplate_configuration = buildplate_configuration
+            self.configurationChanged.emit()
 
     @pyqtProperty(str, fset = setBuildplateConfiguration, notify = configurationChanged)
     def buildplateConfiguration(self) -> str:
@@ -54,7 +56,7 @@ class ConfigurationModel(QObject):
         for configuration in self._extruder_configurations:
             if configuration is None:
                 return False
-        return self._printer_type is not None
+        return self._printer_type != ""
 
     def __str__(self):
         message_chunks = []
