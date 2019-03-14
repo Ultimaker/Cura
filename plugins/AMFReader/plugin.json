@@ -1,8 +1,7 @@
 {
     "name": "AMF Reader",
     "author": "fieldOfView",
-    "version": "3.5.0",
+    "version": "1.0.0",
     "description": "Provides support for reading AMF files.",
-    "api": 5,
-    "supported_sdk_versions": ["5.0.0", "6.0.0"]
+    "api": "6.0.0"
 }
