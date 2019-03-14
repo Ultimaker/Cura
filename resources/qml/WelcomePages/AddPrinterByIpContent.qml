@@ -55,7 +55,6 @@ Item
                 width: parent.width
                 anchors.top: parent.top
                 anchors.margins: 20
-                //anchors.bottomMargin: 20
                 font: UM.Theme.getFont("default")
 
                 text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
@@ -111,7 +110,12 @@ Item
                     BusyIndicator
                     {
                         anchors.fill: parent
-                        running: { ! parent.enabled && ! addPrinterByIpScreen.hasSentRequest }
+                        running:
+                        {
+                            ! parent.enabled &&
+                            ! addPrinterByIpScreen.hasSentRequest &&
+                            ! addPrinterByIpScreen.haveConnection
+                        }
                     }
                 }
             }
@@ -154,6 +158,7 @@ Item
                     {
                         id: printerInfoGrid
                         anchors.top: printerNameLabel.bottom
+                        anchors.margins: 20
                         columns: 2
                         columnSpacing: 20
 
@@ -217,10 +222,8 @@ Item
         fixedWidthMode: true
         onClicked:
         {
-            Cura.MachineManager.addMachine(
-                UM.OutputDeviceManager.manualDeviceProperty("printer_type"),
-                UM.OutputDeviceManager.manualDeviceProperty("name")
-            )
+            CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinterAddress(
+                UM.OutputDeviceManager.manualDeviceProperty("address"))
             UM.OutputDeviceManager.setActiveDevice(UM.OutputDeviceManager.manualDeviceProperty("device_id"))
             base.showNextPage()
         }

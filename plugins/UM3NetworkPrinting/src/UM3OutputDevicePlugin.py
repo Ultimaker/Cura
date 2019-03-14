@@ -179,7 +179,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
             if key.startswith("manual:"):
-                self.removeManualDeviceSignal.emit(self.getPluginId(), key, self._discovered_devices[key].address())  # TODO?
+                self.removeManualDeviceSignal.emit(self.getPluginId(), key, self._discovered_devices[key].address)
 
     def stop(self):
         if self._zero_conf is not None:
@@ -188,8 +188,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cloud_output_device_manager.stop()
 
     def canAddManualDevice(self, address: str) -> ManualDeviceAdditionAttempt:
+        # This plugin should always be the fallback option (at least try it):
         return ManualDeviceAdditionAttempt.POSSIBLE
-        # TODO?: Check if address is a valid IP (by regexp?).
 
     def removeManualDevice(self, key, address = None):
         if key in self._discovered_devices:
@@ -202,7 +202,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._manual_instances.remove(address)
             self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
 
-        self.removeManualDeviceSignal.emit(self.getPluginId(), key, address)  # TODO?
+        self.removeManualDeviceSignal.emit(self.getPluginId(), key, address)
 
     def addManualDevice(self, address):
         if address not in self._manual_instances:
@@ -226,8 +226,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._checkManualDevice(address)
 
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
-        # TODO: This needs to be implemented. It's supposed to create a machine given a unique key as already discovered
-        # by this plugin.
         discovered_device = self._discovered_devices.get(key)
         if discovered_device is None:
             Logger.log("e", "Could not find discovered device with key [%s]", key)
