@@ -16,6 +16,8 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Printers");
     model: Cura.GlobalStacksModel { }
 
+    sectionRole: "sectionName"
+
     activeId: Cura.MachineManager.activeMachineId
     activeIndex: activeMachineIndex()
 
