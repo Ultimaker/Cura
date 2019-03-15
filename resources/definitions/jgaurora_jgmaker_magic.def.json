@@ -78,7 +78,7 @@
             "default_value": 125
         },
         "speed_layer_0": {
-            "default_value": 20
+            "default_value": 30
         },
         "support_enable": {
             "default_value": true
