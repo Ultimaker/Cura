@@ -456,7 +456,7 @@ class CuraApplication(QtApplication):
             # Misc.:
             "ConsoleLogger", #You want to be able to read the log if something goes wrong.
             "CuraEngineBackend", #Cura is useless without this one since you can't slice.
-            "UserAgreement", #Our lawyers want every user to see this at least once.
+            # NOTE: User-Agreement is part of the 'onboarding flow' now (See Welcome Pages).
             "FileLogger", #You want to be able to read the log if something goes wrong.
             "XmlMaterialProfile", #Cura crashes without this one.
             "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
@@ -527,6 +527,8 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/favorite_materials", "")
         preferences.addPreference("cura/expanded_brands", "")
         preferences.addPreference("cura/expanded_types", "")
+
+        preferences.addPreference("general/accepted_user_agreement", False)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin

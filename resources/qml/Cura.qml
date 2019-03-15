@@ -90,6 +90,11 @@ UM.MainWindow
             welcomeDialog.currentStep = 0;
             welcomeDialog.show();
         }
+        else
+        {
+            welcomeDialog.hide()
+            welcomeDialog.visible = false;
+        }
     }
 
     Item
@@ -844,16 +849,6 @@ UM.MainWindow
             if(!base.visible)
             {
                 base.visible = true;
-            }
-
-            // check later if the user agreement dialog has been closed
-            if (CuraApplication.needToShowUserAgreement)
-            {
-                restart();
-            }
-            else if(Cura.MachineManager.activeMachine == null)
-            {
-                addMachineDialog.open();
             }
         }
     }
