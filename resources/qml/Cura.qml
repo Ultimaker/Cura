@@ -45,7 +45,7 @@ UM.MainWindow
     WelcomeDialog
     {
         id: welcomeDialog
-        visible: CuraApplication.needToShowUserAgreement
+        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
     }
 
     Rectangle
@@ -83,6 +83,13 @@ UM.MainWindow
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
+
+        if (CuraApplication.needToShowUserAgreement)
+        {
+            welcomeDialog.visible = true;
+            welcomeDialog.currentStep = 0;
+            welcomeDialog.show();
+        }
     }
 
     Item

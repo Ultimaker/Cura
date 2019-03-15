@@ -245,8 +245,6 @@ class CuraApplication(QtApplication):
 
         self._update_platform_activity_timer = None
 
-        self._need_to_show_user_agreement = True
-
         self._sidebar_custom_menu_items = []  # type: list # Keeps list of custom menu items for the side bar
 
         self._plugins_loaded = False
@@ -530,8 +528,6 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/expanded_brands", "")
         preferences.addPreference("cura/expanded_types", "")
 
-        self._need_to_show_user_agreement = not preferences.getValue("general/accepted_user_agreement")
-
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
@@ -553,11 +549,11 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
-        return self._need_to_show_user_agreement
+        return not self.getPreferences().getValue("general/accepted_user_agreement")
 
     @pyqtSlot(bool)
     def setNeedToShowUserAgreement(self, set_value = True) -> None:
-        self._need_to_show_user_agreement = set_value
+        self.getPreferences().setValue("general/accepted_user_agreement", not set_value)
 
     @pyqtSlot(str, str)
     def writeToLog(self, severity: str, message: str) -> None:
