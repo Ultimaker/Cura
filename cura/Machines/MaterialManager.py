@@ -219,7 +219,7 @@ class MaterialManager(QObject):
 
         root_material_id = material_metadata["base_file"]
         definition = material_metadata["definition"]
-        approximate_diameter = material_metadata["approximate_diameter"]
+        approximate_diameter = str(material_metadata["approximate_diameter"])
 
         if approximate_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
             self._diameter_machine_nozzle_buildplate_material_map[approximate_diameter] = {}
@@ -332,7 +332,6 @@ class MaterialManager(QObject):
                 buildplate_node = nozzle_node.getChildNode(buildplate_name)
 
         nodes_to_check = [buildplate_node, nozzle_node, machine_node, default_machine_node]
-
         # Fallback mechanism of finding materials:
         #  1. buildplate-specific material
         #  2. nozzle-specific material
