@@ -2307,13 +2307,13 @@ msgstr "Overschrijven"
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
-msgstr[0] "Voor de toegewezen printer, 1%, is de volgende configuratiewijziging vereist:"
-msgstr[1] "Voor de toegewezen printer, 1%, zijn de volgende configuratiewijzigingen vereist:"
+msgstr[0] "Voor de toegewezen printer, %1, is de volgende configuratiewijziging vereist:"
+msgstr[1] "Voor de toegewezen printer, %1, zijn de volgende configuratiewijzigingen vereist:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:68
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr "De printer 1% is toegewezen. De taak bevat echter een onbekende materiaalconfiguratie."
+msgstr "De printer %1 is toegewezen. De taak bevat echter een onbekende materiaalconfiguratie."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:78
 msgctxt "@label"
@@ -5015,7 +5015,7 @@ msgstr "X3G-schrijver"
 
 #~ msgctxt "@label"
 #~ msgid "The assigned printer, %1, requires the following configuration change(s):"
-#~ msgstr "Voor de toegewezen printer, 1%, is/zijn de volgende configuratiewijziging/configuratiewijzigingen vereist:"
+#~ msgstr "Voor de toegewezen printer, %1, is/zijn de volgende configuratiewijziging/configuratiewijzigingen vereist:"
 
 #~ msgctxt "@label"
 #~ msgid "Override"

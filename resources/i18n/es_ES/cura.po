@@ -2318,7 +2318,7 @@ msgstr[1] "Es necesario realizar los siguientes cambios de configuración en la 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:68
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr "Se ha asignado la impresora 1%, pero el trabajo tiene una configuración de material desconocido."
+msgstr "Se ha asignado la impresora %1, pero el trabajo tiene una configuración de material desconocido."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:78
 msgctxt "@label"
