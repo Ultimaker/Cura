@@ -20,6 +20,7 @@ Row
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     property int labelWidth: 100
+    property var labelFont: UM.Theme.getFont("medium")
 
     // Left-side column for "Printer Settings"
     Column
@@ -39,6 +40,7 @@ Row
             settingKey: "machine_width"
             settingStoreIndex: 1 // TODO
             labelText: catalog.i18nc("@label", "X (Width)")
+            labelFont: base.labelFont
             labelWidth: base.labelWidth
             unitText: catalog.i18nc("@label", "mm")
             // TODO: add forceUpdateOnChangeFunction:
@@ -51,6 +53,7 @@ Row
             settingKey: "machine_depth"
             settingStoreIndex: 1 // TODO
             labelText: catalog.i18nc("@label", "Y (Depth)")
+            labelFont: base.labelFont
             labelWidth: base.labelWidth
             unitText: catalog.i18nc("@label", "mm")
             // TODO: add forceUpdateOnChangeFunction:
@@ -63,6 +66,7 @@ Row
             settingKey: "machine_height"
             settingStoreIndex: 1 // TODO
             labelText: catalog.i18nc("@label", "Z (Height)")
+            labelFont: base.labelFont
             labelWidth: base.labelWidth
             unitText: catalog.i18nc("@label", "mm")
             // TODO: add forceUpdateOnChangeFunction:
@@ -86,6 +90,7 @@ Row
             settingKey: "machine_center_is_zero"
             settingStoreIndex: 1 // TODO
             labelText: catalog.i18nc("@label", "Origin at center")
+            labelFont: base.labelFont
             // TODO: add forceUpdateOnChangeFunction:
         }
 
@@ -96,6 +101,7 @@ Row
             settingKey: "machine_heated_bed"
             settingStoreIndex: 1 // TODO
             labelText: catalog.i18nc("@label", "Heated bed")
+            labelFont: base.labelFont
             // TODO: add forceUpdateOnChangeFunction:
         }
 
@@ -106,6 +112,7 @@ Row
             settingKey: "machine_gcode_flavor"
             settingStoreIndex: 1 // TODO
             labelText: catalog.i18nc("@label", "G-code flavor")
+            labelFont: base.labelFont
             labelWidth: base.labelWidth
             // TODO: add forceUpdateOnChangeFunction:
             // TODO: add afterOnActivate: manager.updateHasMaterialsMetadata

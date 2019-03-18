@@ -31,6 +31,7 @@ UM.TooltipArea
     property alias settingStoreIndex: propertyProvider.storeIndex
 
     property alias labelText: fieldLabel.text
+    property alias labelFont: fieldLabel.font
     property alias labelWidth: fieldLabel.width
     property alias unitText: unitLabel.text
 
@@ -64,7 +65,7 @@ UM.TooltipArea
             id: fieldLabel
             anchors.verticalCenter: textFieldWithUnit.verticalCenter
             visible: text != ""
-            elide: Text.ElideRight
+            font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
         }
 

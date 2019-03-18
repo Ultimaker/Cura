@@ -24,11 +24,15 @@ UM.TooltipArea
     width: childrenRect.width
     text: tooltipText
 
+    property int controlWidth: UM.Theme.getSize("setting_control").width
+    property int controlHeight: UM.Theme.getSize("setting_control").height
+
     property alias containerStackId: propertyProvider.containerStackId
     property alias settingKey: propertyProvider.key
     property alias settingStoreIndex: propertyProvider.storeIndex
 
     property alias labelText: fieldLabel.text
+    property alias labelFont: fieldLabel.font
     property alias labelWidth: fieldLabel.width
 
     property string tooltipText: propertyProvider.properties.description
@@ -55,7 +59,8 @@ UM.TooltipArea
             id: fieldLabel
             anchors.verticalCenter: comboBox.verticalCenter
             visible: text != ""
-            elide: Text.ElideRight
+            font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
         }
 
         ListModel
@@ -80,8 +85,8 @@ UM.TooltipArea
         CuraComboBox
         {
             id: comboBox
-            width: 100
-            height: UM.Theme.getSize("action_button").height
+            width: comboBoxWithOptions.controlWidth
+            height: comboBoxWithOptions.controlHeight
             model: optionsModel
             textRole: "text"
 

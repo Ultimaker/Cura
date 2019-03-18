@@ -8,13 +8,19 @@ import QtQuick.Layouts 1.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
+import "../Widgets"
+
 
 //
 // CheckBox widget for the on/off or true/false settings in the Machine Settings Dialog.
 //
 UM.TooltipArea
 {
+    id: simpleCheckBox
+
     UM.I18nCatalog { id: catalog; name: "cura"; }
+
+    property int controlHeight: UM.Theme.getSize("setting_control").height
 
     height: childrenRect.height
     width: childrenRect.width
@@ -25,6 +31,7 @@ UM.TooltipArea
     property alias settingStoreIndex: propertyProvider.storeIndex
 
     property alias labelText: checkBox.text
+    property alias labelFont: checkBox.font
 
     property string tooltip: propertyProvider.properties.description
 
@@ -40,10 +47,12 @@ UM.TooltipArea
         watchedProperties: [ "value", "description" ]
     }
 
-    CheckBox
+    CuraCheckBox
     {
         id: checkBox
         checked: String(propertyProvider.properties.value).toLowerCase() != 'false'
+        height: simpleCheckBox.controlHeight
+        font: UM.Theme.getFont("medium")
         onClicked:
         {
             propertyProvider.setPropertyValue("value", checked)
