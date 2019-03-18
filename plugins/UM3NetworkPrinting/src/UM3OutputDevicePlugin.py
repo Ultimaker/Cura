@@ -517,7 +517,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
                 "resources", "svg", "cloud-flow-start.svg"
             )),
-            image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
+            image_caption = i18n_catalog.i18nc("@info:status Ultimaker Cloud is a brand name and shouldn't be translated.", "Connect to Ultimaker Cloud"),
             option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
             option_state = False
         )
