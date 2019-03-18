@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Cura 4.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-02-26 16:36+0000\n"
-"PO-Revision-Date: 2018-10-01 14:10+0100\n"
-"Last-Translator: Jinbuhm Kim <Jinbuhm.Kim@gmail.com>\n"
+"PO-Revision-Date: 2019-03-13 14:00+0200\n"
+"Last-Translator: Korean <info@bothof.nl>\n"
 "Language-Team: Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
 "MIME-Version: 1.0\n"
@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"시작과 동시에형실행될 G 코드 명령어 \n"
-"."
+msgstr "시작과 동시에형실행될 G 코드 명령어 \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"맨 마지막에 실행될 G 코드 명령 \n"
-"."
+msgstr "맨 마지막에 실행될 G 코드 명령 \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1636,9 +1632,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n"
-"이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트랙션없이 모든 내부채움을 단일 돌출 경로에 연결할 수 있습니다."
+msgstr "내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트랙션없이 모든 내부채움을 단일 돌출 경로에 연결할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1678,7 +1672,7 @@ msgstr "스킨 겹침 비율"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr ""
+msgstr "벽과 스킨-센터라인(종점) 사이의 겹침 양을 스킨 라인과 가장 안쪽 벽의 라인 폭 비율로 조정하십시오. 약간의 겹침으로 벽이 스킨에 확실하게 연결될 수 있습니다. 동일한 스킨 및 벽 라인-폭을 고려할 때 비율이 50%가 넘는다면, 그 지점에서 스킨-익스트루더의 노즐 위치가 이미 벽 중앙을 지나 도달할 수 있기 때문에 이미 스킨이 벽을 지나치고 있을 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1688,7 +1682,7 @@ msgstr "스킨 겹침"
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr ""
+msgstr "벽과 스킨-센터라인(종점) 사이의 겹침 양을 조정하십시오. 약간의 겹침으로 벽이 스킨에 확실하게 연결될 수 있습니다. 동일한 스킨 및 벽 라인-폭을 고려할 때 값이 벽 폭의 절반을 넘는다면, 그 지점에서 스킨-익스트루더의 노즐 위치가 이미 벽 중앙을 지나 도달할 수 있기 때문에 이미 스킨이 벽을 지나치고 있을 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -2128,7 +2122,7 @@ msgstr "노즐 스위치 리트렉션 거리"
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
 msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr ""
+msgstr "익스트루더 전환 시 리트렉션 양. 리트렉션이 전혀 없는 경우 0으로 설정하십시오. 이는 일반적으로 열 영역의 길이와 같아야 합니다."
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2788,7 +2782,7 @@ msgstr "Combing 모드"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
-msgstr ""
+msgstr "Combing은 이동할 때 이미 인쇄 된 영역 내에 노즐을 유지합니다. 이로 인해 이동이 약간 더 길어 지지만 리트렉션의 필요성은 줄어듭니다. Combing이 꺼져 있으면 재료가 후퇴하고 노즐이 직선으로 다음 점으로 이동합니다. 또한 상단/하단 스킨 영역을 Combing하거나 내부채움 내에서만 빗질하는 것을 피할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -3443,12 +3437,12 @@ msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 서포트
 #: fdmprinter.def.json
 msgctxt "minimum_support_area label"
 msgid "Minimum Support Area"
-msgstr ""
+msgstr "최소 서포트 지역"
 
 #: fdmprinter.def.json
 msgctxt "minimum_support_area description"
 msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "서포트 영역에 대한 최소 지역 크기. 이 값보다 작은 지역을 갖는 영역은 생성되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3678,62 +3672,62 @@ msgstr "지그재그"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area label"
 msgid "Minimum Support Interface Area"
-msgstr ""
+msgstr "최소 서포트 인터페이스 지역"
 
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "지원 인터페이스 영역에 대한 최소 지역 크기. 이 값보다 작은 지역을 갖는 영역은 생성되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
 msgid "Minimum Support Roof Area"
-msgstr ""
+msgstr "최소 서포트 지붕 지역"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "서포트 지붕에 대한 최소 지역 크기. 이 값보다 작은 지역을 갖는 영역은 생성되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
 msgid "Minimum Support Floor Area"
-msgstr ""
+msgstr "최소 서포트 바닥 지역"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr ""
+msgstr "서포트 바닥에 대한 최소 지역 크기. 이 값보다 작은 지역을 갖는 영역은 생성되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
 msgid "Support Interface Horizontal Expansion"
-msgstr ""
+msgstr "서포트 인터페이스 수평 확장"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset description"
 msgid "Amount of offset applied to the support interface polygons."
-msgstr ""
+msgstr "서포트 인터페이스 영역에 적용되는 오프셋 양."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_offset label"
 msgid "Support Roof Horizontal Expansion"
-msgstr ""
+msgstr "서포트 지붕 수평 확장"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_offset description"
 msgid "Amount of offset applied to the roofs of the support."
-msgstr ""
+msgstr "서포트 지붕에 적용되는 오프셋 양."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_offset label"
 msgid "Support Floor Horizontal Expansion"
-msgstr ""
+msgstr "서포트 바닥 수평 확장"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_offset description"
 msgid "Amount of offset applied to the floors of the support."
-msgstr ""
+msgstr "서포트 바닥에 적용되는 오프셋 양."
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
@@ -3905,9 +3899,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
-"이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
+msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -5908,6 +5900,7 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "시작과 동시에 실행될 G 코드 명령어 \n"
 #~ "."
 
@@ -5920,6 +5913,7 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "맨 마지막에 실행될 G 코드 명령 \n"
 #~ "."
 
