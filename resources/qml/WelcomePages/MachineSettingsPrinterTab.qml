@@ -27,7 +27,7 @@ Item
     property var labelFont: UM.Theme.getFont("medium")
 
     property int columnWidth: (parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2
-    property int columnSpacing: 10
+    property int columnSpacing: 3
     property int propertyStoreIndex: 5  // definition_changes
 
     Item
