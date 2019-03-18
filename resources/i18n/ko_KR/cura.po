@@ -2149,7 +2149,7 @@ msgstr "이 프린터는 프린터 그룹을 호스트하도록 설정되어 있
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:321
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
-msgstr "이 프린터는 1%개 프린터 그룹의 호스트입니다."
+msgstr "이 프린터는 %1개 프린터 그룹의 호스트입니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:332
 msgctxt "@label"
@@ -5802,7 +5802,7 @@ msgstr "X3GWriter"
 
 #~ msgctxt "@label"
 #~ msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
-#~ msgstr "이 프린터는 1% Ultimaker 3 프린터 그룹의 호스트입니다."
+#~ msgstr "이 프린터는 %1 Ultimaker 3 프린터 그룹의 호스트입니다."
 
 #~ msgctxt "@label: arg 1 is group name"
 #~ msgid "%1 is not set up to host a group of connected Ultimaker 3 printers"

@@ -2288,7 +2288,7 @@ msgstr "Interrompi"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:143
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
-msgstr "Sei sicuro di voler spostare 1% all’inizio della coda?"
+msgstr "Sei sicuro di voler spostare %1 all’inizio della coda?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:144
 msgctxt "@window:title"
@@ -4240,7 +4240,7 @@ msgstr "Utilizzare la colla per una migliore adesione con questa combinazione di
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:128
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
-msgstr "Questa configurazione non è disponibile perché 1% non viene riconosciuto. Visitare %2 per scaricare il profilo materiale corretto."
+msgstr "Questa configurazione non è disponibile perché %1 non viene riconosciuto. Visitare %2 per scaricare il profilo materiale corretto."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:129
 msgctxt "@label"
