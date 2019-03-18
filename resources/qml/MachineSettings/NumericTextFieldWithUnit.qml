@@ -3,7 +3,6 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.3
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -30,10 +29,15 @@ UM.TooltipArea
     property alias settingKey: propertyProvider.key
     property alias settingStoreIndex: propertyProvider.storeIndex
 
+    property alias propertyProvider: propertyProvider
     property alias labelText: fieldLabel.text
     property alias labelFont: fieldLabel.font
     property alias labelWidth: fieldLabel.width
     property alias unitText: unitLabel.text
+
+    property alias valueText: textFieldWithUnit.text
+    property alias valueValidator: textFieldWithUnit.validator
+    property alias editingFinishedFunction: textFieldWithUnit.editingFinishedFunction
 
     property string tooltipText: propertyProvider.properties.description
 
@@ -151,7 +155,11 @@ UM.TooltipArea
             }
             validator: RegExpValidator { regExp: allowNegativeValue ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
 
-            onEditingFinished:
+            onEditingFinished: editingFinishedFunction()
+
+            property var editingFinishedFunction: defaultEditingFinishedFunction
+
+            function defaultEditingFinishedFunction()
             {
                 if (propertyProvider && text != propertyProvider.properties.value)
                 {
