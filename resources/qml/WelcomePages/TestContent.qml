@@ -14,7 +14,7 @@ import "../MachineSettings"
 // This component contains the content for the "Welcome" page of the welcome on-boarding process.
 //
 
-Row
+Item
 {
     id: base
     UM.I18nCatalog { id: catalog; name: "cura" }
@@ -22,193 +22,307 @@ Row
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: parent.top
-    anchors.margins: UM.Theme.getSize("default_margin").width
 
-    property int labelWidth: 110
+    property int labelWidth: 130
+    property int controlWidth: UM.Theme.getSize("setting_control").width * 3 / 4
     property var labelFont: UM.Theme.getFont("medium")
 
-    spacing: 10
+    property int columnWidth: (parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2
+    property int columnSpacing: 10
+    property int propertyStoreIndex: 5  // definition_changes
 
-    // =======================================
-    // Left-side column for "Printer Settings"
-    // =======================================
-    Column
+    Item
     {
-        spacing: 10
+        id: upperBlock
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: UM.Theme.getSize("default_margin").width
 
-        Label   // Title Label
+        height: childrenRect.height
+
+        // =======================================
+        // Left-side column for "Printer Settings"
+        // =======================================
+        Column
         {
-            text: catalog.i18nc("@title:label", "Printer Settings")
-            font: UM.Theme.getFont("medium_bold")
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: base.columnWidth
+
+            spacing: base.columnSpacing
+
+            Label   // Title Label
+            {
+                text: catalog.i18nc("@title:label", "Printer Settings")
+                font: UM.Theme.getFont("medium_bold")
+                renderType: Text.NativeRendering
+            }
+
+            NumericTextFieldWithUnit  // "X (Width)"
+            {
+                id: machineXWidthField
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_width"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "X (Width)")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            NumericTextFieldWithUnit  // "Y (Depth)"
+            {
+                id: machineYDepthField
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_depth"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Y (Depth)")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            NumericTextFieldWithUnit  // "Z (Height)"
+            {
+                id: machineZHeightField
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_height"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Z (Height)")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            ComboBoxWithOptions  // "Build plate shape"
+            {
+                id: buildPlateShapeComboBox
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_shape"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Build plate shape")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            SimpleCheckBox  // "Origin at center"
+            {
+                id: originAtCenterCheckBox
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_center_is_zero"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Origin at center")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            SimpleCheckBox  // "Heated bed"
+            {
+                id: heatedBedCheckBox
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_heated_bed"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Heated bed")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            ComboBoxWithOptions  // "G-code flavor"
+            {
+                id: gcodeFlavorComboBox
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_gcode_flavor"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "G-code flavor")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                // TODO: add forceUpdateOnChangeFunction:
+                // TODO: add afterOnActivate: manager.updateHasMaterialsMetadata
+            }
         }
 
-        NumericTextFieldWithUnit  // "X (Width)"
+        // =======================================
+        // Right-side column for "Printhead Settings"
+        // =======================================
+        Column
         {
-            id: machineXWidthField
-            containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_width"
-            settingStoreIndex: 1 // TODO
-            labelText: catalog.i18nc("@label", "X (Width)")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            unitText: catalog.i18nc("@label", "mm")
-            // TODO: add forceUpdateOnChangeFunction:
-        }
+            anchors.top: parent.top
+            anchors.right: parent.right
+            width: base.columnWidth
 
-        NumericTextFieldWithUnit  // "Y (Depth)"
-        {
-            id: machineYDepthField
-            containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_depth"
-            settingStoreIndex: 1 // TODO
-            labelText: catalog.i18nc("@label", "Y (Depth)")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            unitText: catalog.i18nc("@label", "mm")
-            // TODO: add forceUpdateOnChangeFunction:
-        }
+            spacing: base.columnSpacing
 
-        NumericTextFieldWithUnit  // "Z (Height)"
-        {
-            id: machineZHeightField
-            containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_height"
-            settingStoreIndex: 1 // TODO
-            labelText: catalog.i18nc("@label", "Z (Height)")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            unitText: catalog.i18nc("@label", "mm")
-            // TODO: add forceUpdateOnChangeFunction:
-        }
+            Label   // Title Label
+            {
+                text: catalog.i18nc("@title:label", "Printhead Settings")
+                font: UM.Theme.getFont("medium_bold")
+                renderType: Text.NativeRendering
+            }
 
-        ComboBoxWithOptions  // "Build plate shape"
-        {
-            id: buildPlateShapeComboBox
-            containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_shape"
-            settingStoreIndex: 1 // TODO
-            labelText: catalog.i18nc("@label", "Build plate shape")
-            labelWidth: base.labelWidth
-            // TODO: add forceUpdateOnChangeFunction:
-        }
+            PrintHeadMinMaxTextField  // "X min"
+            {
+                id: machineXMinField
 
-        SimpleCheckBox  // "Origin at center"
-        {
-            id: originAtCenterCheckBox
-            containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_center_is_zero"
-            settingStoreIndex: 1 // TODO
-            labelText: catalog.i18nc("@label", "Origin at center")
-            labelFont: base.labelFont
-            // TODO: add forceUpdateOnChangeFunction:
-        }
+                settingStoreIndex: propertyStoreIndex
 
-        SimpleCheckBox  // "Heated bed"
-        {
-            id: heatedBedCheckBox
-            containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_heated_bed"
-            settingStoreIndex: 1 // TODO
-            labelText: catalog.i18nc("@label", "Heated bed")
-            labelFont: base.labelFont
-            // TODO: add forceUpdateOnChangeFunction:
-        }
+                labelText: catalog.i18nc("@label", "X min")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
 
-        ComboBoxWithOptions  // "G-code flavor"
-        {
-            id: gcodeFlavorComboBox
-            containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_gcode_flavor"
-            settingStoreIndex: 1 // TODO
-            labelText: catalog.i18nc("@label", "G-code flavor")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            // TODO: add forceUpdateOnChangeFunction:
-            // TODO: add afterOnActivate: manager.updateHasMaterialsMetadata
+                axisName: "x"
+                axisMinOrMax: "min"
+
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            PrintHeadMinMaxTextField  // "Y min"
+            {
+                id: machineYMinField
+
+                settingStoreIndex: propertyStoreIndex
+
+                labelText: catalog.i18nc("@label", "Y min")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
+
+                axisName: "y"
+                axisMinOrMax: "min"
+
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            PrintHeadMinMaxTextField  // "X max"
+            {
+                id: machineXMaxField
+
+                settingStoreIndex: propertyStoreIndex
+
+                labelText: catalog.i18nc("@label", "X max")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
+
+                axisName: "x"
+                axisMinOrMax: "max"
+
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            PrintHeadMinMaxTextField  // "Y max"
+            {
+                id: machineYMaxField
+
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_head_with_fans_polygon"
+                settingStoreIndex: propertyStoreIndex
+
+                labelText: catalog.i18nc("@label", "Y max")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
+
+                axisName: "y"
+                axisMinOrMax: "max"
+
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            NumericTextFieldWithUnit  // "Gantry Height"
+            {
+                id: machineGantryHeightField
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "gantry_height"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Gantry Height")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "mm")
+                // TODO: add forceUpdateOnChangeFunction:
+            }
+
+            ComboBoxWithOptions  // "Number of Extruders"
+            {
+                id: numberOfExtrudersComboBox
+                containerStackId: Cura.MachineManager.activeMachineId
+                settingKey: "machine_extruder_count"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Number of Extruders")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                // TODO: add forceUpdateOnChangeFunction:
+                // TODO: add afterOnActivate: manager.updateHasMaterialsMetadata
+
+                optionModel: ListModel
+                {
+                    id: extruderCountModel
+                    Component.onCompleted:
+                    {
+                        extruderCountModel.clear()
+                        for (var i = 1; i <= Cura.MachineManager.activeMachine.maxExtruderCount; i++)
+                        {
+                            extruderCountModel.append({text: String(i), value: i})
+                        }
+                    }
+                }
+            }
         }
     }
 
-    // =======================================
-    // Right-side column for "Printhead Settings"
-    // =======================================
-    Column
+    Item  // Start and End G-code
     {
-        spacing: 10
+        id: lowerBlock
+        anchors.top: upperBlock.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: UM.Theme.getSize("default_margin").width
 
-        Label   // Title Label
+        GcodeTextArea   // "Start G-code"
         {
-            text: catalog.i18nc("@title:label", "Printhead Settings")
-            font: UM.Theme.getFont("medium_bold")
-        }
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            width: base.columnWidth - UM.Theme.getSize("default_margin").width
 
-        PrintHeadMinMaxTextField  // "X min"
-        {
-            id: machineXMinField
-
-            settingStoreIndex: 1 // TODO
-
-            labelText: catalog.i18nc("@label", "X min")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            unitText: catalog.i18nc("@label", "mm")
-
-            axisName: "x"
-            axisMinOrMax: "min"
-
-            // TODO: add forceUpdateOnChangeFunction:
-        }
-
-        PrintHeadMinMaxTextField  // "Y min"
-        {
-            id: machineYMinField
-
-            settingStoreIndex: 1 // TODO
-
-            labelText: catalog.i18nc("@label", "Y min")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            unitText: catalog.i18nc("@label", "mm")
-
-            axisName: "y"
-            axisMinOrMax: "min"
-
-            // TODO: add forceUpdateOnChangeFunction:
-        }
-
-        PrintHeadMinMaxTextField  // "X max"
-        {
-            id: machineXMaxField
-
-            settingStoreIndex: 1 // TODO
-
-            labelText: catalog.i18nc("@label", "X max")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            unitText: catalog.i18nc("@label", "mm")
-
-            axisName: "x"
-            axisMinOrMax: "max"
-
-            // TODO: add forceUpdateOnChangeFunction:
-        }
-
-        PrintHeadMinMaxTextField  // "Y max"
-        {
-            id: machineYMaxField
-
+            labelText: catalog.i18nc("@title:label", "Start G-code")
             containerStackId: Cura.MachineManager.activeMachineId
-            settingKey: "machine_head_with_fans_polygon"
-            settingStoreIndex: 1 // TODO
+            settingKey: "machine_start_gcode"
+            settingStoreIndex: propertyStoreIndex
+        }
 
-            labelText: catalog.i18nc("@label", "Y max")
-            labelFont: base.labelFont
-            labelWidth: base.labelWidth
-            unitText: catalog.i18nc("@label", "mm")
+        GcodeTextArea   // "End G-code"
+        {
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            anchors.right: parent.right
+            width: base.columnWidth - UM.Theme.getSize("default_margin").width
 
-            axisName: "y"
-            axisMinOrMax: "max"
-
-            // TODO: add forceUpdateOnChangeFunction:
+            labelText: catalog.i18nc("@title:label", "End G-code")
+            containerStackId: Cura.MachineManager.activeMachineId
+            settingKey: "machine_end_gcode"
+            settingStoreIndex: propertyStoreIndex
         }
     }
 }

@@ -14,12 +14,10 @@ import Cura 1.1 as Cura
 //
 UM.TooltipArea
 {
-    id: gcodeTextArea
+    id: control
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
-    height: childrenRect.height
-    width: childrenRect.width
     text: tooltip
 
     property alias containerStackId: propertyProvider.containerStackId
@@ -28,22 +26,57 @@ UM.TooltipArea
 
     property string tooltip: propertyProvider.properties.description
 
+    property alias labelText: titleLabel.text
+    property alias labelFont: titleLabel.font
+
     UM.SettingPropertyProvider
     {
         id: propertyProvider
         watchedProperties: [ "value", "description" ]
     }
 
-    // TODO: put label here
+    Label   // Title Label
+    {
+        id: titleLabel
+        anchors.top: parent.top
+        anchors.left: parent.left
+        font: UM.Theme.getFont("medium_bold")
+        renderType: Text.NativeRendering
+    }
 
     TextArea
     {
-        id: gcodeArea
-        width: areaWidth
-        height: areaHeight
+        id: gcodeTextArea
+        anchors.top: titleLabel.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        hoverEnabled: true
+        selectByMouse: true
+
         font: UM.Theme.getFont("fixed")
+        renderType: Text.NativeRendering
         text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
         wrapMode: TextEdit.NoWrap
+
+        background: Rectangle
+        {
+            border.color:
+            {
+                if (!gcodeTextArea.enabled)
+                {
+                    return UM.Theme.getColor("setting_control_disabled_border")
+                }
+                if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
+                {
+                    return UM.Theme.getColor("setting_control_border_highlight")
+                }
+                return UM.Theme.getColor("setting_control_border")
+            }
+        }
+
         onActiveFocusChanged:
         {
             if (!activeFocus)

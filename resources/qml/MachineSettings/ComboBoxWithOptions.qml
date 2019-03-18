@@ -34,6 +34,7 @@ UM.TooltipArea
     property alias labelText: fieldLabel.text
     property alias labelFont: fieldLabel.font
     property alias labelWidth: fieldLabel.width
+    property alias optionModel: comboBox.model
 
     property string tooltipText: propertyProvider.properties.description
 
@@ -50,69 +51,67 @@ UM.TooltipArea
         watchedProperties: [ "value", "options", "description" ]
     }
 
-    Row
+    Label
     {
-        spacing: UM.Theme.getSize("default_margin").width
+        id: fieldLabel
+        anchors.left: parent.left
+        anchors.verticalCenter: comboBox.verticalCenter
+        visible: text != ""
+        font: UM.Theme.getFont("medium")
+        renderType: Text.NativeRendering
+    }
 
-        Label
+    ListModel
+    {
+        id: defaultOptionsModel
+        Component.onCompleted:
         {
-            id: fieldLabel
-            anchors.verticalCenter: comboBox.verticalCenter
-            visible: text != ""
-            font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-        }
-
-        ListModel
-        {
-            id: optionsModel
-            Component.onCompleted:
+            // Options come in as a string-representation of an OrderedDict
+            var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/)
+            if (options)
             {
-                // Options come in as a string-representation of an OrderedDict
-                var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/)
-                if (options)
+                options = options[1].split("), (")
+                for (var i = 0; i < options.length; i++)
                 {
-                    options = options[1].split("), (")
-                    for (var i = 0; i < options.length; i++)
-                    {
-                        var option = options[i].substring(1, options[i].length - 1).split("', '")
-                        optionsModel.append({text: option[1], value: option[0]})
-                    }
+                    var option = options[i].substring(1, options[i].length - 1).split("', '")
+                    defaultOptionsModel.append({text: option[1], value: option[0]})
                 }
             }
         }
+    }
 
-        CuraComboBox
+    CuraComboBox
+    {
+        id: comboBox
+        anchors.left: fieldLabel.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        width: comboBoxWithOptions.controlWidth
+        height: comboBoxWithOptions.controlHeight
+        model: defaultOptionsModel
+        textRole: "text"
+
+        currentIndex:
         {
-            id: comboBox
-            width: comboBoxWithOptions.controlWidth
-            height: comboBoxWithOptions.controlHeight
-            model: optionsModel
-            textRole: "text"
-
-            currentIndex:
+            var currentValue = propertyProvider.properties.value
+            var index = 0
+            for (var i = 0; i < model.count; i++)
             {
-                var currentValue = propertyProvider.properties.value
-                var index = 0
-                for (var i = 0; i < model.count; i++)
+                if (model.get(i).value == currentValue)
                 {
-                    if (model.get(i).value == currentValue)
-                    {
-                        index = i
-                        break
-                    }
+                    index = i
+                    break
                 }
-                return index
             }
+            return index
+        }
 
-            onActivated:
+        onActivated:
+        {
+            if(propertyProvider.properties.value != model.get(index).value)
             {
-                if(propertyProvider.properties.value != model.get(index).value)
-                {
-                    propertyProvider.setPropertyValue("value", model.get(index).value)
-                    forceUpdateOnChangeFunction()
-                    afterOnActivateFunction()
-                }
+                propertyProvider.setPropertyValue("value", model.get(index).value)
+                forceUpdateOnChangeFunction()
+                afterOnActivateFunction()
             }
         }
     }

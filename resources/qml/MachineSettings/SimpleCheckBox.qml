@@ -30,8 +30,9 @@ UM.TooltipArea
     property alias settingKey: propertyProvider.key
     property alias settingStoreIndex: propertyProvider.storeIndex
 
-    property alias labelText: checkBox.text
-    property alias labelFont: checkBox.font
+    property alias labelText: fieldLabel.text
+    property alias labelFont: fieldLabel.font
+    property alias labelWidth: fieldLabel.width
 
     property string tooltip: propertyProvider.properties.description
 
@@ -47,12 +48,24 @@ UM.TooltipArea
         watchedProperties: [ "value", "description" ]
     }
 
+    Label
+    {
+        id: fieldLabel
+        anchors.left: parent.left
+        anchors.verticalCenter: checkBox.verticalCenter
+        visible: text != ""
+        font: UM.Theme.getFont("medium")
+        renderType: Text.NativeRendering
+    }
+
     CuraCheckBox
     {
         id: checkBox
+        anchors.left: fieldLabel.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         checked: String(propertyProvider.properties.value).toLowerCase() != 'false'
         height: simpleCheckBox.controlHeight
-        font: UM.Theme.getFont("medium")
+        text: ""
         onClicked:
         {
             propertyProvider.setPropertyValue("value", checked)

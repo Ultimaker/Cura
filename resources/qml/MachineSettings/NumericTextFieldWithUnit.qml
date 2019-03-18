@@ -59,147 +59,144 @@ UM.TooltipArea
         watchedProperties: [ "value", "description" ]
     }
 
-    Row
+    Label
     {
-        id: itemRow
-        spacing: UM.Theme.getSize("default_margin").width
+        id: fieldLabel
+        anchors.left: parent.left
+        anchors.verticalCenter: textFieldWithUnit.verticalCenter
+        visible: text != ""
+        font: UM.Theme.getFont("medium")
+        renderType: Text.NativeRendering
+    }
+
+    TextField
+    {
+        id: textFieldWithUnit
+        anchors.left: fieldLabel.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+        width: numericTextFieldWithUnit.controlWidth
+        height: numericTextFieldWithUnit.controlHeight
+
+        // Background is a rounded-cornered box with filled color as state indication (normal, warning, error, etc.)
+        background: Rectangle
+        {
+            anchors.fill: parent
+            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
+            radius: UM.Theme.getSize("setting_control_radius").width
+
+            border.color:
+            {
+                if (!textFieldWithUnit.enabled)
+                {
+                    return UM.Theme.getColor("setting_control_disabled_border")
+                }
+                switch (propertyProvider.properties.validationState)
+                {
+                    case "ValidatorState.Exception":
+                    case "ValidatorState.MinimumError":
+                    case "ValidatorState.MaximumError":
+                        return UM.Theme.getColor("setting_validation_error")
+                    case "ValidatorState.MinimumWarning":
+                    case "ValidatorState.MaximumWarning":
+                        return UM.Theme.getColor("setting_validation_warning")
+                }
+                // Validation is OK.
+                if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
+                {
+                    return UM.Theme.getColor("setting_control_border_highlight")
+                }
+                return UM.Theme.getColor("setting_control_border")
+            }
+
+            color:
+            {
+                if (!textFieldWithUnit.enabled)
+                {
+                    return UM.Theme.getColor("setting_control_disabled")
+                }
+                switch (propertyProvider.properties.validationState)
+                {
+                    case "ValidatorState.Exception":
+                    case "ValidatorState.MinimumError":
+                    case "ValidatorState.MaximumError":
+                        return UM.Theme.getColor("setting_validation_error_background")
+                    case "ValidatorState.MinimumWarning":
+                    case "ValidatorState.MaximumWarning":
+                        return UM.Theme.getColor("setting_validation_warning_background")
+                    case "ValidatorState.Valid":
+                        return UM.Theme.getColor("setting_validation_ok")
+                    default:
+                        return UM.Theme.getColor("setting_control")
+                }
+            }
+        }
+
+        hoverEnabled: true
+        selectByMouse: true
+        font: UM.Theme.getFont("default")
+        renderType: Text.NativeRendering
+
+        // When the textbox gets focused by TAB, select all text
+        onActiveFocusChanged:
+        {
+            if (activeFocus && (focusReason == Qt.TabFocusReason || focusReason == Qt.BacktabFocusReason))
+            {
+                selectAll()
+            }
+        }
+
+        text:
+        {
+            const value = propertyProvider.properties.value
+            return value ? value : ""
+        }
+        validator: RegExpValidator { regExp: allowNegativeValue ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
+
+        onEditingFinished: editingFinishedFunction()
+
+        property var editingFinishedFunction: defaultEditingFinishedFunction
+
+        function defaultEditingFinishedFunction()
+        {
+            if (propertyProvider && text != propertyProvider.properties.value)
+            {
+                // For some properties like the extruder-compatible material diameter, they need to
+                // trigger many updates, such as the available materials, the current material may
+                // need to be switched, etc. Although setting the diameter can be done directly via
+                // the provider, all the updates that need to be triggered then need to depend on
+                // the metadata update, a signal that can be fired way too often. The update functions
+                // can have if-checks to filter out the irrelevant updates, but still it incurs unnecessary
+                // overhead.
+                // The ExtruderStack class has a dedicated function for this call "setCompatibleMaterialDiameter()",
+                // and it triggers the diameter update signals only when it is needed. Here it is optionally
+                // choose to use setCompatibleMaterialDiameter() or other more specific functions that
+                // are available.
+                if (setValueFunction !== null)
+                {
+                    setValueFunction(text)
+                }
+                else
+                {
+                    propertyProvider.setPropertyValue("value", text)
+                }
+                forceUpdateOnChangeFunction()
+                afterOnEditingFinished()
+            }
+        }
 
         Label
         {
-            id: fieldLabel
-            anchors.verticalCenter: textFieldWithUnit.verticalCenter
-            visible: text != ""
-            font: UM.Theme.getFont("medium")
+            id: unitLabel
+            anchors.right: parent.right
+            anchors.rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
+            anchors.verticalCenter: parent.verticalCenter
+            text: unitText
+            textFormat: Text.PlainText
+            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
-        }
-
-        TextField
-        {
-            id: textFieldWithUnit
-
-            width: numericTextFieldWithUnit.controlWidth
-            height: numericTextFieldWithUnit.controlHeight
-
-            // Background is a rounded-cornered box with filled color as state indication (normal, warning, error, etc.)
-            background: Rectangle
-            {
-                anchors.fill: parent
-                anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
-                radius: UM.Theme.getSize("setting_control_radius").width
-
-                border.color:
-                {
-                    if (!textFieldWithUnit.enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled_border")
-                    }
-                    switch (propertyProvider.properties.validationState)
-                    {
-                        case "ValidatorState.Exception":
-                        case "ValidatorState.MinimumError":
-                        case "ValidatorState.MaximumError":
-                            return UM.Theme.getColor("setting_validation_error")
-                        case "ValidatorState.MinimumWarning":
-                        case "ValidatorState.MaximumWarning":
-                            return UM.Theme.getColor("setting_validation_warning")
-                    }
-                    // Validation is OK.
-                    if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
-                    {
-                        return UM.Theme.getColor("setting_control_border_highlight")
-                    }
-                    return UM.Theme.getColor("setting_control_border")
-                }
-
-                color:
-                {
-                    if (!textFieldWithUnit.enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled")
-                    }
-                    switch (propertyProvider.properties.validationState)
-                    {
-                        case "ValidatorState.Exception":
-                        case "ValidatorState.MinimumError":
-                        case "ValidatorState.MaximumError":
-                            return UM.Theme.getColor("setting_validation_error_background")
-                        case "ValidatorState.MinimumWarning":
-                        case "ValidatorState.MaximumWarning":
-                            return UM.Theme.getColor("setting_validation_warning_background")
-                        case "ValidatorState.Valid":
-                            return UM.Theme.getColor("setting_validation_ok")
-                        default:
-                            return UM.Theme.getColor("setting_control")
-                    }
-                }
-            }
-
-            hoverEnabled: true
-            selectByMouse: true
+            color: UM.Theme.getColor("setting_unit")
             font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
-
-            // When the textbox gets focused by TAB, select all text
-            onActiveFocusChanged:
-            {
-                if (activeFocus && (focusReason == Qt.TabFocusReason || focusReason == Qt.BacktabFocusReason))
-                {
-                    selectAll()
-                }
-            }
-
-            text:
-            {
-                const value = propertyProvider.properties.value
-                return value ? value : ""
-            }
-            validator: RegExpValidator { regExp: allowNegativeValue ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
-
-            onEditingFinished: editingFinishedFunction()
-
-            property var editingFinishedFunction: defaultEditingFinishedFunction
-
-            function defaultEditingFinishedFunction()
-            {
-                if (propertyProvider && text != propertyProvider.properties.value)
-                {
-                    // For some properties like the extruder-compatible material diameter, they need to
-                    // trigger many updates, such as the available materials, the current material may
-                    // need to be switched, etc. Although setting the diameter can be done directly via
-                    // the provider, all the updates that need to be triggered then need to depend on
-                    // the metadata update, a signal that can be fired way too often. The update functions
-                    // can have if-checks to filter out the irrelevant updates, but still it incurs unnecessary
-                    // overhead.
-                    // The ExtruderStack class has a dedicated function for this call "setCompatibleMaterialDiameter()",
-                    // and it triggers the diameter update signals only when it is needed. Here it is optionally
-                    // choose to use setCompatibleMaterialDiameter() or other more specific functions that
-                    // are available.
-                    if (setValueFunction !== null)
-                    {
-                        setValueFunction(text)
-                    }
-                    else
-                    {
-                        propertyProvider.setPropertyValue("value", text)
-                    }
-                    forceUpdateOnChangeFunction()
-                    afterOnEditingFinished()
-                }
-            }
-
-            Label
-            {
-                id: unitLabel
-                anchors.right: parent.right
-                anchors.rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
-                anchors.verticalCenter: parent.verticalCenter
-                text: unitText
-                textFormat: Text.PlainText
-                verticalAlignment: Text.AlignVCenter
-                renderType: Text.NativeRendering
-                color: UM.Theme.getColor("setting_unit")
-                font: UM.Theme.getFont("default")
-            }
         }
     }
 }
