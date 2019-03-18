@@ -19,15 +19,24 @@ Row
     id: base
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property int labelWidth: 100
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    anchors.margins: UM.Theme.getSize("default_margin").width
+
+    property int labelWidth: 110
     property var labelFont: UM.Theme.getFont("medium")
 
+    spacing: 10
+
+    // =======================================
     // Left-side column for "Printer Settings"
+    // =======================================
     Column
     {
         spacing: 10
 
-        Label
+        Label   // Title Label
         {
             text: catalog.i18nc("@title:label", "Printer Settings")
             font: UM.Theme.getFont("medium_bold")
@@ -119,18 +128,87 @@ Row
         }
     }
 
+    // =======================================
     // Right-side column for "Printhead Settings"
+    // =======================================
     Column
     {
         spacing: 10
 
-        Label
+        Label   // Title Label
         {
             text: catalog.i18nc("@title:label", "Printhead Settings")
             font: UM.Theme.getFont("medium_bold")
         }
 
+        PrintHeadMinMaxTextField  // "X min"
+        {
+            id: machineXMinField
 
+            settingStoreIndex: 1 // TODO
 
+            labelText: catalog.i18nc("@label", "X min")
+            labelFont: base.labelFont
+            labelWidth: base.labelWidth
+            unitText: catalog.i18nc("@label", "mm")
+
+            axisName: "x"
+            axisMinOrMax: "min"
+
+            // TODO: add forceUpdateOnChangeFunction:
+        }
+
+        PrintHeadMinMaxTextField  // "Y min"
+        {
+            id: machineYMinField
+
+            settingStoreIndex: 1 // TODO
+
+            labelText: catalog.i18nc("@label", "Y min")
+            labelFont: base.labelFont
+            labelWidth: base.labelWidth
+            unitText: catalog.i18nc("@label", "mm")
+
+            axisName: "y"
+            axisMinOrMax: "min"
+
+            // TODO: add forceUpdateOnChangeFunction:
+        }
+
+        PrintHeadMinMaxTextField  // "X max"
+        {
+            id: machineXMaxField
+
+            settingStoreIndex: 1 // TODO
+
+            labelText: catalog.i18nc("@label", "X max")
+            labelFont: base.labelFont
+            labelWidth: base.labelWidth
+            unitText: catalog.i18nc("@label", "mm")
+
+            axisName: "x"
+            axisMinOrMax: "max"
+
+            // TODO: add forceUpdateOnChangeFunction:
+        }
+
+        PrintHeadMinMaxTextField  // "Y max"
+        {
+            id: machineYMaxField
+
+            containerStackId: Cura.MachineManager.activeMachineId
+            settingKey: "machine_head_with_fans_polygon"
+            settingStoreIndex: 1 // TODO
+
+            labelText: catalog.i18nc("@label", "Y max")
+            labelFont: base.labelFont
+            labelWidth: base.labelWidth
+            unitText: catalog.i18nc("@label", "mm")
+
+            axisName: "y"
+            axisMinOrMax: "max"
+
+            // TODO: add forceUpdateOnChangeFunction:
+        }
     }
 }
