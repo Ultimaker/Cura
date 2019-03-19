@@ -181,7 +181,7 @@ UM.TooltipArea
                     propertyProvider.setPropertyValue("value", text)
                 }
                 forceUpdateOnChangeFunction()
-                afterOnEditingFinished()
+                afterOnEditingFinishedFunction()
             }
         }
 

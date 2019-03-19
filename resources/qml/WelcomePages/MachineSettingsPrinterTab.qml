@@ -30,6 +30,10 @@ Item
     property int columnSpacing: 3
     property int propertyStoreIndex: 5  // definition_changes
 
+    property string machineStackId: Cura.MachineManager.activeMachineId
+
+    property var forceUpdateFunction: CuraApplication.getMachineSettingsManager().forceUpdate
+
     Item
     {
         id: upperBlock
@@ -61,7 +65,7 @@ Item
             NumericTextFieldWithUnit  // "X (Width)"
             {
                 id: machineXWidthField
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_width"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "X (Width)")
@@ -69,13 +73,13 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             NumericTextFieldWithUnit  // "Y (Depth)"
             {
                 id: machineYDepthField
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_depth"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Y (Depth)")
@@ -83,13 +87,13 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             NumericTextFieldWithUnit  // "Z (Height)"
             {
                 id: machineZHeightField
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_height"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Z (Height)")
@@ -97,58 +101,61 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             ComboBoxWithOptions  // "Build plate shape"
             {
                 id: buildPlateShapeComboBox
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_shape"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Build plate shape")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             SimpleCheckBox  // "Origin at center"
             {
                 id: originAtCenterCheckBox
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_center_is_zero"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Origin at center")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             SimpleCheckBox  // "Heated bed"
             {
                 id: heatedBedCheckBox
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_heated_bed"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Heated bed")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             ComboBoxWithOptions  // "G-code flavor"
             {
                 id: gcodeFlavorComboBox
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_gcode_flavor"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "G-code flavor")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
-                // TODO: add forceUpdateOnChangeFunction:
-                // TODO: add afterOnActivate: manager.updateHasMaterialsMetadata
+                forceUpdateOnChangeFunction: forceUpdateFunction
+                // FIXME(Lipu): better document this.
+                // This has something to do with UM2 and UM2+ regarding "has_material" and the gcode flavor settings.
+                // I don't remember exactly what.
+                afterOnEditingFinishedFunction: CuraApplication.getMachineSettingsManager().updateHasMaterialsMetadata
             }
         }
 
@@ -185,7 +192,7 @@ Item
                 axisName: "x"
                 axisMinOrMax: "min"
 
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             PrintHeadMinMaxTextField  // "Y min"
@@ -203,7 +210,7 @@ Item
                 axisName: "y"
                 axisMinOrMax: "min"
 
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             PrintHeadMinMaxTextField  // "X max"
@@ -221,14 +228,14 @@ Item
                 axisName: "x"
                 axisMinOrMax: "max"
 
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             PrintHeadMinMaxTextField  // "Y max"
             {
                 id: machineYMaxField
 
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_head_with_fans_polygon"
                 settingStoreIndex: propertyStoreIndex
 
@@ -241,13 +248,13 @@ Item
                 axisName: "y"
                 axisMinOrMax: "max"
 
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             NumericTextFieldWithUnit  // "Gantry Height"
             {
                 id: machineGantryHeightField
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "gantry_height"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Gantry Height")
@@ -255,21 +262,24 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             ComboBoxWithOptions  // "Number of Extruders"
             {
                 id: numberOfExtrudersComboBox
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: machineStackId
                 settingKey: "machine_extruder_count"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Number of Extruders")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
-                // TODO: add forceUpdateOnChangeFunction:
-                // TODO: add afterOnActivate: manager.updateHasMaterialsMetadata
+                forceUpdateOnChangeFunction: forceUpdateFunction
+                // FIXME(Lipu): better document this.
+                // This has something to do with UM2 and UM2+ regarding "has_material" and the gcode flavor settings.
+                // I don't remember exactly what.
+                afterOnEditingFinishedFunction: CuraApplication.getMachineSettingsManager().updateHasMaterialsMetadata
 
                 optionModel: ListModel
                 {
@@ -305,7 +315,7 @@ Item
             width: base.columnWidth - UM.Theme.getSize("default_margin").width
 
             labelText: catalog.i18nc("@title:label", "Start G-code")
-            containerStackId: Cura.MachineManager.activeMachineId
+            containerStackId: machineStackId
             settingKey: "machine_start_gcode"
             settingStoreIndex: propertyStoreIndex
         }
@@ -319,7 +329,7 @@ Item
             width: base.columnWidth - UM.Theme.getSize("default_margin").width
 
             labelText: catalog.i18nc("@title:label", "End G-code")
-            containerStackId: Cura.MachineManager.activeMachineId
+            containerStackId: machineStackId
             settingKey: "machine_end_gcode"
             settingStoreIndex: propertyStoreIndex
         }

@@ -26,11 +26,31 @@ Item
 
     property var extrudersModel: Cura.ExtrudersModel {}
 
-    onVisibleChanged:
+    // If we create a CuraTabButton for "Printer" and use Repeater for extruders, for some reason, once the component
+    // finishes it will automatically change "currentIndex = 1", and it is VERY difficult to change "currentIndex = 0"
+    // after that. Using a model and a Repeater to create both "Printer" and extruder CuraTabButtons seem to solve this
+    // problem.
+    Connections
     {
-        if (visible)
+        target: extrudersModel
+        onItemsChanged: tabNameModel.update()
+    }
+
+    ListModel
+    {
+        id: tabNameModel
+
+        Component.onCompleted: update()
+
+        function update()
         {
-            tabBar.currentIndex = 0
+            clear()
+            append({ name: catalog.i18nc("@title:tab", "Printer") })
+            for (var i = 0; i < extrudersModel.count; i++)
+            {
+                const m = extrudersModel.getItem(i)
+                append({ name: m.name })
+            }
         }
     }
 
@@ -46,14 +66,9 @@ Item
             id: tabBar
             width: parent.width
 
-            CuraTabButton
-            {
-                text: catalog.i18nc("@title:tab", "Printer")
-            }
-
             Repeater
             {
-                model: extrudersModel
+                model: tabNameModel
                 delegate: CuraTabButton
                 {
                     text: model.name
@@ -83,6 +98,7 @@ Item
                 delegate: MachineSettingsExtruderTab
                 {
                     id: discoverTab
+                    extruderPosition: model.index
                     extruderStackId: model.id
                 }
             }

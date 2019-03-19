@@ -39,8 +39,8 @@ UM.TooltipArea
     property string tooltipText: propertyProvider.properties.description
 
     // callback functions
-    property var afterOnActivateFunction: dummy_func
     property var forceUpdateOnChangeFunction: dummy_func
+    property var afterOnEditingFinishedFunction: dummy_func
 
     // a dummy function for default property values
     function dummy_func() {}
@@ -64,8 +64,10 @@ UM.TooltipArea
     ListModel
     {
         id: defaultOptionsModel
-        Component.onCompleted:
+
+        function updateModel()
         {
+            clear()
             // Options come in as a string-representation of an OrderedDict
             var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/)
             if (options)
@@ -74,10 +76,19 @@ UM.TooltipArea
                 for (var i = 0; i < options.length; i++)
                 {
                     var option = options[i].substring(1, options[i].length - 1).split("', '")
-                    defaultOptionsModel.append({text: option[1], value: option[0]})
+                    append({text: option[1], value: option[0]})
                 }
             }
         }
+
+        Component.onCompleted: updateModel()
+    }
+
+    // Remake the model when the model is bound to a different container stack
+    Connections
+    {
+        target: propertyProvider
+        onContainerStackChanged: defaultOptionsModel.updateModel()
     }
 
     CuraComboBox
@@ -107,11 +118,11 @@ UM.TooltipArea
 
         onActivated:
         {
-            if(propertyProvider.properties.value != model.get(index).value)
+            if (propertyProvider.properties.value != model.get(index).value)
             {
                 propertyProvider.setPropertyValue("value", model.get(index).value)
                 forceUpdateOnChangeFunction()
-                afterOnActivateFunction()
+                afterOnEditingFinishedFunction()
             }
         }
     }

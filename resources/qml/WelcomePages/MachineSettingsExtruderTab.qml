@@ -23,8 +23,6 @@ Item
     anchors.right: parent.right
     anchors.top: parent.top
 
-    property string extruderStackId: ""
-
     property int labelWidth: 180
     property int controlWidth: UM.Theme.getSize("setting_control").width * 3 / 4
     property var labelFont: UM.Theme.getFont("medium")
@@ -32,6 +30,15 @@ Item
     property int columnWidth: (parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2
     property int columnSpacing: 3
     property int propertyStoreIndex: 5  // definition_changes
+
+    property string extruderStackId: ""
+    property int extruderPosition: 0
+    property var forceUpdateFunction: CuraApplication.getMachineSettingsManager().forceUpdate
+
+    function updateMaterialDiameter()
+    {
+        CuraApplication.getMachineSettingsManager().updateMaterialForDiameter(extruderPosition)
+    }
 
     Item
     {
@@ -73,7 +80,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             NumericTextFieldWithUnit  // "Compatible material diameter"
@@ -87,7 +94,9 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
+                // Other modules won't automatically respond after the user changes the value, so we need to force it.
+                afterOnEditingFinishedFunction: updateMaterialDiameter
             }
 
             NumericTextFieldWithUnit  // "Nozzle offset X"
@@ -101,7 +110,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             NumericTextFieldWithUnit  // "Nozzle offset Y"
@@ -115,7 +124,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             NumericTextFieldWithUnit  // "Cooling Fan Number"
@@ -129,7 +138,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: ""
-                // TODO: add forceUpdateOnChangeFunction:
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
         }
     }

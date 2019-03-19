@@ -60,6 +60,7 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.CuraSceneController import CuraSceneController
 
 from cura.UI.WelcomePagesModel import WelcomePagesModel
+from cura.UI.MachineSettingsManager import MachineSettingsManager
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -212,8 +213,9 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
-        self._discovered_printer_model = DiscoveredPrintersModel(self)
+        self._machine_settings_manager = MachineSettingsManager(self)
 
+        self._discovered_printer_model = DiscoveredPrintersModel(self)
         self._welcome_pages_model = WelcomePagesModel(self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -861,6 +863,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
         return self._welcome_pages_model
+
+    @pyqtSlot(result = QObject)
+    def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
+        return self._machine_settings_manager
 
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
