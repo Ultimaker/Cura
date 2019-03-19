@@ -37,8 +37,8 @@ i18n_catalog = i18nCatalog("cura")
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
 @signalemitter
 class UM3OutputDevicePlugin(OutputDevicePlugin):
-    addDeviceSignal = Signal()
-    removeDeviceSignal = Signal()
+    addDeviceSignal = Signal()     # Called '...Signal' to avoid confusion with function-names.
+    removeDeviceSignal = Signal()  # Ditto ^^^.
     discoveredDevicesChanged = Signal()
     cloudFlowIsPossible = Signal()
 
@@ -187,7 +187,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._zero_conf.close()
         self._cloud_output_device_manager.stop()
 
-    def canAddManualDevice(self, address: str) -> ManualDeviceAdditionAttempt:
+    def canAddManualDevice(self, address: str = "") -> ManualDeviceAdditionAttempt:
         # This plugin should always be the fallback option (at least try it):
         return ManualDeviceAdditionAttempt.POSSIBLE
 
