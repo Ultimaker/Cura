@@ -5,8 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 
 import UM 1.3 as UM
-
-import "../Widgets" as Widgets
+import Cura 1.1 as Cura
 
 
 SettingItem
@@ -14,7 +13,7 @@ SettingItem
     id: base
     property var focusItem: control
 
-    contents: Widgets.CuraComboBox
+    contents: Cura.ComboBox
     {
         id: control
 

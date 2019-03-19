@@ -8,8 +8,6 @@ import QtGraphicalEffects 1.0 // For the dropshadow
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../Widgets"
-
 
 Item
 {
@@ -117,7 +115,7 @@ Item
         z: panelBackground.z - 1
     }
 
-    CuraProgressBar
+    Cura.ProgressBar
     {
         id: progressBar
 

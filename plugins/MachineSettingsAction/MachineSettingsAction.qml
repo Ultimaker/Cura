@@ -21,9 +21,9 @@ Cura.MachineAction
 
     property var extrudersModel: Cura.ExtrudersModel {}
 
-    // If we create a CuraTabButton for "Printer" and use Repeater for extruders, for some reason, once the component
+    // If we create a TabButton for "Printer" and use Repeater for extruders, for some reason, once the component
     // finishes it will automatically change "currentIndex = 1", and it is VERY difficult to change "currentIndex = 0"
-    // after that. Using a model and a Repeater to create both "Printer" and extruder CuraTabButtons seem to solve this
+    // after that. Using a model and a Repeater to create both "Printer" and extruder TabButtons seem to solve this
     // problem.
     Connections
     {
@@ -64,7 +64,7 @@ Cura.MachineAction
             Repeater
             {
                 model: tabNameModel
-                delegate: Cura.CuraTabButton
+                delegate: Cura.TabButton
                 {
                     text: model.name
                 }

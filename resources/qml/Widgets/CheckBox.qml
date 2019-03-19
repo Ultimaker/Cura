@@ -57,7 +57,7 @@ CheckBox
             width: Math.round(parent.width / 2.5)
             height: Math.round(parent.height / 2.5)
             sourceSize.height: width
-            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
             source: UM.Theme.getIcon("check")
             opacity: control.checked ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100; } }

@@ -58,8 +58,7 @@ Item
     {
         anchors.top: titleLabel.bottom
         anchors.bottom: nextButton.top
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        anchors.margins: UM.Theme.getSize("default_margin").width
         anchors.left: parent.left
         anchors.right: parent.right
 

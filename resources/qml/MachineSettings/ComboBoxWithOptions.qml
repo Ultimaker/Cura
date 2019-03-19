@@ -92,7 +92,7 @@ UM.TooltipArea
         onContainerStackChanged: defaultOptionsModel.updateModel()
     }
 
-    CuraComboBox
+    Cura.ComboBox
     {
         id: comboBox
         anchors.left: fieldLabel.right

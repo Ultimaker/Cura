@@ -8,8 +8,6 @@ import QtQuick.Layouts 1.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../Widgets"
-
 
 //
 // CheckBox widget for the on/off or true/false settings in the Machine Settings Dialog.
@@ -58,7 +56,7 @@ UM.TooltipArea
         renderType: Text.NativeRendering
     }
 
-    CuraCheckBox
+    Cura.CheckBox
     {
         id: checkBox
         anchors.left: fieldLabel.right
