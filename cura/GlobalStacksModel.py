@@ -1,14 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from PyQt5.QtCore import pyqtProperty, Qt, QTimer
 
 from UM.Qt.ListModel import ListModel
-
-from PyQt5.QtCore import pyqtProperty, Qt, QTimer
+from UM.i18n import i18nCatalog
 
 from cura.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
-
 from cura.Settings.GlobalStack import GlobalStack
 
 
@@ -18,13 +17,18 @@ class GlobalStacksModel(ListModel):
     HasRemoteConnectionRole = Qt.UserRole + 3
     ConnectionTypeRole = Qt.UserRole + 4
     MetaDataRole = Qt.UserRole + 5
+    SectionNameRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
 
     def __init__(self, parent = None):
         super().__init__(parent)
+
+        self._catalog = i18nCatalog("cura")
+
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.HasRemoteConnectionRole, "hasRemoteConnection")
         self.addRoleName(self.MetaDataRole, "metadata")
+        self.addRoleName(self.SectionNameRole, "sectionName")
         self._container_stacks = []
 
         self._change_timer = QTimer()
@@ -62,9 +66,13 @@ class GlobalStacksModel(ListModel):
             if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
                 continue
 
+            section_name = "Network enabled printers" if has_remote_connection else "Local printers"
+            section_name = self._catalog.i18nc("@info:title", section_name)
+
             items.append({"name": container_stack.getMetaDataEntry("group_name", container_stack.getName()),
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
-                          "metadata": container_stack.getMetaData().copy()})
+                          "metadata": container_stack.getMetaData().copy(),
+                          "sectionName": section_name})
         items.sort(key=lambda i: not i["hasRemoteConnection"])
         self.setItems(items)
