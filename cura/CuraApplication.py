@@ -78,7 +78,6 @@ from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
 from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
 from cura.Machines.Models.QualityManagementModel import QualityManagementModel
 from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
-from cura.Machines.Models.MachineManagementModel import MachineManagementModel
 
 from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
@@ -1015,7 +1014,6 @@ class CuraApplication(QtApplication):
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
-        qmlRegisterType(MachineManagementModel, "Cura", 1, 0, "MachineManagementModel")
 
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
 
