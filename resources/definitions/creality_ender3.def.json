@@ -51,16 +51,13 @@
             "default_value": 500
         },
         "acceleration_travel": {
-            "default_value": 500
+            "value": 500
         },
         "jerk_enabled": {
             "default_value": true
         },
         "jerk_travel": {
-            "default_value": 20
-        },
-        "layer_height": {
-            "default_value": 0.10
+            "value": 20
         },
         "layer_height_0": {
             "default_value": 0.2
