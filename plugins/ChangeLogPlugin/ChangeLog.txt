@@ -55,33 +55,33 @@ Previous versions stopped silent installation because the Arduino drivers packag
 - Ender-3. Updates to the printer definition (Contributed by stelgenhof).
 
 *Bug fixes
-- Per extruder slicing error: Fixed an issue which prevented slicing when per extruder settings were changed with a disabled extruder.
-- Non-network connected printers: Improved handling of non-Ultimaker network connected printers within Ultimaker Cura. Contributed by fieldOfView
-- Unnecessary retraction of unused extruder: Fixed an issue where printing with the second extruder only would retract material unnecessarily.
-- Outdated API: Fixed an issue where outdated plugins remained partially activated.
-- Retraction minimum travel combing: Fixed an issue where combing was not working when tweaking Retraction minimum travel.
-- Collision zone: Fixed an oversized print head collision zone when using print one-at-a-time mode.
-- G92 E0 commands: Due to inaccuracy of floats in very large prints, the position is reset again several times using "G92 E0" commands.
-- Update checker: Improved update checker text for better readability.
-- 3MF specification: Updated the implementation of 3MF in Ultimaker Cura for better consistency with 3MF consortium specifications.
-- TPU reliability: Removed all final and initial print temperature offsets, and increased first layer print temperature to fix under-extrusion problems.
-- Undesired panning: Holding shift and rotating a model on its axis for fine-grained rotations would sometimes pan the camera. This has now been fixed.
-- File type association: Added file type associations for .gcode and .g extensions.
-- Experimental profiles: Marked some more profiles as experimental.
-- PLA mislabeling: Fixed an issue where duplicated PLA with a different label would replace the original PLA entry.
-- Creating new materials: Updated which profile new materials are based when you create a brand new material. Contributed by fieldOfView.
-- Startup error messages: Fixed adhesion type errors on startup.
-- Windows systray icon: Fixed an issue where system tray icons would remain when Ultimaker Cura is closed until mouse-over.
-- Extruder Start/End G-code tooltip: Added extra tooltip to give extra information about start/end g-codes.
-- Account management: Fixed an issue where clicking 'Create Account' would go to login instead of sign-up.
-- Legacy profile importer: Fixed an issue where the legacy profile importer would generate corrupt profiles.
-- Version update crash: Fixed an issue where Ultimaker Cura could crash on start-up during the upgrading of your configuration to the newest version for some people.
-- Marketplace plugin crash: Fixed an issue where Ultimaker Cura would crash after downloading plugin from Marketplace.
-- Version upgrade checker: Ignores plugins folder when checking files for version upgrade. Start-up is now much faster if you've installed a lot of plugins or have used many versions of Ultimaker Cura.
-- Firmware checker no internet: Fixed an issue where the firmware checker shows up when there is no internet connection.
-- Setting visibility: Fixed an issue where settings could not be made visible again after hiding all settings.
-- CC core upgrade: Fixed false configuration error for CC Red 0.6 core after a version upgrade.
-- Automatic extruder disable: Fixed an issue where a warning is issued when selecting a printer with no material loaded. The extruder will now be disabled instead.
+- Fixed an issue which prevented slicing when per extruder settings were changed with a disabled extruder.
+- Improved handling of non-Ultimaker network connected printers within Ultimaker Cura. Contributed by fieldOfView
+- Fixed an issue where printing with the second extruder only would retract material unnecessarily.
+- Fixed an issue where outdated plugins remained partially activated.
+- Fixed an issue where combing was not working when tweaking Retraction minimum travel.
+- Fixed an oversized print head collision zone when using print one-at-a-time mode.
+- Due to inaccuracy of floats in very large prints, the position is reset again several times using "G92 E0" commands.
+- Improved update checker text for better readability.
+- Updated the implementation of 3MF in Ultimaker Cura for better consistency with 3MF consortium specifications.
+- Removed all final and initial print temperature offsets, and increased first layer print temperature to fix under-extrusion problems.
+- Holding shift and rotating a model on its axis for fine-grained rotations would sometimes pan the camera. This has now been fixed.
+- Added file type associations for .gcode and .g extensions.
+- Marked some more profiles as experimental.
+- Fixed an issue where duplicated PLA with a different label would replace the original PLA entry.
+- Updated which profile new materials are based when you create a brand new material. Contributed by fieldOfView.
+- Fixed adhesion type errors on startup.
+- Fixed an issue where system tray icons would remain when Ultimaker Cura is closed until mouse-over.
+- Added extra tooltip to give extra information about start/end g-codes.
+- Fixed an issue where clicking 'Create Account' would go to login instead of sign-up.
+- Fixed an issue where the legacy profile importer would generate corrupt profiles.
+- Fixed an issue where Ultimaker Cura could crash on start-up during the upgrading of your configuration to the newest version for some people.
+- Fixed an issue where Ultimaker Cura would crash after downloading plugin from Marketplace.
+- Ignores plugins folder when checking files for version upgrade. Start-up is now much faster if you've installed a lot of plugins or have used many versions of Ultimaker Cura.
+- Fixed an issue where the firmware checker shows up when there is no internet connection.
+- Fixed an issue where settings could not be made visible again after hiding all settings.
+- Fixed false configuration error for CC Red 0.6 core after a version upgrade.
+- Fixed an issue where a warning is issued when selecting a printer with no material loaded. The extruder will now be disabled instead.
 
 [3.6.0]
 *Gyroid infill
