@@ -928,11 +928,6 @@ msgctxt "@action"
 msgid "Select upgrades"
 msgstr "アップグレードを選択する"
 
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:14
-msgctxt "@action"
-msgid "Checkup"
-msgstr "チェックアップ"
-
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:21
 msgctxt "@action"
 msgid "Level build plate"
@@ -2972,99 +2967,6 @@ msgstr "このUltimaker Originalに施されたアップグレートを選択す
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "ヒーティッドビルドプレート（オフィシャルキットまたはセルフビルド）"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:27
-msgctxt "@title"
-msgid "Check Printer"
-msgstr "プリンターチェック"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
-msgctxt "@label"
-msgid "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
-msgstr "お持ちのUltimkaerにてサニティーチェックを数回行うことは推奨します。もしプリンター機能に問題ない場合はこの項目をスキップしてください"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
-msgctxt "@action:button"
-msgid "Start Printer Check"
-msgstr "プリンターチェックを開始する"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:80
-msgctxt "@label"
-msgid "Connection: "
-msgstr "コネクション: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Connected"
-msgstr "接続済"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Not connected"
-msgstr "プリンターにつながっていません"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:99
-msgctxt "@label"
-msgid "Min endstop X: "
-msgstr "エンドストップ X: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-msgctxt "@info:status"
-msgid "Works"
-msgstr "作品"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:173
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Not checked"
-msgstr "チェックされていません"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:120
-msgctxt "@label"
-msgid "Min endstop Y: "
-msgstr "エンドストップ Y: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:141
-msgctxt "@label"
-msgid "Min endstop Z: "
-msgstr "エンドストップ Z: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:163
-msgctxt "@label"
-msgid "Nozzle temperature check: "
-msgstr "ノズル温度チェック: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Stop Heating"
-msgstr "ヒーティングストップ"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Start Heating"
-msgstr "ヒーティング開始"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:223
-msgctxt "@label"
-msgid "Build plate temperature check:"
-msgstr "ビルドプレートの温度チェック:"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Checked"
-msgstr "チェック済"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:284
-msgctxt "@label"
-msgid "Everything is in order! You're done with your CheckUp."
-msgstr "すべてに異常はありません。チェックアップを終了しました。"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"

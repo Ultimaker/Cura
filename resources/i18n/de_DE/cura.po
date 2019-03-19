@@ -927,11 +927,6 @@ msgctxt "@action"
 msgid "Select upgrades"
 msgstr "Upgrades wählen"
 
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:14
-msgctxt "@action"
-msgid "Checkup"
-msgstr "Check-up"
-
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:21
 msgctxt "@action"
 msgid "Level build plate"
@@ -2973,99 +2968,6 @@ msgstr "Wählen Sie bitte alle Upgrades für dieses Ultimaker-Original"
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Beheizte Druckplatte (offizielles Kit oder Eigenbau)"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:27
-msgctxt "@title"
-msgid "Check Printer"
-msgstr "Drucker prüfen"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
-msgctxt "@label"
-msgid "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
-msgstr "Sie sollten einige Sanity Checks bei Ihrem Ultimaker durchführen. Sie können diesen Schritt überspringen, wenn Sie wissen, dass Ihr Gerät funktionsfähig ist"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
-msgctxt "@action:button"
-msgid "Start Printer Check"
-msgstr "Überprüfung des Druckers starten"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:80
-msgctxt "@label"
-msgid "Connection: "
-msgstr "Verbindung: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Connected"
-msgstr "Verbunden"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Not connected"
-msgstr "Nicht verbunden"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:99
-msgctxt "@label"
-msgid "Min endstop X: "
-msgstr "Min. Endstopp X: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-msgctxt "@info:status"
-msgid "Works"
-msgstr "Funktionsfähig"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:173
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Not checked"
-msgstr "Nicht überprüft"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:120
-msgctxt "@label"
-msgid "Min endstop Y: "
-msgstr "Min. Endstopp Y: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:141
-msgctxt "@label"
-msgid "Min endstop Z: "
-msgstr "Min. Endstopp Z: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:163
-msgctxt "@label"
-msgid "Nozzle temperature check: "
-msgstr "Temperaturprüfung der Düse: "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Stop Heating"
-msgstr "Aufheizen stoppen"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Start Heating"
-msgstr "Aufheizen starten"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:223
-msgctxt "@label"
-msgid "Build plate temperature check:"
-msgstr "Temperaturprüfung der Druckplatte:"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Checked"
-msgstr "Geprüft"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:284
-msgctxt "@label"
-msgid "Everything is in order! You're done with your CheckUp."
-msgstr "Alles ist in Ordnung! Der Check-up ist abgeschlossen."
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"
