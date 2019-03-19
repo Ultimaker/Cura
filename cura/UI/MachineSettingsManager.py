@@ -25,9 +25,15 @@ class MachineSettingsManager(QObject):
     # an extruder's compatible material diameter. This ensures that after the modification, changes can be notified
     # and updated right away.
     @pyqtSlot(int)
-    def updateMaterialForDiameter(self, extruder_position: int):
+    def updateMaterialForDiameter(self, extruder_position: int) -> None:
         # Updates the material container to a material that matches the material diameter set for the printer
         self._application.getMachineManager().updateMaterialWithVariant(str(extruder_position))
+
+    @pyqtSlot(int)
+    def setMachineExtruderCount(self, extruder_count: int) -> None:
+        # Note: this method was in this class before, but since it's quite generic and other plugins also need it
+        # it was moved to the machine manager instead. Now this method just calls the machine manager.
+        self._application.getMachineManager().setActiveMachineExtruderCount(extruder_count)
 
     # FIXME(Lipu): Better document what this function does, especially the fuzzy gcode flavor and has_materials logic
     #              regarding UM2 and UM2+
@@ -37,7 +43,7 @@ class MachineSettingsManager(QObject):
         machine_manager = self._application.getMachineManager()
         material_manager = self._application.getMaterialManager()
 
-        global_stack = material_manager.activeMachine
+        global_stack = machine_manager.activeMachine
 
         definition = global_stack.definition
         if definition.getProperty("machine_gcode_flavor", "value") != "UltiGCode" or definition.getMetaDataEntry(

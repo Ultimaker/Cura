@@ -41,6 +41,7 @@ UM.TooltipArea
     // callback functions
     property var forceUpdateOnChangeFunction: dummy_func
     property var afterOnEditingFinishedFunction: dummy_func
+    property var setValueFunction: null
 
     // a dummy function for default property values
     function dummy_func() {}
@@ -76,7 +77,7 @@ UM.TooltipArea
                 for (var i = 0; i < options.length; i++)
                 {
                     var option = options[i].substring(1, options[i].length - 1).split("', '")
-                    append({text: option[1], value: option[0]})
+                    append({ text: option[1], value: option[0] })
                 }
             }
         }
@@ -118,9 +119,17 @@ UM.TooltipArea
 
         onActivated:
         {
-            if (propertyProvider.properties.value != model.get(index).value)
+            var newValue = model.get(index).value
+            if (propertyProvider.properties.value != newValue)
             {
-                propertyProvider.setPropertyValue("value", model.get(index).value)
+                if (setValueFunction !== null)
+                {
+                    setValueFunction(newValue)
+                }
+                else
+                {
+                    propertyProvider.setPropertyValue("value", newValue)
+                }
                 forceUpdateOnChangeFunction()
                 afterOnEditingFinishedFunction()
             }

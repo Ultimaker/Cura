@@ -753,8 +753,6 @@ class CuraApplication(QtApplication):
         # Initialize setting visibility presets model.
         self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
-        self._first_start_machine_actions_model.initialize()
-
         # Initialize Cura API
         self._cura_API.initialize()
 

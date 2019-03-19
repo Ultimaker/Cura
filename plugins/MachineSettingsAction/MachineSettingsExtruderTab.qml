@@ -7,13 +7,10 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../MachineSettings"
-
 
 //
 // This component contains the content for the "Welcome" page of the welcome on-boarding process.
 //
-
 Item
 {
     id: base
@@ -68,7 +65,7 @@ Item
                 renderType: Text.NativeRendering
             }
 
-            NumericTextFieldWithUnit  // "Nozzle size"
+            Cura.NumericTextFieldWithUnit  // "Nozzle size"
             {
                 id: extruderNozzleSizeField
                 visible: !Cura.MachineManager.hasVariants
@@ -83,7 +80,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            NumericTextFieldWithUnit  // "Compatible material diameter"
+            Cura.NumericTextFieldWithUnit  // "Compatible material diameter"
             {
                 id: extruderCompatibleMaterialDiameterField
                 containerStackId: base.extruderStackId
@@ -99,7 +96,7 @@ Item
                 afterOnEditingFinishedFunction: updateMaterialDiameter
             }
 
-            NumericTextFieldWithUnit  // "Nozzle offset X"
+            Cura.NumericTextFieldWithUnit  // "Nozzle offset X"
             {
                 id: extruderNozzleOffsetXField
                 containerStackId: base.extruderStackId
@@ -113,7 +110,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            NumericTextFieldWithUnit  // "Nozzle offset Y"
+            Cura.NumericTextFieldWithUnit  // "Nozzle offset Y"
             {
                 id: extruderNozzleOffsetYField
                 containerStackId: base.extruderStackId
@@ -127,7 +124,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            NumericTextFieldWithUnit  // "Cooling Fan Number"
+            Cura.NumericTextFieldWithUnit  // "Cooling Fan Number"
             {
                 id: extruderNozzleCoolingFanNumberField
                 containerStackId: base.extruderStackId
@@ -152,7 +149,7 @@ Item
         anchors.right: parent.right
         anchors.margins: UM.Theme.getSize("default_margin").width
 
-        GcodeTextArea   // "Extruder Start G-code"
+        Cura.GcodeTextArea   // "Extruder Start G-code"
         {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -166,7 +163,7 @@ Item
             settingStoreIndex: propertyStoreIndex
         }
 
-        GcodeTextArea   // "Extruder End G-code"
+        Cura.GcodeTextArea   // "Extruder End G-code"
         {
             anchors.top: parent.top
             anchors.bottom: parent.bottom

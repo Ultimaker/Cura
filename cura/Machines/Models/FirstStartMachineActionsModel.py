@@ -27,7 +27,9 @@ class FirstStartMachineActionsModel(ListModel):
         from cura.CuraApplication import CuraApplication
         self._application = CuraApplication.getInstance()
 
-    def initialize(self) -> None:
+        self._application.initializationFinished.connect(self._initialize)
+
+    def _initialize(self) -> None:
         self._application.getMachineManager().globalContainerChanged.connect(self._update)
         self._update()
 

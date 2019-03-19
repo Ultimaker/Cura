@@ -7,8 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../MachineSettings"
-
 
 //
 // This the content in the "Printer" tab in the Machine Settings dialog.
@@ -62,7 +60,7 @@ Item
                 renderType: Text.NativeRendering
             }
 
-            NumericTextFieldWithUnit  // "X (Width)"
+            Cura.NumericTextFieldWithUnit  // "X (Width)"
             {
                 id: machineXWidthField
                 containerStackId: machineStackId
@@ -76,7 +74,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            NumericTextFieldWithUnit  // "Y (Depth)"
+            Cura.NumericTextFieldWithUnit  // "Y (Depth)"
             {
                 id: machineYDepthField
                 containerStackId: machineStackId
@@ -90,7 +88,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            NumericTextFieldWithUnit  // "Z (Height)"
+            Cura.NumericTextFieldWithUnit  // "Z (Height)"
             {
                 id: machineZHeightField
                 containerStackId: machineStackId
@@ -104,7 +102,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            ComboBoxWithOptions  // "Build plate shape"
+            Cura.ComboBoxWithOptions  // "Build plate shape"
             {
                 id: buildPlateShapeComboBox
                 containerStackId: machineStackId
@@ -117,7 +115,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            SimpleCheckBox  // "Origin at center"
+            Cura.SimpleCheckBox  // "Origin at center"
             {
                 id: originAtCenterCheckBox
                 containerStackId: machineStackId
@@ -129,7 +127,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            SimpleCheckBox  // "Heated bed"
+            Cura.SimpleCheckBox  // "Heated bed"
             {
                 id: heatedBedCheckBox
                 containerStackId: machineStackId
@@ -141,7 +139,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            ComboBoxWithOptions  // "G-code flavor"
+            Cura.ComboBoxWithOptions  // "G-code flavor"
             {
                 id: gcodeFlavorComboBox
                 containerStackId: machineStackId
@@ -177,7 +175,7 @@ Item
                 renderType: Text.NativeRendering
             }
 
-            PrintHeadMinMaxTextField  // "X min"
+            Cura.PrintHeadMinMaxTextField  // "X min"
             {
                 id: machineXMinField
 
@@ -195,7 +193,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            PrintHeadMinMaxTextField  // "Y min"
+            Cura.PrintHeadMinMaxTextField  // "Y min"
             {
                 id: machineYMinField
 
@@ -213,7 +211,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            PrintHeadMinMaxTextField  // "X max"
+            Cura.PrintHeadMinMaxTextField  // "X max"
             {
                 id: machineXMaxField
 
@@ -231,7 +229,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            PrintHeadMinMaxTextField  // "Y max"
+            Cura.PrintHeadMinMaxTextField  // "Y max"
             {
                 id: machineYMaxField
 
@@ -251,7 +249,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            NumericTextFieldWithUnit  // "Gantry Height"
+            Cura.NumericTextFieldWithUnit  // "Gantry Height"
             {
                 id: machineGantryHeightField
                 containerStackId: machineStackId
@@ -265,7 +263,7 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
-            ComboBoxWithOptions  // "Number of Extruders"
+            Cura.ComboBoxWithOptions  // "Number of Extruders"
             {
                 id: numberOfExtrudersComboBox
                 containerStackId: machineStackId
@@ -280,6 +278,7 @@ Item
                 // This has something to do with UM2 and UM2+ regarding "has_material" and the gcode flavor settings.
                 // I don't remember exactly what.
                 afterOnEditingFinishedFunction: CuraApplication.getMachineSettingsManager().updateHasMaterialsMetadata
+                setValueFunction: CuraApplication.getMachineSettingsManager().setMachineExtruderCount
 
                 optionModel: ListModel
                 {
@@ -289,7 +288,10 @@ Item
                         extruderCountModel.clear()
                         for (var i = 1; i <= Cura.MachineManager.activeMachine.maxExtruderCount; i++)
                         {
-                            extruderCountModel.append({text: String(i), value: i})
+                            // Use String as value. JavaScript only has Number. PropertyProvider.setPropertyValue()
+                            // takes a QVariant as value, and Number gets translated into a float. This will cause problem
+                            // for integer settings such as "Number of Extruders".
+                            extruderCountModel.append({ text: String(i), value: String(i) })
                         }
                     }
                 }
@@ -306,7 +308,7 @@ Item
         anchors.right: parent.right
         anchors.margins: UM.Theme.getSize("default_margin").width
 
-        GcodeTextArea   // "Start G-code"
+        Cura.GcodeTextArea   // "Start G-code"
         {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -320,7 +322,7 @@ Item
             settingStoreIndex: propertyStoreIndex
         }
 
-        GcodeTextArea   // "End G-code"
+        Cura.GcodeTextArea   // "End G-code"
         {
             anchors.top: parent.top
             anchors.bottom: parent.bottom

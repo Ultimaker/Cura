@@ -67,7 +67,7 @@ Item
                 break
             }
         }
-        if (page_index > 0)
+        if (page_index >= 0)
         {
             currentStep = page_index
         }

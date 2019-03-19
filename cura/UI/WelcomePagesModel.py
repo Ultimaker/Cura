@@ -30,13 +30,6 @@ class WelcomePagesModel(ListModel):
     def initialize(self) -> None:
         from cura.CuraApplication import CuraApplication
 
-        self._pages.append({"id": "test",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "TestContent.qml"))),
-                            })
-
-
         # Add default welcome pages
         self._pages.append({"id": "welcome",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
@@ -67,6 +60,11 @@ class WelcomePagesModel(ListModel):
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                                              os.path.join("WelcomePages",
                                                                                           "AddPrinterByIpContent.qml"))),
+                            })
+        self._pages.append({"id": "machine_actions",
+                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                             os.path.join("WelcomePages",
+                                                                                          "FirstStartMachineActionsContent.qml"))),
                             })
         self._pages.append({"id": "cloud",
                             "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
