@@ -1,3 +1,88 @@
+[4.0.0]
+*Updated user interface
+Ultimaker Cura is a very powerful tool with many features to support users’ needs. In the new UI, we present these features in a better, more intuitive way based on the workflow of our users. The Marketplace and user account control have been integrated into the main interface to easily access material profiles and plugins. Three stages are shown in the header to give a clear guidance of the flow. The stage menu is populated with collapsible panels that allow users to focus on the 3D view when needed, while still showing important information at the same time, such as slicing configuration and settings. Users can now easily go to the preview stage to examine the layer view after slicing the model, which previously was less obvious or hidden. The new UI also creates more distinction between recommended and custom mode. Novice users or users who are not interested in all the settings can easily prepare a file, relying on the strength of expert-configured print profiles. Experienced users who want greater control can configure over 300 settings to their needs.
+
+*Redesigned "Add Printer" dialog
+Updated one of the first dialogs a new user is presented with. The layout is loosely modeled on the layout of the Ultimaker 3/Ultimaker S5 "Connect to Network" dialog, and adds some instructions and intention to the dialog. Contributed by fieldOfView.
+
+*Updated custom mode panel
+Based on feedback from 4.0 beta, the custom mode panel is now resizable to make more settings visible. The set position will persist between sessions.
+
+*Monitor tab
+Updated the monitor tab interface for better alignment with Cura Connect interface.
+
+*Remote printing
+Use your Ultimaker S5 printer with an Ultimaker account to send and monitor print jobs from outside your local network. Requires firmware 5.2 (coming soon).
+
+*User ratings for plugins
+With an Ultimaker account, users can now give feedback on their experience by rating their favourite plugins.
+
+*Integrated backups
+‘Cura backups’ has been integrated into Ultimaker Cura and can be found in the ‘extensions’ menu. With this feature, users can use their Ultimaker account to backup their Ultimaker Cura configurations to the cloud for easy, convenient retrieval.
+
+*Plugin versioning
+Newer plug-ins can't load in older versions if they use newer features, while old plug-ins may still load in newer versions.
+
+*LAN and cloud printer icons
+Users can now quickly see if their printer is network or cloud enabled with new icons.
+
+*Improved UI speed
+This version switches faster between extruders and printers. Your mileage may vary depending on your system specifications.
+
+*Floats precision
+No settings in Ultimaker Cura require more than three digits of precision, so floats in setting input fields have been limited to three digits only. Contributed by fieldOfView.
+
+*Minimum support area
+This feature allows set minimum area size for support and support interface polygons. Polygons which area are smaller than set value will not be generated. Contributed by vgribinchuk/Desktop Metal.
+
+*Lazy Tree Support calculation
+In previous versions, 95% of Tree Support’s computation time was used to calculate the collision volumes to make sure that the branches avoid collisions with the meshes. Now it calculates these volumes only when necessary, reducing the computation time. Contributed by bjude.
+
+*CPE and CPE+ comb retractions
+Changed all CPE and CPE+ profiles to travel up to 50 mm without retraction, decreasing blobs caused by combing long distances.
+
+*Marketplace improvements
+Added optimizations to show a support site instead of an email address, increased the number of lines that are shown for the description, and show a 'website' link so people can order material directly.
+
+*Arduino drivers silent install
+Previous versions stopped silent installation because the Arduino drivers packaged with Cura are not signed. Arduino drivers are now skipped when performing a silent install.
+
+*New third-party definitions
+- Wanhao. Updated printer profiles to use new travel_speed macro (Contributed by forkineye).
+- JGAurora A1, A5 and Z-603S (Contributed by pinchies).
+- Alfawise U20 (Contributed by pinchies).
+- Cocoon Create ModelMaker (Contributed by pinchies).
+- Ender-3. Updates to the printer definition (Contributed by stelgenhof).
+
+*Bug fixes
+- Per extruder slicing error: Fixed an issue which prevented slicing when per extruder settings were changed with a disabled extruder.
+- Non-network connected printers: Improved handling of non-Ultimaker network connected printers within Ultimaker Cura. Contributed by fieldOfView
+- Unnecessary retraction of unused extruder: Fixed an issue where printing with the second extruder only would retract material unnecessarily.
+- Outdated API: Fixed an issue where outdated plugins remained partially activated.
+- Retraction minimum travel combing: Fixed an issue where combing was not working when tweaking Retraction minimum travel.
+- Collision zone: Fixed an oversized print head collision zone when using print one-at-a-time mode.
+- G92 E0 commands: Due to inaccuracy of floats in very large prints, the position is reset again several times using "G92 E0" commands.
+- Update checker: Improved update checker text for better readability.
+- 3MF specification: Updated the implementation of 3MF in Ultimaker Cura for better consistency with 3MF consortium specifications.
+- TPU reliability: Removed all final and initial print temperature offsets, and increased first layer print temperature to fix under-extrusion problems.
+- Undesired panning: Holding shift and rotating a model on its axis for fine-grained rotations would sometimes pan the camera. This has now been fixed.
+- File type association: Added file type associations for .gcode and .g extensions.
+- Experimental profiles: Marked some more profiles as experimental.
+- PLA mislabeling: Fixed an issue where duplicated PLA with a different label would replace the original PLA entry.
+- Creating new materials: Updated which profile new materials are based when you create a brand new material. Contributed by fieldOfView.
+- Startup error messages: Fixed adhesion type errors on startup.
+- Windows systray icon: Fixed an issue where system tray icons would remain when Ultimaker Cura is closed until mouse-over.
+- Extruder Start/End G-code tooltip: Added extra tooltip to give extra information about start/end g-codes.
+- Account management: Fixed an issue where clicking 'Create Account' would go to login instead of sign-up.
+- Legacy profile importer: Fixed an issue where the legacy profile importer would generate corrupt profiles.
+- Version update crash: Fixed an issue where Ultimaker Cura could crash on start-up during the upgrading of your configuration to the newest version for some people.
+- Marketplace plugin crash: Fixed an issue where Ultimaker Cura would crash after downloading plugin from Marketplace.
+- Version upgrade checker: Ignores plugins folder when checking files for version upgrade. Start-up is now much faster if you've installed a lot of plugins or have used many versions of Ultimaker Cura.
+- Firmware checker no internet: Fixed an issue where the firmware checker shows up when there is no internet connection.
+- Setting visibility: Fixed an issue where settings could not be made visible again after hiding all settings.
+- CC core upgrade: Fixed false configuration error for CC Red 0.6 core after a version upgrade.
+- Automatic extruder disable: Fixed an issue where a warning is issued when selecting a printer with no material loaded. The extruder will now be disabled instead.
+
 [3.6.0]
 *Gyroid infill
 New infill pattern with enhanced strength properties. Gyroid infill is one of the strongest infill types for a given weight, has isotropic properties, and prints relatively fast with reduced material use and a fully connected part interior. Note: Slicing time can increase up to 40 seconds or more, depending on the model. Contributed by smartavionics.
