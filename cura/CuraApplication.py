@@ -78,6 +78,7 @@ from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
 from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
 from cura.Machines.Models.QualityManagementModel import QualityManagementModel
 from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
+from cura.Machines.Models.FirstStartMachineActionsModel import FirstStartMachineActionsModel
 
 from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
@@ -215,6 +216,7 @@ class CuraApplication(QtApplication):
         self._machine_settings_manager = MachineSettingsManager(self)
 
         self._discovered_printer_model = DiscoveredPrintersModel(self)
+        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self)
         self._welcome_pages_model = WelcomePagesModel(self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -751,6 +753,8 @@ class CuraApplication(QtApplication):
         # Initialize setting visibility presets model.
         self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
+        self._first_start_machine_actions_model.initialize()
+
         # Initialize Cura API
         self._cura_API.initialize()
 
@@ -854,6 +858,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getDiscoveredPrintersModel(self, *args) -> "DiscoveredPrintersModel":
         return self._discovered_printer_model
+
+    @pyqtSlot(result = QObject)
+    def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
+        return self._first_start_machine_actions_model
 
     @pyqtSlot(result = QObject)
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
@@ -1026,6 +1034,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
+        qmlRegisterType(FirstStartMachineActionsModel, "Cura", 1, 0, "FirstStartMachineActionsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)
