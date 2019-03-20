@@ -45,20 +45,3 @@ def test_setActiveMachine(machine_manager):
 
             # Although we mocked the application away, we still want to know if it was notified about the attempted change.
             machine_manager._application.setGlobalContainerStack.assert_called_with(mocked_global_stack)
-
-
-def test_discoveredMachine(machine_manager):
-    mocked_callback = MagicMock()
-    machine_manager.addDiscoveredPrinter("test", "zomg", mocked_callback, "derp")
-    machine_manager.addMachineFromDiscoveredPrinter("test")
-    mocked_callback.assert_called_with("test")
-
-    assert len(machine_manager.discoveredPrinters) == 1
-
-    # Test if removing it works
-    machine_manager.removeDiscoveredPrinter("test")
-    assert len(machine_manager.discoveredPrinters) == 0
-
-    # Just in case, nothing should happen.
-    machine_manager.addMachineFromDiscoveredPrinter("test")
-    assert mocked_callback.call_count == 1
