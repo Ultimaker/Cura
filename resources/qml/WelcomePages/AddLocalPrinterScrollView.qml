@@ -146,10 +146,9 @@ ScrollView
             font: UM.Theme.getFont("default")
             visible: base.currentSection == section
 
-            background: Rectangle
+            background: Item
             {
                 anchors.fill: parent
-                color: "transparent"
             }
 
             indicator: Rectangle
