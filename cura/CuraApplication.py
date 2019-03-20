@@ -48,7 +48,6 @@ from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
-from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.GlobalStacksModel import GlobalStacksModel
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Operations.SetParentOperation import SetParentOperation
@@ -96,7 +95,7 @@ from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
-from . import CuraSplashScreen
+from cura.UI import CuraSplashScreen
 from . import PrintJobPreviewImageProvider
 from . import MachineActionManager
 
