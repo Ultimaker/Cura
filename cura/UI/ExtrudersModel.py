@@ -2,23 +2,25 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
-from typing import Iterable
+from typing import Iterable, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
-import UM.Qt.ListModel
+from UM.Qt.ListModel import ListModel
 from UM.Application import Application
 import UM.FlameProfiler
 
-from cura.Settings.ExtruderStack import ExtruderStack  # To listen to changes on the extruders.
+if TYPE_CHECKING:
+    from cura.Settings.ExtruderStack import ExtruderStack  # To listen to changes on the extruders.
 
 catalog = i18nCatalog("cura")
+
 
 ##  Model that holds extruders.
 #
 #   This model is designed for use by any list of extruders, but specifically
 #   intended for drop-down lists of the current machine's extruders in place of
 #   settings.
-class ExtrudersModel(UM.Qt.ListModel.ListModel):
+class ExtrudersModel(ListModel):
     # The ID of the container stack for the extruder.
     IdRole = Qt.UserRole + 1
 
