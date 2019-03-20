@@ -4,7 +4,7 @@
 import os.path
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
-from cura.Stages.CuraStage import CuraStage
+from cura.UI.CuraStage import CuraStage
 
 ##  Stage for preparing model (slicing).
 class PrepareStage(CuraStage):

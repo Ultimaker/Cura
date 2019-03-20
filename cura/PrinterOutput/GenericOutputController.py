@@ -3,14 +3,15 @@
 
 from typing import TYPE_CHECKING, Set, Union, Optional
 
-from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from PyQt5.QtCore import QTimer
 
+from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
+
 if TYPE_CHECKING:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
+    from cura.UI.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
-    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+    from cura.UI.ExtruderOutputModel import ExtruderOutputModel
 
 
 class GenericOutputController(PrinterOutputController):

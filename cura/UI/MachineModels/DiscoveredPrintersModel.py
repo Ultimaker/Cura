@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Callable, List, Optional, TYPE_CHECKING
+from typing import Callable, Dict, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject
 
@@ -81,34 +81,34 @@ class DiscoveredPrintersModel(QObject):
     def __init__(self, parent: Optional["QObject"]) -> None:
         super().__init__(parent)
 
-        self._discovered_printer_dict = dict()
+        self._discovered_printer_by_ip_dict = dict()  # type: Dict[str, DiscoveredPrinter]
 
     discoveredPrintersChanged = pyqtSignal()
 
     @pyqtProperty(list, notify = discoveredPrintersChanged)
     def discovered_printers(self) -> "List[DiscoveredPrinter]":
-        item_list = list(x for x in self._discovered_printer_dict.values())
+        item_list = list(x for x in self._discovered_printer_by_ip_dict.values())
         item_list.sort(key = lambda x: x.name)
         return item_list
 
     def addDiscoveredPrinter(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None],
                              machine_type: str, device) -> None:
-        if ip_address in self._discovered_printer_dict:
+        if ip_address in self._discovered_printer_by_ip_dict:
             Logger.log("e", "Printer with ip [%s] has already been added", ip_address)
             return
 
         discovered_printer = DiscoveredPrinter(ip_address, key, name, create_callback, machine_type, device, parent = self)
-        self._discovered_printer_dict[ip_address] = discovered_printer
+        self._discovered_printer_by_ip_dict[ip_address] = discovered_printer
         self.discoveredPrintersChanged.emit()
 
     def updateDiscoveredPrinter(self, ip_address: str,
                                 name: Optional[str] = None,
                                 machine_type: Optional[str] = None) -> None:
-        if ip_address not in self._discovered_printer_dict:
+        if ip_address not in self._discovered_printer_by_ip_dict:
             Logger.log("e", "Printer with ip [%s] is not known", ip_address)
             return
 
-        item = self._discovered_printer_dict[ip_address]
+        item = self._discovered_printer_by_ip_dict[ip_address]
 
         if name is not None:
             item.setName(name)
@@ -116,11 +116,11 @@ class DiscoveredPrintersModel(QObject):
             item.setMachineType(machine_type)
 
     def removeDiscoveredPrinter(self, ip_address: str) -> None:
-        if ip_address not in self._discovered_printer_dict:
+        if ip_address not in self._discovered_printer_by_ip_dict:
             Logger.log("i", "Key [%s] does not exist in the discovered printers list.", ip_address)
             return
 
-        del self._discovered_printer_dict[ip_address]
+        del self._discovered_printer_by_ip_dict[ip_address]
         self.discoveredPrintersChanged.emit()
 
     @pyqtSlot("QVariant")

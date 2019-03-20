@@ -6,7 +6,7 @@ from unittest.mock import patch, MagicMock
 
 from UM.Scene.SceneNode import SceneNode
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from cura.UI.PrinterOutputModel import PrinterOutputModel
 from ...src.Cloud import CloudApiClient
 from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
 from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse

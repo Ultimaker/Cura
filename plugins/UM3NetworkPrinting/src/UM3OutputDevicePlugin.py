@@ -5,16 +5,16 @@ from queue import Queue
 from threading import Event, Thread
 from time import time
 import os
+from typing import Optional, TYPE_CHECKING
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
+from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import ConnectionType
-from cura.Settings.GlobalStack import GlobalStack # typing
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 from UM.i18n import i18nCatalog
@@ -28,9 +28,12 @@ from UM.Version import Version
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
-from typing import Optional
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
+    from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 
 i18n_catalog = i18nCatalog("cura")
+
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -448,7 +451,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         Logger.log("d", "Checking if cloud connection is possible...")
 
         # Pre-Check: Skip if active machine already has been cloud connected or you said don't ask again
-        active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
+        active_machine = self._application.getMachineManager().activeMachine # type: Optional[GlobalStack]
         if active_machine:
             
             # Check 1A: Printer isn't already configured for cloud
@@ -536,7 +539,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             return
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
-        active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
+        active_machine = self._application.getMachineManager().activeMachine # type: Optional[GlobalStack]
         if active_machine:
             active_machine.setMetaDataEntry("do_not_show_cloud_message", checked)
             if checked:

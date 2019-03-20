@@ -69,17 +69,8 @@ Item
 
     property alias browsePackages: browsePackagesAction
 
-    property alias showOnBoarding: showOnBoarding
-
     UM.I18nCatalog{id: catalog; name: "cura"}
 
-
-    Controls2.Action
-    {
-        id: showOnBoarding
-        text: catalog.i18nc("@action:inmenu", "Show On boarding")
-        shortcut: "Ctrl+Alt+D"
-    }
 
     Action
     {

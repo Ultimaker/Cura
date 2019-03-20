@@ -4,13 +4,11 @@
 from UM.Logger import Logger
 from UM.Signal import Signal
 
-from typing import Union
-
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
+    from cura.UI.ExtruderOutputModel import ExtruderOutputModel
+    from cura.UI.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 

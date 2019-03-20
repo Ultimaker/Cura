@@ -6,10 +6,10 @@ from typing import List
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
+    from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 
-class ConfigurationModel(QObject):
+class PrinterConfigurationModel(QObject):
 
     configurationChanged = pyqtSignal()
 
@@ -19,14 +19,14 @@ class ConfigurationModel(QObject):
         self._extruder_configurations = []     # type: List[ExtruderConfigurationModel]
         self._buildplate_configuration = ""
 
-    def setPrinterType(self, printer_type):
+    def setPrinterType(self, printer_type: str) -> None:
         self._printer_type = printer_type
 
     @pyqtProperty(str, fset = setPrinterType, notify = configurationChanged)
     def printerType(self) -> str:
         return self._printer_type
 
-    def setExtruderConfigurations(self, extruder_configurations: List["ExtruderConfigurationModel"]):
+    def setExtruderConfigurations(self, extruder_configurations: List["ExtruderConfigurationModel"]) -> None:
         if self._extruder_configurations != extruder_configurations:
             self._extruder_configurations = extruder_configurations
 
@@ -40,7 +40,7 @@ class ConfigurationModel(QObject):
         return self._extruder_configurations
 
     def setBuildplateConfiguration(self, buildplate_configuration: str) -> None:
-        if self._buildplate_configuration !=  buildplate_configuration:
+        if self._buildplate_configuration != buildplate_configuration:
             self._buildplate_configuration = buildplate_configuration
             self.configurationChanged.emit()
 

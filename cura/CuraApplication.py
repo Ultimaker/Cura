@@ -48,8 +48,7 @@ from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
-from cura.MultiplyObjectsJob import MultiplyObjectsJob
-from cura.GlobalStacksModel import GlobalStacksModel
+from cura.UI.GlobalStacksModel import GlobalStacksModel
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
@@ -68,19 +67,19 @@ from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.MachineNameValidator import MachineNameValidator
 
-from cura.Machines.Models.BuildPlateModel import BuildPlateModel
-from cura.Machines.Models.NozzleModel import NozzleModel
-from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
-from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
-from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
-from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
-from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
-from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
-from cura.Machines.Models.QualityManagementModel import QualityManagementModel
-from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
-from cura.Machines.Models.FirstStartMachineActionsModel import FirstStartMachineActionsModel
-
-from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
+from cura.UI.MachineModels.BuildPlateModel import BuildPlateModel
+from cura.UI.MachineModels.DiscoveredPrintersModel import DiscoveredPrintersModel
+from cura.UI.MachineModels.NozzleModel import NozzleModel
+from cura.UI.MachineModels.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
+from cura.UI.MachineModels.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
+from cura.UI.MachineModels.MultiBuildPlateModel import MultiBuildPlateModel
+from cura.UI.MachineModels.FavoriteMaterialsModel import FavoriteMaterialsModel
+from cura.UI.MachineModels.FirstStartMachineActionsModel import FirstStartMachineActionsModel
+from cura.UI.MachineModels.GenericMaterialsModel import GenericMaterialsModel
+from cura.UI.MachineModels.MaterialBrandsModel import MaterialBrandsModel
+from cura.UI.MachineModels.QualityManagementModel import QualityManagementModel
+from cura.UI.MachineModels.QualitySettingsModel import QualitySettingsModel
+from cura.UI.MachineModels.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 
@@ -94,30 +93,26 @@ from .AutoSave import AutoSave
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
-from . import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
-from . import CuraSplashScreen
+from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
 from . import PrintJobPreviewImageProvider
-from . import MachineActionManager
 
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
 
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.UserChangesModel import UserChangesModel
-from cura.Settings.ExtrudersModel import ExtrudersModel
+from cura.UI.UserChangesModel import UserChangesModel
+from cura.UI.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
 import cura.Settings.cura_empty_instance_containers
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
-from cura.ObjectsModel import ObjectsModel
+from cura.UI.ObjectsModel import ObjectsModel
 
-from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
-
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
 from cura import ApplicationMetadata, UltimakerCloudAuthentication
@@ -1010,7 +1005,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
-        qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePageModel")
+        qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 

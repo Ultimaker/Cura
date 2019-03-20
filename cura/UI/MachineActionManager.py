@@ -12,7 +12,7 @@ from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
     from cura.Settings.GlobalStack import GlobalStack
-    from .MachineAction import MachineAction
+    from cura.MachineAction import MachineAction
 
 
 ##  Raised when trying to add an unknown machine action as a required action

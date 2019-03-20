@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
 from PyQt5.QtCore import QUrl, Qt
 
@@ -25,56 +25,44 @@ class WelcomePagesModel(ListModel):
         self.addRoleName(self.PageUrlRole, "page_url")
         self.addRoleName(self.NextPageIdRole, "next_page_id")
 
-        self._pages = []
+        self._pages = []  # type: List[Dict[str, Any]]
+
+    # Convenience function to get QUrl path to pages that's located in "resources/qml/WelcomePages".
+    def _getBuiltinWelcomePagePath(self, page_filename: str) -> "QUrl":
+        from cura.CuraApplication import CuraApplication
+        return QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                    os.path.join("WelcomePages", page_filename)))
 
     def initialize(self) -> None:
-        from cura.CuraApplication import CuraApplication
-
         # Add default welcome pages
         self._pages.append({"id": "welcome",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "WelcomeContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("WelcomeContent.qml"),
                             })
         self._pages.append({"id": "user_agreement",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "UserAgreementContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("UserAgreementContent.qml"),
                             })
         self._pages.append({"id": "whats_new",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "WhatsNewContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
                             })
         self._pages.append({"id": "data_collections",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "DataCollectionsContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
                             })
         self._pages.append({"id": "add_printer_by_selection",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "AddPrinterBySelectionContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("AddPrinterBySelectionContent.qml"),
                             })
         self._pages.append({"id": "add_printer_by_ip",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "AddPrinterByIpContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
                             })
         self._pages.append({"id": "machine_actions",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "FirstStartMachineActionsContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
                             })
         self._pages.append({"id": "cloud",
-                            "page_url": QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                             os.path.join("WelcomePages",
-                                                                                          "CloudContent.qml"))),
+                            "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
                             })
 
         self.setItems(self._pages)
 
-    def addPage(self):
+    def addPage(self) -> None:
         pass
 
 
