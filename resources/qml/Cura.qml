@@ -78,13 +78,13 @@ UM.MainWindow
         {
             welcomeDialog.visible = true;
             welcomeDialog.currentStep = 0;
-            welcomeDialog.show();
         }
         else
         {
-            welcomeDialog.hide()
             welcomeDialog.visible = false;
         }
+        // TODO: While the new onboarding process contains the user-agreement,
+        //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.
     }
 
     Item

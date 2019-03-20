@@ -7,7 +7,6 @@ from PyQt5.QtCore import QUrl, Qt
 
 from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
-from logging import Logger
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject

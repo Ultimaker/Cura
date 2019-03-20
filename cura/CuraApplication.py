@@ -453,7 +453,6 @@ class CuraApplication(QtApplication):
             # Misc.:
             "ConsoleLogger", #You want to be able to read the log if something goes wrong.
             "CuraEngineBackend", #Cura is useless without this one since you can't slice.
-            # NOTE: User-Agreement is part of the 'onboarding flow' now (See Welcome Pages).
             "FileLogger", #You want to be able to read the log if something goes wrong.
             "XmlMaterialProfile", #Cura crashes without this one.
             "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
