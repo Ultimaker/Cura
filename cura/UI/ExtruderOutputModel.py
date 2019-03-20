@@ -8,7 +8,7 @@ from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+    from cura.UI.MaterialOutputModel import MaterialOutputModel
 
 
 class ExtruderOutputModel(QObject):
