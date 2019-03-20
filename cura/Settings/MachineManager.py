@@ -1678,7 +1678,9 @@ class MachineManager(QObject):
 
         meta_data = global_stack.getMetaData()
 
-        if "um_network_key" in meta_data:  # Global stack already had a connection, but it's changed.
+        # Global stack previously had a connection, so here it needs to change the connection information in all
+        # global stacks in that same group.
+        if "um_network_key" in meta_data:
             old_network_key = meta_data["um_network_key"]
             # Since we might have a bunch of hidden stacks, we also need to change it there.
             metadata_filter = {"um_network_key": old_network_key}
@@ -1698,6 +1700,7 @@ class MachineManager(QObject):
                 # Ensure that these containers do know that they are configured for network connection
                 container.addConfiguredConnectionType(printer_device.connectionType.value)
 
-        else:  # Global stack didn't have a connection yet, configure it.
+        # Global stack previously didn't have a connection, so directly configure it.
+        else:
             global_stack.setMetaDataEntry("um_network_key", printer_device.key)
             global_stack.addConfiguredConnectionType(printer_device.connectionType.value)
