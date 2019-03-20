@@ -11,6 +11,8 @@ from UM.Logger import Logger
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
 
+    from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
+
 
 catalog = i18nCatalog("cura")
 
@@ -18,7 +20,7 @@ catalog = i18nCatalog("cura")
 class DiscoveredPrinter(QObject):
 
     def __init__(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None], machine_type: str,
-                 device, parent = None) -> None:
+                 device: "NetworkedPrinterOutputDevice", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self._ip_address = ip_address
@@ -67,7 +69,7 @@ class DiscoveredPrinter(QObject):
         return self.readable_machine_type.lower() == "unknown"
 
     @pyqtProperty(QObject, constant = True)
-    def device(self):
+    def device(self) -> "NetworkedPrinterOutputDevice":
         return self._device
 
 
@@ -78,7 +80,7 @@ class DiscoveredPrinter(QObject):
 #
 class DiscoveredPrintersModel(QObject):
 
-    def __init__(self, parent: Optional["QObject"]) -> None:
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self._discovered_printer_by_ip_dict = dict()  # type: Dict[str, DiscoveredPrinter]
@@ -92,7 +94,7 @@ class DiscoveredPrintersModel(QObject):
         return item_list
 
     def addDiscoveredPrinter(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None],
-                             machine_type: str, device) -> None:
+                             machine_type: str, device: "NetworkedPrinterOutputDevice") -> None:
         if ip_address in self._discovered_printer_by_ip_dict:
             Logger.log("e", "Printer with ip [%s] has already been added", ip_address)
             return
