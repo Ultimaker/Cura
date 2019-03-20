@@ -53,7 +53,7 @@ UM.MainWindow
         id: greyOutBackground
         anchors.fill: parent
         visible: welcomeDialog.visible
-        color: "black"
+        color: UM.Theme.getColor("window_disabled_background")
         opacity: 0.7
         z: stageMenu.z + 1
     }

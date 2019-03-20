@@ -191,6 +191,8 @@
 
         "printer_type_label_background": [228, 228, 242, 255],
 
+        "window_disabled_background": [0, 0, 0, 255],
+
         "text_light_blue": [50, 130, 255, 255],
 
         "text": [25, 25, 25, 255],
