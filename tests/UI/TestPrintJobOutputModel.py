@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from cura.UI.ConfigurationModel import ConfigurationModel
+from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.UI.PrintJobOutputModel import PrintJobOutputModel
 from cura.UI.PrinterOutputModel import PrinterOutputModel
 
@@ -11,7 +11,7 @@ test_validate_data_get_set = [
 ]
 
 test_validate_data_get_update = [
-    {"attribute": "configuration", "value": ConfigurationModel()},
+    {"attribute": "configuration", "value": PrinterConfigurationModel()},
     {"attribute": "owner", "value": "WHOO"},
     {"attribute": "assignedPrinter", "value": PrinterOutputModel(MagicMock())},
     {"attribute": "key", "value": "YAY"},

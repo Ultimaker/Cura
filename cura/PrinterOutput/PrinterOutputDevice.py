@@ -17,7 +17,7 @@ from UM.FlameProfiler import pyqtSlot
 MYPY = False
 if MYPY:
     from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.UI.ConfigurationModel import ConfigurationModel
+    from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
     from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater
     from UM.FileHandler.FileHandler import FileHandler
     from UM.Scene.SceneNode import SceneNode
@@ -73,7 +73,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
-        self._unique_configurations = []   # type: List[ConfigurationModel]
+        self._unique_configurations = []   # type: List[PrinterConfigurationModel]
 
         self._monitor_view_qml_path = ""  # type: str
         self._monitor_component = None  # type: Optional[QObject]
@@ -216,7 +216,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QVariantList", notify = uniqueConfigurationsChanged)
-    def uniqueConfigurations(self) -> List["ConfigurationModel"]:
+    def uniqueConfigurations(self) -> List["PrinterConfigurationModel"]:
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:

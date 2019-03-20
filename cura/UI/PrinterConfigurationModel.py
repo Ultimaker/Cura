@@ -9,7 +9,7 @@ if MYPY:
     from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 
-class ConfigurationModel(QObject):
+class PrinterConfigurationModel(QObject):
 
     configurationChanged = pyqtSignal()
 

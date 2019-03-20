@@ -19,7 +19,7 @@ from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
-from cura.UI.ConfigurationModel import ConfigurationModel
+from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.UI.PrinterOutputModel import PrinterOutputModel
@@ -522,7 +522,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job = UM3PrintJobOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
                                         key=data["uuid"], name= data["name"])
 
-        configuration = ConfigurationModel()
+        configuration = PrinterConfigurationModel()
         extruders = [ExtruderConfigurationModel(position = idx) for idx in range(0, self._number_of_extruders)]
         for index in range(0, self._number_of_extruders):
             try:

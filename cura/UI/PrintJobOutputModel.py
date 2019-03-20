@@ -9,7 +9,7 @@ from PyQt5.QtGui import QImage
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.UI.ConfigurationModel import ConfigurationModel
+    from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
 
 
 class PrintJobOutputModel(QObject):
@@ -35,7 +35,7 @@ class PrintJobOutputModel(QObject):
         self._assigned_printer = None  # type: Optional[PrinterOutputModel]
         self._owner = ""  # Who started/owns the print job?
 
-        self._configuration = None  # type: Optional[ConfigurationModel]
+        self._configuration = None  # type: Optional[PrinterConfigurationModel]
         self._compatible_machine_families = []  # type: List[str]
         self._preview_image_id = 0
 
@@ -69,10 +69,10 @@ class PrintJobOutputModel(QObject):
             self.previewImageChanged.emit()
 
     @pyqtProperty(QObject, notify=configurationChanged)
-    def configuration(self) -> Optional["ConfigurationModel"]:
+    def configuration(self) -> Optional["PrinterConfigurationModel"]:
         return self._configuration
 
-    def updateConfiguration(self, configuration: Optional["ConfigurationModel"]) -> None:
+    def updateConfiguration(self, configuration: Optional["PrinterConfigurationModel"]) -> None:
         if self._configuration != configuration:
             self._configuration = configuration
             self.configurationChanged.emit()
