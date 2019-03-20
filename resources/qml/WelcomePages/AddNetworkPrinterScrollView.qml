@@ -61,7 +61,7 @@ Item
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
             height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
 
-            visible: networkPrinterListView.model.length > 0
+            visible: networkPrinterListView.count > 0
 
             clip: true
 
