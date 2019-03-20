@@ -45,7 +45,7 @@ Item
             text: catalog.i18nc("@label", "There is no printer found over your network.")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
-            visible: !networkPrinterScrollView.visible
+            visible: networkPrinterListView.count == 0  // Do not show if there are discovered devices.
         }
 
         ScrollView
